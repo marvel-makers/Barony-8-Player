@@ -4831,7 +4831,7 @@ bool handleEvents(void)
             }
 #else
             mousestatus[event.button.button] = 1; // set this mouse button to 1
-            Input::mouseButtons[event.button.button] = 1;
+            Input::mouseButtons[event.button.button] = true;
             Input::lastInputOfAnyKind = std::string("Mouse") + std::to_string(event.button.button);
             lastkeypressed = 282 + event.button.button;
 #endif
@@ -4842,7 +4842,7 @@ bool handleEvents(void)
                 break;
             }
             mousestatus[event.button.button] = 0; // set this mouse button to 0
-            Input::mouseButtons[event.button.button] = 0;
+            Input::mouseButtons[event.button.button] = false;
 #ifdef APPLE
             mousestatus[SDL_BUTTON_RIGHT] = 0;
             Input::mouseButtons[SDL_BUTTON_RIGHT] = 0;
@@ -4862,14 +4862,14 @@ bool handleEvents(void)
             if (event.wheel.y > 0)
             {
                 mousestatus[SDL_BUTTON_WHEELUP] = 1;
-                Input::mouseButtons[Input::MOUSE_WHEEL_UP] = 1;
+                Input::mouseButtons[Input::MOUSE_WHEEL_UP] = true;
                 Input::lastInputOfAnyKind = "MouseWheelUp";
                 lastkeypressed = 286;
             }
             else if (event.wheel.y < 0)
             {
                 mousestatus[SDL_BUTTON_WHEELDOWN] = 1;
-                Input::mouseButtons[Input::MOUSE_WHEEL_DOWN] = 1;
+                Input::mouseButtons[Input::MOUSE_WHEEL_DOWN] = true;
                 Input::lastInputOfAnyKind = "MouseWheelDown";
                 lastkeypressed = 287;
             }
@@ -5706,7 +5706,7 @@ void pauseGame(int mode /* 0 == toggle, 1 == force unpause, 2 == force pause */,
         }
         if (keystatus[SDLK_ESCAPE])
         {
-            keystatus[SDLK_ESCAPE] = 0;
+            keystatus[SDLK_ESCAPE] = false;
         }
         return; // doesn't disable the game in multiplayer anymore
         if (multiplayer == SERVER)
@@ -5765,7 +5765,7 @@ void pauseGame(int mode /* 0 == toggle, 1 == force unpause, 2 == force pause */,
         }
         if (keystatus[SDLK_ESCAPE])
         {
-            keystatus[SDLK_ESCAPE] = 0;
+            keystatus[SDLK_ESCAPE] = false;
         }
         return; // doesn't disable the game in multiplayer anymore
         if (multiplayer == SERVER)
@@ -7208,12 +7208,12 @@ static void doConsoleCommands()
             {
                 if (keystatus[SDLK_RETURN])
                 {
-                    keystatus[SDLK_RETURN] = 0;
+                    keystatus[SDLK_RETURN] = false;
                     confirm = true;
                 }
                 if (Input::keys[SDLK_RETURN])
                 {
-                    Input::keys[SDLK_RETURN] = 0;
+                    Input::keys[SDLK_RETURN] = false;
                     confirm = true;
                 }
             }
@@ -7282,7 +7282,7 @@ static void doConsoleCommands()
         // check for cancel keystroke (always ESC)
         if (keystatus[SDLK_ESCAPE])
         {
-            keystatus[SDLK_ESCAPE] = 0;
+            keystatus[SDLK_ESCAPE] = false;
             chosen_command = nullptr;
             command = false;
         }
@@ -8015,7 +8015,7 @@ int main(int argc, char** argv)
                     }
                     if (Input::keys[SDLK_ESCAPE])
                     {
-                        Input::keys[SDLK_ESCAPE] = 0;
+                        Input::keys[SDLK_ESCAPE] = false;
                         skipButtonPressed = true;
                     }
 
@@ -8294,7 +8294,7 @@ int main(int argc, char** argv)
                             }
                             else
                             {
-                                keystatus[SDLK_ESCAPE] = 0;
+                                keystatus[SDLK_ESCAPE] = false;
                             }
                         }
                         else

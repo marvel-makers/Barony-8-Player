@@ -2099,7 +2099,7 @@ void monsterMMoveBodyparts(Entity* my, Stat* myStats, double dist)
                     static int stage = 0;
                     if ( keystatus[SDLK_g] )
                     {
-                        keystatus[SDLK_g] = 0;
+                        keystatus[SDLK_g] = false;
                         stage += 1;
                         if ( stage > 2 )
                         {

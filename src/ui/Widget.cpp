@@ -258,7 +258,7 @@ Widget* Widget::findWidget(const char* name, bool recursive, Widget::SearchType 
             } else {
                 break;
             }
-        } while (1);
+        } while (true);
     }
     return nullptr;
 }
@@ -300,7 +300,7 @@ const Widget* Widget::findWidget(const char* name, bool recursive, Widget::Searc
             } else {
                 break;
             }
-        } while (1);
+        } while (true);
     }
     return nullptr;
 }

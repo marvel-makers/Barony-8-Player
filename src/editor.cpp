@@ -857,10 +857,10 @@ bool handleEvents(void)
                     }
                 }
                 lastkeypressed = event.key.keysym.sym;
-                keystatus[event.key.keysym.sym] = 1; // set this key's index to 1
+                keystatus[event.key.keysym.sym] = true; // set this key's index to 1
                 break;
             case SDL_KEYUP: // if a key is unpressed...
-                keystatus[event.key.keysym.sym] = 0; // set this key's index to 0
+                keystatus[event.key.keysym.sym] = false; // set this key's index to 0
                 break;
             case SDL_TEXTINPUT:
                 if ( (event.text.text[0] != 'c' && event.text.text[0] != 'C') || !(SDL_GetModState()&KMOD_CTRL) )
@@ -1337,7 +1337,7 @@ int loadTilePalettes()
     // read file
     int paletteNumber = 0;
     int paletteTile = 0;
-    bool lockValueEntry = 0;
+    bool lockValueEntry = false;
     for (; !(fp->eof()); )
     {
         //printlog( "loading line %d...\n", line);
@@ -1440,7 +1440,7 @@ int saveTilePalettes()
     Uint32 line;
     int paletteNumber = 0;
     int paletteTile = 0;
-    bool lockValueEntry = 0;
+    bool lockValueEntry = false;
     char data[128];
 
     fp->puts("# Tile palette file\n");
@@ -3102,7 +3102,7 @@ int main(int argc, char** argv)
 
                     if ( keystatus[SDLK_TAB] )
                     {
-                        keystatus[SDLK_TAB] = 0;
+                        keystatus[SDLK_TAB] = false;
                         cursorflash = ticks;
                         editproperty++;
                         if ( editproperty == 15 )
@@ -3747,7 +3747,7 @@ int main(int argc, char** argv)
                             // Cycle properties with TAB.
                             if ( keystatus[SDLK_TAB] )
                             {
-                                keystatus[SDLK_TAB] = 0;
+                                keystatus[SDLK_TAB] = false;
                                 cursorflash = ticks;
                                 editproperty++;
                                 if ( editproperty == numProperties * 2 - 2 )
@@ -4141,7 +4141,7 @@ int main(int argc, char** argv)
                         // Cycle properties with TAB.
                         if ( keystatus[SDLK_TAB] )
                         {
-                            keystatus[SDLK_TAB] = 0;
+                            keystatus[SDLK_TAB] = false;
                             cursorflash = ticks;
                             editproperty++;
                             if ( editproperty == numProperties )
@@ -4596,7 +4596,7 @@ int main(int argc, char** argv)
                         // Cycle properties with TAB.
                         if ( keystatus[SDLK_TAB] )
                         {
-                            keystatus[SDLK_TAB] = 0;
+                            keystatus[SDLK_TAB] = false;
                             cursorflash = ticks;
                             editproperty++;
                             if ( editproperty == numProperties )
@@ -4828,7 +4828,7 @@ int main(int argc, char** argv)
                         // Cycle properties with TAB.
                         if ( keystatus[SDLK_TAB] )
                         {
-                            keystatus[SDLK_TAB] = 0;
+                            keystatus[SDLK_TAB] = false;
                             cursorflash = ticks;
                             editproperty++;
                             if ( editproperty == numProperties )
@@ -5025,7 +5025,7 @@ int main(int argc, char** argv)
                         // Cycle properties with TAB.
                         if ( keystatus[SDLK_TAB] )
                         {
-                            keystatus[SDLK_TAB] = 0;
+                            keystatus[SDLK_TAB] = false;
                             cursorflash = ticks;
                             editproperty++;
                             if ( editproperty == numProperties )
@@ -6202,7 +6202,7 @@ int main(int argc, char** argv)
                         // Cycle properties with TAB.
                         if ( keystatus[SDLK_TAB] )
                         {
-                            keystatus[SDLK_TAB] = 0;
+                            keystatus[SDLK_TAB] = false;
                             cursorflash = ticks;
                             editproperty++;
                             if ( editproperty == numProperties )
@@ -6529,7 +6529,7 @@ int main(int argc, char** argv)
                             // Cycle properties with TAB.
                             if ( keystatus[SDLK_TAB] )
                             {
-                                keystatus[SDLK_TAB] = 0;
+                                keystatus[SDLK_TAB] = false;
                                 cursorflash = ticks;
                                 editproperty++;
                                 if ( editproperty == numProperties )
@@ -6762,7 +6762,7 @@ int main(int argc, char** argv)
                         // Cycle properties with TAB.
                         if ( keystatus[SDLK_TAB] )
                         {
-                            keystatus[SDLK_TAB] = 0;
+                            keystatus[SDLK_TAB] = false;
                             cursorflash = ticks;
                             editproperty++;
                             if ( editproperty == numProperties )
@@ -6855,7 +6855,7 @@ int main(int argc, char** argv)
                                 }
                                 if ( keystatus[SDLK_LEFT] )
                                 {
-                                    keystatus[SDLK_LEFT] = 0;
+                                    keystatus[SDLK_LEFT] = false;
                                     if ( textInsertCaratPosition > 0 )
                                     {
                                         --textInsertCaratPosition;
@@ -6872,7 +6872,7 @@ int main(int argc, char** argv)
                                 }
                                 else if ( keystatus[SDLK_RIGHT] )
                                 {
-                                    keystatus[SDLK_RIGHT] = 0;
+                                    keystatus[SDLK_RIGHT] = false;
                                     if ( textInsertCaratPosition == -1 )
                                     {
                                         textInsertCaratPosition = strlen(inputstr);
@@ -6894,7 +6894,7 @@ int main(int argc, char** argv)
                                     {
                                         textInsertCaratPosition = strlen(inputstr);
                                     }
-                                    keystatus[SDLK_RETURN] = 0;
+                                    keystatus[SDLK_RETURN] = false;
                                 }
                             }
 
@@ -9413,7 +9413,7 @@ int main(int argc, char** argv)
 
                 if ( keystatus[SDLK_ESCAPE] )
                 {
-                    keystatus[SDLK_ESCAPE] = 0;
+                    keystatus[SDLK_ESCAPE] = false;
                     if ( newwindow > 1 )
                     {
                         //buttonCloseSpriteSubwindow(NULL);
@@ -9429,7 +9429,7 @@ int main(int argc, char** argv)
                 }
                 if ( keystatus[SDLK_RETURN] )
                 {
-                    keystatus[SDLK_RETURN] = 0;
+                    keystatus[SDLK_RETURN] = false;
                     if ( newwindow > 1 )
                     {
                         //buttonSpritePropertiesConfirm(NULL);
@@ -9464,120 +9464,120 @@ int main(int argc, char** argv)
                 {
                     if ( keystatus[SDLK_n] && !keystatus[SDLK_LSHIFT] && !keystatus[SDLK_RSHIFT] )
                     {
-                        keystatus[SDLK_n] = 0;
+                        keystatus[SDLK_n] = false;
                         buttonNew(nullptr);
                         groupedEntities.clear();
                     }
                     if ( keystatus[SDLK_s] )
                     {
-                        keystatus[SDLK_s] = 0;
+                        keystatus[SDLK_s] = false;
                         buttonSave(nullptr);
                     }
                     if ( keystatus[SDLK_o] )
                     {
-                        keystatus[SDLK_o] = 0;
+                        keystatus[SDLK_o] = false;
                         buttonOpen(nullptr);
                         groupedEntities.clear();
                     }
                     if ( keystatus[SDLK_x] )
                     {
-                        keystatus[SDLK_x] = 0;
+                        keystatus[SDLK_x] = false;
                         buttonCut(nullptr);
                     }
                     if ( keystatus[SDLK_c] )
                     {
-                        keystatus[SDLK_c] = 0;
+                        keystatus[SDLK_c] = false;
                         buttonCopy(nullptr);
                         groupedEntities.clear();
                     }
                     if ( keystatus[SDLK_v] )
                     {
-                        keystatus[SDLK_v] = 0;
+                        keystatus[SDLK_v] = false;
                         buttonPaste(nullptr);
                         groupedEntities.clear();
                     }
                     if ( keystatus[SDLK_a] )
                     {
-                        keystatus[SDLK_a] = 0;
+                        keystatus[SDLK_a] = false;
                         buttonSelectAll(nullptr);
                         reselectEntityGroup();
                     }
                     if ( keystatus[SDLK_z] )
                     {
-                        keystatus[SDLK_z] = 0;
+                        keystatus[SDLK_z] = false;
                         buttonUndo(nullptr);
                         groupedEntities.clear();
                     }
                     if ( keystatus[SDLK_y] )
                     {
-                        keystatus[SDLK_y] = 0;
+                        keystatus[SDLK_y] = false;
                         buttonRedo(nullptr);
                         groupedEntities.clear();
                     }
                     if ( keystatus[SDLK_g] )
                     {
-                        keystatus[SDLK_g] = 0;
+                        keystatus[SDLK_g] = false;
                         buttonGrid(nullptr);
                     }
                     if ( keystatus[SDLK_d] )
                     {
-                        keystatus[SDLK_d] = 0;
+                        keystatus[SDLK_d] = false;
                         buttonOpenDirectory(nullptr);
                     }
                     if ( keystatus[SDLK_t] )
                     {
-                        keystatus[SDLK_t] = 0;
+                        keystatus[SDLK_t] = false;
                         buttonToolbox(nullptr);
                     }
                     if ( keystatus[SDLK_e] )
                     {
-                        keystatus[SDLK_e] = 0;
+                        keystatus[SDLK_e] = false;
                         buttonViewSprites(nullptr);
                     }
                     if ( keystatus[SDLK_l] )
                     {
-                        keystatus[SDLK_l] = 0;
+                        keystatus[SDLK_l] = false;
                         buttonAllLayers(nullptr);
                     }
                     if ( keystatus[SDLK_h] )
                     {
-                        keystatus[SDLK_h] = 0;
+                        keystatus[SDLK_h] = false;
                         buttonHoverText(nullptr);
                     }
                     if ( keystatus[SDLK_i] )
                     {
-                        keystatus[SDLK_i] = 0;
+                        keystatus[SDLK_i] = false;
                         buttonStatusBar(nullptr);
                     }
                     if ( keystatus[SDLK_m] )
                     {
-                        keystatus[SDLK_m] = 0;
+                        keystatus[SDLK_m] = false;
                         buttonAttributes(nullptr);
                     }
                     //Cycle layer up.
                     if ( keystatus[SDLK_u] )
                     {
-                        keystatus[SDLK_u] = 0;
+                        keystatus[SDLK_u] = false;
                         drawlayer = std::min(drawlayer + 1, MAP_LAYERS - 1);
                     }
                     //Cycle layer down.
                     if ( keystatus[SDLK_p] )
                     {
-                        keystatus[SDLK_p] = 0;
+                        keystatus[SDLK_p] = false;
                         drawlayer = std::max(drawlayer - 1, 0);
                     }
                     if ( keystatus[SDLK_LSHIFT] || keystatus[SDLK_RSHIFT] )
                     {
                         if ( keystatus[SDLK_n] )
                         {
-                            keystatus[SDLK_n] = 0;
+                            keystatus[SDLK_n] = false;
                             buttonClearMap(nullptr);
                             groupedEntities.clear();
                         }
                     }
                     if ( keystatus[SDLK_DOWN] )
                     {
-                        keystatus[SDLK_DOWN] = 0;
+                        keystatus[SDLK_DOWN] = false;
                         // move selection
                         if ( selectedarea_y2 < map.height - 1 )
                         {
@@ -9591,7 +9591,7 @@ int main(int argc, char** argv)
                     }
                     else if ( keystatus[SDLK_UP] )
                     {
-                        keystatus[SDLK_UP] = 0;
+                        keystatus[SDLK_UP] = false;
                         // move selection
                         if ( selectedarea_y1 > 0 )
                         {
@@ -9605,7 +9605,7 @@ int main(int argc, char** argv)
                     }
                     else if ( keystatus[SDLK_LEFT] )
                     {
-                        keystatus[SDLK_LEFT] = 0;
+                        keystatus[SDLK_LEFT] = false;
                         // move selection
                         if ( selectedarea_x1 > 0 )
                         {
@@ -9619,7 +9619,7 @@ int main(int argc, char** argv)
                     }
                     else if ( keystatus[SDLK_RIGHT] )
                     {
-                        keystatus[SDLK_RIGHT] = 0;
+                        keystatus[SDLK_RIGHT] = false;
                         // move selection
                         if ( selectedarea_x2 < map.width - 1 )
                         {
@@ -9638,7 +9638,7 @@ int main(int argc, char** argv)
                     {
                         if ( keystatus[SDLK_DOWN] )
                         {
-                            keystatus[SDLK_DOWN] = 0;
+                            keystatus[SDLK_DOWN] = false;
                             // resize selection
                             if ( selectedarea_y2 < map.height - 1 && !moveSelectionNegativeY )
                             {
@@ -9663,7 +9663,7 @@ int main(int argc, char** argv)
                         }
                         else if ( keystatus[SDLK_UP] )
                         {
-                            keystatus[SDLK_UP] = 0;
+                            keystatus[SDLK_UP] = false;
                             // resize selection
                             if ( selectedarea_y2 > selectedarea_y1 && !moveSelectionNegativeY )
                             {
@@ -9688,7 +9688,7 @@ int main(int argc, char** argv)
                         }
                         else if ( keystatus[SDLK_LEFT] )
                         {
-                            keystatus[SDLK_LEFT] = 0;
+                            keystatus[SDLK_LEFT] = false;
                             // resize selection
                             if ( selectedarea_x2 > selectedarea_x1 && !moveSelectionNegativeX )
                             {
@@ -9713,7 +9713,7 @@ int main(int argc, char** argv)
                         }
                         else if ( keystatus[SDLK_RIGHT] )
                         {
-                            keystatus[SDLK_RIGHT] = 0;
+                            keystatus[SDLK_RIGHT] = false;
                             // resize selection
                             if ( selectedarea_x2 < map.width - 1 && !moveSelectionNegativeX)
                             {
@@ -9739,17 +9739,17 @@ int main(int argc, char** argv)
                     }
                     if ( keystatus[SDLK_s] )
                     {
-                        keystatus[SDLK_s] = 0;
+                        keystatus[SDLK_s] = false;
                         spritepalette = 1;
                     }
                     if ( keystatus[SDLK_t] )
                     {
-                        keystatus[SDLK_t] = 0;
+                        keystatus[SDLK_t] = false;
                         tilepalette = 1;
                     }
                     if ( keystatus[SDLK_f] )
                     {
-                        keystatus[SDLK_f] = 0;
+                        keystatus[SDLK_f] = false;
                         button3DMode(nullptr);
                     }
                 }
@@ -9757,37 +9757,37 @@ int main(int argc, char** argv)
                 {
                     if ( keystatus[SDLK_f] )
                     {
-                        keystatus[SDLK_f] = 0;
+                        keystatus[SDLK_f] = false;
                         menuVisible = 1;
                     }
                     if ( keystatus[SDLK_e] )
                     {
-                        keystatus[SDLK_e] = 0;
+                        keystatus[SDLK_e] = false;
                         menuVisible = 2;
                     }
                     if ( keystatus[SDLK_v] )
                     {
-                        keystatus[SDLK_v] = 0;
+                        keystatus[SDLK_v] = false;
                         menuVisible = 3;
                     }
                     if ( keystatus[SDLK_m] )
                     {
-                        keystatus[SDLK_m] = 0;
+                        keystatus[SDLK_m] = false;
                         menuVisible = 4;
                     }
                     if ( keystatus[SDLK_h] )
                     {
-                        keystatus[SDLK_h] = 0;
+                        keystatus[SDLK_h] = false;
                         menuVisible = 5;
                     }
                     if ( keystatus[SDLK_F4] )
                     {
-                        keystatus[SDLK_F4] = 0;
+                        keystatus[SDLK_F4] = false;
                         buttonExit(nullptr);
                     }
                     if ( keystatus[SDLK_DOWN] )
                     {
-                        keystatus[SDLK_DOWN] = 0;
+                        keystatus[SDLK_DOWN] = false;
                         // move entities
                         makeUndo();
                         if ( selectedarea_y2 < map.height - 1 )
@@ -9806,7 +9806,7 @@ int main(int argc, char** argv)
                     }
                     else if ( keystatus[SDLK_UP] )
                     {
-                        keystatus[SDLK_UP] = 0;
+                        keystatus[SDLK_UP] = false;
                         // move entities
                         makeUndo();
                         if ( selectedarea_y1 > 0 )
@@ -9825,7 +9825,7 @@ int main(int argc, char** argv)
                     }
                     else if ( keystatus[SDLK_LEFT] )
                     {
-                        keystatus[SDLK_LEFT] = 0;
+                        keystatus[SDLK_LEFT] = false;
                         // move entities
                         makeUndo();
                         if ( selectedarea_x1 > 0 )
@@ -9844,7 +9844,7 @@ int main(int argc, char** argv)
                     }
                     else if ( keystatus[SDLK_RIGHT] )
                     {
-                        keystatus[SDLK_RIGHT] = 0;
+                        keystatus[SDLK_RIGHT] = false;
                         // move entities
                         makeUndo();
                         if ( selectedarea_x2 < map.width - 1 )
@@ -9864,109 +9864,109 @@ int main(int argc, char** argv)
                 }
                 if ( keystatus[SDLK_DELETE] )
                 {
-                    keystatus[SDLK_DELETE] = 0;
+                    keystatus[SDLK_DELETE] = false;
                     buttonDelete(nullptr);
                     groupedEntities.clear();
                 }
                 if ( keystatus[SDLK_c] )
                 {
-                    keystatus[SDLK_c] = 0;
+                    keystatus[SDLK_c] = false;
                     buttonCycleSprites(nullptr);
                 }
                 if ( keystatus[SDLK_F1] )
                 {
-                    keystatus[SDLK_F1] = 0;
+                    keystatus[SDLK_F1] = false;
                     buttonAbout(nullptr);
                 }
                 if ( keystatus[SDLK_h] )
                 {
-                    keystatus[SDLK_h] = 0;
+                    keystatus[SDLK_h] = false;
                     buttonEditorControls(nullptr);
                 }
                 if ( keystatus[SDLK_1] ) // Switch to Pencil Tool
                 {
-                    keystatus[SDLK_1] = 0;
+                    keystatus[SDLK_1] = false;
                     selectedTool = 0;
                     selectedarea = false;
                 }
                 if ( keystatus[SDLK_2] ) // Switch to Point Tool
                 {
-                    keystatus[SDLK_2] = 0;
+                    keystatus[SDLK_2] = false;
                     selectedTool = 1;
                     selectedarea = false;
                 }
                 if ( keystatus[SDLK_3] ) // Switch to Brush Tool
                 {
-                    keystatus[SDLK_3] = 0;
+                    keystatus[SDLK_3] = false;
                     selectedTool = 2;
                     selectedarea = false;
                 }
                 if ( keystatus[SDLK_4] ) // Switch to Select Tool
                 {
-                    keystatus[SDLK_4] = 0;
+                    keystatus[SDLK_4] = false;
                     selectedTool = 3;
                     selectedarea = false;
                 }
                 if ( keystatus[SDLK_5] ) // Switch to Fill Tool
                 {
-                    keystatus[SDLK_5] = 0;
+                    keystatus[SDLK_5] = false;
                     selectedTool = 4;
                     selectedarea = false;
                 }
                 if ( keystatus[SDLK_F2] )
                 {
-                    keystatus[SDLK_F2] = 0;
+                    keystatus[SDLK_F2] = false;
                     makeUndo();
                     buttonSpriteProperties(nullptr);
                 }
                 if ( keystatus[SDLK_KP_7] )
                 {
-                    keystatus[SDLK_KP_7] = 0;
+                    keystatus[SDLK_KP_7] = false;
                     selectedTile = recentUsedTiles[recentUsedTilePalette][0];
                 }
                 if ( keystatus[SDLK_KP_8] )
                 {
-                    keystatus[SDLK_KP_8] = 0;
+                    keystatus[SDLK_KP_8] = false;
                     selectedTile = recentUsedTiles[recentUsedTilePalette][1];
                 }
                 if ( keystatus[SDLK_KP_9] )
                 {
-                    keystatus[SDLK_KP_9] = 0;
+                    keystatus[SDLK_KP_9] = false;
                     selectedTile = recentUsedTiles[recentUsedTilePalette][2];
                 }
                 if ( keystatus[SDLK_KP_4] )
                 {
-                    keystatus[SDLK_KP_4] = 0;
+                    keystatus[SDLK_KP_4] = false;
                     selectedTile = recentUsedTiles[recentUsedTilePalette][3];
                 }
                 if ( keystatus[SDLK_KP_5] )
                 {
-                    keystatus[SDLK_KP_5] = 0;
+                    keystatus[SDLK_KP_5] = false;
                     selectedTile = recentUsedTiles[recentUsedTilePalette][4];
                 }
                 if ( keystatus[SDLK_KP_6] )
                 {
-                    keystatus[SDLK_KP_6] = 0;
+                    keystatus[SDLK_KP_6] = false;
                     selectedTile = recentUsedTiles[recentUsedTilePalette][5];
                 }
                 if ( keystatus[SDLK_KP_1] )
                 {
-                    keystatus[SDLK_KP_1] = 0;
+                    keystatus[SDLK_KP_1] = false;
                     selectedTile = recentUsedTiles[recentUsedTilePalette][6];
                 }
                 if ( keystatus[SDLK_KP_2] )
                 {
-                    keystatus[SDLK_KP_2] = 0;
+                    keystatus[SDLK_KP_2] = false;
                     selectedTile = recentUsedTiles[recentUsedTilePalette][7];
                 }
                 if ( keystatus[SDLK_KP_3] )
                 {
-                    keystatus[SDLK_KP_3] = 0;
+                    keystatus[SDLK_KP_3] = false;
                     selectedTile = recentUsedTiles[recentUsedTilePalette][8];
                 }
                 if ( keystatus[SDLK_KP_PLUS] )
                 {
-                    keystatus[SDLK_KP_PLUS] = 0;
+                    keystatus[SDLK_KP_PLUS] = false;
                     recentUsedTilePalette++; //scroll through palettes 1-9
                     if ( recentUsedTilePalette == 9 )
                     {
@@ -9975,7 +9975,7 @@ int main(int argc, char** argv)
                 }
                 if ( keystatus[SDLK_KP_MINUS] )
                 {
-                    keystatus[SDLK_KP_MINUS] = 0;
+                    keystatus[SDLK_KP_MINUS] = false;
                     recentUsedTilePalette--; //scroll through palettes 1-9
                     if ( recentUsedTilePalette == -1 )
                     {
@@ -9984,17 +9984,17 @@ int main(int argc, char** argv)
                 }
                 if ( keystatus[SDLK_KP_MULTIPLY] )
                 {
-                    keystatus[SDLK_KP_MULTIPLY] = 0;
+                    keystatus[SDLK_KP_MULTIPLY] = false;
                     lockTilePalette[recentUsedTilePalette] = !lockTilePalette[recentUsedTilePalette]; // toggle lock/unlock
                 }
                 if ( keystatus[SDLK_F5] )
                 {
-                    keystatus[SDLK_F5] = 0;
+                    keystatus[SDLK_F5] = false;
                     buttonOpenPrevMap(nullptr);
                 }
                 if ( keystatus[SDLK_F8] )
                 {
-                    keystatus[SDLK_F8] = 0;
+                    keystatus[SDLK_F8] = false;
                     buttonOpenNextMap(nullptr);
                 }
             }
@@ -10331,7 +10331,7 @@ void propertyPageTextAndInput(int numProperties, int width)
     // Cycle properties with TAB.
     if ( keystatus[SDLK_TAB] )
     {
-        keystatus[SDLK_TAB] = 0;
+        keystatus[SDLK_TAB] = false;
         cursorflash = ticks;
         editproperty++;
         if ( editproperty == numProperties )

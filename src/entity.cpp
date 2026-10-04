@@ -28197,7 +28197,7 @@ Entity* summonChest(long x, long y)
                 entity = nullptr;
                 break;
             }
-            while (1);
+            while (true);
         }
     }
 

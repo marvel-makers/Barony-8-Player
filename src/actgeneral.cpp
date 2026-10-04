@@ -72,7 +72,7 @@ void actRotate(Entity* my)
 #ifdef TESTSPRITES
     if ( keystatus[SDLK_HOME] )
     {
-        keystatus[SDLK_HOME] = 0;
+        keystatus[SDLK_HOME] = false;
         my->sprite++;
         if ( my->sprite >= nummodels )
         {
@@ -82,7 +82,7 @@ void actRotate(Entity* my)
     }
     if ( keystatus[SDLK_END] )
     {
-        keystatus[SDLK_END] = 0;
+        keystatus[SDLK_END] = false;
         my->sprite += 10;
         if ( my->sprite >= nummodels )
         {
@@ -5783,13 +5783,13 @@ void actBell(Entity* my)
 #ifndef NDEBUG
     if ( keystatus[SDLK_KP_3] && enableDebugKeys )
     {
-        keystatus[SDLK_KP_3] = 0;
+        keystatus[SDLK_KP_3] = false;
         BELL_ACTIVE_TIMER = pullTimerStart; // active pull timer
     }
 
     if ( keystatus[SDLK_g] && enableDebugKeys && *cvar_bell_crash )
     {
-        keystatus[SDLK_g] = 0;
+        keystatus[SDLK_g] = false;
         BELL_CURRENT_EVENT = static_cast<BellEvents>((BELL_CURRENT_EVENT + 1));
         if ( BELL_CURRENT_EVENT >= BELL_ENUM_END )
         {

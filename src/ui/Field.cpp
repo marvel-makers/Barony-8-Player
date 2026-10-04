@@ -505,13 +505,13 @@ Field::result_t Field::process(SDL_Rect _size, SDL_Rect _actualSize, const bool 
             deactivate();
         } else if (editable) {
             if (Input::keys[SDLK_RETURN] || Input::keys[SDLK_KP_ENTER]) {
-                Input::keys[SDLK_RETURN] = 0;
-                Input::keys[SDLK_KP_ENTER] = 0;
+                Input::keys[SDLK_RETURN] = false;
+                Input::keys[SDLK_KP_ENTER] = false;
                 result.entered = true;
                 deactivate();
             }
             if (Input::keys[SDLK_ESCAPE]) {
-                Input::keys[SDLK_ESCAPE] = 0;
+                Input::keys[SDLK_ESCAPE] = false;
                 deactivate();
             }
         }

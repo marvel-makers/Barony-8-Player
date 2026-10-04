@@ -21,7 +21,7 @@ Image::Image(const char* _name) {
         else {
             break;
         }
-    } while (1);
+    } while (true);
 
     std::string path = clippedName;
     if ( PHYSFS_getRealDir(path.c_str()) != nullptr )

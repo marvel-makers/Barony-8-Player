@@ -130,7 +130,7 @@ public:
         Sint16 beatitude = 0;
         Sint16 count = 1;
         Uint32 appearance = 0;
-        bool identified = 0;
+        bool identified = false;
         int percentChance = 100;
         int weightedChance = 1;
         int dropChance = 100;

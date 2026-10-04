@@ -5100,7 +5100,7 @@ void followerDebugEquipment(int player)
 
         if ( keystatus[SDLK_F3] )
         {
-            keystatus[SDLK_F3] = 0;
+            keystatus[SDLK_F3] = false;
             if ( stats->sex == MALE )
             {
                 stats->sex = FEMALE;
@@ -5114,7 +5114,7 @@ void followerDebugEquipment(int player)
         if ( keystatus[SDLK_1] )
         {
             Input::inputs[player].refresh();
-            keystatus[SDLK_1] = 0;
+            keystatus[SDLK_1] = false;
             if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
             {
                 if ( stats->helmet )
@@ -5142,7 +5142,7 @@ void followerDebugEquipment(int player)
         if ( keystatus[SDLK_2] )
         {
             Input::inputs[player].refresh();
-            keystatus[SDLK_2] = 0;
+            keystatus[SDLK_2] = false;
             if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
             {
                 if ( stats->breastplate )
@@ -5170,7 +5170,7 @@ void followerDebugEquipment(int player)
         if ( keystatus[SDLK_3] )
         {
             Input::inputs[player].refresh();
-            keystatus[SDLK_3] = 0;
+            keystatus[SDLK_3] = false;
             if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
             {
                 if ( stats->gloves )
@@ -5198,7 +5198,7 @@ void followerDebugEquipment(int player)
         if ( keystatus[SDLK_4] )
         {
             Input::inputs[player].refresh();
-            keystatus[SDLK_4] = 0;
+            keystatus[SDLK_4] = false;
             if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
             {
                 if ( stats->shoes )
@@ -5226,7 +5226,7 @@ void followerDebugEquipment(int player)
         if ( keystatus[SDLK_5] )
         {
             Input::inputs[player].refresh();
-            keystatus[SDLK_5] = 0;
+            keystatus[SDLK_5] = false;
             if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
             {
                 if ( stats->weapon )
@@ -5254,7 +5254,7 @@ void followerDebugEquipment(int player)
         if ( keystatus[SDLK_6] )
         {
             Input::inputs[player].refresh();
-            keystatus[SDLK_6] = 0;
+            keystatus[SDLK_6] = false;
             if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
             {
                 if ( stats->shield )
@@ -5282,7 +5282,7 @@ void followerDebugEquipment(int player)
         if ( keystatus[SDLK_7] )
         {
             Input::inputs[player].refresh();
-            keystatus[SDLK_7] = 0;
+            keystatus[SDLK_7] = false;
             if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
             {
                 if ( stats->mask )
@@ -5310,7 +5310,7 @@ void followerDebugEquipment(int player)
         if ( keystatus[SDLK_8] )
         {
             Input::inputs[player].refresh();
-            keystatus[SDLK_8] = 0;
+            keystatus[SDLK_8] = false;
             if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
             {
                 if ( stats->cloak )
@@ -5415,37 +5415,37 @@ void doStatueEditor(int player)
             limb->highlightForUI = 1.0;
             if ( keystatus[SDLK_o] )
             {
-                keystatus[SDLK_o] = 0;
+                keystatus[SDLK_o] = false;
                 Input::inputs[player].refresh();
                 limb->pitch += PI / 32;
             }
             if ( keystatus[SDLK_p] )
             {
-                keystatus[SDLK_p] = 0;
+                keystatus[SDLK_p] = false;
                 Input::inputs[player].refresh();
                 limb->pitch -= PI / 32;
             }
             if ( keystatus[SDLK_k] )
             {
-                keystatus[SDLK_k] = 0;
+                keystatus[SDLK_k] = false;
                 Input::inputs[player].refresh();
                 limb->roll += PI / 32;
             }
             if ( keystatus[SDLK_l] )
             {
-                keystatus[SDLK_l] = 0;
+                keystatus[SDLK_l] = false;
                 Input::inputs[player].refresh();
                 limb->roll -= PI / 32;
             }
             if ( keystatus[SDLK_COMMA] )
             {
-                keystatus[SDLK_COMMA] = 0;
+                keystatus[SDLK_COMMA] = false;
                 Input::inputs[player].refresh();
                 limb->yaw += PI / 32;
             }
             if ( keystatus[SDLK_PERIOD] )
             {
-                keystatus[SDLK_PERIOD] = 0;
+                keystatus[SDLK_PERIOD] = false;
                 Input::inputs[player].refresh();
                 limb->yaw -= PI / 32;
             }
@@ -5457,20 +5457,20 @@ void doStatueEditor(int player)
 
             if ( keystatus[SDLK_LEFTBRACKET] )
             {
-                keystatus[SDLK_LEFTBRACKET] = 0;
+                keystatus[SDLK_LEFTBRACKET] = false;
                 Input::inputs[player].refresh();
                 StatueManager.statueEditorHeightOffset -= .25;
             }
             if ( keystatus[SDLK_RIGHTBRACKET] )
             {
-                keystatus[SDLK_RIGHTBRACKET] = 0;
+                keystatus[SDLK_RIGHTBRACKET] = false;
                 Input::inputs[player].refresh();
                 StatueManager.statueEditorHeightOffset += .25;
             }
 
             if ( keystatus[SDLK_F1] )
             {
-                keystatus[SDLK_F1] = 0;
+                keystatus[SDLK_F1] = false;
 
                 ++stats->playerRace;
                 if ( playerEntity->getMonsterFromPlayerRace(stats->playerRace) == HUMAN && stats->playerRace > 0 )
@@ -5484,7 +5484,7 @@ void doStatueEditor(int player)
             }
             if ( keystatus[SDLK_F2] )
             {
-                keystatus[SDLK_F2] = 0;
+                keystatus[SDLK_F2] = false;
 
                 ++stats->stat_appearance;
                 if ( stats->stat_appearance >= NUMAPPEARANCES )
@@ -5494,7 +5494,7 @@ void doStatueEditor(int player)
             }
             if ( keystatus[SDLK_F3] )
             {
-                keystatus[SDLK_F3] = 0;
+                keystatus[SDLK_F3] = false;
                 if ( stats->sex == MALE )
                 {
                     stats->sex = FEMALE;
@@ -5506,14 +5506,14 @@ void doStatueEditor(int player)
             }
             if ( keystatus[SDLK_F4] )
             {
-                keystatus[SDLK_F4] = 0;
+                keystatus[SDLK_F4] = false;
                 StatueManager.drawGreyscale = !StatueManager.drawGreyscale;
             }
 
             if ( keystatus[SDLK_1] )
             {
                 Input::inputs[player].refresh();
-                keystatus[SDLK_1] = 0;
+                keystatus[SDLK_1] = false;
                 if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
                 {
                     if ( stats->helmet )
@@ -5541,7 +5541,7 @@ void doStatueEditor(int player)
             if ( keystatus[SDLK_2] )
             {
                 Input::inputs[player].refresh();
-                keystatus[SDLK_2] = 0;
+                keystatus[SDLK_2] = false;
                 if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
                 {
                     if ( stats->breastplate )
@@ -5569,7 +5569,7 @@ void doStatueEditor(int player)
             if ( keystatus[SDLK_3] )
             {
                 Input::inputs[player].refresh();
-                keystatus[SDLK_3] = 0;
+                keystatus[SDLK_3] = false;
                 if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
                 {
                     if ( stats->gloves )
@@ -5597,7 +5597,7 @@ void doStatueEditor(int player)
             if ( keystatus[SDLK_4] )
             {
                 Input::inputs[player].refresh();
-                keystatus[SDLK_4] = 0;
+                keystatus[SDLK_4] = false;
                 if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
                 {
                     if ( stats->shoes )
@@ -5625,7 +5625,7 @@ void doStatueEditor(int player)
             if ( keystatus[SDLK_5] )
             {
                 Input::inputs[player].refresh();
-                keystatus[SDLK_5] = 0;
+                keystatus[SDLK_5] = false;
                 if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
                 {
                     if ( stats->weapon )
@@ -5653,7 +5653,7 @@ void doStatueEditor(int player)
             if ( keystatus[SDLK_6] )
             {
                 Input::inputs[player].refresh();
-                keystatus[SDLK_6] = 0;
+                keystatus[SDLK_6] = false;
                 if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
                 {
                     if ( stats->shield )
@@ -5681,7 +5681,7 @@ void doStatueEditor(int player)
             if ( keystatus[SDLK_7] )
             {
                 Input::inputs[player].refresh();
-                keystatus[SDLK_7] = 0;
+                keystatus[SDLK_7] = false;
                 if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
                 {
                     if ( stats->mask )
@@ -5709,7 +5709,7 @@ void doStatueEditor(int player)
             if ( keystatus[SDLK_8] )
             {
                 Input::inputs[player].refresh();
-                keystatus[SDLK_8] = 0;
+                keystatus[SDLK_8] = false;
                 if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
                 {
                     if ( stats->cloak )
@@ -6224,7 +6224,7 @@ void actPlayer(Entity* my)
           }
       }*/
 
-        keystatus[SDLK_x] = 0;
+        keystatus[SDLK_x] = false;
         Uint32 color = makeColorRGB(255, 255, 255);
         if ( *cvar_pbaoe == 0 )
         {
@@ -6681,7 +6681,7 @@ void actPlayer(Entity* my)
     }
     if ( keystatus[SDLK_v] && enableDebugKeys && (svFlags & SV_FLAG_CHEATS) )
     {
-        keystatus[SDLK_v] = 0;
+        keystatus[SDLK_v] = false;
 
         static std::map<int, std::vector<ParticleTimerEffect_t::EffectLocations_t>> effLocations;
 
@@ -8314,35 +8314,35 @@ void actPlayer(Entity* my)
         if ( keystatus[SDLK_LCTRL] && keystatus[SDLK_KP_1] )
         {
             Input::waitingToBindControllerForPlayer = 0;
-            keystatus[SDLK_KP_1] = 0;
+            keystatus[SDLK_KP_1] = false;
             messagePlayer(PLAYER_NUM, MESSAGE_DEBUG, "Waiting to bind controller for player: 0");
         }
         if ( keystatus[SDLK_LCTRL] && keystatus[SDLK_KP_2] )
         {
             Input::waitingToBindControllerForPlayer = 1;
-            keystatus[SDLK_KP_2] = 0;
+            keystatus[SDLK_KP_2] = false;
             messagePlayer(PLAYER_NUM, MESSAGE_DEBUG, "Waiting to bind controller for player: 1");
         }
         if ( keystatus[SDLK_LCTRL] && keystatus[SDLK_KP_3] )
         {
             Input::waitingToBindControllerForPlayer = 2;
-            keystatus[SDLK_KP_3] = 0;
+            keystatus[SDLK_KP_3] = false;
             messagePlayer(PLAYER_NUM, MESSAGE_DEBUG, "Waiting to bind controller for player: 2");
         }
         if ( keystatus[SDLK_LCTRL] && keystatus[SDLK_KP_4] )
         {
             Input::waitingToBindControllerForPlayer = 3;
-            keystatus[SDLK_KP_4] = 0;
+            keystatus[SDLK_KP_4] = false;
             messagePlayer(PLAYER_NUM, MESSAGE_DEBUG, "Waiting to bind controller for player: 3");
         }
         if ( keystatus[SDLK_LCTRL] && keystatus[SDLK_KP_5] )
         {
-            keystatus[SDLK_KP_5] = 0;
+            keystatus[SDLK_KP_5] = false;
             consoleCommand("/cyclekeyboard");
         }
         if ( keystatus[SDLK_LCTRL] && keystatus[SDLK_KP_0] )
         {
-            keystatus[SDLK_KP_0] = 0;
+            keystatus[SDLK_KP_0] = false;
             inputs.setPlayerIDAllowedKeyboard(-1);
             for ( int i = 0; i < MAXPLAYERS; ++i )
             {
@@ -8352,19 +8352,19 @@ void actPlayer(Entity* my)
         }
         if ( keystatus[SDLK_LCTRL] && keystatus[SDLK_KP_7] )
         {
-            keystatus[SDLK_KP_7] = 0;
+            keystatus[SDLK_KP_7] = false;
             consoleCommand("/disable_controller_reconnect true");
             consoleCommand("/splitscreen");
         }
         if ( keystatus[SDLK_LCTRL] && keystatus[SDLK_KP_8] )
         {
-            keystatus[SDLK_KP_8] = 0;
+            keystatus[SDLK_KP_8] = false;
             consoleCommand("/disable_controller_reconnect true");
             consoleCommand("/splitscreen 2");
         }
         if ( keystatus[SDLK_LCTRL] && keystatus[SDLK_KP_6] )
         {
-            keystatus[SDLK_KP_6] = 0;
+            keystatus[SDLK_KP_6] = false;
             if ( keystatus[SDLK_LALT] )
             {
                 consoleCommand("/split_clipped true");
@@ -8378,7 +8378,7 @@ void actPlayer(Entity* my)
         }
         if ( keystatus[SDLK_LCTRL] && keystatus[SDLK_KP_9] )
         {
-            keystatus[SDLK_KP_9] = 0;
+            keystatus[SDLK_KP_9] = false;
             for ( int i = 0; i < MAXPLAYERS; ++i )
             {
                 if ( inputs.hasController(i) )

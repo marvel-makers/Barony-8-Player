@@ -4577,7 +4577,7 @@ void Player::HUD_t::updateFrameTooltip(Item* item, const int x, const int y, int
     {
         if ( keystatus[SDLK_KP_PLUS] )
         {
-            keystatus[SDLK_KP_PLUS] = 0;
+            keystatus[SDLK_KP_PLUS] = false;
             item->beatitude += 1;
             /*for ( int i = 0; i < 100; ++i )
              {
@@ -4587,22 +4587,22 @@ void Player::HUD_t::updateFrameTooltip(Item* item, const int x, const int y, int
         }
         if ( keystatus[SDLK_KP_MINUS] )
         {
-            keystatus[SDLK_KP_MINUS] = 0;
+            keystatus[SDLK_KP_MINUS] = false;
             item->beatitude -= 1;
         }
         if ( keystatus[SDLK_KP_6] )
         {
-            keystatus[SDLK_KP_6] = 0;
+            keystatus[SDLK_KP_6] = false;
             item->status = std::min(EXCELLENT, static_cast<Status>(item->status + 1));
         }
         if ( keystatus[SDLK_KP_4] )
         {
-            keystatus[SDLK_KP_4] = 0;
+            keystatus[SDLK_KP_4] = false;
             item->status = std::max(BROKEN, static_cast<Status>(item->status - 1));
         }
         if ( keystatus[SDLK_KP_5] )
         {
-            keystatus[SDLK_KP_5] = 0;
+            keystatus[SDLK_KP_5] = false;
             if ( itemIsEquipped(item, player) )
             {
                 ItemType prevType = item->type;
@@ -4662,7 +4662,7 @@ void Player::HUD_t::updateFrameTooltip(Item* item, const int x, const int y, int
         }
         if ( keystatus[SDLK_KP_8] )
         {
-            keystatus[SDLK_KP_8] = 0;
+            keystatus[SDLK_KP_8] = false;
             if ( itemIsEquipped(item, player) )
             {
                 ItemType prevType = item->type;
@@ -12335,7 +12335,7 @@ void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
                 {
                     x = 0; // fill leftmost first.
                 }
-                while ( 1 )
+                while ( true )
                 {
                     for ( y = 0; y < inventory_y; y++ )
                     {
@@ -12399,7 +12399,7 @@ void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
                     {
                         x = 0; // fill leftmost first.
                     }
-                    while ( 1 )
+                    while ( true )
                     {
                         for ( y = players[player]->inventoryUI.DEFAULT_INVENTORY_SIZEY; y < players[player]->inventoryUI.getSizeY(); y++ )
                         {

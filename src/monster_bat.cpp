@@ -316,7 +316,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
         }
         if ( keystatus[SDLK_g] )
         {
-            keystatus[SDLK_g] = 0;
+            keystatus[SDLK_g] = false;
             MONSTER_ATTACK = MONSTER_POSE_MELEE_WINDUP1;
             MONSTER_ATTACKTIME = 0;
         }
@@ -328,7 +328,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
      }*/
         if ( keystatus[SDLK_j] )
         {
-            keystatus[SDLK_j] = 0;
+            keystatus[SDLK_j] = false;
             my->monsterSpecialState = my->monsterSpecialState == 0 ? BAT_REST : 0;
             if ( my->monsterSpecialState == BAT_REST )
             {
@@ -718,7 +718,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
                 {
                     if ( keystatus[SDLK_KP_PLUS] )
                     {
-                        keystatus[SDLK_KP_PLUS] = 0;
+                        keystatus[SDLK_KP_PLUS] = false;
                         entity->skill[0] = entity->skill[0] == 0 ? 1 : 0;
                     }
                 }
@@ -863,7 +863,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
 
                     if ( keystatus[SDLK_KP_MINUS] )
                     {
-                        keystatus[SDLK_KP_MINUS] = 0;
+                        keystatus[SDLK_KP_MINUS] = false;
                         entity->skill[3] = entity->skill[3] == 0 ? 1 : 0;
                     }
                 }

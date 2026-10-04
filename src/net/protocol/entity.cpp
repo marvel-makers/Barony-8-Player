@@ -678,7 +678,7 @@ void clientActions(Entity* entity)
         break;
     case 3:
         entity->behavior = &actTorch;
-        entity->flags[NOUPDATE] = 1;
+        entity->flags[NOUPDATE] = true;
         break;
     case 160:
     case 203:
@@ -880,8 +880,7 @@ void clientActions(Entity* entity)
     // if the above method failed, we check the value of skill[2] (stored in net_packet->data[30]) and assign an action based on that
     if (entity->behavior == nullptr)
     {
-        const Sint32 c = static_cast<Sint32>(SDLNet_Read32(&net_packet->data[30]));
-        if (c < 0)
+        if (const auto c = static_cast<Sint32>(SDLNet_Read32(&net_packet->data[30])); c < 0)
         {
             switch (c)
             {

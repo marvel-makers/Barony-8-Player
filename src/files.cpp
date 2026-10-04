@@ -3259,7 +3259,7 @@ int loadMap(const char* filename2, map_t* destmap, list_t* entlist, list_t* crea
 
     for ( c = 0; c < 512; c++ )
     {
-        keystatus[c] = 0;
+        keystatus[c] = false;
     }
 
     if ( checkMapHash != nullptr )

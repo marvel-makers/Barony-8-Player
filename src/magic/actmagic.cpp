@@ -7065,7 +7065,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
         element = static_cast<spellElement_t*>(node->element);
         //if (!strcmp(element->element_internal_name, spellElement_fire.element_internal_name)
         //  || !strcmp(element->element_internal_name, spellElement_lightning.element_internal_name))
-        if (1)
+        if (true)
         {
             //Make the ball light up stuff as it travels.
             if ( !my->flags[INVISIBLE] || my->flags[INVISIBLE_DITHER] )

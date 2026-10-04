@@ -2322,7 +2322,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
                 node = treasureRoomLevel->list.first;
                 i = 0;
                 j = -1;
-                while ( 1 )
+                while ( true )
                 {
                     if ( treasureRoomLevel->possibleRooms[i] )
                     {
@@ -2359,7 +2359,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
                 node = specialMapRooms.list.first;
                 i = 0;
                 j = -1;
-                while ( 1 )
+                while ( true )
                 {
                     if ( specialMapRooms.possibleRooms[i] )
                     {
@@ -2671,7 +2671,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
                     }
                 }
 
-                while ( 1 )
+                while ( true )
                 {
                     if ( possiblelocations2[x + y * map.width] == true )
                     {
@@ -2700,7 +2700,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
                 i = -1;
                 x = 0;
                 y = 0;
-                while ( 1 )
+                while ( true )
                 {
                     if ( possiblelocations2[x + y * map.width] == true )
                     {
@@ -2756,7 +2756,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
                 pickSubRoom = map_rng.rand() % innerSubRooms.count;
                 subRoomNode = innerSubRooms.list.first;
                 int k = 0;
-                while ( 1 )
+                while ( true )
                 {
                     if ( k == pickSubRoom )
                     {
@@ -2782,7 +2782,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
                 pickSubRoom = map_rng.rand() % innerSubRooms.count;
                 subRoomNode = innerSubRooms.list.first;
                 int k = 0;
-                while ( 1 )
+                while ( true )
                 {
                     if ( k == pickSubRoom )
                     {
@@ -2805,7 +2805,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
                 pickSubRoom = map_rng.rand() % shopSubRooms.count;
                 subRoomNode = shopSubRooms.list.first;
                 int k = 0;
-                while ( 1 )
+                while ( true )
                 {
                     if ( k == pickSubRoom )
                     {
@@ -2852,7 +2852,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
                         }
                     }
                     int k = 0;
-                    while ( 1 )
+                    while ( true )
                     {
                         if ( k == pickSubRoom )
                         {
@@ -3849,7 +3849,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
             //printlog("numpossiblelocations: %d\n",numpossiblelocations);
             int x = 0;
             int y = 0;
-            while ( 1 )
+            while ( true )
             {
                 if ( possiblelocations[y + x * map.height] == true )
                 {
@@ -4372,7 +4372,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
         int x = 0;
         int y = 0;
         bool skipPossibleLocationsDecrement = false;
-        while ( 1 )
+        while ( true )
         {
             if ( possiblelocations[y + x * map.height] == true )
             {
@@ -5738,7 +5738,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
             i = -1;
             int x = 0;
             int y = 0;
-            while ( 1 )
+            while ( true )
             {
                 if ( possibleLocationsStations[y + x * map.height] == true )
                 {
@@ -6360,7 +6360,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
         i = -1;
         int x = 0;
         int y = 0;
-        while ( 1 )
+        while ( true )
         {
             if ( possibleLocationsBreakables[y + x * map.height] == true )
             {
