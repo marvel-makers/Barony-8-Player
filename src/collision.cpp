@@ -76,14 +76,14 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
 	{
 		if ( !clickCheckOverride && !input.binaryToggle("Use") )
 		{
-			return NULL;
+			return nullptr;
 		}
 	}
 	else
 	{
 		if ( !clickCheckOverride && !input.binaryToggle("Use") )
 		{
-			return NULL;
+			return nullptr;
 		}
 	}
 
@@ -101,7 +101,7 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
 			{
 				*clickedOnGUI = true;
 			}
-			return NULL;
+			return nullptr;
 		}
 
 		if ( inputs.getUIInteraction(player)->itemMenuOpen )
@@ -110,7 +110,7 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
 			{
 				*clickedOnGUI = true;
 			}
-			return NULL;
+			return nullptr;
 		}
 		if ( mx < camera.winx || mx >= camera.winx + camera.winw || my < camera.winy || my >= camera.winy + camera.winh )
 		{
@@ -118,7 +118,7 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
 			{
 				*clickedOnGUI = true;
 			}
-			return NULL;
+			return nullptr;
 		}
 
 		/*if ( mouseInsidePlayerInventory(player) || mouseInsidePlayerHotbar(player) )
@@ -1087,7 +1087,7 @@ int barony_clear(real_t tx, real_t ty, Entity* my)
 						hit.y = y * 16 + 8;
 						hit.mapx = x;
 						hit.mapy = y;
-						hit.entity = NULL;
+						hit.entity = nullptr;
 						return 0;
 					}
 				}
@@ -1113,7 +1113,7 @@ int barony_clear(real_t tx, real_t ty, Entity* my)
 						hit.y = y * 16 + 8;
 						hit.mapx = x;
 						hit.mapy = y;
-						hit.entity = NULL;
+						hit.entity = nullptr;
 						return 0;
 					}
 	
@@ -1127,7 +1127,7 @@ int barony_clear(real_t tx, real_t ty, Entity* my)
 						hit.y = y * 16 + 8;
 						hit.mapx = x;
 						hit.mapy = y;
-						hit.entity = NULL;
+						hit.entity = nullptr;
 						return 0;
 					}
 				}
@@ -1700,7 +1700,7 @@ int barony_clear(real_t tx, real_t ty, Entity* my)
 real_t clipMove(real_t* x, real_t* y, real_t vx, real_t vy, Entity* my)
 {
 	real_t tx, ty;
-	hit.entity = NULL;
+	hit.entity = nullptr;
 
 	// move x and y
 	tx = *x + vx;
@@ -1760,7 +1760,7 @@ real_t clipMove(real_t* x, real_t* y, real_t vx, real_t vy, Entity* my)
 
 Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int entities, Entity* target, list_t* entityListToUse)
 {
-	Entity* result = NULL;
+	Entity* result = nullptr;
 	node_t* node;
 	real_t lowestDist = 9999;
 	int quadrant = 0;
@@ -2281,7 +2281,7 @@ real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, 
 		}
 	}
 
-	Entity* entity = findEntityInLine(my, x1, y1, angle, entities, NULL);
+	Entity* entity = findEntityInLine(my, x1, y1, angle, entities, nullptr);
 
 	Stat* yourStats = nullptr;
 	bool reduceCollisionSize = false;
@@ -2341,7 +2341,7 @@ real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, 
 			hit.y = iy;
 			hit.mapx = inx >> 4;
 			hit.mapy = iny >> 4;
-			hit.entity = NULL;
+			hit.entity = nullptr;
 			return d;
 		}
 		if ( ground )
@@ -2354,7 +2354,7 @@ real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, 
 				hit.y = iy;
 				hit.mapx = inx >> 4;
 				hit.mapy = iny >> 4;
-				hit.entity = NULL;
+				hit.entity = nullptr;
 				return d;
 			}
 		}
@@ -2418,7 +2418,7 @@ real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, 
 	hit.y = iy;
 	hit.mapx = inx >> 4;
 	hit.mapy = iny >> 4;
-	hit.entity = NULL;
+	hit.entity = nullptr;
 	hit.side = 0;
 	return range;
 }
@@ -2526,7 +2526,7 @@ real_t lineTraceTarget(Entity* my, real_t x1, real_t y1, real_t angle, real_t ra
 			hit.y = iy;
 			hit.mapx = inx >> 4;
 			hit.mapy = iny >> 4;
-			hit.entity = NULL;
+			hit.entity = nullptr;
 			return d;
 		}
 		if ( ground )
@@ -2538,7 +2538,7 @@ real_t lineTraceTarget(Entity* my, real_t x1, real_t y1, real_t angle, real_t ra
 				hit.y = iy;
 				hit.mapx = inx >> 4;
 				hit.mapy = iny >> 4;
-				hit.entity = NULL;
+				hit.entity = nullptr;
 				return d;
 			}
 		}
@@ -2602,7 +2602,7 @@ real_t lineTraceTarget(Entity* my, real_t x1, real_t y1, real_t angle, real_t ra
 	hit.y = iy;
 	hit.mapx = inx >> 4;
 	hit.mapy = iny >> 4;
-	hit.entity = NULL;
+	hit.entity = nullptr;
 	hit.side = 0;
 	return range;
 }
@@ -2624,7 +2624,7 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
 	bool levitating = false;
 
 	// get levitation status
-	if ( my != NULL && (stats = my->getStats()) != NULL )
+	if ( my != nullptr && (stats = my->getStats()) != nullptr)
 	{
 		levitating = isLevitating(stats);
 	}

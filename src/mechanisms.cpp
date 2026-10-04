@@ -68,8 +68,8 @@ void Entity::updateCircuitNeighbors()
 
 	if (neighbors)
 	{
-		node_t* node = NULL;
-		for (node = neighbors->first; node != NULL; node = node->next)
+		node_t* node = nullptr;
+		for (node = neighbors->first; node != nullptr; node = node->next)
 		{
 			if (node->element)
 			{
@@ -699,8 +699,8 @@ void Entity::toggleSwitch(int skillIndexForPower)
 
 	if (neighbors)
 	{
-		node_t* node = NULL;
-		for (node = neighbors->first; node != NULL; node = node->next)
+		node_t* node = nullptr;
+		for (node = neighbors->first; node != nullptr; node = node->next)
 		{
 			if (node->element)
 			{
@@ -775,8 +775,8 @@ void Entity::switchUpdateNeighbors()
 
 	if (neighbors)
 	{
-		node_t* node = NULL;
-		for (node = neighbors->first; node != NULL; node = node->next)
+		node_t* node = nullptr;
+		for (node = neighbors->first; node != nullptr; node = node->next)
 		{
 			if (node->element)
 			{
@@ -856,7 +856,7 @@ void getPowerablesOnTile(int x, int y, list_t** list)
 	//And then free the list returned by checkTileForEntity.
 
 	//Right. First, grab all the entities on the tile.
-	list_t* entities = NULL;
+	list_t* entities = nullptr;
 	entities = checkTileForEntity(x, y);
 
 	if (!entities)
@@ -864,10 +864,10 @@ void getPowerablesOnTile(int x, int y, list_t** list)
 		return;    //No use continuing, got no entities.
 	}
 
-	node_t* node = NULL;
-	node_t* node2 = NULL;
+	node_t* node = nullptr;
+	node_t* node2 = nullptr;
 	//Loop through the list of entities.
-	for (node = entities->first; node != NULL; node = node->next)
+	for (node = entities->first; node != nullptr; node = node->next)
 	{
 		if (node->element)
 		{
@@ -879,8 +879,8 @@ void getPowerablesOnTile(int x, int y, list_t** list)
 				if (!(*list))
 				{
 					*list = static_cast<list_t*>(malloc(sizeof(list_t)));
-					(*list)->first = NULL;
-					(*list)->last = NULL;
+					(*list)->first = nullptr;
+					(*list)->last = nullptr;
 				}
 
 				//Add the current entity to it.
@@ -902,7 +902,7 @@ void getPowerablesOnTile(int x, int y, list_t** list)
 
 list_t* Entity::getPowerableNeighbors()
 {
-	list_t* return_val = NULL;
+	list_t* return_val = nullptr;
 
 
 	int tx = x / 16;

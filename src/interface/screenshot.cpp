@@ -53,8 +53,8 @@ void takeScreenshot(const char* output_path)
 	temp2 = flipSurface( temp, FLIP_VERTICAL );
 	SDL_FreeSurface( temp );
 	temp = SDL_CreateRGBSurface(0, xres, yres, 24, 0, 0, 0, 0);
-	SDL_FillRect(temp, NULL, 0);
-	SDL_BlitSurface(temp2, NULL, temp, NULL);
+	SDL_FillRect(temp, nullptr, 0);
+	SDL_BlitSurface(temp2, nullptr, temp, nullptr);
 	SDL_FreeSurface( temp2 );
 	SDL_SavePNG( temp, filename );
 	SDL_FreeSurface( temp );

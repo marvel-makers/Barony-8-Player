@@ -379,7 +379,7 @@ void LobbyHandler_t::handleLobbyListRequests()
 		}
 		if ( hasLobbyListRequestReturned )
 		{
-			openSteamLobbyBrowserWindow(NULL);
+			openSteamLobbyBrowserWindow(nullptr);
 		}
 	}
 }

@@ -1078,7 +1078,7 @@ void handleLevelMusic()
 -------------------------------------------------------------------------------*/
 void* playSound(Uint16 snd, Uint8 vol)
 {
-	return NULL;
+	return nullptr;
 }
 
 void* playSoundPos(real_t x, real_t y, Uint16 snd, Uint8 vol)
@@ -1110,28 +1110,28 @@ void* playSoundPos(real_t x, real_t y, Uint16 snd, Uint8 vol)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void* playSoundPosLocal(real_t x, real_t y, Uint16 snd, Uint8 vol)
 {
-	return NULL;
+	return nullptr;
 }
 
 void* playSoundEntity(Entity* entity, Uint16 snd, Uint8 vol)
 {
-	if (entity == NULL)
+	if (entity == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 	return playSoundPos(entity->x, entity->y, snd, vol);
 }
 
 void* playSoundEntityLocal(Entity* entity, Uint16 snd, Uint8 vol)
 {
-	if ( entity == NULL )
+	if ( entity == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 	return playSoundPosLocal(entity->x, entity->y, snd, vol);
 }
@@ -1142,7 +1142,7 @@ void* playSoundPlayer(int player, Uint16 snd, Uint8 vol)
 
 	if ( player < 0 || player >= MAXPLAYERS )   //Perhaps this can be reprogrammed to remove MAXPLAYERS, and use a pointer to the player instead of an int?
 	{
-		return NULL;
+		return nullptr;
 	}
 	if ( players[player]->isLocalPlayer() )
 	{
@@ -1152,7 +1152,7 @@ void* playSoundPlayer(int player, Uint16 snd, Uint8 vol)
 	{
 		if ( client_disconnected[player] || player <= 0 )
 		{
-			return NULL;
+			return nullptr;
 		}
 		memcpy(net_packet->data, "SNDG", 4);
 		SDLNet_Write16(snd, &net_packet->data[4]);
@@ -1161,10 +1161,10 @@ void* playSoundPlayer(int player, Uint16 snd, Uint8 vol)
 		net_packet->address.port = net_clients[player - 1].port;
 		net_packet->len = 7;
 		sendPacketSafe(net_sock, -1, net_packet, player - 1);
-		return NULL;
+		return nullptr;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void* playSoundNotification(Uint16 snd, Uint8 vol)

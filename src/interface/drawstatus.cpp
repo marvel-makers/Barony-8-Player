@@ -2763,7 +2763,7 @@ void drawStatusNew(const int player)
 		&& !players[player]->ghost.isActive()
 		&& players[player]->bControlEnabled && !gamePaused )
 	{
-		Item* item = NULL;
+		Item* item = nullptr;
 		const auto& inventoryUI = players[player]->inventoryUI;
 		if ( inputs.bPlayerUsingKeyboardControl(player)
 			&& players[player]->gui_mode != GUI_MODE_SIGN

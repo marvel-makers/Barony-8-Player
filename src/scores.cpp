@@ -142,36 +142,36 @@ score_t* scoreConstructor(int player)
 		score->stats->EFFECTS_TIMERS[c] = stats[player]->EFFECTS_TIMERS[c];
 	}
 	score->stats->leader_uid = 0;
-	score->stats->FOLLOWERS.first = NULL;
-	score->stats->FOLLOWERS.last = NULL;
-	score->stats->inventory.first = NULL;
-	score->stats->inventory.last = NULL;
-	score->stats->void_chest_inventory.first = NULL;
-	score->stats->void_chest_inventory.last = NULL;
-	score->stats->helmet = NULL;
-	score->stats->breastplate = NULL;
-	score->stats->gloves = NULL;
-	score->stats->shoes = NULL;
-	score->stats->shield = NULL;
-	score->stats->weapon = NULL;
-	score->stats->cloak = NULL;
-	score->stats->amulet = NULL;
-	score->stats->ring = NULL;
-	score->stats->mask = NULL;
+	score->stats->FOLLOWERS.first = nullptr;
+	score->stats->FOLLOWERS.last = nullptr;
+	score->stats->inventory.first = nullptr;
+	score->stats->inventory.last = nullptr;
+	score->stats->void_chest_inventory.first = nullptr;
+	score->stats->void_chest_inventory.last = nullptr;
+	score->stats->helmet = nullptr;
+	score->stats->breastplate = nullptr;
+	score->stats->gloves = nullptr;
+	score->stats->shoes = nullptr;
+	score->stats->shield = nullptr;
+	score->stats->weapon = nullptr;
+	score->stats->cloak = nullptr;
+	score->stats->amulet = nullptr;
+	score->stats->ring = nullptr;
+	score->stats->mask = nullptr;
 	list_Copy(&score->stats->inventory, &stats[player]->inventory);
-	for ( node = score->stats->inventory.first; node != NULL; node = node->next )
+	for ( node = score->stats->inventory.first; node != nullptr; node = node->next )
 	{
 		auto item = static_cast<Item*>(node->element);
 		item->node = node;
 	}
 	list_Copy(&score->stats->void_chest_inventory, &stats[player]->void_chest_inventory);
-	for ( node = score->stats->void_chest_inventory.first; node != NULL; node = node->next )
+	for ( node = score->stats->void_chest_inventory.first; node != nullptr; node = node->next )
 	{
 		auto item = static_cast<Item*>(node->element);
 		item->node = node;
 	}
 	int c;
-	for ( c = 0, node = stats[player]->inventory.first; node != NULL; node = node->next, c++ )
+	for ( c = 0, node = stats[player]->inventory.first; node != nullptr; node = node->next, c++ )
 	{
 		auto item = static_cast<Item*>(node->element);
 		if ( stats[player]->helmet == item )
@@ -235,7 +235,7 @@ score_t* scoreConstructor(int player)
 			score->stats->mask = item2;
 		}
 	}
-	score->stats->monster_sound = NULL;
+	score->stats->monster_sound = nullptr;
 	score->stats->monster_idlevar = 0;
 
 	score->completionTime = completionTime;
@@ -320,7 +320,7 @@ int saveScore(int player)
     int c;
     node_t* node;
     Uint32 total = totalScore(currentscore);
-	for ( c = 0, node = scoresPtr->first; node != NULL; node = node->next, c++ )
+	for ( c = 0, node = scoresPtr->first; node != nullptr; node = node->next, c++ )
 	{
 		auto score = static_cast<score_t*>(node->element);
 		if ( total > totalScore(score) )
@@ -361,7 +361,7 @@ int totalScore(score_t* score)
 {
 	int amount = 0;
 
-	for ( node_t* node = score->stats->inventory.first; node != NULL; node = node->next )
+	for ( node_t* node = score->stats->inventory.first; node != nullptr; node = node->next )
 	{
 		auto item = static_cast<Item*>(node->element);
 		amount += items[item->type].gold_value;
@@ -522,14 +522,14 @@ void loadScore(score_t* score)
 	}
 	list_FreeAll(&stats[0]->inventory);
 	list_Copy(&stats[0]->inventory, &score->stats->inventory);
-	for ( node_t* node = stats[0]->inventory.first; node != NULL; node = node->next )
+	for ( node_t* node = stats[0]->inventory.first; node != nullptr; node = node->next )
 	{
 		auto item = static_cast<Item*>(node->element);
 		item->node = node;
 	}
 	list_FreeAll(&stats[0]->void_chest_inventory);
 	list_Copy(&stats[0]->void_chest_inventory, &score->stats->void_chest_inventory);
-	for ( node_t* node = stats[0]->void_chest_inventory.first; node != NULL; node = node->next )
+	for ( node_t* node = stats[0]->void_chest_inventory.first; node != nullptr; node = node->next )
 	{
 		auto item = static_cast<Item*>(node->element);
 		item->node = node;
@@ -537,7 +537,7 @@ void loadScore(score_t* score)
 
 	int c;
 	node_t* node;
-	for ( c = 0, node = score->stats->inventory.first; node != NULL; node = node->next, c++ )
+	for ( c = 0, node = score->stats->inventory.first; node != nullptr; node = node->next, c++ )
 	{
 		auto item = static_cast<Item*>(node->element);
 		if ( score->stats->helmet == item )
@@ -690,7 +690,7 @@ void saveAllScoresJSON(const std::string& scoresfilename)
 	}
 
 	rapidjson::Value scores_list(rapidjson::kArrayType);
-	for ( ; node != NULL; node = node->next )
+	for ( ; node != nullptr; node = node->next )
 	{
 		auto score = static_cast<score_t*>(node->element);
 		rapidjson::Value entry(rapidjson::kObjectType);
@@ -795,7 +795,7 @@ void saveAllScoresJSON(const std::string& scoresfilename)
 
 		{
 			rapidjson::Value inventory(rapidjson::kArrayType);
-			for ( node_t* node2 = score->stats->inventory.first; node2 != NULL; node2 = node2->next )
+			for ( node_t* node2 = score->stats->inventory.first; node2 != nullptr; node2 = node2->next )
 			{
 				auto item = static_cast<Item*>(node2->element);
 
@@ -915,7 +915,7 @@ void saveAllScoresJSON(const std::string& scoresfilename)
 
 	{
 		rapidjson::Value books_read(rapidjson::kArrayType);
-		for ( node_t* node = booksRead.first; node != NULL; node = node->next )
+		for ( node_t* node = booksRead.first; node != nullptr; node = node->next )
 		{
 			auto book = static_cast<char*>(node->element);
 			books_read.PushBack(rapidjson::Value(book, d.GetAllocator()), d.GetAllocator());
@@ -981,7 +981,7 @@ void saveAllScores(const std::string& scoresfilename)
 	completePath(path, filename.c_str(), outputdir);
 
 	// open file
-	if ( (fp = FileIO::open(path, "wb")) == NULL )
+	if ( (fp = FileIO::open(path, "wb")) == nullptr)
 	{
 		printlog("error: failed to save '%s!'\n", filename.c_str());
 		return;
@@ -1012,7 +1012,7 @@ void saveAllScores(const std::string& scoresfilename)
 	// header info
 	int booksReadNum = list_Size(&booksRead);
 	fp->write(&booksReadNum, sizeof(Uint32), 1);
-	for ( node_t* node = booksRead.first; node != NULL; node = node->next )
+	for ( node_t* node = booksRead.first; node != nullptr; node = node->next )
 	{
 		auto book = static_cast<char*>(node->element);
 		int c = strlen(book);
@@ -1043,7 +1043,7 @@ void saveAllScores(const std::string& scoresfilename)
 	}
 	fp->write(&numScoresInFile, sizeof(Uint32), 1);
 
-	for (; node != NULL; node = node->next )
+	for (; node != nullptr; node = node->next )
 	{
 		auto score = static_cast<score_t*>(node->element);
 		for ( int c = 0; c < NUMMONSTERS; c++ )
@@ -1121,7 +1121,7 @@ void saveAllScores(const std::string& scoresfilename)
 		node_t* node2;
 		int inventorySize = list_Size(&score->stats->inventory);
 		fp->write(&inventorySize, sizeof(ItemType), 1);
-		for ( node2 = score->stats->inventory.first; node2 != NULL; node2 = node2->next )
+		for ( node2 = score->stats->inventory.first; node2 != nullptr; node2 = node2->next )
 		{
 			auto item = static_cast<Item*>(node2->element);
 			fp->write(&item->type, sizeof(ItemType), 1);
@@ -1451,8 +1451,8 @@ public:
 		\param buffer user-supplied buffer.
 		\param bufferSize size of buffer in bytes. Must >=4 bytes.
 	*/
-	FileReadStreamCustomWrapper(File* fp, char* buffer, size_t bufferSize) : fp_(fp), buffer_(buffer), bufferSize_(bufferSize), bufferLast_(0), current_(buffer_), readCount_(0), count_(0), eof_(false) {
-		RAPIDJSON_ASSERT(fp_ != 0);
+	FileReadStreamCustomWrapper(File* fp, char* buffer, size_t bufferSize) : fp_(fp), buffer_(buffer), bufferSize_(bufferSize), bufferLast_(nullptr), current_(buffer_), readCount_(0), count_(0), eof_(false) {
+		RAPIDJSON_ASSERT(fp_ != nullptr);
 		RAPIDJSON_ASSERT(bufferSize >= 4);
 		Read();
 	}
@@ -1464,12 +1464,12 @@ public:
 	// Not implemented
 	void Put(Ch) { RAPIDJSON_ASSERT(false); }
 	void Flush() { RAPIDJSON_ASSERT(false); }
-	Ch* PutBegin() { RAPIDJSON_ASSERT(false); return 0; }
+	Ch* PutBegin() { RAPIDJSON_ASSERT(false); return nullptr; }
 	size_t PutEnd(Ch*) { RAPIDJSON_ASSERT(false); return 0; }
 
 	// For encoding detection only.
 	const Ch* Peek4() const {
-		return (current_ + 4 <= bufferLast_) ? current_ : 0;
+		return (current_ + 4 <= bufferLast_) ? current_ : nullptr;
 	}
 
 private:
@@ -1522,7 +1522,7 @@ void loadAllScoresJSON(const std::string& scoresfilename)
 	File* fp = nullptr;
 
 	// open file
-	if ( (fp = FileIO::open(path, "rb")) == NULL )
+	if ( (fp = FileIO::open(path, "rb")) == nullptr)
 	{
 		printlog("[JSON]: Error: Could not locate json file %s", path);
 		return;
@@ -1757,8 +1757,8 @@ void loadAllScoresJSON(const std::string& scoresfilename)
 		}
 
 		score->stats->leader_uid = 0;
-		score->stats->FOLLOWERS.first = NULL;
-		score->stats->FOLLOWERS.last = NULL;
+		score->stats->FOLLOWERS.first = nullptr;
+		score->stats->FOLLOWERS.last = nullptr;
 
 		c = 0;
 		for ( auto itr2 = (*itr)["inventory"].Begin(); itr2 != (*itr)["inventory"].End(); ++itr2 )
@@ -1860,7 +1860,7 @@ void loadAllScoresJSON(const std::string& scoresfilename)
 			++c;
 		}
 
-		score->stats->monster_sound = NULL;
+		score->stats->monster_sound = nullptr;
 		score->stats->monster_idlevar = 0;
 	}
 }
@@ -1890,7 +1890,7 @@ void loadAllScores(const std::string& scoresfilename)
 	// check for existence of new JSON format
 	{
 		completePath(path, scoresfilename.c_str(), outputdir);
-		if ( (fp = FileIO::open(path, "rb")) != NULL )
+		if ( (fp = FileIO::open(path, "rb")) != nullptr)
 		{
 			// found new json file, let's read that instead
 			FileIO::close(fp);
@@ -1902,7 +1902,7 @@ void loadAllScores(const std::string& scoresfilename)
 	completePath(path, filename.c_str(), outputdir);
 
 	// open file
-	if ( (fp = FileIO::open(path, "rb")) == NULL )
+	if ( (fp = FileIO::open(path, "rb")) == nullptr)
 	{
 		return;
 	}
@@ -2353,14 +2353,14 @@ void loadAllScores(const std::string& scoresfilename)
 			}
 		}
 		score->stats->leader_uid = 0;
-		score->stats->FOLLOWERS.first = NULL;
-		score->stats->FOLLOWERS.last = NULL;
+		score->stats->FOLLOWERS.first = nullptr;
+		score->stats->FOLLOWERS.last = nullptr;
 
 		// inventory
 		int numitems = 0;
 		fp->read(&numitems, sizeof(Uint32), 1);
-		score->stats->inventory.first = NULL;
-		score->stats->inventory.last = NULL;
+		score->stats->inventory.first = nullptr;
+		score->stats->inventory.last = nullptr;
 		for ( int c = 0; c < numitems; c++ )
 		{
 			if ( c >= 1000 )
@@ -2383,8 +2383,8 @@ void loadAllScores(const std::string& scoresfilename)
 			fp->read(&identified, sizeof(bool), 1);
 			newItem(type, status, beatitude, count, appearance, identified, &score->stats->inventory);
 		}
-		score->stats->void_chest_inventory.first = NULL;
-		score->stats->void_chest_inventory.last = NULL;
+		score->stats->void_chest_inventory.first = nullptr;
+		score->stats->void_chest_inventory.last = nullptr;
 		fp->read(&c, sizeof(Uint32), 1);
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
@@ -2393,7 +2393,7 @@ void loadAllScores(const std::string& scoresfilename)
 		}
 		else
 		{
-			score->stats->helmet = NULL;
+			score->stats->helmet = nullptr;
 		}
 		fp->read(&c, sizeof(Uint32), 1);
 		node = list_Node(&score->stats->inventory, c);
@@ -2403,7 +2403,7 @@ void loadAllScores(const std::string& scoresfilename)
 		}
 		else
 		{
-			score->stats->breastplate = NULL;
+			score->stats->breastplate = nullptr;
 		}
 		fp->read(&c, sizeof(Uint32), 1);
 		node = list_Node(&score->stats->inventory, c);
@@ -2413,7 +2413,7 @@ void loadAllScores(const std::string& scoresfilename)
 		}
 		else
 		{
-			score->stats->gloves = NULL;
+			score->stats->gloves = nullptr;
 		}
 		fp->read(&c, sizeof(Uint32), 1);
 		node = list_Node(&score->stats->inventory, c);
@@ -2423,7 +2423,7 @@ void loadAllScores(const std::string& scoresfilename)
 		}
 		else
 		{
-			score->stats->shoes = NULL;
+			score->stats->shoes = nullptr;
 		}
 		fp->read(&c, sizeof(Uint32), 1);
 		node = list_Node(&score->stats->inventory, c);
@@ -2433,7 +2433,7 @@ void loadAllScores(const std::string& scoresfilename)
 		}
 		else
 		{
-			score->stats->shield = NULL;
+			score->stats->shield = nullptr;
 		}
 		fp->read(&c, sizeof(Uint32), 1);
 		node = list_Node(&score->stats->inventory, c);
@@ -2443,7 +2443,7 @@ void loadAllScores(const std::string& scoresfilename)
 		}
 		else
 		{
-			score->stats->weapon = NULL;
+			score->stats->weapon = nullptr;
 		}
 		fp->read(&c, sizeof(Uint32), 1);
 		node = list_Node(&score->stats->inventory, c);
@@ -2453,7 +2453,7 @@ void loadAllScores(const std::string& scoresfilename)
 		}
 		else
 		{
-			score->stats->cloak = NULL;
+			score->stats->cloak = nullptr;
 		}
 		fp->read(&c, sizeof(Uint32), 1);
 		node = list_Node(&score->stats->inventory, c);
@@ -2463,7 +2463,7 @@ void loadAllScores(const std::string& scoresfilename)
 		}
 		else
 		{
-			score->stats->amulet = NULL;
+			score->stats->amulet = nullptr;
 		}
 		fp->read(&c, sizeof(Uint32), 1);
 		node = list_Node(&score->stats->inventory, c);
@@ -2473,7 +2473,7 @@ void loadAllScores(const std::string& scoresfilename)
 		}
 		else
 		{
-			score->stats->ring = NULL;
+			score->stats->ring = nullptr;
 		}
 		fp->read(&c, sizeof(Uint32), 1);
 		node = list_Node(&score->stats->inventory, c);
@@ -2483,10 +2483,10 @@ void loadAllScores(const std::string& scoresfilename)
 		}
 		else
 		{
-			score->stats->mask = NULL;
+			score->stats->mask = nullptr;
 		}
 
-		score->stats->monster_sound = NULL;
+		score->stats->monster_sound = nullptr;
 		score->stats->monster_idlevar = 0;
 	}
 
@@ -6917,8 +6917,8 @@ list_t* loadGameFollowers(const SaveGameInfo& info) {
 
 	// create followers list
 	auto followers = static_cast<list_t*>(malloc(sizeof(list_t)));
-	followers->first = NULL;
-	followers->last = NULL;
+	followers->first = nullptr;
+	followers->last = nullptr;
 
 	// read the follower data
 	for (auto& player : info.players) {

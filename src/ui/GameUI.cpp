@@ -17016,7 +17016,7 @@ void Player::GUIDropdown_t::process()
 
         if (chest_inventory)
         {
-            for (node_t* node = chest_inventory->first; node != NULL; node = node->next)
+            for (node_t* node = chest_inventory->first; node != nullptr; node = node->next)
             {
                 auto chestItem = static_cast<Item*>(node->element);
                 if (!chestItem)
@@ -26738,7 +26738,7 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
             }
             if (playerEntity->behavior == &actPlayer)
             {
-                for (node_t* node = map.entities->first; node != NULL; node = node->next)
+                for (node_t* node = map.entities->first; node != nullptr; node = node->next)
                 {
                     auto entity = static_cast<Entity*>(node->element);
                     if (static_cast<Sint32>(entity->getUID()) == -4) // torch sprites
@@ -26765,7 +26765,7 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
         }
         else
         {
-            for (node_t* node = map.entities->first; node != NULL; node = node->next)
+            for (node_t* node = map.entities->first; node != nullptr; node = node->next)
             {
                 auto entity = static_cast<Entity*>(node->element);
                 if (playerEntity->behavior == &actPlayer)
@@ -30147,7 +30147,7 @@ void Player::Inventory_t::updateItemContextMenu()
             if (chest_inventory)
             {
                 node_t* nextnode = nullptr;
-                for (node_t* node = chest_inventory->first; node != NULL; node = nextnode)
+                for (node_t* node = chest_inventory->first; node != nullptr; node = nextnode)
                 {
                     nextnode = node->next;
                     auto chestItem = static_cast<Item*>(node->element);
@@ -41191,7 +41191,7 @@ void Player::Inventory_t::SpellPanel_t::updateSpellPanel()
     skillBg->pos.y = 6;*/
 
     int lowestItemY = getNumSpellsToDisplayVertical() - 1;
-    for (node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next)
+    for (node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next)
     {
         auto item = static_cast<Item*>(node->element);
         if (!item) { continue; }
@@ -41535,7 +41535,7 @@ void Player::Inventory_t::SpellPanel_t::scrollToSlot(int x, int y, bool instantl
     }
 
     int lowestItemY = getNumSpellsToDisplayVertical() - 1;
-    for (node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next)
+    for (node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next)
     {
         auto item = static_cast<Item*>(node->element);
         if (!item) { continue; }
@@ -42149,7 +42149,7 @@ void Player::Inventory_t::ChestGUI_t::scrollToSlot(int x, int y, bool instantly)
     }
 
     int lowestItemY = getNumItemsToDisplayVertical() - 1;
-    for (node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next)
+    for (node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next)
     {
         auto item = static_cast<Item*>(node->element);
         if (!item) { continue; }

@@ -1116,7 +1116,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		item->x = static_cast<Sint8>(net_packet->data[18]);
 		item->y = static_cast<Sint8>(net_packet->data[19]);
 		node_t* nextnode;
-		for ( auto node = entitystats->inventory.first; node != NULL; node = nextnode )
+		for ( auto node = entitystats->inventory.first; node != nullptr; node = nextnode )
 		{
 			nextnode = node->next;
 			auto item2 = static_cast<Item*>(node->element);
@@ -1714,7 +1714,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		    SDLNet_Read32(&net_packet->data[16]),
 		    SDLNet_Read32(&net_packet->data[20]),
 		    net_packet->data[24],
-		    NULL);
+		nullptr);
 		Entity* entity = uidToEntity(SDLNet_Read32(&net_packet->data[26]));
 		if ( entity )
 		{
@@ -1741,7 +1741,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		    SDLNet_Read32(&net_packet->data[16]),
 		    SDLNet_Read32(&net_packet->data[20]),
 		    net_packet->data[24],
-		    NULL);
+		nullptr);
 		int wallx = (SDLNet_Read16(&net_packet->data[26]));
 		int wally = (SDLNet_Read16(&net_packet->data[28]));
 		item->applyLockpickToWall(client, wallx, wally);

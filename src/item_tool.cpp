@@ -1229,17 +1229,17 @@ void Item::applyEmptyPotion(int player, Entity& entity)
 		{
 			auto generatedPotion = potionStandardAppearanceMap.at(
 				rng.discrete(potionChances.data(), potionChances.size()));
-			item = newItem(static_cast<ItemType>(generatedPotion.first), EXCELLENT, 0, 1, generatedPotion.second, false, NULL);
+			item = newItem(static_cast<ItemType>(generatedPotion.first), EXCELLENT, 0, 1, generatedPotion.second, false, nullptr);
 		}
 		else
 		{
 			if ( entity.skill[3] == 1 ) // slime
 			{
-				item = newItem(POTION_ACID, EXCELLENT, 0, 1, 0, false, NULL);
+				item = newItem(POTION_ACID, EXCELLENT, 0, 1, 0, false, nullptr);
 			}
 			else
 			{
-				item = newItem(POTION_WATER, EXCELLENT, 0, 1, 0, false, NULL);
+				item = newItem(POTION_WATER, EXCELLENT, 0, 1, 0, false, nullptr);
 			}
 		}
 		if ( item )
@@ -1390,8 +1390,8 @@ void Item::applyEmptyPotion(int player, Entity& entity)
 					std::pair<int, int> generatedPotion = fountainGeneratePotionDrop(rng);
 					auto type = static_cast<ItemType>(generatedPotion.first);
 					int appearance = generatedPotion.second;
-					Item* item = newItem(type, EXCELLENT, 0, 1, appearance, false, NULL);
-					if ( Entity* dropped = dropItemMonster(item, &entity, NULL) )
+					Item* item = newItem(type, EXCELLENT, 0, 1, appearance, false, nullptr);
+					if ( Entity* dropped = dropItemMonster(item, &entity, nullptr) )
 					{
 						dropped->yaw = ((0 + local_rng.rand() % 360) / 180.f) * PI;
 						dropped->vel_x = (0.75 + .025 * (local_rng.rand() % 11)) * cos(dropped->yaw);

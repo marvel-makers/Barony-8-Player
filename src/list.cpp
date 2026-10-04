@@ -31,13 +31,13 @@ void list_FreeAll(list_t* list)
 	node_t* node, *nextnode;
 	if (list == map.entities)
 		map.entities_map.clear();
-	for ( node = list->first; node != NULL; node = nextnode )
+	for ( node = list->first; node != nullptr; node = nextnode )
 	{
 		nextnode = node->next;
 		list_RemoveNode(node);
 	}
-	list->first = NULL;
-	list->last = NULL;
+	list->first = nullptr;
+	list->last = nullptr;
 }
 
 /*-------------------------------------------------------------------------------
@@ -143,14 +143,14 @@ void list_RemoveNode(node_t* node)
 			// is it also the last node?
 			if ( node->list->last == node )
 			{
-				node->list->first = NULL;
-				node->list->last = NULL;
+				node->list->first = nullptr;
+				node->list->last = nullptr;
 			}
 
 			// otherwise, the "first" pointer needs to point to the next node
 			else
 			{
-				node->next->prev = NULL;
+				node->next->prev = nullptr;
 				node->list->first = node->next;
 			}
 		}
@@ -158,7 +158,7 @@ void list_RemoveNode(node_t* node)
 		// if this is the last node, but not the first...
 		else if ( node == node->list->last )
 		{
-			node->prev->next = NULL;
+			node->prev->next = nullptr;
 			node->list->last = node->prev; // the "last" pointer needs to point to the previous node
 		}
 
@@ -204,21 +204,21 @@ node_t* list_AddNodeFirst(list_t* list)
 	node_t* node;
 
 	// allocate memory for node
-	if ( (node = static_cast<node_t*>(malloc(sizeof(node_t)))) == NULL )
+	if ( (node = static_cast<node_t*>(malloc(sizeof(node_t)))) == nullptr)
 	{
 		printlog( "failed to allocate memory for new node!\n" );
 		exit(1);
 	}
 
 	// initialize data pointers to NULL
-	node->element = NULL;
-	node->deconstructor = NULL;
+	node->element = nullptr;
+	node->deconstructor = nullptr;
 	node->size = 0;
-	node->prev = NULL;
+	node->prev = nullptr;
 
 	// integrate it into the list
 	node->list = list;
-	if ( list->first != NULL )
+	if ( list->first != nullptr)
 	{
 		// there are prior nodes in the list
 		node->next = list->first;
@@ -227,7 +227,7 @@ node_t* list_AddNodeFirst(list_t* list)
 	else
 	{
 		// inserting into an empty list
-		node->next = NULL;
+		node->next = nullptr;
 		list->last = node;
 	}
 	list->first = node;
@@ -255,21 +255,21 @@ node_t* list_AddNodeLast(list_t* list)
 	node_t* node;
 
 	// allocate memory for node
-	if ( (node = static_cast<node_t*>(malloc(sizeof(node_t)))) == NULL )
+	if ( (node = static_cast<node_t*>(malloc(sizeof(node_t)))) == nullptr)
 	{
 		printlog( "failed to allocate memory for new node!\n" );
 		exit(1);
 	}
 
 	// initialize data pointers to NULL
-	node->element = NULL;
-	node->deconstructor = NULL;
+	node->element = nullptr;
+	node->deconstructor = nullptr;
 	node->size = 0;
-	node->next = NULL;
+	node->next = nullptr;
 
 	// integrate it into the list
 	node->list = list;
-	if ( list->last != NULL )
+	if ( list->last != nullptr)
 	{
 		// there are prior nodes in the list
 		node->prev = list->last;
@@ -278,7 +278,7 @@ node_t* list_AddNodeLast(list_t* list)
 	else
 	{
 		// inserting into an empty list
-		node->prev = NULL;
+		node->prev = nullptr;
 		list->first = node;
 	}
 	list->last = node;
@@ -302,22 +302,22 @@ node_t* list_AddNode(list_t* list, int index)
 	node_t* node;
 	if ( index < 0 || index > list_Size(list))
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	// allocate memory for node
-	if ( (node = static_cast<node_t*>(malloc(sizeof(node_t)))) == NULL )
+	if ( (node = static_cast<node_t*>(malloc(sizeof(node_t)))) == nullptr)
 	{
 		printlog( "failed to allocate memory for new node!\n" );
 		exit(1);
 	}
 
 	// initialize data pointers to NULL
-	node->element = NULL;
-	node->deconstructor = NULL;
+	node->element = nullptr;
+	node->deconstructor = nullptr;
 	node->size = 0;
-	node->prev = NULL;
-	node->next = NULL;
+	node->prev = nullptr;
+	node->next = nullptr;
 
 	// integrate it into the list
 	node->list = list;
@@ -345,15 +345,15 @@ node_t* list_AddNode(list_t* list, int index)
 		{
 			// inserting at the end of a list
 			node->prev = list->last;
-			node->next = NULL;
+			node->next = nullptr;
 			list->last->next = node;
 			list->last = node;
 		}
 		else
 		{
 			// inserting into an empty list
-			node->prev = NULL;
-			node->next = NULL;
+			node->prev = nullptr;
+			node->next = nullptr;
 			list->first = node;
 			list->last = node;
 		}
@@ -380,7 +380,7 @@ Uint32 list_Size(list_t* list)
 		return 0;
 	}
 
-	for ( c = 0, node = list->first; node != NULL; node = node->next, c++ );
+	for ( c = 0, node = list->first; node != nullptr; node = node->next, c++ );
 	return c;
 }
 
@@ -396,7 +396,7 @@ Uint32 list_Size(list_t* list)
 list_t* list_Copy(list_t* destlist, list_t* srclist)
 {
 	node_t* node;
-	for ( node = srclist->first; node != NULL; node = node->next )
+	for ( node = srclist->first; node != nullptr; node = node->next )
 	{
 		if ( node->size == 0 )
 		{
@@ -426,19 +426,19 @@ list_t* list_CopyNew(list_t* srclist)
 {
 	if ( !srclist )
 	{
-		return NULL;
+		return nullptr;
 	}
 	auto destlist = static_cast<list_t*>(malloc(sizeof(list_t)));
 	if ( !destlist )
 	{
 		printlog("critical error: list_CopyNew() failed to allocate memory for new list!\n");
-		return NULL;
+		return nullptr;
 	}
-	destlist->first = NULL;
-	destlist->last = NULL;
+	destlist->first = nullptr;
+	destlist->last = nullptr;
 
 	node_t* node;
-	for ( node = srclist->first; node != NULL; node = node->next )
+	for ( node = srclist->first; node != nullptr; node = node->next )
 	{
 		if ( node->size == 0 )
 		{
@@ -471,7 +471,7 @@ Uint32 list_Index(node_t* node)
 	node_t* tempnode;
 	int i;
 
-	for ( i = 0, tempnode = node->list->first; tempnode != NULL; tempnode = tempnode->next, i++ )
+	for ( i = 0, tempnode = node->list->first; tempnode != nullptr; tempnode = tempnode->next, i++ )
 	{
 		if ( tempnode == node )
 		{
@@ -493,7 +493,7 @@ Uint32 list_Index(node_t* node)
 node_t* list_Node(list_t* list, int index)
 {
 	if (index < 0) {
-		return NULL;
+		return nullptr;
 	}
     int i = 0;
 	node_t* node = list->first;

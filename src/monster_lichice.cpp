@@ -107,9 +107,9 @@ void initLichIce(Entity* my, Stat* myStats)
 			}
 
 			//give weapon
-			if ( myStats->weapon == NULL && myStats->EDITOR_ITEMS[ITEM_SLOT_WEAPON] == 1 )
+			if ( myStats->weapon == nullptr && myStats->EDITOR_ITEMS[ITEM_SLOT_WEAPON] == 1 )
 			{
-				myStats->weapon = newItem(MAGICSTAFF_COLD, EXCELLENT, -5, 1, rng.rand(), false, NULL);
+				myStats->weapon = newItem(MAGICSTAFF_COLD, EXCELLENT, -5, 1, rng.rand(), false, nullptr);
 			}
 		}
 	}
@@ -246,7 +246,7 @@ void lichIceDie(Entity* my)
 	playSoundEntity(my, 94, 128);
 	my->removeLightField();
 	// kill all other monsters on the level
-	for ( node = map.creatures->first; my->monsterLichAllyStatus == LICH_ALLY_DEAD && node != NULL; node = nextnode )
+	for ( node = map.creatures->first; my->monsterLichAllyStatus == LICH_ALLY_DEAD && node != nullptr; node = nextnode )
 	{
 		nextnode = node->next;
 		auto entity = static_cast<Entity*>(node->element);
@@ -505,7 +505,7 @@ void lichIceAnimate(Entity* my, Stat* myStats, double dist)
 
 	// move arms
 	Entity* rightarm = nullptr;
-	for ( bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++ )
+	for ( bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++ )
 	{
 		if ( bodypart < LICH_RIGHTARM )
 		{
@@ -1124,7 +1124,7 @@ void lichIceAnimate(Entity* my, Stat* myStats, double dist)
 			{
 				entity->z -= 4.25;
 				node_t* tempNode;
-				Entity* playertotrack = NULL;
+				Entity* playertotrack = nullptr;
 				double disttoplayer = 0.0;
 				Entity* target = uidToEntity(my->monsterTarget);
 				if ( target && my->monsterAttack == 0 )

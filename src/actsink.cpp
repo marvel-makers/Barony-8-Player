@@ -181,7 +181,7 @@ void actSink(Entity* my)
 							int beatitude = rng.rand() % 5 - 2; //No item will be able to generate with less than -2 or more than +2 beatitude
 
 							//Actually create the item, put it in the player's inventory, and then free the memory of the temp item.
-							Item* item = newItem(static_cast<ItemType>(ring), status, beatitude, 1, rng.rand(), false, NULL);
+							Item* item = newItem(static_cast<ItemType>(ring), status, beatitude, 1, rng.rand(), false, nullptr);
 							if (item)
 							{
 								itemPickup(i, item);

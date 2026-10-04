@@ -209,7 +209,7 @@ void devilDie(Entity* my)
 			}
 		}
 	}
-	for ( node = map.entities->first; node != NULL; node = node->next )
+	for ( node = map.entities->first; node != nullptr; node = node->next )
 	{
 		auto entity = static_cast<Entity*>(node->element);
 		if ( entity->skill[28] )
@@ -261,9 +261,9 @@ void devilDie(Entity* my)
 void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
 {
 	node_t* node;
-	Entity* entity = NULL;
-	Entity* rightbody = NULL;
-	Entity* leftbody = NULL;
+	Entity* entity = nullptr;
+	Entity* rightbody = nullptr;
+	Entity* leftbody = nullptr;
 	int bodypart;
 
 	// set invisibility //TODO: isInvisible()?
@@ -274,7 +274,7 @@ void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			my->flags[INVISIBLE] = true;
 			my->flags[BLOCKSIGHT] = false;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < 2 )
 				{
@@ -299,7 +299,7 @@ void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			my->flags[INVISIBLE] = false;
 			my->flags[BLOCKSIGHT] = true;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < 2 )
 				{
@@ -328,7 +328,7 @@ void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
 		MONSTER_ARMBENDED = 0;*/
 
 	//Move bodyparts
-	for (bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++)
+	for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++)
 	{
 		entity = static_cast<Entity*>(node->element);
 		if ( bodypart < 2 )

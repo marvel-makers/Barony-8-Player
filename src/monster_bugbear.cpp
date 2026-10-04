@@ -42,7 +42,7 @@ void initBugbear(Entity* my, Stat* myStats)
 	{
 		auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
 
-		if ( myStats != NULL )
+		if ( myStats != nullptr)
 		{
 			if ( !myStats->leader_uid )
 			{
@@ -469,7 +469,7 @@ void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	Entity* shieldarm = nullptr;
 
 	//Move bodyparts
-	for (bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++)
+	for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++)
 	{
 		if ( bodypart < 2 )
 		{

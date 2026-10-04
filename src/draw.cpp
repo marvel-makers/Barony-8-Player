@@ -1081,7 +1081,7 @@ void putPixel(SDL_Surface* surface, int x, int y, Uint32 pixel)
 
 SDL_Surface* flipSurface( SDL_Surface* surface, int flags )
 {
-	SDL_Surface* flipped = NULL;
+	SDL_Surface* flipped = nullptr;
 	Uint32 pixel;
 	int x, rx;
 	int y, ry;
@@ -1372,7 +1372,7 @@ void drawLine( int x1, int y1, int x2, int y2, Uint32 color, Uint8 alpha )
 int drawRect( SDL_Rect* src, Uint32 color, Uint8 alpha )
 {
 	SDL_Rect secondsrc;
-	if ( src == NULL )
+	if ( src == nullptr)
 	{
 		secondsrc.x = 0;
 		secondsrc.y = 0;
@@ -1591,7 +1591,7 @@ SDL_Surface* scaleSurface(SDL_Surface* Surface, Uint16 Width, Uint16 Height)
 
 	if (!Surface || !Width || !Height)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	SDL_Surface* _ret = SDL_CreateRGBSurface(Surface->flags, Width, Height, Surface->format->BitsPerPixel, Surface->format->Rmask, Surface->format->Gmask, Surface->format->Bmask, Surface->format->Amask);
@@ -1671,18 +1671,18 @@ void drawLayer(long camx, long camy, int z, map_t* map)
 				pos.h = TEXTURESIZE;
 				if ( index >= 0 && index < numtiles )
 				{
-					if ( tiles[index] != NULL )
+					if ( tiles[index] != nullptr)
 					{
-						drawImageScaled(tiles[index], NULL, &pos);
+						drawImageScaled(tiles[index], nullptr, &pos);
 					}
 					else
 					{
-						drawImageScaled(sprites[0], NULL, &pos);
+						drawImageScaled(sprites[0], nullptr, &pos);
 					}
 				}
 				else
 				{
-					drawImageScaled(sprites[0], NULL, &pos);
+					drawImageScaled(sprites[0], nullptr, &pos);
 				}
 			}
 		}

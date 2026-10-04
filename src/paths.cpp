@@ -21,8 +21,8 @@
 #include "magic/magic.hpp"
 #include "mod_tools.hpp"
 
-int* pathMapFlying = NULL;
-int* pathMapGrounded = NULL;
+int* pathMapFlying = nullptr;
+int* pathMapGrounded = nullptr;
 int pathMapZone = 1;
 
 #define STRAIGHTCOST 10
@@ -182,7 +182,7 @@ public:
 					if ( list )
 					{
 						node_t* node;
-						for ( node = list->first; node != NULL; node = node->next )
+						for ( node = list->first; node != nullptr; node = node->next )
 						{
 							auto entity = static_cast<Entity*>(node->element);
 							if ( entity )
@@ -442,7 +442,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 			DebugStats.gui2 = DebugStats.gui2 + ms;
 		}
 		lastGeneratePathTries = 0;
-		return NULL;
+		return nullptr;
 	}
 
 	x1 = std::min(std::max(0, x1), static_cast<int>(map.width) - 1);
@@ -507,7 +507,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 			{
 				monsterAllyFormations.updateOnPathFail(my->getUID(), my);
 			}
-			return NULL;
+			return nullptr;
 		}
 		if ( my->behavior == &actMonster )
 		{
@@ -531,7 +531,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 					{
 						monsterAllyFormations.updateOnPathFail(my->getUID(), my);
 					}
-					return NULL;
+					return nullptr;
 				}
 			}
 		}
@@ -926,7 +926,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
             monsterAllyFormations.updateOnPathFail(my->getUID(), my);
         }
 	}
-	return NULL;
+	return nullptr;
 }
 
 /*-------------------------------------------------------------------------------
@@ -999,7 +999,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 		list_t* list = checkTileForEntity(x, y);
 		if ( list )
 		{
-			for ( node = list->first; node != NULL; node = node->next )
+			for ( node = list->first; node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				if ( entity )
@@ -1049,7 +1049,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							if ( list )
 							{
 								node_t* node;
-								for ( node = list->first; node != NULL; node = node->next )
+								for ( node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1096,7 +1096,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							if ( list )
 							{
 								node_t* node;
-								for ( node = list->first; node != NULL; node = node->next )
+								for ( node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1143,7 +1143,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							if ( list )
 							{
 								node_t* node;
-								for ( node = list->first; node != NULL; node = node->next )
+								for ( node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1190,7 +1190,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							if ( list )
 							{
 								node_t* node;
-								for ( node = list->first; node != NULL; node = node->next )
+								for ( node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1429,7 +1429,7 @@ void GateGraph::fillPathMap(int x, int y)
 	list_t* list = checkTileForEntity(x, y);
 	if ( list )
 	{
-		for ( node = list->first; node != NULL; node = node->next )
+		for ( node = list->first; node != nullptr; node = node->next )
 		{
 			auto entity = static_cast<Entity*>(node->element);
 			if ( entity )
@@ -1465,7 +1465,7 @@ void GateGraph::fillPathMap(int x, int y)
 							if ( list )
 							{
 								node_t* node;
-								for ( node = list->first; node != NULL; node = node->next )
+								for ( node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1497,7 +1497,7 @@ void GateGraph::fillPathMap(int x, int y)
 							if ( list )
 							{
 								node_t* node;
-								for ( node = list->first; node != NULL; node = node->next )
+								for ( node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1529,7 +1529,7 @@ void GateGraph::fillPathMap(int x, int y)
 							if ( list )
 							{
 								node_t* node;
-								for ( node = list->first; node != NULL; node = node->next )
+								for ( node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1561,7 +1561,7 @@ void GateGraph::fillPathMap(int x, int y)
 							if ( list )
 							{
 								node_t* node;
-								for ( node = list->first; node != NULL; node = node->next )
+								for ( node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )

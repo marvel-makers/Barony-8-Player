@@ -263,9 +263,9 @@ Sint32 Stat::getThaumProficiencySpellStatBonus(int whichStat, Sint32 currentBonu
 //Destructor
 Stat::~Stat()
 {
-	if (this->helmet != NULL)
+	if (this->helmet != nullptr)
 	{
-		if (this->helmet->node == NULL)
+		if (this->helmet->node == nullptr)
 		{
 			free(this->helmet);
 		}
@@ -273,11 +273,11 @@ Stat::~Stat()
 		{
 			list_RemoveNode(this->helmet->node);
 		}
-		this->helmet = NULL;
+		this->helmet = nullptr;
 	}
-	if (this->breastplate != NULL)
+	if (this->breastplate != nullptr)
 	{
-		if (this->breastplate->node == NULL)
+		if (this->breastplate->node == nullptr)
 		{
 			free(this->breastplate);
 		}
@@ -285,11 +285,11 @@ Stat::~Stat()
 		{
 			list_RemoveNode(this->breastplate->node);
 		}
-		this->breastplate = NULL;
+		this->breastplate = nullptr;
 	}
-	if (this->gloves != NULL)
+	if (this->gloves != nullptr)
 	{
-		if (this->gloves->node == NULL)
+		if (this->gloves->node == nullptr)
 		{
 			free(this->gloves);
 		}
@@ -297,11 +297,11 @@ Stat::~Stat()
 		{
 			list_RemoveNode(this->gloves->node);
 		}
-		this->gloves = NULL;
+		this->gloves = nullptr;
 	}
-	if (this->shoes != NULL)
+	if (this->shoes != nullptr)
 	{
-		if (this->shoes->node == NULL)
+		if (this->shoes->node == nullptr)
 		{
 			free(this->shoes);
 		}
@@ -309,11 +309,11 @@ Stat::~Stat()
 		{
 			list_RemoveNode(this->shoes->node);
 		}
-		this->shoes = NULL;
+		this->shoes = nullptr;
 	}
-	if (this->shield != NULL)
+	if (this->shield != nullptr)
 	{
-		if (this->shield->node == NULL)
+		if (this->shield->node == nullptr)
 		{
 			free(this->shield);
 		}
@@ -321,11 +321,11 @@ Stat::~Stat()
 		{
 			list_RemoveNode(this->shield->node);
 		}
-		this->shield = NULL;
+		this->shield = nullptr;
 	}
-	if (this->weapon != NULL)
+	if (this->weapon != nullptr)
 	{
-		if (this->weapon->node == NULL)
+		if (this->weapon->node == nullptr)
 		{
 			free(this->weapon);
 		}
@@ -333,11 +333,11 @@ Stat::~Stat()
 		{
 			list_RemoveNode(this->weapon->node);
 		}
-		this->weapon = NULL;
+		this->weapon = nullptr;
 	}
-	if (this->cloak != NULL)
+	if (this->cloak != nullptr)
 	{
-		if (this->cloak->node == NULL)
+		if (this->cloak->node == nullptr)
 		{
 			free(this->cloak);
 		}
@@ -345,11 +345,11 @@ Stat::~Stat()
 		{
 			list_RemoveNode(this->cloak->node);
 		}
-		this->cloak = NULL;
+		this->cloak = nullptr;
 	}
-	if (this->amulet != NULL)
+	if (this->amulet != nullptr)
 	{
-		if (this->amulet->node == NULL)
+		if (this->amulet->node == nullptr)
 		{
 			free(this->amulet);
 		}
@@ -357,11 +357,11 @@ Stat::~Stat()
 		{
 			list_RemoveNode(this->amulet->node);
 		}
-		this->amulet = NULL;
+		this->amulet = nullptr;
 	}
-	if (this->ring != NULL)
+	if (this->ring != nullptr)
 	{
-		if (this->ring->node == NULL)
+		if (this->ring->node == nullptr)
 		{
 			free(this->ring);
 		}
@@ -369,11 +369,11 @@ Stat::~Stat()
 		{
 			list_RemoveNode(this->ring->node);
 		}
-		this->ring = NULL;
+		this->ring = nullptr;
 	}
-	if (this->mask != NULL)
+	if (this->mask != nullptr)
 	{
-		if (this->mask->node == NULL)
+		if (this->mask->node == nullptr)
 		{
 			free(this->mask);
 		}
@@ -381,7 +381,7 @@ Stat::~Stat()
 		{
 			list_RemoveNode(this->mask->node);
 		}
-		this->mask = NULL;
+		this->mask = nullptr;
 	}
 	//Free memory for magic effects.
 	node_t* spellnode;
@@ -391,7 +391,7 @@ Stat::~Stat()
 		node_t* oldnode = spellnode;
 		spellnode = spellnode->next;
 		auto spell = static_cast<spell_t*>(oldnode->element);
-		spell->magic_effects_node = NULL;
+		spell->magic_effects_node = nullptr;
 	}
 	list_FreeAll(&this->magic_effects);
 	list_FreeAll(&this->inventory);
@@ -495,7 +495,7 @@ frees all the malloc'd data for the given player's equipment
 
 void Stat::freePlayerEquipment()
 {
-	if (this->helmet != NULL)
+	if (this->helmet != nullptr)
 	{
 		if (this->helmet->node)
 		{
@@ -505,9 +505,9 @@ void Stat::freePlayerEquipment()
 		{
 			free(this->helmet);
 		}
-		this->helmet = NULL;
+		this->helmet = nullptr;
 	}
-	if (this->breastplate != NULL)
+	if (this->breastplate != nullptr)
 	{
 		if (this->breastplate->node)
 		{
@@ -517,9 +517,9 @@ void Stat::freePlayerEquipment()
 		{
 			free(this->breastplate);
 		}
-		this->breastplate = NULL;
+		this->breastplate = nullptr;
 	}
-	if (this->gloves != NULL)
+	if (this->gloves != nullptr)
 	{
 		if (this->gloves->node)
 		{
@@ -529,9 +529,9 @@ void Stat::freePlayerEquipment()
 		{
 			free(this->gloves);
 		}
-		this->gloves = NULL;
+		this->gloves = nullptr;
 	}
-	if (this->shoes != NULL)
+	if (this->shoes != nullptr)
 	{
 		if (this->shoes->node)
 		{
@@ -541,9 +541,9 @@ void Stat::freePlayerEquipment()
 		{
 			free(this->shoes);
 		}
-		this->shoes = NULL;
+		this->shoes = nullptr;
 	}
-	if (this->shield != NULL)
+	if (this->shield != nullptr)
 	{
 		if (this->shield->node)
 		{
@@ -553,9 +553,9 @@ void Stat::freePlayerEquipment()
 		{
 			free(this->shield);
 		}
-		this->shield = NULL;
+		this->shield = nullptr;
 	}
-	if (this->weapon != NULL)
+	if (this->weapon != nullptr)
 	{
 		if (this->weapon->node)
 		{
@@ -565,9 +565,9 @@ void Stat::freePlayerEquipment()
 		{
 			free(this->weapon);
 		}
-		this->weapon = NULL;
+		this->weapon = nullptr;
 	}
-	if (this->cloak != NULL)
+	if (this->cloak != nullptr)
 	{
 		if (this->cloak->node)
 		{
@@ -577,9 +577,9 @@ void Stat::freePlayerEquipment()
 		{
 			free(this->cloak);
 		}
-		this->cloak = NULL;
+		this->cloak = nullptr;
 	}
-	if (this->amulet != NULL)
+	if (this->amulet != nullptr)
 	{
 		if (this->amulet->node)
 		{
@@ -589,9 +589,9 @@ void Stat::freePlayerEquipment()
 		{
 			free(this->amulet);
 		}
-		this->amulet = NULL;
+		this->amulet = nullptr;
 	}
-	if (this->ring != NULL)
+	if (this->ring != nullptr)
 	{
 		if (this->ring->node)
 		{
@@ -601,9 +601,9 @@ void Stat::freePlayerEquipment()
 		{
 			free(this->ring);
 		}
-		this->ring = NULL;
+		this->ring = nullptr;
 	}
-	if (this->mask != NULL)
+	if (this->mask != nullptr)
 	{
 		if (this->mask->node)
 		{
@@ -613,7 +613,7 @@ void Stat::freePlayerEquipment()
 		{
 			free(this->mask);
 		}
-		this->mask = NULL;
+		this->mask = nullptr;
 	}
 }
 
@@ -691,14 +691,14 @@ Stat* Stat::copyStats()
 
 	newStat->defending = this->defending;
 	newStat->leader_uid = this->leader_uid;
-	newStat->FOLLOWERS.first = NULL;
-	newStat->FOLLOWERS.last = NULL;
+	newStat->FOLLOWERS.first = nullptr;
+	newStat->FOLLOWERS.last = nullptr;
 	list_Copy(&newStat->FOLLOWERS, &this->FOLLOWERS);
 
-	newStat->inventory.first = NULL;
-	newStat->inventory.last = NULL;
+	newStat->inventory.first = nullptr;
+	newStat->inventory.last = nullptr;
 	list_Copy(&newStat->inventory, &this->inventory);
-	for (node = newStat->inventory.first; node != NULL; node = node->next)
+	for (node = newStat->inventory.first; node != nullptr; node = node->next)
 	{
 		auto item = static_cast<Item*>(node->element);
 		item->node = node;
@@ -706,7 +706,7 @@ Stat* Stat::copyStats()
 	newStat->void_chest_inventory.first = nullptr;
 	newStat->void_chest_inventory.last = nullptr;
 	list_Copy(&newStat->void_chest_inventory, &this->void_chest_inventory);
-	for ( node = newStat->void_chest_inventory.first; node != NULL; node = node->next )
+	for ( node = newStat->void_chest_inventory.first; node != nullptr; node = node->next )
 	{
 		auto item = static_cast<Item*>(node->element);
 		item->node = node;
@@ -727,7 +727,7 @@ Stat* Stat::copyStats()
 	}
 	else
 	{
-		newStat->helmet = NULL;
+		newStat->helmet = nullptr;
 	}
 	if (this->breastplate)
 	{
@@ -744,7 +744,7 @@ Stat* Stat::copyStats()
 	}
 	else
 	{
-		newStat->breastplate = NULL;
+		newStat->breastplate = nullptr;
 	}
 	if (this->gloves)
 	{
@@ -761,7 +761,7 @@ Stat* Stat::copyStats()
 	}
 	else
 	{
-		newStat->gloves = NULL;
+		newStat->gloves = nullptr;
 	}
 	if (this->shoes)
 	{
@@ -778,7 +778,7 @@ Stat* Stat::copyStats()
 	}
 	else
 	{
-		newStat->shoes = NULL;
+		newStat->shoes = nullptr;
 	}
 	if (this->shield)
 	{
@@ -795,7 +795,7 @@ Stat* Stat::copyStats()
 	}
 	else
 	{
-		newStat->shield = NULL;
+		newStat->shield = nullptr;
 	}
 	if (this->weapon)
 	{
@@ -812,7 +812,7 @@ Stat* Stat::copyStats()
 	}
 	else
 	{
-		newStat->weapon = NULL;
+		newStat->weapon = nullptr;
 	}
 	if (this->cloak)
 	{
@@ -829,7 +829,7 @@ Stat* Stat::copyStats()
 	}
 	else
 	{
-		newStat->cloak = NULL;
+		newStat->cloak = nullptr;
 	}
 	if (this->amulet)
 	{
@@ -846,7 +846,7 @@ Stat* Stat::copyStats()
 	}
 	else
 	{
-		newStat->amulet = NULL;
+		newStat->amulet = nullptr;
 	}
 	if (this->ring)
 	{
@@ -863,7 +863,7 @@ Stat* Stat::copyStats()
 	}
 	else
 	{
-		newStat->ring = NULL;
+		newStat->ring = nullptr;
 	}
 	if (this->mask)
 	{
@@ -880,15 +880,15 @@ Stat* Stat::copyStats()
 	}
 	else
 	{
-		newStat->mask = NULL;
+		newStat->mask = nullptr;
 	}
 
 #if defined(USE_FMOD) || defined(USE_OPENAL)
 	newStat->monster_sound = nullptr;
 #endif
 	newStat->monster_idlevar = this->monster_idlevar;
-	newStat->magic_effects.first = NULL;
-	newStat->magic_effects.last = NULL;
+	newStat->magic_effects.first = nullptr;
+	newStat->magic_effects.last = nullptr;
 	newStat->attributes = this->attributes;
 	newStat->player_lootbags = this->player_lootbags;
 	return newStat;
@@ -1163,7 +1163,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 	}
 	else
 	{
-		this->helmet = NULL;
+		this->helmet = nullptr;
 	}
 	if ( src.breastplate )
 	{
@@ -1195,7 +1195,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 	}
 	else
 	{
-		this->breastplate = NULL;
+		this->breastplate = nullptr;
 	}
 	if ( src.gloves )
 	{
@@ -1227,7 +1227,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 	}
 	else
 	{
-		this->gloves = NULL;
+		this->gloves = nullptr;
 	}
 	if ( src.shoes )
 	{
@@ -1259,7 +1259,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 	}
 	else
 	{
-		this->shoes = NULL;
+		this->shoes = nullptr;
 	}
 	if ( src.shield )
 	{
@@ -1291,7 +1291,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 	}
 	else
 	{
-		this->shield = NULL;
+		this->shield = nullptr;
 	}
 	if ( src.weapon )
 	{
@@ -1323,7 +1323,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 	}
 	else
 	{
-		this->weapon = NULL;
+		this->weapon = nullptr;
 	}
 	if ( src.cloak )
 	{
@@ -1355,7 +1355,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 	}
 	else
 	{
-		this->cloak = NULL;
+		this->cloak = nullptr;
 	}
 	if ( src.amulet )
 	{
@@ -1387,7 +1387,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 	}
 	else
 	{
-		this->amulet = NULL;
+		this->amulet = nullptr;
 	}
 	if ( src.ring )
 	{
@@ -1419,7 +1419,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 	}
 	else
 	{
-		this->ring = NULL;
+		this->ring = nullptr;
 	}
 	if ( src.mask )
 	{
@@ -1451,7 +1451,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 	}
 	else
 	{
-		this->mask = NULL;
+		this->mask = nullptr;
 	}
 
 	for ( node_t* node = src.inventory.first; node; node = node->next )

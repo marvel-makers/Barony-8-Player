@@ -41,7 +41,7 @@ SDL_Surface* ttfTextHashRetrieve(list_t* buckets, char* str, TTF_Font* font, boo
 	list_t* list = &buckets[djb2Hash(str) % HASH_SIZE];
 
 	// find data in bucket (linear search)
-	for ( node = list->first; node != NULL; node = node->next )
+	for ( node = list->first; node != nullptr; node = node->next )
 	{
 		auto hashedVal = static_cast<ttfTextHash_t*>(node->element);
 		if ( !strcmp(hashedVal->str, str) && hashedVal->font == font && hashedVal->outline == outline )
@@ -50,7 +50,7 @@ SDL_Surface* ttfTextHashRetrieve(list_t* buckets, char* str, TTF_Font* font, boo
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 SDL_Surface* ttfTextHashStore(list_t* buckets, char* str, TTF_Font* font, bool outline, SDL_Surface* surf)
@@ -62,9 +62,9 @@ SDL_Surface* ttfTextHashStore(list_t* buckets, char* str, TTF_Font* font, bool o
 	list_t* list = &buckets[djb2Hash(str) % HASH_SIZE];
 
 	// add surface to bucket
-	if ( (node = list_AddNodeFirst(list)) == NULL )
+	if ( (node = list_AddNodeFirst(list)) == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 	else
 	{

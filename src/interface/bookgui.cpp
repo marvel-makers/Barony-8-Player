@@ -541,7 +541,7 @@ void Player::BookGUI_t::openBook(int index, Item* item)
 	// add the book to the list of read books
 	bool hasreadbook = false;
 	node_t* node;
-	for ( node = booksRead.first; node != NULL; node = node->next )
+	for ( node = booksRead.first; node != nullptr; node = node->next )
 	{
 		if ( !strcmp(openBookName.c_str(), static_cast<char*>(node->element)) )
 		{

@@ -68,13 +68,13 @@ void createChestInventory(Entity* my, int chestType)
 	}
 	else
 	{
-		node_t* node = NULL;
+		node_t* node = nullptr;
 		node = list_AddNodeFirst(&my->children);
 		node->element = malloc(sizeof(list_t)); //Allocate memory for the inventory list.
 		node->deconstructor = &listDeconstructor;
 		inventory = static_cast<list_t*>(node->element);
-		inventory->first = NULL;
-		inventory->last = NULL;
+		inventory->first = nullptr;
+		inventory->last = nullptr;
 	}
 
 	if ( !inventory )
@@ -761,7 +761,7 @@ void createChestInventory(Entity* my, int chestType)
 		int slotx = 0;
 		int sloty = 0;
 		node_t* nextnode;
-		for ( node_t* node = inventory->first; node != NULL; node = nextnode )
+		for ( node_t* node = inventory->first; node != nullptr; node = nextnode )
 		{
 			nextnode = node->next;
 			auto item = static_cast<Item*>(node->element);
@@ -893,8 +893,8 @@ void Entity::actChest()
 	}
 
 	list_t* inventory = getChestInventoryList();
-	node_t* node = NULL;
-	Item* item = NULL;
+	node_t* node = nullptr;
+	Item* item = nullptr;
 
 	chestOldHealth = chestHealth;
 
@@ -912,7 +912,7 @@ void Entity::actChest()
 		node_t* nextnode;
 		if ( chestVoidState == 0 )
 		{
-			for ( node = inventory->first; node != NULL; node = nextnode )
+			for ( node = inventory->first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
 				item = static_cast<Item*>(node->element);
@@ -923,7 +923,7 @@ void Entity::actChest()
 						|| item->type == KEY_SILVER
 						|| item->type == KEY_GOLD)) )
 				{
-					dropItemMonster(item, this, NULL);
+					dropItemMonster(item, this, nullptr);
 				}
 			}
 		}
@@ -1081,7 +1081,7 @@ void Entity::actChest()
 						net_packet->address.port = net_clients[chestclicked - 1].port;
 						net_packet->len = 9;
 						sendPacketSafe(net_sock, -1, net_packet, chestclicked - 1);
-						for (node = inventory->first; node != NULL; node = node->next)
+						for (node = inventory->first; node != nullptr; node = node->next)
 						{
 							item = static_cast<Item*>(node->element);
 							strcpy((char*)net_packet->data, "CITM");  //Chest item.
@@ -1250,7 +1250,7 @@ void Entity::closeChest()
 	if ( players[player]->isLocalPlayer() && multiplayer == CLIENT)
 	{
 		//If client, tell server the chest got closed.
-		if (openedChest[player] != NULL)
+		if (openedChest[player] != nullptr)
 		{
 			//Message server.
 			if ( chestHealth > 0 )
@@ -1302,7 +1302,7 @@ void Entity::closeChestServer()
 	if (chestStatus)
 	{
 		chestStatus = 0;
-		openedChest[chestOpener] = NULL;
+		openedChest[chestOpener] = nullptr;
 		players[chestOpener]->inventoryUI.chestGUI.closeChest();
 	}
 }
@@ -1377,16 +1377,16 @@ Item* Entity::addItemToChest(Item* item, bool forceNewStack, Item* specificDesti
 		return addItemToChestClientside(player, item, forceNewStack, specificDestinationStack);
 	}
 
-	Item* item2 = NULL;
+	Item* item2 = nullptr;
 
 	//Add the item to the chest's inventory.
 	list_t* inventory = getChestInventoryList();
 
-	node_t* t_node = NULL;
+	node_t* t_node = nullptr;
 	if ( !forceNewStack )
 	{
 		//If item's already in the chest, add it to a pre-existing stack.
-		for (t_node = inventory->first; t_node != NULL; t_node = t_node->next)
+		for (t_node = inventory->first; t_node != nullptr; t_node = t_node->next)
 		{
 			item2 = static_cast<Item*>(t_node->element);
 			if ( !specificDestinationStack )
@@ -1542,12 +1542,12 @@ Item* Entity::addItemToChestFromInventory(int player, Item* item, int amount, bo
 	// unequip the item
 	if ( item->count - static_cast<Sint16>(amount) <= 0 )
 	{
-		if ( slot != NULL )
+		if ( slot != nullptr)
 		{
-			*slot = NULL;
+			*slot = nullptr;
 		}
 	}
-	if ( item->node != NULL )
+	if ( item->node != nullptr)
 	{
 		if ( item->node->list == &stats[player]->inventory )
 		{
@@ -1593,11 +1593,11 @@ Item* Entity::getItemFromChest(Item* item, int amount, bool getInfoOnly)
 	 * Note that the returned memory will need to be freed.
 	 */
 	
-	Item* newitem = NULL;
+	Item* newitem = nullptr;
 
-	if ( item == NULL )
+	if ( item == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	if ( amount <= 0 )
@@ -1615,7 +1615,7 @@ Item* Entity::getItemFromChest(Item* item, int amount, bool getInfoOnly)
 	{
 		if (!item || !item->node)
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		newitem = newItem(item->type, item->status, item->beatitude, 1, item->appearance, item->identified, nullptr);
@@ -1644,15 +1644,15 @@ Item* Entity::getItemFromChest(Item* item, int amount, bool getInfoOnly)
 	{
 		if ( !item )
 		{
-			return NULL;
+			return nullptr;
 		}
 		if ( !item->node )
 		{
-			return NULL;
+			return nullptr;
 		}
 		if ( item->node->list != getChestInventoryList() )
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		newitem = newItem(item->type, item->status, item->beatitude, 1, item->appearance, item->identified, nullptr);
@@ -1692,7 +1692,7 @@ void closeChestClientside(const int player)
 		//Only called for the client.
 		list_FreeAll(&chestInv[player]);
 
-		openedChest[player] = NULL;
+		openedChest[player] = nullptr;
 
 		//Reset chest-gamepad related stuff here.
 		players[player]->inventoryUI.chestGUI.closeChest();
@@ -1731,12 +1731,12 @@ Item* addItemToChestClientside(const int player, Item* item, bool forceNewStack,
 		//If there's an open chests, add an item to it.
 		//TODO: Add item to the chest.
 
-		Item* item2 = NULL;
-		node_t* node = NULL;
+		Item* item2 = nullptr;
+		node_t* node = nullptr;
 
 		if ( !forceNewStack )
 		{
-			for (node = chestInv[player].first; node != NULL; node = node->next)
+			for (node = chestInv[player].first; node != nullptr; node = node->next)
 			{
 				item2 = static_cast<Item*>(node->element);
 				if ( !specificDestinationStack )
@@ -1774,8 +1774,8 @@ Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStac
 		return nullptr;
 	}
 
-	Item* item2 = NULL;
-	node_t* t_node = NULL;
+	Item* item2 = nullptr;
+	node_t* t_node = nullptr;
 
 	//Add the item to the chest's inventory.
 	list_t* inventory = &stats[0]->void_chest_inventory;
@@ -1850,7 +1850,7 @@ Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStac
 			bool anyItemsInserted = false;
 
 			//If item's already in the chest, add it to a pre-existing stack.
-			for ( t_node = inventory->first; t_node != NULL; t_node = t_node->next )
+			for ( t_node = inventory->first; t_node != nullptr; t_node = t_node->next )
 			{
 				item2 = static_cast<Item*>(t_node->element);
 				if ( !specificDestinationStack )
@@ -1956,8 +1956,8 @@ Item* Entity::addItemToChestServer(Item* item, bool forceNewStack, Item* specifi
 		return nullptr;
 	}
 
-	Item* item2 = NULL;
-	node_t* t_node = NULL;
+	Item* item2 = nullptr;
+	node_t* t_node = nullptr;
 
 	//Add the item to the chest's inventory.
 	list_t* inventory = getChestInventoryList();
@@ -1970,7 +1970,7 @@ Item* Entity::addItemToChestServer(Item* item, bool forceNewStack, Item* specifi
 	if ( !forceNewStack )
 	{
 		//If item's already in the chest, add it to a pre-existing stack.
-		for (t_node = inventory->first; t_node != NULL; t_node = t_node->next)
+		for (t_node = inventory->first; t_node != nullptr; t_node = t_node->next)
 		{
 			item2 = static_cast<Item*>(t_node->element);
 			if ( !specificDestinationStack )
@@ -2005,8 +2005,8 @@ bool Entity::removeItemFromVoidChestServer(int player, Item* item, int count)
 		return false;
 	}
 
-	Item* item2 = NULL;
-	node_t* t_node = NULL;
+	Item* item2 = nullptr;
+	node_t* t_node = nullptr;
 
 	list_t* inventory = &stats[0]->void_chest_inventory;
 	if ( !inventory )
@@ -2016,7 +2016,7 @@ bool Entity::removeItemFromVoidChestServer(int player, Item* item, int count)
 
 	node_t* nextnode = nullptr;
 	bool removedItems = false;
-	for ( t_node = inventory->first; t_node != NULL; t_node = nextnode )
+	for ( t_node = inventory->first; t_node != nullptr; t_node = nextnode )
 	{
 		nextnode = t_node->next;
 		item2 = static_cast<Item*>(t_node->element);
@@ -2062,8 +2062,8 @@ bool Entity::removeItemFromChestServer(Item* item, int count)
 		return false;
 	}
 
-	Item* item2 = NULL;
-	node_t* t_node = NULL;
+	Item* item2 = nullptr;
+	node_t* t_node = nullptr;
 
 	Sint32 oldVoidChestState = chestVoidState;
 	chestVoidState = 0;
@@ -2076,7 +2076,7 @@ bool Entity::removeItemFromChestServer(Item* item, int count)
 
 	node_t* nextnode = nullptr;
 	bool removedItems = false;
-	for ( t_node = inventory->first; t_node != NULL; t_node = nextnode )
+	for ( t_node = inventory->first; t_node != nullptr; t_node = nextnode )
 	{
 		nextnode = t_node->next;
 		item2 = static_cast<Item*>(t_node->element);

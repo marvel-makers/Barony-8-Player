@@ -43,7 +43,7 @@ void initMinotaur(Entity* my, Stat* myStats)
 	{
 		auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
 
-		if ( myStats != NULL )
+		if ( myStats != nullptr)
 		{
 			if ( !myStats->leader_uid )
 			{
@@ -294,10 +294,10 @@ void minotaurDie(Entity* my)
 void minotaurMoveBodyparts(Entity* my, Stat* myStats, double dist)
 {
 	node_t* node;
-	Entity* entity = NULL;
-	Entity* rightbody = NULL;
-	Entity* head = NULL;
-	Entity* chest = NULL;
+	Entity* entity = nullptr;
+	Entity* rightbody = nullptr;
+	Entity* head = nullptr;
+	Entity* chest = nullptr;
 	int bodypart;
 
 	// set invisibility //TODO: isInvisible()?
@@ -308,7 +308,7 @@ void minotaurMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			my->flags[INVISIBLE] = true;
 			my->flags[BLOCKSIGHT] = false;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < 2 )
 				{
@@ -333,7 +333,7 @@ void minotaurMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			my->flags[INVISIBLE] = false;
 			my->flags[BLOCKSIGHT] = true;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < 2 )
 				{
@@ -360,7 +360,7 @@ void minotaurMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	}
 
 	//Move bodyparts
-	for (bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++)
+	for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++)
 	{
 		if ( bodypart < 2 )
 		{

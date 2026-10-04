@@ -87,7 +87,7 @@ bool boulderCheckIfBlockedExit(Entity* my)
 				{
 					list_t* path = generatePath(players[c]->entity->x / 16, players[c]->entity->y / 16, ladder->x / 16, ladder->y / 16,
 						players[c]->entity, ladder, GeneratePathTypes::GENERATE_PATH_BOULDER_BREAK, true);
-					if ( path != NULL )
+					if ( path != nullptr)
 					{
 						list_FreeAll(path);
 						free(path);
@@ -1607,7 +1607,7 @@ void actBoulder(Entity* my)
 				if ( spawn_blood && my->ticks % (rate + local_rng.rand() % 3) == 0 )
 				{
 					Entity* blood = newEntity(BOULDER_SPAWNBLOOD, 1, map.entities, nullptr); //Gib entity.
-					if ( blood != NULL )
+					if ( blood != nullptr)
 					{
 						blood->x = my->x - 4 + local_rng.rand() % 9;
 						blood->y = my->y - 4 + local_rng.rand() % 9;
@@ -1780,7 +1780,7 @@ void actBoulderTrap(Entity* my)
 								entity->yaw = c * (PI / 2.f);
 								entity->sizex = 7;
 								entity->sizey = 7;
-								if ( checkObstacle(entity->x + cos(entity->yaw) * 16, entity->y + sin(entity->yaw) * 16, entity, NULL) )
+								if ( checkObstacle(entity->x + cos(entity->yaw) * 16, entity->y + sin(entity->yaw) * 16, entity, nullptr) )
 								{
 									entity->yaw += PI * (local_rng.rand() % 2) - PI / 2;
 									if ( entity->yaw >= PI * 2 )

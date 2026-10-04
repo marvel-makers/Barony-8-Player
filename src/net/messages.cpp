@@ -111,7 +111,7 @@ bool messagePlayerColor(int player, Uint32 type, Uint32 color, char const * cons
 	char str[Player::MessageZone_t::ADD_MESSAGE_BUFFER_LENGTH] = { 0 };
 	va_list argptr;
 
-	if ( message == NULL )
+	if ( message == nullptr)
 	{
 		return false;
 	}

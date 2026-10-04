@@ -9139,7 +9139,7 @@ void doNewGame(bool makeHighscore) {
 							node_t* gyrobotNode = nullptr;
 							Entity* gyrobotEntity = nullptr;
 							std::vector<node_t*> allyRobotNodes;
-							for ( node = tempFollowers->first; node != NULL; node = node->next )
+							for ( node = tempFollowers->first; node != nullptr; node = node->next )
 							{
 								auto tempStats = static_cast<Stat*>(node->element);
 								if ( tempStats && tempStats->type == GYROBOT )
@@ -9148,7 +9148,7 @@ void doNewGame(bool makeHighscore) {
 									break;
 								}
 							}
-							for ( node = tempFollowers->first; node != NULL; node = node->next )
+							for ( node = tempFollowers->first; node != nullptr; node = node->next )
 							{
 								auto tempStats = static_cast<Stat*>(node->element);
 								if ( tempStats && (tempStats->type == DUMMYBOT
@@ -10724,7 +10724,7 @@ void openGameoverWindow()
 			{
 				continue;
 			}
-			for ( node = stats[i]->inventory.first; node != NULL; node = node->next )
+			for ( node = stats[i]->inventory.first; node != nullptr; node = node->next )
 			{
 				auto item = static_cast<Item*>(node->element);
 				item->identified = true;
@@ -11575,7 +11575,7 @@ void buttonOpenCharacterCreationWindow(button_t* my)
 	// close current window
 	if ( subwindow )
 	{
-		buttonCloseSubwindow(NULL);
+		buttonCloseSubwindow(nullptr);
 		list_FreeAll(&button_l);
 		deleteallbuttons = true;
 	}

@@ -2528,7 +2528,7 @@ void gameLogic(void)
                             node_t* gyrobotNode = nullptr;
                             Entity* gyrobotEntity = nullptr;
                             std::vector<node_t*> allyRobotNodes;
-                            for (node = tempFollowers[c].first; node != NULL; node = node->next)
+                            for (node = tempFollowers[c].first; node != nullptr; node = node->next)
                             {
                                 auto tempStats = static_cast<Stat*>(node->element);
                                 if (tempStats && tempStats->type == GYROBOT)
@@ -2797,7 +2797,7 @@ void gameLogic(void)
                             spellnode = spellnode->next;
                             if (auto spell = static_cast<spell_t*>(oldnode->element))
                             {
-                                spell->magic_effects_node = NULL;
+                                spell->magic_effects_node = nullptr;
                                 if (spell->sustainEffectDissipate >= 0)
                                 {
                                     if (stats[c]->getEffectActive(spell->sustainEffectDissipate))
@@ -3013,7 +3013,7 @@ void gameLogic(void)
             combat = assailant[0];
             for (j = 0; j < MAXPLAYERS; j++)
             {
-                client_selected[j] = NULL;
+                client_selected[j] = nullptr;
             }
 
             Player::PlayerMechanics_t::ensembleMusicUpdate();
@@ -3083,7 +3083,7 @@ void gameLogic(void)
                     }
                 }
 
-                for (node = stats[player]->inventory.first; node != NULL; node = nextnode)
+                for (node = stats[player]->inventory.first; node != nullptr; node = nextnode)
                 {
                     nextnode = node->next;
                     auto item = static_cast<Item*>(node->element);
@@ -3583,10 +3583,10 @@ void gameLogic(void)
                         if (!gamePaused || (multiplayer && !client_disconnected[0]))
                         {
                             (*entity->behavior)(entity);
-                            if (entitiesdeleted.first != NULL)
+                            if (entitiesdeleted.first != nullptr)
                             {
                                 entitydeletedself = false;
-                                for (node2 = entitiesdeleted.first; node2 != NULL; node2 = node2->next)
+                                for (node2 = entitiesdeleted.first; node2 != nullptr; node2 = node2->next)
                                 {
                                     if (entity == static_cast<Entity*>(node2->element))
                                     {
@@ -3842,7 +3842,7 @@ void gameLogic(void)
                     }
                 }
             }
-            for (node = stats[clientnum]->inventory.first; node != NULL; node = nextnode)
+            for (node = stats[clientnum]->inventory.first; node != nullptr; node = nextnode)
             {
                 nextnode = node->next;
                 auto item = static_cast<Item*>(node->element);
@@ -4030,7 +4030,7 @@ void gameLogic(void)
         {
             if (players[i]->isLocalPlayer())
             {
-                if (auto_appraise_target[i] != NULL)
+                if (auto_appraise_target[i] != nullptr)
                 {
                     if ((auto_appraise_target[i]->uid != players[i]->inventoryUI.appraisal.current_item)
                         || players[i]->inventoryUI.appraisal.timer == 0)
@@ -4093,15 +4093,15 @@ void handleButtons(void)
     Sint32 omousey = inputs.getMouse(clientnum, Inputs::MouseInputs::OY);
 
     // handle buttons
-    for (node = button_l.first; node != NULL; node = nextnode)
+    for (node = button_l.first; node != nullptr; node = nextnode)
     {
         nextnode = node->next;
-        if (node->element == NULL)
+        if (node->element == nullptr)
         {
             continue;
         }
         button = static_cast<button_t*>(node->element);
-        if (button == NULL)
+        if (button == nullptr)
         {
             continue;
         }
@@ -4168,9 +4168,9 @@ void handleButtons(void)
                         button->y + button->sizey)
                     {
                         node_t* node;
-                        for (node = button_l.first; node != NULL; node = node->next)
+                        for (node = button_l.first; node != nullptr; node = node->next)
                         {
-                            if (node->element == NULL)
+                            if (node->element == nullptr)
                             {
                                 continue;
                             }
@@ -4204,7 +4204,7 @@ void handleButtons(void)
                             keystatus[button->key] = false;
                             inputs.controllerClearRawInput(clientnum, button->joykey);
                             playSound(139, 64);
-                            if (button->action != NULL)
+                            if (button->action != nullptr)
                             {
                                 (*button->action)(button); // run the button's assigned action
                                 if (deleteallbuttons)
@@ -4601,7 +4601,7 @@ bool handleEvents(void)
                         else
                         {
                             //Already latest command. Clear the chosen command.
-                            chosen_command = NULL;
+                            chosen_command = nullptr;
                             strcpy(command_str, "");
                         }
                     }
@@ -5746,7 +5746,7 @@ void pauseGame(int mode /* 0 == toggle, 1 == force unpause, 2 == force pause */,
     }
     else if ((gamePaused && mode != 2) || mode == 1)
     {
-        buttonCloseSubwindow(NULL);
+        buttonCloseSubwindow(nullptr);
         gamePaused = false;
         if (!SDL_GetRelativeMouseMode() && capture_mouse)
         {
@@ -7437,7 +7437,7 @@ static void doConsoleCommands()
             {
                 saveCommand(command_str);
             }
-            chosen_command = NULL;
+            chosen_command = nullptr;
         }
     }
     else
@@ -7606,7 +7606,7 @@ int main(int argc, char** argv)
                 cmd_line += argv[c];
                 cmd_line += " ";
 #endif
-                if (argv[c] != NULL)
+                if (argv[c] != nullptr)
                 {
                     if (!strcmp(argv[c], "-windowed"))
                     {
@@ -7971,7 +7971,7 @@ int main(int argc, char** argv)
                     }
 
                     // black background
-                    drawRect(NULL, 0, 255);
+                    drawRect(nullptr, 0, 255);
 
 #ifdef USE_FMOD
                     // fmod logo
@@ -8203,8 +8203,8 @@ int main(int argc, char** argv)
                         if (!shopInv[i])
                         {
                             shopInv[i] = static_cast<list_t*>(malloc(sizeof(list_t)));
-                            shopInv[i]->first = NULL;
-                            shopInv[i]->last = NULL;
+                            shopInv[i]->first = nullptr;
+                            shopInv[i]->last = nullptr;
                         }
                     }
                 }
@@ -8550,7 +8550,7 @@ int main(int argc, char** argv)
             // fade in/out effect
             if (fadealpha > 0)
             {
-                drawRect(NULL, makeColor(0, 0, 0, 255), fadealpha);
+                drawRect(nullptr, makeColor(0, 0, 0, 255), fadealpha);
             }
 
             // fps counter

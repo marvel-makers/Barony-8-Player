@@ -139,7 +139,7 @@ void actTorch(Entity* my)
 						my->itemAutoSalvageByPlayer = 0; // clear interact flag.
 					}
 
-					Item* item = newItem(TOOL_TORCH, WORN, 0, 1, 0, true, NULL);
+					Item* item = newItem(TOOL_TORCH, WORN, 0, 1, 0, true, nullptr);
 
 					if ( trySalvage )
 					{
@@ -196,7 +196,7 @@ void actTorch(Entity* my)
 			my->clearMonsterInteract();
 			if ( monster )
 			{
-				Item* item = newItem(TOOL_TORCH, WORN, 0, 1, 0, true, NULL);
+				Item* item = newItem(TOOL_TORCH, WORN, 0, 1, 0, true, nullptr);
 				dropItemMonster(item, monster, monster->getStats());
 				//monster->addItemToMonsterInventory(item);
 			}
@@ -310,7 +310,7 @@ void actCrystalShard(Entity* my)
 						my->itemAutoSalvageByPlayer = 0; // clear interact flag.
 					}
 
-					Item* item = newItem(TOOL_CRYSTALSHARD, WORN, 0, 1, 0, true, NULL);
+					Item* item = newItem(TOOL_CRYSTALSHARD, WORN, 0, 1, 0, true, nullptr);
 
 					if ( trySalvage )
 					{

@@ -2214,17 +2214,17 @@ SDL_Surface* loadImage(char const * const filename)
 		printlog("aborting...\n");
 		exit(1);
 	}
-	if ( (originalSurface = IMG_Load(full_path)) == NULL )
+	if ( (originalSurface = IMG_Load(full_path)) == nullptr)
 	{
 		printlog("error: failed to load image '%s'\n", full_path);
 		exit(1); // critical error
-		return NULL;
+		return nullptr;
 	}
 
 	// translate the original surface to an RGBA surface
 	//int w = pow(2, ceil( log(std::max(originalSurface->w,originalSurface->h))/log(2) ) ); // round up to the nearest power of two
 	SDL_Surface* newSurface = SDL_CreateRGBSurface(0, originalSurface->w, originalSurface->h, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-	SDL_BlitSurface(originalSurface, NULL, newSurface, NULL); // blit onto a purely RGBA Surface
+	SDL_BlitSurface(originalSurface, nullptr, newSurface, nullptr); // blit onto a purely RGBA Surface
 
 	// load the new surface as a GL texture
 	allsurfaces[imgref] = newSurface;
@@ -2653,7 +2653,7 @@ int loadMap(const char* filename2, map_t* destmap, list_t* entlist, list_t* crea
 						// need to give the entity its list stuff.
 						// create an empty first node for traversal purposes
 						node_t* node2 = list_AddNodeFirst(&entity->children);
-						node2->element = NULL;
+						node2->element = nullptr;
 						node2->deconstructor = &emptyDeconstructor;
 
 						myStats = new Stat(entity->sprite);
@@ -3289,7 +3289,7 @@ int saveMap(const char* filename2)
 	Sint32 x, y;
 	Stat* myStats;
 
-	if ( filename2 != NULL && strcmp(filename2, "") )
+	if ( filename2 != nullptr && strcmp(filename2, "") )
 	{
 		if ( !PHYSFS_isInit() )
 		{
@@ -3301,12 +3301,12 @@ int saveMap(const char* filename2)
 			strcpy(filename, filename2);
 		}
 
-		if ( strstr(filename, ".lmp") == NULL )
+		if ( strstr(filename, ".lmp") == nullptr)
 		{
 			strcat(filename, ".lmp");
 		}
 
-		if ((fp = openDataFile(filename, "wb")) == NULL)
+		if ((fp = openDataFile(filename, "wb")) == nullptr)
 		{
 			printlog("warning: failed to open file '%s' for map saving!\n", filename);
 			return 1;
@@ -3617,7 +3617,7 @@ int saveMap(const char* filename2)
 char* readFile(char* filename)
 {
 	long input_file_size = 0;
-	char* file_contents = NULL;
+	char* file_contents = nullptr;
 	File* input_file = openDataFile(filename, "rb");
 	if (!input_file) {
 		printlog("Open failed: %s", strerror(errno));
@@ -3654,7 +3654,7 @@ std::list<std::string> directoryContents(const char* directory, bool includeSubd
 	char fullPath[PATH_MAX];
 	completePath(fullPath, directory, base);
 	DIR* dir = opendir(fullPath);
-	struct dirent* entry = NULL;
+	struct dirent* entry = nullptr;
 
 	if ( !dir )
 	{
@@ -3664,7 +3664,7 @@ std::list<std::string> directoryContents(const char* directory, bool includeSubd
 
 	struct stat cur;
 	char curPath[PATH_MAX];
-	while ((entry = readdir(dir)) != NULL)
+	while ((entry = readdir(dir)) != nullptr)
 	{
 		if (entry->d_name[0] == '.') {
 			if (!entry->d_name[1] || entry->d_name[1] == '.') {
@@ -3894,14 +3894,14 @@ std::list<std::string> physfsGetFileNamesInDirectory(const char* dir)
 {
 	std::list<std::string> filenames;
 	char **rc = PHYSFS_enumerateFiles(dir);
-	if ( rc == NULL )
+	if ( rc == nullptr)
 	{
 		printlog("[PhysFS]: Error: Failed to enumerate filenames in directory '%s': %s", dir, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 		return filenames;
 	}
 	char **i;
 	std::string file;
-	for ( i = rc; *i != NULL; i++ )
+	for ( i = rc; *i != nullptr; i++ )
 	{
 		file = *i;
 		//printlog(" * We've got [%s].\n", file.c_str());
@@ -3921,7 +3921,7 @@ std::string physfsFormatMapName(char const * const levelfilename)
 		mapFileName.append(".lmp");
 	}
 	//printlog("format map name: %s", mapFileName.c_str());
-	if ( PHYSFS_getRealDir(mapFileName.c_str()) != NULL )
+	if ( PHYSFS_getRealDir(mapFileName.c_str()) != nullptr)
 	{
 		//printlog("format map name: %s", mapFileName.c_str());
 		fullMapPath = PHYSFS_getRealDir(mapFileName.c_str());
@@ -3945,7 +3945,7 @@ bool physfsSearchModelsToUpdate()
 	for ( int c = 0; !fp->eof(); c++ )
 	{
 		fp->gets2(name, PATH_MAX);
-		if ( PHYSFS_getRealDir(name) != NULL )
+		if ( PHYSFS_getRealDir(name) != nullptr)
 		{
 			std::string modelRealDir = PHYSFS_getRealDir(name);
 			if ( modelRealDir.compare("./") != 0 )
@@ -4018,7 +4018,7 @@ bool physfsModelIndexUpdate(int &start, int &end)
 
 			if ( c < nummodels )
 			{
-				if ( models[c] != NULL )
+				if ( models[c] != nullptr)
 				{
 					if ( models[c]->data )
 					{
@@ -4208,8 +4208,8 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 	polyquad_t* quad1, * quad2;
 	Uint32 numquads;
 	list_t quads;
-	quads.first = NULL;
-	quads.last = NULL;
+	quads.first = nullptr;
+	quads.last = nullptr;
 
 	if ( !polymodels )
 	{
@@ -5214,7 +5214,7 @@ void reloadModels(int start, int end) {
 			fp->gets2(name, sizeof(name));
 			if ( c >= start && c < end )
 			{
-				if ( models[c] != NULL )
+				if ( models[c] != nullptr)
 				{
 					if ( models[c]->data )
 					{
@@ -5355,7 +5355,7 @@ bool physfsSearchSoundsToUpdate()
 	for ( int c = 0; !fp->eof(); c++ )
 	{
 		fp->gets2(name, PATH_MAX);
-		if ( PHYSFS_getRealDir(name) != NULL )
+		if ( PHYSFS_getRealDir(name) != nullptr)
 		{
 			std::string soundRealDir = PHYSFS_getRealDir(name);
 			if ( soundRealDir.compare("./") != 0 )
@@ -5424,7 +5424,7 @@ void physfsReloadSounds(bool reloadAll)
 			}
 		}
 
-		if ( PHYSFS_getRealDir(name) != NULL )
+		if ( PHYSFS_getRealDir(name) != nullptr)
 		{
 			std::string soundRealDir = PHYSFS_getRealDir(name);
 			if ( soundHasBeenModified || reloadAll || soundRealDir.compare("./") != 0 )
@@ -5586,7 +5586,7 @@ bool physfsSearchTilesToUpdate()
 	for ( int c = 0; !fp->eof(); c++ )
 	{
 		fp->gets2(name, PATH_MAX);
-		if ( PHYSFS_getRealDir(name) != NULL )
+		if ( PHYSFS_getRealDir(name) != nullptr)
 		{
 			std::string tileRealDir = PHYSFS_getRealDir(name);
 			if ( tileRealDir.compare("./") != 0 )
@@ -5621,7 +5621,7 @@ void physfsReloadTiles(bool reloadAll)
 				}
                 char name[PATH_MAX];
                 fp->gets2(name, PATH_MAX);
-                if ( PHYSFS_getRealDir(name) != NULL )
+                if ( PHYSFS_getRealDir(name) != nullptr)
                 {
                     std::string tileRealDir = PHYSFS_getRealDir(name);
                     if ( reloadAll || tileRealDir.compare("./") != 0 )
@@ -5638,7 +5638,7 @@ void physfsReloadTiles(bool reloadAll)
                         animatedtiles[c] = false;
                         lavatiles[c] = false;
                         swimmingtiles[c] = false;
-                        if ( tiles[c] != NULL )
+                        if ( tiles[c] != nullptr)
                         {
                             size_t found = tileFile.find(".png");
                             if ( found != string::npos && found != 0 )
@@ -5837,7 +5837,7 @@ bool physfsSearchItemSpritesToUpdate()
 			node_t* node = list_Node(&items[c].images, x);
 			auto string = static_cast<string_t*>(node->element);
 			std::string itemImgDir;
-			if ( PHYSFS_getRealDir(string->data) != NULL )
+			if ( PHYSFS_getRealDir(string->data) != nullptr)
 			{
 				itemImgDir = PHYSFS_getRealDir(string->data);
 				if ( itemImgDir.compare("./") != 0 )
@@ -5863,7 +5863,7 @@ void physfsReloadItemSprites(bool reloadAll)
 				node_t* node = list_Node(&items[c].images, x);
 				auto string = static_cast<string_t*>(node->element);
 				std::string itemImgDir;
-				if ( PHYSFS_getRealDir(string->data) != NULL )
+				if ( PHYSFS_getRealDir(string->data) != nullptr)
 				{
 					itemImgDir = PHYSFS_getRealDir(string->data);
 					if ( itemImgDir.compare("./") != 0 )
@@ -5878,7 +5878,7 @@ void physfsReloadItemSprites(bool reloadAll)
 			// free the image data.
 			//list_FreeAll(&items[c].images);
 			node_t* node, *nextnode;
-			for ( node = items[c].surfaces.first; node != NULL; node = nextnode )
+			for ( node = items[c].surfaces.first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
 				auto surface = static_cast<SDL_Surface**>(node->element);
@@ -5904,7 +5904,7 @@ void physfsReloadItemSprites(bool reloadAll)
 				node_t* node2 = list_Node(&items[c].images, x);
 				auto string = static_cast<string_t*>(node2->element);
 				std::string itemImgDir;
-				if ( PHYSFS_getRealDir(string->data) != NULL )
+				if ( PHYSFS_getRealDir(string->data) != nullptr)
 				{
 					itemImgDir = PHYSFS_getRealDir(string->data);
 					itemImgDir.append(PHYSFS_getDirSeparator()).append(string->data);
@@ -5930,7 +5930,7 @@ bool physfsSearchMonsterLimbFilesToUpdate()
 		strcpy(filename, "models/creatures/");
 		strcat(filename, monstertypename[c]);
 		strcat(filename, "/limbs.txt");
-		if ( PHYSFS_getRealDir(filename) == NULL ) // some monsters don't have limbs.
+		if ( PHYSFS_getRealDir(filename) == nullptr) // some monsters don't have limbs.
 		{
 			continue;
 		}
@@ -5968,14 +5968,14 @@ void physfsReloadMonsterLimbFiles()
 		{
 			std::string limbsDir = PHYSFS_getRealDir(filename);
 			limbsDir.append(PHYSFS_getDirSeparator()).append(filename);
-			if ( (fp = openDataFile(limbsDir.c_str(), "rb")) == NULL )
+			if ( (fp = openDataFile(limbsDir.c_str(), "rb")) == nullptr)
 			{
 				continue;
 			}
 		}
 		else
 		{
-			if ( (fp = openDataFile(filename, "rb")) == NULL )
+			if ( (fp = openDataFile(filename, "rb")) == nullptr)
 			{
 				continue;
 			}
@@ -6025,7 +6025,7 @@ bool physfsSearchSystemImagesToUpdate()
 	{
 		std::pair<SDL_Surface**, std::string> line = *it;
 		std::string imgFile = line.second;
-		if ( PHYSFS_getRealDir(imgFile.c_str()) != NULL)
+		if ( PHYSFS_getRealDir(imgFile.c_str()) != nullptr)
 		{
 			std::string imgDir = PHYSFS_getRealDir(imgFile.c_str());
 			if ( imgDir.compare("./") != 0 )

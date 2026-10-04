@@ -36,7 +36,7 @@ void clickDescription(int player, Entity* entity)
 
 	Input& input = Input::inputs[player];
 
-	if ( entity == NULL )
+	if ( entity == nullptr)
 	{
 		if ( !framesProcResult.usable && *framesEatMouse )
 		{
@@ -75,11 +75,11 @@ void clickDescription(int player, Entity* entity)
 		entity = uidToEntity(uidnum);
 	}
 
-	if ( entity != NULL )
+	if ( entity != nullptr)
 	{
 		if ( multiplayer != CLIENT )
 		{
-			if ( (stat = entity->getStats()) == NULL )
+			if ( (stat = entity->getStats()) == nullptr)
 			{
 				Entity* parent = uidToEntity(entity->parent);
 				if ( entity->behavior == &actPlayerLimb || entity->skill[2] == entity->parent )
@@ -125,7 +125,7 @@ void clickDescription(int player, Entity* entity)
 				}
 				else if ( entity->behavior == &actItem )
 				{
-					item = newItem(static_cast<ItemType>(entity->skill[10]), static_cast<Status>(entity->skill[11]), entity->skill[12], entity->skill[13], entity->skill[14], false, NULL);
+					item = newItem(static_cast<ItemType>(entity->skill[10]), static_cast<Status>(entity->skill[11]), entity->skill[12], entity->skill[13], entity->skill[14], false, nullptr);
 					if (item)
 					{
 						messagePlayer(player, MESSAGE_INSPECTION, Language::get(257), item->description());

@@ -1482,7 +1482,7 @@ void actThrown(Entity* my)
 					}
 					if ( !ignorePotion )   // this makes it impossible to bork the end boss :)
 					{
-						if ( local_rng.rand() % 4 == 0 && parent != NULL && itemCategory(item) == POTION && item->type != POTION_EMPTY )
+						if ( local_rng.rand() % 4 == 0 && parent != nullptr && itemCategory(item) == POTION && item->type != POTION_EMPTY )
 						{
 							parent->increaseSkill(PRO_ALCHEMY);
 						}
@@ -2467,7 +2467,7 @@ void actThrown(Entity* my)
 		}
 		else if ( itemCategory(item) == THROWN && (item->type == STEEL_CHAKRAM 
 			|| item->type == CRYSTAL_SHURIKEN || (item->type == BOOMERANG && uidToEntity(my->parent))) 
-				&& hit.entity == NULL )
+				&& hit.entity == nullptr)
 		{
 			// chakram, shurikens bounce off walls until entity or floor is hit.
 			playSoundEntity(my, 66, 64);

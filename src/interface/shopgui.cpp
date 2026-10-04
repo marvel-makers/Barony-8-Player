@@ -81,7 +81,7 @@ bool getShopFreeSlot(const int player, list_t* shopInventory, Item* itemToSell, 
 	}
 	if ( lookForStackableItem )
 	{
-		for ( node_t* node = shopkeeperInv->first; node != NULL; node = node->next )
+		for ( node_t* node = shopkeeperInv->first; node != nullptr; node = node->next )
 		{
 			auto item = static_cast<Item*>(node->element);
 			if ( item )
@@ -106,7 +106,7 @@ bool getShopFreeSlot(const int player, list_t* shopInventory, Item* itemToSell, 
 	}
 
 	std::unordered_set<int> takenSlots;
-	for ( node_t* node = shopkeeperInv->first; node != NULL; node = node->next )
+	for ( node_t* node = shopkeeperInv->first; node != nullptr; node = node->next )
 	{
 		auto item = static_cast<Item*>(node->element);
 		if ( item )
@@ -184,7 +184,7 @@ void updateShopWindow(const int player)
 	bool mysteriousShopkeeperRedOrb = false;
 	if ( mysteriousShopkeeper )
 	{
-		for ( node_t* node = shopInv[player]->first; node != NULL; node = node->next )
+		for ( node_t* node = shopInv[player]->first; node != nullptr; node = node->next )
 		{
 			auto item = static_cast<Item*>(node->element);
 			if ( item )
@@ -206,7 +206,7 @@ void updateShopWindow(const int player)
 				}
 			}
 		}
-		for ( node = shopInv[player]->first; node != NULL; node = node->next )
+		for ( node = shopInv[player]->first; node != nullptr; node = node->next )
 		{
 			auto item = static_cast<Item*>(node->element);
 			if ( item )
@@ -1218,7 +1218,7 @@ void Player::ShopGUI_t::updateShop()
 
 	if ( purchaseItemAction && itemPrice >= 0 && player.GUI.activeModule == Player::GUI_t::MODULE_SHOP )
 	{
-		for ( node_t* node = shopInv[player.playernum]->first; node != NULL; node = node->next )
+		for ( node_t* node = shopInv[player.playernum]->first; node != nullptr; node = node->next )
 		{
 			auto item = static_cast<Item*>(node->element);
 			if ( item )
@@ -1261,7 +1261,7 @@ void Player::ShopGUI_t::updateShop()
 	int buybackItems = 0;
 	if ( bOpen && shopInv[player.playernum] )
 	{
-		for ( node_t* node = shopInv[player.playernum]->first; node != NULL; node = node->next )
+		for ( node_t* node = shopInv[player.playernum]->first; node != nullptr; node = node->next )
 		{
 			auto item = static_cast<Item*>(node->element);
 			if ( item )

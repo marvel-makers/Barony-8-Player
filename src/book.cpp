@@ -114,7 +114,7 @@ void BookParser_t::deleteBooks()
 bool BookParser_t::readCompiledBooks()
 {
 	std::string compiledBooksPath = "books/compiled_books.json";
-	if ( PHYSFS_getRealDir(compiledBooksPath.c_str()) != NULL )
+	if ( PHYSFS_getRealDir(compiledBooksPath.c_str()) != nullptr)
 	{
 		std::string path = PHYSFS_getRealDir(compiledBooksPath.c_str());
 		path.append(PHYSFS_getDirSeparator());
@@ -162,7 +162,7 @@ bool BookParser_t::booksRequireCompiling()
 	readBooksIntoTemp();
 
 	std::string compiledBooksPath = "books/compiled_books.json";
-	if ( PHYSFS_getRealDir(compiledBooksPath.c_str()) != NULL )
+	if ( PHYSFS_getRealDir(compiledBooksPath.c_str()) != nullptr)
 	{
 		std::string path = PHYSFS_getRealDir(compiledBooksPath.c_str());
 		path.append(PHYSFS_getDirSeparator());
@@ -224,7 +224,7 @@ std::list<std::string> BookParser_t::getListOfBooksAfterFiltering()
 	std::string ignoreBooksPath = "books/ignored_books.json";
 	std::unordered_set<std::string> ignoredBooks;
 	bool foundIgnoreBookFile = false;
-	if ( PHYSFS_getRealDir(ignoreBooksPath.c_str()) != NULL )
+	if ( PHYSFS_getRealDir(ignoreBooksPath.c_str()) != nullptr)
 	{
 		foundIgnoreBookFile = true;
 		ignoredBooks.insert("ignored_books.json");
@@ -661,7 +661,7 @@ void BookParser_t::createBook(std::string filename)
 			newBook.formattedPages.push_back(pageText);
 			pageText = "";
 		}
-	} while ( (token = nexttoken) != NULL );
+	} while ( (token = nexttoken) != nullptr);
 	newBook.formattedPages.push_back(pageText);
 
 	if ( tmpField )

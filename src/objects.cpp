@@ -25,7 +25,7 @@
 
 void defaultDeconstructor(void* data)
 {
-	if (data != NULL)
+	if (data != nullptr)
 	{
 		free(data);
 	}
@@ -42,13 +42,13 @@ void defaultDeconstructor(void* data)
 void stringDeconstructor(void* data)
 {
 	string_t* string;
-	if (data != NULL)
+	if (data != nullptr)
 	{
 		string = static_cast<string_t*>(data);
-		if ( string->data != NULL )
+		if ( string->data != nullptr)
 		{
 			free(string->data);
-			string->data = NULL;
+			string->data = nullptr;
 		}
 		free(data);
 	}
@@ -204,7 +204,7 @@ void listDeconstructor(void* data)
 {
 	list_t* list;
 
-	if (data != NULL)
+	if (data != nullptr)
 	{
 		list = static_cast<list_t*>(data);
 		list_FreeAll(list);
@@ -265,7 +265,7 @@ button_t* newButton(void)
 	button_t* button;
 
 	// allocate memory for button
-	if ( (button = static_cast<button_t*>(malloc(sizeof(button_t)))) == NULL )
+	if ( (button = static_cast<button_t*>(malloc(sizeof(button_t)))) == nullptr)
 	{
 		printlog( "failed to allocate memory for new button!\n" );
 		exit(1);
@@ -288,7 +288,7 @@ button_t* newButton(void)
 	button->joykey = -1;
 	button->pressed = false;
 	button->needclick = true;
-	button->action = NULL;
+	button->action = nullptr;
 	strcpy(button->label, "nodef");
 
 	button->outline = false;
@@ -351,7 +351,7 @@ string_t* newString(list_t* list, Uint32 color, Uint32 time, int player, char co
 	int c, i;
 
 	// allocate memory for string
-	if ( (string = static_cast<string_t*>(malloc(sizeof(string_t)))) == NULL )
+	if ( (string = static_cast<string_t*>(malloc(sizeof(string_t)))) == nullptr)
 	{
 		printlog( "failed to allocate memory for new string!\n" );
 		exit(1);
@@ -370,7 +370,7 @@ string_t* newString(list_t* list, Uint32 color, Uint32 time, int player, char co
 	string->color = color;
 	string->lines = 1;
 	string->player = player;
-	if ( content != NULL )
+	if ( content != nullptr)
 	{
 #ifndef EDITOR
 		if ( list && list == &messages )
@@ -408,11 +408,11 @@ string_t* newString(list_t* list, Uint32 color, Uint32 time, int player, char co
 	}
 	else
 	{
-		string->data = NULL;
+		string->data = nullptr;
 	}
 
 	// add the string to the list
-	if ( list != NULL )
+	if ( list != nullptr)
 	{
 		string->node = list_AddNodeLast(list);
 		string->node->element = string;
@@ -421,7 +421,7 @@ string_t* newString(list_t* list, Uint32 color, Uint32 time, int player, char co
 	}
 	else
 	{
-		string->node = NULL;
+		string->node = nullptr;
 	}
 
 	return string;

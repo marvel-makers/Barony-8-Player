@@ -96,11 +96,11 @@ static void updateMapNames()
 	{
 		path = physfs_openDirectory + "/maps/";
 	}
-	if ( (dir = openDataDir(path.c_str())) != NULL )
+	if ( (dir = openDataDir(path.c_str())) != nullptr)
 	{
-		while ( (ent = readdir(dir)) != NULL )
+		while ( (ent = readdir(dir)) != nullptr)
 		{
-			if ( strstr(ent->d_name, ".lmp") != NULL || (!strcmp(ent->d_name, "..") || !strcmp(ent->d_name, ".")) )
+			if ( strstr(ent->d_name, ".lmp") != nullptr || (!strcmp(ent->d_name, "..") || !strcmp(ent->d_name, ".")) )
 			{
 				mapNames.push_back(ent->d_name);
 			}
@@ -141,7 +141,7 @@ void writeLevelsTxt(std::string modFolder)
 	{
 		std::string writeFile = modFolder + "/maps/levels.txt";
 		PHYSFS_File *physfp = PHYSFS_openWrite(writeFile.c_str());
-		if ( physfp != NULL )
+		if ( physfp != nullptr)
 		{
 			PHYSFS_writeBytes(physfp, "map: start\n", 11);
 			PHYSFS_writeBytes(physfp, "gen: mine\n", 10);
@@ -603,8 +603,8 @@ void buttonNewConfirm(button_t* my)
 void buttonOpen(button_t* my)
 {
 	button_t* button;
-	DIR* dir = NULL;
-	struct dirent* ent = NULL;
+	DIR* dir = nullptr;
+	struct dirent* ent = nullptr;
 	unsigned long c = 0;
 
 	inputstr = filename;
@@ -755,7 +755,7 @@ void buttonSetOpenDirectoryFolder(button_t* my)
 		{
 			physfs_openDirectory = BASE_DATA_DIR;
 		}
-		if ( PHYSFS_mount(physfs_openDirectory.c_str(), NULL, 1) )
+		if ( PHYSFS_mount(physfs_openDirectory.c_str(), nullptr, 1) )
 		{
 			printlog("[PhysFS]: Changed open directory folder to %s", physfs_openDirectory.c_str());
 		}
@@ -763,7 +763,7 @@ void buttonSetOpenDirectoryFolder(button_t* my)
 		{
 			printlog("[PhysFS]: Failed to change open directory folder to %s", physfs_openDirectory.c_str());
 			physfs_openDirectory = BASE_DATA_DIR;
-			PHYSFS_mount(BASE_DATA_DIR, NULL, 1);
+			PHYSFS_mount(BASE_DATA_DIR, nullptr, 1);
 		}
 	}
 	else
@@ -1039,11 +1039,11 @@ void buttonDelete(button_t* my)
 	makeUndo();
 
 	// delete the selected entity, if there is one
-	if ( selectedEntity[0] != NULL)
+	if ( selectedEntity[0] != nullptr)
 	{
 		list_RemoveNode(selectedEntity[0]->mynode);
-		selectedEntity[0] = NULL;
-		lastSelectedEntity[0] = NULL;
+		selectedEntity[0] = nullptr;
+		lastSelectedEntity[0] = nullptr;
 	}
 	if (selectedarea)
 	{
@@ -1640,7 +1640,7 @@ void buttonEditorToolsHelp(button_t* my)
 	node_t* node;
 	node_t* nextnode;
 	button_t* button;
-	for ( node = button_l.first; node != NULL; node = nextnode )
+	for ( node = button_l.first; node != nullptr; node = nextnode )
 	{
 		nextnode = node->next;
 		button = static_cast<button_t*>(node->element);
@@ -1744,7 +1744,7 @@ void buttonCloseSubwindow(button_t* my)
 	int c;
 
 	// close window
-	selectedEntity[0] = NULL;
+	selectedEntity[0] = nullptr;
 	subwindow = 0;
 	newwindow = 0;
 	openwindow = 0;
@@ -1846,7 +1846,7 @@ void buttonSpriteProperties(button_t* my)
 {
 	button_t* button;
 	int c = 0;
-	Stat* tmpSpriteStats = NULL;
+	Stat* tmpSpriteStats = nullptr;
 	int spriteType = 0;
 	int spacing = 20;
 	int pad_y2;
@@ -1855,7 +1855,7 @@ void buttonSpriteProperties(button_t* my)
 	char tmpStr[32] = "";
 	int itemIndex = 0;
 
-	if ( selectedEntity[0] == NULL && lastSelectedEntity[0] != NULL )
+	if ( selectedEntity[0] == nullptr && lastSelectedEntity[0] != nullptr)
 	{
 		if ( checkSpriteType(lastSelectedEntity[0]->sprite) != 0 )
 		{
@@ -1868,7 +1868,7 @@ void buttonSpriteProperties(button_t* my)
 		}
 	}
 
-	if ( selectedEntity[0] != NULL )
+	if ( selectedEntity[0] != nullptr)
 	{
 		editproperty = 0;
 		for ( int i = 0; i < (sizeof(spriteProperties) / sizeof(spriteProperties[0])); i++ )
@@ -1900,7 +1900,7 @@ void buttonSpriteProperties(button_t* my)
 					inputstr = spriteProperties[0];
 					initMonsterPropertiesWindow();
 				}
-				tmpSpriteStats = NULL;
+				tmpSpriteStats = nullptr;
 				break;
 			case 2: //chests
 				snprintf(spriteProperties[0], 4, "%d", static_cast<int>(selectedEntity[0]->yaw));
@@ -3096,9 +3096,9 @@ void buttonSpriteProperties(button_t* my)
 
 void buttonSpritePropertiesConfirm(button_t* my)
 {
-	Stat* tmpSpriteStats = NULL;
-	button_t* button = NULL;
-	if ( selectedEntity[0] != NULL )
+	Stat* tmpSpriteStats = nullptr;
+	button_t* button = nullptr;
+	if ( selectedEntity[0] != nullptr)
 	{
 		int spriteType = checkSpriteType(selectedEntity[0]->sprite);
 		switch ( spriteType )
@@ -3173,15 +3173,15 @@ void buttonSpritePropertiesConfirm(button_t* my)
 						//butItemOK->visible = 0;
 						//butItemCancel->visible = 0;
 						//butItemX->visible = 0;
-						if ( butMonsterItemOK != NULL )
+						if ( butMonsterItemOK != nullptr)
 						{
 							butMonsterItemOK->visible = 0;
 						}
-						if ( butMonsterItemX != NULL )
+						if ( butMonsterItemX != nullptr)
 						{
 							butMonsterItemX->visible = 0;
 						}
-						if ( butMonsterItemCancel != NULL )
+						if ( butMonsterItemCancel != nullptr)
 						{
 							butMonsterItemCancel->visible = 0;
 						}
@@ -3714,7 +3714,7 @@ void buttonSpritePropertiesConfirm(button_t* my)
 		messagetime = 60;
 	}
 
-	if ( my == butMonsterItemOK && tmpSpriteStats != NULL )
+	if ( my == butMonsterItemOK && tmpSpriteStats != nullptr)
 	{
 		//copyMonsterStatToPropertyStrings(tmpSpriteStats);
 		exitFromItemWindow = true;
@@ -3736,15 +3736,15 @@ void buttonSpritePropertiesConfirm(button_t* my)
 
 void buttonCloseSpriteSubwindow(button_t* my)
 {
-	Stat* tmpSpriteStats = NULL;
+	Stat* tmpSpriteStats = nullptr;
 	// close window
 	if ( my == butMonsterItemCancel || my == butMonsterItemX )
 	{
-		if ( selectedEntity[0] != NULL )
+		if ( selectedEntity[0] != nullptr)
 		{
 			tmpSpriteStats = selectedEntity[0]->getStats();
 		}
-		if ( tmpSpriteStats != NULL )
+		if ( tmpSpriteStats != nullptr)
 		{
 			//copyMonsterStatToPropertyStrings(tmpSpriteStats);
 			exitFromItemWindow = true;
@@ -3753,22 +3753,22 @@ void buttonCloseSpriteSubwindow(button_t* my)
 
 			buttonSpriteProperties(my);
 			itemSlotSelected = -1;
-			if ( butMonsterItemOK != NULL )
+			if ( butMonsterItemOK != nullptr)
 			{
 				butMonsterItemOK->visible = 0;
 			}
-			if ( butMonsterItemX != NULL )
+			if ( butMonsterItemX != nullptr)
 			{
 				butMonsterItemX->visible = 0;
 			}
-			if ( butMonsterItemCancel != NULL )
+			if ( butMonsterItemCancel != nullptr)
 			{
 				butMonsterItemCancel->visible = 0;
 			}
 		}
 	}
 	else {
-		selectedEntity[0] = NULL;
+		selectedEntity[0] = nullptr;
 		newwindow = 0;
 		subwindow = 0;
 		editproperty = 0;
@@ -3783,7 +3783,7 @@ void buttonMonsterItems(button_t* my)
 	int pad_x3 = 40;
 	int pad_x4 = subx2 - 112;
 	char tmpStr[32] = "";
-	button_t* button = NULL;
+	button_t* button = nullptr;
 
 	itemSelect = 0;
 
@@ -3879,79 +3879,79 @@ void buttonMonsterItems(button_t* my)
 	newwindow = 5;
 
 
-	if ( butMonsterHelm != NULL )
+	if ( butMonsterHelm != nullptr)
 	{
 		butMonsterHelm->visible = 0;
 	}
-	if ( butMonsterWeapon != NULL )
+	if ( butMonsterWeapon != nullptr)
 	{
 		butMonsterWeapon->visible = 0;
 	}
-	if ( butMonsterShield != NULL )
+	if ( butMonsterShield != nullptr)
 	{
 		butMonsterShield->visible = 0;
 	}
-	if ( butMonsterArmor != NULL )
+	if ( butMonsterArmor != nullptr)
 	{
 		butMonsterArmor->visible = 0;
 	}
-	if ( butMonsterRing != NULL )
+	if ( butMonsterRing != nullptr)
 	{
 		butMonsterRing->visible = 0;
 	}
-	if ( butMonsterAmulet != NULL )
+	if ( butMonsterAmulet != nullptr)
 	{
 		butMonsterAmulet->visible = 0;
 	}
-	if ( butMonsterBoots != NULL )
+	if ( butMonsterBoots != nullptr)
 	{
 		butMonsterBoots->visible = 0;
 	}
-	if ( butMonsterCloak != NULL )
+	if ( butMonsterCloak != nullptr)
 	{
 		butMonsterCloak->visible = 0;
 	}
-	if ( butMonsterMask != NULL )
+	if ( butMonsterMask != nullptr)
 	{
 		butMonsterMask->visible = 0;
 	}
-	if ( butMonsterGloves != NULL )
+	if ( butMonsterGloves != nullptr)
 	{
 		butMonsterGloves->visible = 0;
 	}
-	if ( butMonsterItem1 != NULL )
+	if ( butMonsterItem1 != nullptr)
 	{
 		butMonsterItem1->visible = 0;
 	}
-	if ( butMonsterItem2 != NULL )
+	if ( butMonsterItem2 != nullptr)
 	{
 		butMonsterItem2->visible = 0;
 	}
-	if ( butMonsterItem3 != NULL )
+	if ( butMonsterItem3 != nullptr)
 	{
 		butMonsterItem3->visible = 0;
 	}
-	if ( butMonsterItem4 != NULL )
+	if ( butMonsterItem4 != nullptr)
 	{
 		butMonsterItem4->visible = 0;
 	}
-	if ( butMonsterItem5 != NULL )
+	if ( butMonsterItem5 != nullptr)
 	{
 		butMonsterItem5->visible = 0;
 	}
-	if ( butMonsterItem6 != NULL )
+	if ( butMonsterItem6 != nullptr)
 	{
 		butMonsterItem6->visible = 0;
 	}
-	if ( butMonsterOK != NULL )
+	if ( butMonsterOK != nullptr)
 	{
 		butMonsterOK->visible = 0;
 	}
-	if ( butMonsterCancel != NULL )
+	if ( butMonsterCancel != nullptr)
 	{
 		butMonsterCancel->visible = 0;
 	}
-	if ( butMonsterX != NULL )
+	if ( butMonsterX != nullptr)
 	{
 		butMonsterX->visible = 0;
 	}
@@ -4016,7 +4016,7 @@ void initMonsterPropertiesWindow() {
 
 void copyMonsterStatToPropertyStrings(Stat* tmpSpriteStats)
 {
-	if ( tmpSpriteStats != NULL )
+	if ( tmpSpriteStats != nullptr)
 	{
 		strcpy(spriteProperties[0], tmpSpriteStats->name);
 		snprintf(spriteProperties[1], 5, "%d", tmpSpriteStats->MAXHP);

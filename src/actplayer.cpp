@@ -877,7 +877,7 @@ void Player::Ghost_t::handleActions()
 	FollowerRadialMenu& followerMenu = FollowerMenu[player.playernum];
 	auto& b = (multiplayer != SINGLE && player.playernum != 0) ? Input::inputs[0].getBindings() : input.getBindings();
 
-	clickDescription(player.playernum, NULL); // inspecting objects
+	clickDescription(player.playernum, nullptr); // inspecting objects
 
 	bool enableFollowerMenu = my && isSpiritGhost();
 
@@ -954,7 +954,7 @@ void Player::Ghost_t::handleActions()
 	}
 	else if ( enableFollowerMenu && followerMenu.followerMenuIsOpen() )
 	{
-		selectedEntity[player.playernum] = NULL;
+		selectedEntity[player.playernum] = nullptr;
 
 		if ( !players[player.playernum]->usingCommand() && players[player.playernum]->bControlEnabled && !gamePaused && input.binaryToggle("Use") )
 		{
@@ -1072,7 +1072,7 @@ void Player::Ghost_t::handleActions()
 	}
 	else if ( calloutMenu.calloutMenuIsOpen() )
 	{
-		selectedEntity[player.playernum] = NULL;
+		selectedEntity[player.playernum] = nullptr;
 		// TODO CALLOUT?
 		if ( !player.usingCommand() && player.bControlEnabled && !gamePaused && input.binaryToggle("Use") )
 		{
@@ -1449,7 +1449,7 @@ void Player::Ghost_t::handleActions()
 						followerMenu.recentEntity = followerMenu.followerToCommand;
 						followerMenu.initfollowerMenuGUICursor(true);
 						followerMenu.updateScrollPartySheet();
-						selectedEntity[player.playernum] = NULL;
+						selectedEntity[player.playernum] = nullptr;
 						Player::soundActivate();
 					}
 				}
@@ -3603,7 +3603,7 @@ bool Player::PlayerMovement_t::isPlayerSwimming()
 
 	// swimming
 	bool waterwalkingboots = false;
-	if ( stats[PLAYER_NUM]->shoes != NULL )
+	if ( stats[PLAYER_NUM]->shoes != nullptr)
 	{
 		if ( stats[PLAYER_NUM]->shoes->type == IRON_BOOTS_WATERWALKING )
 		{
@@ -4285,10 +4285,10 @@ real_t Player::PlayerMovement_t::getMaximumSpeed()
 int Player::PlayerMovement_t::getCharacterEquippedWeight()
 {
 	int weight = 0;
-	for ( node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next )
+	for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
 	{
 		auto item = static_cast<Item*>(node->element);
-		if ( item != NULL && player.paperDoll.isItemOnDoll(*item) )
+		if ( item != nullptr && player.paperDoll.isItemOnDoll(*item) )
 		{
 			if ( item->type >= 0 && item->type < NUMITEMS )
 			{
@@ -4302,10 +4302,10 @@ int Player::PlayerMovement_t::getCharacterEquippedWeight()
 int Player::PlayerMovement_t::getCharacterWeight()
 {
 	int weight = 0;
-	for ( node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next )
+	for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
 	{
 		auto item = static_cast<Item*>(node->element);
-		if ( item != NULL )
+		if ( item != nullptr)
 		{
 			if ( item->type >= 0 && item->type < NUMITEMS )
 			{
@@ -4463,10 +4463,10 @@ real_t Player::PlayerMovement_t::getSpeedFactor(real_t weightratio, Sint32 DEX)
 		speedFactor *= 1.0 - 0.1 * std::min(5, (stats[player.playernum]->getEffectActive(EFF_MAXIMISE) & 0xF));
 	}
 
-	for ( node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next )
+	for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
 	{
 		auto item = static_cast<Item*>(node->element);
-		if ( item != NULL )
+		if ( item != nullptr)
 		{
 			if ( item->type == TOOL_PLAYER_LOOT_BAG )
 			{
@@ -4842,7 +4842,7 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
 
 	// swimming slows you down
 	bool amuletwaterbreathing = false;
-	if ( stats[PLAYER_NUM]->amulet != NULL )
+	if ( stats[PLAYER_NUM]->amulet != nullptr)
 	{
 		if ( stats[PLAYER_NUM]->amulet->type == AMULET_WATERBREATHING )
 		{
@@ -6271,7 +6271,7 @@ void actPlayer(Entity* my)
 		else if ( *cvar_pbaoe == 13 )
 		{
 			Entity* leaf = newEntity(1912, 1, map.entities, nullptr); //Gib entity.
-			if ( leaf != NULL )
+			if ( leaf != nullptr)
 			{
 				leaf->x = my->x + 40.0 * cos(my->yaw);
 				leaf->y = my->y + 40.0 * sin(my->yaw);
@@ -7490,7 +7490,7 @@ void actPlayer(Entity* my)
 		else
 		{
 			node = list_AddNodeLast(&my->children);
-			node->element = NULL;
+			node->element = nullptr;
 			node->deconstructor = &emptyDeconstructor;
 			node->size = 0;
 		}
@@ -8488,7 +8488,7 @@ void actPlayer(Entity* my)
 
 				// update inventory by trying to stack the newly identified item.
 				std::unordered_set<Uint32> appearancesOfSimilarItems;
-				for ( node = stats[PLAYER_NUM]->inventory.first; node != NULL; node = node->next )
+				for ( node = stats[PLAYER_NUM]->inventory.first; node != nullptr; node = node->next )
 				{
 					auto item2 = static_cast<Item*>(node->element);
 					if ( item2 == tempItem )
@@ -8705,7 +8705,7 @@ void actPlayer(Entity* my)
 					{
 						// update inventory by trying to stack the newly identified item.
 						std::unordered_set<Uint32> appearancesOfSimilarItems;
-						for ( node = stats[PLAYER_NUM]->inventory.first; node != NULL; node = node->next )
+						for ( node = stats[PLAYER_NUM]->inventory.first; node != nullptr; node = node->next )
 						{
 							auto item2 = static_cast<Item*>(node->element);
 							if ( item2 && item2 != tempItem && !itemCompare(tempItem, item2, false) )
@@ -8880,55 +8880,55 @@ void actPlayer(Entity* my)
 	}
 
 	// remove broken equipment
-	if ( stats[PLAYER_NUM]->helmet != NULL )
+	if ( stats[PLAYER_NUM]->helmet != nullptr)
 		if ( stats[PLAYER_NUM]->helmet->status == BROKEN )
 		{
-			stats[PLAYER_NUM]->helmet = NULL;
+			stats[PLAYER_NUM]->helmet = nullptr;
 		}
-	if ( stats[PLAYER_NUM]->breastplate != NULL )
+	if ( stats[PLAYER_NUM]->breastplate != nullptr)
 		if ( stats[PLAYER_NUM]->breastplate->status == BROKEN )
 		{
-			stats[PLAYER_NUM]->breastplate = NULL;
+			stats[PLAYER_NUM]->breastplate = nullptr;
 		}
-	if ( stats[PLAYER_NUM]->gloves != NULL )
+	if ( stats[PLAYER_NUM]->gloves != nullptr)
 		if ( stats[PLAYER_NUM]->gloves->status == BROKEN )
 		{
-			stats[PLAYER_NUM]->gloves = NULL;
+			stats[PLAYER_NUM]->gloves = nullptr;
 		}
-	if ( stats[PLAYER_NUM]->shoes != NULL )
+	if ( stats[PLAYER_NUM]->shoes != nullptr)
 		if ( stats[PLAYER_NUM]->shoes->status == BROKEN )
 		{
-			stats[PLAYER_NUM]->shoes = NULL;
+			stats[PLAYER_NUM]->shoes = nullptr;
 		}
-	if ( stats[PLAYER_NUM]->shield != NULL )
+	if ( stats[PLAYER_NUM]->shield != nullptr)
 		if ( stats[PLAYER_NUM]->shield->status == BROKEN )
 		{
-			stats[PLAYER_NUM]->shield = NULL;
+			stats[PLAYER_NUM]->shield = nullptr;
 		}
-	if ( stats[PLAYER_NUM]->weapon != NULL )
+	if ( stats[PLAYER_NUM]->weapon != nullptr)
 		if ( stats[PLAYER_NUM]->weapon->status == BROKEN )
 		{
-			stats[PLAYER_NUM]->weapon = NULL;
+			stats[PLAYER_NUM]->weapon = nullptr;
 		}
-	if ( stats[PLAYER_NUM]->cloak != NULL )
+	if ( stats[PLAYER_NUM]->cloak != nullptr)
 		if ( stats[PLAYER_NUM]->cloak->status == BROKEN )
 		{
-			stats[PLAYER_NUM]->cloak = NULL;
+			stats[PLAYER_NUM]->cloak = nullptr;
 		}
-	if ( stats[PLAYER_NUM]->amulet != NULL )
+	if ( stats[PLAYER_NUM]->amulet != nullptr)
 		if ( stats[PLAYER_NUM]->amulet->status == BROKEN )
 		{
-			stats[PLAYER_NUM]->amulet = NULL;
+			stats[PLAYER_NUM]->amulet = nullptr;
 		}
-	if ( stats[PLAYER_NUM]->ring != NULL )
+	if ( stats[PLAYER_NUM]->ring != nullptr)
 		if ( stats[PLAYER_NUM]->ring->status == BROKEN )
 		{
-			stats[PLAYER_NUM]->ring = NULL;
+			stats[PLAYER_NUM]->ring = nullptr;
 		}
-	if ( stats[PLAYER_NUM]->mask != NULL )
+	if ( stats[PLAYER_NUM]->mask != nullptr)
 		if ( stats[PLAYER_NUM]->mask->status == BROKEN )
 		{
-			stats[PLAYER_NUM]->mask = NULL;
+			stats[PLAYER_NUM]->mask = nullptr;
 		}
 
 	if ( multiplayer != CLIENT )
@@ -8963,7 +8963,7 @@ void actPlayer(Entity* my)
 				my->flags[BLOCKSIGHT] = false;
 				if ( multiplayer != CLIENT )
 				{
-					for ( i = 0, node = my->children.first; node != NULL; node = node->next, ++i )
+					for ( i = 0, node = my->children.first; node != nullptr; node = node->next, ++i )
 					{
 						if ( i == 0 )
 						{
@@ -8998,7 +8998,7 @@ void actPlayer(Entity* my)
 				my->flags[BLOCKSIGHT] = true;
 				if ( multiplayer != CLIENT )
 				{
-					for (i = 0, node = my->children.first; node != NULL; node = node->next, i++)
+					for (i = 0, node = my->children.first; node != nullptr; node = node->next, i++)
 					{
 						if ( i == 0 )
 						{
@@ -9399,7 +9399,7 @@ void actPlayer(Entity* my)
 
 	// swimming
 	bool waterwalkingboots = false;
-	if ( stats[PLAYER_NUM]->shoes != NULL )
+	if ( stats[PLAYER_NUM]->shoes != nullptr)
 	{
 		if ( stats[PLAYER_NUM]->shoes->type == IRON_BOOTS_WATERWALKING )
 		{
@@ -9614,7 +9614,7 @@ void actPlayer(Entity* my)
 		// object interaction
 		if ( intro == false && !players[PLAYER_NUM]->ghost.isActive() )
 		{
-			clickDescription(PLAYER_NUM, NULL); // inspecting objects
+			clickDescription(PLAYER_NUM, nullptr); // inspecting objects
 			doStatueEditor(PLAYER_NUM);
 			if ( svFlags & SV_FLAG_CHEATS )
 			{
@@ -9748,7 +9748,7 @@ void actPlayer(Entity* my)
 			}
 			else if ( followerMenu.followerMenuIsOpen() )
 			{
-				selectedEntity[PLAYER_NUM] = NULL;
+				selectedEntity[PLAYER_NUM] = nullptr;
 
 				if ( !players[PLAYER_NUM]->usingCommand() && players[PLAYER_NUM]->bControlEnabled && !gamePaused && input.binaryToggle("Use") )
 				{
@@ -9866,7 +9866,7 @@ void actPlayer(Entity* my)
 			}
 			else if ( calloutMenu.calloutMenuIsOpen() )
 			{
-				selectedEntity[PLAYER_NUM] = NULL;
+				selectedEntity[PLAYER_NUM] = nullptr;
 				// TODO CALLOUT?
 				if ( !players[PLAYER_NUM]->usingCommand() && players[PLAYER_NUM]->bControlEnabled && !gamePaused && input.binaryToggle("Use") )
 				{
@@ -10223,7 +10223,7 @@ void actPlayer(Entity* my)
 				}
 			}
 
-			if ( selectedEntity[PLAYER_NUM] != NULL )
+			if ( selectedEntity[PLAYER_NUM] != nullptr)
 			{
 				followerMenu.followerToCommand = nullptr;
 				Entity* parent = uidToEntity(selectedEntity[PLAYER_NUM]->skill[2]);
@@ -10257,7 +10257,7 @@ void actPlayer(Entity* my)
 								followerMenu.recentEntity = followerMenu.followerToCommand;
 								followerMenu.initfollowerMenuGUICursor(true);
 								followerMenu.updateScrollPartySheet();
-								selectedEntity[PLAYER_NUM] = NULL;
+								selectedEntity[PLAYER_NUM] = nullptr;
 								Player::soundActivate();
 							}
 						}
@@ -10793,7 +10793,7 @@ void actPlayer(Entity* my)
 				{
 					// remove body parts
 					node_t* nextnode;
-					for ( node = my->children.first, i = 0; node != NULL; node = nextnode, i++ )
+					for ( node = my->children.first, i = 0; node != nullptr; node = nextnode, i++ )
 					{
 						nextnode = node->next;
 						if ( i == 0 )
@@ -10883,7 +10883,7 @@ void actPlayer(Entity* my)
 							node_t* oldnode = spellnode;
 							spellnode = spellnode->next;
 							auto spell = static_cast<spell_t*>(oldnode->element);
-							spell->magic_effects_node = NULL;
+							spell->magic_effects_node = nullptr;
 							if ( spell->sustainEffectDissipate >= 0 )
 							{
 								if ( stats[PLAYER_NUM]->getEffectActive(spell->sustainEffectDissipate) )
@@ -11941,7 +11941,7 @@ void actPlayer(Entity* my)
 	// move bodyparts
 	if ( isHumanoid )
 	{
-		for ( bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++ )
+		for ( bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++ )
 		{
 			if ( bodypart == 0 )
 			{
@@ -12761,7 +12761,7 @@ void actPlayer(Entity* my)
 				entity->flags[INVISIBLE_DITHER] = my->flags[INVISIBLE_DITHER];
 				if ( multiplayer != CLIENT )
 				{
-					if ( stats[PLAYER_NUM]->breastplate == NULL || !showEquipment )
+					if ( stats[PLAYER_NUM]->breastplate == nullptr || !showEquipment )
 					{
 						entity->setDefaultPlayerModel(PLAYER_NUM, playerRace, LIMB_HUMANOID_TORSO, my->sprite);
 					}
@@ -12819,7 +12819,7 @@ void actPlayer(Entity* my)
 					&& !(entity->flags[INVISIBLE] && !entity->flags[INVISIBLE_DITHER]);
 				if ( multiplayer != CLIENT )
 				{
-					if ( stats[PLAYER_NUM]->shoes == NULL || !showEquipment )
+					if ( stats[PLAYER_NUM]->shoes == nullptr || !showEquipment )
 					{
 						entity->setDefaultPlayerModel(PLAYER_NUM, playerRace, LIMB_HUMANOID_RIGHTLEG, my->sprite);
 					}
@@ -12870,7 +12870,7 @@ void actPlayer(Entity* my)
 					&& !(entity->flags[INVISIBLE] && !entity->flags[INVISIBLE_DITHER]);
 				if ( multiplayer != CLIENT )
 				{
-					if ( stats[PLAYER_NUM]->shoes == NULL || !showEquipment )
+					if ( stats[PLAYER_NUM]->shoes == nullptr || !showEquipment )
 					{
 						entity->setDefaultPlayerModel(PLAYER_NUM, playerRace, LIMB_HUMANOID_LEFTLEG, my->sprite);
 					}
@@ -12913,7 +12913,7 @@ void actPlayer(Entity* my)
 				entity->flags[INVISIBLE_DITHER] = my->flags[INVISIBLE_DITHER];
 				if ( multiplayer != CLIENT )
 				{
-					if ( stats[PLAYER_NUM]->gloves == NULL || !showEquipment )
+					if ( stats[PLAYER_NUM]->gloves == nullptr || !showEquipment )
 					{
 						entity->setDefaultPlayerModel(PLAYER_NUM, playerRace, LIMB_HUMANOID_RIGHTARM, my->sprite);
 					}
@@ -12928,7 +12928,7 @@ void actPlayer(Entity* my)
 						|| ((PLAYER_ATTACK == MONSTER_POSE_MAGIC_WINDUP1 || PLAYER_ATTACK == MONSTER_POSE_MAGIC_WINDUP2) && showEquipment)
 						|| (insectoidLevitating && PLAYER_ATTACK == 0 && PLAYER_ATTACKTIME == 0) )
 					{
-						entity->sprite += 2 * (stats[PLAYER_NUM]->weapon != NULL);
+						entity->sprite += 2 * (stats[PLAYER_NUM]->weapon != nullptr);
 
 						if ( stats[PLAYER_NUM]->weapon == nullptr
 							&& (insectoidLevitating || ((PLAYER_ATTACK == MONSTER_POSE_MAGIC_WINDUP1 || PLAYER_ATTACK == MONSTER_POSE_MAGIC_WINDUP2) && showEquipment)) )
@@ -13058,7 +13058,7 @@ void actPlayer(Entity* my)
 				entity->flags[INVISIBLE_DITHER] = my->flags[INVISIBLE_DITHER];
 				if ( multiplayer != CLIENT )
 				{
-					if ( stats[PLAYER_NUM]->gloves == NULL || !showEquipment )
+					if ( stats[PLAYER_NUM]->gloves == nullptr || !showEquipment )
 					{
 						entity->setDefaultPlayerModel(PLAYER_NUM, playerRace, LIMB_HUMANOID_LEFTARM, my->sprite);
 					}
@@ -13076,7 +13076,7 @@ void actPlayer(Entity* my)
 						{
 							bendArm = true;
 						}
-						if ( stats[PLAYER_NUM]->shield != NULL )
+						if ( stats[PLAYER_NUM]->shield != nullptr)
 						{
 							if ( itemCategory(stats[PLAYER_NUM]->shield) == SPELLBOOK )
 							{
@@ -13267,7 +13267,7 @@ void actPlayer(Entity* my)
 					}
 					else
 					{
-						if ( stats[PLAYER_NUM]->weapon == NULL )
+						if ( stats[PLAYER_NUM]->weapon == nullptr)
 						{
 							entity->flags[INVISIBLE] = true;
 							entity->sprite = 0;
@@ -13352,7 +13352,7 @@ void actPlayer(Entity* my)
 					}
 					else
 					{
-						if ( stats[PLAYER_NUM]->shield == NULL )
+						if ( stats[PLAYER_NUM]->shield == nullptr)
 						{
 							entity->flags[INVISIBLE] = true;
 							entity->sprite = 0;
@@ -13423,7 +13423,7 @@ void actPlayer(Entity* my)
 				if ( multiplayer != CLIENT )
 				{
 					entity->flags[INVISIBLE_DITHER] = false;
-					if ( stats[PLAYER_NUM]->cloak == NULL )
+					if ( stats[PLAYER_NUM]->cloak == nullptr)
 					{
 						entity->flags[INVISIBLE] = true;
 					}
@@ -13533,7 +13533,7 @@ void actPlayer(Entity* my)
 				{
 					entity->sprite = itemModel(stats[PLAYER_NUM]->helmet);
 					entity->flags[INVISIBLE_DITHER] = false;
-					if ( stats[PLAYER_NUM]->helmet == NULL )
+					if ( stats[PLAYER_NUM]->helmet == nullptr)
 					{
 						if ( playerRace == MYCONID && stats[PLAYER_NUM]->getEffectActive(EFF_GROWTH) >= 2 )
 						{
@@ -13781,7 +13781,7 @@ void actPlayer(Entity* my)
 				if ( multiplayer != CLIENT )
 				{
 					entity->flags[INVISIBLE_DITHER] = false;
-					if ( stats[PLAYER_NUM]->mask == NULL )
+					if ( stats[PLAYER_NUM]->mask == nullptr)
 					{
 						entity->flags[INVISIBLE] = true;
 					}
@@ -13796,7 +13796,7 @@ void actPlayer(Entity* my)
 						entity->flags[INVISIBLE_DITHER] = true;
 					}
 
-					if ( stats[PLAYER_NUM]->mask != NULL )
+					if ( stats[PLAYER_NUM]->mask != nullptr)
 					{
 						if ( stats[PLAYER_NUM]->mask->type == TOOL_GLASSES )
 						{
@@ -15797,7 +15797,7 @@ void playerAnimateRat(Entity* my)
 {
 	node_t* node = nullptr;
 	int bodypart = 0;
-	for ( bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++ )
+	for ( bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++ )
 	{
 		if ( bodypart == 0 )
 		{
@@ -15930,7 +15930,7 @@ void playerAnimateSpider(Entity* my)
 {
 	node_t* node = nullptr;
 	int bodypart = 0;
-	for ( bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++ )
+	for ( bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++ )
 	{
 		auto entity = static_cast<Entity*>(node->element);
 		if ( bodypart == 0 )
@@ -15970,7 +15970,7 @@ void playerAnimateSpider(Entity* my)
 			}
 			continue;
 		}
-		Entity* previous = NULL; // previous part
+		Entity* previous = nullptr; // previous part
 		if ( bodypart > 12 )
 		{
 			previous = static_cast<Entity*>(node->prev->element);

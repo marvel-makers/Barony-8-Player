@@ -9,7 +9,7 @@ void sendEntityUDP(Entity* entity, int c, bool guarantee)
 {
 	int j;
 
-	if ( entity == NULL )
+	if ( entity == nullptr)
 	{
 		return;
 	}
@@ -142,7 +142,7 @@ void serverUpdateBodypartIDs(Entity* entity)
 		SDLNet_Write32(entity->getUID(), &net_packet->data[4]);
 		node_t* node;
 		int i;
-		for ( i = 0, node = entity->children.first; node != NULL; node = node->next, i++ )
+		for ( i = 0, node = entity->children.first; node != nullptr; node = node->next, i++ )
 		{
 			if ( i < 1 || (i < 2 && entity->behavior == &actMonster) )
 			{
@@ -882,7 +882,7 @@ void clientActions(Entity* entity)
 	}
 
 	// if the above method failed, we check the value of skill[2] (stored in net_packet->data[30]) and assign an action based on that
-	if ( entity->behavior == NULL )
+	if ( entity->behavior == nullptr)
 	{
 		Sint32 c = static_cast<Sint32>(SDLNet_Read32(&net_packet->data[30]));
 		if ( c < 0 )

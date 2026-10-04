@@ -155,10 +155,10 @@ void initGameDatafilesAsync(bool moddedReload)
 int initGame()
 {
 	// setup some lists
-	booksRead.first = NULL;
-	booksRead.last = NULL;
-	lobbyChatboxMessages.first = NULL;
-	lobbyChatboxMessages.last = NULL;
+	booksRead.first = nullptr;
+	booksRead.last = nullptr;
+	lobbyChatboxMessages.first = nullptr;
+	lobbyChatboxMessages.last = nullptr;
 
 	// steam stuff
 #ifdef STEAMWORKS
@@ -216,13 +216,13 @@ int initGame()
 #if defined(USE_EOS) || defined(STEAMWORKS)
 #else
 #ifndef NINTENDO
-		if ( PHYSFS_getRealDir("mythsandoutcasts.key") != NULL )
+		if ( PHYSFS_getRealDir("mythsandoutcasts.key") != nullptr)
 		{
 			std::string serial = PHYSFS_getRealDir("mythsandoutcasts.key");
 			serial.append(PHYSFS_getDirSeparator()).append("mythsandoutcasts.key");
 			// open the serial file
 			File* fp = nullptr;
-			if ( (fp = FileIO::open(serial.c_str(), "rb")) != NULL )
+			if ( (fp = FileIO::open(serial.c_str(), "rb")) != nullptr)
 			{
 				char buf[64];
 				size_t len = fp->read(&buf, sizeof(char), 32);
@@ -242,13 +242,13 @@ int initGame()
 				FileIO::close(fp);
 			}
 		}
-		if ( PHYSFS_getRealDir("legendsandpariahs.key") != NULL ) //TODO: NX PORT: Update for the Switch?
+		if ( PHYSFS_getRealDir("legendsandpariahs.key") != nullptr) //TODO: NX PORT: Update for the Switch?
 		{
 			std::string serial = PHYSFS_getRealDir("legendsandpariahs.key");
 			serial.append(PHYSFS_getDirSeparator()).append("legendsandpariahs.key");
 			// open the serial file
 			File* fp = nullptr;
-			if ( (fp = FileIO::open(serial.c_str(), "rb")) != NULL )
+			if ( (fp = FileIO::open(serial.c_str(), "rb")) != nullptr)
 			{
 				char buf[64];
 				size_t len = fp->read(&buf, sizeof(char), 32);
@@ -268,13 +268,13 @@ int initGame()
 				FileIO::close(fp);
 			}
 		}
-		if ( PHYSFS_getRealDir("desertersanddisciples.key") != NULL ) //TODO: NX PORT: Update for the Switch?
+		if ( PHYSFS_getRealDir("desertersanddisciples.key") != nullptr) //TODO: NX PORT: Update for the Switch?
 		{
 			std::string serial = PHYSFS_getRealDir("desertersanddisciples.key");
 			serial.append(PHYSFS_getDirSeparator()).append("desertersanddisciples.key");
 			// open the serial file
 			File* fp = nullptr;
-			if ( (fp = FileIO::open(serial.c_str(), "rb")) != NULL )
+			if ( (fp = FileIO::open(serial.c_str(), "rb")) != nullptr)
 			{
 				char buf[64];
 				size_t len = fp->read(&buf, sizeof(char), 32);
@@ -297,36 +297,36 @@ int initGame()
 #endif // !NINTENDO
 #endif
 
-		removedEntities.first = NULL;
-		removedEntities.last = NULL;
-		safePacketsSent.first = NULL;
-		safePacketsSent.last = NULL;
+		removedEntities.first = nullptr;
+		removedEntities.last = nullptr;
+		safePacketsSent.first = nullptr;
+		safePacketsSent.last = nullptr;
 		for ( int c = 0; c < MAXPLAYERS; c++ )
 		{
 			safePacketsReceivedMap[c].clear();
 		}
-		topscores_legacy.first = NULL;
-		topscores_legacy.last = NULL;
-		topscoresMultiplayer_legacy.first = NULL;
-		topscoresMultiplayer_legacy.last = NULL;
+		topscores_legacy.first = nullptr;
+		topscores_legacy.last = nullptr;
+		topscoresMultiplayer_legacy.first = nullptr;
+		topscoresMultiplayer_legacy.last = nullptr;
 
 		topscores_json.first = nullptr;
 		topscores_json.last = nullptr;
 		topscoresMultiplayer_json.first = nullptr;
 		topscoresMultiplayer_json.last = nullptr;
 
-		messages.first = NULL;
-		messages.last = NULL;
+		messages.first = nullptr;
+		messages.last = nullptr;
 		for ( int i = 0; i < MAXPLAYERS; ++i )
 		{
-			chestInv[i].first = NULL;
-			chestInv[i].last = NULL;
+			chestInv[i].first = nullptr;
+			chestInv[i].last = nullptr;
 		}
-		command_history.first = NULL;
-		command_history.last = NULL;
+		command_history.first = nullptr;
+		command_history.last = nullptr;
 		for ( int c = 0; c < MAXPLAYERS; c++ )
 		{
-			openedChest[c] = NULL;
+			openedChest[c] = nullptr;
 		}
 		mousex = xres / 2;
 		mousey = yres / 2;
@@ -403,8 +403,8 @@ int initGame()
 
 		for ( int c = 0; c < NUMITEMS; c++ )
 		{
-			items[c].surfaces.first = NULL;
-			items[c].surfaces.last = NULL;
+			items[c].surfaces.first = nullptr;
+			items[c].surfaces.last = nullptr;
 			for ( int x = 0; x < list_Size(&items[c].images); x++ )
 			{
 				auto surface = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*)));
@@ -416,7 +416,7 @@ int initGame()
 				node_t* node2 = list_Node(&items[c].images, x);
 				auto string = static_cast<string_t*>(node2->element);
 				std::string itemImgDir;
-				if ( PHYSFS_getRealDir(string->data) != NULL )
+				if ( PHYSFS_getRealDir(string->data) != nullptr)
 				{
 					itemImgDir = PHYSFS_getRealDir(string->data);
 					itemImgDir.append(PHYSFS_getDirSeparator()).append(string->data);
@@ -568,7 +568,7 @@ void deinitGame()
 			{
 				list_FreeAll(shopInv[c]);
 				free(shopInv[c]);
-				shopInv[c] = NULL;
+				shopInv[c] = nullptr;
 			}
 		}
 	}
@@ -757,7 +757,7 @@ void deinitGame()
 	{
 		list_FreeAll(&items[c].images);
 		node_t* node, *nextnode;
-		for ( node = items[c].surfaces.first; node != NULL; node = nextnode )
+		for ( node = items[c].surfaces.first; node != nullptr; node = nextnode )
 		{
 			nextnode = node->next;
 			auto surface = static_cast<SDL_Surface**>(node->element);
@@ -777,12 +777,12 @@ void deinitGame()
 	{
 		free(pathMapGrounded);
 	}
-	pathMapGrounded = NULL;
+	pathMapGrounded = nullptr;
 	if ( pathMapFlying )
 	{
 		free(pathMapFlying);
 	}
-	pathMapFlying = NULL;
+	pathMapFlying = nullptr;
 
 	// clear steam achievement list
 	list_FreeAll(&booksRead);

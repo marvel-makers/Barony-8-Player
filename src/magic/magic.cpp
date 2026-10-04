@@ -1385,7 +1385,7 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
 					else if ( parent->behavior == &actPlayer )
 					{
 						// search followers for charmed.
-						for ( node_t* node = casterStats->FOLLOWERS.first; node != NULL; node = node->next )
+						for ( node_t* node = casterStats->FOLLOWERS.first; node != nullptr; node = node->next )
 						{
 							auto c = static_cast<Uint32*>(node->element);
 							Entity* follower = nullptr;
@@ -2528,7 +2528,7 @@ bool spellEffectTeleportPull(Entity* my, spellElement_t& element, Entity* parent
 				int numlocations = 0;
 				std::vector<std::pair<int, int>> goodspots;
 				std::vector<std::pair<int, int>> spotsWithLineOfSight;
-				if ( !checkObstacle((tx << 4) + 8, (ty << 4) + 8, target, NULL) ) // try find directly infront of caster.
+				if ( !checkObstacle((tx << 4) + 8, (ty << 4) + 8, target, nullptr) ) // try find directly infront of caster.
 				{
 					Entity* ohitentity = hit.entity;
 					real_t ox = target->x;
@@ -2558,7 +2558,7 @@ bool spellEffectTeleportPull(Entity* my, spellElement_t& element, Entity* parent
 					{
 						for ( int ix = std::max(1, tx - dist); ix < std::min(tx + dist, static_cast<int>(map.width)); ++ix )
 						{
-							if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, target, NULL) )
+							if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, target, nullptr) )
 							{
 								Entity* ohitentity = hit.entity;
 								real_t ox = target->x;
@@ -2829,7 +2829,7 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
 				{
 					for ( int ix = std::max(1, tx - dist); ix < std::min(tx + dist, static_cast<int>(map.width)); ++ix )
 					{
-						if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, target, NULL) )
+						if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, target, nullptr) )
 						{
 							Entity* ohitentity = hit.entity;
 							real_t ox = parent->x;
@@ -2988,7 +2988,7 @@ Entity* spellEffectHologram(Entity& caster, spellElement_t& element, real_t x, r
 		{
 			for ( int ix = std::max(1, tx - dist); ix < std::min(tx + dist, static_cast<int>(map.width)); ++ix )
 			{
-				if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, &caster, NULL, true, true, false) )
+				if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, &caster, nullptr, true, true, false) )
 				{
 					goodspots.push_back(std::make_pair(ix, iy));
 				}
@@ -3000,7 +3000,7 @@ Entity* spellEffectHologram(Entity& caster, spellElement_t& element, real_t x, r
 		}
 		else
 		{
-			if ( !checkObstacle((tx << 4) + 8, (ty << 4) + 8, &caster, NULL, true, true, false, false) )
+			if ( !checkObstacle((tx << 4) + 8, (ty << 4) + 8, &caster, nullptr, true, true, false, false) )
 			{
 				monster = summonMonster(HOLOGRAM, tx * 16.0 + 8, ty * 16.0 + 8, true);
 			}
@@ -3047,7 +3047,7 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
 		{
 			for ( int ix = std::max(1, tx - dist); ix < std::min(tx + dist, static_cast<int>(map.width)); ++ix )
 			{
-				if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, &caster, NULL, true, true, false) )
+				if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, &caster, nullptr, true, true, false) )
 				{
 					goodspots.push_back(std::make_pair(ix, iy));
 				}
@@ -3059,7 +3059,7 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
 		}
 		else
 		{
-			if ( !checkObstacle((tx << 4) + 8, (ty << 4) + 8, &caster, NULL, true, true, false, false) )
+			if ( !checkObstacle((tx << 4) + 8, (ty << 4) + 8, &caster, nullptr, true, true, false, false) )
 			{
 				monster = summonMonster(MONSTER_ADORCISED_WEAPON, tx * 16.0 + 8, ty * 16.0 + 8, true);
 			}
@@ -3256,7 +3256,7 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
 		{
 			for ( int ix = std::max(1, tx - dist); ix < std::min(tx + dist, static_cast<int>(map.width)); ++ix )
 			{
-				if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, &caster, NULL, true, true, false) )
+				if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, &caster, nullptr, true, true, false) )
 				{
 					goodspots.push_back(std::make_pair(ix, iy));
 				}
@@ -3269,7 +3269,7 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
 		else
 		{
 			Monster type = &element == &spellElementMap[SPELL_FIRE_SPRITE] ? MOTH_SMALL : FLAME_ELEMENTAL;
-			if ( !checkObstacle((tx << 4) + 8, (ty << 4) + 8, &caster, NULL, true, true, false, false) )
+			if ( !checkObstacle((tx << 4) + 8, (ty << 4) + 8, &caster, nullptr, true, true, false, false) )
 			{
 				monster = summonMonster(type, tx * 16.0 + 8, ty * 16.0 + 8, true);
 			}

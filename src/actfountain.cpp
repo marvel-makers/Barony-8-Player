@@ -243,8 +243,8 @@ void actFountain(Entity* my)
 							std::pair<int, int> generatedPotion = fountainGeneratePotionDrop(rng);
 							auto type = static_cast<ItemType>(generatedPotion.first);
 							int appearance = generatedPotion.second;
-							Item* item = newItem(type, EXCELLENT, 0, 1, appearance, false, NULL);
-							if ( Entity* dropped = dropItemMonster(item, my, NULL) )
+							Item* item = newItem(type, EXCELLENT, 0, 1, appearance, false, nullptr);
+							if ( Entity* dropped = dropItemMonster(item, my, nullptr) )
 							{
 								dropped->yaw = ((0 + local_rng.rand() % 360) / 180.f) * PI;
 								dropped->vel_x = (0.75 + .025 * (local_rng.rand() % 11)) * cos(dropped->yaw);
@@ -403,7 +403,7 @@ void actFountain(Entity* my)
 							//Potion effect. Potion effect is stored in my->skill[3], randomly chosen when the fountain is created.
 							Compendium_t::Events_t::eventUpdateWorld(i, Compendium_t::CPDM_FOUNTAIN_DRUNK, "fountain", 1);
 							messagePlayer(i, MESSAGE_INTERACTION, Language::get(470));
-							Item* item = newItem(static_cast<ItemType>(POTION_WATER + my->skill[3]), static_cast<Status>(4), 0, 1, 0, false, NULL);
+							Item* item = newItem(static_cast<ItemType>(POTION_WATER + my->skill[3]), static_cast<Status>(4), 0, 1, 0, false, nullptr);
 							useItem(item, i, my);
 							// Long live the mystical fountain of TODO.
 							break;

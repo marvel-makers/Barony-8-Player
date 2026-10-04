@@ -757,7 +757,7 @@ void actHudWeapon(Entity* my)
 			if ( itemCategory(stats[HUDWEAPON_PLAYERNUM]->weapon) == SPELLBOOK )
 			{
 				my->flags[INVISIBLE] = true;
-				if ( parent != NULL )
+				if ( parent != nullptr)
 				{
 					parent->flags[INVISIBLE] = false;
 					parent->flags[INVISIBLE_DITHER] = false;
@@ -766,7 +766,7 @@ void actHudWeapon(Entity* my)
 			else
 			{
 				my->flags[INVISIBLE] = false;
-				if ( parent != NULL )
+				if ( parent != nullptr)
 				{
 					parent->flags[INVISIBLE] = true;
 					parent->flags[INVISIBLE_DITHER] = false;
@@ -785,7 +785,7 @@ void actHudWeapon(Entity* my)
 	{
 		my->flags[INVISIBLE] = true;
 		my->flags[INVISIBLE_DITHER] = false;
-		if ( parent != NULL )
+		if ( parent != nullptr)
 		{
 			parent->flags[INVISIBLE] = true;
 			parent->flags[INVISIBLE_DITHER] = false;
@@ -798,7 +798,7 @@ void actHudWeapon(Entity* my)
 		{
 			my->flags[INVISIBLE] = true;
 			my->flags[INVISIBLE_DITHER] = false;
-			if (parent != NULL)
+			if (parent != nullptr)
 			{
 				parent->flags[INVISIBLE] = true;
 				parent->flags[INVISIBLE_DITHER] = false;
@@ -1160,7 +1160,7 @@ void actHudWeapon(Entity* my)
 			{
 				HUDWEAPON_CHOP = 10; // special punch
 			}
-			else if ( stats[HUDWEAPON_PLAYERNUM]->weapon == NULL || hideWeapon )
+			else if ( stats[HUDWEAPON_PLAYERNUM]->weapon == nullptr || hideWeapon )
 			{
 				HUDWEAPON_CHOP = 7; // punch
 			}
@@ -1295,7 +1295,7 @@ void actHudWeapon(Entity* my)
 													{
 														free(quiver);
 													}
-													stats[HUDWEAPON_PLAYERNUM]->shield = NULL;
+													stats[HUDWEAPON_PLAYERNUM]->shield = nullptr;
 												}
 											}
 										}
@@ -1451,7 +1451,7 @@ void actHudWeapon(Entity* my)
 												{
 													free(quiver);
 												}
-												stats[HUDWEAPON_PLAYERNUM]->shield = NULL;
+												stats[HUDWEAPON_PLAYERNUM]->shield = nullptr;
 											}
 										}
 									}
@@ -1688,7 +1688,7 @@ void actHudWeapon(Entity* my)
 									{
 										free(item);
 									}
-									stats[HUDWEAPON_PLAYERNUM]->weapon = NULL;
+									stats[HUDWEAPON_PLAYERNUM]->weapon = nullptr;
 								}
 							}
 						}
@@ -2066,7 +2066,7 @@ void actHudWeapon(Entity* my)
 									{
 										free(item);
 									}
-									stats[HUDWEAPON_PLAYERNUM]->weapon = NULL;
+									stats[HUDWEAPON_PLAYERNUM]->weapon = nullptr;
 								}
 							}
 						}
@@ -2779,7 +2779,7 @@ void actHudWeapon(Entity* my)
 			if ( swingweapon )
 			{
 				// restart the combo...
-				if ( stats[HUDWEAPON_PLAYERNUM]->weapon == NULL || hideWeapon )
+				if ( stats[HUDWEAPON_PLAYERNUM]->weapon == nullptr || hideWeapon )
 				{
 					HUDWEAPON_CHOP = 7;
 				}
@@ -3032,7 +3032,7 @@ void actHudWeapon(Entity* my)
 								{
 									free(item);
 								}
-								stats[HUDWEAPON_PLAYERNUM]->weapon = NULL;
+								stats[HUDWEAPON_PLAYERNUM]->weapon = nullptr;
 							}
 						}
 						if ( !stats[HUDWEAPON_PLAYERNUM]->weapon )

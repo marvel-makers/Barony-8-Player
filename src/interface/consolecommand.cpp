@@ -927,7 +927,7 @@ namespace ConsoleCommands {
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
 			return;
 		}
-		for (auto node = map.entities->first; node != NULL; node = node->next)
+		for (auto node = map.entities->first; node != nullptr; node = node->next)
 		{
 			const auto entity = static_cast<Entity*>(node->element);
 			if (entity->behavior == &actLadder)
@@ -1522,7 +1522,7 @@ namespace ConsoleCommands {
 		{
 			int c = 0;
 			node_t* node,* nextnode;
-			for (node = map.entities->first; node != NULL; node = nextnode)
+			for (node = map.entities->first; node != nullptr; node = nextnode)
 			{
 				nextnode = node->next;
 				auto entity = static_cast<Entity*>(node->element);
@@ -1560,7 +1560,7 @@ namespace ConsoleCommands {
 		{
 			int c = 0;
 			node_t* node,* nextnode;
-			for ( node = map.entities->first; node != NULL; node = nextnode )
+			for ( node = map.entities->first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
 				const Entity* entity = static_cast<Entity*>(node->element);
@@ -1617,7 +1617,7 @@ namespace ConsoleCommands {
 		});
 
 	static ConsoleCommand ccmd_segfault("/segfault", "don't try this at home", []CCMD{
-		int* potato = NULL;
+		int* potato = nullptr;
 		(*potato) = 322; //Crash the game!
 		});
 
@@ -2461,9 +2461,9 @@ namespace ConsoleCommands {
 
 		if (minotaurlevel)
 		{
-			const node_t* tmpNode = NULL;
-			Entity* tmpEnt = NULL;
-			for (tmpNode = map.entities->first; tmpNode != NULL; tmpNode = tmpNode->next)
+			const node_t* tmpNode = nullptr;
+			Entity* tmpEnt = nullptr;
+			for (tmpNode = map.entities->first; tmpNode != nullptr; tmpNode = tmpNode->next)
 			{
 				tmpEnt = static_cast<Entity*>(tmpNode->element);
 				if (tmpEnt->sprite == 37)
@@ -2653,7 +2653,7 @@ namespace ConsoleCommands {
 			strcpy(filename, "models/creatures/");
 			strcat(filename, monstertypename[c]);
 			strcat(filename, "/limbs.txt");
-			if ((fp = openDataFile(filename, "rb")) == NULL)
+			if ((fp = openDataFile(filename, "rb")) == nullptr)
 			{
 				continue;
 			}
@@ -5571,14 +5571,14 @@ namespace ConsoleCommands {
 	});
 
 	static ConsoleCommand ccmd_mesh_collider_debug("/mesh_collider_debug", "", []CCMD{
-		const node_t* tmpNode = NULL;
-		const Entity* tmpEnt = NULL;
+		const node_t* tmpNode = nullptr;
+		const Entity* tmpEnt = nullptr;
 		if ( !(svFlags & SV_FLAG_CHEATS) )
 		{
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
 			return;
 		}
-		for ( tmpNode = map.entities->first; tmpNode != NULL; tmpNode = tmpNode->next )
+		for ( tmpNode = map.entities->first; tmpNode != nullptr; tmpNode = tmpNode->next )
 		{
 			tmpEnt = static_cast<Entity*>(tmpNode->element);
 			if ( tmpEnt->behavior == &actColliderDecoration )
@@ -5593,8 +5593,8 @@ namespace ConsoleCommands {
 	});
 
 	static ConsoleCommand ccmd_debug_claim_items("/debug_claim_items", "", []CCMD{
-		const node_t * tmpNode = NULL;
-		const Entity* tmpEnt = NULL;
+		const node_t * tmpNode = nullptr;
+		const Entity* tmpEnt = nullptr;
 		if ( !(svFlags & SV_FLAG_CHEATS) )
 		{
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
@@ -5604,7 +5604,7 @@ namespace ConsoleCommands {
 		if ( multiplayer != CLIENT )
 		{
 			node_t* nextnode = nullptr;
-			for ( tmpNode = map.entities->first; tmpNode != NULL; tmpNode = nextnode )
+			for ( tmpNode = map.entities->first; tmpNode != nullptr; tmpNode = nextnode )
 			{
 				nextnode = tmpNode->next;
 				tmpEnt = static_cast<Entity*>(tmpNode->element);
@@ -5628,8 +5628,8 @@ namespace ConsoleCommands {
 	});
 
 	static ConsoleCommand ccmd_debug_heal_items("/debug_heal_items", "", []CCMD{
-		const node_t * tmpNode = NULL;
-		Entity* tmpEnt = NULL;
+		const node_t * tmpNode = nullptr;
+		Entity* tmpEnt = nullptr;
 		if ( !(svFlags & SV_FLAG_CHEATS) )
 		{
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
@@ -5649,7 +5649,7 @@ namespace ConsoleCommands {
 		int monsterShopPrivStockMana = 0;
 		int magicScrap = 0;
 		std::map<int, int> allitems;
-		for ( tmpNode = map.entities->first; tmpNode != NULL; tmpNode = tmpNode->next )
+		for ( tmpNode = map.entities->first; tmpNode != nullptr; tmpNode = tmpNode->next )
 		{
 			tmpEnt = static_cast<Entity*>(tmpNode->element);
 			if ( tmpEnt->behavior == &actItem )

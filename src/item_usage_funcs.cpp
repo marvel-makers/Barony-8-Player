@@ -179,7 +179,7 @@ bool item_PotionWater(Item*& item, Entity* entity, Entity* usedBy)
 		return false;
 	}
 
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -511,7 +511,7 @@ bool item_PotionWater(Item*& item, Entity* entity, Entity* usedBy)
 
 		// else randomly curse an item in the entity's inventory, item must be +0 or higher.
 		int items = 0;
-		for ( node = stats->inventory.first; node != NULL; node = node->next )
+		for ( node = stats->inventory.first; node != nullptr; node = node->next )
 		{
 			auto target = static_cast<Item*>(node->element);
 			if ( target && !itemIsEquipped(target, player) && itemCategory(target) != SPELL_CAT && target->beatitude >= 0 )
@@ -527,7 +527,7 @@ bool item_PotionWater(Item*& item, Entity* entity, Entity* usedBy)
 		}
 		int itemToCurse = local_rng.rand() % items;
 		items = 0;
-		for ( node = stats->inventory.first; node != NULL; node = node->next )
+		for ( node = stats->inventory.first; node != nullptr; node = node->next )
 		{
 			auto target = static_cast<Item*>(node->element);
 			if ( target && !itemIsEquipped(target, player) && itemCategory(target) != SPELL_CAT && target->beatitude >= 0 )
@@ -742,7 +742,7 @@ bool item_PotionJuice(Item*& item, Entity* entity, Entity* usedBy)
 		return false;
 	}
 
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION 
 			&& stats->type != SKELETON )
@@ -932,11 +932,11 @@ bool item_PotionSickness(Item*& item, Entity* entity, Entity* usedBy)
 	auto& camera_shakex = cameravars[player >= 0 ? player : 0].shakex;
 	auto& camera_shakey = cameravars[player >= 0 ? player : 0].shakey;
 
-	if ( entity == NULL )
+	if ( entity == nullptr)
 	{
 		return false;
 	}
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION 
 			&& stats->type != SKELETON )
@@ -1148,7 +1148,7 @@ bool item_PotionConfusion(Item*& item, Entity* entity, Entity* usedBy)
 		return false;
 	}
 
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -1258,7 +1258,7 @@ bool item_PotionCureAilment(Item*& item, Entity* entity, Entity* usedBy)
 		return false;
 	}
 
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION 
 			&& stats->type != SKELETON )
@@ -1389,7 +1389,7 @@ bool item_PotionBlindness(Item*& item, Entity* entity, Entity* usedBy)
 		return false;
 	}
 
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -1470,7 +1470,7 @@ bool item_PotionInvisibility(Item*& item, Entity* entity, Entity* usedBy)
 		return false;
 	}
 
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -1564,7 +1564,7 @@ bool item_PotionLevitation(Item*& item, Entity* entity, Entity* usedBy)
 		return false;
 	}
 
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -1646,7 +1646,7 @@ bool item_PotionSpeed(Item*& item, Entity* entity, Entity* usedBy)
 		return false;
 	}
 
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -1747,7 +1747,7 @@ bool item_PotionStrength(Item*& item, Entity* entity, Entity* usedBy)
 		return false;
 	}
 
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -1839,11 +1839,11 @@ bool item_PotionAcid(Item*& item, Entity* entity, Entity* usedBy)
 	auto& camera_shakex = cameravars[player >= 0 ? player : 0].shakex;
 	auto& camera_shakey = cameravars[player >= 0 ? player : 0].shakey;
 
-	if ( entity == NULL )
+	if ( entity == nullptr)
 	{
 		return false;
 	}
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -1944,11 +1944,11 @@ bool item_PotionUnstableStorm(Item*& item, Entity* entity, Entity* usedBy, Entit
 	auto& camera_shakex = cameravars[player >= 0 ? player : 0].shakex;
 	auto& camera_shakey = cameravars[player >= 0 ? player : 0].shakey;
 
-	if ( entity == NULL )
+	if ( entity == nullptr)
 	{
 		return false;
 	}
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -2124,7 +2124,7 @@ bool item_PotionParalysis(Item*& item, Entity* entity, Entity* usedBy)
 		return false;
 	}
 
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -2518,11 +2518,11 @@ bool item_PotionRestoreMagic(Item*& item, Entity* entity, Entity* usedBy)
 		return false;
 	}
 
-	if ( entity == NULL )
+	if ( entity == nullptr)
 	{
 		return false;
 	}
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -2646,7 +2646,7 @@ Entity* item_PotionPolymorph(Item*& item, Entity* entity, Entity* usedBy)
 		return nullptr;
 	}
 
-	if ( stats->amulet != NULL )
+	if ( stats->amulet != nullptr)
 	{
 		if ( stats->amulet->type == AMULET_STRANGULATION
 			&& stats->type != SKELETON )
@@ -3691,7 +3691,7 @@ void item_ScrollFood(Item* item, int player)
 	}
 	else
 	{
-		for ( node = stats[player]->inventory.first; node != NULL; node = nextnode )
+		for ( node = stats[player]->inventory.first; node != nullptr; node = nextnode )
 		{
 			nextnode = node->next;
 			target = static_cast<Item*>(node->element);
@@ -4945,7 +4945,7 @@ void item_Food(Item*& item, int player)
 		}
 	}
 
-	if ( stats[player]->amulet != NULL )
+	if ( stats[player]->amulet != nullptr)
 	{
 		if ( stats[player]->amulet->type == AMULET_STRANGULATION
 			&& stats[player]->type != SKELETON )
@@ -5409,7 +5409,7 @@ void item_FoodTin(Item*& item, int player)
 		}
 	}
 
-	if ( stats[player]->amulet != NULL )
+	if ( stats[player]->amulet != nullptr)
 	{
 		if ( stats[player]->amulet->type == AMULET_STRANGULATION
 			&& stats[player]->type != SKELETON )
@@ -5756,7 +5756,7 @@ void item_AmuletSexChange(Item* item, int player)
 		consumeItem(item, player);
 	}
 
-	if ( stats[player]->amulet != NULL )
+	if ( stats[player]->amulet != nullptr)
 	{
 		if ( !stats[player]->amulet->canUnequip(stats[player]) )
 		{
@@ -5787,7 +5787,7 @@ void item_AmuletSexChange(Item* item, int player)
 		messagePlayer(player, MESSAGE_EQUIPMENT, Language::get(1094));
 	}
 
-	stats[player]->amulet = NULL;
+	stats[player]->amulet = nullptr;
 	stats[player]->sex = static_cast<sex_t>((stats[player]->sex == 0));
 
 	serverUpdateSexChange(player);
@@ -5934,7 +5934,7 @@ void item_Spellbook(Item*& item, int player)
 				spellID = spell->ID;
 			}
 
-			for ( node_t* node2 = stats[player]->inventory.first; node2 != NULL; node2 = nextnode )
+			for ( node_t* node2 = stats[player]->inventory.first; node2 != nullptr; node2 = nextnode )
 			{
 				nextnode = node2->next;
 				auto itemInventory = static_cast<Item*>(node2->element);

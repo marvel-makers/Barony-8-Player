@@ -762,11 +762,11 @@ void Entity::effectTimes()
 {
 	Stat* myStats = this->getStats();
 	int player;
-	spell_t* spell = NULL;
-	node_t* node = NULL;
+	spell_t* spell = nullptr;
+	node_t* node = nullptr;
 	int count = 0;
 
-	if ( myStats == NULL )
+	if ( myStats == nullptr)
 	{
 		return;
 	}
@@ -793,7 +793,7 @@ void Entity::effectTimes()
 		spell = static_cast<spell_t*>(node->element);
 		if ( !spell->sustain )
 		{
-			node_t* temp = NULL;
+			node_t* temp = nullptr;
 			if ( node->prev )
 			{
 				temp = node->prev;
@@ -802,7 +802,7 @@ void Entity::effectTimes()
 			{
 				temp = node->next;
 			}
-			spell->magic_effects_node = NULL; //To prevent recursive removal, which results in a crash.
+			spell->magic_effects_node = nullptr; //To prevent recursive removal, which results in a crash.
 			if ( player > 0 && multiplayer == SERVER && !players[player]->isLocalPlayer() )
 			{
 				strcpy((char*)net_packet->data, "UNCH");
@@ -2471,7 +2471,7 @@ bool Entity::increaseSkill(int skill, bool notify)
 		player = this->skill[2];
 	}
 
-	if ( myStats == NULL )
+	if ( myStats == nullptr)
 	{
 		return false;
 	}
@@ -3160,7 +3160,7 @@ Entity* uidToEntity(Sint32 uidnum)
 	if ( it != map.entities_map.end() )
 		return static_cast<Entity*>(it->second->element);
 
-	return NULL;
+	return nullptr;
 }
 
 /*-------------------------------------------------------------------------------
@@ -3447,7 +3447,7 @@ void Entity::drainMP(int amount, bool notifyOverexpend)
 	Stat* entitystats = this->getStats();
 
 	//Check if no stats found.
-	if ( entitystats == NULL || amount == 0 )
+	if ( entitystats == nullptr || amount == 0 )
 	{
 		return;
 	}
@@ -3645,7 +3645,7 @@ int Entity::getHungerTickRate(Stat* myStats, bool isPlayer, bool checkItemsEffec
 	int hungerring = 0;
 	if ( checkItemsEffects )
 	{
-		if ( myStats->ring != NULL )
+		if ( myStats->ring != nullptr)
 		{
 			if ( myStats->ring->type == RING_SLOWDIGESTION )
 			{
@@ -5368,7 +5368,7 @@ void Entity::handleEffects(Stat* myStats)
 	}
 
 	// random teleportation
-	if ( myStats->ring != NULL )
+	if ( myStats->ring != nullptr)
 	{
 		if ( myStats->ring->type == RING_TELEPORTATION )
 		{
@@ -5644,7 +5644,7 @@ void Entity::handleEffects(Stat* myStats)
 		{
 			if ( behavior == &actMonster && myStats->HP > 0 )
 			{
-				if ( myStats->weapon != NULL && itemCategory(myStats->weapon) != SPELLBOOK )
+				if ( myStats->weapon != nullptr && itemCategory(myStats->weapon) != SPELLBOOK )
 				{
 					//messagePlayer(player, MESSAGE_EQUIPMENT, Language::get(636));
 					if ( Entity* dropped = dropItemMonster(myStats->weapon, this, myStats) )
@@ -5674,7 +5674,7 @@ void Entity::handleEffects(Stat* myStats)
 		}
 	}
 
-	if ( myStats->shield != NULL )
+	if ( myStats->shield != nullptr)
 	{
 		if ( behavior == &actPlayer && (effectShapeshift == NOTHING || effectShapeshift == CREATURE_IMP) )
 		{
@@ -6311,7 +6311,7 @@ void Entity::handleEffects(Stat* myStats)
 		{
 			int chargeTime = players[player]->mechanics.fociHolyChargeTime;
 			players[player]->mechanics.fociHolyChargeTime = 0;
-			if ( myStats->shield != NULL && (effectShapeshift == NOTHING || effectShapeshift == CREATURE_IMP) )
+			if ( myStats->shield != nullptr && (effectShapeshift == NOTHING || effectShapeshift == CREATURE_IMP) )
 			{
 				if ( itemTypeIsFoci(myStats->shield->type) )
 				{
@@ -6335,7 +6335,7 @@ void Entity::handleEffects(Stat* myStats)
 		{
 			int chargeTime = players[player]->mechanics.fociDarkChargeTime;
 			players[player]->mechanics.fociDarkChargeTime = 0;
-			if ( myStats->shield != NULL && (effectShapeshift == NOTHING || effectShapeshift == CREATURE_IMP) )
+			if ( myStats->shield != nullptr && (effectShapeshift == NOTHING || effectShapeshift == CREATURE_IMP) )
 			{
 				if ( itemTypeIsFoci(myStats->shield->type) )
 				{
@@ -6683,7 +6683,7 @@ void Entity::handleEffects(Stat* myStats)
 					{
 						entity = newEntity(682, 1, map.entities, nullptr); //Blood entity.
 					}
-					if ( entity != NULL )
+					if ( entity != nullptr)
 					{
 						entity->x = this->x;
 						entity->y = this->y;
@@ -6745,7 +6745,7 @@ void Entity::handleEffects(Stat* myStats)
 				if ( map.tiles[0 + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					Entity* entity = newEntity(862, 1, map.entities, nullptr); //Web pool entity.
-					if ( entity != NULL )
+					if ( entity != nullptr)
 					{
 						entity->x = this->x;
 						entity->y = this->y;
@@ -7693,7 +7693,7 @@ void Entity::handleEffects(Stat* myStats)
 	}
 
 	// amulet effects
-	if ( myStats->amulet != NULL )
+	if ( myStats->amulet != nullptr)
 	{
 		// strangulation
 		if ( myStats->amulet->type == AMULET_STRANGULATION && myStats->type != SKELETON )
@@ -7917,7 +7917,7 @@ void Entity::handleEffects(Stat* myStats)
 						net_packet->len = 8;
 						sendPacketSafe(net_sock, -1, net_packet, player - 1);
 					}
-					myStats->amulet = NULL;
+					myStats->amulet = nullptr;
 				}
 			}
 		}
@@ -9770,7 +9770,7 @@ bool Entity::isInvisible() const
 		return false;
 	}
 	Stat* entitystats;
-	if ( (entitystats = getStats()) == NULL )
+	if ( (entitystats = getStats()) == nullptr)
 	{
 		return false;
 	}
@@ -9787,7 +9787,7 @@ bool Entity::isInvisible() const
 	}
 
 	// wearing invisibility cloaks
-	if ( entitystats->cloak != NULL )
+	if ( entitystats->cloak != nullptr)
 	{
 		if ( entitystats->cloak->type == CLOAK_INVISIBILITY )
 		{
@@ -9796,7 +9796,7 @@ bool Entity::isInvisible() const
 	}
 
 	// wearing invisibility ring
-	if ( entitystats->ring != NULL )
+	if ( entitystats->ring != nullptr)
 	{
 		if ( entitystats->ring->type == RING_INVISIBILITY )
 		{
@@ -10016,7 +10016,7 @@ void getItemsOnTile(int x, int y, list_t** list)
 	//And then free the list returned by checkTileForEntity.
 
 	//Right. First, grab all the entities on the tile.
-	list_t* entities = NULL;
+	list_t* entities = nullptr;
 	entities = checkTileForEntity(x, y);
 
 	if ( !entities )
@@ -10024,10 +10024,10 @@ void getItemsOnTile(int x, int y, list_t** list)
 		return;    //No use continuing of got no entities.
 	}
 
-	node_t* node = NULL;
-	node_t* node2 = NULL;
+	node_t* node = nullptr;
+	node_t* node2 = nullptr;
 	//Loop through the list of entities.
-	for ( node = entities->first; node != NULL; node = node->next )
+	for ( node = entities->first; node != nullptr; node = node->next )
 	{
 		if ( node->element )
 		{
@@ -10039,8 +10039,8 @@ void getItemsOnTile(int x, int y, list_t** list)
 				if ( !(*list) )
 				{
 					*list = static_cast<list_t*>(malloc(sizeof(list_t)));
-					(*list)->first = NULL;
-					(*list)->last = NULL;
+					(*list)->first = nullptr;
+					(*list)->last = nullptr;
 				}
 
 				//Add the current entity to it.
@@ -10304,7 +10304,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 			getTargetsAroundEntity(this, this, 24, PI, MONSTER_TARGET_ALL, &aoeTargets);
 			if ( aoeTargets )
 			{
-				for ( node = aoeTargets->first; node != NULL; node = node->next )
+				for ( node = aoeTargets->first; node != nullptr; node = node->next )
 				{
 					auto tmpEntity = static_cast<Entity*>(node->element);
 					if ( tmpEntity != nullptr )
@@ -10857,7 +10857,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 				if ( bowDegradeChance < 100 && local_rng.rand() % bowDegradeChance == 0 && myStats->weapon->type != ARTIFACT_BOW
 					&& !spellEffectPreserveItem(myStats->weapon) )
 				{
-					if ( myStats->weapon != NULL )
+					if ( myStats->weapon != nullptr)
 					{
 						if ( player >= 0 )
 						{
@@ -13530,7 +13530,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 					}
 
 					// damage opponent armor if applicable
-					Item* armor = NULL;
+					Item* armor = nullptr;
 					int armornum = 0;
 					bool isWeakArmor = false;
 					bool shieldIncreased = false;
@@ -13544,7 +13544,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 
 						// choose random piece of equipment to target
 						armornum = hitstats->pickRandomEquippedItemToDegradeOnHit(&armor, true, false, false, true);
-						if ( armor != NULL && armor->status > BROKEN )
+						if ( armor != nullptr && armor->status > BROKEN )
 						{
 							switch ( armor->type )
 							{
@@ -13622,7 +13622,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 								// 66% chance to be deselected from degrading.
 								if ( local_rng.rand() % 3 > 0 )
 								{
-									armor = NULL;
+									armor = nullptr;
 									armornum = 0;
 								}
 							}
@@ -13631,7 +13631,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 								// 75% chance to be deselected from degrading.
 								if ( local_rng.rand() % 4 > 0 )
 								{
-									armor = NULL;
+									armor = nullptr;
 									armornum = 0;
 								}
 							}
@@ -13640,14 +13640,14 @@ void Entity::attack(int pose, int charge, Entity* target)
 						{
 							if ( armorDegradeChance == 100 || (local_rng.rand() % armorDegradeChance > 0) )
 							{
-								armor = NULL;
+								armor = nullptr;
 								armornum = 0;
 							}
 						}
 					}
 
 					// if nothing chosen to degrade, check extra shield chances to degrade
-					if ( hitstats->shield != NULL && hitstats->shield->status > BROKEN && armor == NULL
+					if ( hitstats->shield != nullptr && hitstats->shield->status > BROKEN && armor == nullptr
 						&& !itemTypeIsQuiver(hitstats->shield->type) && itemCategory(hitstats->shield) != SPELLBOOK
 						&& !itemTypeIsFoci(hitstats->shield->type)
 						&& !itemTypeIsInstrument(hitstats->shield->type)
@@ -13780,7 +13780,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 									shieldDegradeChance = 100; // don't break.
 								}
 							}
-							if ( shieldDegradeChance < 100 && armor == NULL &&
+							if ( shieldDegradeChance < 100 && armor == nullptr &&
 								(	(hitstats->defending && local_rng.rand() % shieldDegradeChance == 0)
 									|| (hitstats->defending && pose == MONSTER_POSE_GOLEM_SMASH && target == nullptr && local_rng.rand() % 3 == 0)
 								)
@@ -13792,7 +13792,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 						}
 					}
 
-					if ( armor != NULL && armor->status > BROKEN )
+					if ( armor != nullptr && armor->status > BROKEN )
 					{
 						hit.entity->degradeArmor(*hitstats, *armor, armornum);
 						if ( armor->status == BROKEN )
@@ -14463,7 +14463,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 									Item** slot = itemSlot(hitstats, armor);
 									if ( slot )
 									{
-										*slot = NULL;
+										*slot = nullptr;
 									}
 									if ( armor->node )
 									{
@@ -14618,7 +14618,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 									Item** slot = itemSlot(hitstats, armor);
 									if ( slot )
 									{
-										*slot = NULL;
+										*slot = nullptr;
 									}
 									if ( armor->node )
 									{
@@ -16213,7 +16213,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 						getTargetsAroundEntity(this, hit.entity, STRIKERANGE, PI / 3, MONSTER_TARGET_ENEMY, &aoeTargets);
 						if ( aoeTargets )
 						{
-							for ( node = aoeTargets->first; node != NULL; node = node->next )
+							for ( node = aoeTargets->first; node != nullptr; node = node->next )
 							{
 								tmpEntity = static_cast<Entity*>(node->element);
 								if ( tmpEntity != nullptr )
@@ -16229,7 +16229,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 						if ( shakeTargets )
 						{
 							// shake nearby players that were not the primary target.
-							for ( node = shakeTargets->first; node != NULL; node = node->next )
+							for ( node = shakeTargets->first; node != nullptr; node = node->next )
 							{
 								tmpEntity = static_cast<Entity*>(node->element);
 								playerhit = tmpEntity->skill[2];
@@ -16259,7 +16259,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 						getTargetsAroundEntity(this, this, 24, PI, MONSTER_TARGET_ALL, &aoeTargets);
 						if ( aoeTargets )
 						{
-							for ( node = aoeTargets->first; node != NULL; node = node->next )
+							for ( node = aoeTargets->first; node != nullptr; node = node->next )
 							{
 								tmpEntity = static_cast<Entity*>(node->element);
 								if ( tmpEntity != nullptr )
@@ -16638,7 +16638,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 						messagePlayer(player, MESSAGE_HINT, Language::get(706));
 					}
 				}
-				else if ( myStats->weapon != NULL && !shapeshifted )
+				else if ( myStats->weapon != nullptr && !shapeshifted )
 				{
 					if ( myStats->weapon->type == TOOL_PICKAXE )
 					{
@@ -16826,7 +16826,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 			else
 			{
 				// hit nothing
-				if ( myStats->weapon != NULL && !shapeshifted )
+				if ( myStats->weapon != nullptr && !shapeshifted )
 				{
 					if ( behavior == &actPlayer )
 					{
@@ -16865,7 +16865,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 				if ( shakeTargets )
 				{
 					// shake nearby players that were not the primary target.
-					for ( node = shakeTargets->first; node != NULL; node = node->next )
+					for ( node = shakeTargets->first; node != nullptr; node = node->next )
 					{
 						tmpEntity = static_cast<Entity*>(node->element);
 						playerhit = tmpEntity->skill[2];
@@ -17081,7 +17081,7 @@ bool Entity::teleport(int tele_x, int tele_y)
 	}
 
 	if ( (strstr(map.name, "Minotaur") && behavior != &actDeathGhost) 
-		|| checkObstacle((tele_x << 4) + 8, (tele_y << 4) + 8, this, NULL) )
+		|| checkObstacle((tele_x << 4) + 8, (tele_y << 4) + 8, this, nullptr) )
 	{
 		messagePlayer(player, MESSAGE_HINT, Language::get(707));
 		return false;
@@ -17249,7 +17249,7 @@ bool Entity::teleportRandom(int x1, int x2, int y1, int y2)
 	{
 		for ( int ix = x1; ix < x2; ++ix )
 		{
-			if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, this, NULL) )
+			if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, this, nullptr) )
 			{
 				numlocations++;
 			}
@@ -17266,7 +17266,7 @@ bool Entity::teleportRandom(int x1, int x2, int y1, int y2)
 	{
 		for ( int ix = x1; ix < x2; ++ix )
 		{
-			if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, this, NULL) )
+			if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, this, nullptr) )
 			{
 				if ( numlocations == pickedlocation )
 				{
@@ -17381,7 +17381,7 @@ bool Entity::teleportAroundEntity(Entity* target, int dist, int effectType)
 	{
 		for ( int ix = std::max(1, tx - dist); !forceSpot && ix <= std::min(tx + dist, static_cast<int>(map.width) - 1); ++ix )
 		{
-			if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, this, NULL) )
+			if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, this, nullptr) )
 			{
 				if ( behavior == &actPlayer && target->behavior == &actMonster )
 				{
@@ -18984,7 +18984,7 @@ bool Entity::checkEnemy(Entity* your)
 	}
 
 	// if you have a leader, check whether we are enemies instead
-	Entity* yourLeader = NULL;
+	Entity* yourLeader = nullptr;
 	if ( yourStats->leader_uid )
 	{
 		yourLeader = uidToEntity(yourStats->leader_uid);
@@ -19006,7 +19006,7 @@ bool Entity::checkEnemy(Entity* your)
 	}
 
 	// first find out if I have a leader
-	Entity* myLeader = NULL;
+	Entity* myLeader = nullptr;
 	if ( myStats->leader_uid )
 	{
 		myLeader = uidToEntity(myStats->leader_uid);
@@ -19035,7 +19035,7 @@ bool Entity::checkEnemy(Entity* your)
 	{
 		node_t* t_node;
 		bool foundFollower = false;
-		for ( t_node = myStats->FOLLOWERS.first; t_node != NULL; t_node = t_node->next )
+		for ( t_node = myStats->FOLLOWERS.first; t_node != nullptr; t_node = t_node->next )
 		{
 			auto uid = static_cast<Uint32*>(t_node->element);
 			if ( *uid == your->uid )
@@ -19605,7 +19605,7 @@ bool Entity::checkFriend(Entity* your)
 	}
 
 	// if you have a leader, check whether we are friends instead
-	Entity* yourLeader = NULL;
+	Entity* yourLeader = nullptr;
 	if ( yourStats->leader_uid )
 	{
 		yourLeader = uidToEntity(yourStats->leader_uid);
@@ -19627,7 +19627,7 @@ bool Entity::checkFriend(Entity* your)
 	}
 
 	// first find out if I have a leader
-	Entity* myLeader = NULL;
+	Entity* myLeader = nullptr;
 	if ( myStats->leader_uid )
 	{
 		myLeader = uidToEntity(myStats->leader_uid);
@@ -19656,7 +19656,7 @@ bool Entity::checkFriend(Entity* your)
 	{
 		node_t* t_node;
 		bool foundFollower = false;
-		for ( t_node = myStats->FOLLOWERS.first; t_node != NULL; t_node = t_node->next )
+		for ( t_node = myStats->FOLLOWERS.first; t_node != nullptr; t_node = t_node->next )
 		{
 			auto uid = static_cast<Uint32*>(t_node->element);
 			if ( *uid == your->uid )
@@ -20061,34 +20061,34 @@ void createMonsterEquipment(Stat* stats, BaronyRNG& rng)
 				{
 					switch ( itemIndex ) {
 						case 0:
-							stats->helmet = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, NULL);
+							stats->helmet = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, nullptr);
 							break;
 						case 1:
-							stats->weapon = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, NULL);
+							stats->weapon = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, nullptr);
 							break;
 						case 2:
-							stats->shield = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, NULL);
+							stats->shield = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, nullptr);
 							break;
 						case 3:
-							stats->breastplate = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, NULL);
+							stats->breastplate = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, nullptr);
 							break;
 						case 4:
-							stats->shoes = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, NULL);
+							stats->shoes = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, nullptr);
 							break;
 						case 5:
-							stats->ring = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, NULL);
+							stats->ring = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, nullptr);
 							break;
 						case 6:
-							stats->amulet = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, NULL);
+							stats->amulet = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, nullptr);
 							break;
 						case 7:
-							stats->cloak = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, NULL);
+							stats->cloak = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, nullptr);
 							break;
 						case 8:
-							stats->mask = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, NULL);
+							stats->mask = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, nullptr);
 							break;
 						case 9:
-							stats->gloves = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, NULL);
+							stats->gloves = newItem(itemId, itemStatus, itemBless, itemCount, itemAppearance, itemIdentified, nullptr);
 							break;
 						default:
 							break;
@@ -20850,21 +20850,21 @@ bool isLevitating(Stat* mystats)
 	{
 		return true;
 	}
-	if ( mystats->ring != NULL )
+	if ( mystats->ring != nullptr)
 	{
 		if ( mystats->ring->type == RING_LEVITATION )
 		{
 			return true;
 		}
 	}
-	if ( mystats->shoes != NULL )
+	if ( mystats->shoes != nullptr)
 	{
 		if ( mystats->shoes->type == STEEL_BOOTS_LEVITATION )
 		{
 			return true;
 		}
 	}
-	if ( mystats->cloak != NULL )
+	if ( mystats->cloak != nullptr)
 	{
 		if ( mystats->cloak->type == ARTIFACT_CLOAK )
 		{
@@ -20885,7 +20885,7 @@ returns the proficiency for the weapon equipped.
 
 int getWeaponSkill(const Item* weapon)
 {
-	if ( weapon == NULL )
+	if ( weapon == nullptr)
 	{
 		return PRO_UNARMED;
 	}
@@ -24708,8 +24708,8 @@ bool Entity::monsterAddNearbyItemToInventory(Stat* myStats, int rangeToFind, int
 		if ( !(itemsList) )
 		{
 			itemsList = static_cast<list_t*>(malloc(sizeof(list_t)));
-			(itemsList)->first = NULL;
-			(itemsList)->last = NULL;
+			(itemsList)->first = nullptr;
+			(itemsList)->last = nullptr;
 		}
 
 		//Add the current entity to it.
@@ -30398,7 +30398,7 @@ bool Entity::isBossMonster()
 
 void Entity::handleKnockbackDamage(Stat& myStats, Entity* knockedInto)
 {
-	if ( knockedInto != NULL && (myStats.getEffectActive(EFF_KNOCKBACK) || myStats.getEffectActive(EFF_DASH) >= 2)
+	if ( knockedInto != nullptr && (myStats.getEffectActive(EFF_KNOCKBACK) || myStats.getEffectActive(EFF_DASH) >= 2)
 		&& myStats.HP > 0 && myStats.type != MONSTER_ADORCISED_WEAPON )
 	{
 		Entity* whoKnockedMe = nullptr;
@@ -32212,43 +32212,43 @@ real_t Entity::monsterGetWeightRatio()
 	Stat* myStats = getStats();
 	if ( !myStats ) { return 1.0; }
 	Sint32 weight = 0;
-	if ( myStats->helmet != NULL )
+	if ( myStats->helmet != nullptr)
 	{
 		weight += myStats->helmet->getWeight();
 	}
-	if ( myStats->breastplate != NULL )
+	if ( myStats->breastplate != nullptr)
 	{
 		weight += myStats->breastplate->getWeight();
 	}
-	if ( myStats->gloves != NULL )
+	if ( myStats->gloves != nullptr)
 	{
 		weight += myStats->gloves->getWeight();
 	}
-	if ( myStats->shoes != NULL )
+	if ( myStats->shoes != nullptr)
 	{
 		weight += myStats->shoes->getWeight();
 	}
-	if ( myStats->shield != NULL )
+	if ( myStats->shield != nullptr)
 	{
 		weight += myStats->shield->getWeight();
 	}
-	if ( myStats->weapon != NULL )
+	if ( myStats->weapon != nullptr)
 	{
 		weight += myStats->weapon->getWeight();
 	}
-	if ( myStats->cloak != NULL )
+	if ( myStats->cloak != nullptr)
 	{
 		weight += myStats->cloak->getWeight();
 	}
-	if ( myStats->amulet != NULL )
+	if ( myStats->amulet != nullptr)
 	{
 		weight += myStats->amulet->getWeight();
 	}
-	if ( myStats->ring != NULL )
+	if ( myStats->ring != nullptr)
 	{
 		weight += myStats->ring->getWeight();
 	}
-	if ( myStats->mask != NULL )
+	if ( myStats->mask != nullptr)
 	{
 		weight += myStats->mask->getWeight();
 	}

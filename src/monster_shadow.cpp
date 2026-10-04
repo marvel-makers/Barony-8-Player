@@ -395,21 +395,21 @@ void shadowDie(Entity* my)
 void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 {
 	node_t* node;
-	Entity* entity = NULL, *entity2 = NULL;
-	Entity* rightbody = NULL;
-	Entity* weaponarm = NULL;
+	Entity* entity = nullptr, *entity2 = nullptr;
+	Entity* rightbody = nullptr;
+	Entity* weaponarm = nullptr;
 	int bodypart;
 	bool wearingring = false;
 
 	// set invisibility //TODO: isInvisible()?
 	if ( multiplayer != CLIENT )
 	{
-		if ( myStats->ring != NULL )
+		if ( myStats->ring != nullptr)
 			if ( myStats->ring->type == RING_INVISIBILITY )
 			{
 				wearingring = true;
 			}
-		if ( myStats->cloak != NULL )
+		if ( myStats->cloak != nullptr)
 			if ( myStats->cloak->type == CLOAK_INVISIBILITY )
 			{
 				wearingring = true;
@@ -419,7 +419,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			my->flags[INVISIBLE] = true;
 			my->flags[BLOCKSIGHT] = false;
 			bodypart = 0;
-			for ( node = my->children.first; node != NULL; node = node->next )
+			for ( node = my->children.first; node != nullptr; node = node->next )
 			{
 				if ( bodypart < 2 )
 				{
@@ -444,7 +444,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			my->flags[INVISIBLE] = false;
 			my->flags[BLOCKSIGHT] = true;
 			bodypart = 0;
-			for ( node = my->children.first; node != NULL; node = node->next )
+			for ( node = my->children.first; node != nullptr; node = node->next )
 			{
 				if ( bodypart < 2 )
 				{
@@ -882,7 +882,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			case LIMB_HUMANOID_TORSO:
 				if ( multiplayer != CLIENT )
 				{
-					if ( myStats->breastplate == NULL || !itemModel(myStats->breastplate, false, my) )
+					if ( myStats->breastplate == nullptr || !itemModel(myStats->breastplate, false, my) )
 					{
 						entity->sprite = my->sprite == 1087 ? 1090 :
 						    (my->sprite == 1095 ? 1098 : 482);
@@ -1036,7 +1036,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			case LIMB_HUMANOID_WEAPON:
 				if ( multiplayer != CLIENT )
 				{
-					if ( myStats->weapon == NULL || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
+					if ( myStats->weapon == nullptr || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
 					{
 						entity->flags[INVISIBLE] = true;
 					}
@@ -1095,7 +1095,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			case LIMB_HUMANOID_SHIELD:
 				if ( multiplayer != CLIENT )
 				{
-					if ( myStats->shield == NULL )
+					if ( myStats->shield == nullptr)
 					{
 						entity->flags[INVISIBLE] = true;
 						entity->sprite = 0;
@@ -1201,7 +1201,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			case LIMB_HUMANOID_CLOAK:
 				if ( multiplayer != CLIENT )
 				{
-					if ( myStats->cloak == NULL || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
+					if ( myStats->cloak == nullptr || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
 					{
 						entity->flags[INVISIBLE] = true;
 					}
@@ -1258,7 +1258,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				if ( multiplayer != CLIENT )
 				{
 					entity->sprite = itemModel(myStats->helmet);
-					if ( myStats->helmet == NULL || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
+					if ( myStats->helmet == nullptr || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
 					{
 						entity->flags[INVISIBLE] = true;
 					}
@@ -1319,7 +1319,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 					{
 						entity->flags[INVISIBLE] = false;
 					}
-					if ( myStats->mask != NULL )
+					if ( myStats->mask != nullptr)
 					{
 						if ( myStats->mask->type == TOOL_GLASSES )
 						{

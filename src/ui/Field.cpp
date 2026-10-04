@@ -739,7 +739,7 @@ std::string Field::getLongestLine()
 				longestLine = token;
 			}
 		}
-	} while ( (token = nexttoken) != NULL );
+	} while ( (token = nexttoken) != nullptr);
 	setText(originalText.c_str()); // make sure to replace the original text field, as tokenize will modify it
 	return longestLine;
 }
@@ -783,7 +783,7 @@ int Field::getLastLineThatFitsWithinHeight()
 			}
 		}
 		++lineNumber;
-	} while ( (token = nexttoken) != NULL );
+	} while ( (token = nexttoken) != nullptr);
 	setText(originalText.c_str()); // make sure to replace the original text field, as tokenize will modify it
 	return -1;
 }
@@ -823,7 +823,7 @@ void Field::reflowTextToFit(const int characterOffset, bool check) {
 			{
 				allLines.push_back(result[i]);
 			}
-		} while ( (token = nexttoken) != NULL );
+		} while ( (token = nexttoken) != nullptr);
 
 		for ( auto it = allLines.begin(); it != allLines.end(); ++it )
 		{

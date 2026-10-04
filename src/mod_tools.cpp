@@ -1001,8 +1001,8 @@ void ItemTooltips_t::readItemsFromFile()
 			items[i].variations = tmpItems[i].imagePaths.size();
 		}
 		list_FreeAll(&items[i].images);
-		items[i].images.first = NULL;
-		items[i].images.last = NULL;
+		items[i].images.first = nullptr;
+		items[i].images.last = nullptr;
 		for ( int j = 0; j < tmpItems[i].imagePaths.size(); ++j )
 		{
 			//auto s = static_cast<string_t*>(list_Node(&items[i].images, j)->element);
@@ -8011,7 +8011,7 @@ void ScriptTextParser_t::writeWorldSignsToFile()
 	}
 	CustomHelpers::addMemberToRoot(exportDocument, "default_attributes", objDefaultAttributes);
 
-	for ( auto node = map.entities->first; node != NULL; node = node->next )
+	for ( auto node = map.entities->first; node != nullptr; node = node->next )
 	{
 		auto entity = static_cast<Entity*>(node->element);
 		if ( entity->behavior == &actFloorDecoration && entity->sprite == 991 /* sign */ )
@@ -11469,7 +11469,7 @@ bool Mods::clearAllMountedPaths()
 {
 	bool success = true;
 	char** i;
-	for ( i = PHYSFS_getSearchPath(); *i != NULL; i++ )
+	for ( i = PHYSFS_getSearchPath(); *i != nullptr; i++ )
 	{
         const std::string xmas = (std::string(datadir) + "/") + holidayThemeDirs[HolidayTheme::THEME_XMAS];
         const std::string halloween = (std::string(datadir) + "/") + holidayThemeDirs[HolidayTheme::THEME_HALLOWEEN];
@@ -11504,7 +11504,7 @@ bool Mods::mountAllExistingPaths()
 	for ( it = Mods::mountedFilepaths.begin(); it != Mods::mountedFilepaths.end(); ++it )
 	{
 		std::pair<std::string, std::string> itpair = *it;
-		if ( PHYSFS_mount(itpair.first.c_str(), NULL, 0) )
+		if ( PHYSFS_mount(itpair.first.c_str(), nullptr, 0) )
 		{
 			printlog("[%s] is in the search path.\n", itpair.first.c_str());
 		}
@@ -11569,7 +11569,7 @@ void Mods::loadModels(int start, int end) {
 		fp->gets2(name, sizeof(name));
 		if ( c >= start && c < end )
 		{
-			if ( models[c] != NULL )
+			if ( models[c] != nullptr)
 			{
 				if ( models[c]->data )
 				{
@@ -17188,7 +17188,7 @@ void Compendium_t::Events_t::updateEventsInMainLoop(const int playernum)
 	{
 		int weight = 0;
 		int numDeathBoxes = 0;
-		for ( node_t* node = stats[playernum]->inventory.first; node != NULL; node = node->next )
+		for ( node_t* node = stats[playernum]->inventory.first; node != nullptr; node = node->next )
 		{
 			auto item = static_cast<Item*>(node->element);
 			if ( !item )

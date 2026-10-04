@@ -127,28 +127,28 @@ Stat::Stat(Sint32 sprite) :
 	}
 
 	this->leader_uid = 0;
-	this->FOLLOWERS.first = NULL;
-	this->FOLLOWERS.last = NULL;
-	this->inventory.first = NULL;
-	this->inventory.last = NULL;
-	this->void_chest_inventory.first = NULL;
-	this->void_chest_inventory.last = NULL;
-	this->helmet = NULL;
-	this->breastplate = NULL;
-	this->gloves = NULL;
-	this->shoes = NULL;
-	this->shield = NULL;
-	this->weapon = NULL;
-	this->cloak = NULL;
-	this->amulet = NULL;
-	this->ring = NULL;
-	this->mask = NULL;
+	this->FOLLOWERS.first = nullptr;
+	this->FOLLOWERS.last = nullptr;
+	this->inventory.first = nullptr;
+	this->inventory.last = nullptr;
+	this->void_chest_inventory.first = nullptr;
+	this->void_chest_inventory.last = nullptr;
+	this->helmet = nullptr;
+	this->breastplate = nullptr;
+	this->gloves = nullptr;
+	this->shoes = nullptr;
+	this->shield = nullptr;
+	this->weapon = nullptr;
+	this->cloak = nullptr;
+	this->amulet = nullptr;
+	this->ring = nullptr;
+	this->mask = nullptr;
 #if defined(USE_FMOD) || defined(USE_OPENAL)
 	this->monster_sound = nullptr;
 #endif
 	this->monster_idlevar = 1;
-	this->magic_effects.first = NULL;
-	this->magic_effects.last = NULL;
+	this->magic_effects.first = nullptr;
+	this->magic_effects.last = nullptr;
 
 	if ( multiplayer != CLIENT )
 	{
@@ -243,8 +243,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->sex = MALE;
 			stats->stat_appearance = local_rng.rand();
 			strcpy(stats->name, "Baron Herx");
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 1000;
 			stats->MAXHP = stats->HP;
 			stats->MP = 1000;
@@ -268,8 +268,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = SPIDER;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 50;
 			stats->MAXHP = 50;
 			stats->MP = 10;
@@ -292,8 +292,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = GOBLIN;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 60;
 			stats->MAXHP = 60;
 			stats->MP = 20;
@@ -339,8 +339,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = SHOPKEEPER;
 			stats->sex = MALE;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 300;
 			stats->MAXHP = 300;
 			stats->MP = 200;
@@ -359,8 +359,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->RANDOM_GOLD = 200;
 			stats->HUNGER = 900;
 
-			stats->FOLLOWERS.first = NULL;
-			stats->FOLLOWERS.last = NULL;
+			stats->FOLLOWERS.first = nullptr;
+			stats->FOLLOWERS.last = nullptr;
 			stats->setProficiency(PRO_SORCERY, 50);
 			stats->setProficiency(PRO_MYSTICISM, 50);
 			stats->setProficiency(PRO_TRADING, 75);
@@ -374,8 +374,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = TROLL;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 100;
 			stats->RANDOM_HP = 20;
 			stats->MAXHP = stats->HP;
@@ -404,8 +404,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = HUMAN;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand() % 18; //NUMAPPEARANCES = 18
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 30;
 			stats->RANDOM_HP = 20;
 			stats->MAXHP = stats->HP;
@@ -510,8 +510,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = SCARAB;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 60;
 			stats->MAXHP = 60;
 			stats->MP = 20;
@@ -1005,8 +1005,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = DEMON;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 120;
 			stats->MAXHP = stats->HP;
 			stats->MP = 200;
@@ -1031,8 +1031,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = CREATURE_IMP;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 80;
 			stats->MAXHP = stats->HP;
 			stats->MP = 80;
@@ -1069,8 +1069,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = MINOTAUR;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 400;
 			stats->MAXHP = 400;
 			stats->MP = 100;
@@ -1095,8 +1095,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = SCORPION;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 70;
 			stats->MAXHP = 70;
 			stats->MP = 10;
@@ -1123,8 +1123,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = SLIME;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			//if ( stats->LVL >= 7 )   // blue slime
 			//{
 			//	stats->HP = 70;
@@ -1183,8 +1183,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = RAT;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 30;
 			stats->MAXHP = 30;
 			stats->MP = 10;
@@ -1209,8 +1209,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = GHOUL;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 90;
 			stats->MAXHP = 90;
 			stats->MP = 10;
@@ -1295,8 +1295,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + MIMIC):
 			stats->type = MIMIC;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 90;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;
@@ -1316,8 +1316,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + BAT_SMALL):
 			stats->type = BAT_SMALL;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 10;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;
@@ -1337,8 +1337,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = BUGBEAR;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 130;
 			stats->RANDOM_HP = 20;
 			stats->MAXHP = stats->HP;
@@ -1373,8 +1373,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = DRYAD;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 110;
 			stats->RANDOM_HP = 0;
 			stats->MAXHP = stats->HP;
@@ -1406,8 +1406,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = MYCONID;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 110;
 			stats->RANDOM_HP = 0;
 			stats->MAXHP = stats->HP;
@@ -1444,8 +1444,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = SALAMANDER;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 150;
 			stats->RANDOM_HP = 0;
 			stats->MAXHP = stats->HP;
@@ -1469,8 +1469,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = GREMLIN;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 80;
 			stats->MAXHP = stats->HP;
 			stats->OLDHP = stats->HP;
@@ -1513,8 +1513,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 			stats->type = REVENANT_SKULL;
 			stats->sex = static_cast<sex_t>(local_rng.rand() % 2);
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->HP = 80;
 			stats->MAXHP = stats->HP;
 			stats->OLDHP = stats->HP;
@@ -1537,8 +1537,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + MINIMIMIC):
 			stats->type = MINIMIMIC;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 90;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;
@@ -1558,8 +1558,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + MONSTER_ADORCISED_WEAPON):
 			stats->type = MONSTER_ADORCISED_WEAPON;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 150;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;
@@ -1583,8 +1583,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + FLAME_ELEMENTAL):
 			stats->type = FLAME_ELEMENTAL;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 10;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;
@@ -1603,8 +1603,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + HOLOGRAM):
 			stats->type = HOLOGRAM;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 1;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;
@@ -1623,8 +1623,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + MOTH_SMALL):
 			stats->type = MOTH_SMALL;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 100;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;
@@ -1642,8 +1642,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + EARTH_ELEMENTAL):
 			stats->type = EARTH_ELEMENTAL;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 120;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;
@@ -1665,8 +1665,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + DUCK_SMALL):
 			stats->type = DUCK_SMALL;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 100;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;
@@ -1685,8 +1685,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + MONSTER_UNUSED_6):
 			stats->type = MONSTER_UNUSED_6;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 10;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;
@@ -1705,8 +1705,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + MONSTER_UNUSED_7):
 			stats->type = MONSTER_UNUSED_7;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 10;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;
@@ -1725,8 +1725,8 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
 		case (1000 + MONSTER_UNUSED_8):
 			stats->type = MONSTER_UNUSED_8;
 			stats->stat_appearance = local_rng.rand();
-			stats->inventory.first = NULL;
-			stats->inventory.last = NULL;
+			stats->inventory.first = nullptr;
+			stats->inventory.last = nullptr;
 			stats->MAXHP = 10;
 			stats->HP = stats->MAXHP;
 			stats->OLDHP = stats->HP;

@@ -12845,7 +12845,7 @@ bind_failed:
 	    net_clients = static_cast<IPaddress*>(malloc(sizeof(IPaddress) * MAXPLAYERS));
 	    net_tcpclients = static_cast<TCPsocket*>(malloc(sizeof(TCPsocket) * MAXPLAYERS));
 	    for (int c = 0; c < MAXPLAYERS; c++) {
-		    net_tcpclients[c] = NULL;
+		    net_tcpclients[c] = nullptr;
 	    }
 
 	    // allocate packet data
@@ -18598,7 +18598,7 @@ failed:
 		invite->setColor(0);
 		invite->setBorderColor(0);
 		invite->setHighlightColor(0);
-		invite->setCallback([](Button&){buttonInviteFriends(NULL);});
+		invite->setCallback([](Button&){buttonInviteFriends(nullptr);});
 	}
 
 	static void createWaitingStone(int index) {
@@ -23451,7 +23451,7 @@ failed:
 #else
 		// resolve localhost address
 		Uint16 port = ::portnumber ? ::portnumber : DEFAULT_PORT;
-		int resolve = SDLNet_ResolveHost(&net_server, NULL, port);
+		int resolve = SDLNet_ResolveHost(&net_server, nullptr, port);
 		assert(resolve != -1);
 
 		// open socket
@@ -27716,7 +27716,7 @@ failed:
 				    continue;
 			    }
 	            //players[i]->shootmode = false; // open inventory
-			    for (auto node = stats[i]->inventory.first; node != NULL; node = node->next) {
+			    for (auto node = stats[i]->inventory.first; node != nullptr; node = node->next) {
 				    auto item = static_cast<Item*>(node->element);
 				    item->identified = true;
 			    }
@@ -28753,7 +28753,7 @@ failed:
 					button.setBackgroundHighlighted("*#images/ui/Main Menus/Mods/Load_Button_High00.png");
 					button.setBackgroundActivated("*#images/ui/Main Menus/Mods/Load_Button_Press00.png");
 				}
-				else if ( PHYSFS_mount(fullpath, NULL, 0) )
+				else if ( PHYSFS_mount(fullpath, nullptr, 0) )
 				{
 					Mods::mountedFilepaths.push_back(std::make_pair(fullpath, *it));
 					modLoaded = true;

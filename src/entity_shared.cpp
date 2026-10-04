@@ -2356,10 +2356,10 @@ int canWearEquip(Entity* entity, int category)
 	Stat* stats;
 	int equipType = 0;
 	int type;
-	if ( entity != NULL )
+	if ( entity != nullptr)
 	{
 		stats = entity->getStats();
-		if ( stats != NULL )
+		if ( stats != nullptr)
 		{
 			type = stats->type;
 

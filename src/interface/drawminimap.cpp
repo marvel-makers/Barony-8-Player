@@ -141,7 +141,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 	std::vector<Entity*> entityPointsOfInterest;
 	std::unordered_set<int> customWalls;
 	// get special points of interest (exits, items, revealed monsters, etc)
-	for ( node_t* node = map.entities->first; node != NULL; node = node->next )
+	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
 		auto entity = static_cast<Entity*>(node->element);
 		if ( entity->flags[SPRITE] )
@@ -725,7 +725,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 							{
 								if ( !players[i]->isLocalPlayer() || client_disconnected[i] ) { continue; }
 
-								if ( stats[i]->shoes != NULL )
+								if ( stats[i]->shoes != nullptr)
 								{
 									if ( stats[i]->shoes->type == ARTIFACT_BOOTS
 										&& entity->behavior == &actMonster )
@@ -748,7 +748,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 						else
 						{
 							const int i = player;
-							if ( stats[i]->shoes != NULL )
+							if ( stats[i]->shoes != nullptr)
 							{
 								if ( stats[i]->shoes->type == ARTIFACT_BOOTS 
 									&& entity->behavior == &actMonster )

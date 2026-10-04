@@ -355,7 +355,7 @@ const char* magicLightColorForSprite(Entity* my, int sprite, bool darker) {
 
 void actMagiclightMoving(Entity* my)
 {
-	Entity* caster = NULL;
+	Entity* caster = nullptr;
 	if ( !my )
 	{
 		return;
@@ -521,9 +521,9 @@ void actMagiclightBall(Entity* my)
 		list_RemoveNode(my->mynode); //Delete the light spell.C
 		return;
 	}
-	node_t* node = NULL;
+	node_t* node = nullptr;
 
-	spell_t* spell = NULL;
+	spell_t* spell = nullptr;
 	node = my->children.first;
 	spell = static_cast<spell_t*>(node->element);
 	if (!spell)
@@ -834,10 +834,10 @@ void actMagiclightBall(Entity* my)
 					//lineTraceTarget(my, my->x, my->y, tangent, 1024, LINETRACE_IGNORE_ENTITIES, false, parent);
 					if ( true/*!hit.entity || hit.entity == parent*/ )   //Line of sight to caster?
 					{
-						if (my->path != NULL)
+						if (my->path != nullptr)
 						{
 							list_FreeAll(my->path);
-							my->path = NULL;
+							my->path = nullptr;
 						}
 						
 						my->vel_x = cos(tangent) * ((distance - MAGICLIGHT_BALL_FOLLOW_DISTANCE) / MAGICLIGHTBALL_DIVIDE_CONSTANT);
@@ -1910,8 +1910,8 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 		return;
 	}
 	//node_t *node = NULL;
-	spellElement_t* element = NULL;
-	node_t* node = NULL;
+	spellElement_t* element = nullptr;
+	node_t* node = nullptr;
 	double tangent;
 
 	Entity* parent = uidToEntity(my->parent);
@@ -11374,7 +11374,7 @@ void actParticleTimer(Entity* my)
 						{
 							for ( int ix = std::max(1, tx - dist); !forceSpot && ix <= std::min(tx + dist, static_cast<int>(map.width) - 1); ++ix )
 							{
-								if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, parent, NULL) )
+								if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, parent, nullptr) )
 								{
 									real_t tmpx = parent->x;
 									real_t tmpy = parent->y;
@@ -14725,7 +14725,7 @@ bool Entity::magicOrbitingCollision()
 	{
 		list_t* currentList = *it;
 		node_t* node;
-		for ( node = currentList->first; node != NULL; node = node->next )
+		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
 			auto entity = static_cast<Entity*>(node->element);
 			if ( entity == this )

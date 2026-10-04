@@ -36,7 +36,7 @@ Image::Image(const char* _name) {
 #endif
     }
 	printlog("loading image '%s'...", path.c_str());
-	if ((surf = IMG_Load(path.c_str())) == NULL) {
+	if ((surf = IMG_Load(path.c_str())) == nullptr) {
 		printlog("failed to load image '%s'", path.c_str());
 		return;
 	}

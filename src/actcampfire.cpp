@@ -134,7 +134,7 @@ void actCampfire(Entity* my)
 	else
 	{
 		my->removeLightField();
-		my->light = NULL;
+		my->light = nullptr;
 
 		my->stopEntitySound();
 	}
@@ -157,9 +157,9 @@ void actCampfire(Entity* my)
 							serverUpdateEntitySkill(my, 3); // extinguish for all clients
 							messagePlayer(i, MESSAGE_INTERACTION, Language::get(458));
 							my->removeLightField();
-							my->light = NULL;
+							my->light = nullptr;
 						}
-						Item* item = newItem(TOOL_TORCH, WORN, 0, 1, 0, true, NULL);
+						Item* item = newItem(TOOL_TORCH, WORN, 0, 1, 0, true, nullptr);
 						itemPickup(i, item);
 						free(item);
 					}
@@ -269,7 +269,7 @@ void actCauldron(Entity* my)
 	else
 	{
 		my->removeLightField();
-		my->light = NULL;
+		my->light = nullptr;
 
 		my->stopEntitySound();
 	}

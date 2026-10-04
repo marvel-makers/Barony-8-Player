@@ -1489,10 +1489,10 @@ bool monsterMoveAside(Entity* my, Entity* entity, bool ignoreMonsterState)
 	if ( cos(entity->yaw) > .4 )
 	{
 		y += 16;
-		if ( checkObstacle(my->x, my->y + y, my, NULL) )
+		if ( checkObstacle(my->x, my->y + y, my, nullptr) )
 		{
 			y -= 32;
-			if ( checkObstacle(my->x, my->y + y, my, NULL) )
+			if ( checkObstacle(my->x, my->y + y, my, nullptr) )
 			{
 				y = 0;
 				x += 16;
@@ -1502,10 +1502,10 @@ bool monsterMoveAside(Entity* my, Entity* entity, bool ignoreMonsterState)
 	else if ( cos(entity->yaw) < -.4 )
 	{
 		y -= 16;
-		if ( checkObstacle(my->x, my->y + y, my, NULL) )
+		if ( checkObstacle(my->x, my->y + y, my, nullptr) )
 		{
 			y += 32;
-			if ( checkObstacle(my->x, my->y + y, my, NULL) )
+			if ( checkObstacle(my->x, my->y + y, my, nullptr) )
 			{
 				y = 0;
 				x -= 16;
@@ -1515,10 +1515,10 @@ bool monsterMoveAside(Entity* my, Entity* entity, bool ignoreMonsterState)
 	if ( sin(entity->yaw) > .4 )
 	{
 		x -= 16;
-		if ( checkObstacle(my->x + x, my->y, my, NULL) )
+		if ( checkObstacle(my->x + x, my->y, my, nullptr) )
 		{
 			x += 32;
-			if ( checkObstacle(my->x + x, my->y, my, NULL) )
+			if ( checkObstacle(my->x + x, my->y, my, nullptr) )
 			{
 				x = 0;
 				y += 16;
@@ -1528,10 +1528,10 @@ bool monsterMoveAside(Entity* my, Entity* entity, bool ignoreMonsterState)
 	else if ( sin(entity->yaw) < -.4 )
 	{
 		x += 16;
-		if ( checkObstacle(my->x + x, my->y, my, NULL) )
+		if ( checkObstacle(my->x + x, my->y, my, nullptr) )
 		{
 			x -= 32;
-			if ( checkObstacle(my->x + x, my->y, my, NULL) )
+			if ( checkObstacle(my->x + x, my->y, my, nullptr) )
 			{
 				x = 0;
 				y -= 16;
@@ -2661,7 +2661,7 @@ void actMonster(Entity* my)
 	double tangent;
 	Stat* myStats;
 	Entity* entity;
-	Stat* hitstats = NULL;
+	Stat* hitstats = nullptr;
 	bool hasrangedweapon = false;
 	bool myReflex;
 	Sint32 previousMonsterState = my->monsterState;
@@ -2714,7 +2714,7 @@ void actMonster(Entity* my)
 			case DEVIL: initDevil(my, nullptr); break;
 			case CRYSTALGOLEM: initCrystalgolem(my, nullptr); break;
 			case COCKATRICE: initCockatrice(my, nullptr); break;
-			case AUTOMATON: initAutomaton(my, NULL); break;
+			case AUTOMATON: initAutomaton(my, nullptr); break;
 			case SCARAB: initScarab(my, nullptr); break;
 			case KOBOLD: initKobold(my, nullptr); break;
 			case SHADOW: initShadow(my, nullptr); break;
@@ -2796,7 +2796,7 @@ void actMonster(Entity* my)
 		myStats = my->getStats();
 		if (myStats)
 		{
-			myStats->monster_sound = NULL;
+			myStats->monster_sound = nullptr;
 			switch ( myStats->type )
 			{
 				case HUMAN: initHuman(my, myStats); break;
@@ -2879,7 +2879,7 @@ void actMonster(Entity* my)
 		{
 			my->createPathBoundariesNPC();
 		}
-		MONSTER_SOUND = NULL;
+		MONSTER_SOUND = nullptr;
 		if ( MONSTER_NUMBER == -1 )
 		{
 			MONSTER_NUMBER = nummonsters;
@@ -2918,7 +2918,7 @@ void actMonster(Entity* my)
 	}
 
 	myStats = my->getStats();
-	if ( myStats == NULL )
+	if ( myStats == nullptr)
 	{
 		printlog("ERROR: monster entity at %p has no stats struct!", my);
 		return;
@@ -3688,31 +3688,31 @@ void actMonster(Entity* my)
 		{
 			entity->flags[USERFLAG1] = true;
 		}
-		myStats->helmet = NULL;
+		myStats->helmet = nullptr;
 		entity = dropItemMonster(myStats->breastplate, my, myStats);
 		if ( entity )
 		{
 			entity->flags[USERFLAG1] = true;
 		}
-		myStats->breastplate = NULL;
+		myStats->breastplate = nullptr;
 		entity = dropItemMonster(myStats->gloves, my, myStats);
 		if ( entity )
 		{
 			entity->flags[USERFLAG1] = true;
 		}
-		myStats->gloves = NULL;
+		myStats->gloves = nullptr;
 		entity = dropItemMonster(myStats->shoes, my, myStats);
 		if ( entity )
 		{
 			entity->flags[USERFLAG1] = true;
 		}
-		myStats->shoes = NULL;
+		myStats->shoes = nullptr;
 		entity = dropItemMonster(myStats->shield, my, myStats);
 		if ( entity )
 		{
 			entity->flags[USERFLAG1] = true;
 		}
-		myStats->shield = NULL;
+		myStats->shield = nullptr;
 		if ( myStats->weapon )
 		{
 			if ( itemCategory(myStats->weapon) != SPELLBOOK )
@@ -3735,33 +3735,33 @@ void actMonster(Entity* my)
 					free(myStats->weapon);
 				}
 			}
-			myStats->weapon = NULL;
+			myStats->weapon = nullptr;
 		}
 		entity = dropItemMonster(myStats->cloak, my, myStats);
 		if ( entity )
 		{
 			entity->flags[USERFLAG1] = true;
 		}
-		myStats->cloak = NULL;
+		myStats->cloak = nullptr;
 		entity = dropItemMonster(myStats->amulet, my, myStats);
 		if ( entity )
 		{
 			entity->flags[USERFLAG1] = true;
 		}
-		myStats->amulet = NULL;
+		myStats->amulet = nullptr;
 		entity = dropItemMonster(myStats->ring, my, myStats);
 		if ( entity )
 		{
 			entity->flags[USERFLAG1] = true;
 		}
-		myStats->ring = NULL;
+		myStats->ring = nullptr;
 		entity = dropItemMonster(myStats->mask, my, myStats);
 		if ( entity )
 		{
 			entity->flags[USERFLAG1] = true;
 		}
-		myStats->mask = NULL;
-		node_t* nextnode = NULL;
+		myStats->mask = nullptr;
+		node_t* nextnode = nullptr;
 
 		int mapIndex = 0;
 		if ( my->x >= 0 && my->y >= 0 && my->x < map.width << 4 && my->y < map.height << 4 )
@@ -3769,7 +3769,7 @@ void actMonster(Entity* my)
 			mapIndex = static_cast<int>(my->y / 16)* MAP_LAYERS + static_cast<int>(my->x / 16) * MAP_LAYERS * map.height;
 		}
 
-		for ( node = myStats->inventory.first; node != NULL; node = nextnode )
+		for ( node = myStats->inventory.first; node != nullptr; node = nextnode )
 		{
 			nextnode = node->next;
 			auto item = static_cast<Item*>(node->element);
@@ -4226,7 +4226,7 @@ void actMonster(Entity* my)
 	}
 
 	// check to see if monster can scream again
-	if ( MONSTER_SOUND != NULL )
+	if ( MONSTER_SOUND != nullptr)
 	{
 #ifdef DEBUG_EVENT_TIMERS
 		auto time1 = std::chrono::high_resolution_clock::now();
@@ -4260,84 +4260,84 @@ void actMonster(Entity* my)
 	}
 
 	// remove broken equipment
-	if ( myStats->helmet != NULL )
+	if ( myStats->helmet != nullptr)
 	{
 		if ( myStats->helmet->status == BROKEN )
 		{
 			free(myStats->helmet);
-			myStats->helmet = NULL;
+			myStats->helmet = nullptr;
 		}
 	}
-	if ( myStats->breastplate != NULL )
+	if ( myStats->breastplate != nullptr)
 	{
 		if ( myStats->breastplate->status == BROKEN )
 		{
 			free(myStats->breastplate);
-			myStats->breastplate = NULL;
+			myStats->breastplate = nullptr;
 		}
 	}
-	if ( myStats->gloves != NULL )
+	if ( myStats->gloves != nullptr)
 	{
 		if ( myStats->gloves->status == BROKEN )
 		{
 			free(myStats->gloves);
-			myStats->gloves = NULL;
+			myStats->gloves = nullptr;
 		}
 	}
-	if ( myStats->shoes != NULL )
+	if ( myStats->shoes != nullptr)
 	{
 		if ( myStats->shoes->status == BROKEN )
 		{
 			free(myStats->shoes);
-			myStats->shoes = NULL;
+			myStats->shoes = nullptr;
 		}
 	}
-	if ( myStats->shield != NULL )
+	if ( myStats->shield != nullptr)
 	{
 		if ( myStats->shield->status == BROKEN )
 		{
 			free(myStats->shield);
-			myStats->shield = NULL;
+			myStats->shield = nullptr;
 		}
 	}
-	if ( myStats->weapon != NULL )
+	if ( myStats->weapon != nullptr)
 	{
 		if ( myStats->weapon->status == BROKEN )
 		{
 			free(myStats->weapon);
-			myStats->weapon = NULL;
+			myStats->weapon = nullptr;
 		}
 	}
-	if ( myStats->cloak != NULL )
+	if ( myStats->cloak != nullptr)
 	{
 		if ( myStats->cloak->status == BROKEN )
 		{
 			free(myStats->cloak);
-			myStats->cloak = NULL;
+			myStats->cloak = nullptr;
 		}
 	}
-	if ( myStats->amulet != NULL )
+	if ( myStats->amulet != nullptr)
 	{
 		if ( myStats->amulet->status == BROKEN )
 		{
 			free(myStats->amulet);
-			myStats->amulet = NULL;
+			myStats->amulet = nullptr;
 		}
 	}
-	if ( myStats->ring != NULL )
+	if ( myStats->ring != nullptr)
 	{
 		if ( myStats->ring->status == BROKEN )
 		{
 			free(myStats->ring);
-			myStats->ring = NULL;
+			myStats->ring = nullptr;
 		}
 	}
-	if ( myStats->mask != NULL )
+	if ( myStats->mask != nullptr)
 	{
 		if ( myStats->mask->status == BROKEN )
 		{
 			free(myStats->mask);
-			myStats->mask = NULL;
+			myStats->mask = nullptr;
 		}
 	}
 
@@ -4427,7 +4427,7 @@ void actMonster(Entity* my)
 		if ( myStats->getEffectActive(EFF_INVISIBLE) )
 		{
 			my->flags[INVISIBLE] = true;
-			for ( node = list_Node(&my->children, 2); node != NULL; node = node->next )
+			for ( node = list_Node(&my->children, 2); node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				entity->flags[INVISIBLE] = true;
@@ -4436,7 +4436,7 @@ void actMonster(Entity* my)
 		else
 		{
 			my->flags[INVISIBLE] = false;
-			for ( node = list_Node(&my->children, 2); node != NULL; node = node->next )
+			for ( node = list_Node(&my->children, 2); node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				entity->flags[INVISIBLE] = false;
@@ -5531,7 +5531,7 @@ void actMonster(Entity* my)
 							list_t* playerPath = generatePath(static_cast<int>(floor(my->x / 16)), static_cast<int>(floor(my->y / 16)), 
 								static_cast<int>(floor(players[c]->entity->x / 16)), static_cast<int>(floor(players[c]->entity->y / 16)), my, players[c]->entity,
 								GeneratePathTypes::GENERATE_PATH_BOSS_TRACKING_IDLE);
-							if ( playerPath == NULL )
+							if ( playerPath == nullptr)
 							{
 								continue;
 							}
@@ -5894,7 +5894,7 @@ void actMonster(Entity* my)
 				}
 			}
 			if ( my->monsterMoveTime == 0 
-				&& (uidToEntity(myStats->leader_uid) == NULL || my->monsterAllyState == ALLY_STATE_DEFEND)
+				&& (uidToEntity(myStats->leader_uid) == nullptr || my->monsterAllyState == ALLY_STATE_DEFEND)
 				&& !myStats->getEffectActive(EFF_FEAR) 
 				&& !myStats->getEffectActive(EFF_DISORIENTED)
 				&& !myStats->getEffectActive(EFF_ROOTED)
@@ -5942,7 +5942,7 @@ void actMonster(Entity* my)
 					{
 						for ( y = lowerY; y < upperY; y++ )
 						{
-							if ( !checkObstacle(x << 4, y << 4, my, NULL) )
+							if ( !checkObstacle(x << 4, y << 4, my, nullptr) )
 							{
 								goodspots++;
 								possibleCoordinates.push_back(std::make_pair(x, y));
@@ -5958,7 +5958,7 @@ void actMonster(Entity* my)
 						{
 							if ( x << 4 >= my->monsterPathBoundaryXStart && x << 4 <= my->monsterPathBoundaryXEnd
 								&& y << 4 >= my->monsterPathBoundaryYStart && y << 4 <= my->monsterPathBoundaryYEnd )
-								if ( !checkObstacle(x << 4, y << 4, my, NULL) )
+								if ( !checkObstacle(x << 4, y << 4, my, nullptr) )
 								{
 									goodspots++;
 									possibleCoordinates.push_back(std::make_pair(x, y));
@@ -5994,9 +5994,9 @@ void actMonster(Entity* my)
 							break;
 						}
 					}*/
-					path = generatePath( static_cast<int>(floor(my->x / 16)), static_cast<int>(floor(my->y / 16)), x, y, my, NULL,
+					path = generatePath( static_cast<int>(floor(my->x / 16)), static_cast<int>(floor(my->y / 16)), x, y, my, nullptr,
 						GeneratePathTypes::GENERATE_PATH_IDLE_WALK);
-					if ( my->children.first != NULL )
+					if ( my->children.first != nullptr)
 					{
 						list_RemoveNode(my->children.first);
 					}
@@ -6418,7 +6418,7 @@ timeToGoAgain:
 
 									dist2 = clipMove(&my->x, &my->y, MONSTER_VELX, MONSTER_VELY, my);
 								}
-								if ( hit.entity != NULL )
+								if ( hit.entity != nullptr)
 								{
 									if ( hit.entity->behavior == &actDoor || hit.entity->behavior == &actIronDoor )
 									{
@@ -7312,7 +7312,7 @@ timeToGoAgain:
 													my->monsterHitTime = 0;
 												}
 
-												if ( MONSTER_SOUND == NULL )
+												if ( MONSTER_SOUND == nullptr)
 												{
 													if ( myStats->type != MINOTAUR )
 													{
@@ -7394,7 +7394,7 @@ timeToGoAgain:
 							list_t* playerPath = generatePath(static_cast<int>(floor(my->x / 16)), static_cast<int>(floor(my->y / 16)),
 								static_cast<int>(floor(players[c]->entity->x / 16)), static_cast<int>(floor(players[c]->entity->y / 16)), my, players[c]->entity,
 								GeneratePathTypes::GENERATE_PATH_BOSS_TRACKING_HUNT);
-							if ( playerPath == NULL )
+							if ( playerPath == nullptr)
 							{
 								continue;
 							}
@@ -7621,7 +7621,7 @@ timeToGoAgain:
 			}
 
 			entity = uidToEntity(my->monsterTarget);
-			if ( entity != NULL )
+			if ( entity != nullptr)
 			{
 				if ( entity->behavior == &actPlayer && myStats->type != DUMMYBOT )
 				{
@@ -7629,12 +7629,12 @@ timeToGoAgain:
 					assailantTimer[entity->skill[2]] = COMBAT_MUSIC_COOLDOWN;
 				}
 			}
-			if ( my->children.first != NULL )
+			if ( my->children.first != nullptr)
 			{
-				if ( my->children.first->element != NULL )
+				if ( my->children.first->element != nullptr)
 				{
 					path = static_cast<list_t*>(my->children.first->element);
-					if ( path->first != NULL && !myStats->getEffectActive(EFF_ROOTED) )
+					if ( path->first != nullptr && !myStats->getEffectActive(EFF_ROOTED) )
 					{
 						auto pathnode = static_cast<pathnode_t*>(path->first->element);
 						dist = sqrt( pow(pathnode->y * 16 + 8 - my->y, 2) + pow(pathnode->x * 16 + 8 - my->x, 2) );
@@ -7701,7 +7701,7 @@ timeToGoAgain:
 							}
 							dist2 = clipMove(&my->x, &my->y, MONSTER_VELX, MONSTER_VELY, my);
 							my->handleKnockbackDamage(*myStats, hit.entity);
-							if ( hit.entity != NULL )
+							if ( hit.entity != nullptr)
 							{
 								if ( hit.entity->behavior == &actDoor || hit.entity->behavior == &actIronDoor )
 								{
@@ -8112,7 +8112,7 @@ timeToGoAgain:
 							}*/
 						}
 
-						if ( path->first != NULL && myStats->getEffectActive(EFF_ROOTED) )
+						if ( path->first != nullptr && myStats->getEffectActive(EFF_ROOTED) )
 						{
 							// keep path while rooted
 						}
@@ -8406,7 +8406,7 @@ timeToGoAgain:
 
 			// turn towards target
 			Entity* target = uidToEntity(my->monsterTarget);
-			if ( target != NULL )
+			if ( target != nullptr)
 			{
 				dir = my->yaw - atan2( target->y - my->y, target->x - my->x );
 				while ( dir >= PI )
@@ -10254,7 +10254,7 @@ timeToGoAgain:
 
 	// move body parts
 	myStats = my->getStats();
-	if ( myStats != NULL )
+	if ( myStats != nullptr)
 	{
 	    const auto dist = sqrt(MONSTER_VELX * MONSTER_VELX + MONSTER_VELY * MONSTER_VELY);
 		if ( myStats->getAttribute("monster_portrait") != "" )
@@ -12401,7 +12401,7 @@ void Entity::monsterMoveBackwardsAndPath(bool trySidesFirst)
 	}
 	path = generatePath(static_cast<int>(floor(x / 16)), static_cast<int>(floor(y / 16)), x1, y1, this, this,
 		GeneratePathTypes::GENERATE_PATH_MONSTER_MOVE_BACKWARDS);
-	if ( children.first != NULL )
+	if ( children.first != nullptr)
 	{
 		list_RemoveNode(children.first);
 	}
@@ -13267,7 +13267,7 @@ bool Entity::monsterSetPathToLocation(int destX, int destY, int adjacentTilesToC
 
 	path = generatePath(static_cast<int>(floor(x / 16)), static_cast<int>(floor(y / 16)), pathToX, pathToY, 
 		this, nullptr, static_cast<GeneratePathTypes>(pathingType));
-	if ( children.first != NULL )
+	if ( children.first != nullptr)
 	{
 		list_RemoveNode(children.first);
 	}
@@ -13339,7 +13339,7 @@ bool Entity::gyrobotSetPathToReturnLocation(int destX, int destY, int adjacentTi
 
 	path = generatePath(static_cast<int>(floor(x / 16)), static_cast<int>(floor(y / 16)), pathToX, pathToY, 
 		this, nullptr, GeneratePathTypes::GENERATE_PATH_PLAYER_GYRO_RETURN);
-	if ( children.first != NULL )
+	if ( children.first != nullptr)
 	{
 		list_RemoveNode(children.first);
 	}

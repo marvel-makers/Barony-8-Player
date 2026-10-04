@@ -1095,7 +1095,7 @@ void spellcastingAnimationManager_deactivate(spellcasting_animation_manager_t* a
 	}
 
 	animation_manager->caster = -1;
-	animation_manager->spell = NULL;
+	animation_manager->spell = nullptr;
 	animation_manager->active = false;
 	animation_manager->active_spellbook = false;
 	animation_manager->stage = 0;
@@ -1323,7 +1323,7 @@ void actLeftHandMagic(Entity* my)
 	}
 
 	bool noGloves = false;
-	if ( stats[HANDMAGIC_PLAYERNUM]->gloves == NULL
+	if ( stats[HANDMAGIC_PLAYERNUM]->gloves == nullptr
 		|| playerRace == SPIDER
 		|| playerRace == RAT
 		|| playerRace == CREATURE_IMP
@@ -1672,7 +1672,7 @@ void actLeftHandMagic(Entity* my)
 				{
 					waterwalkingboots = true;
 				}*/
-				if ( stats[HANDMAGIC_PLAYERNUM]->shoes != NULL )
+				if ( stats[HANDMAGIC_PLAYERNUM]->shoes != nullptr)
 				{
 					if ( stats[HANDMAGIC_PLAYERNUM]->shoes->type == IRON_BOOTS_WATERWALKING )
 					{
@@ -1839,7 +1839,7 @@ void actLeftHandMagic(Entity* my)
 				{
 					waterwalkingboots = true;
 				}*/
-				if ( stats[HANDMAGIC_PLAYERNUM]->shoes != NULL )
+				if ( stats[HANDMAGIC_PLAYERNUM]->shoes != nullptr)
 				{
 					if ( stats[HANDMAGIC_PLAYERNUM]->shoes->type == IRON_BOOTS_WATERWALKING )
 					{
@@ -2139,7 +2139,7 @@ void actRightHandMagic(Entity* my)
 	}
 
 	bool noGloves = false;
-	if ( stats[HANDMAGIC_PLAYERNUM]->gloves == NULL
+	if ( stats[HANDMAGIC_PLAYERNUM]->gloves == nullptr
 		|| playerRace == SPIDER 
 		|| playerRace == RAT 
 		|| playerRace == CREATURE_IMP

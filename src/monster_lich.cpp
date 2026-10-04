@@ -46,7 +46,7 @@ void initLich(Entity* my, Stat* myStats)
 	{
 		auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
 
-		if ( myStats != NULL )
+		if ( myStats != nullptr)
 		{
 			if ( !myStats->leader_uid )
 			{
@@ -106,9 +106,9 @@ void initLich(Entity* my, Stat* myStats)
 			}
 
 			//give weapon
-			if ( myStats->weapon == NULL && myStats->EDITOR_ITEMS[ITEM_SLOT_WEAPON] == 1 )
+			if ( myStats->weapon == nullptr && myStats->EDITOR_ITEMS[ITEM_SLOT_WEAPON] == 1 )
 			{
-				myStats->weapon = newItem(SPELLBOOK_LIGHTNING, EXCELLENT, 0, 1, 0, false, NULL);
+				myStats->weapon = newItem(SPELLBOOK_LIGHTNING, EXCELLENT, 0, 1, 0, false, nullptr);
 			}
 		}
 	}
@@ -299,7 +299,7 @@ void lichAnimate(Entity* my, double dist)
 			my->flags[INVISIBLE] = true;
 			my->flags[BLOCKSIGHT] = false;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < 2 )
 				{
@@ -320,7 +320,7 @@ void lichAnimate(Entity* my, double dist)
 			my->flags[INVISIBLE] = false;
 			my->flags[BLOCKSIGHT] = true;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < 2 )
 				{
@@ -356,8 +356,8 @@ void lichAnimate(Entity* my, double dist)
 	}
 
 	// move arms
-	Entity* rightarm = NULL;
-	for (bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++)
+	Entity* rightarm = nullptr;
+	for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++)
 	{
 		if ( bodypart < 2 )
 		{

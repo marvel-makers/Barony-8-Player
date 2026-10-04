@@ -273,7 +273,7 @@ void Button::draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const 
 						_text->drawColor(section, scaledPos, viewport, textColor);
 					}
 				}
-			} while ((token = nexttoken) != NULL);
+			} while ((token = nexttoken) != nullptr);
 			free(buf);
 		}
 	}

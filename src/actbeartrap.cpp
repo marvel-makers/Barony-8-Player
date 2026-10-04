@@ -465,7 +465,7 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
 		}
 		std::vector<Entity*> goodspots;
 		bool teleported = false;
-		for ( node_t* node = map.entities->first; node != NULL; node = node->next )
+		for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 		{
 			auto entity = static_cast<Entity*>(node->element);
 			if ( entity && entity != my && entity->behavior == &actBomb )

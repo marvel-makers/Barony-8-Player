@@ -7739,7 +7739,7 @@ void Item::onItemIdentified(int player, Item* tempItem)
 	if ( player >= 0 && player < MAXPLAYERS && players[player]->isLocalPlayer() && stats[player] )
 	{
 		std::unordered_set<Uint32> appearancesOfSimilarItems;
-		for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
+		for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
 		{
 			auto item2 = static_cast<Item*>(node->element);
 			if ( item2 && item2 != tempItem && !itemCompare(tempItem, item2, true) )

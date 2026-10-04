@@ -40,7 +40,7 @@ Uint32 numSteamLobbies = 0;
 int selectedSteamLobby = 0;
 char lobbyText[MAX_STEAM_LOBBIES][64];
 char lobbyVersion[MAX_STEAM_LOBBIES][64];
-void* lobbyIDs[MAX_STEAM_LOBBIES] = { NULL };
+void* lobbyIDs[MAX_STEAM_LOBBIES] = {nullptr};
 int lobbyPlayers[MAX_STEAM_LOBBIES] = { 0 };
 int lobbyNumMods[MAX_STEAM_LOBBIES] = { 0 };
 char lobbyChallengeRun[MAX_STEAM_LOBBIES][64];
@@ -63,8 +63,8 @@ bool steamLobbyInviteOnlyUserConfigured = false;
 #endif
 static bool handlingInvite = false;
 
-void* currentLobby = NULL; // CSteamID to the current game lobby
-void* steamIDGameServer = NULL; // CSteamID to the current game server
+void* currentLobby = nullptr; // CSteamID to the current game lobby
+void* steamIDGameServer = nullptr; // CSteamID to the current game server
 uint32_t steamServerIP = 0; // ipv4 address for the current game server
 uint16_t steamServerPort = 0; // port number for the current game server
 std::string cmd_line; // for game join requests

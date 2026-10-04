@@ -63,7 +63,7 @@ void updateChestInventory(const int player)
 		return;
 	}
 
-	list_t* chest_inventory = NULL;
+	list_t* chest_inventory = nullptr;
 	if ( multiplayer == CLIENT )
 	{
 		chest_inventory = &chestInv[player];
@@ -77,7 +77,7 @@ void updateChestInventory(const int player)
 	{
 		std::unordered_set<int> takenSlots;
 		std::vector<Item*> itemsToRearrange;
-		for ( node_t* node = chest_inventory->first; node != NULL; node = node->next )
+		for ( node_t* node = chest_inventory->first; node != nullptr; node = node->next )
 		{
 			if ( node->element )
 			{

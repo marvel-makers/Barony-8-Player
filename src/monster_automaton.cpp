@@ -43,7 +43,7 @@ void initAutomaton(Entity* my, Stat* myStats)
 	{
 		auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
 
-		if ( myStats != NULL )
+		if ( myStats != nullptr)
 		{
 	        if (myStats->sex == FEMALE)
 	        {
@@ -182,23 +182,23 @@ void initAutomaton(Entity* my, Stat* myStats)
 			}
 
 			//give weapon
-			if ( myStats->weapon == NULL && myStats->EDITOR_ITEMS[ITEM_SLOT_WEAPON] == 1 )
+			if ( myStats->weapon == nullptr && myStats->EDITOR_ITEMS[ITEM_SLOT_WEAPON] == 1 )
 			{
 				if ( greaterMonster )
 				{
 					switch ( rng.rand() % 4 )
 					{
 						case 0:
-							myStats->weapon = newItem(MAGICSTAFF_LIGHTNING, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+							myStats->weapon = newItem(MAGICSTAFF_LIGHTNING, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 							break;
 						case 1:
-							myStats->weapon = newItem(CRYSTAL_SPEAR, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+							myStats->weapon = newItem(CRYSTAL_SPEAR, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 							break;
 						case 2:
-							myStats->weapon = newItem(SHORTBOW, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+							myStats->weapon = newItem(SHORTBOW, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 							break;
 						case 3:
-							myStats->weapon = newItem(CROSSBOW, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+							myStats->weapon = newItem(CROSSBOW, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 							break;
 						default:
 							break;
@@ -207,7 +207,7 @@ void initAutomaton(Entity* my, Stat* myStats)
 			}
 
 			//give helmet
-			if ( myStats->helmet == NULL && myStats->EDITOR_ITEMS[ITEM_SLOT_HELM] == 1 )
+			if ( myStats->helmet == nullptr && myStats->EDITOR_ITEMS[ITEM_SLOT_HELM] == 1 )
 			{
 				switch ( rng.rand() % 10 )
 				{
@@ -230,7 +230,7 @@ void initAutomaton(Entity* my, Stat* myStats)
 			}
 
 			//give shield
-			if ( myStats->shield == NULL && myStats->EDITOR_ITEMS[ITEM_SLOT_SHIELD] == 1 )
+			if ( myStats->shield == nullptr && myStats->EDITOR_ITEMS[ITEM_SLOT_SHIELD] == 1 )
 			{
 				if ( myStats->weapon && isRangedWeapon(*myStats->weapon) )
 				{
@@ -243,16 +243,16 @@ void initAutomaton(Entity* my, Stat* myStats)
 						switch ( rng.rand() % 4 )
 						{
 							case 0:
-								myStats->shield = newItem(CRYSTAL_SHIELD, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+								myStats->shield = newItem(CRYSTAL_SHIELD, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 								break;
 							case 1:
-								myStats->shield = newItem(STEEL_SHIELD_RESISTANCE, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+								myStats->shield = newItem(STEEL_SHIELD_RESISTANCE, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 								break;
 							case 2:
-								myStats->shield = newItem(STEEL_SHIELD, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+								myStats->shield = newItem(STEEL_SHIELD, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 								break;
 							case 3:
-								myStats->shield = newItem(MIRROR_SHIELD, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+								myStats->shield = newItem(MIRROR_SHIELD, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 								break;
 							default:
 								break;
@@ -262,7 +262,7 @@ void initAutomaton(Entity* my, Stat* myStats)
 			}
 
 			//give boots
-			if ( myStats->shoes == NULL && myStats->EDITOR_ITEMS[ITEM_SLOT_BOOTS] == 1 )
+			if ( myStats->shoes == nullptr && myStats->EDITOR_ITEMS[ITEM_SLOT_BOOTS] == 1 )
 			{
 				if ( greaterMonster )
 				{
@@ -272,7 +272,7 @@ void initAutomaton(Entity* my, Stat* myStats)
 						case 1:
 						case 2:
 						case 3:
-							myStats->shoes = newItem(STEEL_BOOTS_LEVITATION, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+							myStats->shoes = newItem(STEEL_BOOTS_LEVITATION, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 							break;
 						default:
 							break;
@@ -281,20 +281,20 @@ void initAutomaton(Entity* my, Stat* myStats)
 			}
 
 			//give cloak
-			if ( myStats->cloak == NULL && myStats->EDITOR_ITEMS[ITEM_SLOT_CLOAK] == 1 )
+			if ( myStats->cloak == nullptr && myStats->EDITOR_ITEMS[ITEM_SLOT_CLOAK] == 1 )
 			{
 				if ( greaterMonster )
 				{
 					switch ( rng.rand() % 4 )
 					{
 						case 0:
-							myStats->cloak = newItem(CLOAK_MAGICREFLECTION, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+							myStats->cloak = newItem(CLOAK_MAGICREFLECTION, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 							break;
 						case 1:
-							myStats->cloak = newItem(CLOAK_PROTECTION, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+							myStats->cloak = newItem(CLOAK_PROTECTION, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 							break;
 						case 2:
-							myStats->cloak = newItem(CLOAK, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, NULL);
+							myStats->cloak = newItem(CLOAK, EXCELLENT, -1 + rng.rand() % 2, 1, MONSTER_ITEM_UNDROPPABLE_APPEARANCE, false, nullptr);
 							break;
 						case 3:
 							break;
@@ -569,21 +569,21 @@ void automatonDie(Entity* my)
 void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 {
 	node_t* node;
-	Entity* entity = NULL, *entity2 = NULL;
-	Entity* rightbody = NULL;
-	Entity* weaponarm = NULL;
+	Entity* entity = nullptr, *entity2 = nullptr;
+	Entity* rightbody = nullptr;
+	Entity* weaponarm = nullptr;
 	int bodypart;
 	bool wearingring = false;
 
 	// set invisibility //TODO: use isInvisible()?
 	if ( multiplayer != CLIENT )
 	{
-		if ( myStats->ring != NULL )
+		if ( myStats->ring != nullptr)
 			if ( myStats->ring->type == RING_INVISIBILITY )
 			{
 				wearingring = true;
 			}
-		if ( myStats->cloak != NULL )
+		if ( myStats->cloak != nullptr)
 			if ( myStats->cloak->type == CLOAK_INVISIBILITY )
 			{
 				wearingring = true;
@@ -593,7 +593,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			my->flags[INVISIBLE] = true;
 			my->flags[BLOCKSIGHT] = false;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < LIMB_HUMANOID_TORSO )
 				{
@@ -618,7 +618,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			my->flags[INVISIBLE] = false;
 			my->flags[BLOCKSIGHT] = true;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < LIMB_HUMANOID_TORSO )
 				{
@@ -740,7 +740,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	Entity* shieldarm = nullptr;
 	Entity* helmet = nullptr;
 	//Move bodyparts
-	for (bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++)
+	for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++)
 	{
 		if ( bodypart < LIMB_HUMANOID_TORSO )
 		{
@@ -1130,7 +1130,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			case LIMB_HUMANOID_WEAPON:
 				if ( multiplayer != CLIENT )
 				{
-					if ( myStats->weapon == NULL || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
+					if ( myStats->weapon == nullptr || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
 					{
 						entity->flags[INVISIBLE] = true;
 					}
@@ -1189,7 +1189,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			case LIMB_HUMANOID_SHIELD:
 				if ( multiplayer != CLIENT )
 				{
-					if ( myStats->shield == NULL )
+					if ( myStats->shield == nullptr)
 					{
 						entity->flags[INVISIBLE] = true;
 						entity->sprite = 0;
@@ -1247,7 +1247,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			case LIMB_HUMANOID_CLOAK:
 				if ( multiplayer != CLIENT )
 				{
-					if ( myStats->cloak == NULL || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
+					if ( myStats->cloak == nullptr || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
 					{
 						entity->flags[INVISIBLE] = true;
 					}
@@ -1305,7 +1305,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				if ( multiplayer != CLIENT )
 				{
 					entity->sprite = itemModel(myStats->helmet);
-					if ( myStats->helmet == NULL || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
+					if ( myStats->helmet == nullptr || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
 					{
 						entity->flags[INVISIBLE] = true;
 					}
@@ -1358,7 +1358,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				entity->roll = PI / 2;
 				if ( multiplayer != CLIENT )
 				{
-					if ( myStats->mask == NULL || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
+					if ( myStats->mask == nullptr || myStats->getEffectActive(EFF_INVISIBLE) || wearingring ) //TODO: isInvisible()?
 					{
 						entity->flags[INVISIBLE] = true;
 					}
@@ -1366,7 +1366,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 					{
 						entity->flags[INVISIBLE] = false;
 					}
-					if ( myStats->mask != NULL )
+					if ( myStats->mask != nullptr)
 					{
 						if ( myStats->mask->type == TOOL_GLASSES )
 						{

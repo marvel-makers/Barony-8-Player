@@ -1318,7 +1318,7 @@ void glDrawVoxel(view_t* camera, Entity* entity, int mode) {
 		modelindex = entity->sprite;
 	}
 	if (modelindex >= 0 && modelindex < nummodels) {
-		if (models[modelindex] != NULL) {
+		if (models[modelindex] != nullptr) {
 			model = models[modelindex];
 		} else {
 			model = models[0];
@@ -1850,7 +1850,7 @@ void glDrawWorldUISprite(view_t* camera, Entity* entity, int mode)
 	}
 	else {
 		if (entity->sprite >= 0 && entity->sprite < numsprites) {
-			if (sprites[entity->sprite] != NULL) {
+			if (sprites[entity->sprite] != nullptr) {
 				sprite = sprites[entity->sprite];
 			} else {
 				sprite = sprites[0];

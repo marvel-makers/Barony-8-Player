@@ -2300,7 +2300,7 @@ void actLeafPile(Entity* my)
 		for ( int i = 0; i < 3; ++i )
 		{
 			Entity* leaf = newEntity(1912, 1, map.entities, nullptr); //Gib entity.
-			if ( leaf != NULL )
+			if ( leaf != nullptr)
 			{
 				leaf->x = my->x;
 				leaf->y = my->y;
@@ -2697,7 +2697,7 @@ Entity* spawnMiscPuddle(Entity* parentent, real_t x, real_t y, int sprite, bool 
 		}
 
 		Entity* puddle = newEntity(sprite, 1, map.entities, nullptr); //Gib entity.
-		if ( puddle != NULL )
+		if ( puddle != nullptr)
 		{
 			puddle->x = x;
 			puddle->y = y;

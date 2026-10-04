@@ -41,7 +41,7 @@ void initScorpion(Entity* my, Stat* myStats)
 	{
 		auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
 
-		if ( myStats != NULL )
+		if ( myStats != nullptr)
 		{
 			if ( !myStats->leader_uid )
 			{
@@ -166,8 +166,8 @@ void actScorpionTail(Entity* my)
 {
 	int i;
 
-	Entity* parent = NULL;
-	if ( (parent = uidToEntity(my->skill[2])) == NULL )
+	Entity* parent = nullptr;
+	if ( (parent = uidToEntity(my->skill[2])) == nullptr)
 	{
 		list_RemoveNode(my->mynode);
 		return;
@@ -209,7 +209,7 @@ void scorpionAnimate(Entity* my, double dist)
 			my->flags[INVISIBLE] = true;
 			my->flags[BLOCKSIGHT] = false;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < 2 )
 				{
@@ -230,7 +230,7 @@ void scorpionAnimate(Entity* my, double dist)
 			my->flags[INVISIBLE] = false;
 			my->flags[BLOCKSIGHT] = true;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < 2 )
 				{
@@ -255,7 +255,7 @@ void scorpionAnimate(Entity* my, double dist)
 	bool skrabblag = false;
 
 	// move tail
-	for (bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++)
+	for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++)
 	{
 		if ( bodypart < 2 )
 		{

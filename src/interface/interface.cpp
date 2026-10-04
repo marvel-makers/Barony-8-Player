@@ -774,7 +774,7 @@ int loadConfig(char* filename)
 
 	printlog("Loading config '%s'...\n", filename);
 
-	if ( strstr(filename, ".cfg") == NULL )
+	if ( strstr(filename, ".cfg") == nullptr)
 	{
 		char* filename2 = filename;
 		filename = static_cast<char*>(malloc(sizeof(char) * 256));
@@ -784,7 +784,7 @@ int loadConfig(char* filename)
 	}
 
 	// open the config file
-	if ( (fp = FileIO::open(filename, "rb")) == NULL )
+	if ( (fp = FileIO::open(filename, "rb")) == nullptr)
 	{
 		printlog("note: config file '%s' does not exist!\n", filename);
 		defaultConfig(); //Set up the game with the default config.
@@ -792,7 +792,7 @@ int loadConfig(char* filename)
 	}
 
 	// read commands from it
-	while ( fp->gets2(str, 1024) != NULL )
+	while ( fp->gets2(str, 1024) != nullptr)
 	{
 		if ( str[0] != '#' && str[0] != '\n' && str[0] != '\r' )   // if this line is not white space or a comment
 		{
@@ -6279,7 +6279,7 @@ void GenericGUIMenu::updateGUI()
 			std::unordered_map<ItemType, int> itemCounts;
 			if ( guiType == GUI_TYPE_TINKERING && tinkeringFilter == TINKER_FILTER_CRAFTABLE )
 			{
-				for ( node = stats[gui_player]->inventory.first; node != NULL; node = node->next )
+				for ( node = stats[gui_player]->inventory.first; node != nullptr; node = node->next )
 				{
 					if ( node->element )
 					{
@@ -6287,7 +6287,7 @@ void GenericGUIMenu::updateGUI()
 						itemCounts[item->type] += item->count;
 					}
 				}
-				for ( node = player_inventory->first; node != NULL; node = node->next )
+				for ( node = player_inventory->first; node != nullptr; node = node->next )
 				{
 					if ( node->element )
 					{
@@ -9232,7 +9232,7 @@ void GenericGUIMenu::alchemyCookCombination()
 		{
 			std::vector<Item*> torches;
 			Item* torchesEquipped;
-			for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != NULL; invnode = invnode->next )
+			for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != nullptr; invnode = invnode->next )
 			{
 				auto item = static_cast<Item*>(invnode->element);
 				if ( item && item->type == TOOL_TORCH )
@@ -12429,7 +12429,7 @@ Item* GenericGUIMenu::tinkeringKitFindInInventory()
 			return nullptr;
 		}
 
-		for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != NULL; invnode = invnode->next )
+		for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != nullptr; invnode = invnode->next )
 		{
 			auto tinkerItem = static_cast<Item*>(invnode->element);
 			if ( tinkerItem && tinkerItem->type == TOOL_TINKERING_KIT && tinkerItem->status > BROKEN )
@@ -13099,7 +13099,7 @@ Item* GenericGUIMenu::scribingToolFindInInventory()
 	}
 	else
 	{
-		for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != NULL; invnode = invnode->next )
+		for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != nullptr; invnode = invnode->next )
 		{
 			auto scribeItem = static_cast<Item*>(invnode->element);
 			if ( scribeItem && scribeItem->type == ENCHANTED_FEATHER && scribeItem->status > BROKEN )
@@ -15653,7 +15653,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerMenu()
 			|| itemActionType == TINKER_ACTION_OK_UNIDENTIFIED_SALVAGE;
 		if ( player_inventory )
 		{
-			for ( node_t* node = player_inventory->first; node != NULL; node = nextnode )
+			for ( node_t* node = player_inventory->first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
 				if ( node->element )
@@ -17564,7 +17564,7 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 		return;
 	}
 
-	for ( node_t* node = stats[playernum]->inventory.first; node != NULL && !hasTinOpener; node = node->next )
+	for ( node_t* node = stats[playernum]->inventory.first; node != nullptr && !hasTinOpener; node = node->next )
 	{
 		auto item = static_cast<Item*>(node->element);
 		if ( !item ) { continue; }
@@ -18955,7 +18955,7 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 			if ( auto slotFrame = player->inventoryUI.getInventorySlotFrame(player->inventoryUI.getSelectedSlotX(),
 				player->inventoryUI.getSelectedSlotY()) )
 			{
-				for ( node_t* node = stats[playernum]->inventory.first; node != NULL; node = node->next )
+				for ( node_t* node = stats[playernum]->inventory.first; node != nullptr; node = node->next )
 				{
 					auto item = static_cast<Item*>(node->element);
 					if ( !item )
@@ -22881,7 +22881,7 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherMenu()
 		inscribeSuccessName = "";
 		if ( player_inventory )
 		{
-			for ( node_t* node = player_inventory->first; node != NULL; node = nextnode )
+			for ( node_t* node = player_inventory->first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
 				if ( node->element )
@@ -26877,7 +26877,7 @@ void GenericGUIMenu::ItemEffectGUI_t::updateItemEffectMenu()
 		bool itemActionOK = itemActionType == ITEMFX_ACTION_OK;
 		if ( player_inventory )
 		{
-			for ( node_t* node = player_inventory->first; node != NULL; node = nextnode )
+			for ( node_t* node = player_inventory->first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
 				if ( node->element )
@@ -40375,7 +40375,7 @@ void GenericGUIMenu::MailboxGui_t::updateMailMenu()
 			if ( auto slotFrame = player->inventoryUI.getInventorySlotFrame(player->inventoryUI.getSelectedSlotX(),
 				player->inventoryUI.getSelectedSlotY()) )
 			{
-				for ( node_t* node = stats[playernum]->inventory.first; node != NULL; node = node->next )
+				for ( node_t* node = stats[playernum]->inventory.first; node != nullptr; node = node->next )
 				{
 					auto item = static_cast<Item*>(node->element);
 					if ( !item )

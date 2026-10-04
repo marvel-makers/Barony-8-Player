@@ -143,7 +143,7 @@ void Text::render() {
 		}
 		SDL_Rect rect;
 		rect.x = outlineSize; rect.y = outlineSize;
-		SDL_BlitSurface(text, NULL, surf, &rect);
+		SDL_BlitSurface(text, nullptr, surf, &rect);
 		SDL_FreeSurface(text);
 	}
 	else {

@@ -426,13 +426,13 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 			{
 				// receive the entity
 				receiveEntity(entity);
-				entity->behavior = NULL;
+				entity->behavior = nullptr;
 				clientActions(entity);
 			}
 			return;
 		}
 
-		for ( auto node = removedEntities.first; node != NULL; node = node->next )
+		for ( auto node = removedEntities.first; node != nullptr; node = node->next )
 		{
 			auto entity2 = static_cast<Entity*>(node->element);
 			if ( entity2->getUID() == static_cast<int>(SDLNet_Read32(&net_packet->data[4])) )
@@ -441,7 +441,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 			}
 		}
 
-		entity = receiveEntity(NULL);
+		entity = receiveEntity(nullptr);
 		// IMPORTANT! Assign actions to the objects the client has control over
 		clientActions(entity);
 
@@ -2037,7 +2037,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 				item = stats[clientnum]->mask;
 				break;
 			default:
-				item = NULL;
+				item = nullptr;
 				break;
 		}
 
@@ -2046,7 +2046,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		{
 			checkType = SDLNet_Read16(&net_packet->data[6]);
 		}
-		if ( item != NULL && (checkType <= -1 || (checkType >= 0 && item->type == checkType)) )
+		if ( item != nullptr && (checkType <= -1 || (checkType >= 0 && item->type == checkType)) )
 		{
 			if ( item->count > 1 )
 			{
@@ -2104,7 +2104,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 				{
 					std::unordered_set<Uint32> appearancesOfSimilarItems;
 					std::vector<Item*> itemsToReroll;
-					for ( node_t* node = stats[clientnum]->inventory.first; node != NULL; node = node->next )
+					for ( node_t* node = stats[clientnum]->inventory.first; node != nullptr; node = node->next )
 					{
 						auto item2 = static_cast<Item*>(node->element);
 						if ( item2 && item2 != item && !itemCompare(item, item2, true) )
@@ -2164,7 +2164,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 				item = stats[clientnum]->mask;
 				break;
 			default:
-				item = NULL;
+				item = nullptr;
 				break;
 		}
 
@@ -2198,9 +2198,9 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 				if ( item->count <= 0 )
 				{
 					Item** slot = itemSlot(stats[clientnum], item);
-					if ( slot != NULL )
+					if ( slot != nullptr)
 					{
-						*slot = NULL;
+						*slot = nullptr;
 					}
 					if ( item )
 					{
@@ -2241,9 +2241,9 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 						if ( item2->count <= 0 )
 						{
 							Item** slot = itemSlot(stats[clientnum], item2);
-							if ( slot != NULL )
+							if ( slot != nullptr)
 							{
-								*slot = NULL;
+								*slot = nullptr;
 							}
 							if ( item2 )
 							{
@@ -2429,7 +2429,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		    SDLNet_Read32(&net_packet->data[16]),
 		    SDLNet_Read32(&net_packet->data[20]),
 		    net_packet->data[28],
-		    NULL);
+		nullptr);
 		item->ownerUid = SDLNet_Read32(&net_packet->data[24]);
 		Item* pickedUp = itemPickup(clientnum, item);
 		free(item);
@@ -2487,7 +2487,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// unequip and remove item
 	{'DROP', [](){
-		Item** armor = NULL;
+		Item** armor = nullptr;
 		switch ( net_packet->data[4] )
 		{
 			case 0:
@@ -2551,7 +2551,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 				free(*armor);
 			}
 		}
-		*armor = NULL;
+		*armor = nullptr;
 	}},
 
 	// get gold
@@ -2678,7 +2678,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		if ( !keepInventoryGlobal )
 		{
 		    node_t* nextnode;
-			for ( auto node = stats[clientnum]->inventory.first; node != NULL; node = nextnode )
+			for ( auto node = stats[clientnum]->inventory.first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
 				auto item = static_cast<Item*>(node->element);
@@ -2710,7 +2710,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		{
 			// to not soft lock at Herx
 			node_t *node, *nextnode;
-			for ( node = stats[clientnum]->inventory.first; node != NULL; node = nextnode )
+			for ( node = stats[clientnum]->inventory.first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
 				auto item = static_cast<Item*>(node->element);
@@ -2834,7 +2834,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		{
 			playSoundNotification(175, 128);
 		}
-		else if ( (strstr(msg, Language::get(1160))) != NULL ) // <player name> bumps you
+		else if ( (strstr(msg, Language::get(1160))) != nullptr) // <player name> bumps you
 		{
 			for ( int c = 0; c < barony::net::playerCapacity(); c++ )
 			{
@@ -3636,7 +3636,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 				if (spell_search->ID == thespell->ID)
 				{
 					list_RemoveNode(node);
-					node = NULL;
+					node = nullptr;
 				}
 			}
 		}
@@ -4008,7 +4008,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		    SDLNet_Read32(&net_packet->data[16]),
 		    SDLNet_Read32(&net_packet->data[20]),
 		    net_packet->data[28],
-		    NULL);
+		nullptr);
 		item->ownerUid = SDLNet_Read32(&net_packet->data[24]);
 		Item* pickedUp = itemPickup(clientnum, item);
 		free(item);

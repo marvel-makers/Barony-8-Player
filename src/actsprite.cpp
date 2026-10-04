@@ -75,7 +75,7 @@ void actSprite(Entity* my)
 	}
 	else if ( !SPRITE_LIT )
 	{
-		my->light = NULL;
+		my->light = nullptr;
 	}
 	my->skill[3]++;
 	if ( my->skill[3] >= SPRITE_ANIMSPEED )

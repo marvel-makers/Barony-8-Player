@@ -550,7 +550,7 @@ void actArrow(Entity* my)
 			{
 				my->entityCheckIfTriggeredWallButton();
 			}
-			if ( hit.entity != NULL )
+			if ( hit.entity != nullptr)
 			{
 				Entity* parent = uidToEntity(my->parent);
 				Stat* hitstats = hit.entity->getStats();
@@ -661,7 +661,7 @@ void actArrow(Entity* my)
 							DamageGib::DMG_DEFAULT);
 					}
 				}
-				else if ( hitstats != NULL && hit.entity != parent )
+				else if ( hitstats != nullptr && hit.entity != parent )
 				{
 					if ( !(svFlags & SV_FLAG_FRIENDLYFIRE) )
 					{
@@ -1646,13 +1646,13 @@ void actArrow(Entity* my)
 					// hit armor degrade
 					if ( hitstats && parent && parent->getStats() )
 					{
-						Item* armor = NULL;
+						Item* armor = nullptr;
 						int armornum = 0;
 						bool isWeakArmor = false;
 						if ( damage > 0 || (damage == 0 && !(hitstats->shield && hitstats->defending)) )
 						{
 							armornum = hitstats->pickRandomEquippedItemToDegradeOnHit(&armor, true, false, false, true);
-							if ( armor != NULL && armor->status > BROKEN )
+							if ( armor != nullptr && armor->status > BROKEN )
 							{
 								switch ( armor->type )
 								{
@@ -1705,13 +1705,13 @@ void actArrow(Entity* my)
 
 							if ( armorDegradeChance == 100 || (local_rng.rand() % armorDegradeChance > 0) )
 							{
-								armor = NULL;
+								armor = nullptr;
 								armornum = 0;
 							}
 						}
 
 						// if nothing chosen to degrade, check extra shield chances to degrade
-						if ( hitstats->shield != NULL && hitstats->shield->status > BROKEN && armor == NULL
+						if ( hitstats->shield != nullptr && hitstats->shield->status > BROKEN && armor == nullptr
 							&& !itemTypeIsQuiver(hitstats->shield->type) && itemCategory(hitstats->shield) != SPELLBOOK
 							&& !itemTypeIsFoci(hitstats->shield->type)
 							&& !(hitstats->shield->type >= INSTRUMENT_FLUTE && hitstats->shield->type <= INSTRUMENT_HORN)
@@ -1823,7 +1823,7 @@ void actArrow(Entity* my)
 										shieldDegradeChance = 100; // don't break.
 									}
 								}
-								if ( shieldDegradeChance < 100 && armor == NULL &&
+								if ( shieldDegradeChance < 100 && armor == nullptr &&
 									(hitstats->defending && local_rng.rand() % shieldDegradeChance == 0)
 									)
 								{
@@ -1833,7 +1833,7 @@ void actArrow(Entity* my)
 							}
 						}
 
-						if ( armor != NULL && armor->status > BROKEN )
+						if ( armor != nullptr && armor->status > BROKEN )
 						{
 							if ( hit.entity->degradeArmor(*hitstats, *armor, armornum) )
 							{

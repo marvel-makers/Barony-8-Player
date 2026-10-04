@@ -33,7 +33,7 @@ Font::Font(const char* _name) {
 		path.insert(0, BASE_DATA_DIR);
 #endif
 	}
-	if ((font = TTF_OpenFont(path.c_str(), pointSize)) == NULL) {
+	if ((font = TTF_OpenFont(path.c_str(), pointSize)) == nullptr) {
 		printlog("failed to load '%s': %s", path.c_str(), TTF_GetError());
 		return;
 	}

@@ -31,7 +31,7 @@
 void castSpellInit(Uint32 caster_uid, spell_t* spell, bool usingSpellbook, bool usingTome)
 {
 	Entity* caster = uidToEntity(caster_uid);
-	node_t* node = NULL;
+	node_t* node = nullptr;
 	if ( !caster )
 	{
 		//Need a spell and caster to cast a spell.
@@ -541,10 +541,10 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 	if (!caster || !spell)
 	{
 		//Need a spell and caster to cast a spell.
-		return NULL;
+		return nullptr;
 	}
 
-	Entity* result = NULL; //If the spell spawns an entity (like a magic light ball or a magic missile), it gets stored here and returned.
+	Entity* result = nullptr; //If the spell spawns an entity (like a magic light ball or a magic missile), it gets stored here and returned.
 
 	if (clientnum != 0 && multiplayer == CLIENT)
 	{
@@ -588,12 +588,12 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 		net_packet->address.host = net_server.host;
 		net_packet->address.port = net_server.port;
 		sendPacketSafe(net_sock, -1, net_packet, 0);
-		return NULL;
+		return nullptr;
 	}
 
 	if (!spell->elements.first)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	//node_t *node = spell->types->first;
@@ -604,7 +604,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 	int propulsion = 0;
 	int traveltime = 0;
 	int magiccost = 0;
-	spell_t* channeled_spell = NULL; //Pointer to the spell if it's a channeled spell. For the purpose of giving it its node in the channeled spell list.
+	spell_t* channeled_spell = nullptr; //Pointer to the spell if it's a channeled spell. For the purpose of giving it its node in the channeled spell list.
 	node_t* node = spell->elements.first;
 
 	Stat* stat = caster->getStats();
@@ -926,7 +926,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 						}
 					}
 				}
-				return NULL;
+				return nullptr;
 			}
 		}
 	}
@@ -946,7 +946,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 		{
 			waterwalkingboots = true;
 		}*/
-		if ( stat && stat->shoes != NULL )
+		if ( stat && stat->shoes != nullptr)
 		{
 			if (stat->shoes->type == IRON_BOOTS_WATERWALKING )
 			{

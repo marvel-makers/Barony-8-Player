@@ -47,7 +47,7 @@ void initScarab(Entity* my, Stat* myStats)
 	{
 		auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
 
-		if ( myStats != NULL )
+		if ( myStats != nullptr)
 		{
 		    if ( !strncmp(map.name, "The Labyrinth", 13) )
 		    {
@@ -94,7 +94,7 @@ void initScarab(Entity* my, Stat* myStats)
 				myStats->LVL = 10;
 				my->setEffect(EFF_MAGICREFLECT, true, -1, true); //-1 duration, never expires.
 				newItem(ENCHANTED_FEATHER, EXCELLENT, 0, 1, (ENCHANTED_FEATHER_MAX_DURABILITY - 1), false, &myStats->inventory);
-				myStats->weapon = newItem(SPELLBOOK_COLD, EXCELLENT, 0, 1, 0, false, NULL);
+				myStats->weapon = newItem(SPELLBOOK_COLD, EXCELLENT, 0, 1, 0, false, nullptr);
 				customItemsToGenerate = customItemsToGenerate - 1;
 				int c;
 				for ( c = 0; c < 4; ++c )
@@ -273,7 +273,7 @@ void scarabAnimate(Entity* my, Stat* myStats, double dist)
 			my->flags[INVISIBLE] = false;
 			//my->flags[BLOCKSIGHT] = true; //No. It never blocks sight.
 			bodypart = 0;
-			for ( node = my->children.first; node != NULL; node = node->next )
+			for ( node = my->children.first; node != nullptr; node = node->next )
 			{
 				if ( bodypart < 2 )
 				{

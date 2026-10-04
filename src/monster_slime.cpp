@@ -220,7 +220,7 @@ void initSlime(Entity* my, Stat* myStats)
 	{
 		auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
 
-		if ( myStats != NULL )
+		if ( myStats != nullptr)
 		{
 			if ( !myStats->leader_uid )
 			{

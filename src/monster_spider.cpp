@@ -55,7 +55,7 @@ void initSpider(Entity* my, Stat* myStats)
 	{
 		auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
 
-		if ( myStats != NULL )
+		if ( myStats != nullptr)
 		{
 			if ( !myStats->leader_uid )
 			{
@@ -335,7 +335,7 @@ void spiderMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			my->flags[INVISIBLE] = true;
 			my->flags[BLOCKSIGHT] = false;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < 2 )
 				{
@@ -356,7 +356,7 @@ void spiderMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			my->flags[INVISIBLE] = false;
 			my->flags[BLOCKSIGHT] = true;
 			bodypart = 0;
-			for (node = my->children.first; node != NULL; node = node->next)
+			for (node = my->children.first; node != nullptr; node = node->next)
 			{
 				if ( bodypart < 2 )
 				{
@@ -380,14 +380,14 @@ void spiderMoveBodyparts(Entity* my, Stat* myStats, double dist)
 
 	// animate limbs
 	Entity* leftArm = nullptr;
-	for (bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++)
+	for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++)
 	{
 		if ( bodypart < 2 )
 		{
 			continue;
 		}
 		entity = static_cast<Entity*>(node->element);
-		Entity* previous = NULL; // previous part
+		Entity* previous = nullptr; // previous part
 		if ( bodypart > 2 )
 		{
 			previous = static_cast<Entity*>(node->prev->element);

@@ -4147,7 +4147,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 
 				if ( map.monsterexcludelocations[x + y * map.width] == false )
 				{
-					if ( !checkObstacle(x * 16 + 8, y * 16 + 8, NULL, NULL, false, true, false) )
+					if ( !checkObstacle(x * 16 + 8, y * 16 + 8, nullptr, nullptr, false, true, false) )
 					{
 						lavaEmptyTiles.push_back(x + y * 1000);
 					}
@@ -4160,7 +4160,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 
 				if ( map.monsterexcludelocations[x + y * map.width] == false )
 				{
-					if ( !checkObstacle(x * 16 + 8, y * 16 + 8, NULL, NULL, false, true, false) )
+					if ( !checkObstacle(x * 16 + 8, y * 16 + 8, nullptr, nullptr, false, true, false) )
 					{
 						waterEmptyTiles.push_back(x + y * 1000);
 					}
@@ -4168,7 +4168,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			}
 			else
 			{
-				if ( checkObstacle(x * 16 + 8, y * 16 + 8, NULL, NULL, false, true, false) )
+				if ( checkObstacle(x * 16 + 8, y * 16 + 8, nullptr, nullptr, false, true, false) )
 				{
 					possiblelocations[y + x * map.height] = false;
 					--numpossiblelocations;
@@ -4525,7 +4525,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							for ( int y2 = -1; y2 <= 1; y2++ )
 							{
 								if ( obstacleSpots.find((x + x2) + 1000 * (y + y2)) != obstacleSpots.end()
-									|| checkObstacle((x + x2) * 16, (y + y2) * 16, NULL, NULL, false) )
+									|| checkObstacle((x + x2) * 16, (y + y2) * 16, nullptr, nullptr, false) )
 								{
 									obstacles++;
 									obstacleSpots.insert((x + x2) + 1000 * (y + y2));
@@ -4557,7 +4557,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							std::vector<Entity*> tempPassableEntities;
 							if ( hellLadderFix )
 							{
-								for ( node = map.entities->first; node != NULL; node = node->next )
+								for ( node = map.entities->first; node != nullptr; node = node->next )
 								{
 									if ( (entity2 = static_cast<Entity*>(node->element)) )
 									{
@@ -4580,14 +4580,14 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 									}
 								}
 							}
-							for ( node = map.entities->first; node != NULL; node = node->next )
+							for ( node = map.entities->first; node != nullptr; node = node->next )
 							{
 								entity2 = static_cast<Entity*>(node->element);
 								if ( entity2->sprite == 1 ) // note entity->behavior == nullptr at this point
 								{
 									list_t* path = generatePath(x, y, entity2->x / 16, entity2->y / 16,
 										entity, entity2, GeneratePathTypes::GENERATE_PATH_CHECK_EXIT, hellLadderFix);
-									if ( path == NULL )
+									if ( path == nullptr)
 									{
 										nopath = true;
 									}
@@ -4607,7 +4607,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							{
 								// try again
 								list_RemoveNode(entity->mynode);
-								entity = NULL;
+								entity = nullptr;
 								break;
 							}
 						}
@@ -4650,7 +4650,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					}
 #endif
 					c--;
-					entity = NULL;
+					entity = nullptr;
 					continue;
 				}
 
@@ -4665,7 +4665,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					}
 #endif
 					c--;
-					entity = NULL;
+					entity = nullptr;
 					--secretExitLadderTries;
 					continue;
 				}
@@ -4686,19 +4686,19 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				{
 					// determine if ladder is blocked off by walls
 					int obstacles = 0;
-					if ( checkObstacle((x + 1) * 16, (y) * 16, entity, NULL, false) )
+					if ( checkObstacle((x + 1) * 16, (y) * 16, entity, nullptr, false) )
 					{
 						obstacles++;
 					}
-					if ( checkObstacle((x - 1) * 16, (y) * 16, NULL, NULL, false) )
+					if ( checkObstacle((x - 1) * 16, (y) * 16, nullptr, nullptr, false) )
 					{
 						obstacles++;
 					}
-					if ( checkObstacle((x) * 16, (y + 1) * 16, entity, NULL, false) )
+					if ( checkObstacle((x) * 16, (y + 1) * 16, entity, nullptr, false) )
 					{
 						obstacles++;
 					}
-					if ( checkObstacle((x) * 16, (y - 1) * 16, NULL, NULL, false) )
+					if ( checkObstacle((x) * 16, (y - 1) * 16, nullptr, nullptr, false) )
 					{
 						obstacles++;
 					}
@@ -4714,7 +4714,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						// try again, enclosed area
 						c--;
 						list_RemoveNode(entity->mynode);
-						entity = NULL;
+						entity = nullptr;
 						continue;
 					}
 				}
@@ -4727,7 +4727,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					std::vector<Entity*> tempPassableEntities;
 					if ( hellLadderFix )
 					{
-						for ( node = map.entities->first; node != NULL; node = node->next )
+						for ( node = map.entities->first; node != nullptr; node = node->next )
 						{
 							if ( (entity2 = static_cast<Entity*>(node->element)) )
 							{
@@ -4750,7 +4750,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							}
 						}
 					}
-					for ( node = map.entities->first; node != NULL; node = node->next )
+					for ( node = map.entities->first; node != nullptr; node = node->next )
 					{
 						entity2 = static_cast<Entity*>(node->element);
 						if ( entity2->sprite == 1 ) // note entity->behavior == nullptr at this point
@@ -4758,7 +4758,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							foundStart = true;
 							list_t* path = generatePath(x, y, entity2->x / 16, entity2->y / 16,
 								entity, entity2, GeneratePathTypes::GENERATE_PATH_CHECK_EXIT, hellLadderFix);
-							if ( path == NULL )
+							if ( path == nullptr)
 							{
 								nopath = true;
 							}
@@ -4786,7 +4786,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						// try again
 						c--;
 						list_RemoveNode(entity->mynode);
-						entity = NULL;
+						entity = nullptr;
 					}
 					else
 					{
@@ -5002,7 +5002,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			{
 				for ( y2 = -1; y2 <= 1; y2++ )
 				{
-					if ( checkObstacle((x + x2) * 16, (y + y2) * 16, NULL, NULL, false) )
+					if ( checkObstacle((x + x2) * 16, (y + y2) * 16, nullptr, nullptr, false) )
 					{
 						obstacles++;
 						if ( obstacles > decorationObstacleBudget )
@@ -5678,7 +5678,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 								{
 									bellSpot = false;
 								}
-								else if ( checkObstacle((checkx) * 16, (checky) * 16, NULL, NULL, false, false) )
+								else if ( checkObstacle((checkx) * 16, (checky) * 16, nullptr, nullptr, false, false) )
 								{
 									bellSpot = false;
 								}
@@ -5917,7 +5917,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							numContinuousTiles = 0;
 							continue;
 						}
-						else if ( !checkObstacle((checkx) * 16, (checky) * 16, NULL, NULL, false, false) )
+						else if ( !checkObstacle((checkx) * 16, (checky) * 16, nullptr, nullptr, false, false) )
 						{
 							obstacleLocations.insert(checkx + checky * 1000);
 							freespaces.insert(checkx + checky * 1000);
@@ -6171,7 +6171,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							{
 								++numWalls;
 							}
-							if ( checkObstacle((checkx) * 16, (checky) * 16, NULL, NULL, false, true, false) )
+							if ( checkObstacle((checkx) * 16, (checky) * 16, nullptr, nullptr, false, true, false) )
 							{
 								if ( allTrees.find(checkx + checky * 10000) != allTrees.end() )
 								{
@@ -6324,7 +6324,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 									++obstacles;
 									break;
 								}
-								if ( checkObstacle((checkx) * 16, (checky) * 16, NULL, NULL, false, true, false) )
+								if ( checkObstacle((checkx) * 16, (checky) * 16, nullptr, nullptr, false, true, false) )
 								{
 									++obstacles;
 									break;
@@ -6478,7 +6478,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						{
 							continue;
 						}
-						if ( !checkObstacle((checkx) * 16, (checky) * 16, NULL, NULL, false, false) )
+						if ( !checkObstacle((checkx) * 16, (checky) * 16, nullptr, nullptr, false, false) )
 						{
 							freespaces.insert(checkx + checky * 1000);
 						}
@@ -7125,7 +7125,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		}
 
 		Entity* playerStart = nullptr;
-		for ( node = map.entities->first; node != NULL; node = node->next )
+		for ( node = map.entities->first; node != nullptr; node = node->next )
 		{
 			entity2 = static_cast<Entity*>(node->element);
 
@@ -7220,7 +7220,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			std::vector<Entity*> tempPassableEntities;
 			if ( hellLadderFix )
 			{
-				for ( node = map.entities->first; node != NULL; node = node->next )
+				for ( node = map.entities->first; node != nullptr; node = node->next )
 				{
 					if ( (entity2 = static_cast<Entity*>(node->element)) )
 					{
@@ -7278,7 +7278,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				{
 					list_t* path = generatePath(x, y, playerStart->x / 16, playerStart->y / 16,
 						ent, playerStart, GeneratePathTypes::GENERATE_PATH_CHECK_EXIT, true);
-					if ( path == NULL )
+					if ( path == nullptr)
 					{
 						continue; // no path
 					}
@@ -7436,7 +7436,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					{
 						list_t* path = generatePath(x, y, playerStart->x / 16, playerStart->y / 16,
 							keyItem, playerStart, GeneratePathTypes::GENERATE_PATH_CHECK_EXIT, true);
-						if ( path == NULL )
+						if ( path == nullptr)
 						{
 							list_RemoveNode(keyItem->mynode);
 							keyItem = nullptr;
@@ -8021,7 +8021,7 @@ void assignActions(map_t* map)
 				if ( darkmap )
 				{
 					list_RemoveNode(entity->mynode);
-					entity = NULL;
+					entity = nullptr;
 					break;
 				}
 				entity->behavior = &actTorch;
@@ -8038,7 +8038,7 @@ void assignActions(map_t* map)
 				if ( darkmap )
 				{
 					list_RemoveNode(entity->mynode);
-					entity = NULL;
+					entity = nullptr;
 					break;
 				}
 				entity->behavior = &actTorch;
@@ -8056,7 +8056,7 @@ void assignActions(map_t* map)
 				if ( darkmap )
 				{
 					list_RemoveNode(entity->mynode);
-					entity = NULL;
+					entity = nullptr;
 					break;
 				}
 				entity->behavior = &actTorch;
@@ -8074,7 +8074,7 @@ void assignActions(map_t* map)
 				if ( darkmap )
 				{
 					list_RemoveNode(entity->mynode);
-					entity = NULL;
+					entity = nullptr;
 					break;
 				}
 				entity->behavior = &actTorch;
@@ -8573,7 +8573,7 @@ void assignActions(map_t* map)
 				entity->flags[UPDATENEEDED] = true;
 				entity->flags[INVISIBLE] = true;
 				entity->skill[5] = -1;
-				Stat* myStats = NULL;
+				Stat* myStats = nullptr;
 				if ( multiplayer != CLIENT )
 				{
 					myStats = entity->getStats();
@@ -8740,7 +8740,7 @@ void assignActions(map_t* map)
 				if ( darkmap )
 				{
 					list_RemoveNode(entity->mynode);
-					entity = NULL;
+					entity = nullptr;
 					break;
 				}
 				entity->sizex = 3;
@@ -9042,7 +9042,7 @@ void assignActions(map_t* map)
 
 				//Chest inventory.
 				node_t* tempNode = list_AddNodeFirst(&entity->children);
-				tempNode->element = NULL;
+				tempNode->element = nullptr;
 				tempNode->deconstructor = &emptyDeconstructor;
 
 				if ( !strcmp(map->name, "The Mystic Library") && !vampireQuestChest )
@@ -9593,7 +9593,7 @@ void assignActions(map_t* map)
 				if ( darkmap )
 				{
 					list_RemoveNode(entity->mynode);
-					entity = NULL;
+					entity = nullptr;
 					break;
 				}
 				entity->behavior = &actCrystalShard;
@@ -9610,7 +9610,7 @@ void assignActions(map_t* map)
 				if ( darkmap )
 				{
 					list_RemoveNode(entity->mynode);
-					entity = NULL;
+					entity = nullptr;
 					break;
 				}
 				entity->behavior = &actCrystalShard;
@@ -9628,7 +9628,7 @@ void assignActions(map_t* map)
 				if ( darkmap )
 				{
 					list_RemoveNode(entity->mynode);
-					entity = NULL;
+					entity = nullptr;
 					break;
 				}
 				entity->behavior = &actCrystalShard;
@@ -9646,7 +9646,7 @@ void assignActions(map_t* map)
 				if ( darkmap )
 				{
 					list_RemoveNode(entity->mynode);
-					entity = NULL;
+					entity = nullptr;
 					break;
 				}
 				entity->behavior = &actCrystalShard;

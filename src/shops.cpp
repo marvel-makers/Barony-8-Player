@@ -110,7 +110,7 @@ void startTradingServer(Entity* entity, int player)
 	}
 
 	Stat* stats = entity->getStats();
-	if ( stats == NULL )
+	if ( stats == nullptr)
 	{
 		return;
 	}
@@ -145,7 +145,7 @@ void startTradingServer(Entity* entity, int player)
 
 		// fill client's shop inventory with items
 		node_t* node;
-		for ( node = entitystats->inventory.first; node != NULL; node = node->next )
+		for ( node = entitystats->inventory.first; node != nullptr; node = node->next )
 		{
 			auto item = static_cast<Item*>(node->element);
 			strcpy((char*)net_packet->data, "SHPI");

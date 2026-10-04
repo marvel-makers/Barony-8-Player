@@ -37,8 +37,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellTomeIDToAppearance.clear();
 	spellElementMap.clear();
 
-	node_t* node = NULL;
-	spellElement_t* element = NULL;
+	node_t* node = nullptr;
+	spellElement_t* element = nullptr;
 
 	spellElementConstructor(&spellElement_unintelligible);
 	//spellElement_unintelligible.mana = 0;
@@ -512,8 +512,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_force);
 	node->size = sizeof(spellElement_t);
@@ -531,8 +531,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_magicmissile);
 	node->size = sizeof(spellElement_t);
@@ -550,8 +550,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_cold);
 	node->size = sizeof(spellElement_t);
@@ -562,8 +562,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_fireball, SPELL_FIREBALL);
 	strcpy(spell_fireball.spell_internal_name, "spell_fireball");
 	spell_fireball.difficulty = 20;
-	spell_fireball.elements.first = NULL;
-	spell_fireball.elements.last = NULL;
+	spell_fireball.elements.first = nullptr;
+	spell_fireball.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_fireball.elements);
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
@@ -571,8 +571,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_fire);
 	node->size = sizeof(spellElement_t);
@@ -583,8 +583,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_lightning, SPELL_LIGHTNING);
 	strcpy(spell_lightning.spell_internal_name, "spell_lightning");
 	spell_lightning.difficulty = 60;
-	spell_lightning.elements.first = NULL;
-	spell_lightning.elements.last = NULL;
+	spell_lightning.elements.first = nullptr;
+	spell_lightning.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_lightning.elements);
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
@@ -592,8 +592,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_lightning);
 	node->size = sizeof(spellElement_t);
@@ -604,8 +604,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_removecurse, SPELL_REMOVECURSE);
 	strcpy(spell_removecurse.spell_internal_name, "spell_removecurse");
 	spell_removecurse.difficulty = 60;
-	spell_removecurse.elements.first = NULL;
-	spell_removecurse.elements.last = NULL;
+	spell_removecurse.elements.first = nullptr;
+	spell_removecurse.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_removecurse.elements);
 	node->element = copySpellElement(&spellElement_removecurse);
 	node->size = sizeof(spellElement_t);
@@ -616,8 +616,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_light, SPELL_LIGHT);
 	strcpy(spell_light.spell_internal_name, "spell_light");
 	spell_light.difficulty = 0;
-	spell_light.elements.first = NULL;
-	spell_light.elements.last = NULL;
+	spell_light.elements.first = nullptr;
+	spell_light.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_light.elements);
 	node->element = copySpellElement(&spellElement_light);
 	node->size = sizeof(spellElement_t);
@@ -629,8 +629,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_identify, SPELL_IDENTIFY);
 	strcpy(spell_identify.spell_internal_name, "spell_identify");
 	spell_identify.difficulty = 60;
-	spell_identify.elements.first = NULL;
-	spell_identify.elements.last = NULL;
+	spell_identify.elements.first = nullptr;
+	spell_identify.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_identify.elements);
 	node->element = copySpellElement(&spellElement_identify);
 	node->size = sizeof(spellElement_t);
@@ -641,8 +641,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_magicmapping, SPELL_MAGICMAPPING);
 	strcpy(spell_magicmapping.spell_internal_name, "spell_magicmapping");
 	spell_magicmapping.difficulty = 60;
-	spell_magicmapping.elements.first = NULL;
-	spell_magicmapping.elements.last = NULL;
+	spell_magicmapping.elements.first = nullptr;
+	spell_magicmapping.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_magicmapping.elements);
 	node->element = copySpellElement(&spellElement_magicmapping);
 	node->size = sizeof(spellElement_t);
@@ -660,8 +660,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_sleep);
 	node->size = sizeof(spellElement_t);
@@ -679,8 +679,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_confuse);
 	node->size = sizeof(spellElement_t);
@@ -699,8 +699,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_slow);
 	node->size = sizeof(spellElement_t);
@@ -718,8 +718,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_opening);
 	node->size = sizeof(spellElement_t);
@@ -737,8 +737,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_locking);
 	node->size = sizeof(spellElement_t);
@@ -749,8 +749,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_levitation, SPELL_LEVITATION);
 	strcpy(spell_levitation.spell_internal_name, "spell_levitation");
 	spell_levitation.difficulty = 80;
-	spell_levitation.elements.first = NULL;
-	spell_levitation.elements.last = NULL;
+	spell_levitation.elements.first = nullptr;
+	spell_levitation.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_levitation.elements);
 	node->element = copySpellElement(&spellElement_levitation);
 	node->size = sizeof(spellElement_t);
@@ -762,8 +762,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_invisibility, SPELL_INVISIBILITY);
 	strcpy(spell_invisibility.spell_internal_name, "spell_invisibility");
 	spell_invisibility.difficulty = 80;
-	spell_invisibility.elements.first = NULL;
-	spell_invisibility.elements.last = NULL;
+	spell_invisibility.elements.first = nullptr;
+	spell_invisibility.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_invisibility.elements);
 	node->element = copySpellElement(&spellElement_invisible);
 	node->size = sizeof(spellElement_t);
@@ -775,8 +775,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_teleportation, SPELL_TELEPORTATION);
 	strcpy(spell_teleportation.spell_internal_name, "spell_teleportation");
 	spell_teleportation.difficulty = 80;
-	spell_teleportation.elements.first = NULL;
-	spell_teleportation.elements.last = NULL;
+	spell_teleportation.elements.first = nullptr;
+	spell_teleportation.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_teleportation.elements);
 	node->element = copySpellElement(&spellElement_teleportation);
 	node->size = sizeof(spellElement_t);
@@ -787,8 +787,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_polymorph, SPELL_SELF_POLYMORPH);
 	strcpy(spell_polymorph.spell_internal_name, "spell_self_polymorph");
 	spell_polymorph.difficulty = 60;
-	spell_polymorph.elements.first = NULL;
-	spell_polymorph.elements.last = NULL;
+	spell_polymorph.elements.first = nullptr;
+	spell_polymorph.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_polymorph.elements);
 	node->element = copySpellElement(&spellElement_selfPolymorph);
 	node->size = sizeof(spellElement_t);
@@ -799,8 +799,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_healing, SPELL_HEALING);
 	strcpy(spell_healing.spell_internal_name, "spell_healing");
 	spell_healing.difficulty = 20;
-	spell_healing.elements.first = NULL;
-	spell_healing.elements.last = NULL;
+	spell_healing.elements.first = nullptr;
+	spell_healing.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_healing.elements);
 	node->element = copySpellElement(&spellElement_heal);
 	node->size = sizeof(spellElement_t);
@@ -840,8 +840,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_cureailment, SPELL_CUREAILMENT);
 	strcpy(spell_cureailment.spell_internal_name, "spell_cureailment");
 	spell_cureailment.difficulty = 20;
-	spell_cureailment.elements.first = NULL;
-	spell_cureailment.elements.last = NULL;
+	spell_cureailment.elements.first = nullptr;
+	spell_cureailment.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_cureailment.elements);
 	node->element = copySpellElement(&spellElement_cure_ailment);
 	node->size = sizeof(spellElement_t);
@@ -852,8 +852,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_dig, SPELL_DIG);
 	strcpy(spell_dig.spell_internal_name, "spell_dig");
 	spell_dig.difficulty = 40;
-	spell_dig.elements.first = NULL;
-	spell_dig.elements.last = NULL;
+	spell_dig.elements.first = nullptr;
+	spell_dig.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_dig.elements);
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
@@ -861,8 +861,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_dig);
 	node->size = sizeof(spellElement_t);
@@ -880,8 +880,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_stoneblood);
 	node->size = sizeof(spellElement_t);
@@ -899,8 +899,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_bleed);
 	node->size = sizeof(spellElement_t);
@@ -911,8 +911,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_summon, SPELL_SUMMON);
 	strcpy(spell_summon.spell_internal_name, "spell_summon");
 	spell_summon.difficulty = 40;
-	spell_summon.elements.first = NULL;
-	spell_summon.elements.last = NULL;
+	spell_summon.elements.first = nullptr;
+	spell_summon.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_summon.elements);
 	node->element = copySpellElement(&spellElement_summon);
 	node->size = sizeof(spellElement_t);
@@ -930,8 +930,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_dominate);
 	node->size = sizeof(spellElement_t);
@@ -962,8 +962,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_acidSpray);
 	node->size = sizeof(spellElement_t);
@@ -981,8 +981,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_stealWeapon);
 	node->size = sizeof(spellElement_t);
@@ -1000,8 +1000,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_drainSoul);
 	node->size = sizeof(spellElement_t);
@@ -1045,8 +1045,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_charmMonster);
 	node->size = sizeof(spellElement_t);
@@ -1057,8 +1057,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_revertForm, SPELL_REVERT_FORM);
 	strcpy(spell_revertForm.spell_internal_name, "spell_revert_form");
 	spell_revertForm.difficulty = 0;
-	spell_revertForm.elements.first = NULL;
-	spell_revertForm.elements.last = NULL;
+	spell_revertForm.elements.first = nullptr;
+	spell_revertForm.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_revertForm.elements);
 	node->element = copySpellElement(&spellElement_shapeshift);
 	node->size = sizeof(spellElement_t);
@@ -1070,8 +1070,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_ratForm, SPELL_RAT_FORM);
 	strcpy(spell_ratForm.spell_internal_name, "spell_rat_form");
 	spell_ratForm.difficulty = 0;
-	spell_ratForm.elements.first = NULL;
-	spell_ratForm.elements.last = NULL;
+	spell_ratForm.elements.first = nullptr;
+	spell_ratForm.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_ratForm.elements);
 	node->element = copySpellElement(&spellElement_shapeshift);
 	node->size = sizeof(spellElement_t);
@@ -1083,8 +1083,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_spiderForm, SPELL_SPIDER_FORM);
 	strcpy(spell_spiderForm.spell_internal_name, "spell_spider_form");
 	spell_spiderForm.difficulty = 40;
-	spell_spiderForm.elements.first = NULL;
-	spell_spiderForm.elements.last = NULL;
+	spell_spiderForm.elements.first = nullptr;
+	spell_spiderForm.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_spiderForm.elements);
 	node->element = copySpellElement(&spellElement_shapeshift);
 	node->size = sizeof(spellElement_t);
@@ -1096,8 +1096,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_trollForm, SPELL_TROLL_FORM);
 	strcpy(spell_trollForm.spell_internal_name, "spell_troll_form");
 	spell_trollForm.difficulty = 60;
-	spell_trollForm.elements.first = NULL;
-	spell_trollForm.elements.last = NULL;
+	spell_trollForm.elements.first = nullptr;
+	spell_trollForm.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_trollForm.elements);
 	node->element = copySpellElement(&spellElement_shapeshift);
 	node->size = sizeof(spellElement_t);
@@ -1109,8 +1109,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_impForm, SPELL_IMP_FORM);
 	strcpy(spell_impForm.spell_internal_name, "spell_imp_form");
 	spell_impForm.difficulty = 80;
-	spell_impForm.elements.first = NULL;
-	spell_impForm.elements.last = NULL;
+	spell_impForm.elements.first = nullptr;
+	spell_impForm.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_impForm.elements);
 	node->element = copySpellElement(&spellElement_shapeshift);
 	node->size = sizeof(spellElement_t);
@@ -1129,8 +1129,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_sprayWeb);
 	node->size = sizeof(spellElement_t);
@@ -1148,8 +1148,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_poison);
 	node->size = sizeof(spellElement_t);
@@ -1160,8 +1160,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_speed, SPELL_SPEED);
 	strcpy(spell_speed.spell_internal_name, "spell_speed");
 	spell_speed.difficulty = 40;
-	spell_speed.elements.first = NULL;
-	spell_speed.elements.last = NULL;
+	spell_speed.elements.first = nullptr;
+	spell_speed.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_speed.elements);
 	node->element = copySpellElement(&spellElement_speed);
 	node->size = sizeof(spellElement_t);
@@ -1172,8 +1172,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_fear, SPELL_FEAR);
 	strcpy(spell_fear.spell_internal_name, "spell_fear");
 	spell_fear.difficulty = 80;
-	spell_fear.elements.first = NULL;
-	spell_fear.elements.last = NULL;
+	spell_fear.elements.first = nullptr;
+	spell_fear.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_fear.elements);
 	node->element = copySpellElement(&spellElement_fear);
 	node->size = sizeof(spellElement_t);
@@ -1191,8 +1191,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_weakness);
 	node->size = sizeof(spellElement_t);
@@ -1203,8 +1203,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_strike, SPELL_STRIKE);
 	strcpy(spell_strike.spell_internal_name, "spell_strike");
 	spell_strike.difficulty = 80;
-	spell_strike.elements.first = NULL;
-	spell_strike.elements.last = NULL;
+	spell_strike.elements.first = nullptr;
+	spell_strike.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_strike.elements);
 	node->element = copySpellElement(&spellElement_strike);
 	node->size = sizeof(spellElement_t);
@@ -1215,8 +1215,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_detectFood, SPELL_DETECT_FOOD);
 	strcpy(spell_detectFood.spell_internal_name, "spell_detect_food");
 	spell_detectFood.difficulty = 40;
-	spell_detectFood.elements.first = NULL;
-	spell_detectFood.elements.last = NULL;
+	spell_detectFood.elements.first = nullptr;
+	spell_detectFood.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_detectFood.elements);
 	node->element = copySpellElement(&spellElement_detectFood);
 	node->size = sizeof(spellElement_t);
@@ -1227,8 +1227,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_trollsBlood, SPELL_TROLLS_BLOOD);
 	strcpy(spell_trollsBlood.spell_internal_name, "spell_trolls_blood");
 	spell_trollsBlood.difficulty = 40;
-	spell_trollsBlood.elements.first = NULL;
-	spell_trollsBlood.elements.last = NULL;
+	spell_trollsBlood.elements.first = nullptr;
+	spell_trollsBlood.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_trollsBlood.elements);
 	node->element = copySpellElement(&spellElement_trollsBlood);
 	node->size = sizeof(spellElement_t);
@@ -1239,8 +1239,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_flutter, SPELL_FLUTTER);
 	strcpy(spell_flutter.spell_internal_name, "spell_flutter");
 	spell_flutter.difficulty = 60;
-	spell_flutter.elements.first = NULL;
-	spell_flutter.elements.last = NULL;
+	spell_flutter.elements.first = nullptr;
+	spell_flutter.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_flutter.elements);
 	node->element = copySpellElement(&spellElement_flutter);
 	node->size = sizeof(spellElement_t);
@@ -1251,8 +1251,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_dash, SPELL_DASH);
 	strcpy(spell_dash.spell_internal_name, "spell_dash");
 	spell_dash.difficulty = 40;
-	spell_dash.elements.first = NULL;
-	spell_dash.elements.last = NULL;
+	spell_dash.elements.first = nullptr;
+	spell_dash.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_dash.elements);
 	node->element = copySpellElement(&spellElement_dash);
 	node->size = sizeof(spellElement_t);
@@ -1270,8 +1270,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_shadowTag);
 	node->size = sizeof(spellElement_t);
@@ -1289,8 +1289,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_telePull);
 	node->size = sizeof(spellElement_t);
@@ -1308,8 +1308,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_demonIllusion);
 	node->size = sizeof(spellElement_t);
@@ -1320,8 +1320,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_salvageItem, SPELL_SALVAGE);
 	strcpy(spell_salvageItem.spell_internal_name, "spell_salvage");
 	spell_salvageItem.difficulty = 20;
-	spell_salvageItem.elements.first = NULL;
-	spell_salvageItem.elements.last = NULL;
+	spell_salvageItem.elements.first = nullptr;
+	spell_salvageItem.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_salvageItem.elements);
 	node->element = copySpellElement(&spellElement_salvageItem);
 	node->size = sizeof(spellElement_t);
@@ -1332,8 +1332,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_ghost_bolt, SPELL_GHOST_BOLT);
 	strcpy(spell_ghost_bolt.spell_internal_name, "spell_ghost_bolt");
 	spell_ghost_bolt.difficulty = 100;
-	spell_ghost_bolt.elements.first = NULL;
-	spell_ghost_bolt.elements.last = NULL;
+	spell_ghost_bolt.elements.first = nullptr;
+	spell_ghost_bolt.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_ghost_bolt.elements);
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
@@ -1341,8 +1341,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_ghostBolt);
 	node->size = sizeof(spellElement_t);
@@ -1353,8 +1353,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_slime_acid, SPELL_SLIME_ACID);
 	strcpy(spell_slime_acid.spell_internal_name, "spell_slime_acid");
 	spell_slime_acid.difficulty = 100;
-	spell_slime_acid.elements.first = NULL;
-	spell_slime_acid.elements.last = NULL;
+	spell_slime_acid.elements.first = nullptr;
+	spell_slime_acid.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_slime_acid.elements);
 	node->element = copySpellElement(&spellElement_slime_spray);
 	node->size = sizeof(spellElement_t);
@@ -1362,8 +1362,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_slimeAcid);
 	node->size = sizeof(spellElement_t);
@@ -1374,8 +1374,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_slime_water, SPELL_SLIME_WATER);
 	strcpy(spell_slime_water.spell_internal_name, "spell_slime_water");
 	spell_slime_water.difficulty = 100;
-	spell_slime_water.elements.first = NULL;
-	spell_slime_water.elements.last = NULL;
+	spell_slime_water.elements.first = nullptr;
+	spell_slime_water.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_slime_water.elements);
 	node->element = copySpellElement(&spellElement_slime_spray);
 	node->size = sizeof(spellElement_t);
@@ -1383,8 +1383,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_slimeWater);
 	node->size = sizeof(spellElement_t);
@@ -1395,8 +1395,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_slime_fire, SPELL_SLIME_FIRE);
 	strcpy(spell_slime_fire.spell_internal_name, "spell_slime_fire");
 	spell_slime_fire.difficulty = 100;
-	spell_slime_fire.elements.first = NULL;
-	spell_slime_fire.elements.last = NULL;
+	spell_slime_fire.elements.first = nullptr;
+	spell_slime_fire.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_slime_fire.elements);
 	node->element = copySpellElement(&spellElement_slime_spray);
 	node->size = sizeof(spellElement_t);
@@ -1404,8 +1404,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_slimeFire);
 	node->size = sizeof(spellElement_t);
@@ -1416,8 +1416,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_slime_tar, SPELL_SLIME_TAR);
 	strcpy(spell_slime_tar.spell_internal_name, "spell_slime_tar");
 	spell_slime_tar.difficulty = 100;
-	spell_slime_tar.elements.first = NULL;
-	spell_slime_tar.elements.last = NULL;
+	spell_slime_tar.elements.first = nullptr;
+	spell_slime_tar.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_slime_tar.elements);
 	node->element = copySpellElement(&spellElement_slime_spray);
 	node->size = sizeof(spellElement_t);
@@ -1425,8 +1425,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_slimeTar);
 	node->size = sizeof(spellElement_t);
@@ -1437,8 +1437,8 @@ void setupSpells()   ///TODO: Verify this function.
 	spellConstructor(&spell_slime_metal, SPELL_SLIME_METAL);
 	strcpy(spell_slime_metal.spell_internal_name, "spell_slime_metal");
 	spell_slime_metal.difficulty = 100;
-	spell_slime_metal.elements.first = NULL;
-	spell_slime_metal.elements.last = NULL;
+	spell_slime_metal.elements.first = nullptr;
+	spell_slime_metal.elements.last = nullptr;
 	node = list_AddNodeLast(&spell_slime_metal.elements);
 	node->element = copySpellElement(&spellElement_slime_spray);
 	node->size = sizeof(spellElement_t);
@@ -1446,8 +1446,8 @@ void setupSpells()   ///TODO: Verify this function.
 	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
-	element->elements.first = NULL;
-	element->elements.last = NULL;
+	element->elements.first = nullptr;
+	element->elements.last = nullptr;
 	node = list_AddNodeLast(&element->elements);
 	node->element = copySpellElement(&spellElement_slimeMetal);
 	node->size = sizeof(spellElement_t);

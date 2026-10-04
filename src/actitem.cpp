@@ -1295,7 +1295,7 @@ void actItem(Entity* my)
 	{
 		double newx = my->x + ITEM_VELX;
 		double newy = my->y + ITEM_VELY;
-		if ( !checkObstacle( newx, newy, my, NULL ) )
+		if ( !checkObstacle( newx, newy, my, nullptr) )
 		{
 			my->x = newx;
 			my->y = newy;

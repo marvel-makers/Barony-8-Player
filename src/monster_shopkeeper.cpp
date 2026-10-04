@@ -169,7 +169,7 @@ void initShopkeeper(Entity* my, Stat* myStats)
 			}
 		}
 
-		if ( myStats != NULL )
+		if ( myStats != nullptr)
 		{
 			if ( !myStats->leader_uid )
 			{
@@ -232,21 +232,21 @@ void initShopkeeper(Entity* my, Stat* myStats)
 			}
 
 			//give weapon
-			if ( myStats->weapon == NULL && myStats->EDITOR_ITEMS[ITEM_SLOT_WEAPON] == 1 )
+			if ( myStats->weapon == nullptr && myStats->EDITOR_ITEMS[ITEM_SLOT_WEAPON] == 1 )
 			{
 				if ( currentlevel < 25 )
 				{
-					myStats->weapon = newItem(SPELLBOOK_MAGICMISSILE, EXCELLENT, 0, 1, 0, false, NULL);
+					myStats->weapon = newItem(SPELLBOOK_MAGICMISSILE, EXCELLENT, 0, 1, 0, false, nullptr);
 				}
 				else
 				{
 					if ( rng.rand() % 2 == 0 )
 					{
-						myStats->weapon = newItem(SPELLBOOK_DRAIN_SOUL, EXCELLENT, 0, 1, 0, false, NULL);
+						myStats->weapon = newItem(SPELLBOOK_DRAIN_SOUL, EXCELLENT, 0, 1, 0, false, nullptr);
 					}
 					else
 					{
-						myStats->weapon = newItem(SPELLBOOK_BLEED, EXCELLENT, 0, 1, 0, false, NULL);
+						myStats->weapon = newItem(SPELLBOOK_BLEED, EXCELLENT, 0, 1, 0, false, nullptr);
 					}
 				}
 			}
@@ -1501,7 +1501,7 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	Entity* helmet = nullptr;
 
 	//Move bodyparts
-	for (bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++)
+	for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++)
 	{
 		if ( bodypart < LIMB_HUMANOID_TORSO )
 		{

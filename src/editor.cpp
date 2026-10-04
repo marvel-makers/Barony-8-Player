@@ -643,7 +643,7 @@ void handleButtons(void)
 	int w, h;
 
 	// handle buttons
-	for ( node = button_l.first; node != NULL; node = nextnode )
+	for ( node = button_l.first; node != nullptr; node = nextnode )
 	{
 		nextnode = node->next;
 		button = static_cast<button_t*>(node->element);
@@ -707,7 +707,7 @@ void handleButtons(void)
 						if ( !mousestatus[SDL_BUTTON_LEFT] )   // releasing the mouse over the button
 						{
 							button->pressed = false;
-							if ( button->action != NULL )
+							if ( button->action != nullptr)
 							{
 								(*button->action)(button); // run the button's assigned action
 								if ( !subwindow && button->focused )
@@ -778,7 +778,7 @@ bool handleEvents(void)
 	constexpr real_t frame = static_cast<real_t>(1000) / static_cast<real_t>(TICKS_PER_SECOND);
 	while (time_diff >= frame) {
 		time_diff -= frame;
-		timerCallback(0, NULL);
+		timerCallback(0, nullptr);
 	}
 
 	// calculate fps
@@ -803,7 +803,7 @@ bool handleEvents(void)
 		switch ( event.type )
 		{
 			case SDL_QUIT: // if SDL receives the shutdown signal
-				buttonExit(NULL);
+				buttonExit(nullptr);
 				break;
 			case SDL_KEYDOWN: // if a key is pressed...
 				if ( SDL_IsTextInputActive() )
@@ -968,7 +968,7 @@ bool handleEvents(void)
 						printlog("critical error! Attempting to abort safely...\n");
 						mainloop = 0;
 					}
-					if (palette != NULL)
+					if (palette != nullptr)
 					{
 						free(palette);
 					}
@@ -1005,8 +1005,8 @@ Uint32 timerCallback(Uint32 interval, void* param)
 
 	userevent.type = SDL_USEREVENT;
 	userevent.code = 0;
-	userevent.data1 = NULL;
-	userevent.data2 = NULL;
+	userevent.data1 = nullptr;
+	userevent.data2 = nullptr;
 
 	event.type = SDL_USEREVENT;
 	event.user = userevent;
@@ -1188,11 +1188,11 @@ void clearUndos()
 void undo()
 {
 	node_t* node;
-	if ( undospot == NULL )
+	if ( undospot == nullptr)
 	{
 		return;
 	}
-	selectedEntity[0] = NULL;
+	selectedEntity[0] = nullptr;
 	if ( undospot == undolist.last )
 	{
 		node_t* tempnode = undospot;
@@ -1209,13 +1209,13 @@ void undo()
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
 	list_FreeAll(map.entities);
-	for ( node = undomap->entities->first; node != NULL; node = node->next )
+	for ( node = undomap->entities->first; node != nullptr; node = node->next )
 	{
 		Entity* entity = newEntity(static_cast<Entity*>(node->element)->sprite, 1, map.entities, nullptr);
 
 		setSpriteAttributes(entity, static_cast<Entity*>(node->element), static_cast<Entity*>(node->element));
 	}
-	if ( redospot != NULL )
+	if ( redospot != nullptr)
 	{
 		redospot = redospot->prev;
 	}
@@ -1230,11 +1230,11 @@ void redo()
 {
 	node_t* node;
 
-	if ( redospot == NULL )
+	if ( redospot == nullptr)
 	{
 		return;
 	}
-	selectedEntity[0] = NULL;
+	selectedEntity[0] = nullptr;
 	map.tiles.clear();
 	free(camera.vismap);
 	auto undomap = static_cast<map_t*>(redospot->element);
@@ -1245,13 +1245,13 @@ void redo()
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
 	list_FreeAll(map.entities);
-	for ( node = undomap->entities->first; node != NULL; node = node->next )
+	for ( node = undomap->entities->first; node != nullptr; node = node->next )
 	{
 		Entity* entity = newEntity(static_cast<Entity*>(node->element)->sprite, 1, map.entities, nullptr);
 
 		setSpriteAttributes(entity, static_cast<Entity*>(node->element), static_cast<Entity*>(node->element));
 	}
-	if ( undospot != NULL )
+	if ( undospot != nullptr)
 	{
 		undospot = undospot->next;
 	}
@@ -1339,7 +1339,7 @@ int loadTilePalettes()
 	}
 
 	// open palette file
-	if ( (fp = openDataFile(filename, "rb")) == NULL )
+	if ( (fp = openDataFile(filename, "rb")) == nullptr)
 	{
 		printlog("error: unable to load tile palette file: '%s'", filename);
 		return 1;
@@ -1442,7 +1442,7 @@ int saveTilePalettes()
 	}
 
 	// open/create palette file
-	if ( (fp = openDataFile(filename, "w")) == NULL )
+	if ( (fp = openDataFile(filename, "w")) == nullptr)
 	{
 		printlog("error: unable to save or create tile palette file: '%s'", filename);
 		return 1;
@@ -2254,9 +2254,9 @@ int main(int argc, char** argv)
 				}
 
 				// Move Entities
-				if ( map.entities->first != NULL && viewsprites && allowediting )
+				if ( map.entities->first != nullptr && viewsprites && allowediting )
 				{
-					for ( node = map.entities->first; node != NULL; node = nextnode )
+					for ( node = map.entities->first; node != nullptr; node = nextnode )
 					{
 						nextnode = node->next;
 						entity = static_cast<Entity*>(node->element);
@@ -2274,7 +2274,7 @@ int main(int argc, char** argv)
 									}
 								}
 								mousestatus[SDL_BUTTON_LEFT] = 0;
-								selectedEntity[0] = NULL;
+								selectedEntity[0] = nullptr;
 								break;
 							}
 							else if ( mousestatus[SDL_BUTTON_RIGHT] )
@@ -2312,7 +2312,7 @@ int main(int argc, char** argv)
 									prev_x = entity->x / 16;
 									prev_y = entity->y / 16;
 									mousestatus[SDL_BUTTON_LEFT] = 0;
-									if ( newwindow == 0 && selectedEntity[0] != NULL )
+									if ( newwindow == 0 && selectedEntity[0] != nullptr)
 									{
 										makeUndo();
 									}
@@ -2338,7 +2338,7 @@ int main(int argc, char** argv)
 				}
 
 				// Modify World
-				if ( mousestatus[SDL_BUTTON_LEFT] && selectedEntity[0] == NULL )
+				if ( mousestatus[SDL_BUTTON_LEFT] && selectedEntity[0] == nullptr)
 				{
 					if ( allowediting )
 					{
@@ -2459,7 +2459,7 @@ int main(int argc, char** argv)
 					selectingspace = false;
 					savedundo = false;
 				}
-				if ( mousestatus[SDL_BUTTON_RIGHT] && selectedEntity[0] == NULL )
+				if ( mousestatus[SDL_BUTTON_RIGHT] && selectedEntity[0] == nullptr)
 				{
 					if ( selectedTool != 3 )
 					{
@@ -2521,7 +2521,7 @@ int main(int argc, char** argv)
 				camera.winw = xres - 128;
 				camera.winh = yres - 32;
 				light = addLight(camera.x, camera.y, "editor");
-				for ( node = map.entities->first; node != NULL; node = node->next )
+				for ( node = map.entities->first; node != nullptr; node = node->next )
 				{
 					entity = static_cast<Entity*>(node->element);
 					entity->flags[SPRITE] = true; // all entities rendered as SPRITES in the editor
@@ -2537,7 +2537,7 @@ int main(int argc, char** argv)
 				glEndCamera(&camera, false, map);
 				printTextFormatted(font8x8_bmp, 8, yres - 64, "x = %3.3f\ny = %3.3f\nz = %3.3f\nang = %3.3f\nfps = %3.1f", camera.x, camera.y, camera.z, camera.ang, fps);
 				list_RemoveNode(light->node);
-				for ( node = map.entities->first; node != NULL; node = node->next )
+				for ( node = map.entities->first; node != nullptr; node = node->next )
 				{
 					entity = static_cast<Entity*>(node->element);
 					entity->x -= 8;
@@ -2566,18 +2566,18 @@ int main(int argc, char** argv)
 				pos.h = 32;
 				if ( selectedTile >= 0 && selectedTile < numtiles )
 				{
-					if ( tiles[selectedTile] != NULL )
+					if ( tiles[selectedTile] != nullptr)
 					{
-						drawImage(tiles[selectedTile], NULL, &pos);
+						drawImage(tiles[selectedTile], nullptr, &pos);
 					}
 					else
 					{
-						drawImage(sprites[0], NULL, &pos);
+						drawImage(sprites[0], nullptr, &pos);
 					}
 				}
 				else
 				{
-					drawImage(sprites[0], NULL, &pos);
+					drawImage(sprites[0], nullptr, &pos);
 				}
 				pos.x = xres - 48;
 				pos.y = 360;
@@ -2588,23 +2588,23 @@ int main(int argc, char** argv)
 					c = map.tiles[drawlayer + drawy * MAP_LAYERS + drawx * MAP_LAYERS * map.height];
 					if ( c >= 0 && c < numtiles )
 					{
-						if ( tiles[c] != NULL )
+						if ( tiles[c] != nullptr)
 						{
-							drawImage(tiles[c], NULL, &pos);
+							drawImage(tiles[c], nullptr, &pos);
 						}
 						else
 						{
-							drawImage(sprites[0], NULL, &pos);
+							drawImage(sprites[0], nullptr, &pos);
 						}
 					}
 					else
 					{
-						drawImage(sprites[0], NULL, &pos);
+						drawImage(sprites[0], nullptr, &pos);
 					}
 				}
 				else
 				{
-					drawImage(sprites[0], NULL, &pos);
+					drawImage(sprites[0], nullptr, &pos);
 				}
 				printTextFormatted(font8x8_bmp, xres - 124, 324, "Selected:\n\n%9d",
 					(selectedTile >= 0 && selectedTile < numtiles) ? selectedTile : 0);
@@ -2684,7 +2684,7 @@ int main(int argc, char** argv)
 					{
 						drawRect(&boxPos, makeColorRGB(255, 0, 0), 255);
 					}
-					drawImage(tiles[recentUsedTiles[recentUsedTilePalette][recentIndex]], NULL, &pos);
+					drawImage(tiles[recentUsedTiles[recentUsedTilePalette][recentIndex]], nullptr, &pos);
 					pos.x += pad_x;
 				}
 
@@ -3615,7 +3615,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 2 ) 
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						spriteStats = selectedEntity[0]->getStats();
 						if ( spriteStats != nullptr )
@@ -3985,7 +3985,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 3 )
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						int numProperties = sizeof(chestPropertyNames) / sizeof(chestPropertyNames[0]); //find number of entries in property list
 						const int lenProperties = sizeof(chestPropertyNames[0]) / sizeof(char); //find length of entry in property list
@@ -4202,7 +4202,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 4 || newwindow == 5 )
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						int numProperties;
 
@@ -4667,7 +4667,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 6 )
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						int numProperties = sizeof(summonTrapPropertyNames) / sizeof(summonTrapPropertyNames[0]); //find number of entries in property list
 						const int lenProperties = sizeof(summonTrapPropertyNames[0]) / sizeof(char); //find length of entry in property list
@@ -4893,7 +4893,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 7 )
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						int numProperties = sizeof(powerCrystalPropertyNames) / sizeof(powerCrystalPropertyNames[0]); //find number of entries in property list
 						const int lenProperties = sizeof(powerCrystalPropertyNames[0]) / sizeof(char); //find length of entry in property list
@@ -5086,7 +5086,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 8 )
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						int numProperties = sizeof(leverTimerPropertyNames) / sizeof(leverTimerPropertyNames[0]); //find number of entries in property list
 						const int lenProperties = sizeof(leverTimerPropertyNames[0]) / sizeof(char); //find length of entry in property list
@@ -5184,7 +5184,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 9 )
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						int numProperties = sizeof(boulderTrapPropertyNames) / sizeof(boulderTrapPropertyNames[0]); //find number of entries in property list
 						const int lenProperties = sizeof(boulderTrapPropertyNames[0]) / sizeof(char); //find length of entry in property list
@@ -5326,7 +5326,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 10 )
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						int numProperties = sizeof(pedestalPropertyNames) / sizeof(pedestalPropertyNames[0]); //find number of entries in property list
 						const int lenProperties = sizeof(pedestalPropertyNames[0]) / sizeof(char); //find length of entry in property list
@@ -5497,7 +5497,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 11 )
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						int numProperties = sizeof(teleporterPropertyNames) / sizeof(teleporterPropertyNames[0]); //find number of entries in property list
 						const int lenProperties = sizeof(teleporterPropertyNames[0]) / sizeof(char); //find length of entry in property list
@@ -7678,7 +7678,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 26 )
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						int numProperties = sizeof(doorPropertyNames) / sizeof(doorPropertyNames[0]); //find number of entries in property list
 						const int lenProperties = sizeof(doorPropertyNames[0]) / sizeof(char); //find length of entry in property list
@@ -7781,7 +7781,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 36 )
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						int numProperties = sizeof(doorIronPropertyNames) / sizeof(doorIronPropertyNames[0]); //find number of entries in property list
 						const int lenProperties = sizeof(doorIronPropertyNames[0]) / sizeof(char); //find length of entry in property list
@@ -7900,7 +7900,7 @@ int main(int argc, char** argv)
 				}
 				else if ( newwindow == 27 )
 				{
-					if ( selectedEntity[0] != NULL )
+					if ( selectedEntity[0] != nullptr)
 					{
 						int numProperties = sizeof(gatePropertyNames) / sizeof(gatePropertyNames[0]); //find number of entries in property list
 						const int lenProperties = sizeof(gatePropertyNames[0]) / sizeof(char); //find length of entry in property list
@@ -9432,11 +9432,11 @@ int main(int argc, char** argv)
 					}
 					else if ( openwindow > 0 || savewindow == 1 )
 					{
-						buttonCloseSubwindow(NULL);
+						buttonCloseSubwindow(nullptr);
 					}
 					if ( newwindow == 16 || newwindow == 17 )
 					{
-						buttonCloseSubwindow(NULL);
+						buttonCloseSubwindow(nullptr);
 					}
 				}
 				if ( keystatus[SDLK_RETURN] )
@@ -9448,7 +9448,7 @@ int main(int argc, char** argv)
 					}
 					else if ( openwindow == 1 )
 					{
-						buttonOpenConfirm(NULL);
+						buttonOpenConfirm(nullptr);
 					}
 					else if ( savewindow == 1 )
 					{
@@ -9477,94 +9477,94 @@ int main(int argc, char** argv)
 					if ( keystatus[SDLK_n] && !keystatus[SDLK_LSHIFT] && !keystatus[SDLK_RSHIFT] )
 					{
 						keystatus[SDLK_n] = 0;
-						buttonNew(NULL);
+						buttonNew(nullptr);
 						groupedEntities.clear();
 					}
 					if ( keystatus[SDLK_s] )
 					{
 						keystatus[SDLK_s] = 0;
-						buttonSave(NULL);
+						buttonSave(nullptr);
 					}
 					if ( keystatus[SDLK_o] )
 					{
 						keystatus[SDLK_o] = 0;
-						buttonOpen(NULL);
+						buttonOpen(nullptr);
 						groupedEntities.clear();
 					}
 					if ( keystatus[SDLK_x] )
 					{
 						keystatus[SDLK_x] = 0;
-						buttonCut(NULL);
+						buttonCut(nullptr);
 					}
 					if ( keystatus[SDLK_c] )
 					{
 						keystatus[SDLK_c] = 0;
-						buttonCopy(NULL);
+						buttonCopy(nullptr);
 						groupedEntities.clear();
 					}
 					if ( keystatus[SDLK_v] )
 					{
 						keystatus[SDLK_v] = 0;
-						buttonPaste(NULL);
+						buttonPaste(nullptr);
 						groupedEntities.clear();
 					}
 					if ( keystatus[SDLK_a] )
 					{
 						keystatus[SDLK_a] = 0;
-						buttonSelectAll(NULL);
+						buttonSelectAll(nullptr);
 						reselectEntityGroup();
 					}
 					if ( keystatus[SDLK_z] )
 					{
 						keystatus[SDLK_z] = 0;
-						buttonUndo(NULL);
+						buttonUndo(nullptr);
 						groupedEntities.clear();
 					}
 					if ( keystatus[SDLK_y] )
 					{
 						keystatus[SDLK_y] = 0;
-						buttonRedo(NULL);
+						buttonRedo(nullptr);
 						groupedEntities.clear();
 					}
 					if ( keystatus[SDLK_g] )
 					{
 						keystatus[SDLK_g] = 0;
-						buttonGrid(NULL);
+						buttonGrid(nullptr);
 					}
 					if ( keystatus[SDLK_d] )
 					{
 						keystatus[SDLK_d] = 0;
-						buttonOpenDirectory(NULL);
+						buttonOpenDirectory(nullptr);
 					}
 					if ( keystatus[SDLK_t] )
 					{
 						keystatus[SDLK_t] = 0;
-						buttonToolbox(NULL);
+						buttonToolbox(nullptr);
 					}
 					if ( keystatus[SDLK_e] )
 					{
 						keystatus[SDLK_e] = 0;
-						buttonViewSprites(NULL);
+						buttonViewSprites(nullptr);
 					}
 					if ( keystatus[SDLK_l] )
 					{
 						keystatus[SDLK_l] = 0;
-						buttonAllLayers(NULL);
+						buttonAllLayers(nullptr);
 					}
 					if ( keystatus[SDLK_h] )
 					{
 						keystatus[SDLK_h] = 0;
-						buttonHoverText(NULL);
+						buttonHoverText(nullptr);
 					}
 					if ( keystatus[SDLK_i] )
 					{
 						keystatus[SDLK_i] = 0;
-						buttonStatusBar(NULL);
+						buttonStatusBar(nullptr);
 					}
 					if ( keystatus[SDLK_m] )
 					{
 						keystatus[SDLK_m] = 0;
-						buttonAttributes(NULL);
+						buttonAttributes(nullptr);
 					}
 					//Cycle layer up.
 					if ( keystatus[SDLK_u] )
@@ -9583,7 +9583,7 @@ int main(int argc, char** argv)
 						if ( keystatus[SDLK_n] )
 						{
 							keystatus[SDLK_n] = 0;
-							buttonClearMap(NULL);
+							buttonClearMap(nullptr);
 							groupedEntities.clear();
 						}
 					}
@@ -9762,7 +9762,7 @@ int main(int argc, char** argv)
 					if ( keystatus[SDLK_f] )
 					{
 						keystatus[SDLK_f] = 0;
-						button3DMode(NULL);
+						button3DMode(nullptr);
 					}
 				}
 				if ( keystatus[SDLK_LALT] || keystatus[SDLK_RALT] )
@@ -9795,7 +9795,7 @@ int main(int argc, char** argv)
 					if ( keystatus[SDLK_F4] )
 					{
 						keystatus[SDLK_F4] = 0;
-						buttonExit(NULL);
+						buttonExit(nullptr);
 					}
 					if ( keystatus[SDLK_DOWN] )
 					{
@@ -9877,23 +9877,23 @@ int main(int argc, char** argv)
 				if ( keystatus[SDLK_DELETE] )
 				{
 					keystatus[SDLK_DELETE] = 0;
-					buttonDelete(NULL);
+					buttonDelete(nullptr);
 					groupedEntities.clear();
 				}
 				if ( keystatus[SDLK_c] )
 				{
 					keystatus[SDLK_c] = 0;
-					buttonCycleSprites(NULL);
+					buttonCycleSprites(nullptr);
 				}
 				if ( keystatus[SDLK_F1] )
 				{
 					keystatus[SDLK_F1] = 0;
-					buttonAbout(NULL);
+					buttonAbout(nullptr);
 				}
 				if ( keystatus[SDLK_h] )
 				{
 					keystatus[SDLK_h] = 0;
-					buttonEditorControls(NULL);
+					buttonEditorControls(nullptr);
 				}
 				if ( keystatus[SDLK_1] ) // Switch to Pencil Tool
 				{
@@ -9929,7 +9929,7 @@ int main(int argc, char** argv)
 				{
 					keystatus[SDLK_F2] = 0;
 					makeUndo();
-					buttonSpriteProperties(NULL);
+					buttonSpriteProperties(nullptr);
 				}
 				if ( keystatus[SDLK_KP_7] )
 				{
@@ -10019,14 +10019,14 @@ int main(int argc, char** argv)
 			x = 0;
 			y = 0;
 			z = 0;
-			drawRect( NULL, makeColorRGB(0, 0, 0), 255 ); // wipe screen
+			drawRect(nullptr, makeColorRGB(0, 0, 0), 255 ); // wipe screen
 			for ( c = 0; c < xres * yres; c++ )
 			{
 				palette[c] = -1;
 			}
 			for ( c = 0; c < numsprites; c++ )
 			{
-				if ( sprites[c] != NULL )
+				if ( sprites[c] != nullptr)
 				{
 					pos.x = x;
 					pos.y = y;
@@ -10046,7 +10046,7 @@ int main(int argc, char** argv)
 						pos.h *= scale;
 					}
 
-					drawImageScaled(sprites[c], NULL, &pos);
+					drawImageScaled(sprites[c], nullptr, &pos);
 					for ( x2 = x; x2 < x + sprites[c]->w * scale; x2++ )
 					{
 						for ( y2 = y; y2 < y + sprites[c]->h * scale; y2++ )
@@ -10061,7 +10061,7 @@ int main(int argc, char** argv)
 					z = std::max(z, sprites[c]->h * scale);
 					if ( c < numsprites - 1 )
 					{
-						if ( sprites[c + 1] != NULL )
+						if ( sprites[c + 1] != nullptr)
 						{
 							if ( x + sprites[c + 1]->w * scale > xres )
 							{
@@ -10085,12 +10085,12 @@ int main(int argc, char** argv)
 					pos.y = y;
 					pos.w = TEXTURESIZE;
 					pos.h = TEXTURESIZE;
-					drawImageScaled(sprites[0], NULL, &pos);
+					drawImageScaled(sprites[0], nullptr, &pos);
 					x += sprites[0]->w;
 					z = std::max(z, sprites[0]->h);
 					if ( c < numsprites - 1 )
 					{
-						if ( sprites[c + 1] != NULL )
+						if ( sprites[c + 1] != nullptr)
 						{
 							if ( x + sprites[c + 1]->w > xres )
 							{
@@ -10192,7 +10192,7 @@ int main(int argc, char** argv)
 		{
 			x = 0;
 			y = 0;
-			drawRect( NULL, makeColorRGB(0, 0, 0), 255 ); // wipe screen
+			drawRect(nullptr, makeColorRGB(0, 0, 0), 255 ); // wipe screen
 			for ( c = 0; c < xres * yres; c++ )
 			{
 				palette[c] = -1;
@@ -10203,9 +10203,9 @@ int main(int argc, char** argv)
 				pos.y = y;
 				pos.w = TEXTURESIZE;
 				pos.h = TEXTURESIZE;
-				if ( tiles[c] != NULL )
+				if ( tiles[c] != nullptr)
 				{
-					drawImageScaled(tiles[c], NULL, &pos);
+					drawImageScaled(tiles[c], nullptr, &pos);
 					for ( x2 = x; x2 < x + TEXTURESIZE; x2++ )
 						for ( y2 = y; y2 < y + TEXTURESIZE; y2++ )
 						{
@@ -10226,7 +10226,7 @@ int main(int argc, char** argv)
 				}
 				else
 				{
-					drawImageScaled(sprites[0], NULL, &pos);
+					drawImageScaled(sprites[0], nullptr, &pos);
 					x += TEXTURESIZE;
 					if ( c < numtiles - 1 )
 					{
@@ -10318,7 +10318,7 @@ int main(int argc, char** argv)
 	SDL_FreeCursor(cursorPoint);
 	SDL_FreeCursor(cursorBrush);
 	SDL_FreeCursor(cursorFill);
-	if ( palette != NULL )
+	if ( palette != nullptr)
 	{
 		free(palette);
 	}

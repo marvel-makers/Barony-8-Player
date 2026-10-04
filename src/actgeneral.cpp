@@ -275,7 +275,7 @@ void Entity::actFurniture()
 				}
 				playSoundEntity(this, 176, 128);
 				Entity* entity = uidToEntity(parent);
-				if ( entity != NULL )
+				if ( entity != nullptr)
 				{
 					entity->itemNotMoving = 0; // drop the item that was on the table
 					entity->itemNotMovingClient = 0; // clear the client item gravity flag
@@ -4241,7 +4241,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 									}
 									else
 									{
-										(*itemSlot) = newItem(WOODEN_SHIELD, EXCELLENT, 0, 1, 0, false, NULL);
+										(*itemSlot) = newItem(WOODEN_SHIELD, EXCELLENT, 0, 1, 0, false, nullptr);
 										copyItem(*itemSlot, item); // set equipped item to this new one.
 									}
 								}

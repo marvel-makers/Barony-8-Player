@@ -289,7 +289,7 @@ void duckSpawnFeather(int sprite, real_t x, real_t y, real_t z, Entity* my)
 	{
 		real_t leafEndZ = z - 7.5;
 		Entity* leaf = newEntity(featherSprite, 1, map.entities, nullptr); //Gib entity.
-		if ( leaf != NULL )
+		if ( leaf != nullptr)
 		{
 			leaf->x = x;
 			leaf->y = y;
