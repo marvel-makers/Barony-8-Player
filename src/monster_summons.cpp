@@ -528,19 +528,19 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
     {
         if ( keystatus[SDLK_g] )
         {
-            keystatus[SDLK_g] = 0;
+            keystatus[SDLK_g] = false;
             MONSTER_ATTACK = MONSTER_POSE_MELEE_WINDUP1;
             MONSTER_ATTACKTIME = 0;
         }
         if ( keystatus[SDLK_h] )
         {
-            keystatus[SDLK_h] = 0;
+            keystatus[SDLK_h] = false;
             MONSTER_ATTACK = MONSTER_POSE_MAGIC_WINDUP1;
             MONSTER_ATTACKTIME = 0;
         }
         if ( keystatus[SDLK_j] && myStats )
         {
-            keystatus[SDLK_j] = 0;
+            keystatus[SDLK_j] = false;
             myStats->setEffectValueUnsafe(EFF_PARALYZED, myStats->getEffectActive(EFF_PARALYZED) ? 0 : 1);
         }
     }
@@ -1021,12 +1021,12 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                 {
                     if ( keystatus[SDLK_KP_PLUS] )
                     {
-                        keystatus[SDLK_KP_PLUS] = 0;
+                        keystatus[SDLK_KP_PLUS] = false;
                         entity->skill[0] = entity->skill[0] == 0 ? 1 : 0;
                     }
                     if ( keystatus[SDLK_KP_6] )
                     {
-                        keystatus[SDLK_KP_6] = 0;
+                        keystatus[SDLK_KP_6] = false;
                         SKULL_CIRCLES = 2;
                         SKULL_CIRCLE_ANIM = 0.0;
                         SKULL_CIRCLE_SCALE = 0.0;
@@ -1034,12 +1034,12 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                     }
                     if ( keystatus[SDLK_KP_4] )
                     {
-                        keystatus[SDLK_KP_4] = 0;
+                        keystatus[SDLK_KP_4] = false;
                         SKULL_CIRCLES = 0;
                     }
                     if ( keystatus[SDLK_KP_2] )
                     {
-                        keystatus[SDLK_KP_2] = 0;
+                        keystatus[SDLK_KP_2] = false;
                         SKULL_FLIP = 1.0;
 
                     }
@@ -1051,7 +1051,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                     }
                     if ( keystatus[SDLK_KP_0] )
                     {
-                        keystatus[SDLK_KP_0] = 0;
+                        keystatus[SDLK_KP_0] = false;
                         SKULL_BOBS = 5;
                         SKULL_BOB_ANIM = 0.0;
                     }
@@ -1831,28 +1831,28 @@ void earthElementalAnimate(Entity* my, Stat* myStats, double dist)
         }
         if ( keystatus[SDLK_g] )
         {
-            keystatus[SDLK_g] = 0;
+            keystatus[SDLK_g] = false;
             //MONSTER_ATTACK = mothGetAttackPose(my, MONSTER_POSE_MELEE_WINDUP1);
             MONSTER_ATTACK = MONSTER_POSE_MELEE_WINDUP1;// mothGetAttackPose(my, MONSTER_POSE_MAGIC_WINDUP1);
             MONSTER_ATTACKTIME = 0;
         }
         if ( keystatus[SDLK_h] )
         {
-            keystatus[SDLK_h] = 0;
+            keystatus[SDLK_h] = false;
             //MONSTER_ATTACK = mothGetAttackPose(my, MONSTER_POSE_MELEE_WINDUP1);
             MONSTER_ATTACK = MONSTER_POSE_MELEE_WINDUP3;// mothGetAttackPose(my, MONSTER_POSE_MAGIC_WINDUP1);
             MONSTER_ATTACKTIME = 0;
         }
         if ( keystatus[SDLK_n] )
         {
-            keystatus[SDLK_n] = 0;
+            keystatus[SDLK_n] = false;
             //MONSTER_ATTACK = mothGetAttackPose(my, MONSTER_POSE_MELEE_WINDUP1);
             MONSTER_ATTACK = MONSTER_POSE_RANGED_WINDUP1;// mothGetAttackPose(my, MONSTER_POSE_MAGIC_WINDUP1);
             MONSTER_ATTACKTIME = 0;
         }
         if ( keystatus[SDLK_y] )
         {
-            keystatus[SDLK_y] = 0;
+            keystatus[SDLK_y] = false;
             //MONSTER_ATTACK = mothGetAttackPose(my, MONSTER_POSE_MELEE_WINDUP1);
             MONSTER_ATTACK = MONSTER_POSE_MELEE_WINDUP2;// mothGetAttackPose(my, MONSTER_POSE_MAGIC_WINDUP1);
             MONSTER_ATTACKTIME = 0;

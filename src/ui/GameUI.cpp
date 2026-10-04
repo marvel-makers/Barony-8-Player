@@ -44011,7 +44011,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
             if (auto textGet = Text::get(buf.c_str(), dialogueField->getFont(),
                                          dialogueField->getTextColor(), dialogueField->getOutlineColor()))
             {
-                bool quoteOffsetY = 0;
+                bool quoteOffsetY = false;
                 size_t foundEOL = dialogueStrCurrent.find('\0', i + 1);
                 size_t foundNewLine = dialogueStrCurrent.find('\n', i + 1);
                 size_t foundQuote = dialogueStrCurrent.find('\"', i + 1);
@@ -44022,7 +44022,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
                     {
                         // this line has a quote after first char
                         // adjust line spacing to account for offset quote introduces
-                        quoteOffsetY = -2;
+                        quoteOffsetY = true;
                     }
                 }
                 else if (foundEOL != std::string::npos)
@@ -44031,7 +44031,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
                     {
                         // this line has a quote after first char
                         // adjust line spacing to account for offset quote introduces
-                        quoteOffsetY = -2;
+                        quoteOffsetY = true;
                     }
                 }
                 txtPos.y += quoteOffsetY;

@@ -60,7 +60,7 @@ struct PlayerSettings_t
     bool gamepad_facehotbar = true;
     bool hotbar_numkey_quick_add = true;
     bool hotbar_numkey_change_slot = true;
-    bool reversemouse = 0;
+    bool reversemouse = false;
     bool smoothmouse = false;
     real_t gamepad_rightx_sensitivity = 1.0;
     real_t gamepad_righty_sensitivity = 1.0;

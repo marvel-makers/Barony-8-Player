@@ -706,7 +706,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
     {
         if ( keystatus[SDLK_KP_5] )
         {
-            keystatus[SDLK_KP_5] = 0;
+            keystatus[SDLK_KP_5] = false;
             static real_t dir = 0.0;
             my->yaw = dir;
             my->monsterLookDir = my->yaw;
@@ -724,7 +724,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
         }
         if ( keystatus[SDLK_g] )
         {
-            keystatus[SDLK_g] = 0;
+            keystatus[SDLK_g] = false;
             if ( my->monsterSpecialState == 0 )
             {
                 if ( keystatus[SDLK_LSHIFT] )
@@ -762,13 +762,13 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
         }
         if ( keystatus[SDLK_h] )
         {
-            keystatus[SDLK_h] = 0;
+            keystatus[SDLK_h] = false;
             myStats->setEffectValueUnsafe(EFF_STUNNED, myStats->getEffectActive(EFF_STUNNED) ? 0 : 1);
             myStats->EFFECTS_TIMERS[EFF_STUNNED] = myStats->getEffectActive(EFF_STUNNED) ? -1 : 0;
         }
         if ( keystatus[SDLK_j] )
         {
-            keystatus[SDLK_j] = 0;
+            keystatus[SDLK_j] = false;
             //MONSTER_ATTACK = local_rng.rand() % 2 ? MONSTER_POSE_MELEE_WINDUP2 : MONSTER_POSE_MELEE_WINDUP3;
             //MONSTER_ATTACKTIME = 0;
             my->attack(local_rng.rand() % 2 ? MONSTER_POSE_MELEE_WINDUP2 : MONSTER_POSE_MELEE_WINDUP3, 0, nullptr);
@@ -1517,7 +1517,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
             {
                 if ( keystatus[SDLK_KP_PLUS] )
                 {
-                    keystatus[SDLK_KP_PLUS] = 0;
+                    keystatus[SDLK_KP_PLUS] = false;
                     entity->skill[0] = entity->skill[0] == 0 ? 1 : 0;
                 }
             }
@@ -1691,7 +1691,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 
                 if ( keystatus[SDLK_KP_MINUS] )
                 {
-                    keystatus[SDLK_KP_MINUS] = 0;
+                    keystatus[SDLK_KP_MINUS] = false;
                     entity->skill[3] = entity->skill[3] == 0 ? 1 : 0;
                 }
             }

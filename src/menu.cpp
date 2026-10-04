@@ -11138,7 +11138,7 @@ void applySettings()
 void openConfirmResolutionWindow()
 {
     inputs.mouseClearLeft(clientnum);
-    keystatus[SDLK_RETURN] = 0;
+    keystatus[SDLK_RETURN] = false;
     inputs.controllerClearInput(clientnum, INJOY_MENU_NEXT);
     playSound(139, 64);
 

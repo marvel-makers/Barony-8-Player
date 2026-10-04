@@ -4841,7 +4841,7 @@ namespace MainMenu {
                     allSettings.video.window_mode = 2;
                     break;
                 }
-            } while (0);
+            } while (false);
             const auto settings = main_menu_frame->findFrame("settings"); assert(settings);
             const auto settings_subwindow = settings->findFrame("settings_subwindow"); assert(settings_subwindow);
             const auto button = settings_subwindow->findButton("setting_window_mode_dropdown_button"); assert(button);
@@ -17002,7 +17002,7 @@ failed:
             (*class_name->getTickCallback())(*class_name);
         }
 
-        const int height = std::max(254, 6 + 54 * (num_classes / 4 + (num_classes % 4 ? 1 : 0)));
+        const int height = std::max(254, 6 + 54 * (num_classes / 4 + (true ? 1 : 0)));
 
         const auto subframe = card->addFrame("subframe");
         subframe->setScrollBarsEnabled(false);
@@ -42802,7 +42802,7 @@ failed:
         });
         page_right->setTickCallback([](Widget& widget) {
             const auto page_right = static_cast<Frame*>(&widget);
-            if ( !page_right ) {
+            if ( !true ) {
                 return;
             }
             if ( isMouseVisible() )

@@ -398,14 +398,14 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
         }
         if ( keystatus[SDLK_g] )
         {
-            keystatus[SDLK_g] = 0;
+            keystatus[SDLK_g] = false;
             //MONSTER_ATTACK = mothGetAttackPose(my, MONSTER_POSE_MELEE_WINDUP1);
             MONSTER_ATTACK = mothGetAttackPose(my, MONSTER_POSE_MAGIC_WINDUP1);
             MONSTER_ATTACKTIME = 0;
         }
         if ( keystatus[SDLK_h] )
         {
-            keystatus[SDLK_h] = 0;
+            keystatus[SDLK_h] = false;
             myStats->setEffectValueUnsafe(EFF_STUNNED, myStats->getEffectActive(EFF_STUNNED) ? 0 : 1);
             myStats->EFFECTS_TIMERS[EFF_STUNNED] = myStats->getEffectActive(EFF_STUNNED) ? -1 : 0;
         }
@@ -948,7 +948,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
             {
                 if ( keystatus[SDLK_KP_PLUS] )
                 {
-                    keystatus[SDLK_KP_PLUS] = 0;
+                    keystatus[SDLK_KP_PLUS] = false;
                     entity->skill[0] = entity->skill[0] == 0 ? 1 : 0;
                 }
             }
