@@ -3824,7 +3824,7 @@ real_t Player::WorldUI_t::tooltipInRange(Entity& tooltip)
 					{
 						startx += 0.5 * cos(playerEntity->yaw);
 						starty += 0.5 * sin(playerEntity->yaw);
-						index = (static_cast<int>(starty + 16 * sin(playerEntity->yaw)) >> 4) * MAPLAYERS + (static_cast<int>(startx + 16 * cos(playerEntity->yaw)) >> 4) * MAPLAYERS * map.height;
+						index = (static_cast<int>(starty + 16 * sin(playerEntity->yaw)) >> 4) * MAP_LAYERS + (static_cast<int>(startx + 16 * cos(playerEntity->yaw)) >> 4) * MAP_LAYERS * map.height;
 						if ( !map.tiles[OBSTACLELAYER + index] )
 						{
 							// store the last known good coordinate
@@ -3881,7 +3881,7 @@ real_t Player::WorldUI_t::tooltipInRange(Entity& tooltip)
 						starty += 0.1 * sin(yaw);
 						const int index_x = static_cast<int>(startx) >> 4;
 						const int index_y = static_cast<int>(starty) >> 4;
-						index = (index_y)*MAPLAYERS + (index_x)*MAPLAYERS * map.height;
+						index = (index_y)*MAP_LAYERS + (index_x)*MAP_LAYERS * map.height;
 						if ( !map.tiles[(OBSTACLELAYER) + index] )
 						{
 							// store the last known good coordinate
@@ -3941,7 +3941,7 @@ real_t Player::WorldUI_t::tooltipInRange(Entity& tooltip)
 						starty += 0.1 * sin(yaw);
 						const int index_x = static_cast<int>(startx) >> 4;
 						const int index_y = static_cast<int>(starty) >> 4;
-						index = (index_y)* MAPLAYERS + (index_x)* MAPLAYERS * map.height;
+						index = (index_y)* MAP_LAYERS + (index_x)* MAP_LAYERS * map.height;
 						if ( !map.tiles[OBSTACLELAYER + index] )
 						{
 							// store the last known good coordinate

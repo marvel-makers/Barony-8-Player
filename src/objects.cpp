@@ -169,15 +169,10 @@ void lightDeconstructor(void* data)
 
 void mapDeconstructor(void* data)
 {
-	map_t* map;
-
 	if ( data != nullptr )
 	{
-		map = (map_t*)data;
-		if ( map->tiles != nullptr )
-		{
-			free(map->tiles);
-		}
+		auto* map = static_cast<map_t*>(data);
+		map->tiles.clear();
 		if ( map->creatures )
 		{
 			list_FreeAll(map->creatures); //TODO: This needed?

@@ -926,7 +926,7 @@ struct StartRoomInfo_t
 		{
 			return true;
 		}
-		return map.tiles[OBSTACLELAYER + (y)* MAPLAYERS + (x)* MAPLAYERS * map.height];
+		return map.tiles[OBSTACLELAYER + (y)* MAP_LAYERS + (x)* MAP_LAYERS * map.height];
 	}
 	bool isWalkable(int x, int y)
 	{
@@ -934,7 +934,7 @@ struct StartRoomInfo_t
 		{
 			return false;
 		}
-		return map.tiles[(y)* MAPLAYERS + (x)* MAPLAYERS * map.height];
+		return map.tiles[(y)* MAP_LAYERS + (x)* MAP_LAYERS * map.height];
 	}
 	void addCoord(int x, int y)
 	{
@@ -1259,7 +1259,7 @@ struct StartRoomInfo_t
 						break;
 				}
 				printlog("[MAP GENERATOR]: Dug hole using TunnelPoints1 at x: %d y: %d", picked.first.first, picked.first.second);
-				map.tiles[OBSTACLELAYER + (picked.first.second)* MAPLAYERS + (picked.first.first)* MAPLAYERS * map.height] = 0;
+				map.tiles[OBSTACLELAYER + (picked.first.second)* MAP_LAYERS + (picked.first.first)* MAP_LAYERS * map.height] = 0;
 			}
 			else if ( !badTunnelPoints.empty() )
 			{
@@ -1282,7 +1282,7 @@ struct StartRoomInfo_t
 						break;
 				}
 				printlog("[MAP GENERATOR]: Dug hole using TunnelPoints2 at x: %d y: %d", picked.first.first, picked.first.second);
-				map.tiles[OBSTACLELAYER + (picked.first.second)* MAPLAYERS + (picked.first.first)* MAPLAYERS * map.height] = 0;
+				map.tiles[OBSTACLELAYER + (picked.first.second)* MAP_LAYERS + (picked.first.first)* MAP_LAYERS * map.height] = 0;
 			}
 			else if ( !worstTunnelPoints.empty() )
 			{
@@ -1305,7 +1305,7 @@ struct StartRoomInfo_t
 						break;
 				}
 				printlog("[MAP GENERATOR]: Dug hole using TunnelPoints3 at x: %d y: %d", picked.first.first, picked.first.second);
-				map.tiles[OBSTACLELAYER + (picked.first.second)* MAPLAYERS + (picked.first.first)* MAPLAYERS * map.height] = 0;
+				map.tiles[OBSTACLELAYER + (picked.first.second)* MAP_LAYERS + (picked.first.first)* MAP_LAYERS * map.height] = 0;
 			}
 		}
 	}
@@ -1363,8 +1363,8 @@ int getMapPossibleLocationY2()
 
 bool mapTileDiggable(const int x, const int y)
 {
-	if ( swimmingtiles[map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height]]
-		|| lavatiles[map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+	if ( swimmingtiles[map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height]]
+		|| lavatiles[map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 	{
 		return false;
 	}
@@ -1384,12 +1384,12 @@ bool mapTileDiggable(const int x, const int y)
 	return true;
 }
 
-bool loadSubRoomData(std::string fullMapPath, list_t* mapList)
+bool loadSubRoomData(const std::string& fullMapPath, list_t* mapList)
 {
 	// allocate memory for the next subroom and attempt to load it
-	map_t* subRoomMap = (map_t*)malloc(sizeof(map_t));
-	subRoomMap->tiles = nullptr;
-	subRoomMap->entities = (list_t*)malloc(sizeof(list_t));
+	const auto subRoomMap = static_cast<map_t*>(malloc(sizeof(map_t)));
+	subRoomMap->tiles.resize(map.width * map.height * MAP_LAYERS);
+	subRoomMap->entities = static_cast<list_t*>(malloc(sizeof(list_t)));
 	subRoomMap->entities->first = nullptr;
 	subRoomMap->entities->last = nullptr;
 	subRoomMap->creatures = new list_t;
@@ -1431,7 +1431,7 @@ bool loadSubRoomData(std::string fullMapPath, list_t* mapList)
 		{
 			if ( x == 0 || y == 0 || x == subRoomMap->width - 1 || y == subRoomMap->height - 1 )
 			{
-				if ( !subRoomMap->tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * subRoomMap->height] )
+				if ( !subRoomMap->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * subRoomMap->height] )
 				{
 					door_t* door = (door_t*)malloc(sizeof(door_t));
 					door->x = x;
@@ -1624,7 +1624,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 	{
 		// function sets shop level for us.
 	}
-	else if ( map_rng.rand() % 2 && currentlevel > 1 
+	else if ( map_rng.rand() % 2 && currentlevel > 1
 		&& strncmp(map.name, "Underworld", 10) && strncmp(map.name, "Hell", 4)
 		&& strncmp(map.filename, "fortress", 8) )
 	{
@@ -1822,7 +1822,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			shopSubRooms.rootMapFileName = sublevelname;
 			std::string fullMapPath = physfsFormatMapName(sublevelname);
 
-			shopmap.tiles = nullptr;
+			shopmap.tiles.clear();
 			shopmap.entities = (list_t*) malloc(sizeof(list_t));
 			shopmap.entities->first = nullptr;
 			shopmap.entities->last = nullptr;
@@ -1836,10 +1836,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				free(shopmap.entities);
 				list_FreeAll(shopmap.creatures);
 				delete shopmap.creatures;
-				if ( shopmap.tiles )
-				{
-					free(shopmap.tiles);
-				}
+				shopmap.tiles.clear();
 			}
 			if (!verifyMapHash(fullMapPath.c_str(), checkMapHash))
 			{
@@ -2037,7 +2034,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		{
 			doTreasureRoom = true;
 		}
-		
+
 		if ( !secretlevelexit && doTreasureRoom )
 		{
 			std::vector<unsigned int> treasureChances;
@@ -2164,7 +2161,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			for ( int x = 0; x < map.width; x++ )
 			{
 				if ( x < (std::max(2, getMapPossibleLocationX1()))
-					|| y < (std::max(2, getMapPossibleLocationY1())) 
+					|| y < (std::max(2, getMapPossibleLocationY1()))
 					|| x > (std::min(getMapPossibleLocationX2(), (int)map.width - 3))
 					|| y > (std::min(getMapPossibleLocationY2(), (int)map.height - 3)) )
 				{
@@ -2255,7 +2252,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			}
 			else if ( c == 1 && secretlevelexit )
 			{
-				secretlevelmap.tiles = nullptr;
+				secretlevelmap.tiles.clear();
 				secretlevelmap.entities = (list_t*) malloc(sizeof(list_t));
 				secretlevelmap.entities->first = nullptr;
 				secretlevelmap.entities->last = nullptr;
@@ -2301,10 +2298,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					free(secretlevelmap.entities);
 					list_FreeAll(secretlevelmap.creatures);
 					delete secretlevelmap.creatures;
-					if ( secretlevelmap.tiles )
-					{
-						free(secretlevelmap.tiles);
-					}
+					secretlevelmap.tiles.clear();
 				}
 				if (!verifyMapHash(fullMapPath.c_str(), checkMapHash))
 				{
@@ -2567,10 +2561,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						free(shopmap.entities);
 						list_FreeAll(shopmap.creatures);
 						delete shopmap.creatures;
-						if ( shopmap.tiles )
-						{
-							free(shopmap.tiles);
-						}
+						shopmap.tiles.clear();
 					}
 					if ( secretlevelexit && c == 1 )
 					{
@@ -2578,10 +2569,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						free(secretlevelmap.entities);
 						list_FreeAll(secretlevelmap.creatures);
 						delete secretlevelmap.creatures;
-						if ( secretlevelmap.tiles )
-						{
-							free(secretlevelmap.tiles);
-						}
+						secretlevelmap.tiles.clear();
 					}
 					printlog("error: entrance room must fit into dungeon!\n");
 					return -1;
@@ -2832,7 +2820,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 
 				subroomLogCount = shopSubRooms.count;
 
-				snprintf(submapLogMsg, sizeof(submapLogMsg), 
+				snprintf(submapLogMsg, sizeof(submapLogMsg),
 					"Picked level: %d from %d possible rooms in submap %s at x:%d y:%d", pickSubRoom + 1, subroomLogCount, shopSubRooms.rootMapFileName.c_str(), x, y);
 			}
 			else
@@ -2840,7 +2828,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				if ( ((levelnum2 - levelnum) > 1) && (c > 0) && (subroomCount[levelnum2] > 0) )
 				{
 					// levelnum is the start of map search, levelnum2 is jumps required to get to a suitable map.
-					// normal operation is levelnum2 - levelnum == 1. if a levelnum map is unavailable, 
+					// normal operation is levelnum2 - levelnum == 1. if a levelnum map is unavailable,
 					// then levelnum2 will advance search by 1 (higher than normal).
 					// levelnum2 will keep incrementing until a suitable map is found.
 					printlog("[SUBMAP GENERATOR] Skipped map when searching for levelnum %d, setting to %d", levelnum, levelnum2 - 1);
@@ -2885,13 +2873,13 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					"Picked level: %d from %d possible rooms in submap %s at x:%d y:%d", pickSubRoom + 1, subroomLogCount, tempMap->filename, x, y);
 			}
 
-			for ( int z = 0; z < MAPLAYERS; z++ )
+			for ( int z = 0; z < MAP_LAYERS; z++ )
 			{
 				for ( int y0 = y; y0 < y1; y0++ )
 				{
 					for ( int x0 = x; x0 < x1; x0++ )
 					{
-						if ( (subroomLogCount > 0) && tempMap->tiles[z + (y0 - y) * MAPLAYERS + (x0 - x) * MAPLAYERS * tempMap->height] == 201 )
+						if ( (subroomLogCount > 0) && tempMap->tiles[z + (y0 - y) * MAP_LAYERS + (x0 - x) * MAP_LAYERS * tempMap->height] == 201 )
 						{
 							if ( !foundSubRoom )
 							{
@@ -2901,7 +2889,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 								printlog(submapLogMsg);
 							}
 
-							map.tiles[z + y0 * MAPLAYERS + x0 * MAPLAYERS * map.height] = subRoomMap->tiles[z + (subRoom_tiley)* MAPLAYERS + (subRoom_tilex)* MAPLAYERS * subRoomMap->height];
+							map.tiles[z + y0 * MAP_LAYERS + x0 * MAP_LAYERS * map.height] = subRoomMap->tiles[z + (subRoom_tiley)* MAP_LAYERS + (subRoom_tilex)* MAP_LAYERS * subRoomMap->height];
 
 							if ( z == 0 )
 							{
@@ -2909,7 +2897,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 								if ( subRoomMap->flags[MAP_FLAG_DISABLETRAPS] == 1 )
 								{
 									map.trapexcludelocations[x0 + y0 * map.width] = true;
-									//map.tiles[z + y0 * MAPLAYERS + x0 * MAPLAYERS * map.height] = 83;
+									//map.tiles[z + y0 * MAP_LAYERS + x0 * MAP_LAYERS * map.height] = 83;
 								}
 								if ( subRoomMap->flags[MAP_FLAG_DISABLEMONSTERS] == 1 )
 								{
@@ -2934,7 +2922,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						}
 						else
 						{
-							map.tiles[z + y0 * MAPLAYERS + x0 * MAPLAYERS * map.height] = tempMap->tiles[z + (y0 - y) * MAPLAYERS + (x0 - x) * MAPLAYERS * tempMap->height];
+							map.tiles[z + y0 * MAP_LAYERS + x0 * MAP_LAYERS * map.height] = tempMap->tiles[z + (y0 - y) * MAP_LAYERS + (x0 - x) * MAP_LAYERS * tempMap->height];
 						}
 
 						if ( z == 0 )
@@ -2943,7 +2931,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							if ( tempMap->flags[MAP_FLAG_DISABLETRAPS] == 1 )
 							{
 								map.trapexcludelocations[x0 + y0 * map.width] = true;
-								//map.tiles[z + y0 * MAPLAYERS + x0 * MAPLAYERS * map.height] = 83;
+								//map.tiles[z + y0 * MAP_LAYERS + x0 * MAP_LAYERS * map.height] = 83;
 							}
 							if ( tempMap->flags[MAP_FLAG_DISABLEMONSTERS] == 1 )
 							{
@@ -2979,13 +2967,13 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							{
 								decorationexcludelocations[x0 + y0 * map.width] = true;
 								treasureRoomLocations[x0 + y0 * map.width] = true;
-								map.tileAttributes[(y0)*MAPLAYERS + (x0)*MAPLAYERS * map.height] |= map_t::TILE_ATTRIBUTE_TREASURE_ROOM;
+								map.tileAttributes[(y0)*MAP_LAYERS + (x0)*MAP_LAYERS * map.height] |= map_t::TILE_ATTRIBUTE_TREASURE_ROOM;
 							}
 							if ( c == 4 && specialMapRooms.count > 0 )
 							{
 								decorationexcludelocations[x0 + y0 * map.width] = true;
 								treasureRoomLocations[x0 + y0 * map.width] = true;
-								map.tileAttributes[(y0)*MAPLAYERS + (x0)*MAPLAYERS * map.height] |= map_t::TILE_ATTRIBUTE_TREASURE_ROOM;
+								map.tileAttributes[(y0)*MAP_LAYERS + (x0)*MAP_LAYERS * map.height] |= map_t::TILE_ATTRIBUTE_TREASURE_ROOM;
 							}
 						}
 
@@ -3098,10 +3086,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				free(shopmap.entities);
 				list_FreeAll(shopmap.creatures);
 				delete shopmap.creatures;
-				if ( shopmap.tiles )
-				{
-					free(shopmap.tiles);
-				}
+				shopmap.tiles.clear();
 			}
 			if ( secretlevelexit && c == 1 )
 			{
@@ -3109,10 +3094,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				free(secretlevelmap.entities);
 				list_FreeAll(secretlevelmap.creatures);
 				delete secretlevelmap.creatures;
-				if ( secretlevelmap.tiles )
-				{
-					free(secretlevelmap.tiles);
-				}
+				secretlevelmap.tiles.clear();
 			}
 			++roomcount;
 		}
@@ -3165,7 +3147,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		for (node2 = map.entities->first; node2 != nullptr; node2 = node2->next)
 		{
 			entity = (Entity*)node2->element;
-			if ( entity->x / 16 == door->x && entity->y / 16 == door->y 
+			if ( entity->x / 16 == door->x && entity->y / 16 == door->y
 				&& (/*entity->sprite == 2 || entity->sprite == 3 ||*/ entity->sprite == 19 || entity->sprite == 20
 					|| entity->sprite == 113 || entity->sprite == 114
 					|| entity->sprite == 217 || entity->sprite == 218) )
@@ -3227,14 +3209,14 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						}
 						else
 						{
-							map.tiles[OBSTACLELAYER + door->y * MAPLAYERS + (door->x + 1)*MAPLAYERS * map.height] = 0;
+							map.tiles[OBSTACLELAYER + door->y * MAP_LAYERS + (door->x + 1)*MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
 								entity = (Entity*)node3->element;
 								nextnode = node3->next;
 								if ( mapSpriteIsDoorway(entity->sprite) )
 								{
-									if ( (int)(entity->x / 16) == door->x + 2 && (int)(entity->y / 16) == door->y 
+									if ( (int)(entity->x / 16) == door->x + 2 && (int)(entity->y / 16) == door->y
 										&& (entity->sprite == 3 || entity->sprite == 19 || entity->sprite == 113 || entity->sprite == 217) ) // north/south doors 2 tiles away
 									{
 										list_RemoveNode(entity->mynode);
@@ -3262,7 +3244,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						}
 						else
 						{
-							map.tiles[OBSTACLELAYER + (door->y + 1)*MAPLAYERS + door->x * MAPLAYERS * map.height] = 0;
+							map.tiles[OBSTACLELAYER + (door->y + 1)*MAP_LAYERS + door->x * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
 								entity = (Entity*)node3->element;
@@ -3297,7 +3279,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						}
 						else
 						{
-							map.tiles[OBSTACLELAYER + door->y * MAPLAYERS + (door->x - 1) * MAPLAYERS * map.height] = 0;
+							map.tiles[OBSTACLELAYER + door->y * MAP_LAYERS + (door->x - 1) * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
 								entity = (Entity*)node3->element;
@@ -3332,7 +3314,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						}
 						else
 						{
-							map.tiles[OBSTACLELAYER + (door->y - 1)*MAPLAYERS + door->x * MAPLAYERS * map.height] = 0;
+							map.tiles[OBSTACLELAYER + (door->y - 1)*MAP_LAYERS + door->x * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
 								entity = (Entity*)node3->element;
@@ -3436,7 +3418,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						}
 						else
 						{
-							map.tiles[OBSTACLELAYER + door->y * MAPLAYERS + (door->x + 1) * MAPLAYERS * map.height] = 0;
+							map.tiles[OBSTACLELAYER + door->y * MAP_LAYERS + (door->x + 1) * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
 								entity = (Entity*)node3->element;
@@ -3471,7 +3453,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						}
 						else
 						{
-							map.tiles[OBSTACLELAYER + (door->y + 1) * MAPLAYERS + door->x * MAPLAYERS * map.height] = 0;
+							map.tiles[OBSTACLELAYER + (door->y + 1) * MAP_LAYERS + door->x * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
 								entity = (Entity*)node3->element;
@@ -3506,7 +3488,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						}
 						else
 						{
-							map.tiles[OBSTACLELAYER + door->y * MAPLAYERS + (door->x - 1) * MAPLAYERS * map.height] = 0;
+							map.tiles[OBSTACLELAYER + door->y * MAP_LAYERS + (door->x - 1) * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
 								entity = (Entity*)node3->element;
@@ -3541,7 +3523,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						}
 						else
 						{
-							map.tiles[OBSTACLELAYER + (door->y - 1) * MAPLAYERS + door->x * MAPLAYERS * map.height] = 0;
+							map.tiles[OBSTACLELAYER + (door->y - 1) * MAP_LAYERS + door->x * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
 								entity = (Entity*)node3->element;
@@ -3575,15 +3557,15 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 	}
 	bool foundsubmaptile = false;
 	// if for whatever reason some submap 201 tiles didn't get filled in, let's get rid of those.
-	for ( int z = 0; z < MAPLAYERS; ++z )
+	for ( int z = 0; z < MAP_LAYERS; ++z )
 	{
 		for ( int y = 1; y < map.height; ++y )
 		{
 			for ( int x = 1; x < map.width; ++x )
 			{
-				if ( map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] == 201 )
+				if ( map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] == 201 )
 				{
-					map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] = 0;
+					map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 0;
 					foundsubmaptile = true;
 				}
 			}
@@ -3604,37 +3586,37 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			{
 				int gatex = static_cast<int>(gateEntity->x) / 16;
 				int gatey = static_cast<int>(gateEntity->y) / 16;
-				for ( int z = OBSTACLELAYER; z < MAPLAYERS; ++z )
+				for ( int z = OBSTACLELAYER; z < MAP_LAYERS; ++z )
 				{
 					if ( gateEntity->x / 16 == 1 ) // along leftmost edge
 					{
-						if ( !map.tiles[z + gatey * MAPLAYERS + (gatex + 1) * MAPLAYERS * map.height] )
+						if ( !map.tiles[z + gatey * MAP_LAYERS + (gatex + 1) * MAP_LAYERS * map.height] )
 						{
-							map.tiles[z + gatey * MAPLAYERS + (gatex + 1) * MAPLAYERS * map.height] = 230;
+							map.tiles[z + gatey * MAP_LAYERS + (gatex + 1) * MAP_LAYERS * map.height] = 230;
 							//messagePlayer(0, "replaced at: %d, %d", gatex, gatey);
 						}
 					}
 					else if ( gateEntity->x / 16 == 51 ) // along rightmost edge
 					{
-						if ( !map.tiles[z + gatey * MAPLAYERS + (gatex - 1) * MAPLAYERS * map.height] )
+						if ( !map.tiles[z + gatey * MAP_LAYERS + (gatex - 1) * MAP_LAYERS * map.height] )
 						{
-							map.tiles[z + gatey * MAPLAYERS + (gatex - 1) * MAPLAYERS * map.height] = 230;
+							map.tiles[z + gatey * MAP_LAYERS + (gatex - 1) * MAP_LAYERS * map.height] = 230;
 							//messagePlayer(0, "replaced at: %d, %d", gatex, gatey);
 						}
 					}
 					else if ( gateEntity->y / 16 == 1 ) // along top edge
 					{
-						if ( !map.tiles[z + (gatey + 1) * MAPLAYERS + gatex * MAPLAYERS * map.height] )
+						if ( !map.tiles[z + (gatey + 1) * MAP_LAYERS + gatex * MAP_LAYERS * map.height] )
 						{
-							map.tiles[z + (gatey + 1) * MAPLAYERS + gatex * MAPLAYERS * map.height] = 230;
+							map.tiles[z + (gatey + 1) * MAP_LAYERS + gatex * MAP_LAYERS * map.height] = 230;
 							//messagePlayer(0, "replaced at: %d, %d", gatex, gatey);
 						}
 					}
 					else if ( gateEntity->y / 16 == 51 ) // along bottom edge
 					{
-						if ( !map.tiles[z + (gatey - 1) * MAPLAYERS + gatex * MAPLAYERS * map.height] )
+						if ( !map.tiles[z + (gatey - 1) * MAP_LAYERS + gatex * MAP_LAYERS * map.height] )
 						{
-							map.tiles[z + (gatey - 1) * MAPLAYERS + gatex * MAPLAYERS * map.height] = 230;
+							map.tiles[z + (gatey - 1) * MAP_LAYERS + gatex * MAP_LAYERS * map.height] = 230;
 							//messagePlayer(0, "replaced at: %d, %d", gatex, gatey);
 						}
 					}
@@ -3700,36 +3682,36 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				{
 					continue;
 				}
-				if ( !map.tiles[OBSTACLELAYER + y * MAPLAYERS + (x + 1)*MAPLAYERS * map.height] )
+				if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + (x + 1)*MAP_LAYERS * map.height] )
 				{
 					sides++;
 				}
-				if ( !map.tiles[OBSTACLELAYER + (y + 1)*MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( !map.tiles[OBSTACLELAYER + (y + 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					sides++;
 				}
-				if ( !map.tiles[OBSTACLELAYER + y * MAPLAYERS + (x - 1)*MAPLAYERS * map.height] )
+				if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + (x - 1)*MAP_LAYERS * map.height] )
 				{
 					sides++;
 				}
-				if ( !map.tiles[OBSTACLELAYER + (y - 1)*MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( !map.tiles[OBSTACLELAYER + (y - 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					sides++;
 				}
 				int side = 0;
-				if ( !map.tiles[OBSTACLELAYER + y * MAPLAYERS + (x + 1)*MAPLAYERS * map.height] )
+				if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + (x + 1)*MAP_LAYERS * map.height] )
 				{
 					side = 0;
 				}
-				else if ( !map.tiles[OBSTACLELAYER + (y + 1)*MAPLAYERS + x * MAPLAYERS * map.height] )
+				else if ( !map.tiles[OBSTACLELAYER + (y + 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					side = 1;
 				}
-				else if ( !map.tiles[OBSTACLELAYER + y * MAPLAYERS + (x - 1)*MAPLAYERS * map.height] )
+				else if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + (x - 1)*MAP_LAYERS * map.height] )
 				{
 					side = 2;
 				}
-				else if ( !map.tiles[OBSTACLELAYER + (y - 1)*MAPLAYERS + x * MAPLAYERS * map.height] )
+				else if ( !map.tiles[OBSTACLELAYER + (y - 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					side = 3;
 				}
@@ -3890,34 +3872,34 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			}
 			int side = 0;
 			bool nofloor = false;
-			if ( !map.tiles[OBSTACLELAYER + y * MAPLAYERS + (x + 1)*MAPLAYERS * map.height] )
+			if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + (x + 1)*MAP_LAYERS * map.height] )
 			{
 				side = 0;
-				if ( !map.tiles[y * MAPLAYERS + (x + 1)*MAPLAYERS * map.height] )
+				if ( !map.tiles[y * MAP_LAYERS + (x + 1)*MAP_LAYERS * map.height] )
 				{
 					nofloor = true;
 				}
 			}
-			else if ( !map.tiles[OBSTACLELAYER + (y + 1)*MAPLAYERS + x * MAPLAYERS * map.height] )
+			else if ( !map.tiles[OBSTACLELAYER + (y + 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				side = 1;
-				if ( !map.tiles[(y + 1)*MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( !map.tiles[(y + 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					nofloor = true;
 				}
 			}
-			else if ( !map.tiles[OBSTACLELAYER + y * MAPLAYERS + (x - 1)*MAPLAYERS * map.height] )
+			else if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + (x - 1)*MAP_LAYERS * map.height] )
 			{
 				side = 2;
-				if ( !map.tiles[y * MAPLAYERS + (x - 1)*MAPLAYERS * map.height] )
+				if ( !map.tiles[y * MAP_LAYERS + (x - 1)*MAP_LAYERS * map.height] )
 				{
 					nofloor = true;
 				}
 			}
-			else if ( !map.tiles[OBSTACLELAYER + (y - 1)*MAPLAYERS + x * MAPLAYERS * map.height] )
+			else if ( !map.tiles[OBSTACLELAYER + (y - 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				side = 3;
-				if ( !map.tiles[(y - 1)*MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( !map.tiles[(y - 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					nofloor = true;
 				}
@@ -3927,19 +3909,19 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			bool arrowtrapspawn = false;
 			if ( !strncmp(map.name, "Hell", 4) )
 			{
-				if ( side == 0 && !map.tiles[(MAPLAYERS - 1) + y * MAPLAYERS + (x + 1)*MAPLAYERS * map.height] )
+				if ( side == 0 && !map.tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + (x + 1)*MAP_LAYERS * map.height] )
 				{
 					noceiling = true;
 				}
-				if ( side == 1 && !map.tiles[(MAPLAYERS - 1) + (y + 1)*MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( side == 1 && !map.tiles[(MAP_LAYERS - 1) + (y + 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					noceiling = true;
 				}
-				if ( side == 2 && !map.tiles[(MAPLAYERS - 1) + y * MAPLAYERS + (x - 1)*MAPLAYERS * map.height] )
+				if ( side == 2 && !map.tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + (x - 1)*MAP_LAYERS * map.height] )
 				{
 					noceiling = true;
 				}
-				if ( side == 3 && !map.tiles[(MAPLAYERS - 1) + (y - 1)*MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( side == 3 && !map.tiles[(MAP_LAYERS - 1) + (y - 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					noceiling = true;
 				}
@@ -3994,7 +3976,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				arrowtrap = true;
 				entity = newEntity(32, 1, map.entities, nullptr); // arrow trap
 				entity->behavior = &actArrowTrap;
-				map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height] = 53; // trap wall
+				map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 53; // trap wall
 			}
 			else
 			{
@@ -4009,7 +3991,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					auto ceilingTile = *itr;
 					int tx = ceilingTile->x / 16;
 					int ty = ceilingTile->y / 16;
-					
+
 					int trapLocationX = x + ((side == 0) ? 1 : 0) + ((side == 2) ? -1 : 0);
 					int trapLocationY = y + ((side == 1) ? 1 : 0) + ((side == 3) ? -1 : 0);
 					if ( tx == trapLocationX && ty == trapLocationY )
@@ -4124,9 +4106,9 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				testy = std::min(std::max<unsigned int>(0, y), map.height - 1); //TODO: Why are const int and unsigned int being compared?
 				i++;
 			}
-			while ( !map.tiles[OBSTACLELAYER + testy * MAPLAYERS + testx * MAPLAYERS * map.height] 
+			while ( !map.tiles[OBSTACLELAYER + testy * MAP_LAYERS + testx * MAP_LAYERS * map.height]
 				&& !map.trapexcludelocations[testx + testy * map.width]
-				&& !(!arrowtrap && !map.tiles[testy * MAPLAYERS + testx * MAPLAYERS * map.height]) // boulders stop wiring at pit edges
+				&& !(!arrowtrap && !map.tiles[testy * MAP_LAYERS + testx * MAP_LAYERS * map.height]) // boulders stop wiring at pit edges
 				&& i <= 10 );
 		}
 	}
@@ -4158,7 +4140,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				possiblelocations[y + x * map.height] = false;
 				--numpossiblelocations;
 			}
-			else if ( lavatiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+			else if ( lavatiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 			{
 				possiblelocations[y + x * map.height] = false;
 				numpossiblelocations--;
@@ -4171,7 +4153,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					}
 				}
 			}
-			else if ( swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+			else if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 			{
 				possiblelocations[y + x * map.height] = false;
 				numpossiblelocations--;
@@ -4191,7 +4173,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					possiblelocations[y + x * map.height] = false;
 					--numpossiblelocations;
 				}
-				else if ( !map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height] )
+				else if ( !map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					possiblelocations[y + x * map.height] = false;
 					numpossiblelocations--;
@@ -4255,7 +4237,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 
 		genMonsterMin = (map.flags[MAP_FLAG_GENBYTES1] >> 8) & 0xFF; // third leftmost byte
 		genMonsterMax = (map.flags[MAP_FLAG_GENBYTES1] >> 0) & 0xFF; // fourth leftmost byte
-		
+
 		genLootMin = (map.flags[MAP_FLAG_GENBYTES2] >> 24) & 0xFF; // first leftmost byte
 		genLootMax = (map.flags[MAP_FLAG_GENBYTES2] >> 16) & 0xFF; // second leftmost byte
 
@@ -4822,7 +4804,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			++nummonsters;
 			//entity = newEntity(68, 1, map.entities, nullptr); // magic (artifact) bow
 		}
-		else if ( *cvar_underworldshrinetest && !strncmp(map.name, "Underworld", 10) 
+		else if ( *cvar_underworldshrinetest && !strncmp(map.name, "Underworld", 10)
 			&& ((c == 1 && !(secretlevel && currentlevel == 7)) || (c == 2 && secretlevel && currentlevel == 7)) )
 		{
 			std::set<int> walkableTiles;
@@ -4830,10 +4812,10 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			{
 				for ( int islex = 1; islex < map.width - 1; ++islex )
 				{
-					if ( !map.tiles[OBSTACLELAYER + isley * MAPLAYERS + (islex) * MAPLAYERS * map.height]
-						&& map.tiles[isley * MAPLAYERS + (islex) * MAPLAYERS * map.height]
-						&& !swimmingtiles[map.tiles[isley * MAPLAYERS + islex * MAPLAYERS * map.height]]
-						&& !lavatiles[map.tiles[isley * MAPLAYERS + islex * MAPLAYERS * map.height]] )
+					if ( !map.tiles[OBSTACLELAYER + isley * MAP_LAYERS + (islex) * MAP_LAYERS * map.height]
+						&& map.tiles[isley * MAP_LAYERS + (islex) * MAP_LAYERS * map.height]
+						&& !swimmingtiles[map.tiles[isley * MAP_LAYERS + islex * MAP_LAYERS * map.height]]
+						&& !lavatiles[map.tiles[isley * MAP_LAYERS + islex * MAP_LAYERS * map.height]] )
 					{
 						walkableTiles.insert(islex + isley * 1000);
 					}
@@ -4880,7 +4862,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							reachedTiles.insert(checkKey);
 						}
 						checkKey = (ix) + ((iy + 1) * 1000);
-						if ( walkableTiles.find(checkKey) != walkableTiles.end() 
+						if ( walkableTiles.find(checkKey) != walkableTiles.end()
 							&& reachedTiles.find(checkKey) == reachedTiles.end() )
 						{
 							frontier.push(checkKey);
@@ -5691,8 +5673,8 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 								{
 									bellSpot = false;
 								}
-								else if ( map.tiles[(MAPLAYERS - 1) + checky * MAPLAYERS + checkx * MAPLAYERS * map.height]
-									|| map.tiles[OBSTACLELAYER + checky * MAPLAYERS + checkx * MAPLAYERS * map.height] )
+								else if ( map.tiles[(MAP_LAYERS - 1) + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height]
+									|| map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )
 								{
 									bellSpot = false;
 								}
@@ -5820,7 +5802,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				{
 					if ( checky >= 0 && checky < map.height )
 					{
-						int index = (checky)*MAPLAYERS + (checkx)*MAPLAYERS * map.height;
+						int index = (checky)*MAP_LAYERS + (checkx)*MAP_LAYERS * map.height;
 						if ( map.tiles[OBSTACLELAYER + index] )
 						{
 							if ( (x2 == -1 && y2 == -1) || (x2 == 1 && y2 == 1)
@@ -5924,7 +5906,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				{
 					if ( checky >= 0 && checky < map.height )
 					{
-						int index = (checky)*MAPLAYERS + (checkx)*MAPLAYERS * map.height;
+						int index = (checky)*MAP_LAYERS + (checkx)*MAP_LAYERS * map.height;
 						if ( swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]] )
 						{
 							numContinuousTiles = 0;
@@ -6155,7 +6137,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			}
 		}
 
-		for ( int c = 0; c < (int)goodSpots.size() 
+		for ( int c = 0; c < (int)goodSpots.size()
 			&& (numOpenAreaBreakables > 0 || numLeaves > 0 || numShrubs > 0 || numMushrooms > 0 || numClosedAreaBreakables > 0); ++c )
 		{
 			// choose a random location from those available
@@ -6180,7 +6162,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					{
 						if ( checky >= 0 && checky < map.height )
 						{
-							int index = (checky)*MAPLAYERS + (checkx)*MAPLAYERS * map.height;
+							int index = (checky)*MAP_LAYERS + (checkx)*MAP_LAYERS * map.height;
 							if ( !map.tiles[index] || swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]] )
 							{
 								++obstacles;
@@ -6336,7 +6318,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						{
 							if ( checky >= 0 && checky < map.height )
 							{
-								int index = (checky)*MAPLAYERS + (checkx)*MAPLAYERS * map.height;
+								int index = (checky)*MAP_LAYERS + (checkx)*MAP_LAYERS * map.height;
 								if ( map.tiles[index] )
 								{
 									++obstacles;
@@ -6354,7 +6336,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 
 				if ( obstacles == 0 )
 				{
-					breakableLocations.push_back(BreakableNode_t(1, x, y, map_rng.rand() % 4, 
+					breakableLocations.push_back(BreakableNode_t(1, x, y, map_rng.rand() % 4,
 						map_rng.rand() % 2 ? 14 : 40)); // random dir, hanging cage ids
 					--numOpenAreaBreakables;
 
@@ -6417,7 +6399,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				{
 					if ( checky >= 0 && checky < map.height )
 					{
-						int index = (checky) * MAPLAYERS + (checkx) * MAPLAYERS * map.height;
+						int index = (checky) * MAP_LAYERS + (checkx) * MAP_LAYERS * map.height;
 						if ( map.tiles[OBSTACLELAYER + index] )
 						{
 							if ( (x2 == -1 && y2 == -1) || (x2 == 1 && y2 == 1)
@@ -6459,7 +6441,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 
 		//	if ( obstacles == 0 )
 		//	{
-		//		breakableLocations.push(BreakableNode_t(1, x, y, map_rng.rand() % 4, 
+		//		breakableLocations.push(BreakableNode_t(1, x, y, map_rng.rand() % 4,
 		//			map_rng.rand() % 2 ? 14 : 40)); // random dir, low prio, hanging cage ids
 		//		--numOpenAreaBreakables;
 		//	}
@@ -6482,7 +6464,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				if ( x2 == 0 && y2 == 0 ) { continue; }
 				int checkx = x + x2;
 				int checky = y + y2;
-				if ( walls.find(checkx + checky * 1000) != walls.end() 
+				if ( walls.find(checkx + checky * 1000) != walls.end()
 					|| corners.find(checkx + checky * 1000) != corners.end() )
 				{
 					continue;
@@ -6491,7 +6473,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				{
 					if ( checky >= 0 && checky < map.height )
 					{
-						int index = (checky) * MAPLAYERS + (checkx) * MAPLAYERS * map.height;
+						int index = (checky) * MAP_LAYERS + (checkx) * MAP_LAYERS * map.height;
 						if ( swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]] )
 						{
 							continue;
@@ -6726,7 +6708,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			{
 				--breakableGoodies;
 
-				int index = (y) * MAPLAYERS + (x) * MAPLAYERS * map.height;
+				int index = (y) * MAP_LAYERS + (x) * MAP_LAYERS * map.height;
 
 				static ConsoleVariable<int> cvar_breakableMonsterChance("/breakable_monster_chance", 10);
 				int breakableMonsterChanceDivisor = 10;
@@ -6962,10 +6944,10 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						{
 							if ( possiblelocations[ty + tx * map.height] )
 							{
-								int mapIndex = (ty)*MAPLAYERS + (tx)*MAPLAYERS * map.height;
+								int mapIndex = (ty)*MAP_LAYERS + (tx)*MAP_LAYERS * map.height;
 								if ( !map.tiles[OBSTACLELAYER + mapIndex] )
 								{
-									if ( !map.tiles[(MAPLAYERS - 1) + mapIndex] )
+									if ( !map.tiles[(MAP_LAYERS - 1) + mapIndex] )
 									{
 										++openCeilings;
 										goodSpots[0].push_back(coord);
@@ -7198,8 +7180,8 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			{
 				int x = static_cast<int>(entity2->x / 16);
 				int y = static_cast<int>(entity2->y / 16);
-				int index = (y)*MAPLAYERS + (x)*MAPLAYERS * map.height;
-				if ( map.tiles[index] && !shoparea[y + x * map.height] 
+				int index = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
+				if ( map.tiles[index] && !shoparea[y + x * map.height]
 					&& !treasureRoomLocations[x + y * map.width]
 					&& !(x >= startRoomInfo.x1 && x <= startRoomInfo.x2
 						&& y >= startRoomInfo.y1 && y <= startRoomInfo.y2) ) // check floor, dont spawn in treasure room, shop, or start area
@@ -7305,7 +7287,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				}
 				else
 				{
-					if ( !map.tiles[(y)*MAPLAYERS + (x)*MAPLAYERS * map.height] )
+					if ( !map.tiles[(y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height] )
 					{
 						// underworld don't spawn over pit
 						continue;
@@ -7386,7 +7368,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					for ( int y = 0; y < map.height; ++y )
 					{
 						if ( possiblelocations[y + x * map.height] == true && treasureRoomLocations[x + y * map.width] == false
-							&& map.tiles[(y)*MAPLAYERS + (x)*MAPLAYERS * map.height] && !shoparea[y + x * map.height] )
+							&& map.tiles[(y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height] && !shoparea[y + x * map.height] )
 						{
 							goodSpots.push_back(x + 10000 * y);
 
@@ -7406,7 +7388,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 									{
 										if ( checky >= 0 && checky < map.height )
 										{
-											int index = (checky)*MAPLAYERS + (checkx)*MAPLAYERS * map.height;
+											int index = (checky)*MAP_LAYERS + (checkx)*MAP_LAYERS * map.height;
 											if ( map.tiles[OBSTACLELAYER + index] )
 											{
 												if ( (x2 == -1 && y2 == -1) || (x2 == 1 && y2 == 1)
@@ -7465,7 +7447,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					}
 					else
 					{
-						if ( !map.tiles[(y)*MAPLAYERS + (x)*MAPLAYERS * map.height] )
+						if ( !map.tiles[(y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height] )
 						{
 							// underworld don't spawn over pit
 							continue;
@@ -7617,9 +7599,9 @@ void debugMap(map_t* map)
 					{
 						if ( pair.second >= 0 && pair.second < map->height )
 						{
-							if ( map->tiles[pair.second * MAPLAYERS + pair.first * MAPLAYERS * map->height] ) // floor
+							if ( map->tiles[pair.second * MAP_LAYERS + pair.first * MAP_LAYERS * map->height] ) // floor
 							{
-								numWalls += map->tiles[OBSTACLELAYER + pair.second * MAPLAYERS + pair.first * MAPLAYERS * map->height] != 0 ? 1 : 0;
+								numWalls += map->tiles[OBSTACLELAYER + pair.second * MAP_LAYERS + pair.first * MAP_LAYERS * map->height] != 0 ? 1 : 0;
 							}
 						}
 					}
@@ -7646,8 +7628,8 @@ void debugMap(map_t* map)
 		{
 			if ( takenSlots.find(x + y * 10000) == takenSlots.end() )
 			{
-				if ( !map->tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map->height]
-					&& !map->tiles[2 + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+				if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height]
+					&& !map->tiles[2 + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 				{
 					int numTiles = 0;
 					for ( int x1 = x; x1 < map->width && x1 < x + 5; ++x1 )
@@ -7656,8 +7638,8 @@ void debugMap(map_t* map)
 						{
 							if ( takenSlots.find(x1 + y1 * 10000) == takenSlots.end() )
 							{
-								if ( !map->tiles[OBSTACLELAYER + y1 * MAPLAYERS + x1 * MAPLAYERS * map->height]
-									&& !map->tiles[2 + y1 * MAPLAYERS + x1 * MAPLAYERS * map->height] )
+								if ( !map->tiles[OBSTACLELAYER + y1 * MAP_LAYERS + x1 * MAP_LAYERS * map->height]
+									&& !map->tiles[2 + y1 * MAP_LAYERS + x1 * MAP_LAYERS * map->height] )
 								{
 									++numTiles;
 								}
@@ -7706,7 +7688,7 @@ void assignActions(map_t* map)
 	{
 		for ( int x = 0; x < map->width; ++x )
 		{
-			if ( lavatiles[map->tiles[y * MAPLAYERS + x * MAPLAYERS * map->height]] )
+			if ( lavatiles[map->tiles[y * MAP_LAYERS + x * MAP_LAYERS * map->height]] )
 			{
 				addLight(x, y, "lava");
 			}
@@ -8691,7 +8673,7 @@ void assignActions(map_t* map)
 						{
 							variantName = monsterCurveCustomManager.rollMonsterVariant(map->name, monsterType);
 						}
-						
+
 						if ( variantName.compare("default") != 0 )
 						{
 							// find a custom file name.
@@ -8912,7 +8894,7 @@ void assignActions(map_t* map)
                 entity->sprite = doorFrameSprite();
                 entity->flags[PASSABLE] = true;
                 entity->behavior = &actDoorFrame;
-                
+
                 //entity->skill[28] = 1; //It's a mechanism.
                 auto childEntity = newEntity(186, 0, map->entities, nullptr); //Gate entity.
                 childEntity->x = entity->x;
@@ -8927,10 +8909,10 @@ void assignActions(map_t* map)
                 childEntity->skill[28] = 1; //It's a mechanism.
                 childEntity->behavior = &actGate;
                 childEntity->skill[0] = 1; // signify behavior code of DOOR_DIR
-                
+
                 // copy editor options from frame to gate itself.
                 childEntity->gateDisableOpening = entity->gateDisableOpening;
-                
+
                 childEntity = newEntity(doorFrameSprite(), 0, map->entities, nullptr); //Door frame entity.
                 childEntity->flags[INVISIBLE] = true;
                 childEntity->flags[BLOCKSIGHT] = true;
@@ -8942,7 +8924,7 @@ void assignActions(map_t* map)
                 childEntity->sizex = 2;
                 childEntity->sizey = 2;
                 childEntity->behavior = &actDoorFrame;
-                
+
                 childEntity = newEntity(doorFrameSprite(), 0, map->entities, nullptr); //Door frame entity.
                 childEntity->flags[INVISIBLE] = true;
                 childEntity->flags[BLOCKSIGHT] = true;
@@ -8964,7 +8946,7 @@ void assignActions(map_t* map)
                 entity->sprite = doorFrameSprite();
                 entity->flags[PASSABLE] = true;
                 entity->behavior = &actDoorFrame;
-                
+
                 auto childEntity = newEntity(186, 0, map->entities, nullptr); //Gate entity.
                 childEntity->x = entity->x;
                 childEntity->y = entity->y;
@@ -8977,10 +8959,10 @@ void assignActions(map_t* map)
                 childEntity->skill[28] = 1; //It's a mechanism.
                 childEntity->behavior = &actGate;
                 childEntity->skill[0] = 0; // signify behavior code of DOOR_DIR
-                
+
                 // copy editor options from frame to gate itself.
                 childEntity->gateDisableOpening = entity->gateDisableOpening;
-                
+
                 childEntity = newEntity(doorFrameSprite(), 0, map->entities, nullptr); //Door frame entity.
                 childEntity->flags[INVISIBLE] = true;
                 childEntity->flags[BLOCKSIGHT] = true;
@@ -8991,7 +8973,7 @@ void assignActions(map_t* map)
                 childEntity->sizex = 2;
                 childEntity->sizey = 2;
                 childEntity->behavior = &actDoorFrame;
-                
+
                 childEntity = newEntity(doorFrameSprite(), 0, map->entities, nullptr); //Door frame entity.
                 childEntity->flags[INVISIBLE] = true;
                 childEntity->flags[BLOCKSIGHT] = true;
@@ -9225,14 +9207,14 @@ void assignActions(map_t* map)
 					y = ((int)(y + entity->y)) >> 4;
 					if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 					{
-						if ( !map->tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+						if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 						{
 							Entity* childEntity = newEntity(252, 1, map->entities, nullptr);
 							childEntity->x = (x << 4) + 8;
 							childEntity->y = (y << 4) + 8;
 							//printlog("30 Generated entity. Sprite: %d Uid: %d X: %.2f Y: %.2f\n",childEntity->sprite,childEntity->getUID(),childEntity->x,childEntity->y);
 							childEntity->flags[PASSABLE] = true;
-							if ( !map->tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+							if ( !map->tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 							{
 								childEntity->z = -26.99;
 							}
@@ -9297,7 +9279,7 @@ void assignActions(map_t* map)
                 int y = entity->y / 16;
                 if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
                 {
-                    if ( !map->tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+                    if ( !map->tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
                     {
                         entity->z = -6.25 - 16.0;
                     }
@@ -9696,14 +9678,14 @@ void assignActions(map_t* map)
 				const int y = ((int)(entity->y)) >> 4;
 				if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 				{
-					if ( !map->tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+					if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 					{
 						Entity* childEntity = newEntity(252, 1, map->entities, nullptr);
 						childEntity->x = (x << 4) + 8;
 						childEntity->y = (y << 4) + 8;
 						//printlog("30 Generated entity. Sprite: %d Uid: %d X: %.2f Y: %.2f\n",childEntity->sprite,childEntity->getUID(),childEntity->x,childEntity->y);
 						childEntity->flags[PASSABLE] = true;
-						if ( !map->tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+						if ( !map->tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 						{
 							childEntity->z = -26.99;
 						}
@@ -9738,14 +9720,14 @@ void assignActions(map_t* map)
 				const int y = ((int)(entity->y)) >> 4;
 				if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 				{
-					if ( !map->tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+					if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 					{
 						Entity* childEntity = newEntity(252, 1, map->entities, nullptr);
 						childEntity->x = (x << 4) + 8;
 						childEntity->y = (y << 4) + 8;
 						//printlog("30 Generated entity. Sprite: %d Uid: %d X: %.2f Y: %.2f\n",childEntity->sprite,childEntity->getUID(),childEntity->x,childEntity->y);
 						childEntity->flags[PASSABLE] = true;
-						if ( !map->tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+						if ( !map->tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 						{
 							childEntity->z = -26.99;
 						}
@@ -9780,14 +9762,14 @@ void assignActions(map_t* map)
 				const int y = ((int)(entity->y)) >> 4;
 				if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 				{
-					if ( !map->tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+					if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 					{
 						Entity* childEntity = newEntity(252, 1, map->entities, nullptr);
 						childEntity->x = (x << 4) + 8;
 						childEntity->y = (y << 4) + 8;
 						//printlog("30 Generated entity. Sprite: %d Uid: %d X: %.2f Y: %.2f\n",childEntity->sprite,childEntity->getUID(),childEntity->x,childEntity->y);
 						childEntity->flags[PASSABLE] = true;
-						if ( !map->tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+						if ( !map->tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 						{
 							childEntity->z = -26.99;
 						}
@@ -9822,14 +9804,14 @@ void assignActions(map_t* map)
 				const int y = ((int)(entity->y)) >> 4;
 				if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 				{
-					if ( !map->tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+					if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 					{
 						Entity* childEntity = newEntity(252, 1, map->entities, nullptr);
 						childEntity->x = (x << 4) + 8;
 						childEntity->y = (y << 4) + 8;
 						//printlog("30 Generated entity. Sprite: %d Uid: %d X: %.2f Y: %.2f\n",childEntity->sprite,childEntity->getUID(),childEntity->x,childEntity->y);
 						childEntity->flags[PASSABLE] = true;
-						if ( !map->tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+						if ( !map->tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 						{
 							childEntity->z = -26.99;
 						}
@@ -9968,7 +9950,7 @@ void assignActions(map_t* map)
                 entity->behavior = &actStalagCeiling;
                 if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
                 {
-                    if ( !map->tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+                    if ( !map->tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
                     {
                         entity->flags[PASSABLE] = true;
                         entity->z -= 16;
@@ -9990,7 +9972,7 @@ void assignActions(map_t* map)
                 entity->behavior = &actStalagCeiling;
                 if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
                 {
-                    if ( !map->tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+                    if ( !map->tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
                     {
                         entity->flags[PASSABLE] = true;
                         entity->z -= 16;
@@ -10007,7 +9989,7 @@ void assignActions(map_t* map)
                 entity->sprite = doorFrameSprite();
                 entity->flags[PASSABLE] = true;
                 entity->behavior = &actDoorFrame;
-                
+
                 //entity->skill[28] = 1; //It's a mechanism.
                 auto childEntity = newEntity(186, 0, map->entities, nullptr);
                 childEntity->x = entity->x;
@@ -10022,10 +10004,10 @@ void assignActions(map_t* map)
                 childEntity->skill[28] = 1; //It's a mechanism.
                 childEntity->behavior = &actGate;
                 childEntity->skill[0] = 1; // signify behavior code of DOOR_DIR
-                
+
                 // copy editor options from frame to gate itself.
                 childEntity->gateDisableOpening = entity->gateDisableOpening;
-                
+
                 childEntity = newEntity(doorFrameSprite(), 0, map->entities, nullptr);
                 childEntity->flags[INVISIBLE] = true;
                 childEntity->flags[BLOCKSIGHT] = true;
@@ -10037,7 +10019,7 @@ void assignActions(map_t* map)
                 childEntity->sizex = 2;
                 childEntity->sizey = 2;
                 childEntity->behavior = &actDoorFrame;
-                
+
                 childEntity = newEntity(doorFrameSprite(), 0, map->entities, nullptr);
                 childEntity->flags[INVISIBLE] = true;
                 childEntity->flags[BLOCKSIGHT] = true;
@@ -10059,7 +10041,7 @@ void assignActions(map_t* map)
                 entity->sprite = doorFrameSprite();
                 entity->flags[PASSABLE] = true;
                 entity->behavior = &actDoorFrame;
-                
+
                 auto childEntity = newEntity(186, 0, map->entities, nullptr);
                 childEntity->x = entity->x;
                 childEntity->y = entity->y;
@@ -10072,10 +10054,10 @@ void assignActions(map_t* map)
                 childEntity->skill[28] = 1; //It's a mechanism.
                 childEntity->behavior = &actGate;
                 childEntity->skill[0] = 0; // signify behavior code of DOOR_DIR
-                
+
                 // copy editor options from frame to gate itself.
                 childEntity->gateDisableOpening = entity->gateDisableOpening;
-                
+
                 childEntity = newEntity(doorFrameSprite(), 0, map->entities, nullptr);
                 childEntity->flags[INVISIBLE] = true;
                 childEntity->flags[BLOCKSIGHT] = true;
@@ -10086,7 +10068,7 @@ void assignActions(map_t* map)
                 childEntity->sizex = 2;
                 childEntity->sizey = 2;
                 childEntity->behavior = &actDoorFrame;
-                
+
                 childEntity = newEntity(doorFrameSprite(), 0, map->entities, nullptr);
                 childEntity->flags[INVISIBLE] = true;
                 childEntity->flags[BLOCKSIGHT] = true;
@@ -10215,7 +10197,7 @@ void assignActions(map_t* map)
 					const int y = entity->y / 16;
 					if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 					{
-						if ( !map->tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+						if ( !map->tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 						{
 							entity->z = -6.25 - 16.0;
 						}
@@ -10282,11 +10264,11 @@ void assignActions(map_t* map)
 
 				const int x = ((int)(entity->x)) >> 4;
 				const int y = ((int)(entity->y)) >> 4;
-				//map->tiles[y * MAPLAYERS + x * MAPLAYERS * map->height] = 208; //entity->spellTrapCeilingModel
+				//map->tiles[y * MAP_LAYERS + x * MAP_LAYERS * map->height] = 208; //entity->spellTrapCeilingModel
 				Entity* childEntity = nullptr;
 				if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 				{
-					if ( !map->tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+					if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 					{
 						childEntity = newEntity(644, 1, map->entities, nullptr);
 						childEntity->parent = entity->getUID();
@@ -10294,7 +10276,7 @@ void assignActions(map_t* map)
 						childEntity->y = entity->y;
 						//printlog("30 Generated entity. Sprite: %d Uid: %d X: %.2f Y: %.2f\n",childEntity->sprite,childEntity->getUID(),childEntity->x,childEntity->y);
 						childEntity->flags[PASSABLE] = true;
-						if ( !map->tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map->height] )
+						if ( !map->tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
 						{
 							childEntity->z = -22.99;
 						}
@@ -10632,7 +10614,7 @@ void assignActions(map_t* map)
 				break;
 			}
 			//sound source
-			case 130: 
+			case 130:
 				entity->sizex = 2;
 				entity->sizey = 2;
 				entity->x += 8;
@@ -10787,7 +10769,7 @@ void assignActions(map_t* map)
 				{
 					entity->skill[14] = map_rng.rand() % allBooks.size();
 				}
-					
+
 				if ( entity->skill[15] == 1 ) // editor set as identified
 				{
 					entity->skill[15] = 1;
@@ -10817,7 +10799,7 @@ void assignActions(map_t* map)
 				item = nullptr;
                 break;
 			}
-			case 168: 
+			case 168:
 				//Statue Animator
 				entity->sizex = 4;
 				entity->sizey = 4;
@@ -11076,8 +11058,8 @@ void assignActions(map_t* map)
 				}
 
 				map->tileAttributes[OBSTACLELAYER + (nodigtiley)
-					*MAPLAYERS + (nodigtilex)
-					*MAPLAYERS * map->height] |= map_t::TILE_ATTRIBUTE_NODIG;
+					*MAP_LAYERS + (nodigtilex)
+					*MAP_LAYERS * map->height] |= map_t::TILE_ATTRIBUTE_NODIG;
 
 				{
 					Entity* childEntity = newEntity(keySprite, 1, map->entities, nullptr); // lock
@@ -11156,8 +11138,8 @@ void assignActions(map_t* map)
 				}
 
 				map->tileAttributes[OBSTACLELAYER + (nodigtiley)
-					* MAPLAYERS + (nodigtilex)
-					* MAPLAYERS * map->height] |= map_t::TILE_ATTRIBUTE_NODIG;
+					* MAP_LAYERS + (nodigtilex)
+					* MAP_LAYERS * map->height] |= map_t::TILE_ATTRIBUTE_NODIG;
 
 				{
 					Entity* childEntity = newEntity(1152, 1, map->entities, nullptr); // button
@@ -11181,8 +11163,8 @@ void assignActions(map_t* map)
 				break;
 			case 216: // nodig tile
 				map->tileAttributes[OBSTACLELAYER + (static_cast<int>(entity->y) >> 4)
-					* MAPLAYERS + (static_cast<int>(entity->x) >> 4)
-					* MAPLAYERS * map->height] |= map_t::TILE_ATTRIBUTE_NODIG;
+					* MAP_LAYERS + (static_cast<int>(entity->x) >> 4)
+					* MAP_LAYERS * map->height] |= map_t::TILE_ATTRIBUTE_NODIG;
 				list_RemoveNode(entity->mynode);
 				entity = nullptr;
 				break;
@@ -11294,8 +11276,8 @@ void assignActions(map_t* map)
 			}
 			case 219: // slippery tile
 				map->tileAttributes[0 + (static_cast<int>(entity->y) >> 4)
-					* MAPLAYERS + (static_cast<int>(entity->x) >> 4)
-					* MAPLAYERS * map->height] |= map_t::TILE_ATTRIBUTE_SLIPPERY;
+					* MAP_LAYERS + (static_cast<int>(entity->x) >> 4)
+					* MAP_LAYERS * map->height] |= map_t::TILE_ATTRIBUTE_SLIPPERY;
 				list_RemoveNode(entity->mynode);
 				entity = nullptr;
 				break;
@@ -11322,8 +11304,8 @@ void assignActions(map_t* map)
 			}
 			case 221: // slow tile
 				map->tileAttributes[0 + (static_cast<int>(entity->y) >> 4)
-					* MAPLAYERS + (static_cast<int>(entity->x) >> 4)
-					* MAPLAYERS * map->height] |= map_t::TILE_ATTRIBUTE_SLOW;
+					* MAP_LAYERS + (static_cast<int>(entity->x) >> 4)
+					* MAP_LAYERS * map->height] |= map_t::TILE_ATTRIBUTE_SLOW;
 				list_RemoveNode(entity->mynode);
 				entity = nullptr;
 				break;
@@ -11484,7 +11466,7 @@ void assignActions(map_t* map)
 			{
 				int findx = static_cast<int>(postProcessEntity->x) >> 4;
 				int findy = static_cast<int>(postProcessEntity->y) >> 4;
-				if ( !map->tiles[findy * MAPLAYERS + findx * MAPLAYERS * map->height] )
+				if ( !map->tiles[findy * MAP_LAYERS + findx * MAP_LAYERS * map->height] )
 				{
 					// remove the lever as it is over a pit.
 					printlog("[MAP GENERATOR] Removed switch over a pit at x:%d y:%d.", findx, findy);
@@ -11778,7 +11760,7 @@ int mapLevel(int player, int radius, int _x, int _y, bool usingSpell)
 			{
 				continue;
 			}
-			if ( map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+			if ( map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				if ( !minimap[y][x] )
 				{
@@ -11786,7 +11768,7 @@ int mapLevel(int player, int radius, int _x, int _y, bool usingSpell)
 					++revealed;
 				}
 			}
-			else if ( map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height] )
+			else if ( map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				if ( !minimap[y][x] )
 				{
@@ -11821,14 +11803,14 @@ void mapLevel2(int player)
 	{
 		for ( int x = 0; x < map.width; ++x )
 		{
-			if ( map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+			if ( map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				if ( !minimap[y][x] )
 				{
 					minimap[y][x] = 2;
 				}
 			}
-			else if ( map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height] )
+			else if ( map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				if ( !minimap[y][x] )
 				{
@@ -11893,7 +11875,7 @@ void mapFoodOnLevel(int player)
 			}
 			else
 			{
-				magicOnSpellCastEvent(players[player]->entity, players[player]->entity, 
+				magicOnSpellCastEvent(players[player]->entity, players[player]->entity,
 					nullptr,
 					SPELL_DETECT_FOOD, spell_t::SPELL_LEVEL_EVENT_DEFAULT, numFood);
 			}
@@ -12021,7 +12003,7 @@ int loadMainMenuMap(bool blessedAdditionMaps, bool forceVictoryMap, int forcemap
 
 bool map_t::tileHasAttribute(int x, int y, int layer, Uint32 attribute)
 {
-	auto find = tileAttributes.find(layer + y * MAPLAYERS + x * MAPLAYERS * height);
+	auto find = tileAttributes.find(layer + y * MAP_LAYERS + x * MAP_LAYERS * height);
 	if ( find != tileAttributes.end() )
 	{
 		return find->second & attribute;

@@ -12,7 +12,7 @@
 #pragma once
 #include "Config.hpp"
 
-#include <stdlib.h>
+#include <cstdlib>
 //#ifdef WINDOWS
 //#ifdef _DEBUG
 //#define _CRTDBG_MAP_ALLOC
@@ -465,7 +465,7 @@ typedef struct map_t
 	char author[32]; // author of the map
 	unsigned int width, height, skybox;  // size of the map + skybox
 	Sint32 flags[16];
-	Sint32* tiles = nullptr;
+	std::vector<Sint32> tiles;
 	std::unordered_map<Sint32, node_t*> entities_map;
 	list_t* entities = nullptr;
 	list_t* creatures = nullptr; //A list of Entity* pointers.
@@ -503,7 +503,7 @@ typedef struct map_t
 	}
 } map_t;
 
-#define MAPLAYERS 3 // number of layers contained in a single map
+#define MAP_LAYERS 3 // number of layers contained in a single map
 #define OBSTACLELAYER 1 // obstacle layer in map
 #define MAPFLAGS 16 // map flags for custom properties
 #define MAPFLAGTEXTS 20 // map flags for custom properties
@@ -844,7 +844,7 @@ extern Uint32 mapseed;
 extern bool* shoparea;
 
 struct AnimatedTile {
-    int indices[8] = { 0 };
+    int indices[8] = {};
 };
 extern std::unordered_map<int, AnimatedTile> tileAnimations;
 

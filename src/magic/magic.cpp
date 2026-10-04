@@ -1839,18 +1839,18 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
 				{
 					if ( entityInsideTile(target, u, v, 0) )   // no floor
 					{
-						if ( !map.tiles[0 + u * MAPLAYERS + v * MAPLAYERS * map.height] )
+						if ( !map.tiles[0 + u * MAP_LAYERS + v * MAP_LAYERS * map.height] )
 						{
 							// no floor.
 							fellToDeath = true;
 							tryReposition = true;
 						}
-						else if ( lavatiles[map.tiles[0 + u * MAPLAYERS + v * MAPLAYERS * map.height]] )
+						else if ( lavatiles[map.tiles[0 + u * MAP_LAYERS + v * MAP_LAYERS * map.height]] )
 						{
 							fellInLava = true;
 							tryReposition = true;
 						}
-						else if ( swimmingtiles[map.tiles[0 + u * MAPLAYERS + v * MAPLAYERS * map.height]] )
+						else if ( swimmingtiles[map.tiles[0 + u * MAP_LAYERS + v * MAP_LAYERS * map.height]] )
 						{
 							fellInWater = true;
 							tryReposition = true;

@@ -808,7 +808,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 	{
 		if ( mapx >= 0 && mapx < map.width && mapy >= 0 && mapy < map.height )
 		{
-			int mapIndex = (mapy)*MAPLAYERS + (mapx)*MAPLAYERS * map.height;
+			int mapIndex = (mapy)*MAP_LAYERS + (mapx)*MAP_LAYERS * map.height;
 			if ( !map.tiles[mapIndex] )
 			{
 				noFloor = true;

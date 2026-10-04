@@ -88,7 +88,7 @@ void actTorch(Entity* my)
 	checkx = checkx >> 4;
 	int checky = my->y - sin(my->yaw) * 8;
 	checky = checky >> 4;
-	if ( !map.tiles[OBSTACLELAYER + checky * MAPLAYERS + checkx * MAPLAYERS * map.height] )   // wall
+	if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )   // wall
 	{
 		my->removeLightField();
 		list_RemoveNode(my->mynode);
@@ -258,7 +258,7 @@ void actCrystalShard(Entity* my)
 	checkx = checkx >> 4;
 	int checky = my->y - sin(my->yaw) * 8;
 	checky = checky >> 4;
-	if ( !map.tiles[OBSTACLELAYER + checky * MAPLAYERS + checkx * MAPLAYERS * map.height] )   // wall
+	if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )   // wall
 	{
 		my->removeLightField();
 		list_RemoveNode(my->mynode);

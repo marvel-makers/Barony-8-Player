@@ -1402,9 +1402,9 @@ void gameLogic(void)
                 {
                     for (y = 0; y < map.height; y++)
                     {
-                        for (z = 0; z < MAPLAYERS; z++)
+                        for (z = 0; z < MAP_LAYERS; z++)
                         {
-                            int index = z + y * MAPLAYERS + x * MAPLAYERS * map.height;
+                            int index = z + y * MAP_LAYERS + x * MAP_LAYERS * map.height;
                             if (animatedtiles[map.tiles[index]])
                             {
                                 if (z == 0)
@@ -3367,9 +3367,9 @@ void gameLogic(void)
                 {
                     for (y = 0; y < map.height; y++)
                     {
-                        for (z = 0; z < MAPLAYERS; z++)
+                        for (z = 0; z < MAP_LAYERS; z++)
                         {
-                            int index = z + y * MAPLAYERS + x * MAPLAYERS * map.height;
+                            int index = z + y * MAP_LAYERS + x * MAP_LAYERS * map.height;
                             if (animatedtiles[map.tiles[index]])
                             {
                                 if (z == 0)
@@ -7718,7 +7718,7 @@ int main(int argc, char** argv)
         }
 
         // initialize map
-        map.tiles = nullptr;
+        map.tiles.resize(map.width * map.height * MAP_LAYERS);
         map.entities = static_cast<list_t*>(malloc(sizeof(list_t)));
         map.entities->first = nullptr;
         map.entities->last = nullptr;

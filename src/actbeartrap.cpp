@@ -911,7 +911,7 @@ void actBomb(Entity* my)
 			}
 			checkx = checkx >> 4;
 			checky = checky >> 4;
-			if ( !map.tiles[OBSTACLELAYER + checky * MAPLAYERS + checkx * MAPLAYERS * map.height] )   // wall
+			if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )   // wall
 			{
 				shouldExplode = true;
 			}

@@ -1011,7 +1011,7 @@ void actItem(Entity* my)
 	bool overWater = false;
 	if (my->x >= 0 && my->y >= 0 && my->x < map.width << 4 && my->y < map.height << 4)
 	{
-		const int tile = map.tiles[(int)(my->y / 16) * MAPLAYERS + (int)(my->x / 16) * MAPLAYERS * map.height];
+		const int tile = map.tiles[(int)(my->y / 16) * MAP_LAYERS + (int)(my->x / 16) * MAP_LAYERS * map.height];
 		overWater = (tile >= 22 && tile < 30) || (tile >= 64 && tile < 72);
 	}
 
@@ -1120,7 +1120,7 @@ void actItem(Entity* my)
 	{
 		if ( my->x >= 0 && my->y >= 0 && my->x < map.width << 4 && my->y < map.height << 4 )
 		{
-			const int tile = map.tiles[(int)(my->y / 16) * MAPLAYERS + (int)(my->x / 16) * MAPLAYERS * map.height];
+			const int tile = map.tiles[(int)(my->y / 16) * MAP_LAYERS + (int)(my->x / 16) * MAP_LAYERS * map.height];
 			const bool isLootBagSprite =
 				my->sprite >= items[TOOL_PLAYER_LOOT_BAG].index
 				&& my->sprite < (items[TOOL_PLAYER_LOOT_BAG].index + items[TOOL_PLAYER_LOOT_BAG].variations);

@@ -44,7 +44,7 @@ void actArrowTrap(Entity* my)
 	// check wall inside me.
 	int checkx = static_cast<int>(my->x) >> 4;
 	int checky = static_cast<int>(my->y) >> 4;
-	if ( !map.tiles[OBSTACLELAYER + checky * MAPLAYERS + checkx * MAPLAYERS * map.height] )   // wall
+	if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )   // wall
 	{
 		list_RemoveNode(my->mynode);
 		return;
@@ -67,28 +67,28 @@ void actArrowTrap(Entity* my)
 			int y = my->y / 16;
 			if ( (x + 1) >= 0 && (x + 1) < map.width && y >= 0 && y < map.height )
 			{
-				if ( !map.tiles[OBSTACLELAYER + y * MAPLAYERS + (x + 1) * MAPLAYERS * map.height] )
+				if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + (x + 1) * MAP_LAYERS * map.height] )
 				{
 					freeTiles.push_back(std::make_pair(x + 1, y));
 				}
 			}
 			if ( (x - 1) >= 0 && (x - 1) < map.width && y >= 0 && y < map.height )
 			{
-				if ( !map.tiles[OBSTACLELAYER + y * MAPLAYERS + (x - 1) * MAPLAYERS * map.height] )
+				if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + (x - 1) * MAP_LAYERS * map.height] )
 				{
 					freeTiles.push_back(std::make_pair(x - 1, y));
 				}
 			}
 			if ( x >= 0 && x < map.width && (y + 1) >= 0 && (y + 1) < map.height )
 			{
-				if ( !map.tiles[OBSTACLELAYER + (y + 1) * MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( !map.tiles[OBSTACLELAYER + (y + 1) * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					freeTiles.push_back(std::make_pair(x, y + 1));
 				}
 			}
 			if ( x >= 0 && x < map.width && (y - 1) >= 0 && (y - 1) < map.height )
 			{
-				if ( !map.tiles[OBSTACLELAYER + (y - 1) * MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( !map.tiles[OBSTACLELAYER + (y - 1) * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					freeTiles.push_back(std::make_pair(x, y - 1));
 				}
@@ -230,7 +230,7 @@ void actArrowTrap(Entity* my)
 					// out of bounds.
 					continue;
 				}
-				int index = checky * MAPLAYERS + checkx * MAPLAYERS * map.height;
+				int index = checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height;
 				if ( !map.tiles[OBSTACLELAYER + index] )
 				{
 					Entity* entity = newEntity(166, 1, map.entities, nullptr); // arrow

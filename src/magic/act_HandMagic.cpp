@@ -543,7 +543,7 @@ void spellcasting_animation_manager_t::setRangeFinderLocation()
 			starty += (invertZ ? -1.0 : 1.0) * sin(yaw);
 			const int index_x = static_cast<int>(startx) >> 4;
 			const int index_y = static_cast<int>(starty) >> 4;
-			index = (index_y)*MAPLAYERS + (index_x)*MAPLAYERS * map.height;
+			index = (index_y)*MAP_LAYERS + (index_x)*MAP_LAYERS * map.height;
 
 			if ( index_x < 0 || index_x >= map.width || index_y < 0 || index_y >= map.height )
 			{
@@ -1686,7 +1686,7 @@ void actLeftHandMagic(Entity* my)
 					bool swimming = false;
 					int x = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->x / 16)), map.width - 1);
 					int y = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->y / 16)), map.height - 1);
-					if ( swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] || lavatiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+					if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] || lavatiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 					{
 						swimming = true;
 					}
@@ -1853,7 +1853,7 @@ void actLeftHandMagic(Entity* my)
 					bool swimming = false;
 					int x = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->x / 16)), map.width - 1);
 					int y = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->y / 16)), map.height - 1);
-					if ( swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] || lavatiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+					if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] || lavatiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 					{
 						swimming = true;
 					}

@@ -2208,8 +2208,8 @@ Entity* dropItemMonster(Item* const item, Entity* const monster, Stat* const mon
 				entity->vel_y = 0.0;
 				int ix = static_cast<int>(std::floor(monster->x)) >> 4;
 				int iy = static_cast<int>(std::floor(monster->y)) >> 4;
-				if ( map.tiles[OBSTACLELAYER + iy * MAPLAYERS + ix * MAPLAYERS * map.height]
-					|| !map.tiles[iy * MAPLAYERS + ix * MAPLAYERS * map.height] )
+				if ( map.tiles[OBSTACLELAYER + iy * MAP_LAYERS + ix * MAP_LAYERS * map.height]
+					|| !map.tiles[iy * MAP_LAYERS + ix * MAP_LAYERS * map.height] )
 				{
 					// failsafe area in the center of the boss room
 					entity->x = 36 * 16.0 + 8.0;
@@ -6196,7 +6196,7 @@ void Item::applyLockpickToWall(const int player, const int x, const int y) const
 		}
 	}
 
-	if ( map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height] == 53 )
+	if ( map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] == 53 )
 	{
 		messagePlayer(player, MESSAGE_HINT, Language::get(3873));
 	}

@@ -180,7 +180,7 @@ static ccmd_map_t& getConsoleCommands()
 void ConsoleCommand::add_to_map()
 {
 	auto& map = getConsoleCommands();
-	auto result = map.emplace(name, *this);
+	const auto result = map.emplace(name, *this);
 	if (result.second == false) {
 		printlog("A ConsoleCommand by the name \"%s\" already exists! Aborting\n", name);
 		assert(0 && "A ConsoleCommand with a duplicate name was found. Aborting");
@@ -211,7 +211,7 @@ void consoleCommand(char const* const command_str)
 
 	std::vector<const char*> tokens;
 	auto token = strtok(buf, " ");
-	auto command = token;
+	const auto command = token;
 	while (token)
 	{
 		tokens.push_back(token);
@@ -219,7 +219,7 @@ void consoleCommand(char const* const command_str)
 	}
 
 	auto& map = getConsoleCommands();
-	auto find = map.find(command);
+	const auto find = map.find(command);
 	if (find == map.end())
 	{
 		// invalid command
@@ -243,13 +243,13 @@ const char* FindConsoleCommand(const char* str, int index) {
 	if (!str || str[0] == '\0') {
 		return nullptr;
 	}
-	size_t len = strlen(str);
+	const size_t len = strlen(str);
 	int count = 0;
 	auto& map = getConsoleCommands();
-	auto lower = map.lower_bound(str);
+	const auto lower = map.lower_bound(str);
 	auto it = lower;
 	for (; count < index; ++it, ++count);
-	auto cmd = it == map.end() ? nullptr : it->first.c_str();
+	const auto cmd = it == map.end() ? nullptr : it->first.c_str();
 	if (cmd && strncmp(str, cmd, len) == 0) {
 		return cmd;
 	}
@@ -291,7 +291,7 @@ namespace ConsoleCommands {
 	static ConsoleCommand ccmd_help("/help", "get help for a command (eg: /help listcmds)", []CCMD{
 		const char* cmd = argc == 1 ? "help" : argv[1];
 		auto& map = getConsoleCommands();
-		auto find = map.find(std::string("/") + cmd);
+		const auto find = map.find(std::string("/") + cmd);
 		if (find != map.end()) {
 			messagePlayer(clientnum, MESSAGE_MISC, "%s", find->second.desc);
 		}
@@ -301,12 +301,12 @@ namespace ConsoleCommands {
 		});
 
 	static ConsoleCommand ccmd_listcmds("/listcmds", "list all console commands", []CCMD{
-		auto & map = getConsoleCommands();
-		int pagenum = argc > 1 ? atoi(argv[1]) : 0;
+		const auto & map = getConsoleCommands();
+		const int pagenum = argc > 1 ? atoi(argv[1]) : 0;
 		int index = 0;
 		const int num_per_page = 5;
 		for (auto& pair : map) {
-			auto& cmd = pair.second;
+			const auto& cmd = pair.second;
 			++index;
 			const int cur_page = index / num_per_page;
 			if (cur_page == pagenum) {
@@ -320,9 +320,9 @@ namespace ConsoleCommands {
 		});
 
 	static ConsoleCommand ccmd_listcmds_all("/listcmds_all", "list all console commands", []CCMD{
-		auto & map = getConsoleCommands();
+		const auto & map = getConsoleCommands();
 		for ( auto& pair : map ) {
-			auto& cmd = pair.second;
+			const auto& cmd = pair.second;
 			messagePlayer(clientnum, MESSAGE_MISC, "%s", cmd.name);
 		}
 		});
@@ -475,10 +475,10 @@ namespace ConsoleCommands {
 
 		int itemType = SPELLBOOK_FORCEBOLT;
 		std::vector<std::pair<int, int>> chances;
-		int minDifficulty = std::min(60, (currentlevel / 5) * 20);
-		for ( auto& def : allGameSpells )
+		const int minDifficulty = std::min(60, (currentlevel / 5) * 20);
+		for (const auto& def : allGameSpells )
 		{
-			if ( auto spell = def.second )
+			if (const auto spell = def.second )
 			{
 				if ( spell->ID != SPELL_NONE && !spell->hide_from_ui && currentlevel >= spell->drop_table )
 				{
@@ -495,7 +495,7 @@ namespace ConsoleCommands {
 		if ( chances.size() )
 		{
 			Uint32 appearance = 0;
-			int pick = rng.rand() % chances.size();
+			const int pick = rng.rand() % chances.size();
 			int spellbookType = getSpellbookFromSpellID(chances[pick].second);
 			/*if ( items[spellbookType].category == SPELLBOOK )
 			{
@@ -517,7 +517,7 @@ namespace ConsoleCommands {
 			bool identified = true;
 			if ( argc >= 3 )
 			{
-				std::string str = argv[2];
+				const std::string str = argv[2];
 				if ( str == "0" )
 				{
 					identified = false;
@@ -800,8 +800,8 @@ namespace ConsoleCommands {
 		}
 		if (players[clientnum] && players[clientnum]->entity)
 		{
-			int x = std::min<int>(std::max<int>(0, floor(players[clientnum]->entity->x / 16)), map.width - 1);
-			int y = std::min<int>(std::max<int>(0, floor(players[clientnum]->entity->y / 16)), map.height - 1);
+			const int x = std::min<int>(std::max<int>(0, floor(players[clientnum]->entity->x / 16)), map.width - 1);
+			const int y = std::min<int>(std::max<int>(0, floor(players[clientnum]->entity->y / 16)), map.height - 1);
 			messagePlayer(clientnum, MESSAGE_MISC, "pathMapGrounded value: %d", pathMapGrounded[y + x * map.height]);
 			messagePlayer(clientnum, MESSAGE_MISC, "pathMapFlying value: %d", pathMapFlying[y + x * map.height]);
 		}
@@ -929,7 +929,7 @@ namespace ConsoleCommands {
 		}
 		for (auto node = map.entities->first; node != NULL; node = node->next)
 		{
-			auto entity = (Entity*)node->element;
+			const auto entity = (Entity*)node->element;
 			if (entity->behavior == &actLadder)
 			{
 				messagePlayer(clientnum, MESSAGE_MISC, Language::get(298), (int)(entity->x / 16), (int)(entity->y / 16));
@@ -1067,7 +1067,7 @@ namespace ConsoleCommands {
 			return;
 		}
 
-		int amount = atoi(argv[1]);
+		const int amount = atoi(argv[1]);
 
 		players[clientnum]->entity->modHP(-amount);
 
@@ -1404,7 +1404,7 @@ namespace ConsoleCommands {
 		if (argc < 2) {
 			return;
 		}
-		int num = atoi(argv[1]);
+		const int num = atoi(argv[1]);
 		playSound(num, 255);
 		});
 
@@ -1478,11 +1478,11 @@ namespace ConsoleCommands {
 		//Make sure that the number of creatures in the creature list are the real count in the game world.
 		unsigned entcount = 0;
 
-		for (node_t* node = map.entities->first; node; node = node->next)
+		for (const node_t* node = map.entities->first; node; node = node->next)
 		{
 			if (node->element)
 			{
-				Entity* ent = static_cast<Entity*>(node->element);
+				const Entity* ent = static_cast<Entity*>(node->element);
 				if (ent->behavior == actMonster || ent->behavior == actPlayer)
 				{
 					++entcount;
@@ -1563,7 +1563,7 @@ namespace ConsoleCommands {
 			for ( node = map.entities->first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Entity* entity = (Entity*)node->element;
+				const Entity* entity = (Entity*)node->element;
 				if ( entity->behavior == &actItem )
 				{
 					list_RemoveNode(entity->mynode);
@@ -1611,7 +1611,7 @@ namespace ConsoleCommands {
 			suicide(clientnum);
 		}
  else {
-  int player = (int)strtol(argv[1], nullptr, 10);
+  const int player = (int)strtol(argv[1], nullptr, 10);
   suicide(player);
 }
 		});
@@ -1639,10 +1639,10 @@ namespace ConsoleCommands {
 
 		for (int c = 0; c < 100; c++)
 		{
-			if ( auto entity = spawnFlame(players[clientnum]->entity, SPRITE_FLAME) )
+			if (const auto entity = spawnFlame(players[clientnum]->entity, SPRITE_FLAME) )
 			{
 				entity->sprite = 16;
-				double vel = local_rng.rand() % 10;
+				const double vel = local_rng.rand() % 10;
 				entity->vel_x = vel * cos(entity->yaw) * cos(entity->pitch) * .1;
 				entity->vel_y = vel * sin(entity->yaw) * cos(entity->pitch) * .1;
 				entity->vel_z = vel * sin(entity->pitch) * .2;
@@ -1747,16 +1747,16 @@ namespace ConsoleCommands {
 			if ( argc < 2 ) {
 				return;
 			}
-			int type = atoi(argv[1]);
+			const int type = atoi(argv[1]);
 
 			playSoundEntity(players[clientnum]->entity, 153, 64);
 
 			//Spawn monster
-			Entity* monster = summonMonster(SHOPKEEPER, players[clientnum]->entity->x + 32 * cos(players[clientnum]->entity->yaw), players[clientnum]->entity->y + 32 * sin(players[clientnum]->entity->yaw));
+			const Entity* monster = summonMonster(SHOPKEEPER, players[clientnum]->entity->x + 32 * cos(players[clientnum]->entity->yaw), players[clientnum]->entity->y + 32 * sin(players[clientnum]->entity->yaw));
 			if ( monster )
 			{
 				messagePlayer(clientnum, MESSAGE_MISC, Language::get(302), getMonsterLocalizedName(SHOPKEEPER).c_str());
-				if ( auto stat = monster->getStats() )
+				if (const auto stat = monster->getStats() )
 				{
 					stat->MISC_FLAGS[STAT_FLAG_NPC] = 1 + std::max(0, std::min(9, type));
 				}
@@ -1804,7 +1804,7 @@ namespace ConsoleCommands {
 				MonsterStatCustomManager::StatEntry* statEntry = monsterStatCustomManager.readFromFile(name.c_str());
 				if (statEntry)
 				{
-					Entity* monster = summonMonster(static_cast<Monster>(statEntry->type), players[clientnum]->entity->x + 32 * cos(players[clientnum]->entity->yaw), players[clientnum]->entity->y + 32 * sin(players[clientnum]->entity->yaw));
+					const Entity* monster = summonMonster(static_cast<Monster>(statEntry->type), players[clientnum]->entity->x + 32 * cos(players[clientnum]->entity->yaw), players[clientnum]->entity->y + 32 * sin(players[clientnum]->entity->yaw));
 					if (monster)
 					{
 						messagePlayer(clientnum, MESSAGE_MISC, Language::get(302), monstertypename[static_cast<Monster>(statEntry->type)]);
@@ -1819,7 +1819,7 @@ namespace ConsoleCommands {
 									MonsterStatCustomManager::StatEntry* followerEntry = monsterStatCustomManager.readFromFile(followerName.c_str());
 									if (followerEntry)
 									{
-										Entity* summonedFollower = summonMonster(static_cast<Monster>(followerEntry->type), monster->x, monster->y);
+										const Entity* summonedFollower = summonMonster(static_cast<Monster>(followerEntry->type), monster->x, monster->y);
 										if (summonedFollower)
 										{
 											if (summonedFollower->getStats())
@@ -1832,7 +1832,7 @@ namespace ConsoleCommands {
 									}
 									else
 									{
-										Entity* summonedFollower = summonMonster(monster->getStats()->type, monster->x, monster->y);
+										const Entity* summonedFollower = summonMonster(monster->getStats()->type, monster->x, monster->y);
 										if (summonedFollower)
 										{
 											if (summonedFollower->getStats())
@@ -1856,7 +1856,7 @@ namespace ConsoleCommands {
 				playSoundEntity(players[clientnum]->entity, 153, 64);
 
 				//Spawn monster
-				Entity* monster = summonMonster(static_cast<Monster>(creature), players[clientnum]->entity->x + 32 * cos(players[clientnum]->entity->yaw), players[clientnum]->entity->y + 32 * sin(players[clientnum]->entity->yaw));
+				const Entity* monster = summonMonster(static_cast<Monster>(creature), players[clientnum]->entity->x + 32 * cos(players[clientnum]->entity->yaw), players[clientnum]->entity->y + 32 * sin(players[clientnum]->entity->yaw));
 				if (monster)
 				{
 					messagePlayer(clientnum, MESSAGE_MISC, Language::get(302), getMonsterLocalizedName((Monster)creature).c_str());
@@ -1885,12 +1885,12 @@ namespace ConsoleCommands {
 		}
 		else if (players[clientnum] && players[clientnum]->entity)
 		{
-			auto player = players[clientnum]->entity;
+			const auto player = players[clientnum]->entity;
 
 			playSoundEntity(player, 153, 64);
 
-			real_t x = player->x + 32.0 * cos(player->yaw);
-			real_t y = player->y + 32.0 * sin(player->yaw);
+			const real_t x = player->x + 32.0 * cos(player->yaw);
+			const real_t y = player->y + 32.0 * sin(player->yaw);
 			Entity* chest = summonChest(x, y);
 		}
 		});
@@ -1911,8 +1911,8 @@ namespace ConsoleCommands {
 		if (argc < 3) {
 			return;
 		}
-		int catIndex = atoi(argv[1]);
-		int value = atoi(argv[2]);
+		const int catIndex = atoi(argv[1]);
+		const int value = atoi(argv[2]);
 		auto_hotbar_categories[catIndex] = value;
 		printlog("Hotbar auto add category %d, value %d.", catIndex, value);
 		});
@@ -1921,8 +1921,8 @@ namespace ConsoleCommands {
 		if (argc < 3) {
 			return;
 		}
-		int catIndex = atoi(argv[1]);
-		int value = atoi(argv[2]);
+		const int catIndex = atoi(argv[1]);
+		const int value = atoi(argv[2]);
 		autosort_inventory_categories[catIndex] = value;
 		printlog("Autosort inventory category %d, priority %d.", catIndex, value);
 		});
@@ -1970,7 +1970,7 @@ namespace ConsoleCommands {
 		if ( argc > 1 ) {
 			gameModeManager.currentSession.seededRun.setup(argv[1]);
 		}
-		messagePlayer(clientnum, MESSAGE_DEBUG, "Seed is %lu | name: %s | key: %lu", 
+		messagePlayer(clientnum, MESSAGE_DEBUG, "Seed is %lu | name: %s | key: %lu",
 			gameModeManager.currentSession.seededRun.seed,
 			gameModeManager.currentSession.seededRun.seedString.c_str(),
 			uniqueGameKey);
@@ -2153,7 +2153,7 @@ namespace ConsoleCommands {
 					if (stats[i]->playerRace == RACE_HUMAN)
 					{
 						client_classes[i] = local_rng.rand() % (NUMCLASSES);
-						while ( 
+						while (
 							(!enabledDLCPack1 && (client_classes[i] == CLASS_CONJURER || client_classes[i] == CLASS_ACCURSED
 								|| client_classes[i] == CLASS_MESMER || client_classes[i] == CLASS_BREWER))
 							|| (!enabledDLCPack2 && (client_classes[i] == CLASS_HUNTER || client_classes[i] == CLASS_SHAMAN
@@ -2181,7 +2181,7 @@ namespace ConsoleCommands {
 					stats[i]->stat_appearance = local_rng.rand() % 18;
 				}
 				strcpy(stats[i]->name, randomPlayerNamesFemale[local_rng.rand() % randomPlayerNamesFemale.size()].c_str());
-				bool oldIntro = intro;
+				const bool oldIntro = intro;
 				intro = true; // so initClass doesn't add items to hotbar.
 				initClass(i);
 				intro = oldIntro;
@@ -2339,7 +2339,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int amount = atoi(argv[1]);
+		const int amount = atoi(argv[1]);
 		stats[clientnum]->GOLD += amount;
 		stats[clientnum]->GOLD = std::max(stats[clientnum]->GOLD, 0);
 
@@ -2352,7 +2352,7 @@ namespace ConsoleCommands {
 			messagePlayer(clientnum, MESSAGE_MISC, "Please include the amount of gold to drop and player num. (eg: /dropgold 0 10)");
 			return;
 		}
-        
+
         // select player
 		const int player = (int)strtol(argv[1], nullptr, 10);
         if (player < 0 || player >= MAXPLAYERS)
@@ -2367,7 +2367,7 @@ namespace ConsoleCommands {
 		{
 			stats[player]->GOLD = 0;
 		}
-        
+
         // select gold
         int amount = (int)strtol(argv[2], nullptr, 10);
         if (amount > stats[player]->GOLD)
@@ -2380,9 +2380,9 @@ namespace ConsoleCommands {
         }
 
 		// drop gold
-		int x = std::min<int>(std::max(0, (int)(players[player]->entity->x / 16)), map.width - 1);
-		int y = std::min<int>(std::max(0, (int)(players[player]->entity->y / 16)), map.height - 1);
-		if (map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height])
+		const int x = std::min<int>(std::max(0, (int)(players[player]->entity->x / 16)), map.width - 1);
+		const int y = std::min<int>(std::max(0, (int)(players[player]->entity->y / 16)), map.height - 1);
+		if (map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height])
 		{
 			if (amount == 0)
 			{
@@ -2405,7 +2405,7 @@ namespace ConsoleCommands {
 			else
 			{
 				playSoundEntity(players[player]->entity, 242 + local_rng.rand() % 4, 64);
-				auto entity = newEntity(amount < 5 ? 1379 : 130, 0, map.entities, nullptr); // 130 = goldbag model
+				const auto entity = newEntity(amount < 5 ? 1379 : 130, 0, map.entities, nullptr); // 130 = goldbag model
 				entity->goldAmount = amount; // amount
 				entity->sizex = 4;
 				entity->sizey = 4;
@@ -2461,7 +2461,7 @@ namespace ConsoleCommands {
 
 		if (minotaurlevel)
 		{
-			node_t* tmpNode = NULL;
+			const node_t* tmpNode = NULL;
 			Entity* tmpEnt = NULL;
 			for (tmpNode = map.entities->first; tmpNode != NULL; tmpNode = tmpNode->next)
 			{
@@ -2491,7 +2491,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int skill = atoi(argv[1]);
+		const int skill = atoi(argv[1]);
 		if (skill >= NUMPROFICIENCIES)
 		{
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(3239)); //Skill out of range.
@@ -2614,7 +2614,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int skill = atoi(argv[1]);
+		const int skill = atoi(argv[1]);
 		if (skill >= NUMPROFICIENCIES)
 		{
 			messagePlayer(clientnum, MESSAGE_MISC, "Invalid skill ID"); //Skill out of range.
@@ -2717,7 +2717,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int speed = atoi(argv[1]);
+		const int speed = atoi(argv[1]);
 		monsterGlobalAnimationMultiplier = speed;
 		messagePlayer(clientnum, MESSAGE_MISC, "Changed animation speed multiplier to %f.", speed / 10.0);
 		});
@@ -2738,7 +2738,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int speed = atoi(argv[1]);
+		const int speed = atoi(argv[1]);
 		monsterGlobalAttackTimeMultiplier = speed;
 		messagePlayer(clientnum, MESSAGE_MISC, "Changed attack speed multiplier to %d.", speed);
 		});
@@ -2748,17 +2748,17 @@ namespace ConsoleCommands {
 		for (int c = 1; c < argc; ++c)
 		{
 			std::string cmd = argv[c];
-			std::size_t dirfind = cmd.find("dir:");
+			const std::size_t dirfind = cmd.find("dir:");
 			if (dirfind != std::string::npos) {
 				dir = cmd.substr(dirfind + 4);
 				continue;
 			}
-			std::size_t namefind = cmd.find("name:");
+			const std::size_t namefind = cmd.find("name:");
 			if (namefind != std::string::npos) {
 				name = cmd.substr(namefind + 5);
 				continue;
 			}
-			std::size_t fileidFind = cmd.find("fileid:");
+			const std::size_t fileidFind = cmd.find("fileid:");
 			if (fileidFind != std::string::npos) {
 				fileid = cmd.substr(fileidFind + 7);
 				continue;
@@ -2894,7 +2894,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int lvl = atoi(argv[1]);
+		const int lvl = atoi(argv[1]);
 		stats[clientnum]->LVL = lvl;
 		});
 
@@ -2914,7 +2914,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int effect = atoi(argv[1]);
+		const int effect = atoi(argv[1]);
 		if (effect >= NUMEFFECTS || effect < 0 || !players[clientnum]->entity)
 		{
 			return;
@@ -2956,7 +2956,7 @@ namespace ConsoleCommands {
 		while ( num > 0 && players[clientnum]->entity )
 		{
 			--num;
-			auto picked = local_rng.discrete(effects.data(), effects.size());
+			const auto picked = local_rng.discrete(effects.data(), effects.size());
 			effects[picked] = 0;
 			players[clientnum]->entity->setEffect(picked, true, TICKS_PER_SECOND * 60, true);
 		}
@@ -2968,9 +2968,9 @@ namespace ConsoleCommands {
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
 			return;
 		}
-		for (node_t* node = map.creatures->first; node != nullptr; node = node->next)
+		for (const node_t* node = map.creatures->first; node != nullptr; node = node->next)
 		{
-			Entity* entity = (Entity*)node->element;
+			const Entity* entity = (Entity*)node->element;
 			if (entity && entity->behavior == &actMonster && entity->monsterAllySummonRank != 0)
 			{
 				Stat* entityStats = entity->getStats();
@@ -3134,8 +3134,8 @@ namespace ConsoleCommands {
 			return;
 		}
 
-		ItemType item1 = POTION_BOOZE;
-		ItemType item2 = POTION_BLINDNESS;
+		const ItemType item1 = POTION_BOOZE;
+		const ItemType item2 = POTION_BLINDNESS;
 
 		Item* potion = newItem(item1, EXCELLENT, 0, 1, 0, true, nullptr);
 		itemPickup(clientnum, potion);
@@ -3187,7 +3187,7 @@ namespace ConsoleCommands {
 
 		if (argc >= 2)
 		{
-			int count = std::max(1, atoi(argv[1]));
+			const int count = std::max(1, atoi(argv[1]));
 			for (int i = 0; i < 17; ++i)
 			{
 				auto generatedPotion = potionStandardAppearanceMap.at(i);
@@ -3198,7 +3198,7 @@ namespace ConsoleCommands {
 			return;
 		}
 
-		std::vector<unsigned int> potionChances =
+		const std::vector<unsigned int> potionChances =
 		{
 			1,	//POTION_WATER,
 			1,	//POTION_BOOZE,
@@ -3287,12 +3287,12 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int spellID = atoi(argv[1]);
+		const int spellID = atoi(argv[1]);
 		if ( allGameSpells.find(spellID) != allGameSpells.end() )
 		{
-			if ( spell_t* spell = allGameSpells[spellID] )
+			if (const spell_t* spell = allGameSpells[spellID] )
 			{
-				bool oldIntro = intro;
+				const bool oldIntro = intro;
 				intro = true;
 				bool learned = addSpell(spell->ID, clientnum, true);
 				intro = oldIntro;
@@ -3311,9 +3311,9 @@ namespace ConsoleCommands {
 		{
 			if ( allGameSpells.find(i) != allGameSpells.end() )
 			{
-				if ( spell_t* spell = allGameSpells[i] )
+				if (const spell_t* spell = allGameSpells[i] )
 				{
-					bool oldIntro = intro;
+					const bool oldIntro = intro;
 					intro = true;
 					bool learned = addSpell(spell->ID, clientnum, true);
 					intro = oldIntro;
@@ -3339,7 +3339,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		Uint32 newseed = atoi(argv[1]);
+		const Uint32 newseed = atoi(argv[1]);
 		forceMapSeed = newseed;
 		messagePlayer(clientnum, MESSAGE_MISC, "Set next map seed to: %d", forceMapSeed);
 		return;
@@ -3568,7 +3568,7 @@ namespace ConsoleCommands {
 		});
 
 	static ConsoleCommand ccmd_dumpentudata("/dumpentudata", "", []CCMD{
-		for (auto element : DebugStats.entityUpdatePackets)
+		for (const auto element : DebugStats.entityUpdatePackets)
 		{
 			printlog("Sprite: %d | %d", element.first, element.second);
 		}
@@ -3608,7 +3608,7 @@ namespace ConsoleCommands {
 		});
 
 	static ConsoleCommand ccmd_jsonexportfromcursor("/jsonexportfromcursor", "", []CCMD{
-		Entity * target = entityClicked(nullptr, true, clientnum, EntityClickType::ENTITY_CLICK_USE);
+		const Entity * target = entityClicked(nullptr, true, clientnum, EntityClickType::ENTITY_CLICK_USE);
 		if (target)
 		{
 			Entity* parent = uidToEntity(target->skill[2]);
@@ -3713,7 +3713,7 @@ namespace ConsoleCommands {
 		{
 			if (inputs.hasController(i))
 			{
-				int id = inputs.getControllerID(i);
+				const int id = inputs.getControllerID(i);
 				inputs.removeControllerWithDeviceID(id);
 				if (i + 1 >= MAXPLAYERS)
 				{
@@ -3834,7 +3834,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int offset = atoi(argv[1]);
+		const int offset = atoi(argv[1]);
 		Player::WorldUI_t::tooltipHeightOffsetZ = static_cast<real_t>(offset) / 10.0;
 		messagePlayer(clientnum, MESSAGE_MISC, "Tooltip Z offset set to: %.1f", Player::WorldUI_t::tooltipHeightOffsetZ);
 		});
@@ -3848,7 +3848,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int slots = atoi(argv[1]);
+		const int slots = atoi(argv[1]);
 		players[clientnum]->hotbar.radialHotbarSlots = slots;
 		messagePlayer(clientnum, MESSAGE_MISC, "Slots in use: %d", slots);
 		});
@@ -4012,7 +4012,7 @@ namespace ConsoleCommands {
 	static ConsoleCommand ccmd_reloadsound("/reloadsound", "reloads specific sounds.txt index", []CCMD{
 		if ( argc > 1 )
 		{
-			int soundIndex = atoi(argv[1]);
+			const int soundIndex = atoi(argv[1]);
 			if ( soundIndex < numsounds )
 			{
 				Mods::soundsListModifiedIndexes.push_back(soundIndex);
@@ -4024,8 +4024,8 @@ namespace ConsoleCommands {
 	static ConsoleCommand ccmd_reloadsprite("/reloadsprite", "reloads specific sprites.txt index", []CCMD{
 		if ( argc > 1 )
 		{
-			int reloadSpriteIndex = atoi(argv[1]);
-		
+			const int reloadSpriteIndex = atoi(argv[1]);
+
 			std::string spritesDirectory = PHYSFS_getRealDir("images/sprites.txt");
 			spritesDirectory.append(PHYSFS_getDirSeparator()).append("images/sprites.txt");
 			printlog("[PhysFS]: Loading sprites from directory %s...\n", spritesDirectory.c_str());
@@ -4099,9 +4099,9 @@ namespace ConsoleCommands {
 		}
 
 
-		for ( auto spellID : relearnSpells )
+		for (const auto spellID : relearnSpells )
 		{
-			bool oldIntro = intro;
+			const bool oldIntro = intro;
 			intro = true;
 			bool learned = addSpell(spellID, clientnum, true);
 			intro = oldIntro;
@@ -4185,9 +4185,9 @@ namespace ConsoleCommands {
 		{
 			if ( allGameSpells.find(i) != allGameSpells.end() )
 			{
-				if ( spell_t* spell = allGameSpells[i] )
+				if (const spell_t* spell = allGameSpells[i] )
 				{
-					bool oldIntro = intro;
+					const bool oldIntro = intro;
 					intro = true;
 					bool learned = addSpell(spell->ID, clientnum, true);
 					intro = oldIntro;
@@ -4208,9 +4208,9 @@ namespace ConsoleCommands {
 		{
 			if ( allGameSpells.find(i) != allGameSpells.end() )
 			{
-				if ( spell_t* spell = allGameSpells[i] )
+				if (const spell_t* spell = allGameSpells[i] )
 				{
-					bool oldIntro = intro;
+					const bool oldIntro = intro;
 					intro = true;
 					bool learned = addSpell(spell->ID, clientnum, true);
 					intro = oldIntro;
@@ -4235,9 +4235,9 @@ namespace ConsoleCommands {
 		{
 			if ( allGameSpells.find(i) != allGameSpells.end() )
 			{
-				if ( spell_t* spell = allGameSpells[i] )
+				if (const spell_t* spell = allGameSpells[i] )
 				{
-					bool oldIntro = intro;
+					const bool oldIntro = intro;
 					intro = true;
 					bool learned = addSpell(spell->ID, clientnum, true);
 					intro = oldIntro;
@@ -4276,7 +4276,7 @@ namespace ConsoleCommands {
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
 			return;
 		}
-		
+
 		std::vector<std::pair<int, std::pair<int, const char*>>> orderedSpells;
 
 		for ( int i = 0; i < NUM_SPELLS; ++i )
@@ -4285,7 +4285,7 @@ namespace ConsoleCommands {
 			{
 				if ( spell_t* spell = allGameSpells[i] )
 				{
-					bool oldIntro = intro;
+					const bool oldIntro = intro;
 					intro = true;
 					if ( spell->skillID == PRO_SORCERY
 						&& spell->difficulty <= stats[clientnum]->getProficiency(PRO_SORCERY)
@@ -4302,7 +4302,7 @@ namespace ConsoleCommands {
 			}
 		}
 
-		for ( auto& spell : orderedSpells )
+		for (const auto& spell : orderedSpells )
 		{
 			printlog("%d %d %s", spell.first, spell.second.first, spell.second.second);
 		}
@@ -4325,7 +4325,7 @@ namespace ConsoleCommands {
 			{
 				if ( spell_t* spell = allGameSpells[i] )
 				{
-					bool oldIntro = intro;
+					const bool oldIntro = intro;
 					intro = true;
 					if ( spell->skillID == PRO_MYSTICISM
 						&& spell->difficulty <= stats[clientnum]->getProficiency(PRO_MYSTICISM)
@@ -4342,7 +4342,7 @@ namespace ConsoleCommands {
 			}
 		}
 
-		for ( auto& spell : orderedSpells )
+		for (const auto& spell : orderedSpells )
 		{
 			printlog("%d %d %s", spell.first, spell.second.first, spell.second.second);
 		}
@@ -4367,7 +4367,7 @@ namespace ConsoleCommands {
 				{
 					Entity* oldSelected = selectedEntity[0];
 					selectedEntity[0] = entity;
-					bool oldInRange = inrange[0];
+					const bool oldInRange = inrange[0];
 					inrange[0] = true;
 					actItem(entity);
 					inrange[0] = oldInRange;
@@ -4392,7 +4392,7 @@ namespace ConsoleCommands {
 			{
 				if ( spell_t* spell = allGameSpells[i] )
 				{
-					bool oldIntro = intro;
+					const bool oldIntro = intro;
 					intro = true;
 					if ( spell->skillID == PRO_THAUMATURGY
 						&& spell->difficulty <= stats[clientnum]->getProficiency(PRO_THAUMATURGY)
@@ -4409,7 +4409,7 @@ namespace ConsoleCommands {
 			}
 		}
 
-		for ( auto& spell : orderedSpells )
+		for (const auto& spell : orderedSpells )
 		{
 			printlog("%d %d %s", spell.first, spell.second.first, spell.second.second);
 		}
@@ -4422,10 +4422,10 @@ namespace ConsoleCommands {
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
 			return;
 		}
-		
+
 		if ( argc > 1 )
 		{
-			int type = atoi(argv[1]);
+			const int type = atoi(argv[1]);
 			int spellID = SPELL_FORCEBOLT;
 			if ( type == 1 )
 			{
@@ -4474,7 +4474,7 @@ namespace ConsoleCommands {
 				players[clientnum]->mechanics.baseSpellIncrementMP(baseMana, getSpellFromID(spellID)->skillID);
 				mana += baseMana;
 				//castSpell(players[clientnum]->entity->getUID(), getSpellFromID(spellID), false, false);
-				int prevLvl = stats[clientnum]->getProficiency(getSpellFromID(spellID)->skillID);
+				const int prevLvl = stats[clientnum]->getProficiency(getSpellFromID(spellID)->skillID);
 				magicOnSpellCastEvent(players[clientnum]->entity, nullptr, nullptr, spellID, spell_t::SPELL_LEVEL_EVENT_DMG, 1);
 				if ( stats[clientnum]->getProficiency(getSpellFromID(spellID)->skillID) == prevLvl )
 				{
@@ -4553,7 +4553,7 @@ namespace ConsoleCommands {
 			spellEffectPolymorph(players[clientnum]->entity, players[clientnum]->entity, true, TICKS_PER_SECOND * 60 * 5);
 			if ( argc > 1 )
 			{
-				int type = std::min(NUMMONSTERS - 1, std::max((int)HUMAN, atoi(argv[1])));
+				const int type = std::min(NUMMONSTERS - 1, std::max((int)HUMAN, atoi(argv[1])));
 				players[clientnum]->entity->effectPolymorph = type;
 			}
 		}
@@ -4633,7 +4633,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int index = atoi(argv[1]);
+		const int index = atoi(argv[1]);
 		StatueManager.readStatueFromFile(index, "");
 		});
 
@@ -4756,7 +4756,7 @@ namespace ConsoleCommands {
 			{
 				player = clientnum;
 			}
-			for (auto& entry : clientLearnedAlchemyRecipes[player])
+			for (const auto& entry : clientLearnedAlchemyRecipes[player])
 			{
 				messagePlayer(clientnum, MESSAGE_MISC, "[%s]: %s | %s",
 					items[entry.first].getIdentifiedName(), items[entry.second.first].getIdentifiedName(),
@@ -4764,7 +4764,7 @@ namespace ConsoleCommands {
 			}
 		}
 		else {
-			for (auto& entry : clientLearnedAlchemyRecipes[clientnum])
+			for (const auto& entry : clientLearnedAlchemyRecipes[clientnum])
 			{
 				messagePlayer(clientnum, MESSAGE_MISC, "[%s]: %s | %s",
 					items[entry.first].getIdentifiedName(), items[entry.second.first].getIdentifiedName(),
@@ -4846,7 +4846,7 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		int setToChoose = atoi(argv[1]);
+		const int setToChoose = atoi(argv[1]);
 
 		if (players[clientnum]->entity)
 		{
@@ -4880,7 +4880,7 @@ namespace ConsoleCommands {
 				AUTOMATON,
 				BUGBEAR
 			};
-			std::vector<Monster>* set = nullptr;
+			const std::vector<Monster>* set = nullptr;
 			if (setToChoose == 1)
 			{
 				set = &set1;
@@ -4897,7 +4897,7 @@ namespace ConsoleCommands {
 			{
 				return;
 			}
-			for (auto type : *set)
+			for (const auto type : *set)
 			{
 				if (Entity* monster = summonMonster(type, players[clientnum]->entity->x, players[clientnum]->entity->y))
 				{
@@ -4929,7 +4929,7 @@ namespace ConsoleCommands {
 
 		int cat = atoi(argv[1]);
 		cat = std::min(std::max(0, cat), Category::CATEGORY_MAX - 2);
-		ItemType type = itemLevelCurve((Category)cat, 0, currentlevel, local_rng);
+		const ItemType type = itemLevelCurve((Category)cat, 0, currentlevel, local_rng);
 		Item* item = newItem(type, EXCELLENT, 0, 1, local_rng.rand(), true, &stats[clientnum]->inventory);
 		itemLevelCurvePostProcess(nullptr, item, local_rng);
 		dropItem(item, 0);
@@ -5017,7 +5017,7 @@ namespace ConsoleCommands {
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
 			return;
 		}
-		bool oldIntro = intro;
+		const bool oldIntro = intro;
 		intro = true;
 		ClassHotbarConfig_t::writeToFile(ClassHotbarConfig_t::HOTBAR_LAYOUT_DEFAULT_CONFIG, ClassHotbarConfig_t::HOTBAR_CONFIG_WRITE);
 		intro = oldIntro;
@@ -5062,8 +5062,8 @@ namespace ConsoleCommands {
 		for (auto f : directoryContents("maps/", false, true))
 		{
 			map_t m;
-			m.tiles = nullptr;
-			m.entities = (list_t*)malloc(sizeof(list_t));
+			m.tiles.clear();
+			m.entities = static_cast<list_t*>(malloc(sizeof(list_t)));
 			m.entities->first = nullptr;
 			m.entities->last = nullptr;
 			m.creatures = new list_t;
@@ -5073,13 +5073,11 @@ namespace ConsoleCommands {
 			m.worldUI->first = nullptr;
 			m.worldUI->last = nullptr;
 			const std::string mapPath = "maps/" + f;
-			auto path = PHYSFS_getRealDir(mapPath.c_str());
-			if (path)
+			if (const auto path = PHYSFS_getRealDir(mapPath.c_str()))
 			{
 				int maphash = 0;
 				const std::string fullMapPath = path + (PHYSFS_getDirSeparator() + mapPath);
-				int result = loadMap(fullMapPath.c_str(), &m, m.entities, m.creatures, &maphash);
-				if (result >= 0) {
+				if (const int result = loadMap(fullMapPath.c_str(), &m, m.entities, m.creatures, &maphash); result >= 0) {
 					(void)verifyMapHash(fullMapPath.c_str(), maphash);
 					if (outpath) {
 						newMapHashes[f] = maphash;
@@ -5098,9 +5096,7 @@ namespace ConsoleCommands {
 				list_FreeAll(m.worldUI);
 				delete m.worldUI;
 			}
-			if (m.tiles) {
-				free(m.tiles);
-			}
+			m.tiles.clear();
 		}
 		if (outpath) {
 			char buf[16];
@@ -5111,7 +5107,7 @@ namespace ConsoleCommands {
                     fp->write("\t{ \"", sizeof(char), 4);
                     fp->write(pair.first.c_str(), sizeof(char), pair.first.size());
                     fp->write("\", ", sizeof(char), 3);
-                    int len = snprintf(buf, sizeof(buf), "%d", pair.second);
+                    const int len = snprintf(buf, sizeof(buf), "%d", pair.second);
                     fp->write(buf, sizeof(char), len);
                     fp->write(" },\n", sizeof(char), 4);
                 }
@@ -5128,7 +5124,7 @@ namespace ConsoleCommands {
 		{
 			std::string mapPath = "maps/";
 			mapPath += f;
-			bool foundNumber = std::find_if(f.begin(), f.end(), ::isdigit) != f.end();
+			const bool foundNumber = std::find_if(f.begin(), f.end(), ::isdigit) != f.end();
 			if ( foundNumber && PHYSFS_getRealDir(mapPath.c_str()) )
 			{
 				int maphash = 0;
@@ -5140,9 +5136,9 @@ namespace ConsoleCommands {
 				int invertedGate = 0;
 				int gateOnEdge = 0;
 				int invertedGateOnEdge = 0;
-				for ( node_t* node = map.entities->first; node; node = node->next )
+				for (const node_t* node = map.entities->first; node; node = node->next )
 				{
-					if ( Entity* entity = (Entity*)node->element )
+					if (const Entity* entity = (Entity*)node->element )
 					{
 						if ( entity->sprite == 19 || entity->sprite == 20 )
 						{
@@ -5217,7 +5213,7 @@ namespace ConsoleCommands {
 		{
 			std::string mapPath = "maps/";
 			mapPath += f;
-			bool foundNumber = std::find_if(f.begin(), f.end(), ::isdigit) != f.end();
+			const bool foundNumber = std::find_if(f.begin(), f.end(), ::isdigit) != f.end();
 			if ( foundNumber && PHYSFS_getRealDir(mapPath.c_str()) )
 			{
 				int maphash = 0;
@@ -5225,9 +5221,9 @@ namespace ConsoleCommands {
 				fullMapPath += PHYSFS_getDirSeparator();
 				fullMapPath += mapPath;
 				loadMap(fullMapPath.c_str(), &map, map.entities, map.creatures, nullptr);
-				for ( node_t* node = map.entities->first; node; node = node->next )
+				for (const node_t* node = map.entities->first; node; node = node->next )
 				{
-					if ( Entity* entity = (Entity*)node->element )
+					if (const Entity* entity = (Entity*)node->element )
 					{
 						if ( entity->sprite == 217 || entity->sprite == 218 )
 						{
@@ -5260,9 +5256,9 @@ namespace ConsoleCommands {
 				fullMapPath += PHYSFS_getDirSeparator();
 				fullMapPath += mapPath;
 				loadMap(fullMapPath.c_str(), &map, map.entities, map.creatures, nullptr);
-				for ( node_t* node = map.entities->first; node; node = node->next )
+				for (const node_t* node = map.entities->first; node; node = node->next )
 				{
-					if ( Entity* entity = (Entity*)node->element )
+					if (const Entity* entity = (Entity*)node->element )
 					{
 						if ( entity->sprite == 127 && entity->floorDecorationInteractText1 != 0 )
 						{
@@ -5575,8 +5571,8 @@ namespace ConsoleCommands {
 	});
 
 	static ConsoleCommand ccmd_mesh_collider_debug("/mesh_collider_debug", "", []CCMD{
-		node_t* tmpNode = NULL;
-		Entity* tmpEnt = NULL;
+		const node_t* tmpNode = NULL;
+		const Entity* tmpEnt = NULL;
 		if ( !(svFlags & SV_FLAG_CHEATS) )
 		{
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
@@ -5589,7 +5585,7 @@ namespace ConsoleCommands {
 			{
 				if ( tmpEnt->colliderHasCollision != 0 )
 				{
-					messagePlayer(clientnum, MESSAGE_DEBUG, "Collider: %d | z: %4.2f | pos: x: %d y: %d", 
+					messagePlayer(clientnum, MESSAGE_DEBUG, "Collider: %d | z: %4.2f | pos: x: %d y: %d",
 						tmpEnt->sprite, tmpEnt->z, (int)tmpEnt->x / 16, (int)tmpEnt->y / 16);
 				}
 			}
@@ -5597,8 +5593,8 @@ namespace ConsoleCommands {
 	});
 
 	static ConsoleCommand ccmd_debug_claim_items("/debug_claim_items", "", []CCMD{
-		node_t * tmpNode = NULL;
-		Entity* tmpEnt = NULL;
+		const node_t * tmpNode = NULL;
+		const Entity* tmpEnt = NULL;
 		if ( !(svFlags & SV_FLAG_CHEATS) )
 		{
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
@@ -5616,7 +5612,7 @@ namespace ConsoleCommands {
 				{
 					Item* item2 = newItemFromEntity(tmpEnt);
 					int pickedUpCount = item2->count;
-					Item* item = itemPickup(clientnum, item2);
+					const Item* item = itemPickup(clientnum, item2);
 					if ( item )
 					{
 						if ( players[clientnum]->isLocalPlayer() )
@@ -5632,7 +5628,7 @@ namespace ConsoleCommands {
 	});
 
 	static ConsoleCommand ccmd_debug_heal_items("/debug_heal_items", "", []CCMD{
-		node_t * tmpNode = NULL;
+		const node_t * tmpNode = NULL;
 		Entity* tmpEnt = NULL;
 		if ( !(svFlags & SV_FLAG_CHEATS) )
 		{
@@ -5701,12 +5697,12 @@ namespace ConsoleCommands {
 			}
 			else if ( tmpEnt->behavior == &actMonster )
 			{
-				list_t* inventory = &tmpEnt->getStats()->inventory;
+				const list_t* inventory = &tmpEnt->getStats()->inventory;
 				if ( inventory )
 				{
-					for ( node_t* node = inventory->first; node; node = node->next )
+					for (const node_t* node = inventory->first; node; node = node->next )
 					{
-						if ( Item* item = (Item*)node->element )
+						if (const Item* item = (Item*)node->element )
 						{
 							int metal = 0;
 							int magic = 0;
@@ -5763,12 +5759,12 @@ namespace ConsoleCommands {
 			}
 			else if ( tmpEnt->behavior == &actChest )
 			{
-				list_t* inventory = tmpEnt->getChestInventoryList();
+				const list_t* inventory = tmpEnt->getChestInventoryList();
 				if ( inventory )
 				{
-					for ( node_t* node = inventory->first; node; node = node->next )
+					for (const node_t* node = inventory->first; node; node = node->next )
 					{
-						if ( Item* item = (Item*)node->element )
+						if (const Item* item = (Item*)node->element )
 						{
 							int metal = 0;
 							int magic = 0;
@@ -5818,7 +5814,7 @@ namespace ConsoleCommands {
 		messagePlayer(clientnum, MESSAGE_MISC, "Monsters: %d | heal: %d | mana: %d", monsterinv, monsterinvheal, monsterinvmana);
 		messagePlayer(clientnum, MESSAGE_MISC, "Shop Specials: %d | heal: %d | mana: %d", monsterShopPrivStock, monsterShopPrivStockHeal, monsterShopPrivStockMana);
 		messagePlayer(clientnum, MESSAGE_MISC, "Chests: %d | heal: %d | mana: %d", chestinv, chestheal, chestmana);
-		for ( auto& i : allitems )
+		for (const auto& i : allitems )
 		{
 			messagePlayer(clientnum, MESSAGE_MISC, "[Gen]: %s : %d", ::items[i.first].getIdentifiedName(), i.second);
 		}
@@ -5843,18 +5839,18 @@ namespace ConsoleCommands {
 				fullMapPath += PHYSFS_getDirSeparator();
 				fullMapPath += mapPath;
 				loadMap(fullMapPath.c_str(), &map, map.entities, map.creatures, nullptr);
-				for ( node_t* node = map.entities->first; node; node = node->next )
+				for (const node_t* node = map.entities->first; node; node = node->next )
 				{
 					if ( Entity* entity = (Entity*)node->element )
 					{
 						if ( entity->sprite == 179 )
 						{
-							int x = (int)(entity->x) / 16;
-							int y = (int)(entity->y) / 16;
+							const int x = (int)(entity->x) / 16;
+							const int y = (int)(entity->y) / 16;
 							if ( entity->colliderDecorationModel == 1203
 								|| entity->colliderDecorationModel == 1204 )
 							{
-								real_t z = entity->z = 7.5 - entity->colliderDecorationHeightOffset * 0.25;
+								const real_t z = entity->z = 7.5 - entity->colliderDecorationHeightOffset * 0.25;
 								if ( z > -8.51 && z < -8.49 )
 								{
 									if ( entity->colliderHasCollision == 0 )
@@ -5866,7 +5862,7 @@ namespace ConsoleCommands {
 							else if ( entity->colliderDecorationModel == 1197
 								|| entity->colliderDecorationModel == 1198 )
 							{
-								real_t z = entity->z = 7.5 - entity->colliderDecorationHeightOffset * 0.25;
+								const real_t z = entity->z = 7.5 - entity->colliderDecorationHeightOffset * 0.25;
 								if ( z > 7.49 || z < 7.51 )
 								{
 									if ( entity->colliderHasCollision == 0 )
@@ -5881,7 +5877,7 @@ namespace ConsoleCommands {
 							}
 							if ( entity->colliderHasCollision != 0 && (entity->colliderSizeX == 0 || entity->colliderSizeY == 0) )
 							{
-								printlog("[Collider Verify]: x: %d y: %d has 0 collision size (x: %d, y: %d), mesh: %d in map %s", 
+								printlog("[Collider Verify]: x: %d y: %d has 0 collision size (x: %d, y: %d), mesh: %d in map %s",
 									x, y, entity->colliderSizeX, entity->colliderSizeY, entity->colliderDecorationModel, f.c_str());
 							}
 						}
@@ -5901,8 +5897,8 @@ namespace ConsoleCommands {
     });
 
     static ConsoleCommand ccmd_test_model("/test_model", "spawn an entity using a specific model", []CCMD{
-        auto sprite = argc >= 2 ? (int)strtol(argv[1], nullptr, 10) : 1;
-        auto entity = newEntity(sprite, 1, map.entities, nullptr);
+        const auto sprite = argc >= 2 ? (int)strtol(argv[1], nullptr, 10) : 1;
+        const auto entity = newEntity(sprite, 1, map.entities, nullptr);
         entity->flags[PASSABLE] = true;
         entity->x = cameras[0].x * 16;
         entity->y = cameras[0].y * 16;
@@ -5968,7 +5964,7 @@ namespace ConsoleCommands {
     //        messagePlayer(clientnum, MESSAGE_MISC, "Can only be done in singleplayer.");
     //        return;
     //    }
-    //    
+    //
     //    // choose class
     //    const char* classtoquickstart = argc > 1 ? argv[1] : "barbarian";
     //    for (int c = 0; c <= CLASS_MONK; ++c) {
@@ -5991,7 +5987,7 @@ namespace ConsoleCommands {
     //    local_rng.getSeed(&uniqueGameKey, sizeof(uniqueGameKey));
     //    net_rng.seedBytes(&uniqueGameKey, sizeof(uniqueGameKey));
     //    doNewGame(false);
-    //    
+    //
     //    // this just fixes the command buffer coming up again immediately after doNewGame()
     //    Input::inputs[clientnum].consumeBinary("Chat");
     //});
@@ -6012,9 +6008,9 @@ namespace ConsoleCommands {
 
 		for ( int i = SPELL_FORCEBOLT; i < NUM_SPELLS; ++i )
 		{
-			auto spell = getSpellFromID(i);
+			const auto spell = getSpellFromID(i);
 			std::string tags;
-			for ( auto tag : ItemTooltips.spellItems[i].spellTagsStr )
+			for (const auto tag : ItemTooltips.spellItems[i].spellTagsStr )
 			{
 				tags += tag;
 				tags += ' ';
@@ -6100,7 +6096,7 @@ namespace ConsoleCommands {
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
 			return;
 		}
-		
+
 		if ( players[clientnum]->ghost.my )
 		{
 			players[clientnum]->ghost.setActive(!players[clientnum]->ghost.isActive());
@@ -6294,7 +6290,7 @@ namespace ConsoleCommands {
 		int numStatRolls = 0;
 		int attr[6] = { 0, 0, 0, 0, 0, 0 };
 		int attr2[6] = { 0, 0, 0, 0, 0, 0 };
-		Monster prevType = stats[clientnum]->type;
+		const Monster prevType = stats[clientnum]->type;
 		for ( int i = 0; i < 1000; ++i )
 		{
 			stats[clientnum]->STR = 0;
@@ -6473,13 +6469,13 @@ namespace ConsoleCommands {
 				}
 
 				loadMap(fullMapPath.c_str(), &map, map.entities, map.creatures, nullptr);
-				for ( node_t* node = map.entities->first; node; node = node->next )
+				for (const node_t* node = map.entities->first; node; node = node->next )
 				{
-					if ( Entity* entity = (Entity*)node->element )
+					if (const Entity* entity = (Entity*)node->element )
 					{
 						/*if ( entity->sprite == 119 || entity->sprite == 179 || entity->sprite == 127 )
 						{
-							if ( map.tiles && map.tiles[1 + ((int)entity->y / 16) * MAPLAYERS + ((int)entity->x / 16) * MAPLAYERS * map.height] )
+							if ( map.tiles && map.tiles[1 + ((int)entity->y / 16) * MAP_LAYERS + ((int)entity->x / 16) * MAP_LAYERS * map.height] )
 							{
 								printlog("Map [%s] ceiling collider: %d sprite", f.c_str(), entity->sprite);
 							}
@@ -6694,7 +6690,7 @@ namespace ConsoleCommands {
 			int n = 1;
 			while ( c * n < 1.0 )
 			{
-				real_t roll = (local_rng.rand() % 100) / 100.0;
+				const real_t roll = (local_rng.rand() % 100) / 100.0;
 				if ( roll <= (c * n) || n >= 20 )
 				{
 					break;
@@ -6705,7 +6701,7 @@ namespace ConsoleCommands {
 			buckets[n / 5]++;
 			rollsRequired += n;
 		}
-		real_t res = rollsRequired / (real_t)iterations;
+		const real_t res = rollsRequired / (real_t)iterations;
 		messagePlayer(0, MESSAGE_DEBUG, "Rolls avg: %.2f%%, max_n: %d", 100.0 / (rollsRequired / (real_t)iterations), max_n);
 		for ( int i = 0; i < buckets.size(); ++i )
 		{
@@ -6717,7 +6713,7 @@ namespace ConsoleCommands {
 		max_n = 0;
 		for ( int i = 0; i < iterations; ++i )
 		{
-			bool success = players[0]->mechanics.rollRngProc(Player::PlayerMechanics_t::RngRollTypes::RNG_ROLL_DEFAULT, chance);
+			const bool success = players[0]->mechanics.rollRngProc(Player::PlayerMechanics_t::RngRollTypes::RNG_ROLL_DEFAULT, chance);
 			if ( success )
 			{
 				++rollsRequired;
@@ -6745,8 +6741,8 @@ namespace ConsoleCommands {
 		{
 			return;
 		}
-		std::string str_c = argv[1];
-		real_t c = std::stof(str_c);
+		const std::string str_c = argv[1];
+		const real_t c = std::stof(str_c);
 		int chance = 5;
 		if ( argc >= 3 )
 		{

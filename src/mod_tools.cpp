@@ -11345,7 +11345,7 @@ bool Mods::verifyMapFiles(const char* folder, bool ignoreBaseFolder)
 		}
 
 		map_t m;
-		m.tiles = nullptr;
+		m.tiles.clear();
 		m.entities = (list_t*)malloc(sizeof(list_t));
 		m.entities->first = nullptr;
 		m.entities->last = nullptr;
@@ -11384,9 +11384,7 @@ bool Mods::verifyMapFiles(const char* folder, bool ignoreBaseFolder)
 			list_FreeAll(m.worldUI);
 			delete m.worldUI;
 		}
-		if ( m.tiles ) {
-			free(m.tiles);
-		}
+		m.tiles.clear();
 	}
 	return true;
 }
@@ -18773,8 +18771,8 @@ void Compendium_t::readModelLimbsFromFile(std::string section)
 								m.first.ceiling = d["map_tiles"]["ceiling"].GetInt();
 							}
 							auto& tiles = m.second;
-							tiles.resize(w * h * MAPLAYERS);
-							for ( int z = 0; z < MAPLAYERS; ++z )
+							tiles.resize(w * h * MAP_LAYERS);
+							for ( int z = 0; z < MAP_LAYERS; ++z )
 							{
 								int x = 0;
 								int y = 0;
@@ -18782,7 +18780,7 @@ void Compendium_t::readModelLimbsFromFile(std::string section)
 								auto& arr = (z == 0) ? floor : ((z == 1) ? mid : top);
 								for ( auto tile = arr.Begin(); tile != arr.End(); ++tile )
 								{
-									int index = z + (y * MAPLAYERS) + (x * MAPLAYERS * h);
+									int index = z + (y * MAP_LAYERS) + (x * MAP_LAYERS * h);
 									tiles[index] = tile->GetInt();
 
 									// fix animated tiles so they always start on the correct index

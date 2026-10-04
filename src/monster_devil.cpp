@@ -203,9 +203,9 @@ void devilDie(Entity* my)
 	{
 		for ( x = 3; x < map.width / 2; x++ )
 		{
-			if ( !map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height] )
+			if ( !map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
-				map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height] = 72;
+				map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 72;
 			}
 		}
 	}
@@ -657,7 +657,7 @@ bool Entity::devilSummonMonster(Entity* summonOnEntity, Monster creature, int ra
 		{
 			for ( int i = std::max(hellArena_x0, spawn_x - radiusFromCenter); i <= std::min(hellArena_x1, spawn_x + radiusFromCenter); ++i )
 			{
-				int index = (j)* MAPLAYERS + (i)* MAPLAYERS * map.height;
+				int index = (j)* MAP_LAYERS + (i)* MAP_LAYERS * map.height;
 				if ( !map.tiles[OBSTACLELAYER + index] &&
 					((target->behavior == &actPlayer && !map.tiles[index])
 						|| (target->behavior != &actPlayer 
@@ -736,7 +736,7 @@ bool Entity::devilBoulderSummonIfPlayerIsHiding(int player)
 		{
 			doSummon = 1;
 		}
-		else if ( !map.tiles[player_y * MAPLAYERS + player_x * MAPLAYERS * map.height] )
+		else if ( !map.tiles[player_y * MAP_LAYERS + player_x * MAP_LAYERS * map.height] )
 		{
 			if ( entityDist(this, players[player]->entity) > 16 * 10 /*10 tiles*/ )
 			{

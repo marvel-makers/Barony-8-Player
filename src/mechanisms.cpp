@@ -1522,7 +1522,7 @@ void Entity::actWallButton()
 	int checky = y + (wallLockDir == 1 ? -8 : (wallLockDir == 3 ? 8 : 0));
 	checkx = checkx >> 4;
 	checky = checky >> 4;
-	if ( !map.tiles[OBSTACLELAYER + checky * MAPLAYERS + checkx * MAPLAYERS * map.height] )
+	if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )
 	{
 		if ( key )
 		{
@@ -1812,7 +1812,7 @@ void Entity::actWallLock()
 	int checky = y + (wallLockDir == 1 ? -8 : (wallLockDir == 3 ? 8 : 0));
 	checkx = checkx >> 4;
 	checky = checky >> 4;
-	if ( !map.tiles[OBSTACLELAYER + checky * MAPLAYERS + checkx * MAPLAYERS * map.height] )
+	if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )
 	{
 		if ( key )
 		{
@@ -2211,7 +2211,7 @@ bool entityInsideWind(Entity* entity1, Entity* wind)
 		int map_y = wind->y / 16;
 		if ( map_x > 0 && map_x < map.width - 1 && map_y > 0 && map_y < map.height - 1 )
 		{
-			if ( map.tiles[OBSTACLELAYER + map_y * MAPLAYERS + map_x * MAPLAYERS * map.height] )
+			if ( map.tiles[OBSTACLELAYER + map_y * MAP_LAYERS + map_x * MAP_LAYERS * map.height] )
 			{
 				break; // no blow through walls
 			}

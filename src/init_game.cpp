@@ -842,10 +842,7 @@ void deinitGame()
 	{
 		free(shoparea);
 	}
-	if ( CompendiumEntries.compendiumMap.tiles )
-	{
-		free(CompendiumEntries.compendiumMap.tiles);
-	}
+	CompendiumEntries.compendiumMap.tiles.clear();
 
 	for ( auto it : allGameSpells )
 	{

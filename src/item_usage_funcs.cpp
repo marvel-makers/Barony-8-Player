@@ -4824,7 +4824,7 @@ Entity* item_ToolBeartrap(Item*& item, Entity* usedBy)
 	real_t dist = 16.0;
 	real_t checkx = players[player]->entity->x + dist * cos(players[player]->entity->yaw);
 	real_t checky = players[player]->entity->y + dist * sin(players[player]->entity->yaw);
-	int index = (static_cast<int>(checky) >> 4) * MAPLAYERS + (static_cast<int>(checkx) >> 4) * MAPLAYERS * map.height;
+	int index = (static_cast<int>(checky) >> 4) * MAP_LAYERS + (static_cast<int>(checkx) >> 4) * MAP_LAYERS * map.height;
 	while ( !map.tiles[index] || map.tiles[OBSTACLELAYER + index] || swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]] )
 	{
 		dist -= 4.001;
@@ -4836,7 +4836,7 @@ Entity* item_ToolBeartrap(Item*& item, Entity* usedBy)
 		}
 		checkx = players[player]->entity->x + dist * cos(players[player]->entity->yaw);
 		checky = players[player]->entity->y + dist * sin(players[player]->entity->yaw);
-		index = (static_cast<int>(checky) >> 4) * MAPLAYERS + (static_cast<int>(checkx) >> 4) * MAPLAYERS * map.height;
+		index = (static_cast<int>(checky) >> 4) * MAP_LAYERS + (static_cast<int>(checkx) >> 4) * MAP_LAYERS * map.height;
 	}
 	entity->x = checkx;
 	entity->y = checky;

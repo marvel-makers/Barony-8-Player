@@ -574,7 +574,7 @@ void actThrown(Entity* my)
 			}
 
 			// landing on the ground.
-			int index = (int)(my->y / 16)*MAPLAYERS + (int)(my->x / 16)*MAPLAYERS * map.height;
+			int index = (int)(my->y / 16)*MAP_LAYERS + (int)(my->x / 16)*MAP_LAYERS * map.height;
 			if ( map.tiles[index] )
 			{
 				item = newItemFromEntity(my);

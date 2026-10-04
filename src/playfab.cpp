@@ -1470,7 +1470,7 @@ unsigned long djb2Hash2(char* str)
 
 void PlayfabUser_t::postScore(const int player)
 {
-    if ( player < 0 || player >= MAPLAYERS )
+    if ( player < 0 || player >= MAP_LAYERS )
     {
         return;
     }

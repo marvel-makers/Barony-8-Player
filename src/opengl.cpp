@@ -624,7 +624,7 @@ static void fillSmoothLightmap(int which, map_t& map) {
 }
 
 static inline bool testTileOccludes(const map_t& map, int index) {
-    if (index < 0 || index > map.width * map.height * MAPLAYERS - MAPLAYERS) {
+    if (index < 0 || index > map.width * map.height * MAP_LAYERS - MAP_LAYERS) {
         return true;
     }
     const Uint64& t0 = *(Uint64*)&map.tiles[index];
@@ -662,8 +662,8 @@ static void loadLightmapTexture(int which, map_t& map) {
             }
         }
     } else {
-        const int xoff = MAPLAYERS * map.height;
-        const int yoff = MAPLAYERS;
+        const int xoff = MAP_LAYERS * map.height;
+        const int yoff = MAP_LAYERS;
         for (int y = 0; y < map.height; ++y) {
             for (int x = 0, index = y * yoff; x < map.width; ++x, index += xoff) {
                 if (!testTileOccludes(map, index)) {
@@ -2658,17 +2658,17 @@ void Chunk::build(const map_t& map, bool ceiling, int startX, int startY, int w,
     this->y = startY;
     this->w = endX - startX;
     this->h = endY - startY;
-    const int sizeOfTiles = this->w * this->h * MAPLAYERS;
+    const int sizeOfTiles = this->w * this->h * MAP_LAYERS;
     this->tiles.clear();
     this->tiles.resize(sizeOfTiles);
     
     for (int x = startX; x < endX; ++x) {
         for (int y = startY; y < endY; ++y) {
-            for (int z = 0; z < MAPLAYERS + 1; ++z) {
-                const int index = z + y * MAPLAYERS + x * map.height * MAPLAYERS;
+            for (int z = 0; z < MAP_LAYERS + 1; ++z) {
+                const int index = z + y * MAP_LAYERS + x * map.height * MAP_LAYERS;
 
                 // build walls
-                if (z >= 0 && z < MAPLAYERS) {
+                if (z >= 0 && z < MAP_LAYERS) {
                     assert(index2 < sizeOfTiles);
                     this->tiles[index2] = map.tiles[index];
                     ++index2;
@@ -2710,7 +2710,7 @@ void Chunk::build(const map_t& map, bool ceiling, int startX, int startY, int w,
                     }
 
                     // draw east wall
-                    const int easter = index + MAPLAYERS * map.height;
+                    const int easter = index + MAP_LAYERS * map.height;
                     if (x == map.width - 1 || !map.tiles[easter] || map.tiles[easter] == TRANSPARENT_TILE) {
                         if (z) { // normal wall
                             colors.insert(colors.end(), {1.f, 1.f, 1.f});
@@ -2782,7 +2782,7 @@ void Chunk::build(const map_t& map, bool ceiling, int startX, int startY, int w,
                     }
 
                     // draw south wall
-                    const int souther = index + MAPLAYERS;
+                    const int souther = index + MAP_LAYERS;
                     if (y == map.height - 1 || !map.tiles[souther] || map.tiles[souther] == TRANSPARENT_TILE) {
                         if (z) { // normal wall
                             colors.insert(colors.end(), {1.f, 1.f, 1.f});
@@ -2854,7 +2854,7 @@ void Chunk::build(const map_t& map, bool ceiling, int startX, int startY, int w,
                     }
 
                     // draw west wall
-                    const int wester = index - MAPLAYERS * map.height;
+                    const int wester = index - MAP_LAYERS * map.height;
                     if (x == 0 || !map.tiles[wester] || map.tiles[wester] == TRANSPARENT_TILE) {
                         if (z) { // normal wall
                             colors.insert(colors.end(), {1.f, 1.f, 1.f});
@@ -2926,7 +2926,7 @@ void Chunk::build(const map_t& map, bool ceiling, int startX, int startY, int w,
                     }
 
                     // draw north wall
-                    const int norther = index - MAPLAYERS;
+                    const int norther = index - MAP_LAYERS;
                     if (y == 0 || !map.tiles[norther] || map.tiles[norther] == TRANSPARENT_TILE) {
                         if (z) { // normal wall
                             colors.insert(colors.end(), {1.f, 1.f, 1.f});
@@ -3002,7 +3002,7 @@ void Chunk::build(const map_t& map, bool ceiling, int startX, int startY, int w,
                 {
                     // select floor/ceiling texture
                     float tile = mapceilingtile;
-                    if (z >= 0 && z < MAPLAYERS) {
+                    if (z >= 0 && z < MAP_LAYERS) {
                         if (map.tiles[index] < 0 || map.tiles[index] >= numtiles) {
                             tile = 0;
                         } else {
@@ -3056,7 +3056,7 @@ void Chunk::build(const map_t& map, bool ceiling, int startX, int startY, int w,
                     }
                     
                     // build ceiling
-                    else if (z > OBSTACLELAYER && (ceiling || z < MAPLAYERS)) {
+                    else if (z > OBSTACLELAYER && (ceiling || z < MAP_LAYERS)) {
                         if (!map.tiles[index - 1] || map.tiles[index - 1] == TRANSPARENT_TILE) {
                             colors.insert(colors.end(), {1.f, 1.f, 1.f});
                             makeTexCoords(0.f, 0.f, tile);
@@ -3201,12 +3201,12 @@ bool Chunk::isDirty(const map_t& map) {
         return true;
     }
     for (int u = 0; u < w; ++u) {
-        const int off0 = u * h * MAPLAYERS;
-        const int off1 = (u + x) * map.height * MAPLAYERS + y * MAPLAYERS;
-        const int size = MAPLAYERS * h;
-        assert(off0 + size <= w * h * MAPLAYERS);
-        assert(off1 + size <= map.width * map.height * MAPLAYERS);
-        if (memcmp(&tiles[off0], &map.tiles[off1], size * sizeof(Sint32))) {
+        const int off0 = u * h * MAP_LAYERS;
+        const int off1 = (u + x) * map.height * MAP_LAYERS + y * MAP_LAYERS;
+        const int size = MAP_LAYERS * h;
+        assert(off0 + size <= w * h * MAP_LAYERS);
+        assert(off1 + size <= map.width * map.height * MAP_LAYERS);
+        if (memcmp(&tiles[off0], &map.tiles[off1], size * sizeof(Sint32)) != 0) {
             return true;
         }
     }

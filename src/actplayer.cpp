@@ -989,7 +989,7 @@ void Player::Ghost_t::handleActions()
 							starty += 0.1 * sin(yaw);
 							const int index_x = static_cast<int>(startx) >> 4;
 							const int index_y = static_cast<int>(starty) >> 4;
-							index = (index_y)*MAPLAYERS + (index_x)*MAPLAYERS * map.height;
+							index = (index_y)*MAP_LAYERS + (index_x)*MAP_LAYERS * map.height;
 							if ( map.tiles[index] && !map.tiles[OBSTACLELAYER + index] )
 							{
 								// store the last known good coordinate
@@ -1148,7 +1148,7 @@ void Player::Ghost_t::handleActions()
 								starty += 0.1 * sin(yaw);
 								const int index_x = static_cast<int>(startx) >> 4;
 								const int index_y = static_cast<int>(starty) >> 4;
-								index = (index_y)*MAPLAYERS + (index_x)*MAPLAYERS * map.height;
+								index = (index_y)*MAP_LAYERS + (index_x)*MAP_LAYERS * map.height;
 								if ( !map.tiles[OBSTACLELAYER + index] )
 								{
 									// store the last known good coordinate
@@ -1295,7 +1295,7 @@ void Player::Ghost_t::handleActions()
 							starty += 0.1 * sin(yaw);
 							const int index_x = static_cast<int>(startx) >> 4;
 							const int index_y = static_cast<int>(starty) >> 4;
-							index = (index_y)*MAPLAYERS + (index_x)*MAPLAYERS * map.height;
+							index = (index_y)*MAP_LAYERS + (index_x)*MAP_LAYERS * map.height;
 							if ( !map.tiles[OBSTACLELAYER + index] )
 							{
 								// store the last known good coordinate
@@ -1775,7 +1775,7 @@ void spawnPlayerXP(real_t x, real_t y, int player, int xpAmount)
 			int checky = static_cast<int>(y / 16) + iy;
 			if ( checkx >= 0 && checkx < map.width && checky >= 0 && checky < map.height )
 			{
-				if ( !map.tiles[OBSTACLELAYER + checky * MAPLAYERS + checkx * MAPLAYERS * map.height] )
+				if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )
 				{
 					okspots.insert(checkx + 10000 * checky);
 					if ( !checkObstacle(checkx * 16.0 + 8.0, checky * 16.0 + 8.0, entity, nullptr, true, true, false, false) )
@@ -2373,7 +2373,7 @@ void actDeathGhost(Entity* my)
 		}
 		thirdPersonAnimationPercent = std::max(0.f, thirdPersonAnimationPercent);
 	}
-	
+
 	GHOSTCAM_THIRD_PERSON_CUSTOM -= std::max(0.01, GHOSTCAM_THIRD_PERSON_CUSTOM / 20.0);
 	GHOSTCAM_THIRD_PERSON_CUSTOM = std::max(0.0, GHOSTCAM_THIRD_PERSON_CUSTOM);
 
@@ -3005,7 +3005,7 @@ void actDeathGhost(Entity* my)
 void actProjectSpiritCam(Entity* my)
 {
 	auto entityTarget = uidToEntity(DEATHCAM_PLAYERTARGET);
-	if ( !entityTarget || 
+	if ( !entityTarget ||
 		!(stats[DEATHCAM_PLAYERNUM]->getEffectActive(EFF_PROJECT_SPIRIT) && players[DEATHCAM_PLAYERNUM]->entity
 			&& players[DEATHCAM_PLAYERNUM]->entity->skill[3] == 2) )
 	{
@@ -3305,7 +3305,7 @@ void actDeathCam(Entity* my)
 	}
 	else if ( DEATHCAM_TIME < deathcamGameoverPromptTicks )
 	{
-		if ( players[DEATHCAM_PLAYERNUM]->ghost.isActive() 
+		if ( players[DEATHCAM_PLAYERNUM]->ghost.isActive()
 			|| (players[DEATHCAM_PLAYERNUM]->entity && players[DEATHCAM_PLAYERNUM]->entity->playerCreatedDeathCam == 0) )
 		{
 			DEATHCAM_DISABLE_GAMEOVER = 1;
@@ -3317,7 +3317,7 @@ void actDeathCam(Entity* my)
 		{
 			gameModeManager.Tutorial.openGameoverWindow();
 		}
-		else if ( !(players[DEATHCAM_PLAYERNUM]->ghost.isActive() 
+		else if ( !(players[DEATHCAM_PLAYERNUM]->ghost.isActive()
 			|| (players[DEATHCAM_PLAYERNUM]->entity && players[DEATHCAM_PLAYERNUM]->entity->playerCreatedDeathCam == 0) )
 			&& DEATHCAM_DISABLE_GAMEOVER == 0 )
 		{
@@ -3335,7 +3335,7 @@ void actDeathCam(Entity* my)
 	}
 
 	bool shootmode = players[DEATHCAM_PLAYERNUM]->shootmode;
-	if ( shootmode && !gamePaused && !(players[DEATHCAM_PLAYERNUM]->ghost.isActive() 
+	if ( shootmode && !gamePaused && !(players[DEATHCAM_PLAYERNUM]->ghost.isActive()
 		|| (players[DEATHCAM_PLAYERNUM]->entity && players[DEATHCAM_PLAYERNUM]->entity->playerCreatedDeathCam == 0)) )
 	{
 		if ( !players[DEATHCAM_PLAYERNUM]->GUI.isGameoverActive() )
@@ -3534,11 +3534,11 @@ void actDeathCam(Entity* my)
 	}
 	else
 	{
-		TimerExperiments::cameraCurrentState[DEATHCAM_PLAYERNUM].x.velocity = 
+		TimerExperiments::cameraCurrentState[DEATHCAM_PLAYERNUM].x.velocity =
 			TimerExperiments::lerpFactor * (camx - TimerExperiments::cameraCurrentState[DEATHCAM_PLAYERNUM].x.position);
-		TimerExperiments::cameraCurrentState[DEATHCAM_PLAYERNUM].y.velocity = 
+		TimerExperiments::cameraCurrentState[DEATHCAM_PLAYERNUM].y.velocity =
 			TimerExperiments::lerpFactor * (camy - TimerExperiments::cameraCurrentState[DEATHCAM_PLAYERNUM].y.position);
-		TimerExperiments::cameraCurrentState[DEATHCAM_PLAYERNUM].z.velocity = 
+		TimerExperiments::cameraCurrentState[DEATHCAM_PLAYERNUM].z.velocity =
 			TimerExperiments::lerpFactor * (camz - TimerExperiments::cameraCurrentState[DEATHCAM_PLAYERNUM].z.position);
 
 		real_t diff = camang - TimerExperiments::cameraCurrentState[DEATHCAM_PLAYERNUM].yaw.position;
@@ -3616,8 +3616,8 @@ bool Player::PlayerMovement_t::isPlayerSwimming()
 	{
 		int x = std::min(std::max<unsigned int>(0, floor(my->x / 16)), map.width - 1);
 		int y = std::min(std::max<unsigned int>(0, floor(my->y / 16)), map.height - 1);
-		if ( swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]]
-			|| lavatiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+		if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]]
+			|| lavatiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 		{
 			// can swim in lavatiles or swimmingtiles only.
 			swimming = true;
@@ -3767,7 +3767,7 @@ void Player::PlayerMovement_t::startQuickTurn()
 
 void Player::PlayerMovement_t::handlePlayerCameraUpdate(bool useRefreshRateDelta)
 {
-	if ( !players[player.playernum]->entity || (players[player.playernum]->entity 
+	if ( !players[player.playernum]->entity || (players[player.playernum]->entity
 		&& stats[player.playernum]->getEffectActive(EFF_PROJECT_SPIRIT)
 		&& players[player.playernum]->entity->skill[3] == 2) )
 	{
@@ -3952,7 +3952,7 @@ void Player::PlayerMovement_t::handlePlayerCameraUpdate(bool useRefreshRateDelta
 			{
 				if ( my->isMobile() )
 				{
-					PLAYER_ROTY = std::min<float>(std::max<float>(-0.35f, 
+					PLAYER_ROTY = std::min<float>(std::max<float>(-0.35f,
 						mousey_relative * .01f * (mouse_speed / 128.f) * (reversemouse * 2 - 1)), 0.35f);
 				}
 				else
@@ -3976,7 +3976,7 @@ void Player::PlayerMovement_t::handlePlayerCameraUpdate(bool useRefreshRateDelta
 			{
 				if ( my->isMobile() )
 				{
-					PLAYER_ROTY = std::min<float>(std::max<float>(-0.35f, 
+					PLAYER_ROTY = std::min<float>(std::max<float>(-0.35f,
 						mousey_relative * .01f * (mouse_speed / 128.f) * (reversemouse * 2 - 1)), 0.35f);
 				}
 				else
@@ -4083,10 +4083,10 @@ void Player::PlayerMovement_t::handlePlayerCameraBobbing(bool useRefreshRateDelt
 			}
 		}
 		else if ( !gamePaused && playerAllowedMovement(player.playernum)
-			&& ((!inputs.hasController(PLAYER_NUM) 
+			&& ((!inputs.hasController(PLAYER_NUM)
 				&& ((input.binary("Move Forward") || input.binary("Move Backward"))
 					|| (input.binary("Move Left") - input.binary("Move Right"))))
-			|| (inputs.hasController(PLAYER_NUM) 
+			|| (inputs.hasController(PLAYER_NUM)
 				&& (inputs.getController(PLAYER_NUM)->getLeftXPercentForPlayerMovement(player.playernum)
 					|| inputs.getController(PLAYER_NUM)->getLeftYPercentForPlayerMovement(player.playernum)))) )
 		{
@@ -4381,7 +4381,7 @@ real_t Player::PlayerMovement_t::getSpeedFactor(real_t weightratio, Sint32 DEX)
 			slowSpeedPenalty = 2.0;
 		}
 	}
-	else if ( stats[player.playernum]->getEffectActive(EFF_FAST) 
+	else if ( stats[player.playernum]->getEffectActive(EFF_FAST)
 		&& !stats[player.playernum]->getEffectActive(EFF_SLOW)
 		&& !stats[player.playernum]->getEffectActive(EFF_DISRUPTED) )
 	{
@@ -4781,7 +4781,7 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
 		{
 			defendPenalty = 0.5;
 		}
-		if ( stats[PLAYER_NUM]->defending && !stats[PLAYER_NUM]->sneaking 
+		if ( stats[PLAYER_NUM]->defending && !stats[PLAYER_NUM]->sneaking
 			&& stats[PLAYER_NUM]->shield && itemTypeIsFoci(stats[PLAYER_NUM]->shield->type) )
 		{
 			if ( int spellID = getSpellIDFromFoci(stats[PLAYER_NUM]->shield->type) )
@@ -5020,8 +5020,8 @@ void Player::PlayerMovement_t::handlePlayerCameraPosition(bool useRefreshRateDel
 			}
 			else
 			{
-				TimerExperiments::cameraCurrentState[PLAYER_NUM].z.velocity = 
-					((PLAYER_CAMERAZ_ACCEL + PLAYER_BOB) - TimerExperiments::cameraCurrentState[PLAYER_NUM].z.position) 
+				TimerExperiments::cameraCurrentState[PLAYER_NUM].z.velocity =
+					((PLAYER_CAMERAZ_ACCEL + PLAYER_BOB) - TimerExperiments::cameraCurrentState[PLAYER_NUM].z.position)
 					* TimerExperiments::lerpFactor;
 			}
 		}
@@ -6208,7 +6208,7 @@ void actPlayer(Entity* my)
 			playerDebugTests(my);
 		}
 	}
-	
+
 	static ConsoleVariable<int> cvar_pbaoe("/pbaoe", 15);
 	if ( keystatus[SDLK_x] && enableDebugKeys && (svFlags & SV_FLAG_CHEATS) )
 	{
@@ -6851,7 +6851,7 @@ void actPlayer(Entity* my)
 				real_t scale = *c1;
 				if ( *c4 == 3 )
 				{
-					Entity* wave = createParticleWave(ParticleTimerEffect_t::EFFECT_PULSE, 
+					Entity* wave = createParticleWave(ParticleTimerEffect_t::EFFECT_PULSE,
 						1751, my->x + 16.0 * cos(my->yaw), my->y + 16.0 * sin(my->yaw), 6.25, PI / 2 + my->yaw, TICKS_PER_SECOND * 10, false);
 					wave->skill[1] = 6; // frames
 					wave->skill[5] = *c2; // frame time
@@ -6862,7 +6862,7 @@ void actPlayer(Entity* my)
 				}
 				else if ( *c4 == 2 )
 				{
-					Entity* wave = createParticleWave(ParticleTimerEffect_t::EFFECT_KINETIC_FIELD, 
+					Entity* wave = createParticleWave(ParticleTimerEffect_t::EFFECT_KINETIC_FIELD,
 						1739, my->x + 16.0 * cos(my->yaw), my->y + 16.0 * sin(my->yaw), 6.25, PI / 2 + my->yaw, TICKS_PER_SECOND * 10, false);
 					wave->skill[1] = 12; // frames
 					wave->skill[5] = *c2; // frame time
@@ -6933,9 +6933,9 @@ void actPlayer(Entity* my)
 						{
 							light = true;
 						}
-						Entity* wave = createParticleWave(ParticleTimerEffect_t::EFFECT_FIRE_WAVE, 
-							1733, my->x + 16.0 * cos(my->yaw), my->y + 16.0 * sin(my->yaw), 2.75, 
-							-PI / 2 + my->yaw - PI / 3 + i * PI / 3, 
+						Entity* wave = createParticleWave(ParticleTimerEffect_t::EFFECT_FIRE_WAVE,
+							1733, my->x + 16.0 * cos(my->yaw), my->y + 16.0 * sin(my->yaw), 2.75,
+							-PI / 2 + my->yaw - PI / 3 + i * PI / 3,
 							spellTimer->particleTimerDuration, light);
 						wave->skill[1] = 6; // frames
 						wave->skill[5] = *c2; // frame time
@@ -7188,7 +7188,7 @@ void actPlayer(Entity* my)
 	int spriteArmRight = 109 + 12 * stats[PLAYER_NUM]->sex;
 	int spriteArmLeft = 110 + 12 * stats[PLAYER_NUM]->sex;
 	int playerAppearance = stats[PLAYER_NUM]->stat_appearance;
-	
+
 	if ( my->effectShapeshift != NOTHING )
 	{
 		playerRace = static_cast<Monster>(my->effectShapeshift);
@@ -7823,7 +7823,7 @@ void actPlayer(Entity* my)
 			}
 		}
 
-		/*if ( players[PLAYER_NUM]->isLocalPlayer() 
+		/*if ( players[PLAYER_NUM]->isLocalPlayer()
 			&& ((stats[PLAYER_NUM]->playerRace >= 13 && stats[PLAYER_NUM]->playerRace <= 17)
 			|| client_classes[PLAYER_NUM] >= 21) )
 		{
@@ -8460,7 +8460,7 @@ void actPlayer(Entity* my)
 		}
 	}
 
-	if ( players[PLAYER_NUM]->isLocalPlayer() 
+	if ( players[PLAYER_NUM]->isLocalPlayer()
 		&& players[PLAYER_NUM]->inventoryUI.appraisal.timer > 0 && !intro )
 	{
 		Item* tempItem = uidToItem(players[PLAYER_NUM]->inventoryUI.appraisal.current_item);
@@ -8937,7 +8937,7 @@ void actPlayer(Entity* my)
 	}
 
 	bool freezeLimbMovements = false;
-	if ( StatueManager.editingPlayerUid > 0 
+	if ( StatueManager.editingPlayerUid > 0
 		&& uidToEntity(StatueManager.editingPlayerUid) == players[PLAYER_NUM]->entity )
 	{
 		freezeLimbMovements = true;
@@ -9231,7 +9231,7 @@ void actPlayer(Entity* my)
 			{
 				int x = std::min(std::max<unsigned int>(1, my->x / 16), map.width - 2);
 				int y = std::min(std::max<unsigned int>(1, my->y / 16), map.height - 2);
-				if ( !map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( !map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					Compendium_t::Events_t::eventUpdateWorld(PLAYER_NUM, Compendium_t::CPDM_PITS_LEVITATED, "pits", 1);
 				}
@@ -9243,7 +9243,7 @@ void actPlayer(Entity* my)
 			//{
 			//	int x = std::min(std::max<unsigned int>(0, floor(my->x / 16)), map.width - 1);
 			//	int y = std::min(std::max<unsigned int>(0, floor(my->y / 16)), map.height - 1);
-			//	int mapTile = map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height];
+			//	int mapTile = map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height];
 			//	if ( animatedtiles[mapTile] )
 			//	{
 			//		if ( mapTile >= 447 && mapTile <= 454 )
@@ -9426,7 +9426,7 @@ void actPlayer(Entity* my)
 			if ( !PLAYER_INWATER && (players[PLAYER_NUM]->isLocalPlayer()) )
 			{
 				PLAYER_INWATER = 1;
-				if ( lavatiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+				if ( lavatiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 				{
 					messagePlayer(PLAYER_NUM, MESSAGE_STATUS, Language::get(573));
 					if ( stats[PLAYER_NUM]->type == AUTOMATON )
@@ -9443,7 +9443,7 @@ void actPlayer(Entity* my)
 					cameravars[PLAYER_NUM].shakex += .1;
 					cameravars[PLAYER_NUM].shakey += 10;
 				}
-				else if ( swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] && stats[PLAYER_NUM]->type == VAMPIRE )
+				else if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] && stats[PLAYER_NUM]->type == VAMPIRE )
 				{
 					messagePlayerColor(PLAYER_NUM, MESSAGE_STATUS, makeColorRGB(255, 0, 0), Language::get(3183));
 					if ( stats[PLAYER_NUM]->mask && stats[PLAYER_NUM]->mask->type == MASK_HAZARD_GOGGLES )
@@ -9459,13 +9459,13 @@ void actPlayer(Entity* my)
 					cameravars[PLAYER_NUM].shakey += 10;
 					createWaterSplash(my->x, my->y, 30);
 				}
-				else if ( swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] && stats[PLAYER_NUM]->type == AUTOMATON )
+				else if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] && stats[PLAYER_NUM]->type == AUTOMATON )
 				{
 					messagePlayer(PLAYER_NUM, MESSAGE_STATUS, Language::get(3702));
 					playSound(136, 128);
 					createWaterSplash(my->x, my->y, 30);
 				}
-				else if ( swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+				else if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 				{
 					playSound(136, 128);
 					createWaterSplash(my->x, my->y, 30);
@@ -9474,7 +9474,7 @@ void actPlayer(Entity* my)
 
 			if ( players[PLAYER_NUM]->isLocalPlayer() )
 			{
-				if ( swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+				if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 				{
 					Compendium_t::Events_t::eventUpdateWorld(PLAYER_NUM, Compendium_t::CPDM_SWIM_TIME, "murky water", 1);
 				}
@@ -9487,7 +9487,7 @@ void actPlayer(Entity* my)
 			if ( multiplayer != CLIENT )
 			{
 				// Check if the Player is in Water or Lava
-				if ( swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+				if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 				{
 					if ( my->flags[BURNING] )
 					{
@@ -9783,7 +9783,7 @@ void actPlayer(Entity* my)
 									starty += 0.1 * sin(yaw);
 									const int index_x = static_cast<int>(startx) >> 4;
 									const int index_y = static_cast<int>(starty) >> 4;
-									index = (index_y)* MAPLAYERS + (index_x)* MAPLAYERS * map.height;
+									index = (index_y)* MAP_LAYERS + (index_x)* MAP_LAYERS * map.height;
 									if ( map.tiles[index] && !map.tiles[OBSTACLELAYER + index] )
 									{
 										// store the last known good coordinate
@@ -9942,7 +9942,7 @@ void actPlayer(Entity* my)
 										starty += 0.1 * sin(yaw);
 										const int index_x = static_cast<int>(startx) >> 4;
 										const int index_y = static_cast<int>(starty) >> 4;
-										index = (index_y)*MAPLAYERS + (index_x)*MAPLAYERS * map.height;
+										index = (index_y)*MAP_LAYERS + (index_x)*MAP_LAYERS * map.height;
 										if ( !map.tiles[OBSTACLELAYER + index] )
 										{
 											// store the last known good coordinate
@@ -10092,7 +10092,7 @@ void actPlayer(Entity* my)
 									starty += 0.1 * sin(yaw);
 									const int index_x = static_cast<int>(startx) >> 4;
 									const int index_y = static_cast<int>(starty) >> 4;
-									index = (index_y)*MAPLAYERS + (index_x)*MAPLAYERS * map.height;
+									index = (index_y)*MAP_LAYERS + (index_x)*MAP_LAYERS * map.height;
 									if ( !map.tiles[OBSTACLELAYER + index] )
 									{
 										// store the last known good coordinate
@@ -10151,7 +10151,7 @@ void actPlayer(Entity* my)
 					lastNPCCommandOnGamepad = (*lastNPCCommandFind).second.isBindingUsingGamepad();
 					lastNPCCommandInputStr = (*lastNPCCommandFind).second.input;
 				}
-				
+
 				if ( players[PLAYER_NUM]->worldUI.bTooltipInView && players[PLAYER_NUM]->worldUI.tooltipsInRange.size() > 1 )
 				{
 					if ( showNPCCommandsOnGamepad &&
@@ -10173,7 +10173,7 @@ void actPlayer(Entity* my)
 				if ( !calloutMenu.calloutMenuIsOpen() )
 				{
 					if ( (input.binaryToggle("Show NPC Commands") && !showNPCCommandsOnGamepad)
-							|| (input.binaryToggle("Show NPC Commands") && showNPCCommandsOnGamepad 
+							|| (input.binaryToggle("Show NPC Commands") && showNPCCommandsOnGamepad
 								&& players[PLAYER_NUM]->shootmode /*&& !players[PLAYER_NUM]->worldUI.bTooltipInView*/) )
 					{
 						if ( players[PLAYER_NUM] && players[PLAYER_NUM]->entity
@@ -10391,9 +10391,9 @@ void actPlayer(Entity* my)
 	{
 		for (i = 0; i < MAXPLAYERS; i++)
 		{
-			if ( (i == 0 && selectedEntity[0] == my) 
+			if ( (i == 0 && selectedEntity[0] == my)
 				|| (client_selected[i] == my)
-				|| (i == PLAYER_CLICKED - 1) 
+				|| (i == PLAYER_CLICKED - 1)
 				|| (i > 0 && splitscreen && selectedEntity[i] == my) )
 			{
 				PLAYER_CLICKED = 0;
@@ -10557,9 +10557,9 @@ void actPlayer(Entity* my)
 					}
 				}
 				else if ( stats[PLAYER_NUM]->shield->type == TOOL_FOCI_DARK_LIFE
-					|| stats[PLAYER_NUM]->shield->type == TOOL_FOCI_DARK_RIFT 
-					|| stats[PLAYER_NUM]->shield->type == TOOL_FOCI_DARK_SILENCE 
-					|| stats[PLAYER_NUM]->shield->type == TOOL_FOCI_DARK_SUPPRESS 
+					|| stats[PLAYER_NUM]->shield->type == TOOL_FOCI_DARK_RIFT
+					|| stats[PLAYER_NUM]->shield->type == TOOL_FOCI_DARK_SILENCE
+					|| stats[PLAYER_NUM]->shield->type == TOOL_FOCI_DARK_SUPPRESS
 					|| stats[PLAYER_NUM]->shield->type == TOOL_FOCI_DARK_VENGEANCE ) {
 					light_type = "magic_foci_idle_dark";
 					if ( stats[PLAYER_NUM]->defending ) {
@@ -11009,7 +11009,7 @@ void actPlayer(Entity* my)
 						*/
 						if ( players[PLAYER_NUM]->isLocalPlayer() )
 						{
-							if ( (stats[PLAYER_NUM]->type != AUTOMATON) 
+							if ( (stats[PLAYER_NUM]->type != AUTOMATON)
 								|| (stats[PLAYER_NUM]->type == AUTOMATON && my->playerCreatedDeathCam == 0) )
 							{
 								// deathcam
@@ -11232,7 +11232,7 @@ void actPlayer(Entity* my)
 							{
 								my->x = ((int)(my->x / 16)) * 16 + 8;
 								my->y = ((int)(my->y / 16)) * 16 + 8;
-                                
+
                                 Item* items[] = {
                                     stats[PLAYER_NUM]->helmet,
                                     stats[PLAYER_NUM]->breastplate,
@@ -11300,7 +11300,7 @@ void actPlayer(Entity* my)
 							{
 								int x = std::min(std::max<unsigned int>(0, floor(my->x / 16)), map.width - 1);
 								int y = std::min(std::max<unsigned int>(0, floor(my->y / 16)), map.height - 1);
-								if ( swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+								if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 								{
 									Compendium_t::Events_t::eventUpdateWorld(PLAYER_NUM, Compendium_t::CPDM_SWIM_KILLED_WHILE, "murky water", 1);
 								}
@@ -11484,11 +11484,11 @@ void actPlayer(Entity* my)
 				{
 					const int index_x = static_cast<int>(my->x) >> 4;
 					const int index_y = static_cast<int>(my->y) >> 4;
-					int index = (index_y)*MAPLAYERS + (index_x)*MAPLAYERS * map.height;
+					int index = (index_y)*MAP_LAYERS + (index_x)*MAP_LAYERS * map.height;
 					if ( index_x >= 0 && index_x < map.width && index_y >= 0 && index_y < map.height )
 					{
-						if ( !map.tiles[index] || swimmingtiles[map.tiles[index_y * MAPLAYERS + index_x * MAPLAYERS * map.height]]
-							|| lavatiles[map.tiles[index_y * MAPLAYERS + index_x * MAPLAYERS * map.height]] )
+						if ( !map.tiles[index] || swimmingtiles[map.tiles[index_y * MAP_LAYERS + index_x * MAP_LAYERS * map.height]]
+							|| lavatiles[map.tiles[index_y * MAP_LAYERS + index_x * MAP_LAYERS * map.height]] )
 						{
 							players[PLAYER_NUM]->mechanics.updateSustainedSpellEvent(SPELL_LEVITATION, dist, 0.5, nullptr);
 						}
@@ -11782,11 +11782,11 @@ void actPlayer(Entity* my)
 				{
 					const int index_x = static_cast<int>(my->x) >> 4;
 					const int index_y = static_cast<int>(my->y) >> 4;
-					int index = (index_y)*MAPLAYERS + (index_x)*MAPLAYERS * map.height;
+					int index = (index_y)*MAP_LAYERS + (index_x)*MAP_LAYERS * map.height;
 					if ( index_x >= 0 && index_x < map.width && index_y >= 0 && index_y < map.height )
 					{
-						if ( !map.tiles[index] || swimmingtiles[map.tiles[index_y * MAPLAYERS + index_x * MAPLAYERS * map.height]]
-							|| lavatiles[map.tiles[index_y * MAPLAYERS + index_x * MAPLAYERS * map.height]] )
+						if ( !map.tiles[index] || swimmingtiles[map.tiles[index_y * MAP_LAYERS + index_x * MAP_LAYERS * map.height]]
+							|| lavatiles[map.tiles[index_y * MAP_LAYERS + index_x * MAP_LAYERS * map.height]] )
 						{
 							players[PLAYER_NUM]->mechanics.updateSustainedSpellEvent(SPELL_LEVITATION, dist, 0.5, nullptr);
 						}

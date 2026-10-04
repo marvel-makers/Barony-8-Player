@@ -102,7 +102,7 @@ void slimeSetType(Entity* my, Stat* myStats, bool sink, BaronyRNG* rng)
 
 	int x = my->x / 16;
 	int y = my->y / 16;
-	int mapIndex = (y)*MAPLAYERS + (x)*MAPLAYERS * map.height;
+	int mapIndex = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
 	if ( x > 0 && x < map.width && y > 0 && y < map.height )
 	{
 		if ( map.tiles[mapIndex] )
@@ -646,7 +646,7 @@ void slimeAnimate(Entity* my, Stat* myStats, double dist)
 	{
 		int x = std::min(std::max<unsigned int>(0, floor(my->x / 16)), map.width - 1);
 		int y = std::min(std::max<unsigned int>(0, floor(my->y / 16)), map.height - 1);
-		int index = y * MAPLAYERS + x * MAPLAYERS * map.height;
+		int index = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
 		if ( map.tiles[index] )
 		{
 			if ( swimmingtiles[map.tiles[index]]

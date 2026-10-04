@@ -376,22 +376,22 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
 			int sides = 0;
 			int my_x = static_cast<int>(my->x) >> 4;
 			int my_y = static_cast<int>(my->y) >> 4;
-			int mapIndex = (my_y)* MAPLAYERS + (my_x + 1) * MAPLAYERS * map.height;
+			int mapIndex = (my_y)* MAP_LAYERS + (my_x + 1) * MAP_LAYERS * map.height;
 			if ( map.tiles[OBSTACLELAYER + mapIndex] )   // wall
 			{
 				++sides;
 			}
-			mapIndex = (my_y)* MAPLAYERS + (my_x - 1) * MAPLAYERS * map.height;
+			mapIndex = (my_y)* MAP_LAYERS + (my_x - 1) * MAP_LAYERS * map.height;
 			if ( map.tiles[OBSTACLELAYER + mapIndex] )   // wall
 			{
 				++sides;
 			}
-			mapIndex = (my_y + 1) * MAPLAYERS + (my_x)* MAPLAYERS * map.height;
+			mapIndex = (my_y + 1) * MAP_LAYERS + (my_x)* MAP_LAYERS * map.height;
 			if ( map.tiles[OBSTACLELAYER + mapIndex] )   // wall
 			{
 				++sides;
 			}
-			mapIndex = (my_y - 1) * MAPLAYERS + (my_x)* MAPLAYERS * map.height;
+			mapIndex = (my_y - 1) * MAP_LAYERS + (my_x)* MAP_LAYERS * map.height;
 			if ( map.tiles[OBSTACLELAYER + mapIndex] )   // wall
 			{
 				++sides;
@@ -1296,7 +1296,7 @@ void Entity::lichFireSummonMonster(Monster creature)
 		int tries = 25; // max iteration in while loop, fail safe.
 		long spawn_x = (target->x / 16) - 11 + local_rng.rand() % 23;
 		long spawn_y = (target->y / 16) - 11 + local_rng.rand() % 23;
-		int index = (spawn_x)* MAPLAYERS + (spawn_y)* MAPLAYERS * map.height;
+		int index = (spawn_x)* MAP_LAYERS + (spawn_y)* MAP_LAYERS * map.height;
 		while ( tries > 0 &&
 			(map.tiles[OBSTACLELAYER + index] == 1
 				|| map.tiles[index] == 0
@@ -1307,7 +1307,7 @@ void Entity::lichFireSummonMonster(Monster creature)
 			// find a spot that isn't wall, no floor or lava/water tiles.
 			spawn_x = (target->x / 16) - 11 + local_rng.rand() % 23;
 			spawn_y = (target->y / 16) - 11 + local_rng.rand() % 23;
-			index = (spawn_x)* MAPLAYERS + (spawn_y)* MAPLAYERS * map.height;
+			index = (spawn_x)* MAP_LAYERS + (spawn_y)* MAP_LAYERS * map.height;
 			--tries;
 		}
 		if ( tries > 0 )

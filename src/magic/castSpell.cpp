@@ -963,7 +963,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 		{
 			int x = std::min<int>(std::max<int>(0, floor(caster->x / 16)), map.width - 1);
 			int y = std::min<int>(std::max<int>(0, floor(caster->y / 16)), map.height - 1);
-			if ( swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] || lavatiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+			if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] || lavatiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 			{
 				swimming = true;
 			}
@@ -3633,14 +3633,14 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 					}
 					else
 					{
-						int mapIndex = (y)*MAPLAYERS + (x)*MAPLAYERS * map.height;
+						int mapIndex = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
 						if ( map.tiles[OBSTACLELAYER + mapIndex] )
 						{
 							noroom = true;
 						}
 						else if ( map.skybox != 0 )
 						{
-							if ( !map.tiles[(MAPLAYERS - 1) + mapIndex] )
+							if ( !map.tiles[(MAP_LAYERS - 1) + mapIndex] )
 							{
 								noroom = true;
 							}
@@ -3697,14 +3697,14 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 					}
 					else
 					{
-						int mapIndex = (y)*MAPLAYERS + (x)*MAPLAYERS * map.height;
+						int mapIndex = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
 						if ( map.tiles[OBSTACLELAYER + mapIndex] )
 						{
 							noroom = true;
 						}
 						else if ( map.skybox != 0 )
 						{
-							if ( !map.tiles[(MAPLAYERS - 1) + mapIndex] )
+							if ( !map.tiles[(MAP_LAYERS - 1) + mapIndex] )
 							{
 								noroom = true;
 							}
@@ -4787,7 +4787,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 										int y = target->y / 16;
 										if ( x >= 0 && y >= 0 && x < map.width && y < map.height )
 										{
-											if ( !map.tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+											if ( !map.tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 											{
 												z = -23;
 											}
@@ -4823,7 +4823,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 										int y = target->y / 16;
 										if ( x >= 0 && y >= 0 && x < map.width && y < map.height )
 										{
-											if ( !map.tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+											if ( !map.tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 											{
 												spellTimer->z = -23;
 											}
@@ -7378,8 +7378,8 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 				{
 					startx += 0.1 * cos(caster->yaw);
 					starty += 0.1 * sin(caster->yaw);
-					index = (static_cast<int>(starty + 16 * sin(caster->yaw)) >> 4) * MAPLAYERS 
-						+ (static_cast<int>(startx + 16 * cos(caster->yaw)) >> 4) * MAPLAYERS * map.height;
+					index = (static_cast<int>(starty + 16 * sin(caster->yaw)) >> 4) * MAP_LAYERS 
+						+ (static_cast<int>(startx + 16 * cos(caster->yaw)) >> 4) * MAP_LAYERS * map.height;
 					if ( map.tiles[index] && !map.tiles[OBSTACLELAYER + index] )
 					{
 						// store the last known good coordinate

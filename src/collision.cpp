@@ -364,7 +364,7 @@ bool entityInsideTile(Entity* entity, int x, int y, int z, bool checkSafeTiles)
 	{
 		return false;
 	}
-	if ( x < 0 || x >= map.width || y < 0 || y >= map.height || z < 0 || z >= MAPLAYERS )
+	if ( x < 0 || x >= map.width || y < 0 || y >= map.height || z < 0 || z >= MAP_LAYERS )
 	{
 		return false;
 	}
@@ -378,14 +378,14 @@ bool entityInsideTile(Entity* entity, int x, int y, int z, bool checkSafeTiles)
 				{
 					if ( z == OBSTACLELAYER )
 					{
-						if ( map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+						if ( map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 						{
 							return true;
 						}
 					}
 					else if ( z == 0 )
 					{
-						if ( !checkSafeTiles && !map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+						if ( !checkSafeTiles && !map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 						{
 							if ( entity->behavior != &actDeathGhost 
 								&& !(entity->behavior == &actMonster 
@@ -402,15 +402,15 @@ bool entityInsideTile(Entity* entity, int x, int y, int z, bool checkSafeTiles)
 								return true;
 							}
 						}
-						else if ( checkSafeTiles && map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+						else if ( checkSafeTiles && map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 						{
 							return true;
 						}
                         if (entity && entity->behavior == &actMonster) {
 							bool waterWalking = entity->isWaterWalking();
 							bool lavaWalking = entity->isLavaWalking();
-                            if ((swimmingtiles[map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height]] && !waterWalking) ||
-                                (lavatiles[map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height]] && !lavaWalking))
+                            if ((swimmingtiles[map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height]] && !waterWalking) ||
+                                (lavatiles[map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height]] && !lavaWalking))
                             {
                                 return true;
                             }
@@ -472,7 +472,7 @@ bool entityInsideSomething(Entity* entity)
 	#endif
     
 	// test against the map
-	for (int z = 0; z < MAPLAYERS; ++z) {
+	for (int z = 0; z < MAP_LAYERS; ++z) {
 		if (entityInsideTile(entity, x, y, z)) {
 			return true;
 		}
@@ -1106,7 +1106,7 @@ int barony_clear(real_t tx, real_t ty, Entity* my)
 			{
 				if ( x >= 0 && y >= 0 && x < map.width && y < map.height )
 				{
-					if (map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height])
+					if (map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height])
 					{
 						// hit a wall
 						hit.x = x * 16 + 8;
@@ -1117,9 +1117,9 @@ int barony_clear(real_t tx, real_t ty, Entity* my)
 						return 0;
 					}
 	
-					if ( !levitating && (!map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height] 
-						|| (((swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] && !waterWalking) 
-							|| (lavatiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] && !lavaWalking))
+					if ( !levitating && (!map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] 
+						|| (((swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] && !waterWalking) 
+							|| (lavatiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] && !lavaWalking))
 							&& isMonster)) )
 					{
 						// no floor
@@ -1509,7 +1509,7 @@ int barony_clear(real_t tx, real_t ty, Entity* my)
 								int tiley = entity->y / 16;
 								if ( tilex >= 0 && tilex < map.width && tiley >= 0 && tiley < map.height )
 								{
-									if ( !map.tiles[(MAPLAYERS - 1) + tiley * MAPLAYERS + tilex * MAPLAYERS * map.height] )
+									if ( !map.tiles[(MAP_LAYERS - 1) + tiley * MAP_LAYERS + tilex * MAP_LAYERS * map.height] )
 									{
 										if ( entity->behavior == &actMonster )
 										{
@@ -2334,7 +2334,7 @@ real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, 
 		iy = y1 + ry * d;
 
 		// check against the map
-		int index = (iny >> 4) * MAPLAYERS + (inx >> 4) * MAPLAYERS * map.height;
+		int index = (iny >> 4) * MAP_LAYERS + (inx >> 4) * MAP_LAYERS * map.height;
 		if ( map.tiles[OBSTACLELAYER + index] )
 		{
 			hit.x = ix;
@@ -2519,7 +2519,7 @@ real_t lineTraceTarget(Entity* my, real_t x1, real_t y1, real_t angle, real_t ra
 		iy = y1 + ry * d;
 
 		// check against the map
-		int index = (iny >> 4) * MAPLAYERS + (inx >> 4) * MAPLAYERS * map.height;
+		int index = (iny >> 4) * MAP_LAYERS + (inx >> 4) * MAP_LAYERS * map.height;
 		if ( map.tiles[OBSTACLELAYER + index] )
 		{
 			hit.x = ix;
@@ -2645,7 +2645,7 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
 	{
 		if ( y >= 0 && y < map.height << 4 )
 		{
-			int index = (y >> 4) * MAPLAYERS + (x >> 4) * MAPLAYERS * map.height;
+			int index = (y >> 4) * MAP_LAYERS + (x >> 4) * MAP_LAYERS * map.height;
 			if (checkWalls && map.tiles[OBSTACLELAYER + index])   // wall
 			{
 				return 1;

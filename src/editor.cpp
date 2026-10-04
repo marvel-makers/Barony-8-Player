@@ -570,7 +570,7 @@ void mainLogic(void)
 		}
 		else if ( keystatus[SDLK_LSHIFT] || keystatus[SDLK_RSHIFT] )
 		{
-			drawlayer = std::min(drawlayer + 1, MAPLAYERS - 1);
+			drawlayer = std::min(drawlayer + 1, MAP_LAYERS - 1);
 		}
 		else
 		{
@@ -1030,13 +1030,13 @@ void editFill(int x, int y, int layer, int type)
 	int repeat = 1;
 	int fillspot;
 
-	if ( type == map.tiles[layer + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+	if ( type == map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 	{
 		return;
 	}
 
-	fillspot = map.tiles[layer + y * MAPLAYERS + x * MAPLAYERS * map.height];
-	map.tiles[layer + y * MAPLAYERS + x * MAPLAYERS * map.height] = type + numtiles;
+	fillspot = map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height];
+	map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = type + numtiles;
 
 	while ( repeat )
 	{
@@ -1045,37 +1045,37 @@ void editFill(int x, int y, int layer, int type)
 		{
 			for ( y = 0; y < map.height; y++ )
 			{
-				if ( map.tiles[layer + y * MAPLAYERS + x * MAPLAYERS * map.height] == type + numtiles )
+				if ( map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height] == type + numtiles )
 				{
 					if ( x < map.width - 1 )
 					{
-						if ( map.tiles[layer + y * MAPLAYERS + (x + 1)*MAPLAYERS * map.height] == fillspot )
+						if ( map.tiles[layer + y * MAP_LAYERS + (x + 1)*MAP_LAYERS * map.height] == fillspot )
 						{
-							map.tiles[layer + y * MAPLAYERS + (x + 1)*MAPLAYERS * map.height] = type + numtiles;
+							map.tiles[layer + y * MAP_LAYERS + (x + 1)*MAP_LAYERS * map.height] = type + numtiles;
 							repeat = 1;
 						}
 					}
 					if ( x > 0 )
 					{
-						if ( map.tiles[layer + y * MAPLAYERS + (x - 1)*MAPLAYERS * map.height] == fillspot )
+						if ( map.tiles[layer + y * MAP_LAYERS + (x - 1)*MAP_LAYERS * map.height] == fillspot )
 						{
-							map.tiles[layer + y * MAPLAYERS + (x - 1)*MAPLAYERS * map.height] = type + numtiles;
+							map.tiles[layer + y * MAP_LAYERS + (x - 1)*MAP_LAYERS * map.height] = type + numtiles;
 							repeat = 1;
 						}
 					}
 					if ( y < map.height - 1 )
 					{
-						if ( map.tiles[layer + (y + 1)*MAPLAYERS + x * MAPLAYERS * map.height] == fillspot )
+						if ( map.tiles[layer + (y + 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] == fillspot )
 						{
-							map.tiles[layer + (y + 1)*MAPLAYERS + x * MAPLAYERS * map.height] = type + numtiles;
+							map.tiles[layer + (y + 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] = type + numtiles;
 							repeat = 1;
 						}
 					}
 					if ( y > 0 )
 					{
-						if ( map.tiles[layer + (y - 1)*MAPLAYERS + x * MAPLAYERS * map.height] == fillspot )
+						if ( map.tiles[layer + (y - 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] == fillspot )
 						{
-							map.tiles[layer + (y - 1)*MAPLAYERS + x * MAPLAYERS * map.height] = type + numtiles;
+							map.tiles[layer + (y - 1)*MAP_LAYERS + x * MAP_LAYERS * map.height] = type + numtiles;
 							repeat = 1;
 						}
 					}
@@ -1088,9 +1088,9 @@ void editFill(int x, int y, int layer, int type)
 	{
 		for ( y = 0; y < map.height; y++ )
 		{
-			if ( map.tiles[layer + y * MAPLAYERS + x * MAPLAYERS * map.height] == type + numtiles )
+			if ( map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height] == type + numtiles )
 			{
-				map.tiles[layer + y * MAPLAYERS + x * MAPLAYERS * map.height] = type;
+				map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = type;
 			}
 		}
 	}
@@ -1141,8 +1141,8 @@ void makeUndo()
 	{
 		undomap->flags[c] = map.flags[c];
 	}
-	undomap->tiles = (Sint32*) malloc(sizeof(Sint32) * undomap->width * undomap->height * MAPLAYERS);
-	memcpy(undomap->tiles, map.tiles, sizeof(Sint32)*undomap->width * undomap->height * MAPLAYERS);
+	undomap->tiles = (Sint32*) malloc(sizeof(Sint32) * undomap->width * undomap->height * MAP_LAYERS);
+	memcpy(undomap->tiles, map.tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
 	undomap->entities = (list_t*) malloc(sizeof(list_t));
 	undomap->entities->first = nullptr;
 	undomap->entities->last = nullptr;
@@ -1199,15 +1199,15 @@ void undo()
 		makeUndo();
 		undospot = tempnode;
 	}
-	free(map.tiles);
+	map.tiles.clear();
 	free(camera.vismap);
 	map_t* undomap = (map_t*)undospot->element;
 	map.width = undomap->width;
 	map.height = undomap->height;
-	map.tiles = (Sint32*) malloc(sizeof(Sint32) * map.width * map.height * MAPLAYERS);
+	map.tiles = (Sint32*) malloc(sizeof(Sint32) * map.width * map.height * MAP_LAYERS);
 	camera.vismap = (bool*) malloc(sizeof(bool) * map.height * map.width);
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
-	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAPLAYERS);
+	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
 	list_FreeAll(map.entities);
 	for ( node = undomap->entities->first; node != NULL; node = node->next )
 	{
@@ -1235,15 +1235,15 @@ void redo()
 		return;
 	}
 	selectedEntity[0] = NULL;
-	free(map.tiles);
+	map.tiles.clear();
 	free(camera.vismap);
 	map_t* undomap = (map_t*)redospot->element;
 	map.width = undomap->width;
 	map.height = undomap->height;
-	map.tiles = (Sint32*) malloc(sizeof(Sint32) * map.width * map.height * MAPLAYERS);
+	map.tiles = (Sint32*) malloc(sizeof(Sint32) * map.width * map.height * MAP_LAYERS);
 	camera.vismap = (bool*) malloc(sizeof(bool) * map.height * map.width);
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
-	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAPLAYERS);
+	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
 	list_FreeAll(map.entities);
 	for ( node = undomap->entities->first; node != NULL; node = node->next )
 	{
@@ -1689,7 +1689,7 @@ int main(int argc, char** argv)
 	map.worldUI = nullptr;
 	map.entities->first = nullptr;
 	map.entities->last = nullptr;
-	map.tiles = (int*) malloc(sizeof(int) * map.width * map.height * MAPLAYERS);
+	map.tiles = (int*) malloc(sizeof(int) * map.width * map.height * MAP_LAYERS);
 	camera.vismap = (bool*) malloc(sizeof(bool) * map.height * map.width);
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	strcpy(map.name, "");
@@ -1699,7 +1699,7 @@ int main(int argc, char** argv)
 	{
 		map.flags[c] = 0;
 	}
-	for ( z = 0; z < MAPLAYERS; z++ )
+	for ( z = 0; z < MAP_LAYERS; z++ )
 	{
 		for ( y = 0; y < map.height; y++ )
 		{
@@ -1709,16 +1709,16 @@ int main(int argc, char** argv)
 				{
 					if (x == 0 || y == 0 || x == map.width - 1 || y == map.height - 1)
 					{
-						map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] = 2;
+						map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 2;
 					}
 					else
 					{
-						map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] = 0;
+						map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 0;
 					}
 				}
 				else
 				{
-					map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] = 1;
+					map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 1;
 				}
 			}
 		}
@@ -2353,7 +2353,7 @@ int main(int argc, char** argv)
 							{
 								if ( drawx >= 0 && drawx < map.width && drawy >= 0 && drawy < map.height )
 								{
-									map.tiles[drawlayer + drawy * MAPLAYERS + drawx * MAPLAYERS * map.height] = selectedTile;
+									map.tiles[drawlayer + drawy * MAP_LAYERS + drawx * MAP_LAYERS * map.height] = selectedTile;
 								}
 							}
 							else if ( selectedTool == 1 )	// Process Point Tool functionality
@@ -2370,7 +2370,7 @@ int main(int argc, char** argv)
 										{
 											if ( x >= 0 && x < map.width && y >= 0 && y < map.height )
 											{
-												map.tiles[drawlayer + y * MAPLAYERS + x * MAPLAYERS * map.height] = selectedTile;
+												map.tiles[drawlayer + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = selectedTile;
 											}
 										}
 									}
@@ -2442,10 +2442,10 @@ int main(int argc, char** argv)
 								{
 									if ( drawx + x >= 0 && drawx + x < map.width && drawy + y >= 0 && drawy + y < map.height )
 									{
-										z = copymap.name[0] + y * MAPLAYERS + x * MAPLAYERS * copymap.height;
+										z = copymap.name[0] + y * MAP_LAYERS + x * MAP_LAYERS * copymap.height;
 										if ( copymap.tiles[z] )
 										{
-											map.tiles[drawlayer + (drawy + y)*MAPLAYERS + (drawx + x)*MAPLAYERS * map.height] = copymap.tiles[z];
+											map.tiles[drawlayer + (drawy + y)*MAP_LAYERS + (drawx + x)*MAP_LAYERS * map.height] = copymap.tiles[z];
 										}
 									}
 								}
@@ -2465,7 +2465,7 @@ int main(int argc, char** argv)
 					{
 						if ( drawx >= 0 && drawx < map.width && drawy >= 0 && drawy < map.height )
 						{
-							selectedTile = map.tiles[drawlayer + drawy * MAPLAYERS + drawx * MAPLAYERS * map.height];
+							selectedTile = map.tiles[drawlayer + drawy * MAP_LAYERS + drawx * MAP_LAYERS * map.height];
 							updateRecentTileList(selectedTile);
 						}
 					}
@@ -2585,7 +2585,7 @@ int main(int argc, char** argv)
 				pos.h = 32;
 				if ( drawx >= 0 && drawx < map.width && drawy >= 0 && drawy < map.height )
 				{
-					c = map.tiles[drawlayer + drawy * MAPLAYERS + drawx * MAPLAYERS * map.height];
+					c = map.tiles[drawlayer + drawy * MAP_LAYERS + drawx * MAP_LAYERS * map.height];
 					if ( c >= 0 && c < numtiles )
 					{
 						if ( tiles[c] != NULL )
@@ -9570,7 +9570,7 @@ int main(int argc, char** argv)
 					if ( keystatus[SDLK_u] )
 					{
 						keystatus[SDLK_u] = 0;
-						drawlayer = std::min(drawlayer + 1, MAPLAYERS - 1);
+						drawlayer = std::min(drawlayer + 1, MAP_LAYERS - 1);
 					}
 					//Cycle layer down.
 					if ( keystatus[SDLK_p] )

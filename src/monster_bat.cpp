@@ -740,8 +740,8 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
 					int mapy = static_cast<int>(my->y) >> 4;
 					if ( mapx >= 0 && mapx < map.width && mapy >= 0 && mapy < map.height )
 					{
-						int mapIndex = (mapy)*MAPLAYERS + (mapx) * MAPLAYERS * map.height;
-						if ( !map.tiles[(MAPLAYERS - 1) + mapIndex] )
+						int mapIndex = (mapy)*MAP_LAYERS + (mapx) * MAP_LAYERS * map.height;
+						if ( !map.tiles[(MAP_LAYERS - 1) + mapIndex] )
 						{
 							// no ceiling
 							if ( BAT_REST_FLY_Z <= -19.0 )

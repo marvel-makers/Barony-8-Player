@@ -828,7 +828,7 @@ void actMinotaurCeilingBuster(Entity* my)
 	// levitate particles
 	int u = std::min<unsigned int>(std::max<int>(0, my->x / 16), map.width - 1);
 	int v = std::min<unsigned int>(std::max<int>(0, my->y / 16), map.height - 1);
-	if ( !map.tiles[v * MAPLAYERS + u * MAPLAYERS * map.height] )
+	if ( !map.tiles[v * MAP_LAYERS + u * MAP_LAYERS * map.height] )
 	{
 		int c;
 		for ( c = 0; c < 2; c++ )
@@ -862,7 +862,7 @@ void actMinotaurCeilingBuster(Entity* my)
 		{
 			if ( x >= 0 && y >= 0 && x < map.width << 4 && y < map.height << 4 )
 			{
-				int index = (MAPLAYERS - 1) + ((int)floor(y / 16)) * MAPLAYERS + ((int)floor(x / 16)) * MAPLAYERS * map.height;
+				int index = (MAP_LAYERS - 1) + ((int)floor(y / 16)) * MAP_LAYERS + ((int)floor(x / 16)) * MAP_LAYERS * map.height;
 				if ( map.tiles[index] )
 				{
 					if ( my->monsterAttack == 0 )

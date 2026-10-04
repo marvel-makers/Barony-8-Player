@@ -1579,19 +1579,19 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
 				default:
 					break;
 			}
-			if ( !map.tiles[OBSTACLELAYER + checky * MAPLAYERS + checkx * MAPLAYERS * map.height] )
+			if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )
 			{
 				// no wall.
 				switch ( dir )
 				{
 					case BOMB_EAST:
 					case BOMB_WEST:
-						if ( map.tiles[OBSTACLELAYER + (static_cast<int>(entity->y + 4) >> 4) * MAPLAYERS + checkx * MAPLAYERS * map.height] )
+						if ( map.tiles[OBSTACLELAYER + (static_cast<int>(entity->y + 4) >> 4) * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )
 						{
 							// try 4 units away.
 							entity->y += 4; // coordinates good.
 						}
-						else if ( map.tiles[OBSTACLELAYER + (static_cast<int>(entity->y - 4) >> 4) * MAPLAYERS + checkx * MAPLAYERS * map.height] )
+						else if ( map.tiles[OBSTACLELAYER + (static_cast<int>(entity->y - 4) >> 4) * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )
 						{
 							// try 4 units away other direction.
 							entity->y -= 4; // coordinates good.
@@ -1599,12 +1599,12 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
 						break;
 					case BOMB_NORTH:
 					case BOMB_SOUTH:
-						if ( map.tiles[OBSTACLELAYER + checky * MAPLAYERS + (static_cast<int>(entity->x + 4) >> 4)  * MAPLAYERS * map.height] )
+						if ( map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + (static_cast<int>(entity->x + 4) >> 4)  * MAP_LAYERS * map.height] )
 						{
 							// try 4 units away.
 							entity->x += 4; // coordinates good.
 						}
-						else if ( map.tiles[OBSTACLELAYER + checky * MAPLAYERS + (static_cast<int>(entity->x - 4) >> 4)  * MAPLAYERS * map.height] )
+						else if ( map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + (static_cast<int>(entity->x - 4) >> 4)  * MAP_LAYERS * map.height] )
 						{
 							// try 4 units away other direction.
 							entity->x -= 4; // coordinates good.

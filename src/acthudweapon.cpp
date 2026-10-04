@@ -1597,7 +1597,7 @@ void actHudWeapon(Entity* my)
 										&& !hit.entity && hit.mapx >= 0 && hit.mapx < map.width && hit.mapy >= 0 && hit.mapy < map.height )
 									{
 										// arrow traps
-										if ( map.tiles[OBSTACLELAYER + hit.mapy * MAPLAYERS + hit.mapx * MAPLAYERS * map.height] == 53 )
+										if ( map.tiles[OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height] == 53 )
 										{
 											foundWall = true;
 											stats[HUDWEAPON_PLAYERNUM]->weapon->applyLockpickToWall(HUDWEAPON_PLAYERNUM, hit.mapx, hit.mapy);
@@ -3348,7 +3348,7 @@ void actHudWeapon(Entity* my)
 								real_t dist = 16.0;
 								real_t checkx = players[HUDWEAPON_PLAYERNUM]->entity->x + dist * cos(players[HUDWEAPON_PLAYERNUM]->entity->yaw);
 								real_t checky = players[HUDWEAPON_PLAYERNUM]->entity->y + dist * sin(players[HUDWEAPON_PLAYERNUM]->entity->yaw);
-								int index = (static_cast<int>(checky) >> 4) * MAPLAYERS + (static_cast<int>(checkx) >> 4) * MAPLAYERS * map.height;
+								int index = (static_cast<int>(checky) >> 4) * MAP_LAYERS + (static_cast<int>(checkx) >> 4) * MAP_LAYERS * map.height;
 								while ( !map.tiles[index] || map.tiles[OBSTACLELAYER + index] || swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]] )
 								{
 									dist -= 4.001;
@@ -3356,7 +3356,7 @@ void actHudWeapon(Entity* my)
 									{
 										checkx = players[HUDWEAPON_PLAYERNUM]->entity->x;
 										checky = players[HUDWEAPON_PLAYERNUM]->entity->y;
-										index = (static_cast<int>(checky) >> 4) * MAPLAYERS + (static_cast<int>(checkx) >> 4) * MAPLAYERS * map.height;
+										index = (static_cast<int>(checky) >> 4) * MAP_LAYERS + (static_cast<int>(checkx) >> 4) * MAP_LAYERS * map.height;
 										if ( !map.tiles[index] || map.tiles[OBSTACLELAYER + index] || swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]] )
 										{
 											freeTile = false;
@@ -3365,7 +3365,7 @@ void actHudWeapon(Entity* my)
 									}
 									checkx = players[HUDWEAPON_PLAYERNUM]->entity->x + dist * cos(players[HUDWEAPON_PLAYERNUM]->entity->yaw);
 									checky = players[HUDWEAPON_PLAYERNUM]->entity->y + dist * sin(players[HUDWEAPON_PLAYERNUM]->entity->yaw);
-									index = (static_cast<int>(checky) >> 4) * MAPLAYERS + (static_cast<int>(checkx) >> 4) * MAPLAYERS * map.height;
+									index = (static_cast<int>(checky) >> 4) * MAP_LAYERS + (static_cast<int>(checkx) >> 4) * MAP_LAYERS * map.height;
 								}
 								if ( !map.tiles[index] || map.tiles[OBSTACLELAYER + index] || swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]] )
 								{

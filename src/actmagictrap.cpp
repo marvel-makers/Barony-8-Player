@@ -243,7 +243,7 @@ void actMagicTrap(Entity* my)
 	// check wall inside me.
 	int checkx = static_cast<int>(my->x) >> 4;
 	int checky = static_cast<int>(my->y) >> 4;
-	if ( !map.tiles[OBSTACLELAYER + checky * MAPLAYERS + checkx * MAPLAYERS * map.height] )   // wall
+	if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )   // wall
 	{
 		my->removeLightField();
 		list_RemoveNode(my->mynode);
@@ -295,7 +295,7 @@ void actMagicTrap(Entity* my)
 		}
 		int u = std::min<int>(std::max<int>(0.0, (my->x + x) / 16), map.width - 1);
 		int v = std::min<int>(std::max<int>(0.0, (my->y + y) / 16), map.height - 1);
-		if ( !map.tiles[OBSTACLELAYER + v * MAPLAYERS + u * MAPLAYERS * map.height] )
+		if ( !map.tiles[OBSTACLELAYER + v * MAP_LAYERS + u * MAP_LAYERS * map.height] )
 		{
 			Entity* entity = castSpell(my->getUID(), getSpellFromID(MAGICTRAP_SPELL), false, true);
 			entity->x = my->x + x;

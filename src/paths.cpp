@@ -322,7 +322,7 @@ int pathCheckObstacle(int x, int y, Entity* my, Entity* target)
 {
 	const int u = std::min(std::max(0, x >> 4), (int)map.width - 1);
 	const int v = std::min(std::max(0, y >> 4), (int)map.height - 1);
-	const int index = v * MAPLAYERS + u * MAPLAYERS * map.height;
+	const int index = v * MAP_LAYERS + u * MAP_LAYERS * map.height;
 
 	if ( map.tiles[OBSTACLELAYER + index] || !map.tiles[index] || lavatiles[map.tiles[index]] )
 	{
@@ -545,7 +545,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 		{
 			for ( int x = 0; x < map.width; ++x )
 			{
-				if ( !map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( !map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					pathMap[y + x * map.height] = 0;
 				}
@@ -558,7 +558,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 		{
 			for ( int x = 0; x < map.width; ++x )
 			{
-				int index = y * MAPLAYERS + x * MAPLAYERS * map.height;
+				int index = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
 				if ( !map.tiles[index] )
 				{
 					pathMap[y + x * map.height] = 0;
@@ -659,8 +659,8 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 			int x = std::min<unsigned int>(std::max<int>(0, entity->x / 16), map.width - 1);
 			int y = std::min<unsigned int>(std::max<int>(0, entity->y / 16), map.height - 1);
 			if ( entity->sprite == 41
-			|| lavatiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]]
-			|| swimmingtiles[map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height]] )
+			|| lavatiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]]
+			|| swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
 			{
 				//Fix to make ladders generate in hell.
 				continue;
@@ -983,7 +983,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 {
 	bool obstacle = true;
 
-	int index = y * MAPLAYERS + x * MAPLAYERS * map.height;
+	int index = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
 	if ( !map.tiles[OBSTACLELAYER + index] && map.tiles[index] 
 		&& !(swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]]) )
 	{
@@ -1076,7 +1076,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							}
 							if ( !foundWallModifier && !foundObstacle )
 							{
-								int index = v * MAPLAYERS + (u + 1) * MAPLAYERS * map.height;
+								int index = v * MAP_LAYERS + (u + 1) * MAP_LAYERS * map.height;
 								if ( !map.tiles[OBSTACLELAYER + index] && (pathMap == pathMapFlying 
 									|| (map.tiles[index] && !(swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]]) )) )
 								{
@@ -1123,7 +1123,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							}
 							if ( !foundWallModifier && !foundObstacle )
 							{
-								int index = v * MAPLAYERS + (u - 1) * MAPLAYERS * map.height;
+								int index = v * MAP_LAYERS + (u - 1) * MAP_LAYERS * map.height;
 								if ( !map.tiles[OBSTACLELAYER + index] && (pathMap == pathMapFlying 
 									|| (map.tiles[index] && !(swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]])) ) )
 								{
@@ -1170,7 +1170,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							}
 							if ( !foundWallModifier && !foundObstacle )
 							{
-								int index = (v + 1) * MAPLAYERS + u * MAPLAYERS * map.height;
+								int index = (v + 1) * MAP_LAYERS + u * MAP_LAYERS * map.height;
 								if ( !map.tiles[OBSTACLELAYER + index] && (pathMap == pathMapFlying 
 									|| (map.tiles[index] && !(swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]])) ) )
 								{
@@ -1217,7 +1217,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							}
 							if ( !foundWallModifier && !foundObstacle )
 							{
-								int index = (v - 1) * MAPLAYERS + u * MAPLAYERS * map.height;
+								int index = (v - 1) * MAP_LAYERS + u * MAP_LAYERS * map.height;
 								if ( !map.tiles[OBSTACLELAYER + index] && (pathMap == pathMapFlying 
 									|| (map.tiles[index] && !(swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]]) )) )
 								{

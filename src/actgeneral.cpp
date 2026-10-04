@@ -39,7 +39,7 @@ void actAnimator(Entity* my)
 	if ( my->skill[4] == 0 )
 	{
 		my->skill[4] = 1;
-		map.tiles[my->skill[0] + (int)my->y * MAPLAYERS + (int)my->x * MAPLAYERS * map.height] -= my->skill[1] - 1;
+		map.tiles[my->skill[0] + (int)my->y * MAP_LAYERS + (int)my->x * MAP_LAYERS * map.height] -= my->skill[1] - 1;
 	}
 
 	if ( (int)floor(my->x) < 0 || (int)floor(my->x) >= map.width || (int)floor(my->y) < 0 || (int)floor(my->y) >= map.height )
@@ -52,12 +52,12 @@ void actAnimator(Entity* my)
 	if ( my->skill[3] >= 10 )
 	{
 		my->skill[3] = 0;
-		map.tiles[my->skill[0] + (int)floor(my->y)*MAPLAYERS + (int)floor(my->x)*MAPLAYERS * map.height]++;
+		map.tiles[my->skill[0] + (int)floor(my->y)*MAP_LAYERS + (int)floor(my->x)*MAP_LAYERS * map.height]++;
 		my->skill[5]++;
 		if (my->skill[5] == my->skill[1])
 		{
 			my->skill[5] = 0;
-			map.tiles[my->skill[0] + (int)floor(my->y)*MAPLAYERS + (int)floor(my->x)*MAPLAYERS * map.height] -= my->skill[1];
+			map.tiles[my->skill[0] + (int)floor(my->y)*MAP_LAYERS + (int)floor(my->x)*MAP_LAYERS * map.height] -= my->skill[1];
 		}
 	}
 }
@@ -1534,7 +1534,7 @@ Entity* Entity::createBreakableCollider(int colliderDamageType, real_t _x, real_
 	{
 		return nullptr;
 	}
-	int mapIndex = (y)*MAPLAYERS + (x)*MAPLAYERS * map.height;
+	int mapIndex = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
 	if ( !map.tiles[mapIndex] || swimmingtiles[map.tiles[mapIndex]] || lavatiles[map.tiles[mapIndex]] )
 	{
 		return nullptr;
@@ -2006,7 +2006,7 @@ void actColliderDecoration(Entity* my)
 		{
 			int x = static_cast<int>(my->x) >> 4;
 			int y = static_cast<int>(my->y) >> 4;
-			if ( !map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+			if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				//messagePlayer(0, MESSAGE_DEBUG, "[Collider]: Destroyed self at x: %d, y: %d", x, y);
 				my->removeLightField();
@@ -2488,7 +2488,7 @@ void actFloorDecoration(Entity* my)
 			int y = pair.second;
 			if ( x >= 0 && x < map.width && y >= 0 && y < map.height )
 			{
-				if ( !map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					list_RemoveNode(my->mynode);
 					return;
@@ -6393,7 +6393,7 @@ void actBell(Entity* my)
 						{
 							if ( child->x >= 0 && child->y >= 0 && child->x < map.width << 4 && child->y < map.height << 4 )
 							{
-								const int tile = map.tiles[(int)(child->y / 16) * MAPLAYERS + (int)(child->x / 16) * MAPLAYERS * map.height];
+								const int tile = map.tiles[(int)(child->y / 16) * MAP_LAYERS + (int)(child->x / 16) * MAP_LAYERS * map.height];
 								if ( tile )
 								{
 									onground = true;

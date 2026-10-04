@@ -447,8 +447,8 @@ void actArrow(Entity* my)
 		}
 
 		bool arrowInGround = false;
-		int index = (int)(my->y / 16) * MAPLAYERS + (int)(my->x / 16) * MAPLAYERS * map.height;
-		index = std::clamp(index, 0, (int)(MAPLAYERS * map.width * map.height) - 1);
+		int index = (int)(my->y / 16) * MAP_LAYERS + (int)(my->x / 16) * MAP_LAYERS * map.height;
+		index = std::clamp(index, 0, (int)(MAP_LAYERS * map.width * map.height) - 1);
 		if ( map.tiles[index] )
 		{
 			if ( my->sprite == PROJECTILE_BOLT_SPRITE || my->sprite == PROJECTILE_ROCK_SPRITE ) // bolt/rock

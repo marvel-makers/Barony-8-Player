@@ -210,7 +210,7 @@ void actGib(Entity* my)
 	{
 		if ( my->x >= 0 && my->y >= 0 && my->x < map.width << 4 && my->y < map.height << 4 )
 		{
-			if ( !map.tiles[(int)(floor(my->y / 16)*MAPLAYERS + floor(my->x / 16)*MAPLAYERS * map.height)] )
+			if ( !map.tiles[(int)(floor(my->y / 16)*MAP_LAYERS + floor(my->x / 16)*MAP_LAYERS * map.height)] )
 			{
 				GIB_VELZ += GIB_GRAVITY;
 				my->z += GIB_VELZ;
@@ -928,7 +928,7 @@ void actDamageGib(Entity* my)
 	{
 		if ( my->x >= 0 && my->y >= 0 && my->x < map.width << 4 && my->y < map.height << 4 )
 		{
-			if ( !map.tiles[(int)(floor(my->y / 16)*MAPLAYERS + floor(my->x / 16)*MAPLAYERS * map.height)] )
+			if ( !map.tiles[(int)(floor(my->y / 16)*MAP_LAYERS + floor(my->x / 16)*MAP_LAYERS * map.height)] )
 			{
 				GIB_VELZ += GIB_GRAVITY;
 				my->z += GIB_VELZ;
@@ -1606,7 +1606,7 @@ void spawnGreasePuddleSpawner(Entity* caster, real_t x, real_t y, int duration)
 
 	if ( ox >= 0 && ox < map.width && oy >= 0 && oy < map.height )
 	{
-		int mapIndex = oy * MAPLAYERS + ox * MAPLAYERS * map.height;
+		int mapIndex = oy * MAP_LAYERS + ox * MAP_LAYERS * map.height;
 		if ( !map.tiles[mapIndex] )
 		{
 			return;
@@ -1759,7 +1759,7 @@ void actGreasePuddleSpawner(Entity* my)
 				{
 					if ( map.tileHasAttribute(x, y, 0, map_t::TILE_ATTRIBUTE_GREASE) )
 					{
-						map.tileAttributes[0 + (y * MAPLAYERS) + (x * MAPLAYERS * map.height)] &= ~map_t::TILE_ATTRIBUTE_GREASE;
+						map.tileAttributes[0 + (y * MAP_LAYERS) + (x * MAP_LAYERS * map.height)] &= ~map_t::TILE_ATTRIBUTE_GREASE;
 						serverUpdateMapTileFlag(x, y, 0, 0, map_t::TILE_ATTRIBUTE_GREASE);
 					}
 				}
@@ -1772,11 +1772,11 @@ void actGreasePuddleSpawner(Entity* my)
 		{
 			if ( !map.tileHasAttribute(x, y, 0, map_t::TILE_ATTRIBUTE_GREASE) )
 			{
-				map.tileAttributes[0 + (y * MAPLAYERS) + (x * MAPLAYERS * map.height)] |= map_t::TILE_ATTRIBUTE_GREASE;
+				map.tileAttributes[0 + (y * MAP_LAYERS) + (x * MAP_LAYERS * map.height)] |= map_t::TILE_ATTRIBUTE_GREASE;
 				serverUpdateMapTileFlag(x, y, 0, map_t::TILE_ATTRIBUTE_GREASE, 0);
 			}
 
-			int mapIndex = y * MAPLAYERS + x * MAPLAYERS * map.height;
+			int mapIndex = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
 			if ( lavatiles[map.tiles[mapIndex]] )
 			{
 				if ( !my->flags[BURNING] )
@@ -2017,7 +2017,7 @@ void actLeafParticle(Entity* my)
 	{
 		if ( mapx >= 0 && mapx < map.width && mapy >= 0 && mapy < map.height )
 		{
-			int mapIndex = mapy * MAPLAYERS + mapx * MAPLAYERS * map.height;
+			int mapIndex = mapy * MAP_LAYERS + mapx * MAP_LAYERS * map.height;
 			if ( !map.tiles[mapIndex] )
 			{
 				noFloor = true;
@@ -2252,7 +2252,7 @@ Entity* spawnLeafPile(real_t x, real_t y, bool trap)
 
 		int mapx = static_cast<int>(x) / 16;
 		int mapy = static_cast<int>(y) / 16;
-		int mapIndex = mapy * MAPLAYERS + mapx * MAPLAYERS * map.height;
+		int mapIndex = mapy * MAP_LAYERS + mapx * MAP_LAYERS * map.height;
 		if ( mapx > 0 && mapx < map.width && mapy > 0 && mapy < map.height )
 		{
 			if ( !map.tiles[mapIndex] || swimmingtiles[map.tiles[mapIndex]] || lavatiles[map.tiles[mapIndex]]
@@ -2688,7 +2688,7 @@ Entity* spawnMiscPuddle(Entity* parentent, real_t x, real_t y, int sprite, bool 
 
 	int mapx = static_cast<int>(x) / 16;
 	int mapy = static_cast<int>(y) / 16;
-	int mapIndex = mapy * MAPLAYERS + mapx * MAPLAYERS * map.height;
+	int mapIndex = mapy * MAP_LAYERS + mapx * MAP_LAYERS * map.height;
 	if ( mapx > 0 && mapx < map.width && mapy > 0 && mapy < map.height )
 	{
 		if ( !map.tiles[mapIndex] || map.tiles[OBSTACLELAYER + mapIndex] )

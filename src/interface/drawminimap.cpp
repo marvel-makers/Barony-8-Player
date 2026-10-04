@@ -249,14 +249,14 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 				{
 					if ( find->second.ticks <= ticks )
 					{
-						if ( map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+						if ( map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 						{
 							if ( !minimap[y][x] )
 							{
 								minimap[y][x] = 4;
 							}
 						}
-						else if ( map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height] )
+						else if ( map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 						{
 							if ( !minimap[y][x] )
 							{

@@ -191,7 +191,7 @@ void actLadderUp(Entity* my)
     if (my->z > -20) {
         const int x = my->x / 16;
         const int y = my->y / 16;
-        const int index = (MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map.height;
+        const int index = (MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map.height;
         if (!map.tiles[index]) {
             list_RemoveNode(my->mynode);
             return;

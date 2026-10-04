@@ -457,7 +457,7 @@ void buttonNewConfirm(button_t* my)
 {
 	int x, y, z, c;
 	clearUndos();
-	free(map.tiles);
+	map.tiles.clear();
 	free(camera.vismap);
 	list_FreeAll(map.entities);
 	strcpy(map.name, nametext);
@@ -560,10 +560,10 @@ void buttonNewConfirm(button_t* my)
 	map.height = atoi(heighttext);
 	map.width = std::min(std::max(MINWIDTH, map.width), MAXWIDTH);
 	map.height = std::min(std::max(MINHEIGHT, map.height), MAXHEIGHT);
-	map.tiles = (int*) malloc(sizeof(int) * MAPLAYERS * map.height * map.width);
+	map.tiles = (int*) malloc(sizeof(int) * MAP_LAYERS * map.height * map.width);
 	camera.vismap = (bool*) malloc(sizeof(bool) * map.height * map.width);
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
-	for ( z = 0; z < MAPLAYERS; z++ )
+	for ( z = 0; z < MAP_LAYERS; z++ )
 	{
 		for ( y = 0; y < map.height; y++ )
 		{
@@ -573,16 +573,16 @@ void buttonNewConfirm(button_t* my)
 				{
 					if (x == 0 || y == 0 || x == map.width - 1 || y == map.height - 1)
 					{
-						map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] = 2;
+						map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 2;
 					}
 					else
 					{
-						map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] = 0;
+						map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 0;
 					}
 				}
 				else
 				{
-					map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] = 1;
+					map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 1;
 				}
 			}
 		}
@@ -1007,13 +1007,13 @@ void buttonCopy(button_t* my)
 		{
 			free(copymap.tiles);
 		}
-		copymap.tiles = (Sint32*) malloc(sizeof(Sint32) * copymap.width * copymap.height * MAPLAYERS);
-		memset(copymap.tiles, 0, sizeof(Sint32)*copymap.width * copymap.height * MAPLAYERS);
+		copymap.tiles = (Sint32*) malloc(sizeof(Sint32) * copymap.width * copymap.height * MAP_LAYERS);
+		memset(copymap.tiles, 0, sizeof(Sint32)*copymap.width * copymap.height * MAP_LAYERS);
 		for ( x = 0; x < copymap.width; x++ )
 		{
 			for ( y = 0; y < copymap.height; y++ )
 			{
-				copymap.tiles[drawlayer + y * MAPLAYERS + x * MAPLAYERS * copymap.height] = map.tiles[drawlayer + (y + selectedarea_y1) * MAPLAYERS + (x + selectedarea_x1) * MAPLAYERS * map.height];
+				copymap.tiles[drawlayer + y * MAP_LAYERS + x * MAP_LAYERS * copymap.height] = map.tiles[drawlayer + (y + selectedarea_y1) * MAP_LAYERS + (x + selectedarea_x1) * MAP_LAYERS * map.height];
 			}
 		}
 		copymap.name[0] = drawlayer;
@@ -1053,7 +1053,7 @@ void buttonDelete(button_t* my)
 		{
 			for ( y = selectedarea_y1; y <= selectedarea_y2; y++ )
 			{
-				map.tiles[drawlayer + y * MAPLAYERS + x * MAPLAYERS * map.height] = 0;
+				map.tiles[drawlayer + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 0;
 			}
 		}
 		selectedarea = false;
@@ -1359,20 +1359,20 @@ void buttonAttributesConfirm(button_t* my)
 	// make a copy of the current map
 	mapcopy.width = map.width;
 	mapcopy.height = map.height;
-	mapcopy.tiles = (int*) malloc(sizeof(int) * MAPLAYERS * mapcopy.width * mapcopy.height);
-	for ( z = 0; z < MAPLAYERS; z++ )
+	mapcopy.tiles = (int*) malloc(sizeof(int) * MAP_LAYERS * mapcopy.width * mapcopy.height);
+	for ( z = 0; z < MAP_LAYERS; z++ )
 	{
 		for ( y = 0; y < map.height; y++ )
 		{
 			for ( x = 0; x < map.width; x++ )
 			{
-				mapcopy.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] = map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * mapcopy.height];
+				mapcopy.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * mapcopy.height];
 			}
 		}
 	}
 
 	// allocate memory for a new map
-	free(map.tiles);
+	map.tiles.clear();
 	free(camera.vismap);
 	map.width = atoi(widthtext);
 	map.height = atoi(heighttext);
@@ -1486,7 +1486,7 @@ void buttonAttributesConfirm(button_t* my)
 		map.flags[MAP_FLAG_DISABLELOOT] = 0;
 	}
 
-	map.tiles = (int*) malloc(sizeof(int) * MAPLAYERS * map.height * map.width);
+	map.tiles = (int*) malloc(sizeof(int) * MAP_LAYERS * map.height * map.width);
 	camera.vismap = (bool*) malloc(sizeof(bool) * map.height * map.width);
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	strcpy(map.name, nametext);
@@ -1499,7 +1499,7 @@ void buttonAttributesConfirm(button_t* my)
     }
 
 	// transfer data from the new map to the old map and fill extra space with empty data
-	for ( z = 0; z < MAPLAYERS; z++ )
+	for ( z = 0; z < MAP_LAYERS; z++ )
 	{
 		for ( y = 0; y < map.height; y++ )
 		{
@@ -1507,11 +1507,11 @@ void buttonAttributesConfirm(button_t* my)
 			{
 				if ( x >= mapcopy.width || y >= mapcopy.height )
 				{
-					map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] = 0;
+					map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 0;
 				}
 				else
 				{
-					map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] = mapcopy.tiles[z + y * MAPLAYERS + x * MAPLAYERS * mapcopy.height];
+					map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = mapcopy.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * mapcopy.height];
 				}
 			}
 		}
@@ -1569,13 +1569,13 @@ void buttonClearMapConfirm(button_t* my)
 {
 	long x, y, z;
 	makeUndo();
-	for ( z = 0; z < MAPLAYERS; z++ )
+	for ( z = 0; z < MAP_LAYERS; z++ )
 	{
 		for ( y = 0; y < map.height; y++ )
 		{
 			for ( x = 0; x < map.width; x++ )
 			{
-				map.tiles[z + y * MAPLAYERS + x * MAPLAYERS * map.height] = 0;
+				map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 0;
 			}
 		}
 	}

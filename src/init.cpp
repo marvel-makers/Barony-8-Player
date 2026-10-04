@@ -1204,9 +1204,7 @@ int deinitApp()
 		delete map.worldUI;
 	}
 	list_FreeAll(&light_l);
-	if (map.tiles != nullptr) {
-		free(map.tiles);
-	}
+	map.tiles.clear();
 #ifdef EDITOR
 	if (camera.vismap != nullptr) {
 		free(camera.vismap);
@@ -1217,14 +1215,14 @@ int deinitApp()
 		free(menucam.vismap);
 		menucam.vismap = nullptr;
 	}
-	for ( int i = 0; i < MAXPLAYERS; ++i ) {
-		if ( cameras[i].vismap != nullptr ) {
-			free(cameras[i].vismap);
-			cameras[i].vismap = nullptr;
+	for (auto & camera : cameras) {
+		if ( camera.vismap != nullptr ) {
+			free(camera.vismap);
+			camera.vismap = nullptr;
 		}
 	}
-	for (int c = 0; c < HASH_SIZE; ++c) {
-		list_FreeAll(&ttfTextHash[c]);
+	for (auto & c : ttfTextHash) {
+		list_FreeAll(&c);
 	}
 
 	// free textures

@@ -205,7 +205,7 @@ void actSummonTrap(Entity* my)
 
 				int x = my->x / 16;
 				int y = my->y / 16;
-				int mapIndex = (y)*MAPLAYERS + (x)*MAPLAYERS * map.height;
+				int mapIndex = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
 				bool splash = false;
 				if ( x > 0 && x < map.width && y > 0 && y < map.height )
 				{

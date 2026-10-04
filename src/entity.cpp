@@ -1890,7 +1890,7 @@ void Entity::effectTimes()
 							{
 								int playerx = std::min(std::max<unsigned int>(1, this->x / 16), map.width - 2);
 								int playery = std::min(std::max<unsigned int>(1, this->y / 16), map.height - 2);
-								if ( map.tiles[0 + playery * MAPLAYERS + playerx * MAPLAYERS * map.height] )
+								if ( map.tiles[0 + playery * MAP_LAYERS + playerx * MAP_LAYERS * map.height] )
 								{
 									// there's ground..
 									achievementObserver.playerAchievements[skill[2]].checkPathBetweenObjects(this, nullptr, AchievementObserver::BARONY_ACH_FLUTTERSHY);
@@ -6742,7 +6742,7 @@ void Entity::handleEffects(Stat* myStats)
 			int y = this->y / 16;
 			if ( x >= 0 && x < map.width && y >= 0 && y < map.height )
 			{
-				if ( map.tiles[0 + y * MAPLAYERS + x * MAPLAYERS * map.height] )
+				if ( map.tiles[0 + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 				{
 					Entity* entity = newEntity(862, 1, map.entities, nullptr); //Web pool entity.
 					if ( entity != NULL )
@@ -7152,7 +7152,7 @@ void Entity::handleEffects(Stat* myStats)
 
 		if ( x >= 0 && x < map.width && y >= 0 && y < map.height && myStats->getEffectActive(EFF_FLAME_CLOAK) )
 		{
-			int mapIndex = y * MAPLAYERS + x * MAPLAYERS * map.height;
+			int mapIndex = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
 			auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 2);
 			for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
 			{
@@ -16657,8 +16657,8 @@ void Entity::attack(int pose, int charge, Entity* target)
 								spawnBang(hit.x - cos(yaw) * 2, hit.y - sin(yaw) * 2, 0);
 								degradePickaxe = false;
 							}
-							else if ( swimmingtiles[map.tiles[OBSTACLELAYER + hit.mapy * MAPLAYERS + hit.mapx * MAPLAYERS * map.height]]
-								|| lavatiles[map.tiles[OBSTACLELAYER + hit.mapy * MAPLAYERS + hit.mapx * MAPLAYERS * map.height]] )
+							else if ( swimmingtiles[map.tiles[OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height]]
+								|| lavatiles[map.tiles[OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height]] )
 							{
 								// no effect for lava/water tiles.
 								degradePickaxe = false;
@@ -16699,8 +16699,8 @@ void Entity::attack(int pose, int charge, Entity* target)
 									entity->skill[15] = 1;			 // identified
 								}
 
-								if ( map.tiles[OBSTACLELAYER + hit.mapy * MAPLAYERS + hit.mapx * MAPLAYERS * map.height] >= 41
-									&& map.tiles[OBSTACLELAYER + hit.mapy * MAPLAYERS + hit.mapx * MAPLAYERS * map.height] <= 49 )
+								if ( map.tiles[OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height] >= 41
+									&& map.tiles[OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height] <= 49 )
 								{
 									steamAchievementClient(player, "BARONY_ACH_BAD_REVIEW");
 								}
@@ -16713,7 +16713,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 									}
 								}
 
-								map.tiles[OBSTACLELAYER + hit.mapy * MAPLAYERS + hit.mapx * MAPLAYERS * map.height] = 0;
+								map.tiles[OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height] = 0;
 								// send wall destroy info to clients
 								if ( multiplayer == SERVER )
 								{

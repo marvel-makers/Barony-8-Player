@@ -32,9 +32,9 @@
 #include "ui/Image.hpp"
 
 const std::unordered_map<Mesh::BufferType, int> Mesh::ElementsPerVBO = {
-	{Mesh::BufferType::Position, 3},
-	{Mesh::BufferType::TexCoord, 2},
-	{Mesh::BufferType::Color, 4},
+	{BufferType::Position, 3},
+	{BufferType::TexCoord, 2},
+	{BufferType::Color, 4},
 };
 
 framebuffer main_framebuffer;
@@ -744,12 +744,12 @@ void Mesh::init() {
 
 	// data buffers
     numVertices = 0;
-    GL_CHECK_ERR(glGenBuffers((GLsizei)BufferType::Max, vbo));
-	for (unsigned int c = 0; c < (unsigned int)BufferType::Max; ++c) {
+    GL_CHECK_ERR(glGenBuffers(static_cast<GLsizei>(BufferType::Max), vbo));
+	for (unsigned int c = 0; c < static_cast<unsigned int>(BufferType::Max); ++c) {
         if (data[c].size()) {
-            const auto& find = ElementsPerVBO.find((BufferType)c);
+            const auto& find = ElementsPerVBO.find(static_cast<BufferType>(c));
             assert(find != ElementsPerVBO.end());
-            numVertices = std::max(numVertices, (unsigned int)data[c].size() / find->second);
+            numVertices = std::max(numVertices, static_cast<unsigned int>(data[c].size()) / find->second);
             GL_CHECK_ERR(glBindBuffer(GL_ARRAY_BUFFER, vbo[c]));
             GL_CHECK_ERR(glBufferData(GL_ARRAY_BUFFER, data[c].size() * sizeof(float), data[c].data(), GL_STATIC_DRAW));
 #ifdef VERTEX_ARRAYS_ENABLED
@@ -770,7 +770,7 @@ void Mesh::destroy() {
         GL_CHECK_ERR(glDeleteVertexArrays(1, &vao));
         vao = 0;
     }
-	for (int c = 0; c < (int)BufferType::Max; ++c) {
+	for (int c = 0; c < static_cast<int>(BufferType::Max); ++c) {
 		if (vbo[c]) {
             GL_CHECK_ERR(glDeleteBuffers(1, &vbo[c]));
 			vbo[c] = 0;
@@ -783,11 +783,11 @@ void Mesh::draw(GLenum type, int numVertices) const {
 #ifdef VERTEX_ARRAYS_ENABLED
 	GL_CHECK_ERR(glBindVertexArray(vao));
 #endif
-    
+
     if (numVertices == 0) {
         numVertices = this->numVertices;
     }
-    
+
     // bind buffers
 #ifndef VERTEX_ARRAYS_ENABLED
     for (unsigned int c = 0; c < (unsigned int)BufferType::Max; ++c) {
@@ -800,12 +800,12 @@ void Mesh::draw(GLenum type, int numVertices) const {
         }
     }
 #endif
-    
+
     // draw elements
     if (numVertices) {
         GL_CHECK_ERR(glDrawArrays(type, 0, numVertices));
     }
-    
+
     // disable buffers
 #ifndef VERTEX_ARRAYS_ENABLED
     for (unsigned int c = 0; c < (unsigned int)BufferType::Max; ++c) {
@@ -826,7 +826,7 @@ void framebuffer::init(unsigned int _xsize, unsigned int _ysize, GLint minFilter
     }
 	xsize = _xsize;
 	ysize = _ysize;
-    
+
     GL_CHECK_ERR(glGenTextures(1, &fbo_color));
     GL_CHECK_ERR(glBindTexture(GL_TEXTURE_2D, fbo_color));
     GL_CHECK_ERR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
@@ -845,7 +845,7 @@ void framebuffer::init(unsigned int _xsize, unsigned int _ysize, GLint minFilter
     GL_CHECK_ERR(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8,
         xsize, ysize, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, nullptr));
     GL_CHECK_ERR(glBindTexture(GL_TEXTURE_2D, 0));
-    
+
     GL_CHECK_ERR(glGenFramebuffers(1, &fbo));
     GL_CHECK_ERR(glBindFramebuffer(GL_FRAMEBUFFER, fbo));
     GL_CHECK_ERR(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo_color, 0));
@@ -861,7 +861,7 @@ GLhalf* framebuffer::lock() {
     if (!fbo || mapped) {
         return nullptr;
     }
-    
+
     // map data from the current pixel buffer
     if (pbos[pboindex]) {
 		GL_CHECK_ERR(glBindBuffer(GL_PIXEL_PACK_BUFFER, pbos[pboindex]));
@@ -869,7 +869,7 @@ GLhalf* framebuffer::lock() {
 		if (result) {
 			mapped = true;
 		}
-		return (GLhalf*)result;
+		return static_cast<GLhalf*>(result);
 	} else {
 		return nullptr;
 	}
@@ -879,16 +879,16 @@ void framebuffer::unlock() {
     if (!fbo) {
         return;
     }
-    
+
     // unmap pixel pack buffer
 	if (mapped) {
 		GL_CHECK_ERR(glUnmapBuffer(GL_PIXEL_PACK_BUFFER));
 		mapped = false;
 	}
-    
+
     // select next pbo
     pboindex = (pboindex + 1) % NUM_PBOS;
-    
+
     // start filling a new pixel buffer
     if (pbos[pboindex] == 0) {
         GL_CHECK_ERR(glGenBuffers(1, &pbos[pboindex]));
@@ -993,7 +993,7 @@ Uint32 getPixel(SDL_Surface* surface, int x, int y)
 {
 	int bpp = surface->format->BytesPerPixel;
 	// Here p is the address to the pixel we want to retrieve
-	Uint8* p = (Uint8*)surface->pixels + y * surface->pitch + x * bpp;
+	Uint8* p = static_cast<Uint8*>(surface->pixels) + y * surface->pitch + x * bpp;
 
 	switch (bpp)
 	{
@@ -1038,7 +1038,7 @@ void putPixel(SDL_Surface* surface, int x, int y, Uint32 pixel)
 {
 	int bpp = surface->format->BytesPerPixel;
 	// Here p is the address to the pixel we want to set
-	Uint8* p = (Uint8*)surface->pixels + y * surface->pitch + x * bpp;
+	Uint8* p = static_cast<Uint8*>(surface->pixels) + y * surface->pitch + x * bpp;
 
 	switch (bpp)
 	{
@@ -1175,11 +1175,11 @@ static void drawScalingFilledArc(int x, int y, real_t radius1, real_t radius2, r
             "void main() {"
             "gl_Position = iPosition;"
             "}";
-        
+
         static const char g_glsl[] =
             "layout (points) in;"
             "layout (triangle_strip, max_vertices = 64) out;"
-        
+
             "uniform mat4 uProj;"
             "uniform mat4 uView;"
             "uniform vec4 uInnerColor;"
@@ -1189,44 +1189,44 @@ static void drawScalingFilledArc(int x, int y, real_t radius1, real_t radius2, r
             "uniform float uAngle1;"
             "uniform float uAngle2;"
             "out vec4 Color;"
-        
+
             "void Emit(vec2 position, vec4 color) {"
             "gl_Position = uProj * uView * vec4(position.x, -position.y, 0.0, 1.0);"
             "Color = color;"
             "EmitVertex();"
             "}"
-        
+
             "void main() {"
             "vec2 position = gl_in[0].gl_Position.xy;"
 			"float step = 2.0;"
             "for (float c = uAngle2; c > uAngle1; c -= step) {"
             "Emit(position, uInnerColor);"
-        
+
             "float factor1 = (c - uAngle1) / (uAngle2 - uAngle1);"
             "float radius1 = uRadius2 * factor1 + uRadius1 * (1.0 - factor1);"
             "Emit(position + vec2(cos(radians(c)) * radius1, sin(radians(c)) * radius1), uOuterColor);"
-        
+
             "float factor2 = (c - uAngle1 - step) / (uAngle2 - uAngle1);"
             "float radius2 = uRadius2 * factor2 + uRadius1 * (1.0 - factor2);"
             "Emit(position + vec2(cos(radians(c - step)) * radius2, sin(radians(c - step)) * radius2), uOuterColor);"
-        
+
             "EndPrimitive();"
             "}"
             "}";
-        
+
         static const char f_glsl[] =
             "in vec4 Color;"
             "out vec4 FragColor;"
             "void main() {"
             "FragColor = Color;"
             "}";
-        
+
         gearShader.init("gear shader");
         gearShader.compile(v_glsl, sizeof(v_glsl), Shader::Type::Vertex);
         gearShader.compile(g_glsl, sizeof(g_glsl), Shader::Type::Geometry);
         gearShader.compile(f_glsl, sizeof(f_glsl), Shader::Type::Fragment);
         gearShader.bindAttribLocation("iPosition", 0);
-        
+
         //gearShader.setParameter(GL_GEOMETRY_VERTICES_OUT, 64);
         //gearShader.setParameter(GL_GEOMETRY_INPUT_TYPE, GL_POINTS);
         //gearShader.setParameter(GL_GEOMETRY_OUTPUT_TYPE, GL_TRIANGLES);
@@ -1234,15 +1234,15 @@ static void drawScalingFilledArc(int x, int y, real_t radius1, real_t radius2, r
     }
     gearShader.bind();
     GL_CHECK_ERR(glEnable(GL_BLEND));
-    
+
     // upload radii and angles
-    GL_CHECK_ERR(glUniform1f(gearShader.uniform("uRadius1"), (float)radius1));
-    GL_CHECK_ERR(glUniform1f(gearShader.uniform("uRadius2"), (float)radius2));
-    GL_CHECK_ERR(glUniform1f(gearShader.uniform("uAngle1"), (float)angle1));
-    GL_CHECK_ERR(glUniform1f(gearShader.uniform("uAngle2"), (float)angle2));
-    
+    GL_CHECK_ERR(glUniform1f(gearShader.uniform("uRadius1"), static_cast<float>(radius1)));
+    GL_CHECK_ERR(glUniform1f(gearShader.uniform("uRadius2"), static_cast<float>(radius2)));
+    GL_CHECK_ERR(glUniform1f(gearShader.uniform("uAngle1"), static_cast<float>(angle1)));
+    GL_CHECK_ERR(glUniform1f(gearShader.uniform("uAngle2"), static_cast<float>(angle2)));
+
     Uint8 r, g, b, a;
-    
+
     // upload color
     getColor(inner_color, &r, &g, &b, &a);
     float icv[] = {r / 255.f, g / 255.f, b / 255.f, a / 255.f};
@@ -1250,24 +1250,24 @@ static void drawScalingFilledArc(int x, int y, real_t radius1, real_t radius2, r
     getColor(outer_color, &r, &g, &b, &a);
     float ocv[] = {r / 255.f, g / 255.f, b / 255.f, a / 255.f};
     GL_CHECK_ERR(glUniform4fv(gearShader.uniform("uOuterColor"), 1, ocv));
-    
+
     vec4_t v;
     mat4x4 m;
-    
+
     // projection matrix
     mat4x4 proj(1.f);
     (void)ortho(&proj, 0, xres, 0, yres, -1.f, 1.f);
     GL_CHECK_ERR(glUniformMatrix4fv(gearShader.uniform("uProj"), 1, GL_FALSE, (float*)&proj));
-    
+
     // point matrix
     mat4x4 view(1.f);
-    v = {(float)x, (float)(yres - y), 0.f, 0.f};
+    v = {static_cast<float>(x), static_cast<float>(yres - y), 0.f, 0.f};
     (void)translate_mat(&m, &view, &v); view = m;
     GL_CHECK_ERR(glUniformMatrix4fv(gearShader.uniform("uView"), 1, GL_FALSE, (float*)&view));
-    
+
     // draw line
     lineMesh.draw(GL_POINTS, 1);
-    
+
     // reset GL state
     GL_CHECK_ERR(glDisable(GL_BLEND));
 }
@@ -1301,7 +1301,7 @@ void drawLine( int x1, int y1, int x2, int y2, Uint32 color, Uint8 alpha )
     if (!alpha) {
         return;
     }
-    
+
     // initialize shader if needed, then bind
     if (!lineShader.isInitialized()) {
         static const char v_glsl[] =
@@ -1313,14 +1313,14 @@ void drawLine( int x1, int y1, int x2, int y2, Uint32 color, Uint8 alpha )
             "if (gl_VertexID == 0) { gl_Position = uProj * uMatrix0 * iPosition; }"
             "else { gl_Position = uProj * uMatrix1 * iPosition; }"
             "}";
-        
+
         static const char f_glsl[] =
             "uniform vec4 uColor;"
             "out vec4 FragColor;"
             "void main() {"
             "FragColor = uColor;"
             "}";
-        
+
         lineShader.init("line shader");
         lineShader.compile(v_glsl, sizeof(v_glsl), Shader::Type::Vertex);
         lineShader.compile(f_glsl, sizeof(f_glsl), Shader::Type::Fragment);
@@ -1329,34 +1329,34 @@ void drawLine( int x1, int y1, int x2, int y2, Uint32 color, Uint8 alpha )
     }
     lineShader.bind();
     GL_CHECK_ERR(glEnable(GL_BLEND));
-    
+
     // upload color
     float cv[] = {r / 255.f, g / 255.f, b / 255.f, alpha / 255.f};
     GL_CHECK_ERR(glUniform4fv(lineShader.uniform("uColor"), 1, cv));
-    
+
     vec4_t v;
     mat4x4 m;
-    
+
     // projection matrix
     mat4x4 proj(1.f);
     (void)ortho(&proj, 0, xres, 0, yres, -1.f, 1.f);
     GL_CHECK_ERR(glUniformMatrix4fv(lineShader.uniform("uProj"), 1, GL_FALSE, (float*)&proj));
-    
+
     // point 1 matrix
     mat4x4 view0(1.f);
-    v = {(float)x1, (float)(yres - y1), 0.f, 0.f};
+    v = {static_cast<float>(x1), static_cast<float>(yres - y1), 0.f, 0.f};
     (void)translate_mat(&m, &view0, &v); view0 = m;
     GL_CHECK_ERR(glUniformMatrix4fv(lineShader.uniform("uMatrix0"), 1, GL_FALSE, (float*)&view0));
-    
+
     // point 2 matrix
     mat4x4 view1(1.f);
-    v = {(float)x2, (float)(yres - y2), 0.f, 0.f};
+    v = {static_cast<float>(x2), static_cast<float>(yres - y2), 0.f, 0.f};
     (void)translate_mat(&m, &view1, &v); view1 = m;
     GL_CHECK_ERR(glUniformMatrix4fv(lineShader.uniform("uMatrix1"), 1, GL_FALSE, (float*)&view1));
-    
+
     // draw line
     lineMesh.draw(GL_LINES, 2);
-    
+
     // reset GL state
     GL_CHECK_ERR(glDisable(GL_BLEND));
 }
@@ -1380,7 +1380,7 @@ int drawRect( SDL_Rect* src, Uint32 color, Uint8 alpha )
 		secondsrc.h = yres;
 		src = &secondsrc;
 	}
-	Uint32 c = (color & 0x00ffffff) | ((Uint32)alpha << 24);
+	Uint32 c = (color & 0x00ffffff) | (static_cast<Uint32>(alpha) << 24);
 	auto image = Image::get("images/system/white.png");
 	image->drawColor(nullptr, *src, SDL_Rect{0, 0, xres, yres}, c);
 	return 0;
@@ -1421,8 +1421,8 @@ void drawGear(Sint16 x, Sint16 y, real_t size, Sint32 rotation)
 	const int num_teeth = 6;
 	for ( int c = 0; c < num_teeth; c++ )
 	{
-		real_t p = 180.0 / (real_t)num_teeth;
-		real_t r = (real_t)c * (p * 2.0) + (real_t)rotation;
+		real_t p = 180.0 / static_cast<real_t>(num_teeth);
+		real_t r = static_cast<real_t>(c) * (p * 2.0) + static_cast<real_t>(rotation);
 		real_t t = 4.0;
 		drawScalingFilledArc(x, y, size, size,
 			r,
@@ -1596,15 +1596,15 @@ SDL_Surface* scaleSurface(SDL_Surface* Surface, Uint16 Width, Uint16 Height)
 
 	SDL_Surface* _ret = SDL_CreateRGBSurface(Surface->flags, Width, Height, Surface->format->BitsPerPixel, Surface->format->Rmask, Surface->format->Gmask, Surface->format->Bmask, Surface->format->Amask);
 
-	real_t _stretch_factor_x = (real_t)Width / (real_t)Surface->w;
-	real_t _stretch_factor_y = (real_t)Height / (real_t)Surface->h;
+	real_t _stretch_factor_x = static_cast<real_t>(Width) / static_cast<real_t>(Surface->w);
+	real_t _stretch_factor_y = static_cast<real_t>(Height) / static_cast<real_t>(Surface->h);
 
 	for (y = 0; y < Surface->h; y++)
 		for (x = 0; x < Surface->w; x++)
 			for (o_y = 0; o_y < _stretch_factor_y; ++o_y)
 				for (o_x = 0; o_x < _stretch_factor_x; ++o_x)
 				{
-					putPixel(_ret, (Sint32)(_stretch_factor_x * x) + o_x, (Sint32)(_stretch_factor_y * y) + o_y, getPixel(Surface, x, y));
+					putPixel(_ret, static_cast<Sint32>(_stretch_factor_x * x) + o_x, static_cast<Sint32>(_stretch_factor_y * y) + o_y, getPixel(Surface, x, y));
 				}
 
 	free(Surface);
@@ -1662,11 +1662,11 @@ void drawLayer(long camx, long camy, int z, map_t* map)
 	{
 		for ( x = minx; x < maxx; x++ )
 		{
-			index = map->tiles[z + y * MAPLAYERS + x * MAPLAYERS * map->height];
+			index = map->tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map->height];
 			if ( index > 0)
 			{
-				pos.x = (int)((x << TEXTUREPOWER) - camx);
-				pos.y = (int)((y << TEXTUREPOWER) - camy);
+				pos.x = static_cast<int>((x << TEXTUREPOWER) - camx);
+				pos.y = static_cast<int>((y << TEXTUREPOWER) - camy);
 				pos.w = TEXTURESIZE;
 				pos.h = TEXTURESIZE;
 				if ( index >= 0 && index < numtiles )
@@ -1699,7 +1699,7 @@ void drawBackground(long camx, long camy)
 
 void drawForeground(long camx, long camy)
 {
-	for ( int z = OBSTACLELAYER; z < MAPLAYERS; z++ )
+	for ( int z = OBSTACLELAYER; z < MAP_LAYERS; z++ )
 	{
 		drawLayer(camx, camy, z, &map);
 	}
@@ -1746,11 +1746,11 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
     static constexpr bool DoRaysInParallel = true;
     static constexpr bool WriteOutsSequentially = false;
 #else
-    static ConsoleVariable<int> cvar_numRays("/raycast_num", 100);
-    static ConsoleVariable<int> cvar_numRaysPerJob("/raycast_num_per_job", 50);
-    static ConsoleVariable<bool> cvar_parallelRays("/raycast_multithread", false); // note: crashes on nintendo
-    static ConsoleVariable<bool> cvar_writeOutsSequentially("/raycast_write_outs_sequentially", false);
-    
+    static ConsoleVariable cvar_numRays("/raycast_num", 100);
+    static ConsoleVariable cvar_numRaysPerJob("/raycast_num_per_job", 50);
+    static ConsoleVariable cvar_parallelRays("/raycast_multithread", false); // note: crashes on nintendo
+    static ConsoleVariable cvar_writeOutsSequentially("/raycast_write_outs_sequentially", false);
+
     static int NumRays;
     NumRays = *cvar_numRays;
     static int NumRaysPerJob;
@@ -1759,14 +1759,14 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
     DoRaysInParallel = *cvar_parallelRays;
     static bool WriteOutsSequentially;
     WriteOutsSequentially = *cvar_writeOutsSequentially;
-    
+
     static bool TimeTest = false;
     static ConsoleCommand ccmd_raycastTime("/raycast_time", "Time the raycast() function", [](int argc, const char** argv){
         TimeTest = true;
     });
 #endif
 	static real_t raycastMaxDist = 16.0;
-    
+
     // ray shooting functor
     struct outs_t {
         int x;
@@ -1778,23 +1778,23 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
         const int mw;
         const int mh;
         const view_t camera;
-        const Sint32* tiles;
+    	const std::vector<Sint32> tiles;
         const vec4_t* lights;
         Sint8 (*minimap)[MINIMAP_MAX_DIMENSION];
 		bool fillWithColor;
     };
     auto shoot_ray = [](const ins_t&& ins) -> std::vector<outs_t>{
         std::vector<outs_t> result;
-        
+
         const int& mw = ins.mw;
         const int& mh = ins.mh;
         const view_t& camera = ins.camera;
         const auto& tiles = ins.tiles;
         const auto& lights = ins.lights;
         const auto& minimap = ins.minimap;
-        
-        const int posx = (int)camera.x;
-        const int posy = (int)camera.y; // integer coordinates
+
+        const int posx = static_cast<int>(camera.x);
+        const int posy = static_cast<int>(camera.y); // integer coordinates
 		if ( posx == 0 && posy == 0 ) { return result; } // camera not initialized
         const real_t fracx = camera.x - posx;
         const real_t fracy = camera.y - posy; // fraction coordinates
@@ -1802,25 +1802,25 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
         const real_t wfov = (fov * camera.winw / camera.winh) * PI / 180.f;
         constexpr real_t dstart = CLIPNEAR / 16.0;
         constexpr real_t dend = CLIPFAR / 16;
-        
+
         for (int sx = ins.sx; sx < ins.sx + NumRaysPerJob; ++sx) {
             int inx = posx;
             int iny = posy;
             int inx2 = inx;
             int iny2 = iny;
-            
+
             // new ray vector for next column
             const real_t rx = cos(camera.ang - wfov / 2.f + (wfov / NumRays) * sx);
             const real_t ry = sin(camera.ang - wfov / 2.f + (wfov / NumRays) * sx);
             const real_t arx = rx ? 1.0 / fabs(rx) : 0.0;
             const real_t ary = ry ? 1.0 / fabs(ry) : 0.0;
-            
+
             // dval0=dend+1 is there to prevent infinite loops when ray is parallel to axis
             long dincx = 0;
             long dincy = 0;
             real_t dval0 = 1e32;
             real_t dval1 = 1e32;
-            
+
             // calculate integer coordinate increments
             // x-axis:
             if (rx < 0) {
@@ -1830,7 +1830,7 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
                 dincx = 1;
                 dval0 = (1 - fracx) * arx;
             }
-            
+
             // y-axis:
             if (ry < 0) {
                 dincy = -1;
@@ -1839,13 +1839,13 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
                 dincy = 1;
                 dval1 = (1 - fracy) * ary;
             }
-            
+
             real_t d = 0;
             do {
                 // record previous ray position
                 inx2 = inx;
                 iny2 = iny;
-                
+
                 // move the ray one square forward
                 if (dval1 > dval0) {
                     inx += dincx;
@@ -1856,24 +1856,24 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
                     d = dval1;
                     dval1 += ary;
                 }
-                
+
                 // check ray is within map bounds
                 if (inx < 0 || iny < 0 || inx >= mw || iny >= mh) {
                     // out of map bounds
                     break;
                 }
-                
+
                 // check against tiles in each map layer
-                bool zhit[MAPLAYERS] = { false };
-                for (int z = 0; z < MAPLAYERS; z++) {
-                    if (tiles[z + iny * MAPLAYERS + inx * MAPLAYERS * mh]
-						&& !(z > 0 && tiles[z + iny * MAPLAYERS + inx * MAPLAYERS * mh] == TRANSPARENT_TILE)
+                bool zhit[MAP_LAYERS] = { false };
+                for (int z = 0; z < MAP_LAYERS; z++) {
+                    if (tiles[z + iny * MAP_LAYERS + inx * MAP_LAYERS * mh]
+						&& !(z > 0 && tiles[z + iny * MAP_LAYERS + inx * MAP_LAYERS * mh] == TRANSPARENT_TILE)
 						&& d > dstart) { // hit something solid
                         zhit[z] = true;
-                        
+
                         // collect light information
-                        if (tiles[z + iny2 * MAPLAYERS + inx2 * MAPLAYERS * mh]
-							&& !(z > 0 && tiles[z + iny2 * MAPLAYERS + inx2 * MAPLAYERS * mh] == TRANSPARENT_TILE)) {
+                        if (tiles[z + iny2 * MAP_LAYERS + inx2 * MAP_LAYERS * mh]
+							&& !(z > 0 && tiles[z + iny2 * MAP_LAYERS + inx2 * MAP_LAYERS * mh] == TRANSPARENT_TILE)) {
                             continue;
                         }
                         auto& l = lights[iny2 + inx2 * mh];
@@ -1888,7 +1888,7 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
 								visible = true;
 							}
 						}
-                        
+
                         // update minimap
                         if (d < raycastMaxDist && z == OBSTACLELAYER) {
                             if ( visible ) {
@@ -1930,8 +1930,8 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
 						}
 
                         if (d < raycastMaxDist ) {
-                            if ( visible && 
-								tiles[iny * MAPLAYERS + inx * MAPLAYERS * mh] ) {
+                            if ( visible &&
+								tiles[iny * MAP_LAYERS + inx * MAP_LAYERS * mh] ) {
                                 // walkable space
                                 if (WriteOutsSequentially) {
 									if ( ins.fillWithColor )
@@ -1952,8 +1952,8 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
 										minimap[iny][inx] = 3;
 									}
                                 }
-                            } else if (tiles[z + iny * MAPLAYERS + inx * MAPLAYERS * mh]
-								&& tiles[z + iny * MAPLAYERS + inx * MAPLAYERS * mh] != TRANSPARENT_TILE) {
+                            } else if (tiles[z + iny * MAP_LAYERS + inx * MAP_LAYERS * mh]
+								&& tiles[z + iny * MAP_LAYERS + inx * MAP_LAYERS * mh] != TRANSPARENT_TILE) {
                                 // no floor
                                 /*if (WriteOutsSequentially) {
                                     result.push_back({inx, iny, 0});
@@ -1964,10 +1964,10 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
                         }
                     }
                 }
-                
+
                 // if a wall was hit (full column of map layers) stop the ray
                 bool wallhit = true;
-                for (int z = 0; z < MAPLAYERS; z++) {
+                for (int z = 0; z < MAP_LAYERS; z++) {
                     if (zhit[z] == false) {
                         wallhit = false;
                     }
@@ -1980,7 +1980,7 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
         }
         return result;
     };
-    
+
     auto t = std::chrono::high_resolution_clock::now();
 
     // shoot the rays
@@ -2013,9 +2013,9 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
         std::vector<std::future<std::vector<outs_t>>> tasks;
         for (int x = 0; x < NumRays; x += NumRaysPerJob) {
             tasks.emplace_back(std::async(std::launch::async, shoot_ray,
-                ins_t{x, (int)map.width, (int)map.height, camera, map.tiles, lightmap, minimap, fillWithColor}));
+                ins_t{x, static_cast<int>(map.width), static_cast<int>(map.height), camera, map.tiles, lightmap, minimap, fillWithColor}));
         }
-        for (int x = (int)tasks.size() - 1; x >= 0; --x) {
+        for (int x = static_cast<int>(tasks.size()) - 1; x >= 0; --x) {
             auto out_list = tasks[x].get();
             for (auto& it : out_list) {
                 minimap[it.y][it.x] = it.value;
@@ -2024,13 +2024,13 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
         }
     } else {
         for (int x = 0; x < NumRays; x += NumRaysPerJob) {
-            auto out_list = shoot_ray(ins_t{x, (int)map.width, (int)map.height, camera, map.tiles, lightmap, minimap, fillWithColor});
+            auto out_list = shoot_ray(ins_t{x, static_cast<int>(map.width), static_cast<int>(map.height), camera, map.tiles, lightmap, minimap, fillWithColor});
             for (auto& it : out_list) {
                 minimap[it.y][it.x] = it.value;
             }
         }
     }
-    
+
 #ifndef EDITOR
     if (TimeTest) {
         TimeTest = false;
@@ -2057,7 +2057,7 @@ void temporarilyDisableDithering() {
 void drawEntities3D(view_t* camera, int mode)
 {
 #ifndef EDITOR
-    static ConsoleVariable<bool> cvar_drawEnts("/draw_entities", true);
+    static ConsoleVariable cvar_drawEnts("/draw_entities", true);
 	if (!*cvar_drawEnts) {
 	    return;
 	}
@@ -2085,13 +2085,13 @@ void drawEntities3D(view_t* camera, int mode)
 			break;
 		}
 	}
-    
+
     const bool ditheringDisabled = ticks - ditherDisabledTime < TICKS_PER_SECOND;
 
 	node_t* nextnode = nullptr;
 	for ( node_t* node = map.entities->first; node != nullptr; node = nextnode )
     {
-        Entity* entity = (Entity*)node->element;
+        Entity* entity = static_cast<Entity*>(node->element);
         nextnode = node->next;
         if ( node->next == nullptr && node->list == map.entities )
         {
@@ -2101,7 +2101,7 @@ void drawEntities3D(view_t* camera, int mode)
                 nextnode = map.worldUI->first;
             }
         }
-        
+
         if ( entity->flags[INVISIBLE] && !entity->flags[INVISIBLE_DITHER] )
         {
             continue;
@@ -2196,7 +2196,7 @@ void drawEntities3D(view_t* camera, int mode)
 			}
 		}
 #endif
-        
+
         // update dithering
         auto& dither = entity->dithering[camera];
         if (ticks != dither.lastUpdateTick) {
@@ -2208,10 +2208,10 @@ void drawEntities3D(view_t* camera, int mode)
                 const int y = entity->y / 16;
                 if (x >= 0 && y >= 0 && x < map.width && y < map.height)
                 {
-                    if ( !camera->vismap[y + x * map.height] 
+                    if ( !camera->vismap[y + x * map.height]
 						&& entity->monsterEntityRenderAsTelepath == 0
 #ifndef EDITOR
-						&& !(!intro && entity->goldTelepathy > 0 && entity->behavior == &actGoldBag 
+						&& !(!intro && entity->goldTelepathy > 0 && entity->behavior == &actGoldBag
 							&& currentPlayerViewport >= 0 && currentPlayerViewport < MAXPLAYERS
 							&& entity->goldTelepathy & (1 << currentPlayerViewport))
 						&& !(!intro && entity->colliderTelepathy > 0 && entity->behavior == &actColliderDecoration
@@ -2247,7 +2247,7 @@ void drawEntities3D(view_t* camera, int mode)
 					if ( (entity->flags[INVISIBLE] && entity->flags[INVISIBLE_DITHER]) || entity->flags[STASIS_DITHER] )
 					{
 #ifndef EDITOR
-						static ConsoleVariable<int> cvar_dither_invisibility("/dither_invisibility", 5);
+						static ConsoleVariable cvar_dither_invisibility("/dither_invisibility", 5);
 						dither.value = decrease ? std::max(0, dither.value - 2) :
 							std::min(*cvar_dither_invisibility, dither.value + 1);
 #else
@@ -2258,7 +2258,7 @@ void drawEntities3D(view_t* camera, int mode)
 					else if ( entity->mistformGLRender >= 0.45 )
 					{
 #ifndef EDITOR
-						static ConsoleVariable<int> cvar_dither_mistform("/dither_mistform", 6);
+						static ConsoleVariable cvar_dither_mistform("/dither_mistform", 6);
 						dither.value = decrease ? std::max(0, dither.value - 2) :
 							std::min(*cvar_dither_mistform, dither.value + 1);
 #else
@@ -2284,7 +2284,7 @@ void drawEntities3D(view_t* camera, int mode)
 				continue;
 			}
 		}
-        
+
 		if ( entity->flags[SPRITE] == false )
 		{
             GL_CHECK_ERR(glDrawVoxel(camera, entity, mode));
@@ -2364,15 +2364,15 @@ void drawEntities3D(view_t* camera, int mode)
 	}
 #endif
 
-	std::sort(spritesToDraw.begin(), spritesToDraw.end(), 
+	std::sort(spritesToDraw.begin(), spritesToDraw.end(),
 		[](const std::tuple<real_t, void*, SpriteTypes>& lhs, const std::tuple<real_t, void*, SpriteTypes>& rhs) {
 		return lhs > rhs;
 	});
 	for ( auto& distSpriteType : spritesToDraw )
 	{
-		if ( std::get<2>(distSpriteType) == SpriteTypes::SPRITE_ENTITY )
+		if ( std::get<2>(distSpriteType) == SPRITE_ENTITY )
 		{
-			Entity* entity = (Entity*)std::get<1>(distSpriteType);
+			Entity* entity = static_cast<Entity*>(std::get<1>(distSpriteType));
 			if ( entity->behavior == &actSpriteNametag )
 			{
 				if ( intro ) { continue; } // don't draw on main menu
@@ -2541,19 +2541,19 @@ void drawEntities3D(view_t* camera, int mode)
 				glDrawSprite(camera, entity, mode);
 			}
 		}
-		else if ( std::get<2>(distSpriteType) == SpriteTypes::SPRITE_HPBAR )
+		else if ( std::get<2>(distSpriteType) == SPRITE_HPBAR )
 		{
 #ifndef EDITOR
 			if ( intro ) { continue; } // don't draw on main menu
-			auto enemybar = (std::pair<Uint32, EnemyHPDamageBarHandler::EnemyHPDetails>*)std::get<1>(distSpriteType);
+			auto enemybar = static_cast<std::pair<Uint32, EnemyHPDamageBarHandler::EnemyHPDetails>*>(std::get<1>(distSpriteType));
 			glDrawEnemyBarSprite(camera, mode, currentPlayerViewport, &enemybar->second);
 #endif
 		}
-		else if ( std::get<2>(distSpriteType) == SpriteTypes::SPRITE_DIALOGUE )
+		else if ( std::get<2>(distSpriteType) == SPRITE_DIALOGUE )
 		{
 #ifndef EDITOR
 			if ( intro ) { continue; } // don't draw on main menu
-			auto dialogue = (Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t*)std::get<1>(distSpriteType);
+			auto dialogue = static_cast<Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t*>(std::get<1>(distSpriteType));
 			glDrawWorldDialogueSprite(camera, dialogue, mode);
 #endif
 		}
@@ -2617,7 +2617,7 @@ void drawEntities2D(long camx, long camy)
 					box.y = pos.y + 1;
 					drawRect(&box, makeColorRGB(0, 0, 255), 255);
 				}
-				
+
 				// if item sprite and the item index is not 0 (NULL), or 1 (RANDOM)
 				if ( entity->sprite == 8 && entity->skill[10] > 1 )
 				{
@@ -3338,10 +3338,10 @@ void drawEditormap(long camx, long camy)
 	drawRect(&src, makeColorRGB(0, 0, 0), 255);
 
 	// initial box dimensions
-	src.x = (xres - 120) + (((real_t)camx / TEXTURESIZE) * 112.0) / map.width;
-	src.y = 24 + (((real_t)camy / TEXTURESIZE) * 112.0) / map.height;
-	src.w = (112.0 / map.width) * ((real_t)xres / TEXTURESIZE);
-	src.h = (112.0 / map.height) * ((real_t)yres / TEXTURESIZE);
+	src.x = (xres - 120) + ((static_cast<real_t>(camx) / TEXTURESIZE) * 112.0) / map.width;
+	src.y = 24 + ((static_cast<real_t>(camy) / TEXTURESIZE) * 112.0) / map.height;
+	src.w = (112.0 / map.width) * (static_cast<real_t>(xres) / TEXTURESIZE);
+	src.h = (112.0 / map.height) * (static_cast<real_t>(yres) / TEXTURESIZE);
 
 	// clip at left edge
 	if ( src.x < xres - 120 )
@@ -3432,13 +3432,13 @@ void drawWindowFancy(int x1, int y1, int x2, int y2)
 {
     auto white = Image::get("images/system/white.png");
     auto backdrop = Image::get("images/system/fancyWindow.png");
-    
+
     white->drawColor(nullptr, SDL_Rect{x1, y1, x2 - x1, y2 - y1},
          SDL_Rect{0, 0, xres, yres}, makeColorRGB(63, 63, 63));
-    
+
     white->drawColor(nullptr, SDL_Rect{x1 + 1, y1 + 1, x2 - x1 - 2, y2 - y1 - 2},
          SDL_Rect{0, 0, xres, yres}, makeColorRGB(127, 127, 127));
-    
+
     backdrop->drawColor(nullptr, SDL_Rect{x1 + 2, y1 + 2, x2 - x1 - 4, y2 - y1 - 4},
          SDL_Rect{0, 0, xres, yres}, makeColorRGB(191, 191, 191));
 }
@@ -3493,8 +3493,8 @@ SDL_Rect ttfPrintTextColor( TTF_Font* font, int x, int y, Uint32 color, bool out
             ptr[c] = '\0';
             auto text = Text::get(ptr, filename, uint32ColorWhite, uint32ColorBlack);
             text->drawColor(SDL_Rect{0, 0, 0, 0}, SDL_Rect{x, y, 0, 0}, SDL_Rect{0, 0, xres, yres}, color);
-			w = std::max(w, (int)text->getWidth());
-			h = std::max(h, (int)text->getHeight());
+			w = std::max(w, static_cast<int>(text->getWidth()));
+			h = std::max(h, static_cast<int>(text->getHeight()));
             y += text->getHeight();
             ptr += c + 1;
         }
@@ -3502,8 +3502,8 @@ SDL_Rect ttfPrintTextColor( TTF_Font* font, int x, int y, Uint32 color, bool out
 	if (ptr < buf + sizeof(buf)) {
 		auto text = Text::get(ptr, filename, uint32ColorWhite, uint32ColorBlack);
 		text->drawColor(SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ x, y, 0, 0 }, SDL_Rect{ 0, 0, xres, yres }, color);
-		w = std::max(w, (int)text->getWidth());
-		h = std::max(h, (int)text->getHeight());
+		w = std::max(w, static_cast<int>(text->getWidth()));
+		h = std::max(h, static_cast<int>(text->getHeight()));
 	}
     return SDL_Rect{x, y, w, h};
 }
@@ -3587,7 +3587,7 @@ void printText( SDL_Surface* font_bmp, int x, int y, const char* str )
 	}
 
 	// format the string
-	numbytes = (int)strlen(str);
+	numbytes = static_cast<int>(strlen(str));
 
 	// define font dimensions
 	dest.x = x;
@@ -3846,15 +3846,15 @@ bool behindCamera(const view_t& camera, real_t x, real_t y)
 	// 2D, so when the camera tilts up or down, broadening the WFOV, this is
 	// unaccounted for. therefore a margin of error of 30* is added to fov
 	const uint32_t error = 30;
-    const float aspect = (float)camera.winw / (float)camera.winh;
-    const float wfov = std::max(90.f, (float)(fov + error) * aspect) * ((float)PI) / 180.f;
+    const float aspect = static_cast<float>(camera.winw) / static_cast<float>(camera.winh);
+    const float wfov = std::max(90.f, static_cast<float>(fov + error) * aspect) * static_cast<float>(PI) / 180.f;
     const float c = cosf(wfov * 0.5f);
 
     return dot < c;
 }
 
 static inline bool testTileOccludes(const map_t& map, int index) {
-    assert(index >= 0 && index <= map.width * map.height * MAPLAYERS - MAPLAYERS);
+    assert(index >= 0 && index <= map.width * map.height * MAP_LAYERS - MAP_LAYERS);
     const Uint64& t0 = *(Uint64*)&map.tiles[index];
     const Uint32& t1 = *(Uint32*)&map.tiles[index + 2];
     return (t0 & 0xffffffff00000000) // is floor != 0
@@ -3869,8 +3869,8 @@ void occlusionCulling(map_t& map, view_t& camera)
 {
 	// cvars
 #ifndef EDITOR
-    static ConsoleVariable<bool> disabled("/skipculling", false);
-	static ConsoleVariable<bool> disableInWalls("/disable_culling_in_walls", false);
+    static ConsoleVariable disabled("/skipculling", false);
+	static ConsoleVariable disableInWalls("/disable_culling_in_walls", false);
 #else
 	static bool ed_disabled = false;
 	static bool ed_disableInWalls = true;
@@ -3879,18 +3879,18 @@ void occlusionCulling(map_t& map, view_t& camera)
 #endif
 
 	const int size = map.width * map.height;
-	
+
     if (*disabled) {
         memset(camera.vismap, 1, sizeof(bool) * size);
         return;
     }
 
-    const int camx = std::min(std::max(0, (int)camera.x), (int)map.width - 1);
-    const int camy = std::min(std::max(0, (int)camera.y), (int)map.height - 1);
+    const int camx = std::min(std::max(0, static_cast<int>(camera.x)), static_cast<int>(map.width) - 1);
+    const int camy = std::min(std::max(0, static_cast<int>(camera.y)), static_cast<int>(map.height) - 1);
 
     // don't do culling if camera in wall
 	if (*disableInWalls) {
-		if (map.tiles[OBSTACLELAYER + camy * MAPLAYERS + camx * MAPLAYERS * map.height] != 0) {
+		if (map.tiles[OBSTACLELAYER + camy * MAP_LAYERS + camx * MAP_LAYERS * map.height] != 0) {
 			memset(camera.vismap, 1, sizeof(bool) * size);
 			return;
 		}
@@ -3900,9 +3900,9 @@ void occlusionCulling(map_t& map, view_t& camera)
     memset(camera.vismap, 0, sizeof(bool) * size);
 	camera.vismap[camy + camx * map.height] = true;
 
-    const int hoff = MAPLAYERS;
-    const int woff = MAPLAYERS * map.height;
-    
+    const int hoff = MAP_LAYERS;
+    const int woff = MAP_LAYERS * map.height;
+
 	// making these static saves a lot of redundant
 	// putting up / pulling down of structures in
 	// memory, which saves measurable time on more
@@ -3925,13 +3925,13 @@ void occlusionCulling(map_t& map, view_t& camera)
         if (camera.vismap[v + u * map.height]) {
             goto next;
         }
-        if (behindCamera(camera, (real_t)u + 0.5, (real_t)v + 0.5)) {
+        if (behindCamera(camera, static_cast<real_t>(u) + 0.5, static_cast<real_t>(v) + 0.5)) {
             goto next;
         }
         for (int foo = -1; foo <= 1; ++foo) {
             for (int bar = -1; bar <= 1; ++bar) {
-                const int x = std::min(std::max(0, camx + foo), (int)map.width - 1);
-                const int y = std::min(std::max(0, camy + bar), (int)map.height - 1);
+                const int x = std::min(std::max(0, camx + foo), static_cast<int>(map.width) - 1);
+                const int y = std::min(std::max(0, camy + bar), static_cast<int>(map.height) - 1);
                 const int xyindex = y * hoff + x * woff;
                 if (testTileOccludes(map, xyindex)) {
                     continue;
@@ -3980,7 +3980,7 @@ void occlusionCulling(map_t& map, view_t& camera)
                 }
             }
         }
-        
+
     next:
         // if the vis check succeeded, explore adjacent tiles
         if (camera.vismap[v + u * map.height]) {
@@ -4148,7 +4148,7 @@ GLhalf toFloat16(float f) {
 			// less than half_MIN (f may be a small normalized
 			// float, a denormalized float or a zero).
 			// We convert f to a half zero.
-			return GLhalf(s);
+			return static_cast<GLhalf>(s);
 		}
 
 		// E is between -10 and 0.  F is a normalized float,
@@ -4166,13 +4166,13 @@ GLhalf toFloat16(float f) {
 		}
 
 		// Assemble the half from s, e (zero) and m.
-		return GLhalf(s | (m >> 13));
+		return static_cast<GLhalf>(s | (m >> 13));
 	}
 	else if (e == 0xff - (127 - 15)) {
 		if (m == 0) {
 			// F is an infinity; convert f to a half
 			// infinity with the same sign as f.
-			return GLhalf(s | 0x7c00);
+			return static_cast<GLhalf>(s | 0x7c00);
 		}
 		else {
 			// F is a NAN; we produce a half NAN that preserves
@@ -4182,7 +4182,7 @@ GLhalf toFloat16(float f) {
 			// into an infinity, so we have to set at least one
 			// bit in the significand.
 			m >>= 13;
-			return GLhalf(s | 0x7c00 | m | (m == 0));
+			return static_cast<GLhalf>(s | 0x7c00 | m | (m == 0));
 		}
 	}
 	else {
@@ -4203,10 +4203,10 @@ GLhalf toFloat16(float f) {
 
 			// if this returns, the half becomes an
 			// infinity with the same sign as f.
-			return GLhalf(s | 0x7c00);
+			return static_cast<GLhalf>(s | 0x7c00);
 		}
 
 		// Assemble the half from s, e and m.
-		return GLhalf(s | (e << 10) | (m >> 13));
+		return static_cast<GLhalf>(s | (e << 10) | (m >> 13));
 	}
 }

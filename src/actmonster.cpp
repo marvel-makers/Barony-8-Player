@@ -3035,7 +3035,7 @@ void actMonster(Entity* my)
 							continue;
 						}
 
-						int mapIndex = (y) * MAPLAYERS + (x) * MAPLAYERS * map.height;
+						int mapIndex = (y) * MAP_LAYERS + (x) * MAP_LAYERS * map.height;
 						if ( !map.tiles[OBSTACLELAYER + mapIndex] )
 						{
 							// wall has been broken, fights on
@@ -3289,22 +3289,22 @@ void actMonster(Entity* my)
 					int sides = 0;
 					int my_x = static_cast<int>(my->x) >> 4;
 					int my_y = static_cast<int>(my->y) >> 4;
-					int mapIndex = (my_y) * MAPLAYERS + (my_x + 1) * MAPLAYERS * map.height;
+					int mapIndex = (my_y) * MAP_LAYERS + (my_x + 1) * MAP_LAYERS * map.height;
 					if ( map.tiles[OBSTACLELAYER + mapIndex] )   // wall
 					{
 						++sides;
 					}
-					mapIndex = (my_y) * MAPLAYERS + (my_x - 1) * MAPLAYERS * map.height;
+					mapIndex = (my_y) * MAP_LAYERS + (my_x - 1) * MAP_LAYERS * map.height;
 					if ( map.tiles[OBSTACLELAYER + mapIndex] )   // wall
 					{
 						++sides;
 					}
-					mapIndex = (my_y + 1) * MAPLAYERS + (my_x) * MAPLAYERS * map.height;
+					mapIndex = (my_y + 1) * MAP_LAYERS + (my_x) * MAP_LAYERS * map.height;
 					if ( map.tiles[OBSTACLELAYER + mapIndex] )   // wall
 					{
 						++sides;
 					}
-					mapIndex = (my_y - 1) * MAPLAYERS + (my_x) * MAPLAYERS * map.height;
+					mapIndex = (my_y - 1) * MAP_LAYERS + (my_x) * MAP_LAYERS * map.height;
 					if ( map.tiles[OBSTACLELAYER + mapIndex] )   // wall
 					{
 						++sides;
@@ -3766,7 +3766,7 @@ void actMonster(Entity* my)
 		int mapIndex = 0;
 		if ( my->x >= 0 && my->y >= 0 && my->x < map.width << 4 && my->y < map.height << 4 )
 		{
-			mapIndex = (int)(my->y / 16)* MAPLAYERS + (int)(my->x / 16) * MAPLAYERS * map.height;
+			mapIndex = (int)(my->y / 16)* MAP_LAYERS + (int)(my->x / 16) * MAP_LAYERS * map.height;
 		}
 
 		for ( node = myStats->inventory.first; node != NULL; node = nextnode )
@@ -4973,7 +4973,7 @@ void actMonster(Entity* my)
 								bool slide = true;
 								if ( mapy - 1 > 0 )
 								{
-									int index = (mapy - 1) * MAPLAYERS + (mapx) * MAPLAYERS * map.height;
+									int index = (mapy - 1) * MAP_LAYERS + (mapx) * MAP_LAYERS * map.height;
 									if ( !map.tiles[OBSTACLELAYER + index] )
 									{
 										// no effect, wall is missing
@@ -4993,7 +4993,7 @@ void actMonster(Entity* my)
 								bool slide = true;
 								if ( mapy + 1 < map.height )
 								{
-									int index = (mapy + 1) * MAPLAYERS + (mapx) * MAPLAYERS * map.height;
+									int index = (mapy + 1) * MAP_LAYERS + (mapx) * MAP_LAYERS * map.height;
 									if ( !map.tiles[OBSTACLELAYER + index] )
 									{
 										// no effect, wall is missing
@@ -5017,7 +5017,7 @@ void actMonster(Entity* my)
 								bool slide = true;
 								if ( mapx - 1 > 0 )
 								{
-									int index = (mapy) * MAPLAYERS + (mapx - 1) * MAPLAYERS * map.height;
+									int index = (mapy) * MAP_LAYERS + (mapx - 1) * MAP_LAYERS * map.height;
 									if ( !map.tiles[OBSTACLELAYER + index] )
 									{
 										// no effect, wall is missing
@@ -5037,7 +5037,7 @@ void actMonster(Entity* my)
 								bool slide = true;
 								if ( mapx + 1 < map.width )
 								{
-									int index = (mapy) * MAPLAYERS + (mapx + 1) * MAPLAYERS * map.height;
+									int index = (mapy) * MAP_LAYERS + (mapx + 1) * MAP_LAYERS * map.height;
 									if ( !map.tiles[OBSTACLELAYER + index] )
 									{
 										// no effect, wall is missing
@@ -5631,7 +5631,7 @@ void actMonster(Entity* my)
 
 							int mapx = (static_cast<int>(startx) >> 4);
 							int mapy = (static_cast<int>(starty) >> 4);
-							int index = (mapy) * MAPLAYERS + (mapx) * MAPLAYERS * map.height;
+							int index = (mapy) * MAP_LAYERS + (mapx) * MAP_LAYERS * map.height;
 							if ( !map.tiles[OBSTACLELAYER + index] )
 							{
 								bool foundObstacle = false;
@@ -6737,8 +6737,8 @@ timeToGoAgain:
 							// bust ceilings
 							/*if( myStats->type == MINOTAUR ) {
 								if( my->x>=0 && my->y>=0 && my->x<map.width<<4 && my->y<map.height<<4 ) {
-									if( map.tiles[MAPLAYERS+(int)(my->y/16)*MAPLAYERS+(int)(my->x/16)*MAPLAYERS*map.height] )
-										map.tiles[MAPLAYERS+(int)(my->y/16)*MAPLAYERS+(int)(my->x/16)*MAPLAYERS*map.height] = 0;
+									if( map.tiles[MAP_LAYERS+(int)(my->y/16)*MAP_LAYERS+(int)(my->x/16)*MAP_LAYERS*map.height] )
+										map.tiles[MAP_LAYERS+(int)(my->y/16)*MAP_LAYERS+(int)(my->x/16)*MAP_LAYERS*map.height] = 0;
 								}
 							}*/
 
@@ -7507,7 +7507,7 @@ timeToGoAgain:
 
 							int mapx = (static_cast<int>(startx) >> 4);
 							int mapy = (static_cast<int>(starty) >> 4);
-							int index = (mapy) * MAPLAYERS + (mapx) * MAPLAYERS * map.height;
+							int index = (mapy) * MAP_LAYERS + (mapx) * MAP_LAYERS * map.height;
 							if ( !map.tiles[OBSTACLELAYER + index] )
 							{
 								bool foundObstacle = false;
@@ -13012,7 +13012,7 @@ void Entity::monsterAllySendCommand(int command, int destX, int destY, Uint32 ui
 				{
 					if ( monsterY >= 0 && monsterY < map.height )
 					{
-						int index = (monsterY) * MAPLAYERS + (monsterX) * MAPLAYERS * map.height;
+						int index = (monsterY) * MAP_LAYERS + (monsterX) * MAP_LAYERS * map.height;
 						noground = !map.tiles[index];
 					}
 				}
@@ -13295,7 +13295,7 @@ bool Entity::gyrobotSetPathToReturnLocation(int destX, int destY, int adjacentTi
 	}
 	else if ( !checkObstacle((destX << 4) + 8, (destY << 4) + 8, this, nullptr) )
 	{
-		int index = (destY)* MAPLAYERS + (destX)* MAPLAYERS * map.height;
+		int index = (destY)* MAP_LAYERS + (destX)* MAP_LAYERS * map.height;
 		if ( !tryRandomSpot && map.tiles[index] )
 		{
 			foundplace = true; // we can path directly to the destination specified.
@@ -13316,7 +13316,7 @@ bool Entity::gyrobotSetPathToReturnLocation(int destX, int destY, int adjacentTi
 				}
 				else if ( !checkObstacle((u << 4) + 8, (v << 4) + 8, this, nullptr) )
 				{
-					int index = (v) * MAPLAYERS + (u) * MAPLAYERS * map.height;
+					int index = (v) * MAP_LAYERS + (u) * MAP_LAYERS * map.height;
 					if ( !map.tiles[index] )
 					{
 						continue; // bad spot to land
@@ -14862,7 +14862,7 @@ void mimicResetIdle(Entity* my)
 	{
 		int tx = pair.first;
 		int ty = pair.second;
-		if ( map.tiles[OBSTACLELAYER + ((ty)*MAPLAYERS + (tx)*MAPLAYERS * map.height)] )
+		if ( map.tiles[OBSTACLELAYER + ((ty)*MAP_LAYERS + (tx)*MAP_LAYERS * map.height)] )
 		{
 			if ( tx == x + 1 )
 			{

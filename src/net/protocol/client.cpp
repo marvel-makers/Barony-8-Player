@@ -2383,7 +2383,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		int x = SDLNet_Read16(&net_packet->data[4]);
 		if ( x >= 0 && x < map.width && y >= 0 && y < map.height )
 		{
-			map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height] = map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height];
+			map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height];
 		}
 
 		const real_t effectOffset = 2.0;
@@ -2399,7 +2399,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		int x = SDLNet_Read16(&net_packet->data[4]);
 		if ( x >= 0 && x < map.width && y >= 0 && y < map.height )
 		{
-			map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height] = 0;
+			map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 0;
 		}
 	}},
 
@@ -2409,8 +2409,8 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		int x = SDLNet_Read16(&net_packet->data[4]);
 		if ( x >= 0 && x < map.width && y >= 0 && y < map.height )
 		{
-			map.tiles[OBSTACLELAYER + y * MAPLAYERS + x * MAPLAYERS * map.height] = 0;
-			map.tiles[(MAPLAYERS - 1) + y * MAPLAYERS + x * MAPLAYERS * map.height] = 0;
+			map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 0;
+			map.tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 0;
 		}
 	}},
 
@@ -3704,9 +3704,9 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 			{
 				for ( x = 3; x < map.width / 2; x++ )
 				{
-					if ( !map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height] )
+					if ( !map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 					{
-						map.tiles[y * MAPLAYERS + x * MAPLAYERS * map.height] = 72;
+						map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 72;
 					}
 				}
 			}
@@ -4498,20 +4498,20 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		Uint32 flagSet = SDLNet_Read32(&net_packet->data[8]);
 		Uint32 flagRemove = SDLNet_Read32(&net_packet->data[12]);
 		int layer = net_packet->data[16];
-		if ( x >= 0 && x < map.width && y >= 0 && y < map.height && layer >= 0 && layer < MAPLAYERS )
+		if ( x >= 0 && x < map.width && y >= 0 && y < map.height && layer >= 0 && layer < MAP_LAYERS )
 		{
 			if ( flagSet )
 			{
 				if ( !map.tileHasAttribute(x, y, layer, flagSet) )
 				{
-					map.tileAttributes[layer + (y * MAPLAYERS) + (x * MAPLAYERS * map.height)] |= flagSet;
+					map.tileAttributes[layer + (y * MAP_LAYERS) + (x * MAP_LAYERS * map.height)] |= flagSet;
 				}
 			}
 			if ( flagRemove )
 			{
 				if ( map.tileHasAttribute(x, y, layer, flagRemove) )
 				{
-					map.tileAttributes[layer + (y * MAPLAYERS) + (x * MAPLAYERS * map.height)] &= ~flagRemove;
+					map.tileAttributes[layer + (y * MAP_LAYERS) + (x * MAP_LAYERS * map.height)] &= ~flagRemove;
 				}
 			}
 		}

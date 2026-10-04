@@ -2511,11 +2511,7 @@ int loadMap(const char* filename2, map_t* destmap, list_t* entlist, list_t* crea
 		destmap->liquidSfxPlayedTiles.clear();
 		destmap->tileAttributes.clear();
 	}
-	if ( destmap->tiles != nullptr )
-	{
-		free(destmap->tiles);
-		destmap->tiles = nullptr;
-	}
+	destmap->tiles.clear();
 	if ( destmap == &map )
 	{
 #ifdef EDITOR
@@ -2575,7 +2571,7 @@ int loadMap(const char* filename2, map_t* destmap, list_t* entlist, list_t* crea
 	{
 		fp->read(destmap->flags, sizeof(Sint32), MAPFLAGS); // map flags
 	}
-	destmap->tiles = (Sint32*) malloc(sizeof(Sint32) * destmap->width * destmap->height * MAPLAYERS);
+	destmap->tiles.resize(destmap->width * destmap->height * MAP_LAYERS);
 	if ( destmap == &map )
 	{
 #ifdef EDITOR
@@ -2590,29 +2586,33 @@ int loadMap(const char* filename2, map_t* destmap, list_t* entlist, list_t* crea
             memset(cameras[i].vismap, 0, sizeof(bool) * destmap->height * destmap->width);
 		}
 	}
-	fp->read(destmap->tiles, sizeof(Sint32), destmap->width * destmap->height * MAPLAYERS);
+	auto mapsize = destmap->width * destmap->height * MAP_LAYERS;
+	destmap->tiles.resize(mapsize);
+
+	fp->read(
+		destmap->tiles.data(),
+		sizeof(Sint32),
+		mapsize
+	);
 	fp->read(&numentities, sizeof(Uint32), 1); // number of entities on the map
 
-    const int mapsize = destmap->width * destmap->height * MAPLAYERS;
-	for ( int c = 0; c < mapsize; ++c )
+	for ( int tileSlot = 0; tileSlot < mapsize; ++tileSlot )
 	{
-		mapHashData += destmap->tiles[c];
+		mapHashData += destmap->tiles[tileSlot];
 	}
  
     // new as of july 30 2023
     // fix animated tiles so they always start on the correct index
-    constexpr int numTileAtlases = sizeof(AnimatedTile::indices) / sizeof(AnimatedTile::indices[0]);
-    for (int c = 0; c < mapsize; ++c) {
-        int& tile = destmap->tiles[c];
-        if (animatedtiles[tile]) {
-            auto find = tileAnimations.find(tile);
-            if (find == tileAnimations.end()) {
+	constexpr int numTileAtlases = sizeof(AnimatedTile::indices) / sizeof(AnimatedTile::indices[0]);
+    for (int tileIdx = 0; tileIdx < mapsize; ++tileIdx) {
+	    if (int& tile = destmap->tiles[tileIdx]; animatedtiles[tile]) {
+		    if (auto find = tileAnimations.find(tile); find == tileAnimations.end()) {
                 // this is not the correct index!
-                for (const auto& pair : tileAnimations) {
-                    const auto& animation = pair.second;
+                for (const auto& [fst, snd] : tileAnimations) {
+                    const auto& [indices] = snd;
                     for (int i = 0; i < numTileAtlases; ++i) {
-                        if (animation.indices[i] == tile) {
-                            tile = animation.indices[0];
+                        if (indices[i] == tile) {
+                            tile = indices[0];
                         }
                     }
                 }
@@ -3319,7 +3319,15 @@ int saveMap(const char* filename2)
 		fp->write(&map.height, sizeof(Uint32), 1); // map height
 		fp->write(&map.skybox, sizeof(Uint32), 1); // map skybox
 		fp->write(map.flags, sizeof(Sint32), MAPFLAGS); // map flags
-		fp->write(map.tiles, sizeof(Sint32), map.width * map.height * MAPLAYERS);
+
+		const auto count = map.width * map.height * MAP_LAYERS;
+		map.tiles.resize(count);
+
+		fp->write(
+			map.tiles.data(),
+			sizeof(Sint32),
+			count
+		);
 		for (node = map.entities->first; node != nullptr; node = node->next)
 		{
 			++numentities;
