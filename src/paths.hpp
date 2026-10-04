@@ -47,6 +47,6 @@ extern int lastGeneratePathTries;
 list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target, GeneratePathTypes pathingType, bool lavaIsPassable = false);
 void generatePathMaps();
 // return true if an entity is blocks pathing
-bool isPathObstacle(Entity* entity);
-int pathCheckObstacle(int x, int y, Entity* my, Entity* target);
+bool isPathObstacle(const Entity* entity);
+int pathCheckObstacle(int x, int y, const Entity* my, const Entity* target);
 void updateGatePath(Entity& entity);

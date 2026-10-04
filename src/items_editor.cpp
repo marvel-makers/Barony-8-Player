@@ -142,7 +142,7 @@ returns a pointer to the SDL_Surface used to represent the item
 
 -------------------------------------------------------------------------------*/
 
-SDL_Surface* itemSprite(Item* const item)
+SDL_Surface* itemSprite(const Item* const item)
 {
     if ( !item )
     {

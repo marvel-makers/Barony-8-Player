@@ -238,8 +238,8 @@ public:
 
 
     //! converts the given input to a boolean/analog value
-    bool binaryOf(Binding_t& binding);
-    float analogOf(Binding_t& binding);
+    bool binaryOf(const Binding_t& binding);
+    float analogOf(const Binding_t& binding);
 
 
     //Closes the SDL device.
@@ -934,7 +934,7 @@ public:
             void updateSpellPanel();
             void scrollToSlot(int x, int y, bool instantly);
             bool isSlotVisible(int x, int y) const;
-            bool isItemVisible(Item* item) const;
+            bool isItemVisible(const Item* item) const;
             static int heightOffsetWhenNotCompact;
             SpellPanel_t(Player& p) :
                 player(p) {}
@@ -962,7 +962,7 @@ public:
             void updateChest();
             void scrollToSlot(int x, int y, bool instantly);
             bool isSlotVisible(int x, int y) const;
-            bool isItemVisible(Item* item) const;
+            bool isItemVisible(const Item* item) const;
 
             int selectedChestSlotX = -1;
             int selectedChestSlotY = -1;
@@ -1014,8 +1014,8 @@ public:
             int tooltipWidth = 0;
             int tooltipHeight = 0;
 
-            bool isItemSameAsCurrent(const int player, Item* newItem);
-            void updateItem(const int player, Item* newItem);
+            bool isItemSameAsCurrent(const int player, const Item* newItem);
+            void updateItem(const int player, const Item* newItem);
             bool displayingShortFormTooltip = false;
             bool displayingTitleOnlyTooltip = false;
             ItemTooltipDisplay_t();
@@ -1077,15 +1077,15 @@ public:
         void selectChestSlot(const int x, const int y);
         const int getSelectedChestX() const { return chestGUI.selectedChestSlotX; }
         const int getSelectedChestY() const { return chestGUI.selectedChestSlotY; }
-        const bool isItemFromChest(Item* item) const;
+        const bool isItemFromChest(const Item* item) const;
         const bool selectedSlotInPaperDoll() const { return selectedSlotY < 0; }
-        bool warpMouseToSelectedItem(Item* snapToItem, Uint32 flags);
-        bool warpMouseToSelectedSpell(Item* snapToItem, Uint32 flags);
-        bool warpMouseToSelectedChestSlot(Item* snapToItem, Uint32 flags);
-        bool guiAllowDropItems(Item* itemToDrop) const;
+        bool warpMouseToSelectedItem(const Item* snapToItem, Uint32 flags);
+        bool warpMouseToSelectedSpell(const Item* snapToItem, Uint32 flags);
+        bool warpMouseToSelectedChestSlot(const Item* snapToItem, Uint32 flags);
+        bool guiAllowDropItems(const Item* itemToDrop) const;
         bool guiAllowDefaultRightClick() const;
-        Item* hasKeyForWallLock(Entity& entity) const;
-        int getKeyAmountForWallLock(Entity& entity) const;
+        Item* hasKeyForWallLock(const Entity& entity) const;
+        int getKeyAmountForWallLock(const Entity& entity) const;
         void processInventory();
         void updateInventory();
         void updateCursor();
@@ -1131,7 +1131,7 @@ public:
         void updateSelectedSlotAnimation(int destx, int desty, int width, int height, bool usingMouse);
         Frame* getInventorySlotFrame(int x, int y) const;
         Frame* getSpellSlotFrame(int x, int y) const;
-        Frame* getItemSlotFrame(Item* item, int x, int y) const;
+        Frame* getItemSlotFrame(const Item* item, int x, int y) const;
         Frame* getChestSlotFrame(int x, int y) const;
 
         enum PaperDollRows : int
@@ -1160,9 +1160,9 @@ public:
             std::map<Uint32, int> appraisalProgressionItems;
             Uint32 old_item = 0;
             Uint32 manual_appraised_item = 0;
-            int getAppraisalTime(Item* item); // Return time in ticks needed to appraise an item
+            int getAppraisalTime(const Item* item); // Return time in ticks needed to appraise an item
             void appraiseItem(Item* item); // start appraise process
-            bool appraisalPossible(Item* item); // if possible with current skill and stats
+            bool appraisalPossible(const Item* item); // if possible with current skill and stats
             real_t animAppraisal = 0.0;
             Uint32 animStartTick = 0;
             Uint32 itemNotifyUpdatedThisTick = 0;
@@ -1231,11 +1231,11 @@ public:
         const int getSelectedShopX() const { return selectedShopSlotX; }
         const int getSelectedShopY() const { return selectedShopSlotY; }
         Frame* getShopSlotFrame(int x, int y) const;
-        const bool isItemFromShop(Item* item) const;
+        const bool isItemFromShop(const Item* item) const;
         void setItemDisplayNameAndPrice(Item* item);
         const bool isItemSelectedFromShop(Item* item) const;
         const bool isItemSelectedToSellToShop(Item* item) const;
-        bool warpMouseToSelectedShopItem(Item* snapToItem, Uint32 flags);
+        bool warpMouseToSelectedShopItem(const Item* snapToItem, Uint32 flags);
         void clearItemDisplayed();
 
         static int heightOffsetWhenNotCompact;
@@ -1797,8 +1797,8 @@ public:
         { 
             selected_spell = spell; 
         }
-        void setQuickCastSpellFromInventory(Item* item);
-        void setQuickCastTomeFromInventory(Item* item);
+        void setQuickCastSpellFromInventory(const Item* item);
+        void setQuickCastTomeFromInventory(const Item* item);
         bool doQuickCastSpell() { return quick_cast_spell != nullptr; }
         void resetQuickCastSpell() { quick_cast_spell = nullptr; }
         void resetQuickCastTome() { quick_cast_tome = 0; }
@@ -1843,7 +1843,7 @@ public:
         real_t getWeightRatio(int weight, Sint32 STR);
         int getCharacterWeight();
         int getCharacterEquippedWeight();
-        int getCharacterModifiedWeight(int* customWeight = nullptr);
+        int getCharacterModifiedWeight(const int* customWeight = nullptr);
         real_t getSpeedFactor(real_t weightratio, Sint32 DEX);
         real_t getCurrentMovementSpeed();
         void handlePlayerCameraPosition(bool useRefreshRateDelta);
@@ -1911,7 +1911,7 @@ public:
         static bool gameoverOnDismiss(const int player);
         static bool gamemodeAllowsGhosts();
         void reset();
-        bool allowedInteractEntity(Entity& entity);
+        bool allowedInteractEntity(const Entity& entity);
         static const int GHOST_MODEL_P1 = 1238;
         static const int GHOST_MODEL_P2 = 1239;
         static const int GHOST_MODEL_P3 = 1240;
@@ -2012,7 +2012,7 @@ public:
             Uint32 appearance = 0;
             bool identifiedItem = false;
             bool hasAppraiseCapstone = false;
-            bool isItemSameAsCurrent(Item* item);
+            bool isItemSameAsCurrent(const Item* item);
             SDL_Surface* blitItemWorldTooltip(Item* item);
             SDL_Surface* itemWorldTooltipSurface = nullptr;
             Frame* itemFrame = nullptr;
@@ -2126,7 +2126,7 @@ public:
         void reset();
         void setTooltipActive(Entity& tooltip);
         void setTooltipDisabled(Entity& tooltip);
-        bool bTooltipActiveForPlayer(Entity& tooltip);
+        bool bTooltipActiveForPlayer(const Entity& tooltip);
         bool bTooltipInView = false;
         Uint32 uidForActiveTooltip = 0;
         std::string interactText = "Interact";
@@ -2396,8 +2396,8 @@ public:
         std::vector<std::pair<int, Uint32>> pendingDucks;
         std::map<int, int> favoriteBooksAchievement;
         int numFishingCaught = 0;
-        bool itemDegradeRoll(Item* item, int skillID = -1, int* checkInterval = nullptr);
-        void onItemDegrade(Item* item);
+        bool itemDegradeRoll(const Item* item, int skillID = -1, int* checkInterval = nullptr);
+        void onItemDegrade(const Item* item);
         int sustainedSpellMPUsedSorcery = 0;
         int sustainedSpellMPUsedMysticism = 0;
         int sustainedSpellMPUsedThaumaturgy = 0;
@@ -2428,12 +2428,12 @@ public:
         void baseSpellClearMP(int skillID);
         std::map<int, int> baseSpellLevelUpProcs;
         std::map<int, real_t> sustainedSpellIDCounter;
-        bool updateSustainedSpellEvent(int spellID, real_t value, real_t scaleValue, Entity* hitEntity);
+        bool updateSustainedSpellEvent(int spellID, real_t value, real_t scaleValue, const Entity* hitEntity);
         bool rollRngProc(RngRollTypes rngType, int chance, int spellID = -1);
         std::map<Uint32, int> enemyRaisedBlockingAgainst;
         std::map<Uint32, int> enemyRaisedStealthAgainst;
-        bool allowedRaiseBlockingAgainstEntity(Entity& attacker);
-        bool allowedRaiseStealthAgainstEntity(Entity& attacker);
+        bool allowedRaiseBlockingAgainstEntity(const Entity& attacker);
+        bool allowedRaiseStealthAgainstEntity(const Entity& attacker);
         int getWealthTier();
         int ensemblePlaying = -1;
         bool ensembleRequireRecast = false;
@@ -2453,7 +2453,7 @@ public:
             GBREAK_DEGRADE
         };
         int gremlinBreakableCounter = 0;
-        void incrementBreakableCounter(BreakableEvent eventType, Entity* entity);
+        void incrementBreakableCounter(BreakableEvent eventType, const Entity* entity);
         int getBreakableCounterTier();
         void updateBreakableCounterServer();
         Uint32 ensembleDataUpdate = 0;

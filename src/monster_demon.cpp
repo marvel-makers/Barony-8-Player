@@ -265,7 +265,7 @@ void demonDie(Entity* my)
 
 #define DEMONWALKSPEED .125
 
-void demonMoveBodyparts(Entity* my, Stat* myStats, double dist)
+void demonMoveBodyparts(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;

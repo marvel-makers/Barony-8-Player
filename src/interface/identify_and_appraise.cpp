@@ -358,7 +358,7 @@ SDL_Surface* identifyGUI_img;
 //  }
 //} //updateIdentifyGUI()
 
-bool Player::Inventory_t::Appraisal_t::appraisalPossible(Item* item)
+bool Player::Inventory_t::Appraisal_t::appraisalPossible(const Item* item)
 {
     if ( !item )
     {
@@ -653,7 +653,7 @@ void Player::Inventory_t::Appraisal_t::readFromFile()
     }
 }
 
-int Player::Inventory_t::Appraisal_t::getAppraisalTime(Item* item)
+int Player::Inventory_t::Appraisal_t::getAppraisalTime(const Item* item)
 {
     int appraisal_time = 0;
 

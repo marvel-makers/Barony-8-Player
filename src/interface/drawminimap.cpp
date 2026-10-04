@@ -963,7 +963,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
                 selfCallout(_selfCallout)
             {};
         };
-        auto compFunc = [](CalloutPing_t& lhs, CalloutPing_t& rhs)
+        auto compFunc = [](const CalloutPing_t& lhs, const CalloutPing_t& rhs)
         {
             return lhs.creationTick < rhs.creationTick;
         };

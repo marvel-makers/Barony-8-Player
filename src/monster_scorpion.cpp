@@ -161,7 +161,7 @@ void scorpionDie(Entity* my)
     list_RemoveNode(my->mynode);
     return;
 }
-void actScorpionTail(Entity* my)
+void actScorpionTail(const Entity* my)
 {
     Entity* parent = nullptr;
     if ( (parent = uidToEntity(my->skill[2])) == nullptr)

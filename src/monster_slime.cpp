@@ -44,7 +44,7 @@ int getSlimeFrame(std::string color, int frame)
     }
 }
 
-void slimeSetType(Entity* my, Stat* myStats, bool sink, BaronyRNG* rng)
+void slimeSetType(const Entity* my, Stat* myStats, bool sink, BaronyRNG* rng)
 {
     if ( !my || !myStats ) { return; }
 
@@ -150,7 +150,7 @@ void slimeSetType(Entity* my, Stat* myStats, bool sink, BaronyRNG* rng)
     myStats->setAttribute("slime_type", possibleTypes[roll].first);
 }
 
-void slimeSetStats(Entity& my, Stat& myStats)
+void slimeSetStats(const Entity& my, Stat& myStats)
 {
     myStats.HP = 60;
     myStats.STR = 3;
@@ -294,7 +294,7 @@ void initSlime(Entity* my, Stat* myStats)
 
 const int slimeSprayDelayOffset = TICKS_PER_SECOND / 2;
 const int slimeSprayDelay = TICKS_PER_SECOND + ((2 * TICKS_PER_SECOND) / 5) - slimeSprayDelayOffset;
-void slimeSprayAttack(Entity* my)
+void slimeSprayAttack(const Entity* my)
 {
     if ( !my ) { return; }
 

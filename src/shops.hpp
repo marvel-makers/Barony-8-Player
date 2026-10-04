@@ -28,13 +28,13 @@ extern std::map<Uint32, int> hamletShopkeeperSkillLimit[MAXPLAYERS];
 static const int hamletTradingSkillLimit = 7;
 
 void startTradingServer(Entity* entity, int player);
-bool isItemSellableToShop(const int player, Item* item);
-bool hideItemFromShopView(Item& item);
+bool isItemSellableToShop(const int player, const Item* item);
+bool hideItemFromShopView(const Item& item);
 bool buyItemFromShop(const int player, Item* item, bool& bOutConsumedEntireStack);
 bool sellItemToShop(const int player, Item* item);
-bool shopIsMysteriousShopkeeper(Entity* entity);
+bool shopIsMysteriousShopkeeper(const Entity* entity);
 extern std::unordered_map<int, std::unordered_set<int>> shopkeeperMysteriousItems;
-void buyItemFromMysteriousShopkeepConsumeOrb(const int player, Entity& entity, Item& boughtItem);
+void buyItemFromMysteriousShopkeepConsumeOrb(const int player, const Entity& entity, const Item& boughtItem);
 void closeShop(const int player);
 void shopChangeGoldEvent(const int player, Sint32 amount);
 

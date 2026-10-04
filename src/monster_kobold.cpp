@@ -495,7 +495,7 @@ void koboldDie(Entity* my)
 
 #define KOBOLDWALKSPEED .13
 
-void koboldMoveBodyparts(Entity* my, Stat* myStats, double dist)
+void koboldMoveBodyparts(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr, *entity2 = nullptr;

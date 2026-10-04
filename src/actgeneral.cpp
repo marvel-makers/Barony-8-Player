@@ -98,7 +98,7 @@ void actRotate(Entity* my)
 #define LIQUID_LAVA my->flags[USERFLAG1]
 #define LIQUID_LAVANOBUBBLE my->skill[4]
 
-void actLiquid(Entity* my)
+void actLiquid(const Entity* my)
 {
     // as of 1.0.7 this function is DEPRECATED
 
@@ -127,7 +127,7 @@ void actFurniture(Entity* my)
     my->actFurniture();
 }
 
-void Entity::furnitureHandleDamageMagic(int damage, Entity& magicProjectile, Entity* caster, bool messages, bool doSound)
+void Entity::furnitureHandleDamageMagic(int damage, const Entity& magicProjectile, const Entity* caster, bool messages, bool doSound)
 {
     updateEntityOldHPBeforeMagicHit(*this, magicProjectile);
     const int oldHP = this->furnitureHealth;
@@ -671,7 +671,7 @@ void Entity::actPistonCam()
     }
 }
 
-int colliderGetSpellRange(Entity* my)
+int colliderGetSpellRange(const Entity* my)
 {
     if ( my->colliderSpellEvent % 1000 == 0 ) { return 0; }
     int range = 32;
@@ -1517,7 +1517,7 @@ int Entity::getColliderSfxOnBreak() const
     return colliderData.sfxBreak[local_rng.rand() % colliderData.sfxBreak.size()];
 }
 
-Entity* Entity::createBreakableCollider(int colliderDamageType, real_t _x, real_t _y, Entity* parent)
+Entity* Entity::createBreakableCollider(int colliderDamageType, real_t _x, real_t _y, const Entity* parent)
 {
     if ( colliderDamageType == 0 )
     {
@@ -1603,7 +1603,7 @@ void Entity::colliderSetServerSkillOnSpawned()
     skill[2] = val;
 }
 
-void Entity::colliderAssignProperties(Entity* entity, bool mapGeneration, map_t* whichMap)
+void Entity::colliderAssignProperties(Entity* entity, bool mapGeneration, const map_t* whichMap)
 {
     auto& rng = mapGeneration ? map_rng : local_rng;
 
@@ -2342,7 +2342,7 @@ void actColliderDecoration(Entity* my)
     }
 }
 
-void Entity::colliderHandleDamageMagic(int damage, Entity &magicProjectile, Entity *caster, bool messages, bool doSound)
+void Entity::colliderHandleDamageMagic(int damage, const Entity &magicProjectile, const Entity *caster, bool messages, bool doSound)
 {
     updateEntityOldHPBeforeMagicHit(*this, magicProjectile);
     const auto oldHP = colliderCurrentHP;
@@ -5160,7 +5160,7 @@ void TextSourceScript::playerClearInventory(bool clearStats)
     this->hasClearedInventory = true;
 }
 
-std::string TextSourceScript::getScriptFromEntity(Entity& src)
+std::string TextSourceScript::getScriptFromEntity(const Entity& src)
 {
     // assemble the string.
     char buf[256] = "";
@@ -5522,7 +5522,7 @@ int getBellDmgOnEntity(Entity* entity)
     return damage;
 }
 
-void spawnMagicEffectParticlesBell(Entity* my, Uint32 sprite)
+void spawnMagicEffectParticlesBell(const Entity* my, Uint32 sprite)
 {
     if ( !my ) { return; }
     const int baseX = my->x / 16;

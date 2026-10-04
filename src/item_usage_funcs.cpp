@@ -28,7 +28,7 @@
 #include "mod_tools.hpp"
 #include "scrolls.hpp"
 
-bool potionUseAbundanceEffect(Item* item, Entity* entity, Entity* usedBy)
+bool potionUseAbundanceEffect(Item* item, Entity* entity, const Entity* usedBy)
 {
     bool result = false;
     if ( item && itemCategory(item) == POTION )
@@ -1012,7 +1012,7 @@ bool item_PotionSickness(Item*& item, Entity* entity, Entity* usedBy)
     return true;
 }
 
-bool item_PotionGrease(Item*& item, Entity* entity, Entity* usedBy)
+bool item_PotionGrease(Item*& item, Entity* entity, const Entity* usedBy)
 {
     if ( !entity )
     {
@@ -1897,7 +1897,7 @@ bool item_PotionAcid(Item*& item, Entity* entity, Entity* usedBy)
     return true;
 }
 
-bool item_PotionUnstableStorm(Item*& item, Entity* entity, Entity* usedBy, Entity* thrownPotion)
+bool item_PotionUnstableStorm(Item*& item, Entity* entity, Entity* usedBy, const Entity* thrownPotion)
 {
     if ( !entity )
     {
@@ -2677,7 +2677,7 @@ Entity* item_PotionPolymorph(Item*& item, Entity* entity, Entity* usedBy)
     return transformedEntity;
 }
 
-void onScrollUseAppraisalIncrease(Item* item, int player)
+void onScrollUseAppraisalIncrease(const Item* item, int player)
 {
     if ( !item ) { return; }
     if ( item->identified && players[player] && players[player]->isLocalPlayer() )
@@ -6609,7 +6609,7 @@ bool itemIsConsumableByAutomaton(const Item& item)
     return false;
 }
 
-void updateHungerMessages(Entity* my, Stat* myStats, Item* eaten)
+void updateHungerMessages(const Entity* my, Stat* myStats, const Item* eaten)
 {
     if ( !myStats || !eaten || !my)
     {

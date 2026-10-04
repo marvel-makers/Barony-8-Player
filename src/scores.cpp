@@ -357,7 +357,7 @@ int saveScore(int player)
 
 -------------------------------------------------------------------------------*/
 
-int totalScore(score_t* score)
+int totalScore(const score_t* score)
 {
     int amount = 0;
 
@@ -464,7 +464,7 @@ int totalScore(score_t* score)
 
 -------------------------------------------------------------------------------*/
 
-void loadScore(score_t* score)
+void loadScore(const score_t* score)
 {
     if ( !score ) { return; }
     stats[0]->clearStats();
@@ -4388,7 +4388,7 @@ void AchievementObserver::updateData()
     updateClientBounties(true);
 }
 
-bool AchievementObserver::addEntityAchievementTimer(Entity* entity, int achievement, int ticks, bool resetTimerIfActive, int optionalIncrement)
+bool AchievementObserver::addEntityAchievementTimer(const Entity* entity, int achievement, int ticks, bool resetTimerIfActive, int optionalIncrement)
 {
     if ( !entity )
     {
@@ -4486,7 +4486,7 @@ void AchievementObserver::achievementTimersTickDown()
     //printActiveAchievementTimers();
 }
 
-void AchievementObserver::awardAchievementIfActive(int player, Entity* entity, int achievement)
+void AchievementObserver::awardAchievementIfActive(int player, const Entity* entity, int achievement)
 {
     if ( !entity )
     {
@@ -4583,7 +4583,7 @@ std::set<ItemType> AchievementObserver::PlayerAchievements::startingClassItems =
     HAT_CIRCLET_WISDOM*/
 };
 
-int AchievementObserver::PlayerAchievements::getItemIndexForDapperAchievement(Item* item)
+int AchievementObserver::PlayerAchievements::getItemIndexForDapperAchievement(const Item* item)
 {
     if ( dapperItems.empty() )
     {
@@ -5249,7 +5249,7 @@ bool AchievementObserver::PlayerAchievements::checkPathBetweenObjects(Entity* pl
     return false;
 }
 
-bool AchievementObserver::PlayerAchievements::checkTraditionKill(Entity* player, Entity* target)
+bool AchievementObserver::PlayerAchievements::checkTraditionKill(const Entity* player, Entity* target)
 {
     if ( tradition )
     {

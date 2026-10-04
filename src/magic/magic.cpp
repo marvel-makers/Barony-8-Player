@@ -27,7 +27,7 @@
 
 std::map<Uint32, std::map<Uint32, ParticleEmitterHit_t>> particleTimerEmitterHitEntities;
 std::map<Uint32, ParticleTimerEffect_t> particleTimerEffects;
-ParticleEmitterHit_t* getParticleEmitterHitProps(Uint32 emitterUid, Entity* hitentity)
+ParticleEmitterHit_t* getParticleEmitterHitProps(Uint32 emitterUid, const Entity* hitentity)
 {
     if ( emitterUid == 0 || !hitentity ) { return nullptr; }
 
@@ -108,7 +108,7 @@ void spell_summonFamiliar(int player)
     // deprecated
 }
 
-bool spellEffectDominate(Entity& my, spellElement_t& element, Entity& caster, Entity* parent)
+bool spellEffectDominate(const Entity& my, spellElement_t& element, Entity& caster, const Entity* parent)
 {
     if ( !hit.entity )
     {
@@ -248,7 +248,7 @@ bool spellEffectDominate(Entity& my, spellElement_t& element, Entity& caster, En
     return true;
 }
 
-void spellEffectAcid(Entity& my, spellElement_t& element, Entity* parent, int damage, int resistance)
+void spellEffectAcid(Entity& my, const spellElement_t& element, Entity* parent, int damage, int resistance)
 {
     playSoundEntity(&my, 173, 128);
         
@@ -465,7 +465,7 @@ void spellEffectAcid(Entity& my, spellElement_t& element, Entity* parent, int da
     }
 }
 
-void spellEffectPoison(Entity& my, spellElement_t& element, Entity* parent, int damage, int resistance)
+void spellEffectPoison(Entity& my, const spellElement_t& element, Entity* parent, int damage, int resistance)
 {
     playSoundEntity(&my, 173, 128);
     if ( hit.entity )
@@ -612,7 +612,7 @@ void spellEffectPoison(Entity& my, spellElement_t& element, Entity* parent, int 
     }
 }
 
-bool spellEffectFear(Entity* my, spellElement_t& element, Entity* forceParent, Entity* target, int resistance)
+bool spellEffectFear(const Entity* my, spellElement_t& element, Entity* forceParent, Entity* target, int resistance)
 {
     if ( !target )
     {
@@ -1174,7 +1174,7 @@ void spellEffectDrainSoul(Entity& my, spellElement_t& element, Entity* parent, i
     return;
 }
 
-spell_t* spellEffectVampiricAura(Entity* caster, spell_t* spell)
+spell_t* spellEffectVampiricAura(Entity* caster, const spell_t* spell)
 {
     if ( !caster )
     {
@@ -1225,7 +1225,7 @@ spell_t* spellEffectVampiricAura(Entity* caster, spell_t* spell)
     return channeled_spell;
 }
 
-int getCharmMonsterDifficulty(Entity& my, Stat& myStats)
+int getCharmMonsterDifficulty(const Entity& my, Stat& myStats)
 {
     int difficulty = 0;
 
@@ -1310,7 +1310,7 @@ int getCharmMonsterDifficulty(Entity& my, Stat& myStats)
     return difficulty;
 }
 
-void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent, int resistance, bool magicstaff)
+void spellEffectCharmMonster(Entity& my, const spellElement_t& element, Entity* parent, int resistance, bool magicstaff)
 {
     if ( hit.entity )
     {
@@ -2464,7 +2464,7 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
     return nullptr;
 }
 
-bool spellEffectTeleportPull(Entity* my, spellElement_t& element, Entity* parent, Entity* target, int resistance)
+bool spellEffectTeleportPull(const Entity* my, spellElement_t& element, Entity* parent, Entity* target, int resistance)
 {
     if ( !parent )
     {
@@ -2684,7 +2684,7 @@ bool spellEffectTeleportPull(Entity* my, spellElement_t& element, Entity* parent
     return false;
 }
 
-void spellEffectShadowTag(Entity& my, spellElement_t& element, Entity* parent, int resistance)
+void spellEffectShadowTag(Entity& my, const spellElement_t& element, Entity* parent, int resistance)
 {
     if ( hit.entity )
     {
@@ -2772,7 +2772,7 @@ void spellEffectShadowTag(Entity& my, spellElement_t& element, Entity* parent, i
     }
 }
 
-bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* parent, Entity* target, int resistance)
+bool spellEffectDemonIllusion(const Entity& my, spellElement_t& element, Entity* parent, Entity* target, int resistance)
 {
     if ( target )
     {
@@ -3034,7 +3034,7 @@ Entity* spellEffectHologram(Entity& caster, spellElement_t& element, real_t x, r
     return monster;
 }
 
-Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, real_t y, Item* itemToAdorcise)
+Entity* spellEffectAdorcise(Entity& caster, const spellElement_t& element, real_t x, real_t y, const Item* itemToAdorcise)
 {
     Entity* monster = nullptr;
     {
@@ -3243,7 +3243,7 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
     return monster;
 }
 
-Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x, real_t y)
+Entity* spellEffectFlameSprite(Entity& caster, const spellElement_t& element, real_t x, real_t y)
 {
     Entity* monster = nullptr;
     {
@@ -3396,7 +3396,7 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
     return monster;
 }
 
-bool Entity::spellEffectPreserveItem(Item* item)
+bool Entity::spellEffectPreserveItem(const Item* item)
 {
     if ( !item ) { return false; }
     if (const Stat* myStats = getStats() )
@@ -3536,7 +3536,7 @@ int thaumSpellArmorProc(Entity* my, Stat& myStats, bool checkEffectActiveOnly, E
     return 0;
 }
 
-bool Entity::pinpointDamageProc(Entity* attacker, int damage)
+bool Entity::pinpointDamageProc(const Entity* attacker, int damage)
 {
     if ( multiplayer == CLIENT || !attacker ) { return false; }
     if (const Stat* myStats = getStats() )
@@ -4012,7 +4012,7 @@ bool applyGenericMagicDamage(Entity* caster, Entity* hitentity, Entity& damageSo
     return false;
 }
 
-Entity* spellEffectDemesneDoor(Entity& caster, Entity& target)
+Entity* spellEffectDemesneDoor(const Entity& caster, Entity& target)
 {
     const auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(&target, 1);
     const int mapx = target.x / 16;
@@ -4393,7 +4393,7 @@ real_t getSpellPropertyFromID(spell_t::SpellBasePropertiesFloat prop, int spellI
     return result;
 }
 
-int getSpellPropertyFromID(spell_t::SpellBasePropertiesInt prop, int spellID, Entity* parent, Stat* parentStats, Entity* magicSourceParticle, real_t addSpellBonus)
+int getSpellPropertyFromID(spell_t::SpellBasePropertiesInt prop, int spellID, const Entity* parent, const Stat* parentStats, Entity* magicSourceParticle, real_t addSpellBonus)
 {
     spellElement_t* element = nullptr;
     const spell_t* spell = nullptr;
@@ -4459,7 +4459,7 @@ int getSpellPropertyFromID(spell_t::SpellBasePropertiesInt prop, int spellID, En
     return result;
 }
 
-int getSpellFromSummonedEntityForSpellEvent(Entity* summon)
+int getSpellFromSummonedEntityForSpellEvent(const Entity* summon)
 {
     if ( !summon ) { return SPELL_NONE; }
     if ( summon->behavior != &actMonster ) { return SPELL_NONE; }
@@ -4511,7 +4511,7 @@ int getSpellFromSummonedEntityForSpellEvent(Entity* summon)
     return SPELL_NONE;
 }
 
-int getSpellDamageFromStatic(int spellID, Stat* hitstats)
+int getSpellDamageFromStatic(int spellID, const Stat* hitstats)
 {
     if ( !hitstats )
     {
@@ -4526,7 +4526,7 @@ int getSpellDamageFromStatic(int spellID, Stat* hitstats)
     return 0;
 }
 
-void updateEntityOldHPBeforeMagicHit(Entity& my, Entity& projectile)
+void updateEntityOldHPBeforeMagicHit(const Entity& my, const Entity& projectile)
 {
     if ( projectile.behavior == &actMagicMissile && projectile.actmagicUpdateOLDHPOnHit == 1 )
     {

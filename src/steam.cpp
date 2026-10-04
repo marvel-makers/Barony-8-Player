@@ -349,7 +349,7 @@ public:
     std::string authTicket = "";
     HAuthTicket authTicketHandle = 0;
 private:
-    void OnGetNumberOfCurrentPlayers( NumberOfCurrentPlayers_t *pCallback, bool bIOFailure );
+    void OnGetNumberOfCurrentPlayers(const NumberOfCurrentPlayers_t *pCallback, bool bIOFailure );
     CCallResult< SteamServerClientWrapper, NumberOfCurrentPlayers_t > m_NumberOfCurrentPlayersCallResult;
 }* steam_server_client_wrapper; //TODO: Initialize this...where?
 
@@ -765,7 +765,7 @@ void SteamServerClientWrapper::GetNumberOfCurrentPlayers()
 }
 
 // Called when SteamUserStats()->GetNumberOfCurrentPlayers() returns asynchronously, after a call to SteamAPI_RunCallbacks().
-void SteamServerClientWrapper::OnGetNumberOfCurrentPlayers(NumberOfCurrentPlayers_t *pCallback, bool bIOFailure)
+void SteamServerClientWrapper::OnGetNumberOfCurrentPlayers(const NumberOfCurrentPlayers_t *pCallback, bool bIOFailure)
 {
     if ( bIOFailure || !pCallback->m_bSuccess )
     {
@@ -949,7 +949,7 @@ void steamAchievementClient(int player, const char* achName)
     }
 }
 
-void steamAchievementEntity(Entity* my, const char* achName)
+void steamAchievementEntity(const Entity* my, const char* achName)
 {
     if ( !my )
     {

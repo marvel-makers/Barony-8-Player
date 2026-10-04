@@ -81,7 +81,7 @@ public:
     std::unordered_map<int, std::unordered_set<int>> connectedZones;
     void buildGraph(const int parentMapType);
     void fillPathMap(int x, int y);
-    bool generatePath(Entity* my, int x1, int y1, int x2, int y2);
+    bool generatePath(const Entity* my, int x1, int y1, int x2, int y2);
     void reset()
     {
         if ( mapSubzones )
@@ -316,7 +316,7 @@ Uint32 heuristic(int x1, int y1, int x2, int y2)
 
 -------------------------------------------------------------------------------*/
 
-int pathCheckObstacle(int x, int y, Entity* my, Entity* target)
+int pathCheckObstacle(int x, int y, const Entity* my, const Entity* target)
 {
     const int u = std::min(std::max(0, x >> 4), static_cast<int>(map.width) - 1);
     const int v = std::min(std::max(0, y >> 4), static_cast<int>(map.height) - 1);
@@ -1227,7 +1227,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 
 
 
-bool isPathObstacle(Entity* entity)
+bool isPathObstacle(const Entity* entity)
 {
     if ( entity->behavior == &actHeadstone )
     {
@@ -1623,7 +1623,7 @@ void GateGraph::debugPaths()
     }
 }
 
-bool GateGraph::generatePath(Entity* my, int x1, int y1, int x2, int y2)
+bool GateGraph::generatePath(const Entity* my, int x1, int y1, int x2, int y2)
 {
     const int srcZone = mapSubzones[y1 + x1 * map.height];
     const int destZone = mapSubzones[y2 + x2 * map.height];

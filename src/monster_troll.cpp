@@ -268,7 +268,7 @@ void trollDie(Entity* my)
 
 #define TROLLWALKSPEED .12
 
-void trollMoveBodyparts(Entity* my, Stat* myStats, double dist)
+void trollMoveBodyparts(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;

@@ -330,7 +330,7 @@ void bugbearDie(Entity* my)
 }
 
 #define BUGBEARWALKSPEED .12
-real_t getWalkSpeed(Entity& my)
+real_t getWalkSpeed(const Entity& my)
 {
     real_t val = BUGBEARWALKSPEED;
     if ( my.monsterState == MONSTER_STATE_GENERIC_CHARGE )
@@ -340,7 +340,7 @@ real_t getWalkSpeed(Entity& my)
     return val;
 }
 
-void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
+void bugbearMoveBodyparts(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;

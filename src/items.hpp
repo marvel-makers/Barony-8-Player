@@ -707,8 +707,8 @@ public:
 
     Sint32 potionGetEffectHealth(Entity* my, Stat* myStats) const;
     Sint32 potionGetEffectDamage(Entity* my, Stat* myStats) const;
-    Sint32 potionGetEffectDurationMinimum(Entity* my, Stat* myStats) const;
-    Sint32 potionGetEffectDurationMaximum(Entity* my, Stat* myStats) const;
+    Sint32 potionGetEffectDurationMinimum(Entity* my, const Stat* myStats) const;
+    Sint32 potionGetEffectDurationMaximum(Entity* my, const Stat* myStats) const;
     Sint32 potionGetEffectDurationRandom(Entity* my, Stat* myStats) const;
     Sint32 potionGetCursedEffectDurationMinimum(Entity* my, Stat* myStats) const;
     Sint32 potionGetCursedEffectDurationMaximum(Entity* my, Stat* myStats) const;
@@ -720,7 +720,7 @@ public:
 
     void foodTinGetDescriptionIndices(int* a, int* b, int* c) const;
     void foodTinGetDescription(std::string& cookingMethod, std::string& protein, std::string& sides) const;
-    int foodGetPukeChance(Stat* eater) const;
+    int foodGetPukeChance(const Stat* eater) const;
     int getLootBagPlayer() const;
     int getLootBagNumItems() const;
     int getDuckPlayer() const;
@@ -747,8 +747,8 @@ public:
         BOMB_TELEPORT_RECEIVER,
         BOMB_TRIGGER_ALL
     };
-    void applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement, ItemBombFacingDirection dir, Entity* thrown, Entity* onEntity);
-    void applyTinkeringCreation(Entity* parent, Entity* thrown);
+    void applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement, ItemBombFacingDirection dir, const Entity* thrown, const Entity* onEntity);
+    void applyTinkeringCreation(Entity* parent, const Entity* thrown);
     void applyDuck(Uint32 parentUid, real_t x, real_t y, Entity* hitentity, bool onLevelRespawn);
     bool unableToEquipDueToSwapWeaponTimer(const int player) const;
     bool tinkeringBotIsMaxHealth() const;
@@ -807,7 +807,7 @@ bool item_PotionBooze(Item*& item, Entity* entity, Entity* usedBy, bool shouldCo
 bool item_PotionJuice(Item*& item, Entity* entity, Entity* usedBy);
 bool item_PotionSickness(Item*& item, Entity* entity, Entity* usedBy);
 bool item_PotionConfusion(Item*& item, Entity* entity, Entity* usedBy);
-bool item_PotionGrease(Item*& item, Entity* entity, Entity* usedBy);
+bool item_PotionGrease(Item*& item, Entity* entity, const Entity* usedBy);
 bool item_PotionCureAilment(Item*& item, Entity* entity, Entity* usedBy);
 bool item_PotionBlindness(Item*& item, Entity* entity, Entity* usedBy);
 bool item_PotionHealing(Item*& item, Entity* entity, Entity* usedBy, bool shouldConsumeItem = true);
@@ -818,7 +818,7 @@ bool item_PotionLevitation(Item*& item, Entity* entity, Entity* usedBy);
 bool item_PotionSpeed(Item*& item, Entity* entity, Entity* usedBy);
 bool item_PotionStrength(Item*& item, Entity* entity, Entity* usedBy);
 bool item_PotionAcid(Item*& item, Entity* entity, Entity* usedBy);
-bool item_PotionUnstableStorm(Item*& item, Entity* entity, Entity* usedBy, Entity* thrownPotion);
+bool item_PotionUnstableStorm(Item*& item, Entity* entity, Entity* usedBy, const Entity* thrownPotion);
 bool item_PotionParalysis(Item*& item, Entity* entity, Entity* usedBy);
 Entity* item_PotionPolymorph(Item*& item, Entity* entity, Entity* usedBy);
 void item_ScrollMail(Item* item, int player);
@@ -850,7 +850,7 @@ void item_ToolLootBag(Item*& item, int player);
 //General functions.
 Item* newItem(ItemType type, Status status, Sint16 beatitude, Sint16 count, Uint32 appearance, bool identified, list_t* inventory);
 Item* uidToItem(Uint32 uid);
-ItemType itemLevelCurveEntity(Entity& my, Category cat, int minLevel, int maxLevel, BaronyRNG& rng);
+ItemType itemLevelCurveEntity(const Entity& my, Category cat, int minLevel, int maxLevel, BaronyRNG& rng);
 bool itemLevelCurvePostProcess(Entity* my, Item* item, BaronyRNG& rng, 
 #ifdef EDITOR
     int itemLevel = 0
@@ -861,10 +861,10 @@ bool itemLevelCurvePostProcess(Entity* my, Item* item, BaronyRNG& rng,
 ItemType itemLevelCurve(Category cat, int minLevel, int maxLevel, BaronyRNG& rng);
 Item* newItemFromEntity(const Entity* entity, bool discardUid = false); //Make sure to call free(item). discardUid will free the new items uid if this is for temp purposes
 Entity* dropItemMonster(Item* item, Entity* monster, Stat* monsterStats, Sint16 count = 1);
-Item** itemSlot(Stat* myStats, Item* item);
+Item** itemSlot(Stat* myStats, const Item* item);
 
 enum Category itemCategory(const Item* item);
-Sint32 itemModel(const Item* item, bool shortModel = false, Entity* creature = nullptr);
+Sint32 itemModel(const Item* item, bool shortModel = false, const Entity* creature = nullptr);
 Sint32 itemModelFirstperson(const Item* item);
 int getLootBagVariationForPlayer(const int playerOwner, const bool colorblind);
 int getLootBagPlayerForVariation(const int variation, const bool colorblind);
@@ -899,8 +899,8 @@ void playerTryEquipItemAndUpdateServer(const int player, Item* item, bool checkI
 void clientSendEquipUpdateToServer(EquipItemSendToServerSlot slot, EquipItemResult equipType, int player,
     ItemType type, Status status, Sint16 beatitude, int count, Uint32 appearance, bool identified);
 void clientUnequipSlotAndUpdateServer(const int player, EquipItemSendToServerSlot slot, Item* item);
-void clientSendAppearanceUpdateToServer(const int player, Item* item, const bool onIdentify);
-void clientSendItemTypeUpdateToServer(const int player, Item* item, ItemType prevItemType);
+void clientSendAppearanceUpdateToServer(const int player, const Item* item, const bool onIdentify);
+void clientSendItemTypeUpdateToServer(const int player, const Item* item, ItemType prevItemType);
 EquipItemResult equipItem(Item* item, Item** slot, int player, bool checkInventorySpaceForPaperDoll);
 enum ItemStackResults : int
 {
@@ -920,7 +920,7 @@ struct ItemStackResult
 ItemStackResult getItemStackingBehavior(const int player, Item* itemToCheck, Item* itemDestinationStack, int& newQtyForCheckedItem, int& newQtyForDestItem);
 // checks chest inventory order for dropping all items into (the first item in the list that is stackable will be returned)
 ItemStackResult getItemStackingBehaviorIntoChest(const int player, Item* itemToCheck, Item* itemDestinationStack, int& newQtyForCheckedItem, int& newQtyForDestItem);
-void getItemEmptySlotStackingBehavior(const int player, Item& itemToCheck, int& newQtyForCheckedItem, int& newQtyForDestItem);
+void getItemEmptySlotStackingBehavior(const int player, const Item& itemToCheck, int& newQtyForCheckedItem, int& newQtyForDestItem);
 Item* itemPickup(int player, Item* item, Item* addToSpecificInventoryItem = nullptr, bool forceNewStack = false);
 bool itemIsEquipped(const Item* item, int player);
 bool shouldInvertEquipmentBeatitude(const Stat* wielder);
@@ -984,7 +984,7 @@ bool itemIsThrowableTinkerTool(const Item* item);
 void createCustomInventory(Stat* stats, int itemLimit, BaronyRNG& rng);
 void copyItem(Item* itemToSet, const Item* itemToCopy);
 bool swapMonsterWeaponWithInventoryItem(Entity* my, Stat* myStats, node_t* inventoryNode, bool moveStack, bool overrideCursed);
-bool monsterUnequipSlot(Stat* myStats, Item** slot, Item* itemToUnequip);
+bool monsterUnequipSlot(Stat* myStats, Item** slot, const Item* itemToUnequip);
 bool monsterUnequipSlotFromCategory(Stat* myStats, Item** slot, Category cat);
 node_t* itemNodeInInventory(const Stat* myStats, Sint32 itemToFind, Category cat, bool randomSlot = false);
 node_t* spellbookNodeInInventory(const Stat* myStats, int spellIDToFind);
@@ -1000,8 +1000,8 @@ bool itemTypeIsInstrument(ItemType type);
 bool itemTypeIsThrownBall(ItemType type);
 real_t rangedAttackGetSpeedModifier(const Stat* myStats);
 bool rangedWeaponUseQuiverOnAttack(const Stat* myStats);
-real_t getArtifactWeaponEffectChance(ItemType type, Stat& wielder, real_t* effectAmount);
-void updateHungerMessages(Entity* my, Stat* myStats, Item* eaten);
+real_t getArtifactWeaponEffectChance(ItemType type, const Stat& wielder, real_t* effectAmount);
+void updateHungerMessages(const Entity* my, Stat* myStats, const Item* eaten);
 bool playerCanSpawnMoreTinkeringBots(const Stat* myStats);
 int maximumTinkeringBotsCanBeDeployed(const Stat* myStats);
 extern bool overrideTinkeringLimit;
@@ -1028,5 +1028,5 @@ enum SpellbookColors
 int getItemVariationFromSpellbookOrTome(const Item& item);
 
 #ifdef EDITOR
-SDL_Surface* itemSprite(Item* const item);
+SDL_Surface* itemSprite(const Item* const item);
 #endif

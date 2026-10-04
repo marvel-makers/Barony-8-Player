@@ -39,7 +39,7 @@
 
 -------------------------------------------------------------------------------*/
 
-real_t entityDist(Entity* my, Entity* your)
+real_t entityDist(const Entity* my, const Entity* your)
 {
     const real_t dx = my->x - your->x;
     const real_t dy = my->y - your->y;
@@ -357,7 +357,7 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
 
 -------------------------------------------------------------------------------*/
 
-bool entityInsideTile(Entity* entity, int x, int y, int z, bool checkSafeTiles)
+bool entityInsideTile(const Entity* entity, int x, int y, int z, bool checkSafeTiles)
 {
     if ( !entity )
     {
@@ -430,7 +430,7 @@ bool entityInsideTile(Entity* entity, int x, int y, int z, bool checkSafeTiles)
 
 -------------------------------------------------------------------------------*/
 
-bool entityInsideEntity(Entity* entity1, Entity* entity2)
+bool entityInsideEntity(const Entity* entity1, const Entity* entity2)
 {
     if ( !entity1 || !entity2 ) { return false; }
     if ( entity1->x + entity1->sizex > entity2->x - entity2->sizex )
@@ -541,7 +541,7 @@ bool entityInsideSomething(Entity* entity)
 }
 
 static ConsoleVariable<float> cvar_linetrace_smallcollision("/linetrace_smallcollision", 4.0);
-bool useSmallCollision(Entity& my, Stat& myStats, Entity& your, Stat& yourStats)
+bool useSmallCollision(const Entity& my, const Stat& myStats, const Entity& your, const Stat& yourStats)
 {
     if ( (my.behavior == &actMonster || my.behavior == &actPlayer) &&
         (your.behavior == &actMonster || your.behavior == &actPlayer) )
@@ -2595,7 +2595,7 @@ real_t lineTraceTarget(Entity* my, real_t x1, real_t y1, real_t angle, real_t ra
 
 -------------------------------------------------------------------------------*/
 
-int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntityList, bool checkWalls, bool checkFloor, bool checkEnemies)
+int checkObstacle(long x, long y, const Entity* my, const Entity* target, bool useTileEntityList, bool checkWalls, bool checkFloor, bool checkEnemies)
 {
     const node_t* node = nullptr;
     const Entity* entity = nullptr;

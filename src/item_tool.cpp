@@ -1438,7 +1438,7 @@ void Item::applyEmptyPotion(int player, Entity& entity)
     }
 }
 
-void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement, ItemBombFacingDirection dir, Entity* thrown, Entity* onEntity)
+void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement, ItemBombFacingDirection dir, const Entity* thrown, const Entity* onEntity)
 {
     if ( multiplayer == CLIENT )
     {
@@ -2018,7 +2018,7 @@ void Item::applyDuck(Uint32 parentUid, real_t x, real_t y, Entity* hitentity, bo
     }
 }
 
-void Item::applyTinkeringCreation(Entity* parent, Entity* thrown)
+void Item::applyTinkeringCreation(Entity* parent, const Entity* thrown)
 {
     if ( !thrown )
     {

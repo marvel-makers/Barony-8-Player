@@ -426,7 +426,7 @@ bool buyItemFromShop(const int player, Item* item, bool& bOutConsumedEntireStack
 
 -------------------------------------------------------------------------------*/
 
-bool isItemSellableToShop(const int player, Item* item)
+bool isItemSellableToShop(const int player, const Item* item)
 {
     if ( !item )
     {
@@ -750,7 +750,7 @@ bool sellItemToShop(const int player, Item* item)
     return true;
 }
 
-bool shopIsMysteriousShopkeeper(Entity* entity)
+bool shopIsMysteriousShopkeeper(const Entity* entity)
 {
     if ( !entity )
     {
@@ -763,7 +763,7 @@ bool shopIsMysteriousShopkeeper(Entity* entity)
     return false;
 }
 
-void buyItemFromMysteriousShopkeepConsumeOrb(const int player, Entity& entity, Item& boughtItem)
+void buyItemFromMysteriousShopkeepConsumeOrb(const int player, const Entity& entity, const Item& boughtItem)
 {
     const list_t* inventory = nullptr;
     if ( multiplayer == CLIENT )

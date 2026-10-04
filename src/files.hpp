@@ -295,7 +295,7 @@ int loadMap(const char* filename, map_t* destmap, list_t* entlist, list_t* creat
 int loadConfig(char* filename);
 int loadDefaultConfig();
 int saveMap(const char* filename);
-char* readFile(char* filename);
+char* readFile(const char* filename);
 std::list<std::string> directoryContents(const char* directory, bool includeSubdirectory, bool includeFiles, const char* base = datadir);
 File *openDataFile(const char *const filename, const char * const mode);
 DIR * openDataDir(const char *const);

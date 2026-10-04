@@ -476,7 +476,7 @@ bool isLetter(const char character)
 }
 
 //This is a more powerful version of isLetter that checks if a specified character is part of a word. However, it requires contextual information -- what are the next and previous characters? So pass the entire string to this function and the index in the string of the character being looked up.
-bool isCharacterPartOfWord(char* const text, const int index)
+bool isCharacterPartOfWord(const char* const text, const int index)
 {
     if (!text)
     {

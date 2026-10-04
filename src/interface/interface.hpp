@@ -251,16 +251,16 @@ extern std::map<int, MinimapHighlight_t> minimapHighlights;
 void handleDamageIndicatorTicks();
 void drawStatus(const int player);
 void drawStatusNew(const int player);
-void saveCommand(char* content);
+void saveCommand(const char* content);
 int loadConfig(char* filename);
 int saveConfig(char const * const filename);
 void defaultConfig();
 void updateChestInventory(const int player);
 Item* takeItemFromChest(int player, Item* item, int amount, Item* addToSpecificInventoryItem, bool forceNewStack, bool bDoPickupMessage = true);
 void updateShopWindow(const int player);
-bool getShopFreeSlot(const int player, list_t* shopInventory, Item* itemToSell, int& xout, int& yout, Item*& itemToStackInto);
+bool getShopFreeSlot(const int player, const list_t* shopInventory, Item* itemToSell, int& xout, int& yout, Item*& itemToStackInto);
 
-void updateEnemyBar(Entity* source, Entity* target, const char* name, Sint32 hp, Sint32 maxhp, 
+void updateEnemyBar(const Entity* source, const Entity* target, const char* name, Sint32 hp, Sint32 maxhp, 
     bool lowPriorityTick, DamageGib gibType);
 
 bool autoAddHotbarFilter(const Item& item);
@@ -269,7 +269,7 @@ void sortInventoryItemsOfType(const int player, int categoryInt, bool sortRightT
 void autosortInventory(const int player, bool sortPaperDoll = false);
 bool mouseInsidePlayerInventory(const int player);
 bool mouseInsidePlayerHotbar(const int player);
-bool playerLearnedSpellbook(const int player, Item* current_item);
+bool playerLearnedSpellbook(const int player, const Item* current_item);
 
 /*
  * Used for two purposes:
@@ -461,7 +461,7 @@ public:
     // transmute
     bool isItemAlterable(const Item* item);
     void alterItem(Item* item);
-    int getAlterItemResultAtCycle(Item* item);
+    int getAlterItemResultAtCycle(const Item* item);
 
     // void
     bool isItemVoidable(const Item* item);
@@ -498,7 +498,7 @@ public:
 
     // tinkering menu foncs
     bool tinkeringSalvageItem(Item* item, bool outsideInventory, int player);
-    bool tinkeringCraftItem(Item* item);
+    bool tinkeringCraftItem(const Item* item);
     void tinkeringCreateCraftableItemList();
     void tinkeringFreeLists();
     bool isItemSalvageable(const Item* item, int player);
@@ -514,7 +514,7 @@ public:
     bool tinkeringIsItemRepairable(Item* item, int player);
     bool tinkeringIsItemUpgradeable(const Item* item);
     bool tinkeringRepairItem(Item* item);
-    int tinkeringUpgradeMaxStatus(Item* item);
+    int tinkeringUpgradeMaxStatus(const Item* item);
     bool tinkeringConsumeMaterialsForRepair(Item* item, bool upgradingItem);
     bool tinkeringPlayerCanAffordRepair(Item* item);
     int tinkeringRepairGeneralItemSkillRequirement(Item* item);
@@ -529,13 +529,13 @@ public:
     bool scribingWriteItem(Item* item);
     int scribingLastUsageAmount;
     int scribingLastUsageDisplayTimer;
-    void scribingGetChargeCost(Item* itemUsedWith, int& outChargeCostMin, int& outChargeCostMax);
+    void scribingGetChargeCost(const Item* itemUsedWith, int& outChargeCostMin, int& outChargeCostMax);
 
     inline bool isGUIOpen()
     {
         return guiActive;
     };
-    inline bool isNodeTinkeringCraftableItem(node_t* node)
+    inline bool isNodeTinkeringCraftableItem(const node_t* node)
     {
         if ( !node )
         {
@@ -543,7 +543,7 @@ public:
         }
         return (node->list == &tinkeringTotalItems);
     };
-    inline bool isNodeScribingCraftableItem(node_t* node)
+    inline bool isNodeScribingCraftableItem(const node_t* node)
     {
         if ( !node )
         {
@@ -597,7 +597,7 @@ public:
             itemEffectScrollItem = nullptr;
         }
     }
-    bool isNodeFromPlayerInventory(node_t* node);
+    bool isNodeFromPlayerInventory(const node_t* node);
 
     struct TinkerGUI_t
     {
@@ -676,14 +676,14 @@ public:
         static const int MAX_TINKER_X;
         static const int MAX_TINKER_Y;
         std::unordered_map<int, Frame*> tinkerSlotFrames;
-        bool isTinkerConstructItemSelected(Item* item);
-        bool isSalvageOrRepairItemSelected(Item* item);
+        bool isTinkerConstructItemSelected(const Item* item);
+        bool isSalvageOrRepairItemSelected(const Item* item);
         void selectTinkerSlot(const int x, const int y);
         const int getSelectedTinkerSlotX() const { return selectedTinkerSlotX; }
         const int getSelectedTinkerSlotY() const { return selectedTinkerSlotY; }
         Frame* getTinkerSlotFrame(int x, int y) const;
         TinkerActions_t setItemDisplayNameAndPrice(Item* item, bool checkResultOnly = false);
-        bool warpMouseToSelectedTinkerItem(Item* snapToItem, Uint32 flags);
+        bool warpMouseToSelectedTinkerItem(const Item* snapToItem, Uint32 flags);
         void clearItemDisplayed();
         void updateTinkerScrapHeld(void* metalHeldText, void* magicHeldText, int realMetalScrap, int realMagicScrap);
 
@@ -750,7 +750,7 @@ public:
         void closeItemEffectMenu();
         void updateItemEffectMenu();
         void createItemEffectMenu();
-        bool isItemSelectedToEffect(Item* item);
+        bool isItemSelectedToEffect(const Item* item);
         bool isItemEffectMenuActive() const;
         bool ItemEffectHasBeenCreated() const;
         std::string itemDesc = "";
@@ -879,7 +879,7 @@ public:
         Frame* assistShrineFrame = nullptr;
         Uint32 shrineUID = 0;
 
-        void openAssistShrine(Entity* shrine);
+        void openAssistShrine(const Entity* shrine);
         void closeAssistShrine();
         void updateAssistShrine();
         void createAssistShrine();
@@ -888,7 +888,7 @@ public:
         void selectAssistShrineSlot(const int x, const int y);
         int getAssistPointsSaved();
         int getAssistPointsPreview();
-        int getAssistPointFromItem(Item* item);
+        int getAssistPointFromItem(const Item* item);
 
         int selectedAssistShrineSlotX = -1;
         int selectedAssistShrineSlotY = -1;
@@ -913,8 +913,8 @@ public:
         const int getSelectedAssistShrineY() const { return selectedAssistShrineSlotY; }
         Frame* getAssistShrineSlotFrame(int x, int y) const;
         //void setItemDisplayNameAndPrice(Item* item, bool isTooltipForResultPotion, bool isTooltipForRecipe);
-        bool warpMouseToSelectedAssistShrineItem(Item* snapToItem, Uint32 flags);
-        bool itemIsFromGUI(Item* item);
+        bool warpMouseToSelectedAssistShrineItem(const Item* snapToItem, Uint32 flags);
+        bool itemIsFromGUI(const Item* item);
         bool isSlotVisible(int x, int y) const;
         void scrollToSlot(int x, int y, bool instantly);
         static int heightOffsetWhenNotCompact;
@@ -967,7 +967,7 @@ public:
         };
         InvalidActionFeedback_t invalidActionType = INVALID_ACTION_NONE;
         int itemType = -1;
-        AssistItemActions_t setItemDisplayNameAndPrice(Item* item, bool checkResultOnly = false);
+        AssistItemActions_t setItemDisplayNameAndPrice(const Item* item, bool checkResultOnly = false);
         void clearItemDisplayed();
     };
     AssistShrineGUI_t assistShrineGUI;
@@ -1049,11 +1049,11 @@ public:
         const int getSelectedMailSlotX() const { return selectedMailSlotX; }
         const int getSelectedMailSlotY() const { return selectedMailSlotY; }
         Frame* getMailSlotFrame(int x, int y) const;
-        void setItemDisplayNameAndPrice(Item* item, const bool isTooltipForRecvItem);
+        void setItemDisplayNameAndPrice(const Item* item, const bool isTooltipForRecvItem);
         //void setItemDisplayNameAndPriceBrew(Item* item, const bool isTooltipForResultPotion, const bool isTooltipForRecipe);
         //void setItemDisplayNameAndPriceCook(Item* item, const bool isTooltipForResultPotion, const bool isTooltipForRecipe);
-        bool inventoryItemAllowedInGUI(Item* item);
-        bool warpMouseToSelectedMailItem(Item* snapToItem, Uint32 flags);
+        bool inventoryItemAllowedInGUI(const Item* item);
+        bool warpMouseToSelectedMailItem(const Item* snapToItem, Uint32 flags);
         void clearItemDisplayed();
         static int heightOffsetWhenNotCompact;
     };
@@ -1153,16 +1153,16 @@ public:
         const int getSelectedFeatherSlotY() const { return selectedFeatherSlotY; }
         Frame* getFeatherSlotFrame(int x, int y) const;
         FeatherActions_t setItemDisplayNameAndPrice(Item* item, bool checkResultOnly);
-        bool warpMouseToSelectedFeatherItem(Item* snapToItem, Uint32 flags);
+        bool warpMouseToSelectedFeatherItem(const Item* snapToItem, Uint32 flags);
         bool isInscriptionDrawerItemSelected(Item* item);
-        bool isItemSelectedToRepairOrInscribe(Item* item);
+        bool isItemSelectedToRepairOrInscribe(const Item* item);
         bool isInscriptionDrawerOpen() const;
         bool isInscribeOrRepairActive() const;
         void clearItemDisplayed();
         static int heightOffsetWhenNotCompact;
         void scrollToSlot(int x, int y, bool instantly);
         bool isSlotVisible(int x, int y) const;
-        bool isItemVisible(Item* item) const;
+        bool isItemVisible(const Item* item) const;
         const int kNumInscriptionsToDisplayVertical = 5;
         int getNumInscriptionsToDisplayVertical() const;
         void updateFeatherCharge(void* featherChargeText, void* featherChangeChargeText, int currentCharge);
@@ -1216,7 +1216,7 @@ public:
             void updateRecipePanel();
             void scrollToSlot(int x, int y, bool instantly);
             bool isSlotVisible(int x, int y) const;
-            bool isItemVisible(Item* item) const;
+            bool isItemVisible(const Item* item) const;
 
             int activateRecipeIndex = -1;
 
@@ -1412,12 +1412,12 @@ public:
         const int getSelectedAlchemySlotY() const { return selectedAlchemySlotY; }
         Frame* getAlchemySlotFrame(int x, int y) const;
         void setItemDisplayNameAndPrice(Item* item, const bool isTooltipForResultPotion, const bool isTooltipForRecipe);
-        void setItemDisplayNameAndPriceBrew(Item* item, const bool isTooltipForResultPotion, const bool isTooltipForRecipe);
+        void setItemDisplayNameAndPriceBrew(const Item* item, const bool isTooltipForResultPotion, const bool isTooltipForRecipe);
         void setItemDisplayNameAndPriceCook(Item* item, const bool isTooltipForResultPotion, const bool isTooltipForRecipe);
-        bool inventoryItemAllowedInGUI(Item* item);
-        bool warpMouseToSelectedAlchemyItem(Item* snapToItem, Uint32 flags);
+        bool inventoryItemAllowedInGUI(const Item* item);
+        bool warpMouseToSelectedAlchemyItem(const Item* snapToItem, Uint32 flags);
         void clearItemDisplayed();
-        bool alchemyMissingIngredientQty(Item* item);
+        bool alchemyMissingIngredientQty(const Item* item);
         static int heightOffsetWhenNotCompact;
     };
     AlchemyGUI_t alchemyGUI;
@@ -1467,13 +1467,13 @@ typedef struct hotbar_slot_t
     Uint32 item = 0;
     Item lastItem;
     int lastCategory = -1;
-    bool matchesExactLastItem(int player, Item* item);
+    bool matchesExactLastItem(int player, const Item* item);
     void resetLastItem();
     hotbar_slot_t()
     {
         resetLastItem();
     }
-    void storeLastItem(Item* item);
+    void storeLastItem(const Item* item);
 } hotbar_slot_t;
 
 
@@ -1715,8 +1715,8 @@ public:
     void selectNextFollower();
     int numMonstersToDrawInParty();
     void updateScrollPartySheet();
-    bool allowedInteractEntity(Entity& selectedEntity, bool updateInteractText = true);
-    int optionDisabledForCreature(int playerSkillLVL, int monsterType, int option, Entity* follower);
+    bool allowedInteractEntity(const Entity& selectedEntity, bool updateInteractText = true);
+    int optionDisabledForCreature(int playerSkillLVL, int monsterType, int option, const Entity* follower);
     bool allowedClassToggle(int monsterType);
     bool allowedItemPickupToggle(int monsterType);
     static bool allowedInteractFood(int monsterType);
@@ -1962,9 +1962,9 @@ struct CalloutRadialMenu
     void drawCalloutMenu();
     void initCalloutMenuGUICursor(bool openInventory);
     void closeCalloutMenuGUI();
-    bool allowedInteractEntity(Entity& selectedEntity, bool updateInteractText = true);
+    bool allowedInteractEntity(const Entity& selectedEntity, bool updateInteractText = true);
     bool createParticleCallout(real_t x, real_t y, real_t z, Uint32 uid, CalloutCommand _cmd = CALLOUT_CMD_LOOK); // if true, send message
-    bool createParticleCallout(Entity* entity, CalloutCommand _cmd, Uint32 overrideUID = 0); // if true, send message
+    bool createParticleCallout(const Entity* entity, CalloutCommand _cmd, Uint32 overrideUID = 0); // if true, send message
     enum SetCalloutTextTypes : int {
         SET_CALLOUT_BANNER_TEXT,
         SET_CALLOUT_WORLD_TEXT,
@@ -2034,6 +2034,6 @@ enum ItemContextMenuPrompts {
 
 std::vector<ItemContextMenuPrompts> getContextMenuOptionsForItem(const int player, Item* item);
 std::vector<ItemContextMenuPrompts> getContextTooltipOptionsForItem(const int player, Item* item, int useDropdownMenu, bool hotbarItem);
-const char* getContextMenuLangEntry(const int player, const ItemContextMenuPrompts prompt, Item& item);
+const char* getContextMenuLangEntry(const int player, const ItemContextMenuPrompts prompt, const Item& item);
 std::string getContextMenuOptionBindingName(const int player, const ItemContextMenuPrompts prompt);
 void cleanupMinimapTextures();

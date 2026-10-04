@@ -1465,7 +1465,7 @@ int deinitApp()
 
 -------------------------------------------------------------------------------*/
 
-static void positionAndLimitWindow(int& x, int& y, int& w, int& h)
+static void positionAndLimitWindow(int& x, int& y, const int& w, const int& h)
 {
 #ifdef NINTENDO
     // don't do anything on nintendo.

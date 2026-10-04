@@ -83,7 +83,7 @@ void actFlame(Entity* my)
 
 static ConsoleVariable<bool> cvar_flame_use_vismap("/flame_use_vismap", true);
 
-Entity* spawnFlameSprites(Entity* parentent, Sint32 sprite)
+Entity* spawnFlameSprites(const Entity* parentent, Sint32 sprite)
 {
     if ( !parentent )
     {
@@ -142,7 +142,7 @@ Entity* spawnFlameSprites(Entity* parentent, Sint32 sprite)
     return nullptr;
 }
 
-Entity* spawnFlame(Entity* parentent, Sint32 sprite )
+Entity* spawnFlame(const Entity* parentent, Sint32 sprite )
 {
     if ( !parentent )
     {

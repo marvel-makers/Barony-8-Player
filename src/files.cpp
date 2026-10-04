@@ -3611,7 +3611,7 @@ int saveMap(const char* filename2)
 
 -------------------------------------------------------------------------------*/
 
-char* readFile(char* filename)
+char* readFile(const char* filename)
 {
     long input_file_size = 0;
     char* file_contents = nullptr;

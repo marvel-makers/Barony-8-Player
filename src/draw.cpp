@@ -989,7 +989,7 @@ void framebuffer::unbindAll() {
 
 -------------------------------------------------------------------------------*/
 
-Uint32 getPixel(SDL_Surface* surface, int x, int y)
+Uint32 getPixel(const SDL_Surface* surface, int x, int y)
 {
     const int bpp = surface->format->BytesPerPixel;
     // Here p is the address to the pixel we want to retrieve
@@ -1034,7 +1034,7 @@ Uint32 getPixel(SDL_Surface* surface, int x, int y)
 
 -------------------------------------------------------------------------------*/
 
-void putPixel(SDL_Surface* surface, int x, int y, Uint32 pixel)
+void putPixel(const SDL_Surface* surface, int x, int y, Uint32 pixel)
 {
     const int bpp = surface->format->BytesPerPixel;
     // Here p is the address to the pixel we want to set
@@ -1368,7 +1368,7 @@ void drawLine( int x1, int y1, int x2, int y2, Uint32 color, Uint8 alpha )
 
 -------------------------------------------------------------------------------*/
 
-int drawRect( SDL_Rect* src, Uint32 color, Uint8 alpha )
+int drawRect(const SDL_Rect* src, Uint32 color, Uint8 alpha )
 {
     SDL_Rect secondsrc;
     if ( src == nullptr)
@@ -1393,7 +1393,7 @@ int drawRect( SDL_Rect* src, Uint32 color, Uint8 alpha )
    draws the border of a rectangle
 
 -------------------------------------------------------------------------------*/
-int drawBox(SDL_Rect* src, Uint32 color, Uint8 alpha)
+int drawBox(const SDL_Rect* src, Uint32 color, Uint8 alpha)
 {
     drawLine(src->x, src->y, src->x + src->w, src->y, color, alpha); //Top.
     drawLine(src->x, src->y, src->x, src->y + src->h, color, alpha); //Left.
@@ -1463,7 +1463,7 @@ void drawGear(Sint16 x, Sint16 y, real_t size, Sint32 rotation)
 
 -------------------------------------------------------------------------------*/
 
-void drawImageRotatedAlpha( SDL_Surface* image, SDL_Rect* src, SDL_Rect* pos, real_t angle, Uint8 alpha )
+void drawImageRotatedAlpha( SDL_Surface* image, const SDL_Rect* src, const SDL_Rect* pos, real_t angle, Uint8 alpha )
 {
     if (!image || !pos) {
         return;
@@ -1481,7 +1481,7 @@ void drawImageRotatedAlpha( SDL_Surface* image, SDL_Rect* src, SDL_Rect* pos, re
 
 -------------------------------------------------------------------------------*/
 
-void drawImageColor( SDL_Surface* image, SDL_Rect* src, SDL_Rect* pos, Uint32 color )
+void drawImageColor( SDL_Surface* image, const SDL_Rect* src, const SDL_Rect* pos, Uint32 color )
 {
     if (!image || !pos) {
         return;
@@ -1511,7 +1511,7 @@ void drawImageAlpha( SDL_Surface* image, SDL_Rect* src, SDL_Rect* pos, Uint8 alp
 
 -------------------------------------------------------------------------------*/
 
-void drawImage( SDL_Surface* image, SDL_Rect* src, SDL_Rect* pos )
+void drawImage( SDL_Surface* image, const SDL_Rect* src, const SDL_Rect* pos )
 {
     if (!image || !pos) {
         return;
@@ -1541,7 +1541,7 @@ void drawImageRing(SDL_Surface* image, SDL_Rect* src, int radius, int thickness,
 
 -------------------------------------------------------------------------------*/
 
-void drawImageScaled( SDL_Surface* image, SDL_Rect* src, SDL_Rect* pos )
+void drawImageScaled( SDL_Surface* image, const SDL_Rect* src, const SDL_Rect* pos )
 {
     if (!image || !pos) {
         return;
@@ -1644,7 +1644,7 @@ void drawSky3D( view_t* camera, SDL_Surface* tex )
 
 -------------------------------------------------------------------------------*/
 
-void drawLayer(long camx, long camy, int z, map_t* map)
+void drawLayer(long camx, long camy, int z, const map_t* map)
 {
     SDL_Rect pos;
 
@@ -3447,7 +3447,7 @@ void drawWindowFancy(int x1, int y1, int x2, int y2)
 
 -------------------------------------------------------------------------------*/
 
-SDL_Rect ttfPrintTextColor( TTF_Font* font, int x, int y, Uint32 color, bool outline, const char* str )
+SDL_Rect ttfPrintTextColor(const TTF_Font* font, int x, int y, Uint32 color, bool outline, const char* str )
 {
     auto filename = "lang/en.ttf#12#1"; // default
     if (outline) {
@@ -3853,7 +3853,7 @@ static inline bool testTileOccludes(const map_t& map, int index) {
         && (t1 != TRANSPARENT_TILE); // is ceiling != TRANSPARENT_TILE
 }
 
-void occlusionCulling(map_t& map, view_t& camera)
+void occlusionCulling(const map_t& map, const view_t& camera)
 {
     // cvars
 #ifndef EDITOR

@@ -873,12 +873,12 @@ void lowercaseString(std::string& str)
 }
 #endif
 
-void hashSpellProp(Uint32& hash, Uint32& hashShift, int& toSet)
+void hashSpellProp(Uint32& hash, Uint32& hashShift, const int& toSet)
 {
     hash += static_cast<Uint32>(abs(toSet)) << hashShift % 32; ++hashShift;
 }
 
-void hashSpellProp(Uint32& hash, Uint32& hashShift, real_t& toSet)
+void hashSpellProp(Uint32& hash, Uint32& hashShift, const real_t& toSet)
 {
     hash += static_cast<Uint32>(abs(toSet) * 100000) << hashShift % 32; ++hashShift;
 }
@@ -2330,7 +2330,7 @@ std::string& ItemTooltips_t::getProficiencyLevelName(Sint32 proficiencyLevel)
     }
 }
 
-bool ItemTooltips_t::bIsSpellDamageOrHealingType(spell_t* spell)
+bool ItemTooltips_t::bIsSpellDamageOrHealingType(const spell_t* spell)
 {
     if ( !spell )
     {
@@ -2357,7 +2357,7 @@ bool ItemTooltips_t::bSpellHasBasicHitMessage(const int spellID)
     return false;
 }
 
-int ItemTooltips_t::getSpellDamageOrHealAmount(const int player, spell_t* spell, Item* spellbook, const bool excludePlayerStats)
+int ItemTooltips_t::getSpellDamageOrHealAmount(const int player, const spell_t* spell, const Item* spellbook, const bool excludePlayerStats)
 {
 #ifdef EDITOR
     return 0;
@@ -2446,7 +2446,7 @@ int ItemTooltips_t::getSpellDamageOrHealAmount(const int player, spell_t* spell,
 #endif
 }
 
-std::string ItemTooltips_t::getSpellDescriptionText(const int player, Item& item)
+std::string ItemTooltips_t::getSpellDescriptionText(const int player, const Item& item)
 {
 #ifdef EDITOR
     return defaultString;
@@ -2478,7 +2478,7 @@ std::string ItemTooltips_t::getSpellDescriptionText(const int player, Item& item
 #endif
 }
 
-std::string& ItemTooltips_t::getIconLabel(Item& item)
+std::string& ItemTooltips_t::getIconLabel(const Item& item)
 {
 #ifndef EDITOR
     if ( item.type == SPELL_ITEM && !item.spellNotifyIcon ) { return defaultString; }
@@ -2911,7 +2911,7 @@ real_t ItemTooltips_t::getSpellSustainCostPerSecond(int spellID)
     return cost;
 }
 
-std::string& ItemTooltips_t::getSpellTypeString(const int player, Item& item)
+std::string& ItemTooltips_t::getSpellTypeString(const int player, const Item& item)
 {
 #ifdef EDITOR
     return defaultString;
@@ -2964,7 +2964,7 @@ std::string& ItemTooltips_t::getSpellTypeString(const int player, Item& item)
 #endif
 }
 
-std::string ItemTooltips_t::getCostOfSpellString(const int player, Item& item)
+std::string ItemTooltips_t::getCostOfSpellString(const int player, const Item& item)
 {
 #ifdef EDITOR
     return defaultString;
@@ -3100,7 +3100,7 @@ node_t* ItemTooltips_t::getSpellNodeFromSpellID(int spellID)
     return spellImageNode;
 }
 
-std::string ItemTooltips_t::getSpellIconPath(const int player, Item& item, int spellID)
+std::string ItemTooltips_t::getSpellIconPath(const int player, const Item& item, int spellID)
 {
 #ifdef EDITOR
     return "items/images/null.png";
@@ -3197,7 +3197,7 @@ std::string& ItemTooltips_t::getItemPotionAlchemyAdjective(const int player, Uin
 #endif
 }
 
-std::string& ItemTooltips_t::getItemPotionHarmAllyAdjective(Item& item)
+std::string& ItemTooltips_t::getItemPotionHarmAllyAdjective(const Item& item)
 {
 #ifdef EDITOR
     return defaultString;
@@ -3347,7 +3347,7 @@ std::string& ItemTooltips_t::getItemStatFullName(const char* attr)
     return defaultString;
 }
 
-std::string& ItemTooltips_t::getItemEquipmentEffectsForIconText(std::string& attribute)
+std::string& ItemTooltips_t::getItemEquipmentEffectsForIconText(const std::string& attribute)
 {
     if ( adjectives["equipment_effects_icon_text"].find(attribute) != adjectives["equipment_effects_icon_text"].end() )
     {
@@ -3356,7 +3356,7 @@ std::string& ItemTooltips_t::getItemEquipmentEffectsForIconText(std::string& att
     return defaultString;
 }
 
-std::string& ItemTooltips_t::getItemEquipmentEffectsForAttributesText(std::string& attribute)
+std::string& ItemTooltips_t::getItemEquipmentEffectsForAttributesText(const std::string& attribute)
 {
     if ( adjectives["equipment_effects_attributes_text"].find(attribute) != adjectives["equipment_effects_attributes_text"].end() )
     {
@@ -3365,7 +3365,7 @@ std::string& ItemTooltips_t::getItemEquipmentEffectsForAttributesText(std::strin
     return defaultString;
 }
 
-Sint32 getStatAttributeBonusFromItem(const int player, Item& item, std::string& attribute)
+Sint32 getStatAttributeBonusFromItem(const int player, const Item& item, const std::string& attribute)
 {
 #ifndef EDITOR
     Sint32 stat = 0;
@@ -6644,8 +6644,8 @@ bool charIsWordSeparator(char c)
     return false;
 }
 
-void ItemTooltips_t::getWordIndexesItemDetails(void* field, std::string& str, std::string& highlightValues, std::string& positiveValues, std::string& negativeValues,
-    std::map<int, Uint32>& highlightIndexes, std::map<int, Uint32>& positiveIndexes, std::map<int, Uint32>& negativeIndexes, ItemTooltip_t& tooltip)
+void ItemTooltips_t::getWordIndexesItemDetails(void* field, const std::string& str, const std::string& highlightValues, const std::string& positiveValues, const std::string& negativeValues,
+    std::map<int, Uint32>& highlightIndexes, std::map<int, Uint32>& positiveIndexes, std::map<int, Uint32>& negativeIndexes, const ItemTooltip_t& tooltip)
 {
     positiveIndexes.clear();
     negativeIndexes.clear();
@@ -12714,7 +12714,7 @@ void EquipmentModelOffsets_t::readFromFile(std::string monsterName, int monsterT
 }
 
 #ifndef EDITOR
-void GameModeManager_t::CurrentSession_t::ChallengeRun_t::updateKillEvent(Entity* entity)
+void GameModeManager_t::CurrentSession_t::ChallengeRun_t::updateKillEvent(const Entity* entity)
 {
     if ( multiplayer == CLIENT || !isActive() || !entity )
     {

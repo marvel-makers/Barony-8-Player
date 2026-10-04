@@ -21,7 +21,7 @@ typedef struct ttfTextHash_t
     bool outline;
 } ttfTextHash_t;
 
-unsigned long djb2Hash(char* str);
-SDL_Surface* ttfTextHashRetrieve(list_t* buckets, char* str, TTF_Font* font, bool outline);
+unsigned long djb2Hash(const char* str);
+SDL_Surface* ttfTextHashRetrieve(const list_t* buckets, char* str, const TTF_Font* font, bool outline);
 SDL_Surface* ttfTextHashStore(list_t* buckets, char* str, TTF_Font* font, bool outline, SDL_Surface* surf);
 void ttfTextHash_deconstructor(void* data);

@@ -1748,7 +1748,7 @@ void setDefaultMonsterStats(Stat* stats, int sprite)
     }
 }
 
-bool isMonsterStatsDefault(Stat& myStats)
+bool isMonsterStatsDefault(const Stat& myStats)
 {
     const Stat baseStats(myStats.type + 1000);
     if ( baseStats.HP == myStats.HP

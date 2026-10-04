@@ -118,7 +118,7 @@ int getLootBagLightPaletteForVariation(const int variation, const bool colorblin
     return getLootBagLightPaletteForPlayer(getLootBagPlayerForVariation(variation, colorblind));
 }
 
-bool autoHotbarSoftReserveItem(Item& item)
+bool autoHotbarSoftReserveItem(const Item& item)
 {
     const Category cat = itemCategory(&item);
     if ( cat == THROWN || item.type == GEM_ROCK || itemIsThrowableTinkerTool(&item) || item.type == TOOL_BEARTRAP )
@@ -408,7 +408,7 @@ enum ItemLevelCurveType
 
 ItemLevelCurveType itemLevelCurveType = ITEM_LEVEL_CURVE_TYPE_DEFAULT;
 int itemLevelCurveShop = -1;
-ItemType itemLevelCurveEntity(Entity& my, Category cat, int minLevel, int maxLevel, BaronyRNG& rng)
+ItemType itemLevelCurveEntity(const Entity& my, Category cat, int minLevel, int maxLevel, BaronyRNG& rng)
 {
     itemLevelCurveType = ITEM_LEVEL_CURVE_TYPE_DEFAULT;
     itemLevelCurveShop = -1;
@@ -1297,7 +1297,7 @@ int getItemVariationFromSpellbookOrTome(const Item& item)
 
 -------------------------------------------------------------------------------*/
 
-Sint32 itemModel(const Item* const item, bool shortModel, Entity* creature)
+Sint32 itemModel(const Item* const item, bool shortModel, const Entity* creature)
 {
     if ( !item || item->type < 0 || item->type >= NUMITEMS )
     {
@@ -2663,7 +2663,7 @@ void useItem(Item* item, const int player, Entity* usedBy, bool unequipForDroppi
         Uint32 appearance = 0;
         bool identified = false;
         bool sendToServer = false;
-        void setItem(Item& item)
+        void setItem(const Item& item)
         {
             type = item.type;
             status = item.status;
@@ -4084,7 +4084,7 @@ int Item::getMaxStackLimit(int player) const
     return maxStack;
 }
 
-ItemStackResult getItemStackingBehaviorIndividualItemCheck(const int player, Item* itemToCheck, Item* itemDestinationStack, int& newQtyForCheckedItem, int& newQtyForDestItem)
+ItemStackResult getItemStackingBehaviorIndividualItemCheck(const int player, const Item* itemToCheck, Item* itemDestinationStack, int& newQtyForCheckedItem, int& newQtyForDestItem)
 {
     ItemStackResult itemStackResult;
     itemStackResult.itemToStackInto = nullptr;
@@ -4181,7 +4181,7 @@ ItemStackResult getItemStackingBehaviorIndividualItemCheck(const int player, Ite
     return itemStackResult;
 }
 
-void getItemEmptySlotStackingBehavior(const int player, Item& itemToCheck, int& newQtyForCheckedItem, int& newQtyForDestItem)
+void getItemEmptySlotStackingBehavior(const int player, const Item& itemToCheck, int& newQtyForCheckedItem, int& newQtyForDestItem)
 {
     const int maxStack = itemToCheck.getMaxStackLimit(player);
     if ( itemToCheck.count > maxStack )
@@ -4427,7 +4427,7 @@ Item* newItemFromEntity(const Entity* const entity, bool discardUid)
 
 -------------------------------------------------------------------------------*/
 
-Item** itemSlot(Stat* const myStats, Item* const item)
+Item** itemSlot(Stat* const myStats, const Item* const item)
 {
     if ( !myStats || !item )
     {
@@ -5015,7 +5015,7 @@ Sint32 Item::potionGetEffectDamage(Entity* my, Stat* myStats) const
     return damage;
 }
 
-Sint32 Item::potionGetEffectDurationMinimum(Entity* my, Stat* myStats) const
+Sint32 Item::potionGetEffectDurationMinimum(Entity* my, const Stat* myStats) const
 {
     if ( type == GREASE_BALL )
     {
@@ -5093,7 +5093,7 @@ Sint32 Item::potionGetEffectDurationMinimum(Entity* my, Stat* myStats) const
     return duration;
 }
 
-Sint32 Item::potionGetEffectDurationMaximum(Entity* my, Stat* myStats) const
+Sint32 Item::potionGetEffectDurationMaximum(Entity* my, const Stat* myStats) const
 {
     if ( type == GREASE_BALL )
     {
@@ -5417,7 +5417,7 @@ void Item::foodTinGetDescription(std::string& cookingMethod, std::string& protei
     sides = Language::get(950 + c);
 }
 
-int Item::foodGetPukeChance(Stat* eater) const
+int Item::foodGetPukeChance(const Stat* eater) const
 {
     int pukeChance = 100;
     switch ( status )
@@ -6611,7 +6611,7 @@ bool swapMonsterWeaponWithInventoryItem(Entity* const my, Stat* const myStats, n
     }
 }
 
-bool monsterUnequipSlot(Stat* const myStats, Item** const slot, Item* const itemToUnequip)
+bool monsterUnequipSlot(Stat* const myStats, Item** const slot, const Item* const itemToUnequip)
 {
     Item* tmpItem = nullptr;
 
@@ -7250,7 +7250,7 @@ bool rangedWeaponUseQuiverOnAttack(const Stat* const myStats)
     return false;
 }
 
-real_t getArtifactWeaponEffectChance(const ItemType type, Stat& wielder, real_t* const effectAmount)
+real_t getArtifactWeaponEffectChance(const ItemType type, const Stat& wielder, real_t* const effectAmount)
 {
     if ( type == ARTIFACT_AXE )
     {
@@ -7504,7 +7504,7 @@ void playerTryEquipItemAndUpdateServer(const int player, Item* const item, bool 
     }
 }
 
-void clientSendAppearanceUpdateToServer(const int player, Item* item, const bool onIdentify)
+void clientSendAppearanceUpdateToServer(const int player, const Item* item, const bool onIdentify)
 {
     if ( multiplayer != CLIENT ) { return; }
     if ( !item || !itemIsEquipped(item, player) || items[item->type].item_slot == NO_EQUIP )
@@ -7527,7 +7527,7 @@ void clientSendAppearanceUpdateToServer(const int player, Item* item, const bool
     sendPacketSafe(net_sock, -1, net_packet, 0);
 }
 
-void clientSendItemTypeUpdateToServer(const int player, Item* item, ItemType prevItemType)
+void clientSendItemTypeUpdateToServer(const int player, const Item* item, ItemType prevItemType)
 {
     if ( multiplayer != CLIENT ) { return; }
     if ( !item || !itemIsEquipped(item, player) || items[item->type].item_slot == NO_EQUIP )

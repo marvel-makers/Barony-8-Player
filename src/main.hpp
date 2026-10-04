@@ -872,11 +872,11 @@ void list_RemoveNodeWithElement(list_t &list, T element)
 node_t* list_AddNodeFirst(list_t* list);
 node_t* list_AddNodeLast(list_t* list);
 node_t* list_AddNode(list_t* list, int index);
-Uint32 list_Size(list_t* list);
-list_t* list_Copy(list_t* destlist, list_t* srclist);
-list_t* list_CopyNew(list_t* srclist);
-Uint32 list_Index(node_t* node);
-node_t* list_Node(list_t* list, int index);
+Uint32 list_Size(const list_t* list);
+list_t* list_Copy(list_t* destlist, const list_t* srclist);
+list_t* list_CopyNew(const list_t* srclist);
+Uint32 list_Index(const node_t* node);
+node_t* list_Node(const list_t* list, int index);
 
 // function prototypes for objects.c:
 void defaultDeconstructor(void* data);

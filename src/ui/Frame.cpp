@@ -455,7 +455,7 @@ static bool isMouseActive(int owner) {
 #endif
 }
 
-void frameDrawBlitSurface(const Frame* frame, SDL_Rect _size, SDL_Surface* surf, TempTexture* tex)
+void frameDrawBlitSurface(const Frame* frame, SDL_Rect _size, const SDL_Surface* surf, const TempTexture* tex)
 {
 #ifndef EDITOR
     if (!surf || !tex || !frame) {

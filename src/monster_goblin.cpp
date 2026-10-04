@@ -539,7 +539,7 @@ void goblinDie(Entity* my)
 
 #define GOBLINWALKSPEED .13
 
-void goblinMoveBodyparts(Entity* my, Stat* myStats, double dist)
+void goblinMoveBodyparts(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr, *entity2 = nullptr;

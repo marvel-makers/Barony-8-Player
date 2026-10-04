@@ -234,7 +234,7 @@ void serverUpdateEntityBodypart(Entity* entity, int bodypart)
 
 -------------------------------------------------------------------------------*/
 
-void serverUpdateEntitySprite(Entity* entity)
+void serverUpdateEntitySprite(const Entity* entity)
 {
     if (multiplayer != SERVER)
     {
@@ -246,7 +246,7 @@ void serverUpdateEntitySprite(Entity* entity)
         {
             continue;
         }
-        strcpy((char*)net_packet->data, "ENTA");
+        strcpy(reinterpret_cast<char*>(net_packet->data), "ENTA");
         SDLNet_Write32(entity->getUID(), &net_packet->data[4]);
         SDLNet_Write32(entity->sprite, &net_packet->data[8]);
         net_packet->address.host = net_clients[c - 1].host;
@@ -264,7 +264,7 @@ void serverUpdateEntitySprite(Entity* entity)
 
 -------------------------------------------------------------------------------*/
 
-void serverUpdateEntitySkill(Entity* entity, int skill)
+void serverUpdateEntitySkill(const Entity* entity, int skill)
 {
     if (multiplayer != SERVER)
     {
@@ -295,7 +295,7 @@ Updates a specific entity skill for all clients
 
 -------------------------------------------------------------------------------*/
 
-void serverUpdateEntityStatFlag(Entity* entity, int flag)
+void serverUpdateEntityStatFlag(const Entity* entity, int flag)
 {
     if (multiplayer != SERVER)
     {
@@ -330,7 +330,7 @@ Updates a specific entity fskill for all clients
 
 -------------------------------------------------------------------------------*/
 
-void serverUpdateEntityFSkill(Entity* entity, int fskill)
+void serverUpdateEntityFSkill(const Entity* entity, int fskill)
 {
     if (multiplayer != SERVER)
     {
@@ -361,7 +361,7 @@ Spawns misc particle effects for all clients
 
 -------------------------------------------------------------------------------*/
 
-void serverSpawnMiscParticles(Entity* entity, int particleType, int particleSprite, Uint32 optionalUid, Uint32 duration,
+void serverSpawnMiscParticles(const Entity* entity, int particleType, int particleSprite, Uint32 optionalUid, Uint32 duration,
                               Uint32 optionalData)
 {
     if (multiplayer != SERVER)
@@ -433,7 +433,7 @@ void serverSpawnMiscParticlesAtLocation(Sint16 x, Sint16 y, Sint16 z, int partic
 
 -------------------------------------------------------------------------------*/
 
-void serverUpdateEntityFlag(Entity* entity, int flag)
+void serverUpdateEntityFlag(const Entity* entity, int flag)
 {
     if (multiplayer != SERVER)
     {

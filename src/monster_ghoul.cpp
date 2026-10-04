@@ -308,7 +308,7 @@ void ghoulDie(Entity* my)
 
 #define GHOULWALKSPEED .125
 
-void ghoulMoveBodyparts(Entity* my, Stat* myStats, double dist)
+void ghoulMoveBodyparts(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;
