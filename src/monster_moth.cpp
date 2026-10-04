@@ -261,7 +261,7 @@ void mothDie(Entity* my)
 #define BODY_CIRCLING_ATTACK body->fskill[11]
 #define BODY_CIRCLING_ATTACK_SETPOINT body->fskill[12]
 
-int mothGetAttackPose(Entity* my, int basePose)
+int mothGetAttackPose(const Entity* my, int basePose)
 {
     if ( !my )
     {

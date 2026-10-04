@@ -546,7 +546,7 @@ void monsterGDie(Entity* my)
 
 #define MONSTER_GWALKSPEED .13
 
-void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
+void monsterGMoveBodyparts(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;

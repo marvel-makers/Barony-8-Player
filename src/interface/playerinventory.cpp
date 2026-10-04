@@ -615,7 +615,7 @@ const char* itemUseString(int player, const Item& item)
 //  return Language::get(332);
 //}
 
-Player::PaperDoll_t::PaperDollSlotType getPaperDollSlotFromItemType(Item& item)
+Player::PaperDoll_t::PaperDollSlotType getPaperDollSlotFromItemType(const Item& item)
 {
     const auto slotName = items[item.type].item_slot;
     Player::PaperDoll_t::PaperDollSlotType dollSlot = Player::PaperDoll_t::PaperDollSlotType::SLOT_MAX;
@@ -7954,7 +7954,7 @@ void Player::Inventory_t::closeInventory()
     itemTooltipDisplay.scrolledToMax = 0;
 }
 
-int Player::Inventory_t::getKeyAmountForWallLock(Entity& entity) const
+int Player::Inventory_t::getKeyAmountForWallLock(const Entity& entity) const
 {
     int num = 0;
     ItemType key = WOODEN_SHIELD;
@@ -8002,7 +8002,7 @@ int Player::Inventory_t::getKeyAmountForWallLock(Entity& entity) const
     return num;
 }
 
-Item* Player::Inventory_t::hasKeyForWallLock(Entity& entity) const
+Item* Player::Inventory_t::hasKeyForWallLock(const Entity& entity) const
 {
     ItemType key = WOODEN_SHIELD;
     switch ( entity.wallLockMaterial )
@@ -8062,7 +8062,7 @@ bool Player::Inventory_t::guiAllowDefaultRightClick() const
     return false;
 }
 
-bool Player::Inventory_t::guiAllowDropItems(Item* itemToDrop) const
+bool Player::Inventory_t::guiAllowDropItems(const Item* itemToDrop) const
 {
     if ( player.GUI.bModuleAccessibleWithMouse(player.GUI.activeModule) )
     {
@@ -11312,7 +11312,7 @@ std::string getContextMenuOptionBindingName(const int player, const ItemContextM
     }
 }
 
-const char* getContextMenuLangEntry(const int player, const ItemContextMenuPrompts prompt, Item& item)
+const char* getContextMenuLangEntry(const int player, const ItemContextMenuPrompts prompt, const Item& item)
 {
     switch ( prompt )
     {
@@ -12504,7 +12504,7 @@ bool mouseInsidePlayerHotbar(const int player)
     return false;
 }
 
-bool playerLearnedSpellbook(int player, Item* current_item)
+bool playerLearnedSpellbook(int player, const Item* current_item)
 {
     if ( !current_item )
     {

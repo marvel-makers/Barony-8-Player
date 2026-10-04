@@ -671,7 +671,7 @@ void spellElementDeconstructor(void* data)
     }
 }
 
-spell_t* copySpell(spell_t* spell, int subElementIndexToCopy)
+spell_t* copySpell(const spell_t* spell, int subElementIndexToCopy)
 {
     const auto result = static_cast<spell_t*>(malloc(sizeof(spell_t)));
     *result = *spell; // copy over all the static data members.
@@ -716,7 +716,7 @@ spell_t* copySpell(spell_t* spell, int subElementIndexToCopy)
     return result;
 }
 
-void copySpellElement(spellElement_t* spellElement, spellElement_t* spellElementToSet)
+void copySpellElement(const spellElement_t* spellElement, spellElement_t* spellElementToSet)
 {
     if ( !spellElement || !spellElementToSet )
     {
@@ -742,7 +742,7 @@ void copySpellElement(spellElement_t* spellElement, spellElement_t* spellElement
     }
 }
 
-spellElement_t* copySpellElement(spellElement_t* spellElement)
+spellElement_t* copySpellElement(const spellElement_t* spellElement)
 {
     const auto result = static_cast<spellElement_t*>(malloc(sizeof(spellElement_t)));
     *result = *spellElement; // copy over all the static data members.
@@ -767,7 +767,7 @@ spellElement_t* copySpellElement(spellElement_t* spellElement)
     return result;
 }
 
-int getGoldCostOfSpell(spell_t* spell, int player)
+int getGoldCostOfSpell(const spell_t* spell, int player)
 {
     if ( player < 0 || player >= MAXPLAYERS ) { return 0; }
     if ( !spell )
@@ -799,7 +799,7 @@ int getGoldCostOfSpell(spell_t* spell, int player)
     return cost;
 }
 
-int getSustainCostOfSpell(spell_t* spell, Entity* caster)
+int getSustainCostOfSpell(const spell_t* spell, Entity* caster)
 {
     int cost = 0;
     if ( !spell )
@@ -815,7 +815,7 @@ int getSustainCostOfSpell(spell_t* spell, Entity* caster)
     return cost;
 }
 
-int getCostOfSpell(spell_t* spell, Entity* caster)
+int getCostOfSpell(const spell_t* spell, const Entity* caster)
 {
     int cost = 0;
     if ( !spell )
@@ -862,7 +862,7 @@ int getCostOfSpell(spell_t* spell, Entity* caster)
     return cost;
 }
 
-bool spell_isChanneled(spell_t* spell)
+bool spell_isChanneled(const spell_t* spell)
 {
     const node_t* node = nullptr;
 
@@ -1166,7 +1166,7 @@ real_t getBonusFromCasterOfSpellElement(Entity* caster, Stat* casterStats, spell
     return std::max(-0.9, bonus);
 }
 
-bool spellElement_isChanneled(spellElement_t* spellElement)
+bool spellElement_isChanneled(const spellElement_t* spellElement)
 {
     const node_t* node = nullptr;
 
@@ -1188,7 +1188,7 @@ bool spellElement_isChanneled(spellElement_t* spellElement)
     return false;
 }
 
-void equipSpell(spell_t* spell, int playernum, Item* spellItem)
+void equipSpell(spell_t* spell, int playernum, const Item* spellItem)
 {
     if ( players[playernum]->isLocalPlayer() )
     {
@@ -1779,7 +1779,7 @@ int getSpellIDFromSpellbook(int spellbookType)
     }
 }
 
-bool spellInList(list_t* list, spell_t* spell)
+bool spellInList(const list_t* list, const spell_t* spell)
 {
     if ( !spell )
     {
@@ -1879,7 +1879,7 @@ void spell_changeHealth(Entity* entity, int amount, bool overdrewFromHP, bool do
     }
 }
 
-spell_t* getSpellFromItem(const int player, Item* item, bool usePlayerInventory)
+spell_t* getSpellFromItem(const int player, const Item* item, bool usePlayerInventory)
 {
     spell_t* spell = nullptr;
     const node_t* node = nullptr;

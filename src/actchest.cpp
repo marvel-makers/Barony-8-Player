@@ -1719,7 +1719,7 @@ list_t* Entity::getChestInventoryList()
     return nullptr;
 }
 
-Item* addItemToChestClientside(const int player, Item* item, bool forceNewStack, Item* specificDestinationStack)
+Item* addItemToChestClientside(const int player, Item* item, bool forceNewStack, const Item* specificDestinationStack)
 {
     if (openedChest[player])
     {
@@ -1764,7 +1764,7 @@ Item* addItemToChestClientside(const int player, Item* item, bool forceNewStack,
     return nullptr;
 }
 
-Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStack, Item* specificDestinationStack)
+Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStack, const Item* specificDestinationStack)
 {
     if ( !item )
     {
@@ -1946,7 +1946,7 @@ Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStac
     return item;
 }
 
-Item* Entity::addItemToChestServer(Item* item, bool forceNewStack, Item* specificDestinationStack)
+Item* Entity::addItemToChestServer(Item* item, bool forceNewStack, const Item* specificDestinationStack)
 {
     if (!item)
     {
@@ -1995,7 +1995,7 @@ Item* Entity::addItemToChestServer(Item* item, bool forceNewStack, Item* specifi
     return item;
 }
 
-bool Entity::removeItemFromVoidChestServer(int player, Item* item, int count)
+bool Entity::removeItemFromVoidChestServer(int player, const Item* item, int count)
 {
     if ( !item )
     {
@@ -2052,7 +2052,7 @@ bool Entity::removeItemFromVoidChestServer(int player, Item* item, int count)
     return removedItems;
 }
 
-bool Entity::removeItemFromChestServer(Item* item, int count)
+bool Entity::removeItemFromChestServer(const Item* item, int count)
 {
     if (!item)
     {
@@ -2123,7 +2123,7 @@ void Entity::lockChest()
     chestLocked = 1;
 }
 
-void Entity::chestHandleDamageMagic(int damage, Entity &magicProjectile, Entity *caster, bool doSound)
+void Entity::chestHandleDamageMagic(int damage, const Entity &magicProjectile, Entity *caster, bool doSound)
 {
     updateEntityOldHPBeforeMagicHit(*this, magicProjectile);
 

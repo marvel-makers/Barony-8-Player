@@ -1116,7 +1116,7 @@ void* playSoundPosLocal(real_t x, real_t y, Uint16 snd, Uint8 vol)
     return nullptr;
 }
 
-void* playSoundEntity(Entity* entity, Uint16 snd, Uint8 vol)
+void* playSoundEntity(const Entity* entity, Uint16 snd, Uint8 vol)
 {
     if (entity == nullptr)
     {
@@ -1125,7 +1125,7 @@ void* playSoundEntity(Entity* entity, Uint16 snd, Uint8 vol)
     return playSoundPos(entity->x, entity->y, snd, vol);
 }
 
-void* playSoundEntityLocal(Entity* entity, Uint16 snd, Uint8 vol)
+void* playSoundEntityLocal(const Entity* entity, Uint16 snd, Uint8 vol)
 {
     if ( entity == nullptr)
     {

@@ -4449,7 +4449,7 @@ void Player::WorldUI_t::setTooltipDisabled(Entity& tooltip)
         uidForActiveTooltip = 0;
     }
 }
-bool Player::WorldUI_t::bTooltipActiveForPlayer(Entity& tooltip)
+bool Player::WorldUI_t::bTooltipActiveForPlayer(const Entity& tooltip)
 {
     return (tooltip.worldTooltipActive == 1 && tooltip.worldTooltipPlayer == player.playernum);
 }
@@ -5569,7 +5569,7 @@ const int Player::Inventory_t::getPlayerItemInventoryY() const
     return y;
 }
 
-bool Player::Inventory_t::warpMouseToSelectedItem(Item* snapToItem, Uint32 flags)
+bool Player::Inventory_t::warpMouseToSelectedItem(const Item* snapToItem, Uint32 flags)
 {
     if ( frame )
     {
@@ -5617,7 +5617,7 @@ bool Player::Inventory_t::warpMouseToSelectedItem(Item* snapToItem, Uint32 flags
     return false;
 }
 
-bool Player::Inventory_t::warpMouseToSelectedSpell(Item* snapToItem, Uint32 flags)
+bool Player::Inventory_t::warpMouseToSelectedSpell(const Item* snapToItem, Uint32 flags)
 {
     if ( spellFrame )
     {
@@ -5660,7 +5660,7 @@ bool Player::Inventory_t::warpMouseToSelectedSpell(Item* snapToItem, Uint32 flag
     return false;
 }
 
-bool Player::Inventory_t::warpMouseToSelectedChestSlot(Item* snapToItem, Uint32 flags)
+bool Player::Inventory_t::warpMouseToSelectedChestSlot(const Item* snapToItem, Uint32 flags)
 {
     if ( chestFrame )
     {
@@ -5703,7 +5703,7 @@ bool Player::Inventory_t::warpMouseToSelectedChestSlot(Item* snapToItem, Uint32 
     return false;
 }
 
-bool Player::ShopGUI_t::warpMouseToSelectedShopItem(Item* snapToItem, Uint32 flags)
+bool Player::ShopGUI_t::warpMouseToSelectedShopItem(const Item* snapToItem, Uint32 flags)
 {
     if ( shopFrame )
     {
@@ -5799,7 +5799,7 @@ Frame* Player::ShopGUI_t::getShopSlotFrame(int x, int y) const
 }
 
 
-Frame* Player::Inventory_t::getItemSlotFrame(Item* item, int x, int y) const
+Frame* Player::Inventory_t::getItemSlotFrame(const Item* item, int x, int y) const
 {
     if ( item && GenericGUI[player.playernum].isNodeTinkeringCraftableItem(item->node) )
     {
@@ -5885,7 +5885,7 @@ bool Player::Magic_t::doQuickCastTome() {
     return false;
 }
 
-void Player::Magic_t::setQuickCastTomeFromInventory(Item* item)
+void Player::Magic_t::setQuickCastTomeFromInventory(const Item* item)
 {
     if ( item && itemCategory(item) == TOME_SPELL )
     {
@@ -5900,7 +5900,7 @@ void Player::Magic_t::setQuickCastTomeFromInventory(Item* item)
     }
 }
 
-void Player::Magic_t::setQuickCastSpellFromInventory(Item* item)
+void Player::Magic_t::setQuickCastSpellFromInventory(const Item* item)
 {
     if ( quick_cast_spell ) // spell already queued, ignore.
     {
@@ -6718,7 +6718,7 @@ SDL_Rect Inputs::getGlyphRectForInput(const int player, bool pressed, const unsi
     return defaultRect;
 }
 
-bool GameController::binaryOf(Binding_t& binding) 
+bool GameController::binaryOf(const Binding_t& binding) 
 {
     if ( binding.type == Binding_t::CONTROLLER_AXIS || binding.type == Binding_t::CONTROLLER_BUTTON || binding.type == Binding_t::VIRTUAL_DPAD )
     {
@@ -6803,7 +6803,7 @@ bool GameController::binaryOf(Binding_t& binding)
     return false;
 }
 
-float GameController::analogOf(Binding_t& binding) 
+float GameController::analogOf(const Binding_t& binding) 
 {
     if ( binding.type == Binding_t::CONTROLLER_AXIS || binding.type == Binding_t::CONTROLLER_BUTTON ) 
     {
@@ -7363,7 +7363,7 @@ const char* Player::getAccountName() const
     return unknown;
 }
 
-void Player::PlayerMechanics_t::onItemDegrade(Item* item)
+void Player::PlayerMechanics_t::onItemDegrade(const Item* item)
 {
     if ( !item )
     {
@@ -7383,7 +7383,7 @@ void Player::PlayerMechanics_t::onItemDegrade(Item* item)
     }
 }
 
-bool Player::PlayerMechanics_t::itemDegradeRoll(Item* item, int skillID, int* checkInterval)
+bool Player::PlayerMechanics_t::itemDegradeRoll(const Item* item, int skillID, int* checkInterval)
 {
     if ( !item )
     {
@@ -7642,7 +7642,7 @@ void Player::PlayerMechanics_t::sustainedSpellClearMP(int skillID)
     }
 }
 
-bool Player::PlayerMechanics_t::updateSustainedSpellEvent(int spellID, real_t value, real_t scaleValue, Entity* hitentity)
+bool Player::PlayerMechanics_t::updateSustainedSpellEvent(int spellID, real_t value, real_t scaleValue, const Entity* hitentity)
 {
     if ( value < 0.05 ) { return false; }
 
@@ -7832,7 +7832,7 @@ void Player::PlayerMechanics_t::baseSpellClearMP(int skillID)
     }
 }
 
-bool Player::PlayerMechanics_t::allowedRaiseBlockingAgainstEntity(Entity& attacker)
+bool Player::PlayerMechanics_t::allowedRaiseBlockingAgainstEntity(const Entity& attacker)
 {
     if ( attacker.behavior != &actMonster )
     {
@@ -7847,7 +7847,7 @@ bool Player::PlayerMechanics_t::allowedRaiseBlockingAgainstEntity(Entity& attack
     return enemyRaisedBlockingAgainst[attacker.getUID()] < 1;
 }
 
-bool Player::PlayerMechanics_t::allowedRaiseStealthAgainstEntity(Entity& attacker)
+bool Player::PlayerMechanics_t::allowedRaiseStealthAgainstEntity(const Entity& attacker)
 {
     if ( attacker.behavior != &actMonster )
     {
@@ -8570,7 +8570,7 @@ int Player::PlayerMechanics_t::getBreakableCounterTier()
     return 0;
 }
 
-void Player::PlayerMechanics_t::incrementBreakableCounter(Player::PlayerMechanics_t::BreakableEvent eventType, Entity* entity)
+void Player::PlayerMechanics_t::incrementBreakableCounter(Player::PlayerMechanics_t::BreakableEvent eventType, const Entity* entity)
 {
     if ( stats[player.playernum]->type == GREMLIN )
     {

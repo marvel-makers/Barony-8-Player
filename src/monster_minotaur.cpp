@@ -289,7 +289,7 @@ void minotaurDie(Entity* my)
 
 #define MINOTAURWALKSPEED .07
 
-void minotaurMoveBodyparts(Entity* my, Stat* myStats, double dist)
+void minotaurMoveBodyparts(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;
@@ -1091,7 +1091,7 @@ void actMinotaurCeilingBuster(Entity* my)
     }
 }
 
-void createMinotaurTimer(Entity* entity, map_t* map, Uint32 seed)
+void createMinotaurTimer(const Entity* entity, const map_t* map, Uint32 seed)
 {
     if ( !entity )
     {

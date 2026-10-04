@@ -28,7 +28,7 @@
 
 -------------------------------------------------------------------------------*/
 
-void actWallBuster(Entity* my)
+void actWallBuster(const Entity* my)
 {
     if ( !my->skill[28] )
     {
@@ -65,7 +65,7 @@ void actWallBuster(Entity* my)
     }
 }
 
-void actWallBuilder(Entity* my)
+void actWallBuilder(const Entity* my)
 {
     if ( !my->skill[28] )
     {

@@ -3752,7 +3752,7 @@ void buttonCloseSpriteSubwindow(button_t* my)
     }
 }
 
-void buttonMonsterItems(button_t* my)
+void buttonMonsterItems(const button_t* my)
 {
     const int spacing = 20;
     int pad_y2 = suby1 + 28 + 2 * spacing;
@@ -3990,7 +3990,7 @@ void initMonsterPropertiesWindow() {
     strcat(subtext, spriteEditorNameStrings[selectedEntity[0]->sprite]);
 }
 
-void copyMonsterStatToPropertyStrings(Stat* tmpSpriteStats)
+void copyMonsterStatToPropertyStrings(const Stat* tmpSpriteStats)
 {
     if ( tmpSpriteStats != nullptr)
     {

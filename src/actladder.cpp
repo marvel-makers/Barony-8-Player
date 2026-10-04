@@ -159,7 +159,7 @@ void actLadder(Entity* my)
     }
 }
 
-void actLadderUp(Entity* my)
+void actLadderUp(const Entity* my)
 {
     /*LADDER_AMBIENCE--;
    if ( LADDER_AMBIENCE <= 0 )
@@ -1120,7 +1120,7 @@ void Entity::actMidGamePortal()
     }
 }
 
-int customPortalLookForMapWithName(char* mapToSearch, bool isSecretLevel, int levelOffset)
+int customPortalLookForMapWithName(const char* mapToSearch, bool isSecretLevel, int levelOffset)
 {
     if ( !mapToSearch )
     {

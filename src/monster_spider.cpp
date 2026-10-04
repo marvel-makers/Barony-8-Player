@@ -316,7 +316,7 @@ void actSpiderLimb(Entity* my)
     my->actMonsterLimb();
 }
 
-void spiderMoveBodyparts(Entity* my, Stat* myStats, double dist)
+void spiderMoveBodyparts(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity;

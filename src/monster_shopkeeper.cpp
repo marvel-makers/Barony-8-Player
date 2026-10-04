@@ -24,7 +24,7 @@
 #include "mod_tools.hpp"
 #include "prng.hpp"
 
-std::vector<Item*> generateShopkeeperConsumables(Entity& my, Stat& myStats, int storetype)
+std::vector<Item*> generateShopkeeperConsumables(const Entity& my, Stat& myStats, int storetype)
 {
 
     auto& rng = my.entity_rng ? *my.entity_rng : local_rng;
@@ -1392,7 +1392,7 @@ void shopkeeperDie(Entity* my)
 
 #define SHOPKEEPERWALKSPEED .15
 
-void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
+void shopkeeperMoveBodyparts(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr, *entity2 = nullptr;

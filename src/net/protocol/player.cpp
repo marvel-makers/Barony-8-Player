@@ -384,7 +384,7 @@ void serverRemoveClientFollower(int player, Uint32 uidToRemove)
     sendPacketSafe(net_sock, -1, net_packet, player - 1);
 }
 
-void serverSendItemToPickupAndEquip(int player, Item* item)
+void serverSendItemToPickupAndEquip(int player, const Item* item)
 {
     if ( multiplayer != SERVER || player <= 0 )
     {

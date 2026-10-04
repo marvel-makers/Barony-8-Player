@@ -2633,7 +2633,7 @@ void actThrown(Entity* my)
     }
 }
 
-void thrownItemUpdateSpellTrail(Entity& my, real_t _x, real_t _y)
+void thrownItemUpdateSpellTrail(const Entity& my, real_t _x, real_t _y)
 {
     if ( my.sprite == items[DUST_BALL].index )
     {

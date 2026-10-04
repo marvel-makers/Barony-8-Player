@@ -253,7 +253,7 @@ void devilDie(Entity* my)
     return;
 }
 
-void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
+void devilMoveBodyparts(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;
@@ -618,7 +618,7 @@ void actDevilTeleport(Entity* my)
     // dummy function
     my->flags[PASSABLE] = true;
 }
-bool Entity::devilSummonMonster(Entity* summonOnEntity, Monster creature, int radiusFromCenter, int playerToTarget)
+bool Entity::devilSummonMonster(const Entity* summonOnEntity, Monster creature, int radiusFromCenter, int playerToTarget)
 {
     const Entity* target = nullptr;
     if ( summonOnEntity )

@@ -990,13 +990,13 @@ namespace MainMenu {
 
 /******************************************************************************/
 
-    static void settingsGeneral(Button&);
-    static void settingsVideo(Button&);
-    static void settingsAudio(Button&);
+    static void settingsGeneral(const Button&);
+    static void settingsVideo(const Button&);
+    static void settingsAudio(const Button&);
     static void settingsControls(Button&);
-    static void settingsOnlinePopulate(Button&, bool);
+    static void settingsOnlinePopulate(const Button&, bool);
     static void settingsOnline(Button&);
-    static void settingsGame(Button&);
+    static void settingsGame(const Button&);
 
     static void archivesLeaderboards(Button&);
     static void archivesDungeonCompendium(Button&);
@@ -4645,7 +4645,7 @@ namespace MainMenu {
             });
     }
 
-    static void settingsResolutionEntry(Frame::entry_t& entry) {
+    static void settingsResolutionEntry(const Frame::entry_t& entry) {
         soundActivate();
         int new_xres, new_yres, new_hz;
         sscanf(entry.name.c_str(), "%d x %d @ %dhz", &new_xres, &new_yres, &new_hz);
@@ -4671,7 +4671,7 @@ namespace MainMenu {
     }
 
     static void settingsDisplayDevice(Button& button) {
-        settingsOpenDropdown(button, "device", DropdownType::Short, [](Frame::entry_t& entry){
+        settingsOpenDropdown(button, "device", DropdownType::Short, [](const Frame::entry_t& entry){
             soundActivate();
             int new_device = 0;
             if (sscanf(entry.name.c_str(), Language::get(5036), &new_device) == 1) {
@@ -4801,7 +4801,7 @@ namespace MainMenu {
     }
 
     static void settingsGamepadHotbarLayout(Button& button) {
-        settingsOpenDropdown(button, "gamepad_facehotbar", DropdownType::Short_2Slot, [](Frame::entry_t& entry) {
+        settingsOpenDropdown(button, "gamepad_facehotbar", DropdownType::Short_2Slot, [](const Frame::entry_t& entry) {
             soundActivate();
             if ( entry.name == Language::get(5230) )
             {
@@ -4822,7 +4822,7 @@ namespace MainMenu {
     }
 
     static void settingsWindowMode(Button& button) {
-        settingsOpenDropdown(button, "window_mode", DropdownType::Short, [](Frame::entry_t& entry){
+        settingsOpenDropdown(button, "window_mode", DropdownType::Short, [](const Frame::entry_t& entry){
             soundActivate();
             do {
                 if (entry.name == Language::get(5037)) {
@@ -6232,7 +6232,7 @@ namespace MainMenu {
                 });
         }
 
-        window->setTickCallback([](Widget& widget){
+        window->setTickCallback([](const Widget& widget){
             if (bind_mode) {
                 if (bound_button && !Input::lastInputOfAnyKind.empty()) {
                     const auto bindings = main_menu_frame->findFrame("bindings"); assert(bindings);
@@ -6323,7 +6323,7 @@ bind_failed:
     static std::vector<const char*> crosshairs;
     
     static void settingsCrosshairType(Button& button) {
-        settingsOpenDropdown(button, "shootmode_crosshair", DropdownType::Short, [](Frame::entry_t& entry) {
+        settingsOpenDropdown(button, "shootmode_crosshair", DropdownType::Short, [](const Frame::entry_t& entry) {
             soundActivate();
 
         int index = 0;
@@ -6346,7 +6346,7 @@ bind_failed:
             });
     }
 
-    static void settingsGeneral(Button& button) {
+    static void settingsGeneral(const Button& button) {
         Frame* settings_subwindow;
         if ((settings_subwindow = settingsSubwindowSetup(button.getName(), false)) == nullptr) {
             const auto settings = main_menu_frame->findFrame("settings"); assert(settings);
@@ -6501,7 +6501,7 @@ bind_failed:
         settingsSelect(*settings_subwindow, {Setting::Type::Boolean, "fast_restart"});
     }
 
-    static void settingsVideo(Button& button) {
+    static void settingsVideo(const Button& button) {
         Frame* settings_subwindow;
         if ((settings_subwindow = settingsSubwindowSetup(button.getName(), video_refresh != 0)) == nullptr) {
             const auto settings = main_menu_frame->findFrame("settings"); assert(settings);
@@ -6635,7 +6635,7 @@ bind_failed:
 #endif
     }
 
-    static void settingsAudio(Button& button) {
+    static void settingsAudio(const Button& button) {
         Frame* settings_subwindow;
         if ((settings_subwindow = settingsSubwindowSetup(button.getName(), false)) == nullptr) {
             const auto settings = main_menu_frame->findFrame("settings"); assert(settings);
@@ -7347,7 +7347,7 @@ bind_failed:
             [](Button& button){
                 soundActivate();
                 settingsOpenDropdown(button, "player_dropdown", DropdownType::Short,
-                    [](Frame::entry_t& entry){
+                    [](const Frame::entry_t& entry){
                         soundActivate();
                         const int player = entry.name.back() - '1';
                     
@@ -7379,7 +7379,7 @@ bind_failed:
             [](Button& button){
                 soundActivate();
                 settingsOpenDropdown(button, "device_dropdown", DropdownType::Short,
-                    [](Frame::entry_t& entry){
+                    [](const Frame::entry_t& entry){
                     soundActivate();
                     const int device = getDeviceIndexForName(entry.text.c_str());
                     
@@ -7410,7 +7410,7 @@ bind_failed:
             [](Button& button){
                 soundActivate();
                 settingsOpenDropdown(button, "profile_dropdown", DropdownType::Short,
-                    [](Frame::entry_t& entry){
+                    [](const Frame::entry_t& entry){
                     soundActivate();
                     const char* profile = entry.text.c_str();
                     allSettings.bindings.kb_mouse_bindings[bound_player].clear();
@@ -7583,7 +7583,7 @@ bind_failed:
         settingsControlsPopulate(player, device, profile, {Setting::Type::Dropdown, "player_dropdown_button"});
     }
 
-    static void settingsOnlinePopulate(Button& button, bool quiet) {
+    static void settingsOnlinePopulate(const Button& button, bool quiet) {
         Frame* settings_subwindow;
         if ((settings_subwindow = settingsSubwindowSetup(button.getName(), quiet)) == nullptr) {
             const auto settings = main_menu_frame->findFrame("settings"); assert(settings);
@@ -7710,7 +7710,7 @@ bind_failed:
         settingsOnlinePopulate(button, false);
     }
 
-    static void settingsGame(Button& button) {
+    static void settingsGame(const Button& button) {
         Frame* settings_subwindow;
         if ((settings_subwindow = settingsSubwindowSetup(button.getName(), false)) == nullptr) {
             const auto settings = main_menu_frame->findFrame("settings"); assert(settings);
@@ -8987,7 +8987,7 @@ bind_failed:
         auto kills_img = subframe->addImage(SDL_Rect{ 426 - 32 - 8, 188 + 4 - 2, 32, 32 }, 0xFFFFFFFF,
             "*images/ui/Main Menus/Leaderboards/kills.png", "kills_img");
 
-        static auto kills_refresh = [](Frame* subframe, score_t* score) {
+        static auto kills_refresh = [](Frame* subframe, const score_t* score) {
             if ( !subframe ) {
                 return false;
             }
@@ -14366,7 +14366,7 @@ failed:
         card->setHideSelectors(true);
         card->setHideGlyphs(true);
 
-        card->setTickCallback([](Widget& widget){
+        card->setTickCallback([](const Widget& widget){
             const int player = widget.getOwner();
             if (multiplayer == SINGLE) {
                 if (inputs.getPlayerIDAllowedKeyboard() != player && !inputs.hasController(player)) {
@@ -14420,7 +14420,7 @@ failed:
             button->select();
         };
 
-        const auto back = createBackWidget(card,[](Button& button){soundCancel(); back_fn(button.getOwner());});
+        const auto back = createBackWidget(card,[](const Button& button){soundCancel(); back_fn(button.getOwner());});
         if (multiplayer == CLIENT) {
             back->setTickCallback([](Widget& widget){
                 if (!main_menu_frame) {
@@ -14767,7 +14767,7 @@ failed:
             button->select();
         };
 
-        (void)createBackWidget(card,[](Button& button){soundCancel(); back_fn(button.getOwner());});
+        (void)createBackWidget(card,[](const Button& button){soundCancel(); back_fn(button.getOwner());});
 
         auto backdrop = card->addImage(
             card->getActualSize(),
@@ -14814,7 +14814,7 @@ failed:
             custom_difficulty->setWidgetDown("seed");
         }
         custom_difficulty->setWidgetRight("custom");
-        custom_difficulty->setCallback([](Button& button){soundActivate(); characterCardGameFlagsMenu(button.getOwner());});
+        custom_difficulty->setCallback([](const Button& button){soundActivate(); characterCardGameFlagsMenu(button.getOwner());});
         custom_difficulty->setTickCallback([](Widget& widget){
             // rescue player selection
             if (!main_menu_frame) {
@@ -14946,7 +14946,7 @@ failed:
             seed_field->setWidgetUp("custom_difficulty");
             seed_field->setWidgetDown(online ? "invite" : "player_count_2");
             seed_field->setWidgetRight("randomize_seed");
-            seed_field->setCallback([](Field& field) {seed_field_fn(field.getText(), field.getOwner()); });
+            seed_field->setCallback([](const Field& field) {seed_field_fn(field.getText(), field.getOwner()); });
             seed_field->setTickCallback([](Widget& widget) {
                 const auto field = static_cast<Field*>(&widget);
                 seed_field_fn(field->getText(), field->getOwner());
@@ -15951,7 +15951,7 @@ failed:
             button->select();
         };
 
-        (void)createBackWidget(card,[](Button& button){soundCancel(); back_fn(button.getOwner());});
+        (void)createBackWidget(card,[](const Button& button){soundCancel(); back_fn(button.getOwner());});
 
         auto backdrop = card->addImage(
             card->getActualSize(),
@@ -16372,7 +16372,7 @@ failed:
         appearance_downarrow->addWidgetAction("MenuAlt1", "disable_abilities");
         appearance_downarrow->addWidgetAction("MenuAlt2", "show_race_info");
 
-        static auto appearance_fn = [](Frame::entry_t& entry, int index){
+        static auto appearance_fn = [](const Frame::entry_t& entry, int index){
             if (stats[index]->playerRace != RACE_HUMAN) {
                 return;
             }
@@ -16687,12 +16687,12 @@ failed:
         show_race_info->setWidgetDown("confirm");
         show_race_info->setWidgetLeft("female");
         if (details) {
-            show_race_info->setCallback([](Button& button){
+            show_race_info->setCallback([](const Button& button){
                 characterCardRaceMenu(button.getOwner(), false, race_selection[button.getOwner()]);
                 soundActivate();
                 });
         } else {
-            show_race_info->setCallback([](Button& button){
+            show_race_info->setCallback([](const Button& button){
                 characterCardRaceMenu(button.getOwner(), true, race_selection[button.getOwner()]);
                 soundActivate();
                 });
@@ -16753,7 +16753,7 @@ failed:
             button->select();
         };
 
-        (void)createBackWidget(card,[](Button& button){soundCancel(); back_fn(button.getOwner());});
+        (void)createBackWidget(card,[](const Button& button){soundCancel(); back_fn(button.getOwner());});
 
         auto backdrop = card->addImage(
             card->getActualSize(),
@@ -17076,13 +17076,13 @@ failed:
         class_info->setGlyphPosition(Widget::glyph_position_t::CENTERED_BOTTOM);
         if (details) {
             class_info->setText(Language::get(5429));
-            class_info->setCallback([](Button& button){
+            class_info->setCallback([](const Button& button){
                 characterCardClassMenu(button.getOwner(), false, class_selection[button.getOwner()]);
                 soundActivate();
                 });
         } else {
             class_info->setText(Language::get(5430));
-            class_info->setCallback([](Button& button){
+            class_info->setCallback([](const Button& button){
                 characterCardClassMenu(button.getOwner(), true, class_selection[button.getOwner()]);
                 soundActivate();
                 });
@@ -17514,7 +17514,7 @@ failed:
             return;
         }
 
-        (void)createBackWidget(card,[](Button& button){
+        (void)createBackWidget(card,[](const Button& button){
             createStartButton(button.getOwner());
             checkReadyStates();
             soundCancel();
@@ -17576,7 +17576,7 @@ failed:
         name_field->setWidgetBack("back_button");
         name_field->setWidgetRight("randomize_name");
         name_field->setWidgetDown("game_settings");
-        static auto name_field_fn = [](Field* field, const char* text, const int index) {
+        static auto name_field_fn = [](const Field* field, const char* text, const int index) {
             if ( field && !text )
             {
                 text = field->getText();
@@ -17671,7 +17671,7 @@ failed:
         game_settings->setWidgetBack("back_button");
         game_settings->setWidgetUp("name");
         game_settings->setWidgetDown("male");
-        game_settings->setCallback([](Button& button){soundActivate(); characterCardLobbySettingsMenu(button.getOwner());});
+        game_settings->setCallback([](const Button& button){soundActivate(); characterCardLobbySettingsMenu(button.getOwner());});
 
         const auto bottom = card->addFrame("bottom");
         bottom->setSize(SDL_Rect{42, 166, 120, 52});
@@ -17866,7 +17866,7 @@ failed:
         race_button->setWidgetLeft("female");
         race_button->setWidgetUp("game_settings");
         race_button->setWidgetDown("class");
-        race_button->setCallback([](Button& button){
+        race_button->setCallback([](const Button& button){
             soundActivate();
             const int index = button.getOwner();
             old_classes[index] = client_classes[index];
@@ -18128,7 +18128,7 @@ failed:
         class_button->setWidgetUp("male");
         class_button->setWidgetDown("ready");
         class_button->setTickCallback([](Widget& widget){class_button_tick_fn(*static_cast<Button*>(&widget), widget.getOwner());});
-        class_button->setCallback([](Button& button){class_button_fn(button.getOwner());});
+        class_button->setCallback([](const Button& button){class_button_fn(button.getOwner());});
         (*class_button->getTickCallback())(*class_button);
 
         static auto ready_button_fn = [](Button& button, int index) {
@@ -18861,9 +18861,9 @@ failed:
             button->setWidgetSearchParent(card->getName());
             button->addWidgetAction("MenuConfirm", "FraggleMaggleStiggleWortz"); // some garbage so that this glyph isn't auto-bound
             if (ready) {
-                button->setCallback([](Button& button){cancel_fn(button.getOwner());});
+                button->setCallback([](const Button& button){cancel_fn(button.getOwner());});
             } else {
-                button->setCallback([](Button& button){ready_fn(button.getOwner());}); 
+                button->setCallback([](const Button& button){ready_fn(button.getOwner());}); 
             }
             button->setTickCallback([](Widget& widget){
                 // rescue focus
@@ -19779,7 +19779,7 @@ failed:
                             }
 #endif
                         },
-                        [](Button& button){ // no
+                        [](const Button& button){ // no
                             soundCancel();
                             closeBinary();
 #ifndef NINTENDO
@@ -34019,7 +34019,7 @@ failed:
     static std::vector<Entity*> compendiumMonsterLimbs;
     static ConsoleVariable<bool> cvar_compendium_monster_entity("/compendium_monster_entity", false);
     static void populateRecordsSectionItems(Frame* page_right, int entryType, const char* entryName = "", int specificClass = -1);
-    static void refreshCompendiumCamera(std::string& modelsPath)
+    static void refreshCompendiumCamera(const std::string& modelsPath)
     {
         const auto find = CompendiumEntries.compendiumObjectLimbs.find(modelsPath);
         if ( find != CompendiumEntries.compendiumObjectLimbs.end() )
@@ -35494,7 +35494,7 @@ failed:
         }
     }
 
-    static void scrollToCompendiumListItem(Frame& toSelect, Frame& page_right_inner)
+    static void scrollToCompendiumListItem(const Frame& toSelect, Frame& page_right_inner)
     {
         Frame* parent = page_right_inner.getParent();
         if ( Slider* slider = parent->findSlider("right_slider") )

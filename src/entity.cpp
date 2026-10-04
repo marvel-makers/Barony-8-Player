@@ -566,7 +566,7 @@ after reductions depending on the entity stats and another entity observing
 
 -------------------------------------------------------------------------------*/
 
-int Entity::entityLightAfterReductions(Stat& myStats, Entity* observer)
+int Entity::entityLightAfterReductions(const Stat& myStats, Entity* observer)
 {
     int player = -1;
     const int minLight = static_cast<int>((TOUCHRANGE * 1.5));
@@ -3635,7 +3635,7 @@ hunger, level ups, poison, etc.
 
 -------------------------------------------------------------------------------*/
 
-int Entity::getHungerTickRate(Stat* myStats, bool isPlayer, bool checkItemsEffects)
+int Entity::getHungerTickRate(const Stat* myStats, bool isPlayer, bool checkItemsEffects)
 {
     int hungerTickRate = 30; // how many ticks to reduce hunger by a point.
     if ( !myStats )
@@ -8123,7 +8123,7 @@ void Entity::handleEffects(Stat* myStats)
     myStats->OLDHP = myStats->HP;
 }
 
-real_t Entity::getACEffectiveness(Entity* my, Stat* myStats, bool isPlayer, Entity* attacker, Stat* attackerStats, int& outNumBlessings)
+real_t Entity::getACEffectiveness(const Entity* my, const Stat* myStats, bool isPlayer, Entity* attacker, Stat* attackerStats, int& outNumBlessings)
 {
     if ( !myStats || !my )
     {
@@ -8481,7 +8481,7 @@ returns the attack power depending on targets attributes, status effects and rac
 
 -------------------------------------------------------------------------------*/
 
-Sint32 Entity::getBonusAttackOnTarget(Stat& hitstats)
+Sint32 Entity::getBonusAttackOnTarget(const Stat& hitstats)
 {
     Stat* entitystats;
     Sint32 bonusAttack = 0;
@@ -9538,7 +9538,7 @@ Sint32 Entity::getCHR()
     return statGetCHR(entitystats, this);
 }
 
-Sint32 statGetCHR(Stat* entitystats, Entity* my)
+Sint32 statGetCHR(const Stat* entitystats, const Entity* my)
 {
     if ( !entitystats )
     {
@@ -19383,7 +19383,7 @@ bool Entity::checkEnemy(Entity* your)
     return result;
 }
 
-bool Entity::friendlyFireProtection(Entity* your)
+bool Entity::friendlyFireProtection(const Entity* your)
 {
     if ( !your ) { return false; }
     if ( behavior == &actPlayer && (your->behavior == &actPlayer 
@@ -20080,7 +20080,7 @@ void createMonsterEquipment(Stat* stats, BaronyRNG& rng)
     }
 }
 
-int countCustomItems(Stat* stats)
+int countCustomItems(const Stat* stats)
 {
     int x = 0;
     int customItemSlotCount = 0;
@@ -20096,7 +20096,7 @@ int countCustomItems(Stat* stats)
     return customItemSlotCount; //use custom items from editor instead of default generation
 }
 
-int countDefaultItems(Stat* stats)
+int countDefaultItems(const Stat* stats)
 {
     int x = 0;
     int defaultItemSlotCount = 0;
@@ -20384,7 +20384,7 @@ int checkEquipType(const Item *item)
     return TYPE_NONE;
 }
 
-int setGloveSprite(Stat* myStats, Entity* ent, int spriteOffset)
+int setGloveSprite(const Stat* myStats, Entity* ent, int spriteOffset)
 {
     if ( myStats == nullptr )
     {
@@ -20455,7 +20455,7 @@ int setGloveSprite(Stat* myStats, Entity* ent, int spriteOffset)
     return 1;
 }
 
-bool Entity::isBootSpriteShortArmor(Entity* leg)
+bool Entity::isBootSpriteShortArmor(const Entity* leg)
 {
     if ( !leg ) { return false; }
 
@@ -20773,7 +20773,7 @@ returns true if the given entity is levitating, or false if it cannot
 
 -------------------------------------------------------------------------------*/
 
-bool isLevitating(Stat* mystats)
+bool isLevitating(const Stat* mystats)
 {
     if ( mystats == nullptr )
     {
@@ -20977,7 +20977,7 @@ int getStatForProficiency(int skill)
     return statForProficiency;
 }
 
-void Entity::setMeleeDamageSkillModifiers(Entity* my, Stat* myStats, int skill, real_t& baseSkillModifier, real_t& variance, ItemType* itemType)
+void Entity::setMeleeDamageSkillModifiers(const Entity* my, const Stat* myStats, int skill, real_t& baseSkillModifier, real_t& variance, const ItemType* itemType)
 {
     const bool shapeshifted = (my && my->behavior == &actPlayer && my->effectShapeshift != NOTHING);
     bool gungnir = false;
@@ -23212,7 +23212,7 @@ void Entity::handleHumanoidWeaponLimb(Entity* weaponLimb, Entity* weaponArmLimb)
     return;
 }
 
-void doParticleEffectForTouchSpell(Entity& my, Entity* focalLimb, Monster monsterType)
+void doParticleEffectForTouchSpell(const Entity& my, const Entity* focalLimb, Monster monsterType)
 {
     if ( my.behavior != &actPlayer )
     {
@@ -23327,7 +23327,7 @@ void doParticleEffectForTouchSpell(Entity& my, Entity* focalLimb, Monster monste
     }
 }
 
-void Entity::lookAtEntity(Entity& target)
+void Entity::lookAtEntity(const Entity& target)
 {
     const double tangent = atan2(target.y - y, target.x - x);
     monsterLookTime = 1;
@@ -26558,7 +26558,7 @@ node_t* Entity::chooseAttackSpellbookFromInventory()
     return spellbook;
 }
 
-int Entity::getManaringFromEffects(Entity* my, Stat& myStats)
+int Entity::getManaringFromEffects(Entity* my, const Stat& myStats)
 {
     int manaring = 0;
     if ( myStats.getEffectActive(EFF_MP_REGEN) && myStats.type != AUTOMATON )
@@ -26572,7 +26572,7 @@ int Entity::getManaringFromEffects(Entity* my, Stat& myStats)
     return manaring;
 }
 
-int Entity::getManaringFromEquipment(Entity* my, Stat& myStats, bool isPlayer)
+int Entity::getManaringFromEquipment(const Entity* my, const Stat& myStats, bool isPlayer)
 {
     bool shapeshifted = false;
     if ( isPlayer && myStats.type != HUMAN )
@@ -26763,7 +26763,7 @@ int Entity::getManaRegenInterval(Entity* my, Stat& myStats, bool isPlayer, bool 
     return MAGIC_REGEN_TIME;
 }
 
-int Entity::getHealringFromEffects(Entity* my, Stat& myStats)
+int Entity::getHealringFromEffects(Entity* my, const Stat& myStats)
 {
     double healring = 0;
     if ( myStats.getEffectActive(EFF_HP_REGEN) )
@@ -26798,7 +26798,7 @@ int Entity::getHealringFromEffects(Entity* my, Stat& myStats)
     return static_cast<int>(healring);
 }
 
-int Entity::getHealringFromEquipment(Entity* my, Stat& myStats, bool isPlayer)
+int Entity::getHealringFromEquipment(Entity* my, const Stat& myStats, bool isPlayer)
 {
     double healring = 0;
     bool cursedItemIsBuff = false;
@@ -27142,7 +27142,7 @@ int getBaseManaRegen(Entity* my, Stat& myStats, bool excludeItemsEffectsBonus)
     return MAGIC_REGEN_TIME;
 }
 
-void Entity::setRangedProjectileAttack(Entity& marksman, Stat& myStats, int optionalOverrideForArrowType)
+void Entity::setRangedProjectileAttack(Entity& marksman, const Stat& myStats, int optionalOverrideForArrowType)
 {
     this->arrowSpeed = 7;
     this->arrowShotByWeapon = 0;
@@ -27396,7 +27396,7 @@ bool Entity::setArrowProjectileProperties(int weaponType)
  * Entities with Stats will have their fire time (char_fire) and chance to stop being on fire (chanceToPutOutFire) reduced by their CON
  * Calculations for reductions is outlined in this function
  */
-bool Entity::SetEntityOnFire(Entity* sourceOfFire)
+bool Entity::SetEntityOnFire(const Entity* sourceOfFire)
 {
     // Check if the Entity can be set on fire
     if ( this->flags[BURNABLE] )
@@ -27521,7 +27521,7 @@ handles text for monster interaction/damage/obituaries
 
 -------------------------------------------------------------------------------*/
 
-void messagePlayerMonsterEvent(int player, Uint32 color, Stat& monsterStats, const char* msgGeneric, const char* msgNamed, int detailType, Entity* optionalEntity)
+void messagePlayerMonsterEvent(int player, Uint32 color, Stat& monsterStats, const char* msgGeneric, const char* msgNamed, int detailType, const Entity* optionalEntity)
 {
     if ( player < 0 || player >= MAXPLAYERS )
     {
@@ -28108,7 +28108,7 @@ void Entity::setHelmetLimbOffset(Entity* helm)
     }
 }
 
-real_t Entity::yawDifferenceFromEntity(Entity* entity)
+real_t Entity::yawDifferenceFromEntity(const Entity* entity)
 {
     if ( entity )
     {
@@ -28307,7 +28307,7 @@ void Entity::addToWorldUIList(list_t *list)
 }
 
 real_t Entity::magicResistancePerPoint = 0.3;
-int Entity::getMagicResistance(Stat* myStats)
+int Entity::getMagicResistance(const Stat* myStats)
 {
     int resistance = 0;
     if ( myStats )
@@ -28542,7 +28542,7 @@ std::vector<list_t*> TileEntityListHandler::getEntitiesWithinRadius(int u, int v
 }
 
 /* returns list of entities within a radius around entity, e.g 1 radius is a 3x3 area around entity. */
-std::vector<list_t*> TileEntityListHandler::getEntitiesWithinRadiusAroundEntity(Entity* entity, int radius)
+std::vector<list_t*> TileEntityListHandler::getEntitiesWithinRadiusAroundEntity(const Entity* entity, int radius)
 {
     const int u = static_cast<int>(entity->x) >> 4;
     const int v = static_cast<int>(entity->y) >> 4;
@@ -30728,7 +30728,7 @@ void Entity::setHelmetLimbOffsetWithMask(Entity* helm, Entity* mask)
     }
 }
 
-bool monsterIsImmobileTurret(Entity* my, Stat* myStats)
+bool monsterIsImmobileTurret(const Entity* my, const Stat* myStats)
 {
     if ( myStats )
     {
@@ -30749,7 +30749,7 @@ bool monsterIsImmobileTurret(Entity* my, Stat* myStats)
     return false;
 }
 
-bool monsterChangesColorWhenAlly(Stat* myStats, Entity* entity)
+bool monsterChangesColorWhenAlly(const Stat* myStats, const Entity* entity)
 {
     int race = NOTHING;
     if ( !myStats )
@@ -30783,7 +30783,7 @@ bool monsterChangesColorWhenAlly(Stat* myStats, Entity* entity)
     return true;
 }
 
-int monsterTinkeringConvertHPToAppearance(Stat* myStats)
+int monsterTinkeringConvertHPToAppearance(const Stat* myStats)
 {
     if ( myStats )
     {
@@ -30816,7 +30816,7 @@ int monsterTinkeringConvertHPToAppearance(Stat* myStats)
     return 0;
 }
 
-int monsterTinkeringConvertAppearanceToHP(Stat* myStats, int appearance)
+int monsterTinkeringConvertAppearanceToHP(const Stat* myStats, int appearance)
 {
     if ( myStats )
     {
@@ -30832,7 +30832,7 @@ int monsterTinkeringConvertAppearanceToHP(Stat* myStats, int appearance)
     return 0;
 }
 
-void Entity::handleQuiverThirdPersonModel(Stat& myStats, int mySprite)
+void Entity::handleQuiverThirdPersonModel(const Stat& myStats, int mySprite)
 {
     if ( multiplayer == CLIENT )
     {
@@ -30945,7 +30945,7 @@ void Entity::handleQuiverThirdPersonModel(Stat& myStats, int mySprite)
     }
 }
 
-Sint32 Entity::playerInsectoidExpectedManaFromHunger(Stat& myStats)
+Sint32 Entity::playerInsectoidExpectedManaFromHunger(const Stat& myStats)
 {
     const real_t manaPercentFromHunger = myStats.HUNGER / 1000.f;
     const real_t expectedManaValue = std::floor(myStats.MAXMP * manaPercentFromHunger);
@@ -30959,7 +30959,7 @@ Sint32 Entity::playerInsectoidExpectedManaFromHunger(Stat& myStats)
     return static_cast<Sint32>(expectedManaValue);
 }
 
-Sint32 Entity::playerInsectoidHungerValueOfManaPoint(Stat& myStats)
+Sint32 Entity::playerInsectoidHungerValueOfManaPoint(const Stat& myStats)
 {
     const float manaPointPercentage = 1 / static_cast<float>(myStats.MAXMP);
     return static_cast<Sint32>(1000 * manaPointPercentage);
@@ -30989,7 +30989,7 @@ void Entity::playerInsectoidIncrementHungerToMP(int mpAmount)
     }
 }
 
-real_t Entity::getDamageTableEquipmentMod(Stat& myStats, Item& item, real_t base, real_t mod)
+real_t Entity::getDamageTableEquipmentMod(const Stat& myStats, const Item& item, real_t base, real_t mod)
 {
     real_t bonus = base;
     if ( item.beatitude >= 0 || shouldInvertEquipmentBeatitude(&myStats) )
@@ -31004,7 +31004,7 @@ real_t Entity::getDamageTableEquipmentMod(Stat& myStats, Item& item, real_t base
     return bonus;
 }
 
-real_t Entity::getDamageTableMultiplier(Entity* my, Stat& myStats, DamageTableType damageType, int* magicResistance, int* outNumSources)
+real_t Entity::getDamageTableMultiplier(Entity* my, Stat& myStats, DamageTableType damageType, const int* magicResistance, int* outNumSources)
 {
     real_t damageMultiplier = damagetables[myStats.type][damageType];
     if ( myStats.getEffectActive(EFF_SHADOW_TAGGED) )
@@ -31326,7 +31326,7 @@ bool Entity::bEntityHighlightedForPlayer(const int player) const
     return false;
 }
 
-int getEntityHungerInterval(int player, Entity* my, Stat* myStats, EntityHungerIntervals hungerInterval)
+int getEntityHungerInterval(int player, const Entity* my, const Stat* myStats, EntityHungerIntervals hungerInterval)
 {
     bool isInsectoidPlayer = false;
     bool isAutomatonPlayer = false;
@@ -32064,7 +32064,7 @@ bool Entity::doSilkenBowOnAttack(Entity* attacker)
     return false;
 }
 
-bool Entity::windEffectsEntity(Entity* entity)
+bool Entity::windEffectsEntity(const Entity* entity)
 {
     if ( !entity ) { return false; }
     if ( multiplayer == CLIENT )
@@ -32462,7 +32462,7 @@ bool Entity::myconidReboundOnHit(Entity* attacker)
 }
 
 bool Entity::modifyDamageMultipliersFromEffects(Entity* hitentity, Entity* attacker,
-    real_t& damageMultiplier, DamageTableType damageTableType, Entity* projectile, int spellID)
+    real_t& damageMultiplier, DamageTableType damageTableType, const Entity* projectile, int spellID)
 {
     if ( !hitentity ) { return false; }
 

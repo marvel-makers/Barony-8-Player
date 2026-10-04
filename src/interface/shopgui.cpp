@@ -26,7 +26,7 @@
 
 #include <assert.h>
 
-bool hideItemFromShopView(Item& item)
+bool hideItemFromShopView(const Item& item)
 {
     if ( item.type == ARTIFACT_ORB_GREEN || item.type == ARTIFACT_ORB_RED || item.type == ARTIFACT_ORB_BLUE )
     {
@@ -52,7 +52,7 @@ std::string getShopTypeLangEntry(int shopType)
     return "";
 }
 
-bool getShopFreeSlot(const int player, list_t* shopInventory, Item* itemToSell, int& xout, int& yout, Item*& itemToStackInto)
+bool getShopFreeSlot(const int player, const list_t* shopInventory, Item* itemToSell, int& xout, int& yout, Item*& itemToStackInto)
 {
     xout = Player::ShopGUI_t::MAX_SHOP_X;
     yout = Player::ShopGUI_t::MAX_SHOP_Y;
@@ -1029,7 +1029,7 @@ void Player::ShopGUI_t::setItemDisplayNameAndPrice(Item* item)
     }
 }
 
-void buttonShopUpdateSelectorOnHighlight(const int player, Button* button)
+void buttonShopUpdateSelectorOnHighlight(const int player, const Button* button)
 {
     if ( button->isHighlighted() )
     {
@@ -1800,7 +1800,7 @@ void Player::ShopGUI_t::updateShop()
     updateShopGUIChatter(player.playernum, flipped);
 }
 
-const bool Player::ShopGUI_t::isItemFromShop(Item* item) const
+const bool Player::ShopGUI_t::isItemFromShop(const Item* item) const
 {
     if ( !item || !bOpen )
     {

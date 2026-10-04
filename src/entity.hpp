@@ -502,8 +502,8 @@ public:
     Sint32& colliderSpellTarget = skill[23];
     Sint32& colliderTelepathy = skill[24];
     Sint32& colliderDropVariable = skill[25]; // store germinate drop qtys
-    static void colliderAssignProperties(Entity* entity, bool mapGeneration, map_t* whichMap);
-    static Entity* createBreakableCollider(int colliderDamageType, real_t _x, real_t _y, Entity* parent);
+    static void colliderAssignProperties(Entity* entity, bool mapGeneration, const map_t* whichMap);
+    static Entity* createBreakableCollider(int colliderDamageType, real_t _x, real_t _y, const Entity* parent);
     void colliderSetServerSkillOnSpawned();
 
     //--PUBLIC SPELL TRAP SKILLS--
@@ -851,10 +851,10 @@ public:
     Sint32 getCHR();
 
     int entityLight(); //NOTE: Name change conflicted with light_t *light
-    int entityLightAfterReductions(Stat& myStats, Entity* observer);
+    int entityLightAfterReductions(const Stat& myStats, Entity* observer);
 
     void handleEffects(Stat* myStats);
-    static int getHungerTickRate(Stat* myStats, bool isPlayer, bool checkItemsEffects);
+    static int getHungerTickRate(const Stat* myStats, bool isPlayer, bool checkItemsEffects);
     void handleEffectsClient();
 
     void effectTimes();
@@ -877,9 +877,9 @@ public:
     static real_t PlayerAttackRangedStatFactor;
     static real_t PlayerAttackThrownStatFactor;
     static Sint32 getAttack(Entity* my, Stat* myStats, bool isPlayer, int chargeModifier = -1, int* returnWeaponAttackValue = nullptr);
-    static real_t getACEffectiveness(Entity* my, Stat* myStats, bool isPlayer, Entity* attacker, Stat* attackerStats, int& outNumBlessings);
-    static void setMeleeDamageSkillModifiers(Entity* my, Stat* myStats, int skill, real_t& baseSkillModifier, real_t& variance, ItemType* itemType);
-    Sint32 getBonusAttackOnTarget(Stat& hitstats);
+    static real_t getACEffectiveness(const Entity* my, const Stat* myStats, bool isPlayer, Entity* attacker, Stat* attackerStats, int& outNumBlessings);
+    static void setMeleeDamageSkillModifiers(const Entity* my, const Stat* myStats, int skill, real_t& baseSkillModifier, real_t& variance, const ItemType* itemType);
+    Sint32 getBonusAttackOnTarget(const Stat& hitstats);
     Sint32 getRangedAttack(int atkFromQuivers);
     Sint32 getThrownAttack();
     bool isBlind();
@@ -933,7 +933,7 @@ public:
     void monsterHandleKnockbackVelocity(real_t monsterFacingTangent, real_t weightratio);
     int monsterGetDexterityForMovement();
     void monsterGenerateQuiverItem(Stat* myStats, bool lesserMonster = false);
-    int getMonsterEffectiveDistanceOfRangedWeapon(Item* weapon);
+    int getMonsterEffectiveDistanceOfRangedWeapon(const Item* weapon);
     bool isFollowerFreeToPathToPlayer(Stat* myStats);
     void removeLightField(); // Removes light field from entity, sets this->light to nullptr.
 
@@ -952,27 +952,27 @@ public:
     void closeChestServer(); //Close the chest serverside, silently. Called when the chest is closed somewhere else for that client, but the server end stuff needs to be tied up.
     Item* addItemToChest(Item* item, bool forceNewStack, Item* specificDestinationStack); //Adds an item to the chest. If server, notifies the client. If client, notifies the server.
     static Item* addItemToVoidChest(int player, Item* item, bool forceNewStack, Item* specificDestinationStack); //Adds an item to the chest. If client, notifies the server.
-    static Item* addItemToVoidChestServer(int player, Item* item, bool forceNewStack, Item* specificDestinationStack);
+    static Item* addItemToVoidChestServer(int player, Item* item, bool forceNewStack, const Item* specificDestinationStack);
     Item* getItemFromChest(Item* item, int amount, bool getInfoOnly = false); //Removes an item from the chest and returns a pointer to it.
     Item* addItemToChestFromInventory(int player, Item* item, int amount, bool forceNewStack, Item* specificDestinationStack);
-    Item* addItemToChestServer(Item* item, bool forceNewStack, Item* specificDestinationStack); //Adds an item to the chest. Called when the server receives a notification from the client that an item was added to the chest.
-    bool removeItemFromChestServer(Item* item, int count); //Called when the server learns that a client removed an item from the chest.
-    static bool removeItemFromVoidChestServer(int player, Item* item, int count); //Called when the server learns that a client removed an item from the chest.
+    Item* addItemToChestServer(Item* item, bool forceNewStack, const Item* specificDestinationStack); //Adds an item to the chest. Called when the server receives a notification from the client that an item was added to the chest.
+    bool removeItemFromChestServer(const Item* item, int count); //Called when the server learns that a client removed an item from the chest.
+    static bool removeItemFromVoidChestServer(int player, const Item* item, int count); //Called when the server learns that a client removed an item from the chest.
     void unlockChest();
     void lockChest();
     list_t* getChestInventoryList();
-    void chestHandleDamageMagic(int damage, Entity &magicProjectile, Entity *caster, bool doSound = true);
+    void chestHandleDamageMagic(int damage, const Entity &magicProjectile, Entity *caster, bool doSound = true);
 
     //Power Crystal functions.
     void powerCrystalCreateElectricityNodes();
 
     //Door functions.
-    void doorHandleDamageMagic(int damage, Entity &magicProjectile, Entity *caster, bool messages = true, bool doSound = true);
-    void colliderHandleDamageMagic(int damage, Entity &magicProjectile, Entity *caster, bool messages = true, bool doSound = true);
+    void doorHandleDamageMagic(int damage, const Entity &magicProjectile, const Entity *caster, bool messages = true, bool doSound = true);
+    void colliderHandleDamageMagic(int damage, const Entity &magicProjectile, const Entity *caster, bool messages = true, bool doSound = true);
 
     bool checkEnemy(Entity* your);
     bool checkFriend(Entity* your);
-    bool friendlyFireProtection(Entity* your);
+    bool friendlyFireProtection(const Entity* your);
     void alertAlliesOnBeingHit(Entity* attacker, std::unordered_set<Entity*>* skipEntitiesToAlert = nullptr);
 
     //Act functions.
@@ -992,7 +992,7 @@ public:
     bool magicFallingCollision();
     bool magicOrbitingCollision();
     void actFurniture();
-    void furnitureHandleDamageMagic(int damage, Entity& magicProjectile, Entity* caster, bool messages = true, bool doSound = true);
+    void furnitureHandleDamageMagic(int damage, const Entity& magicProjectile, const Entity* caster, bool messages = true, bool doSound = true);
     void actPistonCam();
     void actStalagCeiling();
     void actStalagFloor();
@@ -1065,15 +1065,15 @@ public:
     // handle humanoid weapon arm animation/sprite offsets
     void handleHumanoidWeaponLimb(Entity* weaponLimb, Entity* weaponArmLimb);
     void handleHumanoidShieldLimb(Entity* shieldLimb, Entity* shieldArmLimb);
-    void handleQuiverThirdPersonModel(Stat& myStats, int mySprite = -1);
+    void handleQuiverThirdPersonModel(const Stat& myStats, int mySprite = -1);
     // server only function to set boot sprites on monsters.
     bool setBootSprite(Entity* leg, int spriteOffset, bool forceShort = false);
-    static bool isBootSpriteShortArmor(Entity* leg);
+    static bool isBootSpriteShortArmor(const Entity* leg);
     // monster special attack handler, returns true if monster should attack after calling this function.
     bool handleMonsterSpecialAttack(Stat* myStats, Entity* target, double dist, bool forceDeinit);
     // monster attack handler
     void handleMonsterAttack(Stat* myStats, Entity* target, double dist);
-    void lookAtEntity(Entity& target);
+    void lookAtEntity(const Entity& target);
     // automaton specific function
     void automatonRecycleItem();
     // incubus teleport spells
@@ -1087,7 +1087,7 @@ public:
     void lichIceCreateCannon();
     Entity* lichThrowProjectile(real_t angle);
     void lichIceSummonMonster(Monster creature);
-    bool devilSummonMonster(Entity* summonOnEntity, Monster creature, int radiusFromCenter, int playerToTarget = -1);
+    bool devilSummonMonster(const Entity* summonOnEntity, Monster creature, int radiusFromCenter, int playerToTarget = -1);
     int devilGetNumMonstersInArena(Monster creature);
     bool devilBoulderSummonIfPlayerIsHiding(int player);
     void lichFireSummonMonster(Monster creature);
@@ -1100,17 +1100,17 @@ public:
     // check if monster should retreat or stand still when less than given distance
     bool backupWithRangedWeapon(Stat& myStats, int dist, int hasrangedweapon);
     // calc time required for a mana regen tick, uses equipped gear as modifiers.
-    static int getManaringFromEquipment(Entity* my, Stat& myStats, bool isPlayer);
-    static int getManaringFromEffects(Entity* my, Stat& myStats);
+    static int getManaringFromEquipment(const Entity* my, const Stat& myStats, bool isPlayer);
+    static int getManaringFromEffects(Entity* my, const Stat& myStats);
     static int getManaRegenInterval(Entity* my, Stat& myStats, bool isPlayer, bool excludeItemsEffectsBonus = false);
     // calc time required for a hp regen tick, uses equipped gear as modifiers.
-    static int getHealringFromEquipment(Entity* my, Stat& myStats, bool isPlayer);
-    static int getHealringFromEffects(Entity* my, Stat& myStats);
+    static int getHealringFromEquipment(Entity* my, const Stat& myStats, bool isPlayer);
+    static int getHealringFromEffects(Entity* my, const Stat& myStats);
     static int getHealthRegenInterval(Entity* my, Stat& myStats, bool isPlayer, bool excludeItemsEffectsBonus = false);
     // calc damage/effects for ranged weapons.
-    void setRangedProjectileAttack(Entity& marksman, Stat& myStats, int optionalOverrideForArrowType = 0);
+    void setRangedProjectileAttack(Entity& marksman, const Stat& myStats, int optionalOverrideForArrowType = 0);
     bool setArrowProjectileProperties(int weaponType);
-    real_t yawDifferenceFromEntity(Entity* entity); // calc targets yaw compared to an entity, returns 0 - 2 * PI, where > PI is facing towards player.
+    real_t yawDifferenceFromEntity(const Entity* entity); // calc targets yaw compared to an entity, returns 0 - 2 * PI, where > PI is facing towards player.
     spell_t* getActiveMagicEffect(int spellID);
 
     /*
@@ -1134,7 +1134,7 @@ public:
   * @param monsterWasHit: monster is retaliating to an attack as opposed to finding an enemy. to set reaction time accordingly in hardcore
    */
     void monsterAcquireAttackTarget(const Entity& target, Sint32 state, bool monsterWasHit = false);
-    bool monsterAlertBeforeHit(Entity* attacker);
+    bool monsterAlertBeforeHit(const Entity* attacker);
 
     /*
   * Attempts to set the target to 0.
@@ -1259,7 +1259,7 @@ public:
     * Entities with Stats will have their fire time (char_fire) and chance to stop being on fire (chanceToPutOutFire) reduced by their CON
      * Calculations for reductions is outlined in this function
      */
-    bool SetEntityOnFire(Entity* sourceOfFire);
+    bool SetEntityOnFire(const Entity* sourceOfFire);
 
     void addToCreatureList(list_t* list);
     void addToWorldUIList(list_t *list);
@@ -1291,7 +1291,7 @@ public:
     void clearMonsterInteract(); // tidy up flags after interaction.
     bool monsterSetPathToLocation(int destX, int destY, int adjacentTilesToCheck, int pathingType, bool tryRandomSpot = false, bool shortByShortest = true); // monster create path to destination, search adjacent tiles if specified target is inaccessible.
     bool gyrobotSetPathToReturnLocation(int destX, int destY, int adjacentTilesToCheck, bool tryRandomSpot = false); // gyrobot create path to destination to land safely.
-    static int getMagicResistance(Stat* myStats); // returns the value of magic resistance of a monster.
+    static int getMagicResistance(const Stat* myStats); // returns the value of magic resistance of a monster.
     static real_t magicResistancePerPoint;
     void playerLevelEntrySpeechSecond(); // handle secondary voice lines for post-herx content
     bool isPlayerHeadSprite() const; // determines if model of entity is a human head.
@@ -1307,11 +1307,11 @@ public:
     void setHelmetLimbOffsetWithMask(Entity* helm, Entity* mask);
     bool entityCheckIfTriggeredBomb(bool triggerBomb);
     bool entityCheckIfTriggeredWallButton();
-    Sint32 playerInsectoidExpectedManaFromHunger(Stat& myStats);
-    Sint32 playerInsectoidHungerValueOfManaPoint(Stat& myStats);
+    Sint32 playerInsectoidExpectedManaFromHunger(const Stat& myStats);
+    Sint32 playerInsectoidHungerValueOfManaPoint(const Stat& myStats);
     void playerInsectoidIncrementHungerToMP(int mpAmount);
-    static real_t getDamageTableMultiplier(Entity* my, Stat& myStats, DamageTableType damageType, int* magicResistance = nullptr, int* outNumSources = nullptr);
-    static real_t getDamageTableEquipmentMod(Stat& myStats, Item& item, real_t base, real_t mod);
+    static real_t getDamageTableMultiplier(Entity* my, Stat& myStats, DamageTableType damageType, const int* magicResistance = nullptr, int* outNumSources = nullptr);
+    static real_t getDamageTableEquipmentMod(const Stat& myStats, const Item& item, real_t base, real_t mod);
     bool isBoulderSprite();
     void createWorldUITooltip();
     bool bEntityTooltipRequiresButtonHeld() const;
@@ -1344,14 +1344,14 @@ public:
     bool doSilkenBowOnAttack(Entity* attacker);
     void setBugbearStrafeDir(bool forceDirection);
     void processEntityWind();
-    bool windEffectsEntity(Entity* entity);
+    bool windEffectsEntity(const Entity* entity);
     real_t monsterGetWeightRatio();
-    bool spellEffectPreserveItem(Item* item);
+    bool spellEffectPreserveItem(const Item* item);
     bool mistFormDodge(bool checkEffectActiveOnly, Entity* attacker);
     bool defyFleshProc(Entity* attacker);
-    bool pinpointDamageProc(Entity* attacker, int damage);
+    bool pinpointDamageProc(const Entity* attacker, int damage);
     static bool modifyDamageMultipliersFromEffects(Entity* hitentity, Entity* attacker, 
-        real_t& damageMultiplier, DamageTableType damageTableType, Entity* projectile = nullptr, int spellID = -1);
+        real_t& damageMultiplier, DamageTableType damageTableType, const Entity* projectile = nullptr, int spellID = -1);
     real_t getHealingSpellPotionModifierFromEffects(bool processLevelup);
     void attractItem(Entity& itemEntity);
     void creatureHandleLiftZ();
@@ -1368,7 +1368,7 @@ Sint32 statGetDEX(Stat* entitystats, Entity* my);
 Sint32 statGetCON(Stat* entitystats, Entity* my);
 Sint32 statGetINT(Stat* entitystats, Entity* my);
 Sint32 statGetPER(Stat* entitystats, Entity* my);
-Sint32 statGetCHR(Stat* entitystats, Entity* my);
+Sint32 statGetCHR(const Stat* entitystats, const Entity* my);
 extern Uint32 entity_uids, lastEntityUIDs;
 //extern Entity *players[4];
 extern Uint32 nummonsters;
@@ -1446,7 +1446,7 @@ void actIronDoor(Entity* my);
 void actChest(Entity* my);
 void actChestLid(Entity* my);
 void closeChestClientside(const int player); //Called by the client to manage all clientside stuff relating to closing a chest.
-Item* addItemToChestClientside(const int player, Item* item, bool forceNewStack, Item* specificDestinationStack); //Called by the client to manage all clientside stuff relating to adding an item to a chest.
+Item* addItemToChestClientside(const int player, Item* item, bool forceNewStack, const Item* specificDestinationStack); //Called by the client to manage all clientside stuff relating to adding an item to a chest.
 void createChestInventory(Entity* my, int chestType);
 
 //---Stalag functions---
@@ -1498,11 +1498,11 @@ extern char tileEditorNameStrings[NUM_EDITOR_TILES][44];
 extern char monsterEditorNameStrings[NUMMONSTERS][32];
 extern char itemStringsByType[10][NUM_ITEM_STRINGS_BY_TYPE][32];
 extern char itemNameStrings[NUM_ITEM_STRINGS][32];
-int canWearEquip(Entity* entity, int category);
+int canWearEquip(const Entity* entity, int category);
 void createMonsterEquipment(Stat* stats, BaronyRNG& rng);
-int countCustomItems(Stat* stats);
-int countDefaultItems(Stat* stats);
-void copyMonsterStatToPropertyStrings(Stat* tmpSpriteStats);
+int countCustomItems(const Stat* stats);
+int countDefaultItems(const Stat* stats);
+void copyMonsterStatToPropertyStrings(const Stat* tmpSpriteStats);
 void setRandomMonsterStats(Stat* stats, BaronyRNG& rng);
 
 int checkEquipType(const Item *ITEM);
@@ -1512,15 +1512,15 @@ static const int SPRITE_GLOVE_LEFT_OFFSET = 4;
 static const int SPRITE_BOOT_RIGHT_OFFSET = 0;
 static const int SPRITE_BOOT_LEFT_OFFSET = 2;
 
-int setGloveSprite(Stat * myStats, Entity* ent, int spriteOffset);
-bool isLevitating(Stat * myStats);
+int setGloveSprite(const Stat * myStats, Entity* ent, int spriteOffset);
+bool isLevitating(const Stat * myStats);
 int getWeaponSkill(const Item* weapon);
 int getStatForProficiency(int skill);
-void setSpriteAttributes(Entity* entityToSet, Entity* entityToCopy, Entity* entityStatToCopy);
-bool monsterIsImmobileTurret(Entity* my, Stat* myStats);
-bool monsterChangesColorWhenAlly(Stat* myStats, Entity* entity = nullptr);
-int monsterTinkeringConvertHPToAppearance(Stat* myStats);
-int monsterTinkeringConvertAppearanceToHP(Stat* myStats, int appearance);
+void setSpriteAttributes(Entity* entityToSet, const Entity* entityToCopy, const Entity* entityStatToCopy);
+bool monsterIsImmobileTurret(const Entity* my, const Stat* myStats);
+bool monsterChangesColorWhenAlly(const Stat* myStats, const Entity* entity = nullptr);
+int monsterTinkeringConvertHPToAppearance(const Stat* myStats);
+int monsterTinkeringConvertAppearanceToHP(const Stat* myStats, int appearance);
 
 static const int MSG_DESCRIPTION = 0;
 static const int MSG_COMBAT = 1;
@@ -1530,7 +1530,7 @@ static const int MSG_ATTACKS = 4;
 static const int MSG_STEAL_WEAPON = 5;
 static const int MSG_TOOL_BOMB = 6;
 static const int MSG_COMBAT_BASIC = 7;
-void messagePlayerMonsterEvent(int player, Uint32 color, Stat& monsterStats, const char* msgGeneric, const char* msgNamed, int detailType, Entity* optionalEntity = nullptr);
+void messagePlayerMonsterEvent(int player, Uint32 color, Stat& monsterStats, const char* msgGeneric, const char* msgNamed, int detailType, const Entity* optionalEntity = nullptr);
 char const * playerClassLangEntry(int classnum, int playernum);
 
 //Some testing functions/commands.
@@ -1549,7 +1549,7 @@ bool shieldSpriteAllowedImpForm(int sprite);
 bool weaponSpriteAllowedImpForm(int sprite);
 
 bool playerRequiresBloodToSustain(int player); // vampire type or accursed class
-void spawnBloodVialOnMonsterDeath(Entity* entity, Stat* hitstats, Entity* killer);
+void spawnBloodVialOnMonsterDeath(const Entity* entity, Stat* hitstats, const Entity* killer);
 
 void shrineDaedalusRevealMap(Entity& my);
 void daedalusShrineInteract(Entity* my, Entity* touched);
@@ -1563,7 +1563,7 @@ enum EntityHungerIntervals : int
     HUNGER_INTERVAL_AUTOMATON_SUPERHEATED,
     HUNGER_INTERVAL_AUTOMATON_CRITICAL
 };
-int getEntityHungerInterval(int player, Entity* my, Stat* myStats, EntityHungerIntervals hungerInterval);
+int getEntityHungerInterval(int player, const Entity* my, const Stat* myStats, EntityHungerIntervals hungerInterval);
 
 //Fountain potion drop chance variables.
 extern const std::vector<unsigned int> fountainPotionDropChances;
@@ -1680,7 +1680,7 @@ public:
         }
         return false;
     }
-    void eraseTag(std::string& script, std::string& scriptTag, size_t tagIndex)
+    void eraseTag(std::string& script, const std::string& scriptTag, size_t tagIndex)
     {
         if ( tagIndex + scriptTag.length() < script.length()
             && script.at(tagIndex + scriptTag.length()) == ' ' )
@@ -1694,7 +1694,7 @@ public:
     }
     void updateClientInformation(int player, bool clearInventory, bool clearStats, ClientInformationType updateType);
     void playerClearInventory(bool clearStats);
-    std::string getScriptFromEntity(Entity& src);
+    std::string getScriptFromEntity(const Entity& src);
     void parseScriptInMapGeneration(Entity& src);
     Entity* createScriptEntityInMapGen(int x, int y, const char* text);
     void addScriptToTextSource(Entity& src, const char* text);
@@ -1728,7 +1728,7 @@ public:
         skill &= 0xFFFF0FFF;
         skill |= ((setValue << 12) & 0xF000);
     }
-    std::vector<Entity*> getScriptAttachedEntities(Entity& script)
+    std::vector<Entity*> getScriptAttachedEntities(const Entity& script)
     {
         std::vector<Entity*> entities;
         for (const node_t* node = script.children.first; node; node = node->next )

@@ -196,7 +196,7 @@ void buttonCloseSubwindow(button_t* my);
 void buttonSpriteProperties(button_t* my);
 void buttonSpritePropertiesConfirm(button_t* my);
 void buttonCloseSpriteSubwindow(button_t* my);
-void buttonMonsterItems(button_t* my);
+void buttonMonsterItems(const button_t* my);
 void initMonsterPropertiesWindow();
 void buttonOpenDirectory(button_t* my);
 void buttonOpenPrevMap(button_t* my);

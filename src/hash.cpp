@@ -12,7 +12,7 @@
 #include "main.hpp"
 #include "hash.hpp"
 
-unsigned long djb2Hash(char* str)
+unsigned long djb2Hash(const char* str)
 {
     unsigned long hash = 5381;
     int c;
@@ -33,7 +33,7 @@ void ttfTextHash_deconstructor(void* data)
     free(data);
 }
 
-SDL_Surface* ttfTextHashRetrieve(list_t* buckets, char* str, TTF_Font* font, bool outline)
+SDL_Surface* ttfTextHashRetrieve(const list_t* buckets, char* str, const TTF_Font* font, bool outline)
 {
     // retrieve bucket
     const list_t* list = &buckets[djb2Hash(str) % HASH_SIZE];

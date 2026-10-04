@@ -432,9 +432,9 @@ extern bool achievementRangedMode[MAXPLAYERS];
 score_t* scoreConstructor(int player);
 void scoreDeconstructor(void* data);
 int saveScore(int player);
-int totalScore(score_t* score);
+int totalScore(const score_t* score);
 void loadScore(int score);
-void loadScore(score_t* score);
+void loadScore(const score_t* score);
 bool deleteScore(bool multiplayer, int index);
 void saveAllScores(const std::string& scoresfilename);
 void loadAllScores(const std::string& scoresfilename);
@@ -525,7 +525,7 @@ struct SaveGameInfo {
             PlayerRaceHostility_t() = default;
             PlayerRaceHostility_t(const PlayerRaceHostility_t&) = default;
             PlayerRaceHostility_t(PlayerRaceHostility_t&&) = default;
-            PlayerRaceHostility_t(ShopkeeperPlayerHostility_t::PlayerRaceHostility_t& h)
+            PlayerRaceHostility_t(const ShopkeeperPlayerHostility_t::PlayerRaceHostility_t& h)
             {
                 wantedLevel = h.wantedLevel;
                 playerRace = h.playerRace;
@@ -836,10 +836,10 @@ public:
     int checkUidIsFromPlayer(Uint32 uid);
     std::unordered_map<Uint32, std::unordered_map<int, std::pair<int,int>>> entityAchievementsToProcess; // uid of entity, achievement int, <ticks remaining, optional counter>
     
-    bool addEntityAchievementTimer(Entity* entity, int achievement, int ticks, bool resetTimerIfActive, int optionalIncrement);
+    bool addEntityAchievementTimer(const Entity* entity, int achievement, int ticks, bool resetTimerIfActive, int optionalIncrement);
 
     void achievementTimersTickDown();
-    void awardAchievementIfActive(int player, Entity* entity, int achievement);
+    void awardAchievementIfActive(int player, const Entity* entity, int achievement);
     void awardAchievement(int player, int achievement);
     void printActiveAchievementTimers();
 
@@ -1009,8 +1009,8 @@ public:
             flutterShyCoordinates = std::make_pair(0.0, 0.0);
         };
         bool checkPathBetweenObjects(Entity* player, Entity* target, int achievement);
-        bool checkTraditionKill(Entity* player, Entity* target);
-        int getItemIndexForDapperAchievement(Item* item);
+        bool checkTraditionKill(const Entity* player, Entity* target);
+        int getItemIndexForDapperAchievement(const Item* item);
     } playerAchievements[MAXPLAYERS];
 
     void updateClientBounties(bool firstSend);

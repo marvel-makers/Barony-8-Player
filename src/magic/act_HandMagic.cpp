@@ -208,7 +208,7 @@ bool spellcasting_animation_manager_t::spellIgnoreAttack()
     return false;
 }
 
-bool rangefinderTargetEnemyType(spell_t& spell, Entity& entity)
+bool rangefinderTargetEnemyType(const spell_t& spell, const Entity& entity)
 {
     if ( entity.behavior == &actMonster && !entity.monsterIsTargetable(true) )
     {
@@ -634,7 +634,7 @@ void spellcasting_animation_manager_t::setRangeFinderLocation()
             int wallDir = 0;
         };
 
-        auto compFunc = [](EntitySpellTargetLocation& lhs, EntitySpellTargetLocation& rhs)
+        auto compFunc = [](const EntitySpellTargetLocation& lhs, const EntitySpellTargetLocation& rhs)
         {
             if ( abs(lhs.crossDist - rhs.crossDist) <= 0.00001 )
             {

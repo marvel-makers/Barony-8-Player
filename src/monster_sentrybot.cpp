@@ -953,7 +953,7 @@ void sentryBotAnimate(Entity* my, Stat* myStats, double dist)
 #define GYRO_ROTOR_SMALL 3
 #define GYRO_BOMB 4
 
-bool gyroBotFoundNewEntity(Entity& ent)
+bool gyroBotFoundNewEntity(const Entity& ent)
 {
     const auto find = gyroBotDetectedUids.find(ent.getUID());
     if ( find == gyroBotDetectedUids.end() )

@@ -162,7 +162,7 @@ bool itemProcessReturnItemEffect(Entity* my, bool fallingIntoVoid)
     return false;
 }
 
-void onItemPickedUp(Entity& who, Uint32 itemUid)
+void onItemPickedUp(const Entity& who, Uint32 itemUid)
 {
     for ( int player = 0; player < MAXPLAYERS; ++player )
     {
@@ -205,7 +205,7 @@ void onItemPickedUp(Entity& who, Uint32 itemUid)
     }
 }
 
-bool entityWantsJewel(int tier, Entity& entity, Stat& stats, bool checkTypeOnly)
+bool entityWantsJewel(int tier, Entity& entity, const Stat& stats, bool checkTypeOnly)
 {
     int req = -1;
     switch ( stats.type )

@@ -235,7 +235,7 @@ void initScarab(Entity* my, Stat* myStats)
     my->bodyparts.push_back(entity);
 }
 
-void scarabAnimate(Entity* my, Stat* myStats, double dist)
+void scarabAnimate(Entity* my, const Stat* myStats, double dist)
 {
     node_t* node;
     int bodypart;

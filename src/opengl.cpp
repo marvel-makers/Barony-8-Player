@@ -570,7 +570,7 @@ vec4_t unproject(
 
 -------------------------------------------------------------------------------*/
 
-static void fillSmoothLightmap(int which, map_t& map) {
+static void fillSmoothLightmap(int which, const map_t& map) {
 #ifndef EDITOR
     if ( &map == &CompendiumEntries.compendiumMap )
     {
@@ -635,7 +635,7 @@ static inline bool testTileOccludes(const map_t& map, int index) {
         && (t1 != TRANSPARENT_TILE); // is ceiling != TRANSPARENT_TILE
 }
 
-static void loadLightmapTexture(int which, map_t& map) {
+static void loadLightmapTexture(int which, const map_t& map) {
     const auto lightmapSmoothed = lightmapsSmoothed[which].data();
     
     // allocate lightmap pixel data
@@ -713,7 +713,7 @@ ConsoleVariable<float> cvar_fogRate("/fog_rate", 0.0);
 ConsoleVariable<float> cvar_fogFade("/fog_fade", 0.0);
 #endif
 
-static void uploadUniforms(Shader& shader, float* proj, float* view, float* mapDims) {
+static void uploadUniforms(Shader& shader, const float* proj, const float* view, const float* mapDims) {
     shader.bind();
     if (proj) { GL_CHECK_ERR(glUniformMatrix4fv(shader.uniform("uProj"), 1, false, proj)); }
     if (view) { GL_CHECK_ERR(glUniformMatrix4fv(shader.uniform("uView"), 1, false, view)); }
@@ -1216,7 +1216,7 @@ void glEndCamera(view_t* camera, bool useHDR, map_t& map)
         const auto pixels = camera->fb[fbIndex].lock();
         if (pixels) {
             // functor for crawling through the framebuffer collecting samples
-            auto fn = [](GLhalf* pixels, GLhalf* end, const int step) {
+            auto fn = [](const GLhalf* pixels, const GLhalf* end, const int step) {
                 std::vector<float> v(4);
                 if (step > 0) {
                     for (; pixels < end; pixels += step) {

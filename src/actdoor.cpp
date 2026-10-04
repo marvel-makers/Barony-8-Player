@@ -325,7 +325,7 @@ void actDoorFrame(Entity* my)
     }
 }
 
-void Entity::doorHandleDamageMagic(int damage, Entity &magicProjectile, Entity *caster, bool messages, bool doSound)
+void Entity::doorHandleDamageMagic(int damage, const Entity &magicProjectile, const Entity *caster, bool messages, bool doSound)
 {
     if ( behavior == &::actIronDoor )
     {

@@ -1345,7 +1345,7 @@ void initHologram(Entity* my, Stat* myStats)
     my->mistformGLRender = 2.0;
 }
 
-void hologramAnimate(Entity* my, Stat* myStats, double dist)
+void hologramAnimate(Entity* my, const Stat* myStats, double dist)
 {
     my->flags[INVISIBLE] = true; // hide the "AI" bodypart
     my->sizex = 4;

@@ -190,7 +190,7 @@ public:
             return (arr[(monster_stat_rng.rand() % arr.Size())].GetInt());
         }
 
-        bool readKeyToItemEntry(rapidjson::Value::ConstMemberIterator& itr)
+        bool readKeyToItemEntry(const rapidjson::Value::ConstMemberIterator& itr)
         {
             const std::string name = itr->name.GetString();
             if ( name.compare("type") == 0 )
@@ -785,7 +785,7 @@ public:
         writeToFile(d, monstertypename[myStats->type]);
     }
 
-    void readItemsFromStats(Stat* myStats, rapidjson::Document& d)
+    void readItemsFromStats(const Stat* myStats, rapidjson::Document& d)
     {
         rapidjson::Value equippedItemsObject;
         equippedItemsObject.SetObject();
@@ -866,7 +866,7 @@ public:
         }
     }
 
-    bool readKeyToStatEntry(StatEntry& statEntry, rapidjson::Value::ConstMemberIterator& itr)
+    bool readKeyToStatEntry(StatEntry& statEntry, const rapidjson::Value::ConstMemberIterator& itr)
     {
         const std::string name = itr->name.GetString();
         if ( name.compare("name") == 0 )
@@ -1036,7 +1036,7 @@ public:
         return false;
     }
 
-    void addArrayMemberFromItem(rapidjson::Document& d, std::string rootKey, Item* item)
+    void addArrayMemberFromItem(rapidjson::Document& d, std::string rootKey, const Item* item)
     {
         if ( item )
         {
@@ -1046,7 +1046,7 @@ public:
             CustomHelpers::addArrayMemberToSubkey(d, rootKey, itemObject);
         }
     }
-    void addMemberFromItem(rapidjson::Document& d, std::string rootKey, std::string key, Item* item)
+    void addMemberFromItem(rapidjson::Document& d, std::string rootKey, std::string key, const Item* item)
     {
         if ( item )
         {
@@ -1057,7 +1057,7 @@ public:
         }
     }
 
-    void writeToFile(rapidjson::Document& d, std::string monsterFileName)
+    void writeToFile(const rapidjson::Document& d, std::string monsterFileName)
     {
         int filenum = 0;
         std::string testPath = "/data/custom-monsters/monster_" + monsterFileName + "_export" + std::to_string(filenum) + ".json";
@@ -1628,7 +1628,7 @@ public:
         return "default";
     }
 
-    void createMonsterFromFile(Entity* entity, Stat* myStats, const std::string& filename, Monster& outMonsterType)
+    void createMonsterFromFile(const Entity* entity, Stat* myStats, const std::string& filename, Monster& outMonsterType)
     {
         MonsterStatCustomManager::StatEntry* statEntry = monsterStatCustomManager.readFromFile(filename.c_str());
         if ( statEntry )
@@ -1811,7 +1811,7 @@ public:
         writeToFile(d);
     }
 
-    void writeToFile(rapidjson::Document& d)
+    void writeToFile(const rapidjson::Document& d)
     {
         int filenum = 0;
         std::string testPath = "/data/monstercurve_export" + std::to_string(filenum) + ".json";
@@ -2021,7 +2021,7 @@ public:
         writeToFile(d);
     }
 
-    void writeToFile(rapidjson::Document& d)
+    void writeToFile(const rapidjson::Document& d)
     {
         int filenum = 0;
         std::string testPath = "/data/gameplaymodifiers_export" + std::to_string(filenum) + ".json";
@@ -2089,7 +2089,7 @@ public:
         }
     }
 
-    bool readKeyToGameplayProperty(rapidjson::Value::ConstMemberIterator& itr)
+    bool readKeyToGameplayProperty(const rapidjson::Value::ConstMemberIterator& itr)
     {
         const std::string name = itr->name.GetString();
         if ( name.compare("version") == 0 )
@@ -2204,7 +2204,7 @@ public:
         return false;
     }
 
-    bool readKeyToMapGenerationProperty(MapGeneration& m, rapidjson::Value::ConstMemberIterator& itr)
+    bool readKeyToMapGenerationProperty(MapGeneration& m, const rapidjson::Value::ConstMemberIterator& itr)
     {
         const std::string name = itr->name.GetString();
         if ( name.compare("trap_generation_types") == 0 )
@@ -2545,7 +2545,7 @@ public:
             void reset();
             bool loadScenario();
             void applySettings();
-            void updateKillEvent(Entity* entity);
+            void updateKillEvent(const Entity* entity);
         } challengeRun;
     } currentSession;
 
@@ -2600,7 +2600,7 @@ public:
         bool showFirstTutorialCompletedPrompt = false;
         bool firstTutorialCompleted = false;
         void createFirstTutorialCompletedPrompt();
-        void setTutorialMap(std::string& mapname)
+        void setTutorialMap(const std::string& mapname)
         {
             loadCustomNextMap = mapname;
             currentMap = loadCustomNextMap;
@@ -2676,7 +2676,7 @@ public:
 #else
         const std::string tutorialScoresFilename = "/savegames/tutorial_scores.json";
 #endif
-        void writeToFile(rapidjson::Document& d)
+        void writeToFile(const rapidjson::Document& d)
         {
             std::string outputPath = outputdir;
             outputPath.append(tutorialScoresFilename.c_str());
@@ -2910,25 +2910,25 @@ public:
     std::string& getItemStatusAdjective(Uint32 itemType, Status status);
     std::string& getItemBeatitudeAdjective(Sint16 beatitude);
     std::string& getItemPotionAlchemyAdjective(const int player, Uint32 itemType);
-    std::string& getItemPotionHarmAllyAdjective(Item& item);
+    std::string& getItemPotionHarmAllyAdjective(const Item& item);
     std::string& getItemProficiencyName(int proficiency);
     std::string& getItemSlotName(ItemEquippableSlot slotname);
     std::string& getItemStatShortName(const char* attribute);
     std::string& getItemStatFullName(const char* attribute);
-    std::string& getItemEquipmentEffectsForIconText(std::string& attribute);
-    std::string& getItemEquipmentEffectsForAttributesText(std::string& attribute);
+    std::string& getItemEquipmentEffectsForIconText(const std::string& attribute);
+    std::string& getItemEquipmentEffectsForAttributesText(const std::string& attribute);
     std::string& getProficiencyLevelName(Sint32 proficiencyLevel);
-    std::string& getIconLabel(Item& item);
+    std::string& getIconLabel(const Item& item);
     std::string getSpellIconText(const int player, Item& item, const bool excludePlayerStats);
     std::string getSpellIconFormatText(const int player, Item& item, std::string& format, const spell_t* spell, const int iconIndex, const bool compendiumTooltipIntro);
-    std::string getSpellDescriptionText(const int player, Item& item);
-    std::string getSpellIconPath(const int player, Item& item, int spellID);
-    std::string getCostOfSpellString(const int player, Item& item);
-    std::string& getSpellTypeString(const int player, Item& item);
+    std::string getSpellDescriptionText(const int player, const Item& item);
+    std::string getSpellIconPath(const int player, const Item& item, int spellID);
+    std::string getCostOfSpellString(const int player, const Item& item);
+    std::string& getSpellTypeString(const int player, const Item& item);
     node_t* getSpellNodeFromSpellID(int spellID);
     real_t getSpellSustainCostPerSecond(int spellID);
-    int getSpellDamageOrHealAmount(const int player, spell_t* spell, Item* spellbook, const bool excludePlayerStats);
-    bool bIsSpellDamageOrHealingType(spell_t* spell);
+    int getSpellDamageOrHealAmount(const int player, const spell_t* spell, const Item* spellbook, const bool excludePlayerStats);
+    bool bIsSpellDamageOrHealingType(const spell_t* spell);
     bool bSpellHasBasicHitMessage(const int spellID);
 
     void formatItemIcon(const int player, std::string tooltipType, Item& item, std::string& str, int iconIndex, std::string& conditionalAttribute, Frame* parentFrame = nullptr);
@@ -2936,8 +2936,8 @@ public:
     void formatItemDetails(const int player, std::string tooltipType, Item& item, std::string& str, std::string detailTag, Frame* parentFrame = nullptr);
     void stripOutPositiveNegativeItemDetails(std::string& str, std::string& positiveValues, std::string& negativeValues);
     void stripOutHighlightBracketText(std::string& str, std::string& bracketText);
-    void getWordIndexesItemDetails(void* field, std::string& str, std::string& highlightValues, std::string& positiveValues, std::string& negativeValues,
-        std::map<int, Uint32>& highlightIndexes, std::map<int, Uint32>& positiveIndexes, std::map<int, Uint32>& negativeIndexes, ItemTooltip_t& tooltip);
+    void getWordIndexesItemDetails(void* field, const std::string& str, const std::string& highlightValues, const std::string& positiveValues, const std::string& negativeValues,
+        std::map<int, Uint32>& highlightIndexes, std::map<int, Uint32>& positiveIndexes, std::map<int, Uint32>& negativeIndexes, const ItemTooltip_t& tooltip);
 };
 extern ItemTooltips_t ItemTooltips;
 

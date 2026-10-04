@@ -593,8 +593,8 @@ extern float fadein_increment, fadeout_increment, default_fadein_increment, defa
 void* playSound(Uint16, Uint8);
 void* playSoundPos(real_t x, real_t y, Uint16, Uint8);
 void* playSoundPosLocal(real_t, real_t, Uint16, Uint8);
-void* playSoundEntity(Entity*, Uint16, Uint8);
-void* playSoundEntityLocal(Entity*, Uint16, Uint8);
+void* playSoundEntity(const Entity*, Uint16, Uint8);
+void* playSoundEntityLocal(const Entity*, Uint16, Uint8);
 void* playSoundPlayer(int, Uint16, Uint8);
 void* playSoundNotification(Uint16, Uint8);
 void* playSoundNotificationPlayer(int, Uint16, Uint8);

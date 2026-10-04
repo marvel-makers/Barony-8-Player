@@ -11,7 +11,7 @@
 Frame::result_t doFrames();
 void doSharedMinimap();
 extern Frame* gameUIFrame[MAXPLAYERS];
-void addMessageToLogWindow(int player, string_t* string);
+void addMessageToLogWindow(int player, const string_t* string);
 void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable = false);
 void createInventoryTooltipFrame(const int player, 
     Frame* parentFrame,
@@ -34,13 +34,13 @@ struct EnemyBarSettings_t
 {
     std::unordered_map<std::string, float> heightOffsets;
     std::unordered_map<std::string, float> screenDistanceOffsets;
-    std::string getEnemyBarSpriteName(Entity* entity);
-    float getHeightOffset(Entity* entity)
+    std::string getEnemyBarSpriteName(const Entity* entity);
+    float getHeightOffset(const Entity* entity)
     {
         if ( !entity ) { return 0.f; }
         return heightOffsets[getEnemyBarSpriteName(entity)];
     }
-    float getScreenDistanceOffset(Entity* entity)
+    float getScreenDistanceOffset(const Entity* entity)
     {
         if ( !entity ) { return 0.f; }
         return screenDistanceOffsets[getEnemyBarSpriteName(entity)];
@@ -210,7 +210,7 @@ struct StatusEffectQueue_t
     void updateAllQueuedEffects();
     void animateStatusEffectTooltip(bool showTooltip);
     bool doStatusEffectTooltip(StatusEffectQueueEntry_t& entry, SDL_Rect pos);
-    void updateEntryImage(StatusEffectQueueEntry_t& entry, Frame::image_t* img);
+    void updateEntryImage(const StatusEffectQueueEntry_t& entry, Frame::image_t* img);
     void createStatusEffectTooltip();
     Frame* getStatusEffectFrame();
     void handleNavigation(std::map<int, StatusEffectQueueEntry_t*>& grid, 
@@ -340,7 +340,7 @@ void capitalizeString(std::string& str);
 void lowercaseString(std::string& str);
 void uppercaseString(std::string& str);
 void camelCaseString(std::string& str);
-bool stringStartsWithVowel(std::string& str);
+bool stringStartsWithVowel(const std::string& str);
 
 struct MinotaurWarning_t
 {
@@ -451,7 +451,7 @@ struct LevelUpAnimation_t
         void animateTitle(SDL_Rect basePos);
     };
     std::deque<LevelUp_t> lvlUps;
-    void addLevelUp(const int currentLvl, const int addLvl, std::vector<LevelUp_t::StatUp_t>& statInfo);
+    void addLevelUp(const int currentLvl, const int addLvl, const std::vector<LevelUp_t::StatUp_t>& statInfo);
 };
 
 extern LevelUpAnimation_t levelUpAnimation[MAXPLAYERS];

@@ -210,7 +210,7 @@ void spawnBasicMagicParticleForMissile(Entity* my)
     }
 }
 
-const char* magicLightColorForSprite(Entity* my, int sprite, bool darker) {
+const char* magicLightColorForSprite(const Entity* my, int sprite, bool darker) {
     if ( my && my->flags[SPRITE] )
     {
         if ( darker )
@@ -969,7 +969,7 @@ void actMagiclightBall(Entity* my)
     }
 }
 
-void spawnBloodVialOnMonsterDeath(Entity* entity, Stat* hitstats, Entity* killer)
+void spawnBloodVialOnMonsterDeath(const Entity* entity, Stat* hitstats, const Entity* killer)
 {
     if ( !entity || !hitstats ) { return; }
     if ( entity->behavior == &actMonster )
@@ -1052,7 +1052,7 @@ void spawnBloodVialOnMonsterDeath(Entity* entity, Stat* hitstats, Entity* killer
     }
 }
 
-bool magicOnSpellCastEvent(Entity* parent, Entity* projectile, Entity* hitentity, int spellID, Uint32 eventType, int eventValue, bool allowedLevelup)
+bool magicOnSpellCastEvent(Entity* parent, const Entity* projectile, Entity* hitentity, int spellID, Uint32 eventType, int eventValue, bool allowedLevelup)
 {
     if ( !parent )
     {
@@ -1760,7 +1760,7 @@ void magicOnEntityHit(Entity* parent, Entity* particle, Entity* hitentity, Stat*
     }
 }
 
-void magicTrapOnHit(Entity* parent, Entity* hitentity, Stat* hitstats, Sint32 oldHP, int spellID)
+void magicTrapOnHit(const Entity* parent, const Entity* hitentity, const Stat* hitstats, Sint32 oldHP, int spellID)
 {
     if ( !parent || !hitentity || !hitstats ) { return; }
     if ( spellID == SPELL_NONE ) { return; }
@@ -1853,7 +1853,7 @@ Sint32 convertResistancePointsToMagicValue(Sint32 value, int resistance)
     }
 }
 
-void magicSetResistance(Entity* entity, Entity* parent, int& resistance, real_t& damageMultiplier, DamageGib& dmgGib, int& trapResist, int spellID)
+void magicSetResistance(Entity* entity, const Entity* parent, int& resistance, real_t& damageMultiplier, DamageGib& dmgGib, int& trapResist, int spellID)
 {
     if ( entity )
     {
@@ -7463,7 +7463,7 @@ void actHUDMagicParticle(Entity* my)
     }
 }
 
-void createEnsembleTargetParticleCircling(Entity* parent)
+void createEnsembleTargetParticleCircling(const Entity* parent)
 {
     if ( !parent ) { return; }
 
@@ -7506,7 +7506,7 @@ void createEnsembleTargetParticleCircling(Entity* parent)
     entity->setUID(-3);
 }
 
-void createEnsembleHUDParticleCircling(Entity* parent)
+void createEnsembleHUDParticleCircling(const Entity* parent)
 {
     if ( !parent ) { return; }
 
@@ -7683,7 +7683,7 @@ void actMagicParticleCircling2(Entity* my)
     }
 }
 
-Entity* spawnMagicParticle(Entity* parentent)
+Entity* spawnMagicParticle(const Entity* parentent)
 {
     if ( !parentent )
     {
@@ -7721,7 +7721,7 @@ Entity* spawnMagicParticle(Entity* parentent)
     return entity;
 }
 
-Entity* spawnMagicParticleCustom(Entity* parentent, int sprite, real_t scale, real_t spreadReduce)
+Entity* spawnMagicParticleCustom(const Entity* parentent, int sprite, real_t scale, real_t spreadReduce)
 {
     if ( !parentent )
     {
@@ -7810,7 +7810,7 @@ void spawnMagicEffectParticles(Sint16 x, Sint16 y, Sint16 z, Uint32 sprite)
     }
 }
 
-void createParticleCircling(Entity* parent, int duration, int sprite)
+void createParticleCircling(const Entity* parent, int duration, int sprite)
 {
     if ( !parent )
     {
@@ -7975,7 +7975,7 @@ void actParticleCircle(Entity* my)
     }
 }
 
-void createParticleDot(Entity* parent)
+void createParticleDot(const Entity* parent)
 {
     if ( !parent )
     {
@@ -8006,7 +8006,7 @@ void createParticleDot(Entity* parent)
     }
 }
 
-Entity* createParticleBolas(Entity* parent, int sprite, int duration, Item* item)
+Entity* createParticleBolas(const Entity* parent, int sprite, int duration, const Item* item)
 {
     if ( !parent ) { return nullptr; }
     Entity* entity = newEntity(sprite, 1, map.entities, nullptr); //Particle entity.
@@ -8040,7 +8040,7 @@ Entity* createParticleBolas(Entity* parent, int sprite, int duration, Item* item
     return entity;
 }
 
-Entity* createParticleAestheticOrbit(Entity* parent, int sprite, int duration, int effectType)
+Entity* createParticleAestheticOrbit(const Entity* parent, int sprite, int duration, int effectType)
 {
     if ( effectType == PARTICLE_EFFECT_NULL_PARTICLE
         || effectType == PARTICLE_EFFECT_IGNITE_ORBIT
@@ -8090,7 +8090,7 @@ Entity* createParticleAestheticOrbit(Entity* parent, int sprite, int duration, i
     return entity;
 }
 
-void createParticleRock(Entity* parent, int sprite, bool light)
+void createParticleRock(const Entity* parent, int sprite, bool light)
 {
     if ( !parent )
     {
@@ -8135,7 +8135,7 @@ void createParticleRock(Entity* parent, int sprite, bool light)
     }
 }
 
-void createParticleShatteredGem(real_t x, real_t y, real_t z, int sprite, Entity* parent)
+void createParticleShatteredGem(real_t x, real_t y, real_t z, int sprite, const Entity* parent)
 {
     for ( int c = 0; c < 5; c++ )
     {
@@ -10142,7 +10142,7 @@ void createParticleErupt(real_t x, real_t y, int sprite)
     }
 }
 
-void createParticleErupt(Entity* parent, int sprite)
+void createParticleErupt(const Entity* parent, int sprite)
 {
     if ( !parent )
     {
@@ -10152,7 +10152,7 @@ void createParticleErupt(Entity* parent, int sprite)
     createParticleErupt(parent->x, parent->y, sprite);
 }
 
-Entity* createParticleSapCenter(Entity* parent, Entity* target, int spell, int sprite, int endSprite)
+Entity* createParticleSapCenter(const Entity* parent, const Entity* target, int spell, int sprite, int endSprite)
 {
     if ( !parent || !target )
     {
@@ -10188,7 +10188,7 @@ Entity* createParticleSapCenter(Entity* parent, Entity* target, int spell, int s
     return entity;
 }
 
-void createParticleSap(Entity* parent)
+void createParticleSap(const Entity* parent)
 {
     const real_t speed = 0.4;
     if ( !parent )
@@ -10372,7 +10372,7 @@ void createParticleSap(Entity* parent)
     }
 }
 
-void createParticleDropRising(Entity* parent, int sprite, double scale)
+void createParticleDropRising(const Entity* parent, int sprite, double scale)
 {
     if ( !parent )
     {
@@ -10408,7 +10408,7 @@ void createParticleDropRising(Entity* parent, int sprite, double scale)
     }
 }
 
-Entity* createParticleTimer(Entity* parent, int duration, int sprite)
+Entity* createParticleTimer(const Entity* parent, int duration, int sprite)
 {
     Entity* entity = newEntity(-1, 1, map.entities, nullptr); //Timer entity.
     entity->sizex = 1;
@@ -10802,7 +10802,7 @@ void floorMagicCreateSpores(Entity* spawnOnEntity, real_t x, real_t y, Entity* c
     }
 }
 
-void floorMagicCreateLightningSequence(Entity* spellTimer, int startTickOffset)
+void floorMagicCreateLightningSequence(const Entity* spellTimer, int startTickOffset)
 {
     if ( !spellTimer ) { return; }
 
@@ -14507,7 +14507,7 @@ void actParticleSapCenter(Entity* my)
     }
 }
 
-void createParticleExplosionCharge(Entity* parent, int sprite, int particleCount, double scale)
+void createParticleExplosionCharge(const Entity* parent, int sprite, int particleCount, double scale)
 {
     if ( !parent )
     {
@@ -14846,7 +14846,7 @@ Entity* Entity::castOrbitingMagicMissile(int spellID, real_t distFromCaster, rea
     return entity;
 }
 
-Entity* castStationaryOrbitingMagicMissile(Entity* parent, int spellID, real_t centerx, real_t centery,
+Entity* castStationaryOrbitingMagicMissile(const Entity* parent, int spellID, real_t centerx, real_t centery,
     real_t distFromCenter, real_t angleFromCenterDirection, int duration)
 {
     spell_t* spell = getSpellFromID(spellID);
@@ -15226,7 +15226,7 @@ void actParticleShadowTag(Entity* my)
     }
 }
 
-void createParticleShadowTag(Entity* parent, Uint32 casterUid, int duration)
+void createParticleShadowTag(const Entity* parent, Uint32 casterUid, int duration)
 {
     if ( !parent )
     {
@@ -15654,7 +15654,7 @@ void actParticlePinpointTarget(Entity* my)
     }
 }
 
-Entity* createParticleSpellPinpointTarget(Entity* parent, Uint32 casterUid, int sprite, int duration, int spellID)
+Entity* createParticleSpellPinpointTarget(const Entity* parent, Uint32 casterUid, int sprite, int duration, int spellID)
 {
     if ( !parent )
     {
@@ -15716,7 +15716,7 @@ Entity* createParticleSpellPinpointTarget(Entity* parent, Uint32 casterUid, int 
     return entity;
 }
 
-void createParticleCharmMonster(Entity* parent)
+void createParticleCharmMonster(const Entity* parent)
 {
     if ( !parent )
     {
@@ -16109,7 +16109,7 @@ bool magicDig(Entity* parent, Entity* projectile, int numRocks, int randRocks)
     return false;
 }
 
-Entity* createParticleCastingIndicator(Entity* parent, real_t x, real_t y, real_t z, Uint32 lifetime, Uint32 followUid)
+Entity* createParticleCastingIndicator(const Entity* parent, real_t x, real_t y, real_t z, Uint32 lifetime, Uint32 followUid)
 {
     Uint32 uid = 0;
     if ( parent )
@@ -16660,7 +16660,7 @@ void AOEIndicators_t::Indicator_t::updateIndicator()
     //}
 }
 
-Entity* createParticleAOEIndicator(Entity* parent, real_t x, real_t y, real_t z, Uint32 lifetime, int size)
+Entity* createParticleAOEIndicator(const Entity* parent, real_t x, real_t y, real_t z, Uint32 lifetime, int size)
 {
     Uint32 uid = 0;
     if ( parent )
@@ -19624,7 +19624,7 @@ void radiusMagicSetUID(Entity& fx, bool noupdate)
     fx.skill[2] = val;
 }
 
-Entity* createRadiusMagic(int spellID, Entity* caster, real_t x, real_t y, real_t radius, Uint32 lifetime, Entity* follow)
+Entity* createRadiusMagic(int spellID, const Entity* caster, real_t x, real_t y, real_t radius, Uint32 lifetime, const Entity* follow)
 {
     if ( !caster )
     {
@@ -19775,7 +19775,7 @@ Entity* createRadiusMagic(int spellID, Entity* caster, real_t x, real_t y, real_
     return entity;
 }
 
-Entity* createMagicRadiusBadge(Entity& parent)
+Entity* createMagicRadiusBadge(const Entity& parent)
 {
     Entity* entity = newEntity(parent.sprite, 1, map.entities, nullptr); //Particle entity.
     entity->parent = parent.getUID();
@@ -19821,7 +19821,7 @@ Entity* createMagicRadiusBadge(Entity& parent)
     return entity;
 }
 
-void actRadiusMagicOnFade(Entity* my)
+void actRadiusMagicOnFade(const Entity* my)
 {
     const Entity* caster = uidToEntity(my->parent);
     const Entity* follow = uidToEntity(my->actRadiusMagicFollowUID);
@@ -20874,7 +20874,7 @@ void actRadiusMagic(Entity* my)
     }
 }
 
-Entity* createSpellExplosionArea(int spellID, Entity* caster, real_t x, real_t y, real_t z, real_t radius, int damage, Entity* ohitentity)
+Entity* createSpellExplosionArea(int spellID, Entity* caster, real_t x, real_t y, real_t z, real_t radius, int damage, const Entity* ohitentity)
 {
     Entity* spellTimer = nullptr;
     if ( multiplayer != CLIENT )
@@ -21573,7 +21573,7 @@ void actParticleShatterEarthRock(Entity* my)
     }
 }
 
-void createParticleShatterEarth(Entity* my, Entity* caster, real_t _x, real_t _y, int spellID)
+void createParticleShatterEarth(Entity* my, const Entity* caster, real_t _x, real_t _y, int spellID)
 {
     const int x = static_cast<int>(_x / 16);
     const int y = static_cast<int>(_y / 16);

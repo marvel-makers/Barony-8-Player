@@ -3986,7 +3986,7 @@ void deinitShapeshiftHotbar(int player)
     }
 }
 
-bool playerUnlockedShamanSpell(const int player, Item* const item)
+bool playerUnlockedShamanSpell(const int player, const Item* const item)
 {
     if ( player < 0 && player >= MAXPLAYERS )
     {

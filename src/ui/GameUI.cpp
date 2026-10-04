@@ -430,7 +430,7 @@ void camelCaseString(std::string& str)
     }
 }
 
-bool stringStartsWithVowel(std::string& str)
+bool stringStartsWithVowel(const std::string& str)
 {
     if (str.size() < 1) { return false; }
     switch (str[0])
@@ -452,7 +452,7 @@ bool stringStartsWithVowel(std::string& str)
     return false;
 }
 
-std::string EnemyBarSettings_t::getEnemyBarSpriteName(Entity* entity)
+std::string EnemyBarSettings_t::getEnemyBarSpriteName(const Entity* entity)
 {
     if (!entity) { return "default"; }
 
@@ -1253,7 +1253,7 @@ void updateCalloutPromptFrame(const int player)
     }
 }
 
-void updateVoicePromptFrame(const int player, Frame* baseFrame, Frame* allyFrame)
+void updateVoicePromptFrame(const int player, Frame* baseFrame, const Frame* allyFrame)
 {
     auto& hud_t = players[player]->hud;
     const auto frame = baseFrame;
@@ -4122,7 +4122,7 @@ void updateAllyFollowerFrame(const int player)
             }
 
             auto it = std::find_if(hud_t.followerBars.begin() + position, hud_t.followerBars.end(),
-                                   [uid](std::pair<Uint32, Player::HUD_t::FollowerBar_t>& pair)
+                                   [uid](const std::pair<Uint32, Player::HUD_t::FollowerBar_t>& pair)
                                    {
                                        return pair.first == uid;
                                    });
@@ -4143,7 +4143,7 @@ void updateAllyFollowerFrame(const int player)
                 }
 
                 it = std::find_if(hud_t.followerBars.begin() + position, hud_t.followerBars.end(),
-                                  [uid](std::pair<Uint32, Player::HUD_t::FollowerBar_t>& pair)
+                                  [uid](const std::pair<Uint32, Player::HUD_t::FollowerBar_t>& pair)
                                   {
                                       return pair.first == uid;
                                   });
@@ -4960,7 +4960,7 @@ void createUINavigation(const int player)
         magicButton->setMenuConfirmControlType(0);
         magicButton->setColor(makeColor(255, 255, 255, 255));
         magicButton->setHighlightColor(makeColor(255, 255, 255, 255));
-        magicButton->setCallback([](Button& button)
+        magicButton->setCallback([](const Button& button)
         {
             if (inputs.getVirtualMouse(button.getOwner())->draw_cursor)
             {
@@ -4999,7 +4999,7 @@ void createUINavigation(const int player)
         statusButton->setMenuConfirmControlType(0);
         statusButton->setColor(makeColor(255, 255, 255, 255));
         statusButton->setHighlightColor(makeColor(255, 255, 255, 255));
-        statusButton->setCallback([](Button& button)
+        statusButton->setCallback([](const Button& button)
         {
             Player::soundActivate();
             if (players[button.getOwner()]->hud.compactLayoutMode != Player::HUD_t::COMPACT_LAYOUT_CHARSHEET)
@@ -5038,7 +5038,7 @@ void createUINavigation(const int player)
         itemsButton->setMenuConfirmControlType(0);
         itemsButton->setColor(makeColor(255, 255, 255, 255));
         itemsButton->setHighlightColor(makeColor(255, 255, 255, 255));
-        itemsButton->setCallback([](Button& button)
+        itemsButton->setCallback([](const Button& button)
         {
             if (players[button.getOwner()]->hud.compactLayoutMode != Player::HUD_t::COMPACT_LAYOUT_INVENTORY)
             {
@@ -5079,7 +5079,7 @@ void createUINavigation(const int player)
         skillsButton->setMenuConfirmControlType(0);
         skillsButton->setColor(makeColor(255, 255, 255, 255));
         skillsButton->setHighlightColor(makeColor(255, 255, 255, 255));
-        skillsButton->setCallback([](Button& button)
+        skillsButton->setCallback([](const Button& button)
         {
             players[button.getOwner()]->skillSheet.openSkillSheet();
         });
@@ -7862,7 +7862,7 @@ void Player::HUD_t::updateStatusEffectFocusedWindow()
             dismiss->setMenuConfirmControlType(0);
             dismiss->setHideSelectors(true);
             dismiss->setOntop(true);
-            dismiss->setCallback([](Button& button)
+            dismiss->setCallback([](const Button& button)
             {
                 players[button.getOwner()]->hud.closeStatusFxWindow();
                 Player::soundCancel();
@@ -10312,7 +10312,7 @@ void StatusEffectQueue_t::updateAllQueuedEffects()
     requiresAnimUpdate = false;
 }
 
-void StatusEffectQueue_t::updateEntryImage(StatusEffectQueueEntry_t& entry, Frame::image_t* img)
+void StatusEffectQueue_t::updateEntryImage(const StatusEffectQueueEntry_t& entry, Frame::image_t* img)
 {
     if (img)
     {
@@ -14469,7 +14469,7 @@ static ConsoleCommand ccmd_log_clear("/log_clear", "Clears log history",
                                          list_FreeAll(&messages);
                                      });
 
-void addMessageToLogWindow(int player, string_t* string)
+void addMessageToLogWindow(int player, const string_t* string)
 {
     const auto& frame = players[player]->messageZone.logWindow;
     if (!frame || !string)
@@ -15338,7 +15338,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
             logButton->setMenuConfirmControlType(Widget::MENU_CONFIRM_CONTROLLER);
             logButton->setColor(makeColor(255, 255, 255, 255));
             logButton->setHighlightColor(makeColor(255, 255, 255, 255));
-            logButton->setCallback([](Button& button)
+            logButton->setCallback([](const Button& button)
             {
                 openLogWindow(button.getOwner());
             });
@@ -15415,7 +15415,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
             timerButton->setHideKeyboardGlyphs(true);
             timerButton->setHideSelectors(true);
             timerButton->setMenuConfirmControlType(Widget::MENU_CONFIRM_CONTROLLER);
-            timerButton->setCallback([](Button& button)
+            timerButton->setCallback([](const Button& button)
             {
                 bool& bShowTimer = players[button.getOwner()]->characterSheet.showGameTimerAlways;
                 bShowTimer = !bShowTimer;
@@ -15456,7 +15456,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
             skillsButton->setMenuConfirmControlType(Widget::MENU_CONFIRM_CONTROLLER);
             skillsButton->setColor(makeColor(255, 255, 255, 255));
             skillsButton->setHighlightColor(makeColor(255, 255, 255, 255));
-            skillsButton->setCallback([](Button& button)
+            skillsButton->setCallback([](const Button& button)
             {
                 players[button.getOwner()]->skillSheet.openSkillSheet();
             });
@@ -17989,7 +17989,7 @@ std::string& Player::CharacterSheet_t::getHoverTextString(std::string key)
     return defaultString;
 }
 
-bool getAttackTooltipLines(int playernum, AttackHoverText_t& attackHoverTextInfo, int lineNumber, char titleBuf[128],
+bool getAttackTooltipLines(int playernum, const AttackHoverText_t& attackHoverTextInfo, int lineNumber, char titleBuf[128],
                            char valueBuf[128])
 {
     std::string skillName = "-";
@@ -18774,7 +18774,7 @@ void characterSheetTooltipSetZeroStat(Entity* entity, Stat* myStats, Sint32* LVL
     }
 }
 
-void characterSheetTooltipRestoreStats(Stat* myStats, Sint32* LVL, Sint32 oldStats[NUMSTATS])
+void characterSheetTooltipRestoreStats(Stat* myStats, const Sint32* LVL, Sint32 oldStats[NUMSTATS])
 {
     if (!myStats) { return; }
     if (LVL)
@@ -25840,7 +25840,7 @@ void drawSpritesPreview(std::string name, std::string modelsPath, SDL_Rect pos, 
     ::fov = ofov;
 }
 
-void glDrawWorldTile(view_t* camera, int mode, map_t& map)
+void glDrawWorldTile(const view_t* camera, int mode, const map_t& map)
 {
     if (!camera)
     {
@@ -28754,7 +28754,7 @@ void createPlayerSpellList(const int player)
         closeBtn->setBackground("*#images/ui/Inventory/chests/Button_X_00.png");
         closeBtn->setBackgroundHighlighted("*#images/ui/Inventory/chests/Button_XHigh_00.png");
         closeBtn->setBackgroundActivated("*#images/ui/Inventory/chests/Button_XPress_00.png");
-        closeBtn->setCallback([](Button& button)
+        closeBtn->setCallback([](const Button& button)
         {
             if (players[button.getOwner()]->inventory_mode == INVENTORY_MODE_SPELL)
             {
@@ -28796,7 +28796,7 @@ void createPlayerSpellList(const int player)
         filterBtn->setBackground("*#images/ui/Inventory/HUD_Magic_Casting_BG_01.png");
         filterBtn->setBackgroundHighlighted("*#images/ui/Inventory/HUD_Magic_Casting_BG_High_01.png");
         filterBtn->setBackgroundActivated("*#images/ui/Inventory/HUD_Magic_Casting_BG_Press_01.png");
-        filterBtn->setCallback([](Button& button)
+        filterBtn->setCallback([](const Button& button)
         {
             auto& val = players[button.getOwner()]->inventoryUI.spellPanel.spellFilterBySkill;
             if (val == 0) { val = PRO_SORCERY; }
@@ -29089,7 +29089,7 @@ void createChestGUI(const int player)
         closeBtn->setBackgroundHighlighted("*#images/ui/Inventory/chests/Button_XHigh_00.png");
         closeBtn->setBackgroundActivated("*#images/ui/Inventory/chests/Button_XPress_00.png");
         closeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-        closeBtn->setCallback([](Button& button)
+        closeBtn->setCallback([](const Button& button)
         {
             closeChestGUIAction(button.getOwner());
         });
@@ -29112,7 +29112,7 @@ void createChestGUI(const int player)
         grabAllBtn->setBackgroundHighlighted("*#images/ui/Inventory/chests/Button_TakeAllHigh_00.png");
         grabAllBtn->setBackgroundActivated("*#images/ui/Inventory/chests/Button_TakeAllPress_00.png");
         grabAllBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-        grabAllBtn->setCallback([](Button& button)
+        grabAllBtn->setCallback([](const Button& button)
         {
             takeAllChestGUIAction(button.getOwner());
             Player::soundActivate();
@@ -29310,7 +29310,7 @@ void createShopGUI(const int player)
         closeBtn->setBackgroundHighlighted("*#images/ui/Shop/Button_XHigh_00.png");
         closeBtn->setBackgroundActivated("*#images/ui/Shop/Button_XPress_00.png");
         closeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-        closeBtn->setCallback([](Button& button)
+        closeBtn->setCallback([](const Button& button)
         {
             closeShopGUIAction(button.getOwner());
             Player::soundCancel();
@@ -29444,7 +29444,7 @@ void createShopGUI(const int player)
             buybackBtn->setBackgroundHighlighted("*#images/ui/Shop/Shop_Buyback_ButtonHigh_00.png");
             buybackBtn->setBackgroundActivated("*#images/ui/Shop/Shop_Buyback_ButtonPress_00.png");
             buybackBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            buybackBtn->setCallback([](Button& button)
+            buybackBtn->setCallback([](const Button& button)
             {
                 toggleShopBuybackView(button.getOwner());
                 Player::soundActivate();
@@ -29963,7 +29963,7 @@ void createPlayerInventory(const int player)
             //autosortButton->setOntop(true);
             autosortButton->setColor(makeColor(255, 255, 255, 255));
             autosortButton->setHighlightColor(makeColor(255, 255, 255, 255));
-            autosortButton->setCallback([](Button& button)
+            autosortButton->setCallback([](const Button& button)
             {
                 autosortInventory(button.getOwner());
                 //playSound(139, 64);
@@ -31478,7 +31478,7 @@ void Player::Inventory_t::updateInventoryItemTooltip(Frame* parentFrame)
     }
 }
 
-void Player::Inventory_t::ItemTooltipDisplay_t::updateItem(const int player, Item* newItem)
+void Player::Inventory_t::ItemTooltipDisplay_t::updateItem(const int player, const Item* newItem)
 {
     if (newItem && player >= 0 && player < MAXPLAYERS && stats[player])
     {
@@ -31513,7 +31513,7 @@ void Player::Inventory_t::ItemTooltipDisplay_t::updateItem(const int player, Ite
     }
 }
 
-bool Player::Inventory_t::ItemTooltipDisplay_t::isItemSameAsCurrent(const int player, Item* newItem)
+bool Player::Inventory_t::ItemTooltipDisplay_t::isItemSameAsCurrent(const int player, const Item* newItem)
 {
     if (newItem && player >= 0 && player < MAXPLAYERS && stats[player])
     {
@@ -35847,7 +35847,7 @@ void Player::HUD_t::updateMPBar()
     mpFrame->setDisabled(player.ghost.isActive() && !player.entity);
 }
 
-bool hotbar_slot_t::matchesExactLastItem(int player, Item* item)
+bool hotbar_slot_t::matchesExactLastItem(int player, const Item* item)
 {
     if (!item) { return false; }
     if (lastItem.uid == item->uid) { return true; }
@@ -35879,7 +35879,7 @@ void hotbar_slot_t::resetLastItem()
     lastItem.uid = 0;
 }
 
-void hotbar_slot_t::storeLastItem(Item* item)
+void hotbar_slot_t::storeLastItem(const Item* item)
 {
     if (!item) { return; }
     if (!item->identified) { return; }
@@ -36934,7 +36934,7 @@ void Player::SkillSheet_t::createSkillSheet()
         closeBtn->setBackground("*#images/ui/Skillsheet/Button_X_00.png");
         closeBtn->setBackgroundHighlighted("*#images/ui/Skillsheet/Button_XHigh_00.png");
         closeBtn->setBackgroundActivated("*#images/ui/Skillsheet/Button_XPress_00.png");
-        closeBtn->setCallback([](Button& button)
+        closeBtn->setCallback([](const Button& button)
         {
             players[button.getOwner()]->skillSheet.closeSkillSheet();
             Player::soundCancel();
@@ -39205,7 +39205,7 @@ void Player::SkillSheet_t::selectSkill(int skill)
 //  return sprite;
 //}
 
-void buttonSkillsheetUpdateSelectorOnHighlight(const int player, Button* button)
+void buttonSkillsheetUpdateSelectorOnHighlight(const int player, const Button* button)
 {
     if (button->isHighlighted())
     {
@@ -39224,7 +39224,7 @@ void buttonSkillsheetUpdateSelectorOnHighlight(const int player, Button* button)
     }
 }
 
-void sliderSkillsheetUpdateSelectorOnHighlight(const int player, Slider* slider)
+void sliderSkillsheetUpdateSelectorOnHighlight(const int player, const Slider* slider)
 {
     if (slider->isHighlighted())
     {
@@ -41035,7 +41035,7 @@ int Player::Inventory_t::SpellPanel_t::getNumSpellsToDisplayVertical() const
     }
 }
 
-void buttonSpellUpdateSelectorOnHighlight(const int player, Button* button)
+void buttonSpellUpdateSelectorOnHighlight(const int player, const Button* button)
 {
     if (button->isHighlighted())
     {
@@ -41054,7 +41054,7 @@ void buttonSpellUpdateSelectorOnHighlight(const int player, Button* button)
     }
 }
 
-void sliderSpellUpdateSelectorOnHighlight(const int player, Slider* slider)
+void sliderSpellUpdateSelectorOnHighlight(const int player, const Slider* slider)
 {
     if (slider->isHighlighted())
     {
@@ -41517,7 +41517,7 @@ bool Player::Inventory_t::SpellPanel_t::isSlotVisible(int x, int y) const
     return false;
 }
 
-bool Player::Inventory_t::SpellPanel_t::isItemVisible(Item* item) const
+bool Player::Inventory_t::SpellPanel_t::isItemVisible(const Item* item) const
 {
     if (!item) { return false; }
     return isSlotVisible(item->x, item->y);
@@ -41672,7 +41672,7 @@ void Player::Inventory_t::selectChestSlot(const int x, const int y)
     chestGUI.selectedChestSlotY = y;
 }
 
-const bool Player::Inventory_t::isItemFromChest(Item* item) const
+const bool Player::Inventory_t::isItemFromChest(const Item* item) const
 {
     if (!item)
     {
@@ -42131,7 +42131,7 @@ bool Player::Inventory_t::ChestGUI_t::isSlotVisible(int x, int y) const
     return false;
 }
 
-bool Player::Inventory_t::ChestGUI_t::isItemVisible(Item* item) const
+bool Player::Inventory_t::ChestGUI_t::isItemVisible(const Item* item) const
 {
     if (!item) { return false; }
     return isSlotVisible(item->x, item->y);
@@ -42860,7 +42860,7 @@ void Player::HUD_t::updateMinotaurWarning()
     m.animBg = std::max(0.0, m.animBg);
 }
 
-bool Player::WorldUI_t::WorldTooltipItem_t::isItemSameAsCurrent(Item* item)
+bool Player::WorldUI_t::WorldTooltipItem_t::isItemSameAsCurrent(const Item* item)
 {
     if (!item)
     {
@@ -44291,7 +44291,7 @@ static ConsoleVariable<int> cvar_lvlup_sfx("/lvlup_sfx", 526);
 Uint32 levelupSoundDelay = 0;
 
 void LevelUpAnimation_t::addLevelUp(const int currentLvl, const int increaseLvl,
-                                    std::vector<LevelUp_t::StatUp_t>& statInfo)
+                                    const std::vector<LevelUp_t::StatUp_t>& statInfo)
 {
     if (lvlUps.size() > 2)
     {

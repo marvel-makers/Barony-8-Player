@@ -52,7 +52,7 @@ namespace
     }
 }
 
-void updateEnemyBar(Entity* source, Entity* target, const char* name, Sint32 hp, Sint32 maxhp, bool lowPriorityTick, 
+void updateEnemyBar(const Entity* source, const Entity* target, const char* name, Sint32 hp, Sint32 maxhp, bool lowPriorityTick, 
     DamageGib gibType)
 {
     // server/singleplayer only function.

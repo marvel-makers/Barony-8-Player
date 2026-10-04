@@ -416,7 +416,7 @@ void Player::Ghost_t::reset()
     player.cleanUpOnEntityRemoval();
 }
 
-bool Player::Ghost_t::allowedInteractEntity(Entity& entity)
+bool Player::Ghost_t::allowedInteractEntity(const Entity& entity)
 {
     if ( entity.behavior == &actItem
         || entity.behavior == &actDoor
@@ -2149,7 +2149,7 @@ int Player::Ghost_t::getSpriteForPlayer(const int player)
         colorblindGhostModelByPlayer[player] : normalGhostModelByPlayer[player];
 }
 
-void actDeathGhostLimb(Entity* my)
+void actDeathGhostLimb(const Entity* my)
 {
     const int playernum = GHOSTCAM_PLAYERNUM;
     if ( playernum < 0 || playernum >= MAXPLAYERS )
@@ -4315,7 +4315,7 @@ int Player::PlayerMovement_t::getCharacterWeight()
     return weight;
 }
 
-int Player::PlayerMovement_t::getCharacterModifiedWeight(int* customWeight)
+int Player::PlayerMovement_t::getCharacterModifiedWeight(const int* customWeight)
 {
     int weight = getCharacterWeight();
     if ( customWeight )
@@ -6074,7 +6074,7 @@ void playerDebugTests(Entity* my)
                 {
                     sortedXP.push_back(std::make_pair(pair.first, pair.second.numXP / static_cast<real_t>(std::max(1, pair.second.numKills))));
                 }
-                std::sort(sortedXP.begin(), sortedXP.end(), [](std::pair<std::string, real_t>& a, std::pair<std::string, real_t>& b) {
+                std::sort(sortedXP.begin(), sortedXP.end(), [](const std::pair<std::string, real_t>& a, const std::pair<std::string, real_t>& b) {
                     return a.second > b.second;
                     });
                 for ( auto& p : sortedXP )
@@ -6092,7 +6092,7 @@ void playerDebugTests(Entity* my)
                     {
                         sortedXP.push_back(std::make_pair(pair2.first, pair2.second.numXP / static_cast<real_t>(std::max(1, pair2.second.numKills))));
                     }
-                    std::sort(sortedXP.begin(), sortedXP.end(), [](std::pair<std::string, real_t>& a, std::pair<std::string, real_t>& b) {
+                    std::sort(sortedXP.begin(), sortedXP.end(), [](const std::pair<std::string, real_t>& a, const std::pair<std::string, real_t>& b) {
                         return a.second > b.second;
                         });
                     for ( auto& p : sortedXP )

@@ -23,7 +23,7 @@
 #include "scores.hpp"
 #include "mod_tools.hpp"
 
-real_t getNormalHeightMonsterD(Entity& my)
+real_t getNormalHeightMonsterD(const Entity& my)
 {
     if ( my.sprite == 1514 || my.sprite == 1515 )
     {

@@ -298,7 +298,7 @@ void castSpellInit(Uint32 caster_uid, spell_t* spell, bool usingSpellbook, bool 
     //castSpell(caster, spell); //For now, do this while the spell animations are worked on.
 }
 
-int getSpellcastingAbilityFromUsingSpellbook(spell_t* spell, Entity* caster, Stat* casterStats)
+int getSpellcastingAbilityFromUsingSpellbook(const spell_t* spell, Entity* caster, Stat* casterStats)
 {
     if ( !casterStats || !spell ) 
     { 
@@ -363,7 +363,7 @@ bool isSpellcasterBeginner(int player, Entity* caster, int skillID)
     return false;
 }
 
-bool isSpellcasterBeginnerFromSpellbook(int player, Entity* caster, Stat* stat, spell_t* spell, Item* spellbookItem)
+bool isSpellcasterBeginnerFromSpellbook(int player, Entity* caster, Stat* stat, const spell_t* spell, Item* spellbookItem)
 {
     if ( player < 0 || !spell || !stat || !spellbookItem )
     {
@@ -389,7 +389,7 @@ bool isSpellcasterBeginnerFromSpellbook(int player, Entity* caster, Stat* stat, 
     return newbie;
 }
 
-int getSpellbookBonusPercent(Entity* caster, Stat* stat, Item* spellbookItem)
+int getSpellbookBonusPercent(Entity* caster, Stat* stat, const Item* spellbookItem)
 {
     if ( !spellbookItem || !(itemCategory(spellbookItem) == SPELLBOOK || itemTypeIsFoci(spellbookItem->type)) )
     {
@@ -445,7 +445,7 @@ enum SpellTarget_t
     TARGET_ENEMY = 2,
     TARGET_FRIEND = 4
 };
-Entity* getSpellTarget(node_t* node, int radius, Entity* caster, bool targetCaster, SpellTarget_t target)
+Entity* getSpellTarget(const node_t* node, int radius, Entity* caster, bool targetCaster, SpellTarget_t target)
 {
     if ( !node )
     {
@@ -525,7 +525,7 @@ bool CastSpellProps_t::setToMonsterCast(Entity* monster, int spellID)
     return false;
 }
 
-int getEffectiveSpellcastingAbility(Entity* caster, Stat* stat, spell_t* spell) // to check for fumbling
+int getEffectiveSpellcastingAbility(Entity* caster, Stat* stat, const spell_t* spell) // to check for fumbling
 {
     if ( !caster || !stat || !spell )
     {
@@ -5674,7 +5674,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
         {
             if ( caster )
             {
-                auto compFunc = [](std::pair<std::pair<Sint32, real_t>, Entity*>& lhs, std::pair<std::pair<Sint32, real_t>, Entity*>& rhs)
+                auto compFunc = [](const std::pair<std::pair<Sint32, real_t>, Entity*>& lhs, const std::pair<std::pair<Sint32, real_t>, Entity*>& rhs)
                 {
                     const int lhs_dist = 64 * (static_cast<int>(lhs.first.second) / 64);
                     const int rhs_dist = 64 * (static_cast<int>(rhs.first.second) / 64);
@@ -5773,7 +5773,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
         {
             if ( caster && caster->behavior == &actPlayer )
             {
-                auto compFunc = [](std::pair<std::pair<Sint32, real_t>, Entity*>& lhs, std::pair<std::pair<Sint32, real_t>, Entity*>& rhs)
+                auto compFunc = [](const std::pair<std::pair<Sint32, real_t>, Entity*>& lhs, const std::pair<std::pair<Sint32, real_t>, Entity*>& rhs)
                     {
                         return lhs.first.second > rhs.first.second;
                     };
@@ -9339,7 +9339,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
     return result;
 }
 
-int spellGetCastSound(spell_t* spell)
+int spellGetCastSound(const spell_t* spell)
 {
     if ( !spell )
     {
@@ -9393,7 +9393,7 @@ int spellGetCastSound(spell_t* spell)
     return 0;
 }
 
-bool spellIsNaturallyLearnedByRaceOrClass(Entity* caster, Stat& stat, int spellID, int player)
+bool spellIsNaturallyLearnedByRaceOrClass(const Entity* caster, const Stat& stat, int spellID, int player)
 {
     if ( caster && caster->behavior != &actPlayer )
     {
@@ -9556,7 +9556,7 @@ bool spellIsNaturallyLearnedByRaceOrClass(Entity* caster, Stat& stat, int spellI
     return false;
 }
 
-void createParticleFociLight(Entity* entity, int spellID, bool updateClients)
+void createParticleFociLight(const Entity* entity, int spellID, bool updateClients)
 {
     if ( !entity ) { return; }
 
@@ -9580,7 +9580,7 @@ void createParticleFociLight(Entity* entity, int spellID, bool updateClients)
     }
 }
 
-void createParticleFociDark(Entity* entity, int spellID, bool updateClients)
+void createParticleFociDark(const Entity* entity, int spellID, bool updateClients)
 {
     if ( !entity ) { return; }
 

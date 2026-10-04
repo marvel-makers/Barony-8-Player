@@ -51,7 +51,7 @@
 #define GIB_HIT_GROUND my->skill[9]
 #define GIB_PLAYER my->skill[11]
 
-void poof(Entity* my) {
+void poof(const Entity* my) {
     if (GIB_POOF) {
         playSoundEntityLocal(my, 512, 128);
         for (int c = 0; c < 3; ++c) {
@@ -959,7 +959,7 @@ void actDamageGib(Entity* my)
 
 -------------------------------------------------------------------------------*/
 
-Entity* spawnGib(Entity* parentent, int customGibSprite)
+Entity* spawnGib(const Entity* parentent, int customGibSprite)
 {
     Entity* entity = nullptr;
     const Stat* parentstats = nullptr;
@@ -1565,7 +1565,7 @@ Entity* spawnGibClient(Sint16 x, Sint16 y, Sint16 z, Sint16 sprite)
     return entity;
 }
 
-void serverSpawnGibForClient(Entity* gib)
+void serverSpawnGibForClient(const Entity* gib)
 {
     if ( !gib )
     {
@@ -1594,7 +1594,7 @@ void serverSpawnGibForClient(Entity* gib)
     }
 }
 
-void spawnGreasePuddleSpawner(Entity* caster, real_t x, real_t y, int duration)
+void spawnGreasePuddleSpawner(const Entity* caster, real_t x, real_t y, int duration)
 {
     if ( multiplayer == CLIENT ) { return; }
     const int ox = x / 16;
@@ -1643,7 +1643,7 @@ void spawnGreasePuddleSpawner(Entity* caster, real_t x, real_t y, int duration)
     }
 }
 
-void spawnGreasePuddle(Entity* parent, real_t x, real_t y, int duration, int location)
+void spawnGreasePuddle(const Entity* parent, real_t x, real_t y, int duration, int location)
 {
     if ( !parent ) { return; }
     const int ox = x / 16;
@@ -1689,7 +1689,7 @@ void spawnGreasePuddle(Entity* parent, real_t x, real_t y, int duration, int loc
     }
 }
 
-void actGreasePuddle(Entity* my)
+void actGreasePuddle(const Entity* my)
 {
     if ( my->ticks % 10 == 0 )
     {
@@ -2670,7 +2670,7 @@ void actLeafPile(Entity* my)
     }
 }
 
-Entity* spawnMiscPuddle(Entity* parentent, real_t x, real_t y, int sprite, bool updateClients)
+Entity* spawnMiscPuddle(const Entity* parentent, real_t x, real_t y, int sprite, bool updateClients)
 {
     if ( sprite == 0 )
     {

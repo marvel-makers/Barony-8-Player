@@ -64,7 +64,7 @@ inline uint32_t DecodeUTF8(uint32_t* const codep, const uint32_t byte)
 }
 
 // Returns 0 (UTF8_ACCEPT) if valid UTF8, 1 (UTF8_REJECT) if invalid, or greater than 1 if more processing is required (two byte character)
-inline uint32_t ValidateUTF8String(char* const str, const size_t length)
+inline uint32_t ValidateUTF8String(const char* const str, const size_t length)
 {
     uint32_t state = UTF8_ACCEPT;
 

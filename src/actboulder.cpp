@@ -109,7 +109,7 @@ checks which objects the boulder breaks when it hits.
 
 -------------------------------------------------------------------------------*/
 
-bool doesEntityStopBoulder(Entity* entity)
+bool doesEntityStopBoulder(const Entity* entity)
 {
     if ( !entity )
     {

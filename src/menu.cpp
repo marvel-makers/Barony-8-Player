@@ -489,7 +489,7 @@ int isCharacterValidFromDLC(int player, int characterClass, int race, int appear
     return result;
 }
 
-int isCharacterValidFromDLC(Stat& myStats, int characterClass)
+int isCharacterValidFromDLC(const Stat& myStats, int characterClass)
 {
     bool challengeClass = false;
     bool challengeRace = false;

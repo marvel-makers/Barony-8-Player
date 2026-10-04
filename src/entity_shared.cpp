@@ -2351,7 +2351,7 @@ char tileEditorNameStrings[NUM_EDITOR_TILES][44] =
     "Replace Me", "Replace Me", "Replace Me"
 };
 
-int canWearEquip(Entity* entity, int category)
+int canWearEquip(const Entity* entity, int category)
 {
     int equipType = 0;
     if ( entity != nullptr)
@@ -2464,7 +2464,7 @@ int canWearEquip(Entity* entity, int category)
     return 0;
 }
 
-void setSpriteAttributes(Entity* entityNew, Entity* entityToCopy, Entity* entityStatToCopy)
+void setSpriteAttributes(Entity* entityNew, const Entity* entityToCopy, const Entity* entityStatToCopy)
 {
     Stat* tmpStats = nullptr;
     if ( !entityNew )

@@ -321,7 +321,7 @@ void actBeartrap(Entity* my)
     }
 }
 
-void actBeartrapLaunched(Entity* my)
+void actBeartrapLaunched(const Entity* my)
 {
     if ( my->ticks >= 200 )
     {

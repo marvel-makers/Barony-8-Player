@@ -1093,7 +1093,7 @@ const char* getSkillLangEntry(int skill)
     return Language::get(langEntry);
 }
 
-void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
+void Stat::copyNPCStatsAndInventoryFrom(const Stat& src)
 {
     int player = -1;
     if ( multiplayer == CLIENT )
@@ -1486,7 +1486,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
     intro = oldIntro;
 }
 
-int Stat::getActiveShieldBonus(bool checkShield, bool excludeSkill, Item* shieldItem, bool checkNonShieldBonus) const
+int Stat::getActiveShieldBonus(bool checkShield, bool excludeSkill, const Item* shieldItem, bool checkNonShieldBonus) const
 {
     const Item* item = shieldItem;
     if ( !item )
@@ -1526,7 +1526,7 @@ int Stat::getActiveShieldBonus(bool checkShield, bool excludeSkill, Item* shield
     }
 }
 
-int Stat::getParryingACBonus(Stat* myStats, Item* myWeapon, bool checkWeapon, bool excludeSkill, int weaponSkill)
+int Stat::getParryingACBonus(const Stat* myStats, const Item* myWeapon, bool checkWeapon, bool excludeSkill, int weaponSkill)
 {
     if ( !checkWeapon )
     {
@@ -1588,7 +1588,7 @@ int Stat::getPassiveShieldBonus(bool checkShield, bool excludeSkill) const
     }
 }
 
-int Stat::numShillelaghDebuffsActive(Entity* my)
+int Stat::numShillelaghDebuffsActive(const Entity* my)
 {
     static std::set<int> effs = {
         EFF_ASLEEP,
@@ -1639,7 +1639,7 @@ int Stat::numShillelaghDebuffsActive(Entity* my)
     return result;
 }
 
-bool Stat::statusEffectRemovedByCureAilment(const int effect, Entity* my)
+bool Stat::statusEffectRemovedByCureAilment(const int effect, const Entity* my)
 {
     switch ( effect )
     {

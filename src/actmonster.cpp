@@ -617,7 +617,7 @@ void ShopkeeperPlayerHostility_t::setWantedLevel(ShopkeeperPlayerHostility_t::Pl
     }
 }
 
-void ShopkeeperPlayerHostility_t::onShopkeeperDeath(Entity* my, Stat* myStats, Entity* attacker)
+void ShopkeeperPlayerHostility_t::onShopkeeperDeath(Entity* my, Stat* myStats, const Entity* attacker)
 {
     if ( shopIsMysteriousShopkeeper(my) ) { return; }
     if ( my && myStats && attacker && myStats->type == SHOPKEEPER )
@@ -640,7 +640,7 @@ void ShopkeeperPlayerHostility_t::onShopkeeperDeath(Entity* my, Stat* myStats, E
         }
     }
 }
-void ShopkeeperPlayerHostility_t::onShopkeeperHit(Entity* my, Stat* myStats, Entity* attacker)
+void ShopkeeperPlayerHostility_t::onShopkeeperHit(Entity* my, const Stat* myStats, const Entity* attacker)
 {
     if ( shopIsMysteriousShopkeeper(my) ) { return; }
     if ( my && myStats && attacker && myStats->type == SHOPKEEPER )
@@ -718,7 +718,7 @@ void ShopkeeperPlayerHostility_t::serverSendClientUpdate(const bool force)
 
 ShopkeeperPlayerHostility_t ShopkeeperPlayerHostility;
 
-bool Entity::monsterAlertBeforeHit(Entity* attacker)
+bool Entity::monsterAlertBeforeHit(const Entity* attacker)
 {
     if ( !attacker )
     {
@@ -852,7 +852,7 @@ bool MonsterAllyFormation_t::getFollowLocation(Uint32 uid, Uint32 leaderUid, std
     return found;
 }
 
-void MonsterAllyFormation_t::updateOnPathFail(Uint32 uid, Entity* entity)
+void MonsterAllyFormation_t::updateOnPathFail(Uint32 uid, const Entity* entity)
 {
     if ( !entity )
     {
@@ -900,7 +900,7 @@ void MonsterAllyFormation_t::updateOnPathFail(Uint32 uid, Entity* entity)
     }
 }
 
-void MonsterAllyFormation_t::updateOnPathSucceed(Uint32 uid, Entity* entity)
+void MonsterAllyFormation_t::updateOnPathSucceed(Uint32 uid, const Entity* entity)
 {
     if ( !entity )
     {
@@ -938,7 +938,7 @@ void MonsterAllyFormation_t::updateOnPathSucceed(Uint32 uid, Entity* entity)
     }
 }
 
-void MonsterAllyFormation_t::updateOnFollowCommand(Uint32 uid, Entity* entity)
+void MonsterAllyFormation_t::updateOnFollowCommand(Uint32 uid, const Entity* entity)
 {
     if ( !entity )
     {
@@ -976,7 +976,7 @@ void MonsterAllyFormation_t::updateOnFollowCommand(Uint32 uid, Entity* entity)
     }
 }
 
-int MonsterAllyFormation_t::getFollowerChaseLeaderInterval(Entity& my, Stat& myStats)
+int MonsterAllyFormation_t::getFollowerChaseLeaderInterval(const Entity& my, const Stat& myStats)
 {
     if ( myStats.leader_uid != 0 )
     {
@@ -998,7 +998,7 @@ int MonsterAllyFormation_t::getFollowerChaseLeaderInterval(Entity& my, Stat& myS
     return TICKS_PER_SECOND;
 }
 
-int MonsterAllyFormation_t::getFollowerPathingDelay(Entity& my, Stat& myStats)
+int MonsterAllyFormation_t::getFollowerPathingDelay(const Entity& my, const Stat& myStats)
 {
     if ( myStats.leader_uid != 0 )
     {
@@ -1020,7 +1020,7 @@ int MonsterAllyFormation_t::getFollowerPathingDelay(Entity& my, Stat& myStats)
     return 0;
 }
 
-int MonsterAllyFormation_t::getFollowerTryExtendedPathSearch(Entity& my, Stat& myStats)
+int MonsterAllyFormation_t::getFollowerTryExtendedPathSearch(const Entity& my, const Stat& myStats)
 {
     if ( myStats.leader_uid != 0 )
     {
@@ -1473,7 +1473,7 @@ void summonManyMonster(Monster creature)
 
 -------------------------------------------------------------------------------*/
 
-bool monsterMoveAside(Entity* my, Entity* entity, bool ignoreMonsterState)
+bool monsterMoveAside(Entity* my, const Entity* entity, bool ignoreMonsterState)
 {
     if ( !my || !entity )
     {
@@ -1552,7 +1552,7 @@ bool monsterMoveAside(Entity* my, Entity* entity, bool ignoreMonsterState)
     return false;
 }
 
-int getMonsterInteractGreeting(Stat& myStats)
+int getMonsterInteractGreeting(const Stat& myStats)
 {
     if ( myStats.type == BUGBEAR )
     {
@@ -2539,7 +2539,7 @@ void printFollowerTableForSkillsheet(int monsterclicked, Entity* my, Stat* mySta
     messagePlayer(0, MESSAGE_MISC, "Exported file: %s", outputPath.c_str());
 }
 
-void sentrybotPickSpotNoise(Entity* my, Stat* myStats)
+void sentrybotPickSpotNoise(const Entity* my, Stat* myStats)
 {
     if ( !my || !myStats )
     {
@@ -2580,7 +2580,7 @@ void sentrybotPickSpotNoise(Entity* my, Stat* myStats)
 }
 
 void mimicResetIdle(Entity* my);
-void batResetIdle(Entity* my);
+void batResetIdle(const Entity* my);
 
 void monsterAnimate(Entity* my, Stat* myStats, double dist)
 {
@@ -11132,7 +11132,7 @@ real_t normaliseAngle2PI(real_t angle)
     return angle;
 }
 
-bool forceFollower(Entity& leader, Entity& follower)
+bool forceFollower(const Entity& leader, Entity& follower)
 {
     Stat* leaderStats = leader.getStats();
     Stat* followerStats = follower.getStats();
@@ -12103,7 +12103,7 @@ bool Entity::handleMonsterSpecialAttack(Stat* myStats, Entity* target, double di
     return true;
 }
 
-void getTargetsAroundEntity(Entity* my, Entity* originalTarget, double distToFind, real_t angleToSearch, int searchType, list_t** list)
+void getTargetsAroundEntity(Entity* my, const Entity* originalTarget, double distToFind, real_t angleToSearch, int searchType, list_t** list)
 {
     Entity* entity = nullptr;
     const node_t* node = nullptr;
@@ -12189,7 +12189,7 @@ int numTargetsAroundEntity(Entity* my, double distToFind, real_t angleToSearch, 
     return count;
 }
 
-bool handleMonsterChatter(int monsterclicked, bool ringconflict, char namesays[64], Entity* my, Stat* myStats)
+bool handleMonsterChatter(int monsterclicked, bool ringconflict, char namesays[64], const Entity* my, Stat* myStats)
 {
     if ( !my )
     {
@@ -14651,7 +14651,7 @@ void Entity::monsterGenerateQuiverItem(Stat* myStats, bool lesserMonster)
     }
 }
 
-int Entity::getMonsterEffectiveDistanceOfRangedWeapon(Item* weapon)
+int Entity::getMonsterEffectiveDistanceOfRangedWeapon(const Item* weapon)
 {
     int distance = 160;
     if (const Stat* myStats = getStats() )
@@ -14791,7 +14791,7 @@ bool Entity::monsterIsTargetable(bool targetInertMimics) const
     return true;
 }
 
-void batResetIdle(Entity* my)
+void batResetIdle(const Entity* my)
 {
     if ( !my ) { return; }
     // reset to inert after wandering with no target

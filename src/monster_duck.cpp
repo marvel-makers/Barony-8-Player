@@ -263,7 +263,7 @@ void actDuckLimb(Entity* my)
     my->actMonsterLimb(false);
 }
 
-void duckSpawnFeather(int sprite, real_t x, real_t y, real_t z, Entity* my)
+void duckSpawnFeather(int sprite, real_t x, real_t y, real_t z, const Entity* my)
 {
     int featherSprite = 2249;
     if ( sprite == 2225 || sprite == 2226 )

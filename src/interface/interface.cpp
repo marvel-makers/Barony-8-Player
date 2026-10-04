@@ -752,7 +752,7 @@ static void genericgui_deselect_fn(Widget& widget) {
 
 -------------------------------------------------------------------------------*/
 
-void saveCommand(char* content)
+void saveCommand(const char* content)
 {
     newString(&command_history, 0xFFFFFFFF, ticks, -1, content);
 }
@@ -1999,7 +1999,7 @@ void FollowerRadialMenu::createFollowerMenuGUI()
     wheelStatImg->disabled = true;
 }
 
-void setFollowerBannerTextFormatted(const int player, Field* field, Uint32 color, std::set<int>& highlights, char const * const text, ...)
+void setFollowerBannerTextFormatted(const int player, Field* field, Uint32 color, const std::set<int>& highlights, char const * const text, ...)
 {
     if ( !field ) { return; }
 
@@ -2057,7 +2057,7 @@ bool commandCanBeSentToAll(int optionSelected)
     return true;
 }
 
-std::vector<Entity*> getAllOtherFollowersForSendAllCommand(const int gui_player, Entity* followerToCommand, Monster followerType, int optionSelected)
+std::vector<Entity*> getAllOtherFollowersForSendAllCommand(const int gui_player, const Entity* followerToCommand, Monster followerType, int optionSelected)
 {
     std::vector<Entity*> vec;
     if ( !followerToCommand )
@@ -4213,7 +4213,7 @@ bool FollowerRadialMenu::isTinkeringFollower(int type)
     return false;
 }
 
-bool FollowerRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool updateInteractText)
+bool FollowerRadialMenu::allowedInteractEntity(const Entity& selectedEntity, bool updateInteractText)
 {
     if ( optionSelected != ALLY_CMD_ATTACK_SELECT )
     {
@@ -4400,7 +4400,7 @@ bool FollowerRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool upda
     return true;
 }
 
-int FollowerRadialMenu::optionDisabledForCreature(int playerSkillLVL, int monsterType, int option, Entity* follower)
+int FollowerRadialMenu::optionDisabledForCreature(int playerSkillLVL, int monsterType, int option, const Entity* follower)
 {
     int creatureTier = 0;
 
@@ -6659,7 +6659,7 @@ bool GenericGUIMenu::ItemEffectGUI_t::consumeResourcesForTransmute()
     return false;
 }
 
-int GenericGUIMenu::getAlterItemResultAtCycle(Item* item)
+int GenericGUIMenu::getAlterItemResultAtCycle(const Item* item)
 {
     if ( !item )
     {
@@ -8533,7 +8533,7 @@ bool GenericGUIMenu::isItemRation(int type)
     return false;
 }
 
-bool GenericGUIMenu::AlchemyGUI_t::alchemyMissingIngredientQty(Item* item)
+bool GenericGUIMenu::AlchemyGUI_t::alchemyMissingIngredientQty(const Item* item)
 {
     if ( currentView == ALCHEMY_VIEW_COOK || currentView == ALCHEMY_VIEW_RECIPES_COOK )
     {
@@ -8570,7 +8570,7 @@ bool GenericGUIMenu::AlchemyGUI_t::alchemyMissingIngredientQty(Item* item)
     return false;
 }
 
-ItemType alchemyCookResult(int player, Item* potion1Item, Item* potion2Item, int& outCreateCount, Status& statusOut, 
+ItemType alchemyCookResult(int player, const Item* potion1Item, const Item* potion2Item, int& outCreateCount, Status& statusOut, 
     int& outMissingPotion1Count, int& outMissingPotion2Count)
 {
     ItemType result = POTION_EMPTY;
@@ -10691,7 +10691,7 @@ void GenericGUIMenu::tinkeringFreeLists()
     tinkeringTotalLastCraftableNode = nullptr;
 }
 
-bool GenericGUIMenu::tinkeringCraftItem(Item* item)
+bool GenericGUIMenu::tinkeringCraftItem(const Item* item)
 {
     if ( !item )
     {
@@ -11048,7 +11048,7 @@ bool GenericGUIMenu::tinkeringSalvageItem(Item* item, bool outsideInventory, int
     return true;
 }
 
-bool GenericGUIMenu::isNodeFromPlayerInventory(node_t* node)
+bool GenericGUIMenu::isNodeFromPlayerInventory(const node_t* node)
 {
     if ( stats[gui_player] && node )
     {
@@ -12128,7 +12128,7 @@ bool GenericGUIMenu::tinkeringGetItemValue(const Item* item, int* metal, int* ma
     return false;
 }
 
-void getGeneralItemRepairCostWithoutRequirements(const int player, Item* item, int& metal, int& magic)
+void getGeneralItemRepairCostWithoutRequirements(const int player, const Item* item, int& metal, int& magic)
 {
     int metalSalvage = 0;
     int magicSalvage = 0;
@@ -12816,7 +12816,7 @@ bool GenericGUIMenu::tinkeringRepairItem(Item* item)
     return false;
 }
 
-int GenericGUIMenu::tinkeringUpgradeMaxStatus(Item* item)
+int GenericGUIMenu::tinkeringUpgradeMaxStatus(const Item* item)
 {
     if ( !item )
     {
@@ -13111,7 +13111,7 @@ Item* GenericGUIMenu::scribingToolFindInInventory()
     return nullptr;
 }
 
-void GenericGUIMenu::scribingGetChargeCost(Item* itemUsedWith, int& outChargeCostMin, int& outChargeCostMax)
+void GenericGUIMenu::scribingGetChargeCost(const Item* itemUsedWith, int& outChargeCostMin, int& outChargeCostMax)
 {
     outChargeCostMin = 0;
     outChargeCostMax = 0;
@@ -14272,7 +14272,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerScrapHeld(void* metalHeldText, voi
     }
 }
 
-void buttonTinkerUpdateSelectorOnHighlight(const int player, Button* button)
+void buttonTinkerUpdateSelectorOnHighlight(const int player, const Button* button)
 {
     if ( button->isHighlighted() )
     {
@@ -14290,7 +14290,7 @@ void buttonTinkerUpdateSelectorOnHighlight(const int player, Button* button)
     }
 }
 
-void buttonItemfxSelectorOnHighlight(const int player, Button* button)
+void buttonItemfxSelectorOnHighlight(const int player, const Button* button)
 {
     if ( button->isHighlighted() )
     {
@@ -16046,7 +16046,7 @@ void GenericGUIMenu::TinkerGUI_t::createTinkerMenu()
             closeBtn->setBackgroundHighlighted("*images/ui/Tinkering/Button_XHigh_00.png");
             closeBtn->setBackgroundActivated("*images/ui/Tinkering/Button_XPress_00.png");
             closeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            closeBtn->setCallback([](Button& button) {
+            closeBtn->setCallback([](const Button& button) {
                 GenericGUI[button.getOwner()].closeGUI();
                 Player::soundCancel();
             });
@@ -16120,7 +16120,7 @@ void GenericGUIMenu::TinkerGUI_t::createTinkerMenu()
             filterBtn->setHideKeyboardGlyphs(true);
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
-            filterBtn->setCallback([](Button& button) {
+            filterBtn->setCallback([](const Button& button) {
                 const auto oldTab = GenericGUI[button.getOwner()].tinkeringFilter;
                 const bool changeToDifferentTab = oldTab != GenericGUIMenu::TINKER_FILTER_SALVAGEABLE;
                 GenericGUI[button.getOwner()].tinkeringFilter = GenericGUIMenu::TINKER_FILTER_SALVAGEABLE;
@@ -16161,7 +16161,7 @@ void GenericGUIMenu::TinkerGUI_t::createTinkerMenu()
             filterBtn->setHideKeyboardGlyphs(true);
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
-            filterBtn->setCallback([](Button& button) {
+            filterBtn->setCallback([](const Button& button) {
                 const auto oldTab = GenericGUI[button.getOwner()].tinkeringFilter;
                 const bool changeToDifferentTab = oldTab != GenericGUIMenu::TINKER_FILTER_CRAFTABLE;
                 GenericGUI[button.getOwner()].tinkeringFilter = GenericGUIMenu::TINKER_FILTER_CRAFTABLE;
@@ -16195,7 +16195,7 @@ void GenericGUIMenu::TinkerGUI_t::createTinkerMenu()
             filterBtn->setHideKeyboardGlyphs(true);
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
-            filterBtn->setCallback([](Button& button) {
+            filterBtn->setCallback([](const Button& button) {
                 const auto oldTab = GenericGUI[button.getOwner()].tinkeringFilter;
                 const bool changeToDifferentTab = oldTab != GenericGUIMenu::TINKER_FILTER_REPAIRABLE;
                 GenericGUI[button.getOwner()].tinkeringFilter = GenericGUIMenu::TINKER_FILTER_REPAIRABLE;
@@ -16263,7 +16263,7 @@ void GenericGUIMenu::TinkerGUI_t::createTinkerMenu()
     }
 }
 
-bool GenericGUIMenu::TinkerGUI_t::isTinkerConstructItemSelected(Item* item)
+bool GenericGUIMenu::TinkerGUI_t::isTinkerConstructItemSelected(const Item* item)
 {
     if ( !item || itemCategory(item) == SPELL_CAT )
     {
@@ -16295,7 +16295,7 @@ bool GenericGUIMenu::TinkerGUI_t::isTinkerConstructItemSelected(Item* item)
     return false;
 }
 
-bool GenericGUIMenu::TinkerGUI_t::isSalvageOrRepairItemSelected(Item* item)
+bool GenericGUIMenu::TinkerGUI_t::isSalvageOrRepairItemSelected(const Item* item)
 {
     if ( !item || itemCategory(item) == SPELL_CAT )
     {
@@ -16705,7 +16705,7 @@ GenericGUIMenu::TinkerGUI_t::TinkerActions_t GenericGUIMenu::TinkerGUI_t::setIte
     return actionResult;
 }
 
-bool GenericGUIMenu::TinkerGUI_t::warpMouseToSelectedTinkerItem(Item* snapToItem, Uint32 flags)
+bool GenericGUIMenu::TinkerGUI_t::warpMouseToSelectedTinkerItem(const Item* snapToItem, Uint32 flags)
 {
     if ( tinkerGUIHasBeenCreated() )
     {
@@ -16922,7 +16922,7 @@ bool hideRecipeFromList(int type)
     return false;
 }
 
-void buttonAlchemyUpdateSelectorOnHighlight(const int player, Button* button)
+void buttonAlchemyUpdateSelectorOnHighlight(const int player, const Button* button)
 {
     if ( button->isHighlighted() )
     {
@@ -16954,7 +16954,7 @@ bool playerKnowsRecipe(const int player, ItemType basePotion, ItemType secondary
     return false;
 }
 
-void getInventoryItemAlchemyAnimSlotPos(Frame* slotFrame, Player* player, int itemx, int itemy, int& outPosX, int& outPosY, int yOffset)
+void getInventoryItemAlchemyAnimSlotPos(Frame* slotFrame, const Player* player, int itemx, int itemy, int& outPosX, int& outPosY, int yOffset)
 {
     outPosX = slotFrame->getSize().x + slotFrame->getParent()->getSize().x;
     outPosY = slotFrame->getSize().y + (player->inventoryUI.bCompactView ? 8 : 0) + yOffset;
@@ -19249,7 +19249,7 @@ void GenericGUIMenu::AlchemyGUI_t::createAlchemyMenu()
         clearRecipeBtn->setBackgroundHighlighted("*#images/ui/Alchemy/Alchemy_RecipeClear_ButtonHigh_00.png");
         clearRecipeBtn->setBackgroundActivated("*#images/ui/Alchemy/Alchemy_RecipeClear_ButtonPress_00.png");
         clearRecipeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-        clearRecipeBtn->setCallback([](Button& button) {
+        clearRecipeBtn->setCallback([](const Button& button) {
             const int player = button.getOwner();
             auto& alchemyGUI = GenericGUI[player].alchemyGUI;
             alchemyGUI.recipes.activateRecipeIndex = -1;
@@ -19519,7 +19519,7 @@ void GenericGUIMenu::AlchemyGUI_t::createAlchemyMenu()
             recipeBtn->setBackgroundHighlighted("*#images/ui/Alchemy/Alchemy_Recipe_ButtonHigh_00.png");
             recipeBtn->setBackgroundActivated("*#images/ui/Alchemy/Alchemy_Recipe_ButtonPress_00.png");
             //recipeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            recipeBtn->setCallback([](Button& button) {
+            recipeBtn->setCallback([](const Button& button) {
                 const int player = button.getOwner();
                 if ( GenericGUI[player].alchemyGUI.bOpen )
                 {
@@ -19561,7 +19561,7 @@ void GenericGUIMenu::AlchemyGUI_t::createAlchemyMenu()
             closeBtn->setBackgroundHighlighted("*#images/ui/Alchemy/Button_XHigh_00.png");
             closeBtn->setBackgroundActivated("*#images/ui/Alchemy/Button_XPress_00.png");
             closeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            closeBtn->setCallback([](Button& button) {
+            closeBtn->setCallback([](const Button& button) {
                 GenericGUI[button.getOwner()].closeGUI();
                 Player::soundCancel();
             });
@@ -19587,7 +19587,7 @@ void GenericGUIMenu::AlchemyGUI_t::createAlchemyMenu()
             brewBtn->setBackgroundHighlighted("*#images/ui/Alchemy/Alchemy_ButtonBrew_High_00.png");
             brewBtn->setBackgroundActivated("*#images/ui/Alchemy/Alchemy_ButtonBrew_Press_00.png");
             brewBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            brewBtn->setCallback([](Button& button) {
+            brewBtn->setCallback([](const Button& button) {
                 const int player = button.getOwner();
                 auto& alchemyGUI = GenericGUI[player].alchemyGUI;
                 alchemyGUI.recipes.activateRecipeIndex = -1;
@@ -19714,7 +19714,7 @@ void GenericGUIMenu::AlchemyGUI_t::setItemDisplayNameAndPrice(Item* item, const 
 }
 
 
-bool GenericGUIMenu::AlchemyGUI_t::inventoryItemAllowedInGUI(Item* item)
+bool GenericGUIMenu::AlchemyGUI_t::inventoryItemAllowedInGUI(const Item* item)
 {
     if ( !item ) { return false; }
     if ( item->status == BROKEN )
@@ -19790,7 +19790,7 @@ bool GenericGUIMenu::AlchemyGUI_t::inventoryItemAllowedInGUI(Item* item)
     return false;
 }
 
-void GenericGUIMenu::AlchemyGUI_t::setItemDisplayNameAndPriceBrew(Item* item, const bool isTooltipForResultPotion, const bool isTooltipForRecipe)
+void GenericGUIMenu::AlchemyGUI_t::setItemDisplayNameAndPriceBrew(const Item* item, const bool isTooltipForResultPotion, const bool isTooltipForRecipe)
 {
     itemTooltipForRecipe = isTooltipForRecipe;
 
@@ -20236,7 +20236,7 @@ void GenericGUIMenu::AlchemyGUI_t::setItemDisplayNameAndPriceCook(Item* item, co
     }
 }
 
-bool GenericGUIMenu::AlchemyGUI_t::warpMouseToSelectedAlchemyItem(Item* snapToItem, Uint32 flags)
+bool GenericGUIMenu::AlchemyGUI_t::warpMouseToSelectedAlchemyItem(const Item* snapToItem, Uint32 flags)
 {
     if ( alchemyGUIHasBeenCreated() )
     {
@@ -21115,7 +21115,7 @@ bool GenericGUIMenu::AlchemyGUI_t::AlchemyRecipes_t::isSlotVisible(int x, int y)
     return false;
 }
 
-bool GenericGUIMenu::AlchemyGUI_t::AlchemyRecipes_t::isItemVisible(Item* item) const
+bool GenericGUIMenu::AlchemyGUI_t::AlchemyRecipes_t::isItemVisible(const Item* item) const
 {
     if ( !item ) { return false; }
     return isSlotVisible(item->x, item->y);
@@ -21645,7 +21645,7 @@ void onFeatherChangeTabAction(const int playernum, bool changingToNewTab)
     }
 }
 
-void buttonFeatherUpdateSelectorOnHighlight(const int player, Button* button)
+void buttonFeatherUpdateSelectorOnHighlight(const int player, const Button* button)
 {
     if ( button->isHighlighted() )
     {
@@ -21663,7 +21663,7 @@ void buttonFeatherUpdateSelectorOnHighlight(const int player, Button* button)
     }
 }
 
-void sliderFeatherUpdateSelectorOnHighlight(const int player, Slider* slider)
+void sliderFeatherUpdateSelectorOnHighlight(const int player, const Slider* slider)
 {
     if ( slider->isHighlighted() )
     {
@@ -23348,7 +23348,7 @@ void GenericGUIMenu::FeatherGUI_t::createFeatherMenu()
             sortBtn->setBackgroundHighlighted("*images/ui/Feather/Feather_Sort_ButtonHigh_00.png");
             sortBtn->setBackgroundActivated("*images/ui/Feather/Feather_Sort_ButtonPress_00.png");
             sortBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            sortBtn->setCallback([](Button& button) {
+            sortBtn->setCallback([](const Button& button) {
                 if ( GenericGUI[button.getOwner()].featherGUI.sortType == SortTypes_t::SORT_SCROLL_DEFAULT )
                 {
                     GenericGUI[button.getOwner()].featherGUI.changeSortingType(SortTypes_t::SORT_SCROLL_DISCOVERED);
@@ -23380,7 +23380,7 @@ void GenericGUIMenu::FeatherGUI_t::createFeatherMenu()
             closeBtn->setBackgroundHighlighted("*images/ui/Feather/Button_XHigh_00.png");
             closeBtn->setBackgroundActivated("*images/ui/Feather/Button_XPress_00.png");
             closeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            closeBtn->setCallback([](Button& button) {
+            closeBtn->setCallback([](const Button& button) {
                 GenericGUI[button.getOwner()].scribingBlankScrollTarget = nullptr;
                 GenericGUI[button.getOwner()].featherGUI.bDrawerOpen = false;
                 onFeatherChangeTabAction(button.getOwner(), true);
@@ -23505,7 +23505,7 @@ void GenericGUIMenu::FeatherGUI_t::createFeatherMenu()
             closeBtn->setBackgroundHighlighted("*images/ui/Feather/Button_XHigh_00.png");
             closeBtn->setBackgroundActivated("*images/ui/Feather/Button_XPress_00.png");
             closeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            closeBtn->setCallback([](Button& button) {
+            closeBtn->setCallback([](const Button& button) {
                 GenericGUI[button.getOwner()].closeGUI();
                 Player::soundCancel();
             });
@@ -23578,7 +23578,7 @@ void GenericGUIMenu::FeatherGUI_t::createFeatherMenu()
             filterBtn->setHideKeyboardGlyphs(true);
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
-            filterBtn->setCallback([](Button& button) {
+            filterBtn->setCallback([](const Button& button) {
                 const auto oldTab = GenericGUI[button.getOwner()].scribingFilter;
                 const bool changeToDifferentTab = oldTab != GenericGUIMenu::SCRIBING_FILTER_CRAFTABLE;
                 GenericGUI[button.getOwner()].scribingFilter = GenericGUIMenu::SCRIBING_FILTER_CRAFTABLE;
@@ -23611,7 +23611,7 @@ void GenericGUIMenu::FeatherGUI_t::createFeatherMenu()
             filterBtn->setHideKeyboardGlyphs(true);
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
-            filterBtn->setCallback([](Button& button) {
+            filterBtn->setCallback([](const Button& button) {
                 const auto oldTab = GenericGUI[button.getOwner()].scribingFilter;
                 const bool changeToDifferentTab = oldTab != GenericGUIMenu::SCRIBING_FILTER_REPAIRABLE;
                 GenericGUI[button.getOwner()].scribingFilter = GenericGUIMenu::SCRIBING_FILTER_REPAIRABLE;
@@ -23951,7 +23951,7 @@ GenericGUIMenu::FeatherGUI_t::FeatherActions_t GenericGUIMenu::FeatherGUI_t::set
     return result;
 }
 
-bool GenericGUIMenu::FeatherGUI_t::warpMouseToSelectedFeatherItem(Item* snapToItem, Uint32 flags)
+bool GenericGUIMenu::FeatherGUI_t::warpMouseToSelectedFeatherItem(const Item* snapToItem, Uint32 flags)
 {
     if ( featherGUIHasBeenCreated() )
     {
@@ -24069,7 +24069,7 @@ bool GenericGUIMenu::FeatherGUI_t::isSlotVisible(int x, int y) const
     return false;
 }
 
-bool GenericGUIMenu::FeatherGUI_t::isItemVisible(Item* item) const
+bool GenericGUIMenu::FeatherGUI_t::isItemVisible(const Item* item) const
 {
     if ( !item ) { return false; }
     return isSlotVisible(item->x, item->y);
@@ -24107,7 +24107,7 @@ bool GenericGUIMenu::FeatherGUI_t::isInscriptionDrawerItemSelected(Item* item)
     return false;
 }
 
-bool GenericGUIMenu::FeatherGUI_t::isItemSelectedToRepairOrInscribe(Item* item)
+bool GenericGUIMenu::FeatherGUI_t::isItemSelectedToRepairOrInscribe(const Item* item)
 {
     if ( !item || itemCategory(item) == SPELL_CAT )
     {
@@ -25151,7 +25151,7 @@ GenericGUIMenu::ItemEffectGUI_t::ItemEffectActions_t GenericGUIMenu::ItemEffectG
     return result;
 }
 
-bool GenericGUIMenu::ItemEffectGUI_t::isItemSelectedToEffect(Item* item)
+bool GenericGUIMenu::ItemEffectGUI_t::isItemSelectedToEffect(const Item* item)
 {
     if ( !item || (itemCategory(item) == SPELL_CAT && currentMode != ITEMFX_MODE_SCEPTER_CHARGE) 
         || (itemCategory(item) != SPELL_CAT && currentMode == ITEMFX_MODE_SCEPTER_CHARGE) )
@@ -27154,7 +27154,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
             closeBtn->setBackgroundHighlighted("*images/ui/ScrollSpells/Button_XHigh_00.png");
             closeBtn->setBackgroundActivated("*images/ui/ScrollSpells/Button_XPress_00.png");
             closeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            closeBtn->setCallback([](Button& button) {
+            closeBtn->setCallback([](const Button& button) {
                 GenericGUI[button.getOwner()].closeGUI();
                 Player::soundCancel();
             });
@@ -27239,7 +27239,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
             actionButtonCancel->setBackgroundActivated("*images/ui/ScrollSpells/Button_CancelPress_00.png");
             //actionButtonCancel->setTextColor(hudColors.characterSheetRed);
             actionButtonCancel->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            actionButtonCancel->setCallback([](Button& button) {
+            actionButtonCancel->setCallback([](const Button& button) {
                 if ( button.getOwner() >= 0 && button.getOwner() < MAXPLAYERS )
                 {
                     if ( GenericGUI[button.getOwner()].transmuteItemTarget )
@@ -27283,7 +27283,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
             actionButtonRefresh->setBackgroundHighlighted("*images/ui/ScrollSpells/Button_RefreshHigh00.png");
             actionButtonRefresh->setBackgroundActivated("*images/ui/ScrollSpells/Button_RefreshPress00.png");
             actionButtonRefresh->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            actionButtonRefresh->setCallback([](Button& button) {
+            actionButtonRefresh->setCallback([](const Button& button) {
                 Player::soundModuleNavigation();
                 if ( button.getOwner() >= 0 && button.getOwner() < MAXPLAYERS )
                 {
@@ -27616,7 +27616,7 @@ void CalloutRadialMenu::loadCalloutJSON()
     }
 }
 
-void setCalloutBannerTextFormatted(const int player, Field* field, Uint32 color, std::set<int>& highlights, char const* const text, ...)
+void setCalloutBannerTextFormatted(const int player, Field* field, Uint32 color, const std::set<int>& highlights, char const* const text, ...)
 {
     if ( !field ) { return; }
 
@@ -29558,11 +29558,11 @@ void CalloutRadialMenu::drawCallouts(const int playernum)
         }
     };
 
-    auto compFunc = [](CalloutToDraw_t& lhs, CalloutToDraw_t& rhs)
+    auto compFunc = [](const CalloutToDraw_t& lhs, const CalloutToDraw_t& rhs)
     {
         return lhs.dist < rhs.dist;
     };
-    auto compFunc2 = [](CalloutToDraw_t& lhs, CalloutToDraw_t& rhs)
+    auto compFunc2 = [](const CalloutToDraw_t& lhs, const CalloutToDraw_t& rhs)
     {
         return lhs.creationTick < rhs.creationTick;
     };
@@ -30065,7 +30065,7 @@ int CalloutRadialMenu::CALLOUT_SFX_NEGATIVE = 607;
 int CalloutRadialMenu::CALLOUT_SFX_POSITIVE = 606;
 static ConsoleVariable<int> cvar_callout_sfx_vol("/callout_sfx_vol", 128);
 
-bool CalloutRadialMenu::createParticleCallout(Entity* entity, CalloutRadialMenu::CalloutCommand _cmd, Uint32 overrideUID)
+bool CalloutRadialMenu::createParticleCallout(const Entity* entity, CalloutRadialMenu::CalloutCommand _cmd, Uint32 overrideUID)
 {
     if ( !entity ) { return false; }
     if ( _cmd == CALLOUT_CMD_CANCEL ) { return false; }
@@ -31478,7 +31478,7 @@ void CalloutRadialMenu::drawCalloutMenu()
     }
 }
 
-bool CalloutRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool updateInteractText)
+bool CalloutRadialMenu::allowedInteractEntity(const Entity& selectedEntity, bool updateInteractText)
 {
     if ( optionSelected != CALLOUT_CMD_SELECT )
     {
@@ -31891,7 +31891,7 @@ bool CalloutRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool updat
 const int GenericGUIMenu::AssistShrineGUI_t::MAX_ASSISTSHRINE_X = 4;
 const int GenericGUIMenu::AssistShrineGUI_t::MAX_ASSISTSHRINE_Y = 20;
 
-void GenericGUIMenu::AssistShrineGUI_t::openAssistShrine(Entity* shrine)
+void GenericGUIMenu::AssistShrineGUI_t::openAssistShrine(const Entity* shrine)
 {
     shrineUID = 0;
     if ( shrine )
@@ -32512,7 +32512,7 @@ bool GenericGUIMenu::AssistShrineGUI_t::assistShrineGUIHasBeenCreated() const
     return false;
 }
 
-void buttonAssistShrineUpdateSelectorOnHighlight(const int player, Button* button)
+void buttonAssistShrineUpdateSelectorOnHighlight(const int player, const Button* button)
 {
     if ( button->isHighlighted() )
     {
@@ -32555,7 +32555,7 @@ Frame* GenericGUIMenu::AssistShrineGUI_t::getAssistShrineSlotFrame(int x, int y)
     return nullptr;
 }
 
-bool GenericGUIMenu::AssistShrineGUI_t::warpMouseToSelectedAssistShrineItem(Item* snapToItem, Uint32 flags)
+bool GenericGUIMenu::AssistShrineGUI_t::warpMouseToSelectedAssistShrineItem(const Item* snapToItem, Uint32 flags)
 {
     if ( assistShrineGUIHasBeenCreated() )
     {
@@ -32603,7 +32603,7 @@ const int GenericGUIMenu::AssistShrineGUI_t::kRaceSlotWidth = 164 + 54 + 6;
 const int kAssistClassListHeight = GenericGUIMenu::AssistShrineGUI_t::kNumClassesToDisplayVertical * GenericGUIMenu::AssistShrineGUI_t::kClassSlotHeight;
 const int kAssistRaceListHeight = GenericGUIMenu::AssistShrineGUI_t::kNumRacesToDisplayVertical * GenericGUIMenu::AssistShrineGUI_t::kRaceSlotHeight;
 
-void sliderAssistUpdateSelectorOnHighlight(const int player, Slider* slider)
+void sliderAssistUpdateSelectorOnHighlight(const int player, const Slider* slider)
 {
     if ( slider->isHighlighted() )
     {
@@ -32621,7 +32621,7 @@ void sliderAssistUpdateSelectorOnHighlight(const int player, Slider* slider)
     }
 }
 
-int GenericGUIMenu::AssistShrineGUI_t::getAssistPointFromItem(Item* item)
+int GenericGUIMenu::AssistShrineGUI_t::getAssistPointFromItem(const Item* item)
 {
     if ( item )
     {
@@ -33281,7 +33281,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             confirmBtn->setBackgroundHighlighted("*#images/ui/AssistShrine/Button_ConfirmHigh_00.png");
             confirmBtn->setBackgroundActivated("*#images/ui/AssistShrine/Button_ConfirmPress_00.png");
             confirmBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            confirmBtn->setCallback([](Button& button) {
+            confirmBtn->setCallback([](const Button& button) {
                 auto& gui = GenericGUI[button.getOwner()].assistShrineGUI;
                 if ( !gui.classHasChanged() )
                 {
@@ -33472,7 +33472,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             confirmBtn->setBackgroundHighlighted("*#images/ui/AssistShrine/Button_ConfirmHigh_00.png");
             confirmBtn->setBackgroundActivated("*#images/ui/AssistShrine/Button_ConfirmPress_00.png");
             confirmBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            confirmBtn->setCallback([](Button& button) {
+            confirmBtn->setCallback([](const Button& button) {
                 auto& gui = GenericGUI[button.getOwner()].assistShrineGUI;
                 if ( !gui.raceHasChanged() )
                 {
@@ -33968,7 +33968,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             filterBtn->setHideKeyboardGlyphs(true);
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
-            filterBtn->setCallback([](Button& button) {
+            filterBtn->setCallback([](const Button& button) {
                 const auto oldTab = GenericGUI[button.getOwner()].assistShrineGUI.currentView;
                 const bool changeToDifferentTab = oldTab != GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_ITEMS;
                 GenericGUI[button.getOwner()].assistShrineGUI.changeCurrentView(GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_ITEMS);
@@ -34000,7 +34000,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             filterBtn->setHideKeyboardGlyphs(true);
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
-            filterBtn->setCallback([](Button& button) {
+            filterBtn->setCallback([](const Button& button) {
                 const auto oldTab = GenericGUI[button.getOwner()].assistShrineGUI.currentView;
                 const bool changeToDifferentTab = oldTab != GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_RACE;
                 GenericGUI[button.getOwner()].assistShrineGUI.changeCurrentView(GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_RACE);
@@ -34049,7 +34049,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             filterBtn->setHideKeyboardGlyphs(true);
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
-            filterBtn->setCallback([](Button& button) {
+            filterBtn->setCallback([](const Button& button) {
                 const auto oldTab = GenericGUI[button.getOwner()].assistShrineGUI.currentView;
                 const bool changeToDifferentTab = oldTab != GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_CLASSES;
                 GenericGUI[button.getOwner()].assistShrineGUI.changeCurrentView(GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_CLASSES);
@@ -34109,7 +34109,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             closeBtn->setBackgroundActivated("*#images/ui/AssistShrine/Button_XPress_00.png");
             closeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
             closeBtn->setOntop(true);
-            closeBtn->setCallback([](Button& button) {
+            closeBtn->setCallback([](const Button& button) {
                 GenericGUI[button.getOwner()].closeGUI();
                 Player::soundCancel();
                 });
@@ -34135,7 +34135,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             itemBtn->setBackgroundHighlighted("*#images/ui/AssistShrine/Button_ConfirmHigh_00.png");
             itemBtn->setBackgroundActivated("*#images/ui/AssistShrine/Button_ConfirmPress_00.png");
             itemBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            itemBtn->setCallback([](Button& button) {
+            itemBtn->setCallback([](const Button& button) {
                 if ( !GenericGUI[button.getOwner()].assistShrineGUI.hasItemsToClaim() )
                 {
                     playSound(90, 64);
@@ -34838,7 +34838,7 @@ void GenericGUIMenu::AssistShrineGUI_t::resetItems()
     itemRing.itemHiddenFromShop = true;
 }
 
-bool GenericGUIMenu::AssistShrineGUI_t::itemIsFromGUI(Item* item)
+bool GenericGUIMenu::AssistShrineGUI_t::itemIsFromGUI(const Item* item)
 {
     if ( item )
     {
@@ -34853,7 +34853,7 @@ bool GenericGUIMenu::AssistShrineGUI_t::itemIsFromGUI(Item* item)
     return false;
 }
 
-GenericGUIMenu::AssistShrineGUI_t::AssistItemActions_t GenericGUIMenu::AssistShrineGUI_t::setItemDisplayNameAndPrice(Item* item, bool checkResultOnly)
+GenericGUIMenu::AssistShrineGUI_t::AssistItemActions_t GenericGUIMenu::AssistShrineGUI_t::setItemDisplayNameAndPrice(const Item* item, bool checkResultOnly)
 {
     auto result = ASSIST_ITEM_NONE;
     if ( !(svFlags & SV_FLAG_ASSIST_ITEMS) && claimedItems.find(item->type) == claimedItems.end() )
@@ -38952,7 +38952,7 @@ void GenericGUIMenu::MailboxGui_t::closeMailMenu()
 int GenericGUIMenu::MailboxGui_t::heightOffsetWhenNotCompact = 150;
 const int mailBaseWidth = 206;
 
-void getInventoryItemMailboxAnimSlotPos(Frame* slotFrame, Player* player, int itemx, int itemy, int& outPosX, int& outPosY, int yOffset)
+void getInventoryItemMailboxAnimSlotPos(Frame* slotFrame, const Player* player, int itemx, int itemy, int& outPosX, int& outPosY, int yOffset)
 {
     outPosX = slotFrame->getSize().x + slotFrame->getParent()->getSize().x;
     outPosY = slotFrame->getSize().y + (player->inventoryUI.bCompactView ? 8 : 0) + yOffset;
@@ -38989,7 +38989,7 @@ bool GenericGUIMenu::MailboxGui_t::mailGUIHasBeenCreated() const
     return false;
 }
 
-void buttonMailUpdateSelectorOnHighlight(const int player, Button* button)
+void buttonMailUpdateSelectorOnHighlight(const int player, const Button* button)
 {
     if ( button->isHighlighted() )
     {
@@ -40562,7 +40562,7 @@ void GenericGUIMenu::MailboxGui_t::createMailMenu()
             closeBtn->setBackgroundHighlighted("*#images/ui/Alchemy/Button_XHigh_00.png");
             closeBtn->setBackgroundActivated("*#images/ui/Alchemy/Button_XPress_00.png");
             closeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
-            closeBtn->setCallback([](Button& button) {
+            closeBtn->setCallback([](const Button& button) {
                 GenericGUI[button.getOwner()].closeGUI();
                 Player::soundCancel();
                 });
@@ -40663,7 +40663,7 @@ Frame* GenericGUIMenu::MailboxGui_t::getMailSlotFrame(int x, int y) const
     return nullptr;
 }
 
-bool GenericGUIMenu::MailboxGui_t::inventoryItemAllowedInGUI(Item* item)
+bool GenericGUIMenu::MailboxGui_t::inventoryItemAllowedInGUI(const Item* item)
 {
     if ( !item ) { return false; }
     if ( item->status == BROKEN )
@@ -40744,7 +40744,7 @@ bool GenericGUIMenu::MailboxGui_t::inventoryItemAllowedInGUI(Item* item)
     return false;
 }
 
-void GenericGUIMenu::MailboxGui_t::setItemDisplayNameAndPrice(Item* item, const bool isTooltipForRecvItem)
+void GenericGUIMenu::MailboxGui_t::setItemDisplayNameAndPrice(const Item* item, const bool isTooltipForRecvItem)
 {
     itemActionType = MAIL_ACTION_NONE;
     if ( !item || item->type == SPELL_ITEM )
@@ -40876,7 +40876,7 @@ void GenericGUIMenu::MailboxGui_t::setItemDisplayNameAndPrice(Item* item, const 
     }
 }
 
-bool GenericGUIMenu::MailboxGui_t::warpMouseToSelectedMailItem(Item* snapToItem, Uint32 flags)
+bool GenericGUIMenu::MailboxGui_t::warpMouseToSelectedMailItem(const Item* snapToItem, Uint32 flags)
 {
     if ( mailGUIHasBeenCreated() )
     {

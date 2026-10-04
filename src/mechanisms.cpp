@@ -2196,7 +2196,7 @@ void actWind(Entity* my)
 
 static ConsoleVariable<float> cvar_map_tile_wind("/map_tile_wind", 1.0);
 
-bool entityInsideWind(Entity* entity1, Entity* wind)
+bool entityInsideWind(const Entity* entity1, Entity* wind)
 {
     if ( !entity1 || !wind ) { return false; }
     const real_t startx = wind->x;

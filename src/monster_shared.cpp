@@ -541,7 +541,7 @@ std::string& MonsterData_t::getAllyIconFromSprite(int sprite, int type)
     }
 }
 
-int MonsterData_t::getSpecialNPCBaseModel(Stat& myStats)
+int MonsterData_t::getSpecialNPCBaseModel(const Stat& myStats)
 {
     const std::string npcValue = myStats.getAttribute("special_npc");
     if ( npcValue != "" )
@@ -551,7 +551,7 @@ int MonsterData_t::getSpecialNPCBaseModel(Stat& myStats)
     return 0;
 }
 
-std::string MonsterData_t::getSpecialNPCName(Stat& myStats)
+std::string MonsterData_t::getSpecialNPCName(const Stat& myStats)
 {
     const std::string npcValue = myStats.getAttribute("special_npc");
     if ( npcValue != "" )
@@ -561,7 +561,7 @@ std::string MonsterData_t::getSpecialNPCName(Stat& myStats)
     return "";
 }
 
-bool MonsterData_t::nameMatchesSpecialNPCName(Stat& myStats, std::string npcKey)
+bool MonsterData_t::nameMatchesSpecialNPCName(const Stat& myStats, std::string npcKey)
 {
     auto& specialNPCs = monsterDataEntries[myStats.type].specialNPCs;
     if ( specialNPCs.find(npcKey) != specialNPCs.end() )

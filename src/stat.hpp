@@ -470,7 +470,7 @@ public:
     void clearStats();
     void freePlayerEquipment();
     Stat* copyStats();
-    void copyNPCStatsAndInventoryFrom(Stat& src);
+    void copyNPCStatsAndInventoryFrom(const Stat& src);
     void printStats();
     Sint32 EDITOR_ITEMS[ITEM_SLOT_NUM];
     int pickRandomEquippedItemToDegradeOnHit(Item** returnItem, bool excludeWeapon, bool excludeShield, bool excludeArmor, bool excludeJewelry);
@@ -483,8 +483,8 @@ public:
         MONSTER_FORCE_PLAYER_RECRUITABLE
     };
     int getPassiveShieldBonus(bool checkShield, bool excludeSkill) const;
-    int getActiveShieldBonus(bool checkShield, bool excludeSkill, Item* shieldItem = nullptr, bool checkNonShieldBonus = false) const;
-    static int getParryingACBonus(Stat* myStats, Item* myWeapon, bool checkWeapon, bool excludeSkill, int weaponSkill);
+    int getActiveShieldBonus(bool checkShield, bool excludeSkill, const Item* shieldItem = nullptr, bool checkNonShieldBonus = false) const;
+    static int getParryingACBonus(const Stat* myStats, const Item* myWeapon, bool checkWeapon, bool excludeSkill, int weaponSkill);
     std::string getAttribute(std::string key) const
     { 
         if ( attributes.find(key) != attributes.end() )
@@ -497,8 +497,8 @@ public:
         }
     }
     void setAttribute(std::string key, std::string value);
-    bool statusEffectRemovedByCureAilment(const int effect, Entity* my);
-    int numShillelaghDebuffsActive(Entity* my);
+    bool statusEffectRemovedByCureAilment(const int effect, const Entity* my);
+    int numShillelaghDebuffsActive(const Entity* my);
     void addItemToLootingBag(const int player, const real_t x, const real_t y, Item& item);
     Uint32 getLootingBagKey(const int player);
     static bool emptyLootingBag(const int player, Uint32 key);
@@ -549,5 +549,5 @@ inline bool skillCapstoneUnlocked(int player, int proficiency)
 }
 static const int MAX_PLAYER_STAT_VALUE = 248;
 void setDefaultMonsterStats(Stat* stats, int sprite);
-bool isMonsterStatsDefault(Stat& myStats);
+bool isMonsterStatsDefault(const Stat& myStats);
 const char* getSkillLangEntry(int skill);
