@@ -32,9 +32,8 @@
 void takeScreenshot(const char* output_path)
 {
 	char filename[PATH_MAX];
-	SDL_Surface* temp, *temp2;
 
-    if (output_path) {
+	if (output_path) {
         (void)completePath(filename, output_path, outputdir);
     } else {
         char buffer[32];
@@ -46,11 +45,11 @@ void takeScreenshot(const char* output_path)
         (void)completePath(filename, filename2, outputdir);
 	}
 
-	temp = SDL_CreateRGBSurface(0, xres, yres, 32, 0, 0, 0, 0);
+	SDL_Surface* temp = SDL_CreateRGBSurface(0, xres, yres, 32, 0, 0, 0, 0);
 	SDL_LockSurface(temp);
     GL_CHECK_ERR(glReadPixels(0, 0, xres, yres, GL_BGRA, GL_UNSIGNED_BYTE, temp->pixels));
 	SDL_UnlockSurface(temp);
-	temp2 = flipSurface( temp, FLIP_VERTICAL );
+	SDL_Surface* temp2 = flipSurface(temp, FLIP_VERTICAL);
 	SDL_FreeSurface( temp );
 	temp = SDL_CreateRGBSurface(0, xres, yres, 24, 0, 0, 0, 0);
 	SDL_FillRect(temp, nullptr, 0);

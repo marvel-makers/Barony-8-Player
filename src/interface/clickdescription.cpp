@@ -31,8 +31,6 @@
 void clickDescription(int player, Entity* entity)
 {
 	Stat* stat;
-	Item* item;
-	Uint32 uidnum;
 
 	Input& input = Input::inputs[player];
 
@@ -71,7 +69,7 @@ void clickDescription(int player, Entity* entity)
 
 		input.consumeBinaryToggle("InspectWithMouse");
 
-		uidnum = GO_GetPixelU32(mx, yres - my, cameras[player]);
+		Uint32 uidnum = GO_GetPixelU32(mx, yres - my, cameras[player]);
 		entity = uidToEntity(uidnum);
 	}
 
@@ -125,7 +123,8 @@ void clickDescription(int player, Entity* entity)
 				}
 				else if ( entity->behavior == &actItem )
 				{
-					item = newItem(static_cast<ItemType>(entity->skill[10]), static_cast<Status>(entity->skill[11]), entity->skill[12], entity->skill[13], entity->skill[14], false, nullptr);
+					Item* item = newItem(static_cast<ItemType>(entity->skill[10]), static_cast<Status>(entity->skill[11]),
+					                     entity->skill[12], entity->skill[13], entity->skill[14], false, nullptr);
 					if (item)
 					{
 						messagePlayer(player, MESSAGE_INSPECTION, Language::get(257), item->description());

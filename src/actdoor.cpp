@@ -38,9 +38,6 @@ void actDoor(Entity* my)
 		return;
 	}
 
-	Entity* entity;
-	int i, c;
-
 	auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
 
 	if ( !my->doorInit )
@@ -87,9 +84,9 @@ void actDoor(Entity* my)
 			// door mortality :p
 			if ( my->doorHealth <= 0 )
 			{
-				for ( c = 0; c < 5; c++ )
+				for ( int c = 0; c < 5; c++ )
 				{
-					entity = spawnGib(my);
+					Entity* entity = spawnGib(my);
 					entity->flags[INVISIBLE] = false;
 					entity->sprite = 187; // Splinter.vox
 					entity->x = floor(my->x / 16) * 16 + 8;
@@ -136,7 +133,7 @@ void actDoor(Entity* my)
 			}
 
 			// using door
-			for (i = 0; i < MAXPLAYERS; i++)
+			for (int i = 0; i < MAXPLAYERS; i++)
 			{
 				if ( selectedEntity[i] == my || client_selected[i] == my )
 				{
@@ -225,7 +222,6 @@ void actDoor(Entity* my)
 		if ( my->yaw == my->doorStartAng && my->flags[PASSABLE] )
 		{
 			// don't set impassable if someone's inside, otherwise do
-			node_t* node;
 			bool somebodyinside = false;
 			std::vector<list_t*> entLists;
 			if ( multiplayer == CLIENT )
@@ -243,7 +239,7 @@ void actDoor(Entity* my)
 			for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
 			{
 				list_t* currentList = *it;
-				for ( node = currentList->first; node != nullptr; node = node->next )
+				for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 				{
 					auto entity = static_cast<Entity*>(node->element);
 					if ( entity == my || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost) 
@@ -407,7 +403,6 @@ void actIronDoor(Entity* my)
 void Entity::actIronDoor()
 {
 	Entity* entity;
-	int i, c;
 
 	auto& rng = entity_rng ? *entity_rng : local_rng;
 
@@ -446,7 +441,7 @@ void Entity::actIronDoor()
 			// door mortality :p
 			if ( doorHealth <= 0 )
 			{
-				for ( c = 0; c < 5 && false; c++ )
+				for ( int c = 0; c < 5 && false; c++ )
 				{
 					entity = spawnGib(this);
 					entity->flags[INVISIBLE] = false;
@@ -518,7 +513,7 @@ void Entity::actIronDoor()
 			}
 
 			// using door
-			for ( i = 0; i < MAXPLAYERS; i++ )
+			for ( int i = 0; i < MAXPLAYERS; i++ )
 			{
 				if ( selectedEntity[i] == this || client_selected[i] == this )
 				{
@@ -617,7 +612,6 @@ void Entity::actIronDoor()
 		if ( yaw == doorStartAng && flags[PASSABLE] )
 		{
 			// don't set impassable if someone's inside, otherwise do
-			node_t* node;
 			bool somebodyinside = false;
 			std::vector<list_t*> entLists;
 			if ( multiplayer == CLIENT )
@@ -635,7 +629,7 @@ void Entity::actIronDoor()
 			for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
 			{
 				list_t* currentList = *it;
-				for ( node = currentList->first; node != nullptr; node = node->next )
+				for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 				{
 					auto entity = static_cast<Entity*>(node->element);
 					if ( entity == this || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost)

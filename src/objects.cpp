@@ -41,10 +41,9 @@ void defaultDeconstructor(void* data)
 
 void stringDeconstructor(void* data)
 {
-	string_t* string;
 	if (data != nullptr)
 	{
-		string = static_cast<string_t*>(data);
+		string_t* string = static_cast<string_t*>(data);
 		if ( string->data != nullptr)
 		{
 			free(string->data);
@@ -77,11 +76,9 @@ void emptyDeconstructor(void* data)
 
 void entityDeconstructor(void* data)
 {
-	Entity* entity;
-
 	if ( data != nullptr )
 	{
-		entity = static_cast<Entity*>(data);
+		Entity* entity = static_cast<Entity*>(data);
 
 		//TODO: If I am part of the creaturelist, remove my node from that list.)
 
@@ -100,11 +97,9 @@ Frees the memory occupied by a node pointing to stat
 
 void statDeconstructor(void* data)
 {
-	Stat* stat;
-
 	if ( data != nullptr )
 	{
-		stat = static_cast<Stat*>(data);
+		Stat* stat = static_cast<Stat*>(data);
 		//free(data);
 		delete stat;
 	}
@@ -202,11 +197,9 @@ void mapDeconstructor(void* data)
 
 void listDeconstructor(void* data)
 {
-	list_t* list;
-
 	if (data != nullptr)
 	{
-		list = static_cast<list_t*>(data);
+		list_t* list = static_cast<list_t*>(data);
 		list_FreeAll(list);
 		free(data);
 	}
@@ -348,7 +341,7 @@ string_t* newString(list_t* list, Uint32 color, Uint32 time, int player, char co
 	string_t* string;
 	char str[1024] = { 0 };
 	va_list argptr;
-	int c, i;
+	int i;
 
 	// allocate memory for string
 	if ( (string = static_cast<string_t*>(malloc(sizeof(string_t)))) == nullptr)
@@ -397,7 +390,7 @@ string_t* newString(list_t* list, Uint32 color, Uint32 time, int player, char co
 			exit(1);
 		}
 		memset(string->data, 0, sizeof(char) * (i + 1));
-		for ( c = 0; c < i; c++ )
+		for ( int c = 0; c < i; c++ )
 		{
 			if ( str[c] == 10 )   // line feed
 			{

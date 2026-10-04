@@ -3205,12 +3205,11 @@ void actProjectSpiritCam(Entity* my)
 
 	my->light = addLight(my->x / 16, my->y / 16, "deathcam");
 
-	real_t camx, camy, camz, camang, camvang;
-	camx = my->x / 16.f;
-	camy = my->y / 16.f;
-	camz = my->z * 2.f;
-	camang = my->yaw;
-	camvang = my->pitch;
+	real_t camx = my->x / 16.f;
+	real_t camy = my->y / 16.f;
+	real_t camz = my->z * 2.f;
+	real_t camang = my->yaw;
+	real_t camvang = my->pitch;
 
 	camx -= cos(my->yaw) * cos(my->pitch) * 1.5;
 	camy -= sin(my->yaw) * cos(my->pitch) * 1.5;
@@ -3512,12 +3511,11 @@ void actDeathCam(Entity* my)
 
 	my->light = addLight(my->x / 16, my->y / 16, "deathcam");
 
-	real_t camx, camy, camz, camang, camvang;
-	camx = my->x / 16.f;
-	camy = my->y / 16.f;
-	camz = my->z * 2.f;
-	camang = my->yaw;
-	camvang = my->pitch;
+	real_t camx = my->x / 16.f;
+	real_t camy = my->y / 16.f;
+	real_t camz = my->z * 2.f;
+	real_t camang = my->yaw;
+	real_t camvang = my->pitch;
 
 	camx -= cos(my->yaw) * cos(my->pitch) * 1.5;
 	camy -= sin(my->yaw) * cos(my->pitch) * 1.5;
@@ -14687,8 +14685,6 @@ void Entity::playerShakeGrowthHelmet()
 // client function
 void actPlayerLimb(Entity* my)
 {
-	int i;
-
 	Entity* parent = uidToEntity(my->parent);
 
 	if ( multiplayer == CLIENT )
@@ -14718,7 +14714,7 @@ void actPlayerLimb(Entity* my)
 
 	if ( parent && multiplayer != CLIENT )
 	{
-		for ( i = 0; i < MAXPLAYERS; i++ )
+		for ( int i = 0; i < MAXPLAYERS; i++ )
 		{
 			if ( inrange[i] )
 			{

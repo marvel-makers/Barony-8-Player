@@ -25,8 +25,6 @@
 
 void initSpider(Entity* my, Stat* myStats)
 {
-	int c;
-
 	my->flags[BURNABLE] = true;
 	my->flags[UPDATENEEDED] = true;
 	my->flags[INVISIBLE] = false;
@@ -99,8 +97,7 @@ void initSpider(Entity* my, Stat* myStats)
 				int status = DECREPIT + (currentlevel > 5) + (currentlevel > 15) + (currentlevel > 20);
 				newItem(ARTIFACT_SWORD, static_cast<Status>(status), 1, 1, rng.rand(), false, &myStats->inventory);
 				customItemsToGenerate -= 2;
-				int c;
-				for ( c = 0; c < 3; c++ )
+			    for ( int c = 0; c < 3; c++ )
 				{
 					Entity* entity = summonMonster(SPIDER, my->x, my->y);
 					if ( entity )
@@ -150,10 +147,8 @@ void initSpider(Entity* my, Stat* myStats)
 		}
 	}
 
-	int model;
-
 	// right pedipalp
-	model = arachnophobia_filter ? 998 : (my->sprite == 1118 ? 1119 : 268);
+	int model = arachnophobia_filter ? 998 : (my->sprite == 1118 ? 1119 : 268);
 	Entity* entity = newEntity(model, 1, map.entities, nullptr); //Limb entity.
 	entity->sizex = 4;
 	entity->sizey = 4;
@@ -211,7 +206,7 @@ void initSpider(Entity* my, Stat* myStats)
 	my->bodyparts.push_back(entity);
 
 	// eight legs :)
-	for ( c = 0; c < 8; c++ )
+	for ( int c = 0; c < 8; c++ )
 	{
 		// "thigh"
 	    model = arachnophobia_filter ? 999 : (my->sprite == 1118 ? 1121 : 269);

@@ -384,8 +384,7 @@ Stat::~Stat()
 		this->mask = nullptr;
 	}
 	//Free memory for magic effects.
-	node_t* spellnode;
-	spellnode = this->magic_effects.first;
+	node_t* spellnode = this->magic_effects.first;
 	while (spellnode)
 	{
 		node_t* oldnode = spellnode;

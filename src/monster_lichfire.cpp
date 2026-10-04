@@ -200,9 +200,8 @@ void lichFireDie(Entity* my)
 		return;
 	}
 
-	node_t* node, *nextnode;
-	int c;
-	for ( c = 0; c < 20; c++ )
+	node_t*nextnode;
+	for ( int c = 0; c < 20; c++ )
 	{
 		Entity* entity = spawnGib(my);
 		if ( entity )
@@ -246,7 +245,7 @@ void lichFireDie(Entity* my)
 	playSoundEntity(my, 94, 128);
 	my->removeLightField();
 	// kill all other monsters on the level
-	for ( node = map.creatures->first; my->monsterLichAllyStatus == LICH_ALLY_DEAD && node != nullptr; node = nextnode )
+	for ( node_t* node = map.creatures->first; my->monsterLichAllyStatus == LICH_ALLY_DEAD && node != nullptr; node = nextnode )
 	{
 		nextnode = node->next;
 		auto entity = static_cast<Entity*>(node->element);
@@ -283,7 +282,6 @@ void actLichFireLimb(Entity* my)
 
 void lichFireAnimate(Entity* my, Stat* myStats, double dist)
 {
-	node_t* node;
 	Entity* entity = nullptr, *entity2 = nullptr;
 	Entity* rightbody = nullptr;
 	Entity* weaponarm = nullptr;
@@ -296,7 +294,7 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
 	my->removeLightField();
 
 	// obtain head entity
-	node = list_Node(&my->children, LICH_HEAD);
+	node_t* node = list_Node(&my->children, LICH_HEAD);
 	if ( node )
 	{
 		head = static_cast<Entity*>(node->element);
@@ -401,8 +399,8 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
 				my->monsterLichBattleState = LICH_BATTLE_READY;
 				my->flags[PASSABLE] = false;
 				real_t distToPlayer = 0;
-				int c, playerToChase = -1;
-				for ( c = 0; c < MAXPLAYERS; c++ )
+				int playerToChase = -1;
+				for ( int c = 0; c < MAXPLAYERS; c++ )
 				{
 					if ( players[c] && players[c]->entity )
 					{

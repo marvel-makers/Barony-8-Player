@@ -25,8 +25,6 @@
 
 void initKobold(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->flags[BURNABLE] = true;
 	my->initMonster(421); //Sprite 421 = Kobold head model
 	my->z = 2.25;
@@ -291,7 +289,7 @@ void initKobold(Entity* my, Stat* myStats)
 	entity->focalz = limbs[KOBOLD][1][2]; // 0
 	entity->behavior = &actKoboldLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -476,8 +474,7 @@ void actKoboldLimb(Entity* my)
 
 void koboldDie(Entity* my)
 {
-	int c;
-	for ( c = 0; c < 12; ++c )
+	for ( int c = 0; c < 12; ++c )
 	{
 		Entity* gib = spawnGib(my);
 		if (c < 6) {

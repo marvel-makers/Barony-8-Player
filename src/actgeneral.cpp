@@ -253,8 +253,7 @@ void Entity::actFurniture()
 			// furniture mortality :p
 			if ( furnitureHealth <= 0 )
 			{
-				int c;
-				for ( c = 0; c < 5; c++ )
+				for ( int c = 0; c < 5; c++ )
 				{
 					Entity* entity = spawnGib(this);
 					entity->flags[INVISIBLE] = false;
@@ -287,8 +286,7 @@ void Entity::actFurniture()
 			}
 
 			// using
-			int i;
-			for (i = 0; i < MAXPLAYERS; i++)
+			for (int i = 0; i < MAXPLAYERS; i++)
 			{
 				if ( selectedEntity[i] == this || client_selected[i] == this )
 				{
@@ -350,8 +348,7 @@ void actMCaxe(Entity* my)
 		if ( multiplayer != CLIENT )
 		{
 			// use
-			int i;
-			for (i = 0; i < MAXPLAYERS; i++)
+			for (int i = 0; i < MAXPLAYERS; i++)
 			{
 				if ( selectedEntity[i] == my || client_selected[i] == my )
 				{
@@ -931,8 +928,7 @@ void actColliderMushroomCap(Entity* my)
 				std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1 + (range / 16));
 				for ( auto it : entLists )
 				{
-					node_t* node;
-					for ( node = it->first; node != nullptr; node = node->next )
+					for ( node_t* node = it->first; node != nullptr; node = node->next )
 					{
 						auto entity = static_cast<Entity*>(node->element);
 						if ( !(entity->behavior == &actPlayer || entity->behavior == &actMonster) )
@@ -1392,8 +1388,7 @@ void Entity::colliderOnDestroy()
 						for (auto it = entLists.begin(); it != entLists.end(); ++it )
 						{
 							list_t* currentList = *it;
-							node_t* node;
-							for ( node = currentList->first; node != nullptr; node = node->next )
+							for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 							{
 								auto ent = static_cast<Entity*>(node->element);
 								if ( ent && ent->behavior == &actGoldBag && ent != entity && ent->goldInContainer != 0
@@ -2117,8 +2112,7 @@ void actColliderDecoration(Entity* my)
 							for (auto it = entLists.begin(); it != entLists.end() && !found; ++it )
 							{
 								list_t* currentList = *it;
-								node_t* node;
-								for ( node = currentList->first; node != nullptr; node = node->next )
+								for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( !entity || !(entity->behavior == &actPlayer || entity->behavior == &actMonster) ) { continue; }
@@ -2237,8 +2231,7 @@ void actColliderDecoration(Entity* my)
 						for (auto it = entLists.begin(); it != entLists.end() && !found; ++it )
 						{
 							list_t* currentList = *it;
-							node_t* node;
-							for ( node = currentList->first; node != nullptr; node = node->next )
+							for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 							{
 								auto entity = static_cast<Entity*>(node->element);
 								if ( entity && (entity->behavior == &actPlayer || (entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader())) )
@@ -5366,8 +5359,7 @@ void bellAttractMonsters(Entity* my)
 	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
-		node_t* node;
-		for ( node = currentList->first; node != nullptr; node = node->next )
+		for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 		{
 			auto entity = static_cast<Entity*>(node->element);
 			if ( entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader() == nullptr )

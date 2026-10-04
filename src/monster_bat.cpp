@@ -27,8 +27,6 @@
 
 void initBat(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->z = 0;
 	my->initMonster(1408);
 	my->flags[INVISIBLE] = true; // hide the "AI" bodypart
@@ -97,7 +95,7 @@ void initBat(Entity* my, Stat* myStats)
 	entity->focalz = limbs[BAT_SMALL][1][2];
 	entity->behavior = &actBatLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -176,8 +174,7 @@ void actBatLimb(Entity* my)
 
 void batDie(Entity* my)
 {
-	int c;
-	for ( c = 0; c < 4; c++ )
+	for ( int c = 0; c < 4; c++ )
 	{
 		Entity* entity = spawnGib(my);
 		if ( entity )

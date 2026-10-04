@@ -167,13 +167,12 @@ bool item_PotionWater(Item*& item, Entity* entity, Entity* usedBy)
 
 	node_t* node;
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -576,13 +575,12 @@ bool item_PotionBooze(Item*& item, Entity* entity, Entity* usedBy, bool shouldCo
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -730,13 +728,12 @@ bool item_PotionJuice(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -917,13 +914,12 @@ bool item_PotionSickness(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -1034,13 +1030,12 @@ bool item_PotionGrease(Item*& item, Entity* entity, Entity* usedBy)
 	}*/
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -1136,13 +1131,12 @@ bool item_PotionConfusion(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -1245,14 +1239,12 @@ bool item_PotionCureAilment(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
-	int c;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -1301,7 +1293,7 @@ bool item_PotionCureAilment(Item*& item, Entity* entity, Entity* usedBy)
 		messagePlayer(player, MESSAGE_HINT, Language::get(2900));
 	}
 
-	for ( c = 0; c < NUMEFFECTS; c++ )   //This does a whole lot more than just cure ailments.
+	for ( int c = 0; c < NUMEFFECTS; c++ )   //This does a whole lot more than just cure ailments.
 	{
 		if ( stats->statusEffectRemovedByCureAilment(c, entity) )
 		{
@@ -1377,13 +1369,12 @@ bool item_PotionBlindness(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -1458,13 +1449,12 @@ bool item_PotionInvisibility(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -1552,13 +1542,12 @@ bool item_PotionLevitation(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -1634,13 +1623,12 @@ bool item_PotionSpeed(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -1735,13 +1723,12 @@ bool item_PotionStrength(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -1824,13 +1811,12 @@ bool item_PotionAcid(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -1929,13 +1915,12 @@ bool item_PotionUnstableStorm(Item*& item, Entity* entity, Entity* usedBy, Entit
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -2112,13 +2097,12 @@ bool item_PotionParalysis(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -2197,13 +2181,12 @@ bool item_PotionHealing(Item*& item, Entity* entity, Entity* usedBy, bool should
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -2352,13 +2335,12 @@ bool item_PotionExtraHealing(Item*& item, Entity* entity, Entity* usedBy, bool s
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -2506,13 +2488,12 @@ bool item_PotionRestoreMagic(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return false;
@@ -2634,13 +2615,12 @@ Entity* item_PotionPolymorph(Item*& item, Entity* entity, Entity* usedBy)
 	}
 
 	int player = -1;
-	Stat* stats;
 
 	if ( entity->behavior == &actPlayer )
 	{
 		player = entity->skill[2];
 	}
-	stats = entity->getStats();
+	Stat* stats = entity->getStats();
 	if ( !stats )
 	{
 		return nullptr;
@@ -2892,8 +2872,6 @@ void item_ScrollIdentify(Item* item, int player)
 
 void item_ScrollLight(Item* item, int player)
 {
-	int c;
-
 	if (players[player] == nullptr || players[player]->entity == nullptr)
 	{
 		return;
@@ -2930,7 +2908,7 @@ void item_ScrollLight(Item* item, int player)
 	// send new light info to clients
 	if (multiplayer == SERVER)
 	{
-		for (c = 1; c < MAXPLAYERS; c++)
+		for (int c = 1; c < MAXPLAYERS; c++)
 		{
 			if (client_disconnected[c] == true || players[c]->isLocalPlayer() )
 			{
@@ -3614,8 +3592,7 @@ bool item_ScrollFire(Item* item, int player)
 		// Attempt to set the Player on fire
 		players[player]->entity->SetEntityOnFire(nullptr);
 
-		int c;
-		for (c = 0; c < 25; c++)
+		for (int c = 0; c < 25; c++)
 		{
 			if ( Entity* entity = spawnFlame(players[player]->entity, SPRITE_FLAME) )
 			{
@@ -3649,8 +3626,7 @@ bool item_ScrollFire(Item* item, int player)
 
 void item_ScrollFood(Item* item, int player)
 {
-	Item* target;
-	node_t* node, *nextnode;
+	node_t*nextnode;
 	int foundfood = 0;
 
 	if (players[player] == nullptr || players[player]->entity == nullptr)
@@ -3691,10 +3667,10 @@ void item_ScrollFood(Item* item, int player)
 	}
 	else
 	{
-		for ( node = stats[player]->inventory.first; node != nullptr; node = nextnode )
+		for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = nextnode )
 		{
 			nextnode = node->next;
-			target = static_cast<Item*>(node->element);
+			Item* target = static_cast<Item*>(node->element);
 			if ( itemCategory(target) == FOOD )
 			{
 				if ( local_rng.rand() % 2 == 0 )   // 50% chance of destroying that food item
@@ -3770,8 +3746,6 @@ void item_ScrollConjureArrow(Item* item, int player)
 
 void item_ScrollMagicMapping(Item* item, int player)
 {
-	int x, y;
-
 	if (players[player] == nullptr || players[player]->entity == nullptr)
 	{
 		return;
@@ -3808,9 +3782,9 @@ void item_ScrollMagicMapping(Item* item, int player)
 	else
 	{
 		messagePlayer(player, MESSAGE_HINT, Language::get(869));
-		for ( y = 0; y < map.height; y++ )
+		for ( int y = 0; y < map.height; y++ )
 		{
-			for ( x = 0; x < map.width; x++ )
+			for ( int x = 0; x < map.width; x++ )
 			{
 				minimap[y][x] = 0;
 			}
@@ -4358,9 +4332,8 @@ void item_ScrollSummon(Item* item, int player)
 		}
 	}
 
-	int i;
 	bool spawnedMonster = false;
-	for (i = 0; i < numCreatures; ++i)
+	for (int i = 0; i < numCreatures; ++i)
 	{
 		Entity* monster = summonMonster(creature, floor(players[player]->entity->x / 16) * 16 + 8, floor(players[player]->entity->y / 16) * 16 + 8);
 		if ( monster )
@@ -4709,12 +4682,11 @@ Entity* item_ToolBeartrap(Item*& item, Entity* usedBy)
 	int player = -1;
 	if ( usedBy->behavior == &actMonster ) // monster
 	{
-		int u, v;
 		int x = std::min(std::max<unsigned int>(1, usedBy->x / 16), map.width - 2);
 		int y = std::min(std::max<unsigned int>(1, usedBy->y / 16), map.height - 2);
-		for ( u = x - 1; u <= x + 1; u++ )
+		for ( int u = x - 1; u <= x + 1; u++ )
 		{
-			for ( v = y - 1; v <= y + 1; v++ )
+			for ( int v = y - 1; v <= y + 1; v++ )
 			{
 				if ( entityInsideTile(usedBy, u, v, 0) )   // no floor
 				{
@@ -4913,8 +4885,6 @@ void item_Food(Item*& item, int player)
 	{
 		return;
 	}
-	int oldcount;
-	int pukeChance;
 
 	if ( player < 0 || player >= MAXPLAYERS || !stats[player] )
 	{
@@ -4993,7 +4963,7 @@ void item_Food(Item*& item, int player)
 	}
 
 	// consumption message
-	oldcount = item->count;
+	int oldcount = item->count;
 	item->count = 1;
 	messagePlayer(player, MESSAGE_STATUS, Language::get(907), item->description());
 	item->count = oldcount;
@@ -5010,7 +4980,7 @@ void item_Food(Item*& item, int player)
 	}
 
 	// chance of rottenness
-	pukeChance = item->foodGetPukeChance(stats[player]);
+	int pukeChance = item->foodGetPukeChance(stats[player]);
 
 	if ( players[player] 
 		&& players[player]->entity && playerRequiresBloodToSustain(player) )
@@ -5381,8 +5351,6 @@ void item_FoodTin(Item*& item, int player)
 	{
 		return;
 	}
-	int oldcount;
-	int pukeChance;
 	bool slippery = false;
 
 	if ( player >= 0 && stats[player]->type == AUTOMATON )
@@ -5459,7 +5427,7 @@ void item_FoodTin(Item*& item, int player)
 
 	// consumption message
 	char tempstr[128] = { 0 };
-	oldcount = item->count;
+	int oldcount = item->count;
 	item->count = 1;
 
 	bool hpBuff = false;
@@ -5521,7 +5489,7 @@ void item_FoodTin(Item*& item, int player)
 	serverUpdatePlayerGameplayStats(player, STATISTICS_YES_WE_CAN, 1);
 
 	// chance of rottenness
-	pukeChance = item->foodGetPukeChance(stats[player]);
+	int pukeChance = item->foodGetPukeChance(stats[player]);
 
 	if ( players[player] && players[player]->entity && players[player]->entity->effectShapeshift != NOTHING )
 	{
@@ -5855,7 +5823,7 @@ void item_AmuletSexChange(Item* item, int player)
 
 void item_Spellbook(Item*& item, int player)
 {
-	node_t* node, *nextnode;
+	node_t*nextnode;
 
 	if ( players[player] && !players[player]->isLocalPlayer() )
 	{
@@ -5908,7 +5876,7 @@ void item_Spellbook(Item*& item, int player)
 		{
 			// randomly delete a spell
 			int spellToDelete = local_rng.rand() % list_Size(&players[player]->magic.spellList);
-			node = list_Node(&players[player]->magic.spellList, spellToDelete);
+			node_t* node = list_Node(&players[player]->magic.spellList, spellToDelete);
 			auto spell = static_cast<spell_t*>(node->element);
 			int spellID = spell->ID;
 			bool deleted = false;

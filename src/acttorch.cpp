@@ -38,8 +38,6 @@ bool flickerLights = true;
 
 void actTorch(Entity* my)
 {
-	int i;
-
 	if ( my->ticks == 1 )
 	{
 		my->createWorldUITooltip();
@@ -126,7 +124,7 @@ void actTorch(Entity* my)
 	// using
 	if ( multiplayer != CLIENT )
 	{
-		for (i = 0; i < MAXPLAYERS; i++)
+		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			if ( selectedEntity[i] == my || client_selected[i] == my )
 			{
@@ -211,8 +209,6 @@ void actTorch(Entity* my)
 
 void actCrystalShard(Entity* my)
 {
-	int i;
-
 	if ( my->ticks == 1 )
 	{
 		my->createWorldUITooltip();
@@ -297,7 +293,7 @@ void actCrystalShard(Entity* my)
 	// using
 	if ( multiplayer != CLIENT )
 	{
-		for ( i = 0; i < MAXPLAYERS; i++ )
+		for ( int i = 0; i < MAXPLAYERS; i++ )
 		{
 			if ( selectedEntity[i] == my || client_selected[i] == my )
 			{

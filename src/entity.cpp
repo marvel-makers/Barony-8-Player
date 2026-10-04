@@ -8524,14 +8524,12 @@ Sint32 Entity::getSTR()
 
 Sint32 statGetSTR(Stat* entitystats, Entity* my)
 {
-	Sint32 STR;
-
 	if ( !entitystats )
 	{
 		return 0;
 	}
 
-	STR = entitystats->STR;
+	Sint32 STR = entitystats->STR;
 
 	bool cursedItemIsBuff = false;
 	bool shapeshifted = false;
@@ -8749,8 +8747,6 @@ Sint32 Entity::getDEX()
 
 Sint32 statGetDEX(Stat* entitystats, Entity* my)
 {
-	Sint32 DEX;
-
 	if ( !entitystats )
 	{
 		return 0;
@@ -8766,7 +8762,7 @@ Sint32 statGetDEX(Stat* entitystats, Entity* my)
 		return -10;
 	}
 
-	DEX = entitystats->DEX;
+	Sint32 DEX = entitystats->DEX;
 
 	bool cursedItemIsBuff = false;
 	bool shapeshifted = false;
@@ -9069,14 +9065,12 @@ Sint32 Entity::getCON()
 
 Sint32 statGetCON(Stat* entitystats, Entity* my)
 {
-	Sint32 CON;
-
 	if ( !entitystats )
 	{
 		return 0;
 	}
 
-	CON = entitystats->CON;
+	Sint32 CON = entitystats->CON;
 
 	bool cursedItemIsBuff = false;
 	bool shapeshifted = false;
@@ -9254,14 +9248,12 @@ Sint32 Entity::getINT()
 
 Sint32 statGetINT(Stat* entitystats, Entity* my)
 {
-	Sint32 INT;
-
 	if ( !entitystats )
 	{
 		return 0;
 	}
 
-	INT = entitystats->INT;
+	Sint32 INT = entitystats->INT;
 
 	bool cursedItemIsBuff = false;
 	bool shapeshifted = false;
@@ -9373,14 +9365,12 @@ Sint32 Entity::getPER()
 
 Sint32 statGetPER(Stat* entitystats, Entity* my)
 {
-	Sint32 PER;
-
 	if ( !entitystats )
 	{
 		return 0;
 	}
 
-	PER = entitystats->PER;
+	Sint32 PER = entitystats->PER;
 
 	bool cursedItemIsBuff = false;
 	bool shapeshifted = false;
@@ -9550,14 +9540,12 @@ Sint32 Entity::getCHR()
 
 Sint32 statGetCHR(Stat* entitystats, Entity* my)
 {
-	Sint32 CHR;
-
 	if ( !entitystats )
 	{
 		return 0;
 	}
 
-	CHR = entitystats->CHR;
+	Sint32 CHR = entitystats->CHR;
 
 	bool cursedItemIsBuff = false;
 	bool shapeshifted = false;
@@ -17213,7 +17201,6 @@ Teleports the given entity to a random location on the map.
 bool Entity::teleportRandom(int x1, int x2, int y1, int y2)
 {
 	int numlocations = 0;
-	int pickedlocation;
 	int player = -1;
 	if ( behavior == &actPlayer )
 	{
@@ -17260,7 +17247,7 @@ bool Entity::teleportRandom(int x1, int x2, int y1, int y2)
 		messagePlayer(player, MESSAGE_HINT, Language::get(708));
 		return false;
 	}
-	pickedlocation = local_rng.rand() % numlocations;
+	int pickedlocation = local_rng.rand() % numlocations;
 	numlocations = 0;
 	for ( int iy = y1; iy < y2; ++iy )
 	{
@@ -17294,8 +17281,7 @@ bool teleportCoordHasTrap(const int x, const int y)
 	for ( auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
-		node_t* node;
-		for ( node = currentList->first; node != nullptr; node = node->next )
+		for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 		{
 			auto entity = static_cast<Entity*>(node->element);
 			if ( !entity ) { continue; }
@@ -19033,9 +19019,8 @@ bool Entity::checkEnemy(Entity* your)
 	}
 	else
 	{
-		node_t* t_node;
 		bool foundFollower = false;
-		for ( t_node = myStats->FOLLOWERS.first; t_node != nullptr; t_node = t_node->next )
+		for ( node_t* t_node = myStats->FOLLOWERS.first; t_node != nullptr; t_node = t_node->next )
 		{
 			auto uid = static_cast<Uint32*>(t_node->element);
 			if ( *uid == your->uid )
@@ -19654,9 +19639,8 @@ bool Entity::checkFriend(Entity* your)
 	}
 	else
 	{
-		node_t* t_node;
 		bool foundFollower = false;
-		for ( t_node = myStats->FOLLOWERS.first; t_node != nullptr; t_node = t_node->next )
+		for ( node_t* t_node = myStats->FOLLOWERS.first; t_node != nullptr; t_node = t_node->next )
 		{
 			auto uid = static_cast<Uint32*>(t_node->element);
 			if ( *uid == your->uid )
@@ -19945,10 +19929,7 @@ void createMonsterEquipment(Stat* stats, BaronyRNG& rng)
 {
 	int itemIndex = 0;
 	ItemType itemId;
-	Status itemStatus;
-	int itemBless;
 	int itemAppearance = rng.rand();
-	int itemCount;
 	int chance = 1;
 	int category = 0;
 	bool itemIdentified;
@@ -20027,7 +20008,7 @@ void createMonsterEquipment(Stat* stats, BaronyRNG& rng)
 
 			if ( itemId >= 0 && generateItem )
 			{
-				itemStatus = static_cast<Status>(stats->EDITOR_ITEMS[itemIndex * ITEM_SLOT_NUMPROPERTIES + 1]);
+				Status itemStatus = static_cast<Status>(stats->EDITOR_ITEMS[itemIndex * ITEM_SLOT_NUMPROPERTIES + 1]);
 				if ( itemStatus == 0 )
 				{
 					itemStatus = static_cast<Status>(DECREPIT + rng.rand() % 4);
@@ -20036,12 +20017,12 @@ void createMonsterEquipment(Stat* stats, BaronyRNG& rng)
 				{
 					itemStatus = static_cast<Status>(itemStatus - 1); // reserved '0' for random, so '1' is decrepit... etc to '5' being excellent.
 				}
-				itemBless = stats->EDITOR_ITEMS[itemIndex * ITEM_SLOT_NUMPROPERTIES + 2];
+				int itemBless = stats->EDITOR_ITEMS[itemIndex * ITEM_SLOT_NUMPROPERTIES + 2];
 				if ( itemBless == 10 )
 				{
 					itemBless = -2 + rng.rand() % 5;
 				}
-				itemCount = stats->EDITOR_ITEMS[itemIndex * ITEM_SLOT_NUMPROPERTIES + 3];
+				int itemCount = stats->EDITOR_ITEMS[itemIndex * ITEM_SLOT_NUMPROPERTIES + 3];
 				if ( stats->EDITOR_ITEMS[itemIndex * ITEM_SLOT_NUMPROPERTIES + 4] == 1 )
 				{
 					itemIdentified = true;

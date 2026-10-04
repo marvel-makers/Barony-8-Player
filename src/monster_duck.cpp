@@ -28,8 +28,6 @@
 
 void initDuck(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	bool spiritDuck = my && my->behavior == &actDeathGhostLimb;
 
 	my->z = 0;
@@ -117,7 +115,7 @@ void initDuck(Entity* my, Stat* myStats)
 	entity->focalz = limbs[DUCK_SMALL][1][2];
 	entity->behavior = &actDuckLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

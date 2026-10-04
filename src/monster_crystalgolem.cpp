@@ -24,8 +24,6 @@
 
 void initCrystalgolem(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->flags[BURNABLE] = false;
 	my->initMonster(475);
 	my->z = -1.5;
@@ -143,7 +141,7 @@ void initCrystalgolem(Entity* my, Stat* myStats)
 	entity->focalz = limbs[CRYSTALGOLEM][1][2]; // 0
 	entity->behavior = &actCrystalgolemLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

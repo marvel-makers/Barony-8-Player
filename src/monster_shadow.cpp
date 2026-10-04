@@ -29,7 +29,6 @@ static ConsoleVariable<bool> cvar_spawnArtemisia("/spawn_artemisia", false);
 
 void initShadow(Entity* my, Stat* myStats)
 {
-	node_t* node;
 	my->monsterShadowDontChangeName = 0; //By default, it does.
 	if ( myStats && strcmp(myStats->name, "") != 0 )
 	{
@@ -166,7 +165,7 @@ void initShadow(Entity* my, Stat* myStats)
 	entity->focalz = limbs[SHADOW][1][2]; // 0
 	entity->behavior = &actShadowLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -373,8 +372,7 @@ void actShadowLimb(Entity* my)
 
 void shadowDie(Entity* my)
 {
-	int c;
-	for ( c = 0; c < 5; c++ )
+	for ( int c = 0; c < 5; c++ )
 	{
 		Entity* gib = spawnGib(my);
 		serverSpawnGibForClient(gib);

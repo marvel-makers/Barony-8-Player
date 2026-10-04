@@ -26,8 +26,6 @@
 
 void initMinotaur(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->flags[BURNABLE] = true;
 	my->initMonster(239);
 	my->z = -6;
@@ -142,7 +140,7 @@ void initMinotaur(Entity* my, Stat* myStats)
 	entity->focalz = limbs[MINOTAUR][1][2]; // 0
 	entity->behavior = &actMinotaurLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -739,9 +737,8 @@ void actMinotaurTimer(Entity* my)
 		Entity* monster = summonMonster(MINOTAUR, my->x, my->y);
 		if ( monster )
 		{
-			int c;
 			bool playedSound = false;
-			for ( c = 0; c < MAXPLAYERS; c++ )
+			for ( int c = 0; c < MAXPLAYERS; c++ )
 			{
 				if ( multiplayer == SINGLE )
 				{
@@ -767,9 +764,8 @@ void actMinotaurTimer(Entity* my)
 	}
 	if ( MINOTAURTIMER_ACTIVE && MINOTAURTIMER_LIFE >= MINOTAURTIMER_ACTIVE + TICKS_PER_SECOND * 3 )
 	{
-		int c;
 		bool playedSound = false;
-		for ( c = 0; c < MAXPLAYERS; c++ )
+		for ( int c = 0; c < MAXPLAYERS; c++ )
 		{
 			if ( currentlevel < 25 )
 			{
@@ -823,15 +819,12 @@ void actMinotaurTimer(Entity* my)
 
 void actMinotaurCeilingBuster(Entity* my)
 {
-	double x, y;
-
 	// levitate particles
 	int u = std::min<unsigned int>(std::max<int>(0, my->x / 16), map.width - 1);
 	int v = std::min<unsigned int>(std::max<int>(0, my->y / 16), map.height - 1);
 	if ( !map.tiles[v * MAP_LAYERS + u * MAP_LAYERS * map.height] )
 	{
-		int c;
-		for ( c = 0; c < 2; c++ )
+		for ( int c = 0; c < 2; c++ )
 		{
 			Entity* entity = newEntity(171, 1, map.entities, nullptr); //Particle entity.
 			entity->x = my->x - 8 + local_rng.rand() % 17;
@@ -856,9 +849,9 @@ void actMinotaurCeilingBuster(Entity* my)
 	}
 
 	// bust ceilings
-	for ( x = my->x - my->sizex - 1; x <= my->x + my->sizex + 1; x += 1 )
+	for ( double x = my->x - my->sizex - 1; x <= my->x + my->sizex + 1; x += 1 )
 	{
-		for ( y = my->y - my->sizey - 1; y <= my->y + my->sizey + 1; y += 1 )
+		for ( double y = my->y - my->sizey - 1; y <= my->y + my->sizey + 1; y += 1 )
 		{
 			if ( x >= 0 && y >= 0 && x < map.width << 4 && y < map.height << 4 )
 			{
@@ -892,8 +885,8 @@ void actMinotaurCeilingBuster(Entity* my)
 					}
 
 					// spawn several rock particles (NOT items)
-					int c, i = 6 + local_rng.rand() % 4;
-					for ( c = 0; c < i; c++ )
+					int i = 6 + local_rng.rand() % 4;
+					for ( int c = 0; c < i; c++ )
 					{
 						Entity *entity = nullptr;
 						if ( multiplayer == SERVER )
@@ -924,12 +917,12 @@ void actMinotaurCeilingBuster(Entity* my)
 						}
 					}
 				}
-				node_t* node, *nextnode;
+				node_t*nextnode;
 				std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
 				for (auto it = entLists.begin(); it != entLists.end(); ++it )
 				{
 					list_t* currentList = *it;
-					for ( node = currentList->first; node != nullptr; node = nextnode )
+					for ( node_t* node = currentList->first; node != nullptr; node = nextnode )
 					{
 						nextnode = node->next;
 						auto entity = static_cast<Entity*>(node->element);
@@ -938,8 +931,8 @@ void actMinotaurCeilingBuster(Entity* my)
 							if ( entity->behavior == &actDoorFrame )
 							{
 								// spawn several rock items
-								int c, i = 8 + local_rng.rand() % 4;
-								for ( c = 0; c < i; c++ )
+								int i = 8 + local_rng.rand() % 4;
+								for ( int c = 0; c < i; c++ )
 								{
 									Entity *entity = nullptr;
 									if ( multiplayer == SERVER )
@@ -1056,8 +1049,8 @@ void actMinotaurCeilingBuster(Entity* my)
 									)
 							{
 								// spawn several rock items
-								int c, i = local_rng.rand() % 4;
-								for ( c = 0; c < i; ++c )
+								int i = local_rng.rand() % 4;
+								for ( int c = 0; c < i; ++c )
 								{
 									//Entity* childEntity = spawnGib(my);
 									Entity *childEntity = nullptr;

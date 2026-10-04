@@ -26,8 +26,6 @@
 
 void initMoth(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->z = 0;
 	my->initMonster(1819);
 	if ( my->sprite == 1822 )
@@ -137,7 +135,7 @@ void initMoth(Entity* my, Stat* myStats)
 		}
 
 		entity->parent = my->getUID();
-		node = list_AddNodeLast(&my->children);
+		node_t* node = list_AddNodeLast(&my->children);
 		node->element = entity;
 		node->deconstructor = &emptyDeconstructor;
 		node->size = sizeof(Entity*);
@@ -207,8 +205,7 @@ void mothDie(Entity* my)
 	}
 	else
 	{
-		int c;
-		for ( c = 0; c < 3; c++ )
+		for ( int c = 0; c < 3; c++ )
 		{
 			Entity* entity = spawnGib(my);
 			if ( entity )

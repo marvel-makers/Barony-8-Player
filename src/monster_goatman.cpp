@@ -31,7 +31,6 @@ const int NUM_GOATMAN_BOSS_GHARBAD_THROWN_WEAPONS = 3;
 
 void initGoatman(Entity* my, Stat* myStats)
 {
-	node_t* node;
 	bool spawnedBoss = false;
 
 	my->flags[BURNABLE] = true;
@@ -530,7 +529,7 @@ void initGoatman(Entity* my, Stat* myStats)
 	entity->focalz = limbs[GOATMAN][1][2]; // 0
 	entity->behavior = &actGoatmanLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

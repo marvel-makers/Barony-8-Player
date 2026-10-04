@@ -89,8 +89,7 @@ std::string getBookLocalizedNameFromIndex(int index, bool censored)
 //Local helper function to make getting the list of books cross-platform easier.
 std::list<std::string> getListOfBooks()
 {
-	std::list<std::string> books;
-	books = physfsGetFileNamesInDirectory("books/");
+	std::list<std::string> books = physfsGetFileNamesInDirectory("books/");
 	for ( auto it = books.begin(); it != books.end(); )
 	{
 		if ( (*it).find(".txt") == std::string::npos)

@@ -30,8 +30,6 @@
 
 void actWallBuster(Entity* my)
 {
-	int c;
-
 	if ( !my->skill[28] )
 	{
 		return;
@@ -47,7 +45,7 @@ void actWallBuster(Entity* my)
 		spawnExplosion(my->x, my->y, my->z - 8);
 		if ( multiplayer == SERVER )
 		{
-			for ( c = 1; c < MAXPLAYERS; c++ )
+			for ( int c = 1; c < MAXPLAYERS; c++ )
 			{
 				if ( client_disconnected[c] == true || players[c]->isLocalPlayer() )
 				{
@@ -69,8 +67,6 @@ void actWallBuster(Entity* my)
 
 void actWallBuilder(Entity* my)
 {
-	int c;
-
 	if ( !my->skill[28] )
 	{
 		return;
@@ -142,7 +138,7 @@ void actWallBuilder(Entity* my)
 
 		if ( multiplayer == SERVER )
 		{
-			for ( c = 1; c < MAXPLAYERS; c++ )
+			for ( int c = 1; c < MAXPLAYERS; c++ )
 			{
 				if ( client_disconnected[c] == true || players[c]->isLocalPlayer() )
 				{

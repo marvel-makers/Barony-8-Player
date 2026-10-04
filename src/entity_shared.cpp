@@ -2353,15 +2353,13 @@ char tileEditorNameStrings[NUM_EDITOR_TILES][44] =
 
 int canWearEquip(Entity* entity, int category)
 {
-	Stat* stats;
 	int equipType = 0;
-	int type;
 	if ( entity != nullptr)
 	{
-		stats = entity->getStats();
+		Stat* stats = entity->getStats();
 		if ( stats != nullptr)
 		{
-			type = stats->type;
+			int type = stats->type;
 
 			switch ( type )
 			{

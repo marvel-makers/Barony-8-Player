@@ -756,8 +756,8 @@ void deinitGame()
 	for ( int c = 0; c < NUMITEMS; c++ )
 	{
 		list_FreeAll(&items[c].images);
-		node_t* node, *nextnode;
-		for ( node = items[c].surfaces.first; node != nullptr; node = nextnode )
+		node_t*nextnode;
+		for ( node_t* node = items[c].surfaces.first; node != nullptr; node = nextnode )
 		{
 			nextnode = node->next;
 			auto surface = static_cast<SDL_Surface**>(node->element);

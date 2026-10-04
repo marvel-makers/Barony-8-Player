@@ -26,8 +26,6 @@
 
 void initRevenantSkull(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->z = 0;
 	my->flags[BURNABLE] = false;
 	my->initMonster(1796);
@@ -99,7 +97,7 @@ void initRevenantSkull(Entity* my, Stat* myStats)
 	entity->focalz = limbs[REVENANT_SKULL][1][2];
 	entity->behavior = &actRevenantSkullLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -108,8 +106,6 @@ void initRevenantSkull(Entity* my, Stat* myStats)
 
 void initAdorcisedWeapon(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->z = 0;
 	my->initMonster(1797);
 	my->flags[BURNABLE] = false;
@@ -198,7 +194,7 @@ void initAdorcisedWeapon(Entity* my, Stat* myStats)
 	entity->focalz = limbs[MONSTER_ADORCISED_WEAPON][1][2];
 	entity->behavior = &actAdorcisedWeaponLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -207,8 +203,6 @@ void initAdorcisedWeapon(Entity* my, Stat* myStats)
 
 void initFlameElemental(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->z = 0;
 	my->initMonster(1804);
 	my->flags[BURNABLE] = false;
@@ -270,7 +264,7 @@ void initFlameElemental(Entity* my, Stat* myStats)
 	entity->behavior = &actFlameElementalLimb;
 	entity->parent = my->getUID();
 	entity->lightBonus = vec4_t{ 0.25, 0.25, 0.25, 0.0 };
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -353,8 +347,7 @@ void revenantSkullDie(Entity* my)
 
 	my->removeMonsterDeathNodes();
 
-	int c;
-	for ( c = 0; c < 6; c++ )
+	for ( int c = 0; c < 6; c++ )
 	{
 		Entity* entity = spawnGib(my);
 		if ( entity )
@@ -1278,8 +1271,6 @@ void hologramDie(Entity* my)
 
 void initHologram(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->z = 0;
 	my->initMonster(1803);
 	my->flags[BURNABLE] = false;
@@ -1344,7 +1335,7 @@ void initHologram(Entity* my, Stat* myStats)
 		entity->focalz = 0.0;
 		entity->behavior = &actHologramLimb;
 		entity->parent = my->getUID();
-		node = list_AddNodeLast(&my->children);
+		node_t* node = list_AddNodeLast(&my->children);
 		node->element = entity;
 		node->deconstructor = &emptyDeconstructor;
 		node->size = sizeof(Entity*);
@@ -1549,8 +1540,6 @@ void actEarthElementalLimb(Entity* my)
 
 void initEarthElemental(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->z = 0;
 
 	int sprite = 1871; // default sprite, summon anim
@@ -1638,7 +1627,7 @@ void initEarthElemental(Entity* my, Stat* myStats)
 	entity->focalz = limbs[EARTH_ELEMENTAL][3][2];
 	entity->behavior = &actEarthElementalLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

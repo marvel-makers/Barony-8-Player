@@ -24,8 +24,6 @@
 
 void initLich(Entity* my, Stat* myStats)
 {
-	int c;
-
 	my->flags[BURNABLE] = false;
 	my->flags[UPDATENEEDED] = true;
 	my->flags[INVISIBLE] = false;
@@ -55,7 +53,7 @@ void initLich(Entity* my, Stat* myStats)
 
 			if ( myStats->HP == 1000 )
 			{
-				for ( c = 0; c < MAXPLAYERS; ++c )
+				for ( int c = 0; c < MAXPLAYERS; ++c )
 				{
 					if ( !client_disconnected[c] )
 					{
@@ -174,7 +172,7 @@ void initLich(Entity* my, Stat* myStats)
 
 void lichDie(Entity* my)
 {
-	node_t* node, *nextnode;
+	node_t*nextnode;
 	int c;
 	for ( c = 0; c < 20; c++ )
 	{
@@ -222,7 +220,7 @@ void lichDie(Entity* my)
 	//playSoundEntity(my, 94, 128);
 	my->removeLightField();
 	// kill all other monsters on the level
-	for ( node = map.creatures->first; node != nullptr; node = nextnode ) //Only searching for monsters, so don't search full map.entities.
+	for ( node_t* node = map.creatures->first; node != nullptr; node = nextnode ) //Only searching for monsters, so don't search full map.entities.
 	{
 		nextnode = node->next;
 		auto entity = static_cast<Entity*>(node->element);
@@ -424,9 +422,8 @@ void lichAnimate(Entity* my, double dist)
 			case 4:
 			{
 				entity->z -= 4.25;
-				node_t* tempNode;
 				Entity* playertotrack = nullptr;
-				for ( tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Only searching for players, so don't search full map.entities.
+				for ( node_t* tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Only searching for players, so don't search full map.entities.
 				{
 					auto tempEntity = static_cast<Entity*>(tempNode->element);
 					double lowestdist = 5000;

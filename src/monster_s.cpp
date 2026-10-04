@@ -34,7 +34,6 @@ void initMonsterS(Entity* my, Stat* myStats)
 	{
 		return;
 	}
-	node_t* node;
 	bool spawnedBoss = false;
 
 	my->flags[BURNABLE] = true;
@@ -504,7 +503,7 @@ void initMonsterS(Entity* my, Stat* myStats)
 	entity->focalz = limbs[SALAMANDER][1][2]; // 0
 	entity->behavior = &actMonsterSLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

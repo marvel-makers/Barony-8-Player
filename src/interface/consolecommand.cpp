@@ -676,8 +676,7 @@ namespace ConsoleCommands {
 					net_packet->address.port = net_clients[c - 1].port;
 					net_packet->len = 4;
 					sendPacketSafe(net_sock, -1, net_packet, c - 1);
-					int i;
-					for (i = 0; i < MAXPLAYERS; i++)
+					for (int i = 0; i < MAXPLAYERS; i++)
 					{
 						messagePlayer(i, MESSAGE_MISC, Language::get(279), c, stats[c]->name);
 					}
@@ -1521,8 +1520,8 @@ namespace ConsoleCommands {
 		else
 		{
 			int c = 0;
-			node_t* node,* nextnode;
-			for (node = map.entities->first; node != nullptr; node = nextnode)
+			node_t* nextnode;
+			for (node_t* node = map.entities->first; node != nullptr; node = nextnode)
 			{
 				nextnode = node->next;
 				auto entity = static_cast<Entity*>(node->element);
@@ -1559,8 +1558,8 @@ namespace ConsoleCommands {
 		else
 		{
 			int c = 0;
-			node_t* node,* nextnode;
-			for ( node = map.entities->first; node != nullptr; node = nextnode )
+			node_t* nextnode;
+			for ( node_t* node = map.entities->first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
 				const Entity* entity = static_cast<Entity*>(node->element);
@@ -1705,10 +1704,10 @@ namespace ConsoleCommands {
 				name.append(" ");
 				name.append(argv[arg]);
 			}
-			int i, creature;
+			int creature;
 			bool found = false;
 
-			for (i = 1; i < NUMMONSTERS; ++i)   //Start at 1 because 0 is a nothing.
+			for (int i = 1; i < NUMMONSTERS; ++i)   //Start at 1 because 0 is a nothing.
 			{
 				if (strstr(monstertypename[i], name.c_str()))
 				{
@@ -1787,10 +1786,10 @@ namespace ConsoleCommands {
 				name.append(" ");
 				name.append(argv[arg]);
 			}
-			int i, creature;
+			int creature;
 			bool found = false;
 
-			for (i = 1; i < NUMMONSTERS; ++i)   //Start at 1 because 0 is a nothing.
+			for (int i = 1; i < NUMMONSTERS; ++i)   //Start at 1 because 0 is a nothing.
 			{
 				if (strstr(monstertypename[i], name.c_str()))
 				{
@@ -2629,7 +2628,6 @@ namespace ConsoleCommands {
 		});
 
 	static ConsoleCommand ccmd_reloadlimbs("/reloadlimbs", "reload limb files", []CCMD{
-		int x;
 		File* fp;
 		bool success = true;
 
@@ -2641,7 +2639,7 @@ namespace ConsoleCommands {
 		for (int c = 1; c < NUMMONSTERS; c++)
 		{
 			// initialize all offsets to zero
-			for (x = 0; x < 30; x++)
+			for (int x = 0; x < 30; x++)
 			{
 				limbs[c][x][0] = 0;
 				limbs[c][x][1] = 0;
@@ -2659,8 +2657,7 @@ namespace ConsoleCommands {
 			}
 
 			// read file
-			int line;
-			for (line = 1; !fp->eof(); line++)
+			for (int line = 1; !fp->eof(); line++)
 			{
 				char data[256];
 				int limb = 20;

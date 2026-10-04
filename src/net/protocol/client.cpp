@@ -196,8 +196,8 @@ static void changeLevel() {
 	    generatePathMaps();
         updateLoadingScreen(80);
 
-        node_t *node, *nextnode;
-	    for ( node = map.entities->first; node != nullptr; node = nextnode )
+        node_t*nextnode;
+	    for ( node_t* node = map.entities->first; node != nullptr; node = nextnode )
 	    {
 		    nextnode = node->next;
 		    auto entity = static_cast<Entity*>(node->element);
@@ -2709,8 +2709,8 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		else
 		{
 			// to not soft lock at Herx
-			node_t *node, *nextnode;
-			for ( node = stats[clientnum]->inventory.first; node != nullptr; node = nextnode )
+			node_t*nextnode;
+			for ( node_t* node = stats[clientnum]->inventory.first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
 				auto item = static_cast<Item*>(node->element);
@@ -3628,8 +3628,8 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		spell_t* thespell = getSpellFromID(SDLNet_Read32(&net_packet->data[5]));
 		if (spellInList(&channeledSpells[clientnum], thespell))
 		{
-			node_t *node, *nextnode;
-			for (node = channeledSpells[clientnum].first; node; node = nextnode)
+			node_t*nextnode;
+			for (node_t* node = channeledSpells[clientnum].first; node; node = nextnode)
 			{
 				nextnode = node->next;
 				auto spell_search = static_cast<spell_t*>(node->element);
@@ -3699,10 +3699,9 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		}
 		if ( strstr(map.name, "Hell") )
 		{
-			int x, y;
-			for ( y = map.height / 2 - 1; y < map.height / 2 + 2; y++ )
+			for ( int y = map.height / 2 - 1; y < map.height / 2 + 2; y++ )
 			{
-				for ( x = 3; x < map.width / 2; x++ )
+				for ( int x = 3; x < map.width / 2; x++ )
 				{
 					if ( !map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 					{

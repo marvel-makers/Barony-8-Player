@@ -189,15 +189,15 @@ char const *cursor_fill[] =
 
 SDL_Cursor* newCursor(char const * const image[])
 {
-	int i, row, col;
+	int row;
 	Uint8 data[128];
 	Uint8 mask[128];
 	int hot_x, hot_y;
 
-	i = -1;
+	int i = -1;
 	for ( row = 0; row < 32; ++row )
 	{
-		for ( col = 0; col < 32; ++col )
+		for ( int col = 0; col < 32; ++col )
 		{
 			if ( col % 8 )
 			{

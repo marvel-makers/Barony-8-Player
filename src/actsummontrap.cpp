@@ -49,8 +49,7 @@ void actSummonTrap(Entity* my)
 			for (auto it = entLists.begin(); it != entLists.end() && !foundTriggerEntity; ++it )
 			{
 				list_t* currentList = *it;
-				node_t* node;
-				for ( node = currentList->first; node != nullptr; node = node->next )
+				for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 				{
 					auto entity = static_cast<Entity*>(node->element);
 					if ( entity && (entity->behavior == &actPlayer || (entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader())) )

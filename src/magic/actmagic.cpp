@@ -7599,9 +7599,7 @@ void actHUDMagicParticleCircling(Entity* my)
 
 	if ( !my->flags[SPRITE] )
 	{
-		Entity* entity;
-
-		entity = newEntity(my->sprite, 1, map.entities, nullptr); //Particle entity.
+		Entity* entity = newEntity(my->sprite, 1, map.entities, nullptr); //Particle entity.
 
 		entity->x = my->x + (local_rng.rand() % 50 - 25) / 200.f;
 		entity->y = my->y + (local_rng.rand() % 50 - 25) / 200.f;
@@ -7656,9 +7654,7 @@ void actMagicParticleCircling2(Entity* my)
 
 	if ( !my->flags[SPRITE] )
 	{
-		Entity* entity;
-
-		entity = newEntity(my->sprite, 1, map.entities, nullptr); //Particle entity.
+		Entity* entity = newEntity(my->sprite, 1, map.entities, nullptr); //Particle entity.
 
 		entity->x = my->x + (local_rng.rand() % 50 - 25) / 200.f;
 		entity->y = my->y + (local_rng.rand() % 50 - 25) / 200.f;
@@ -7693,9 +7689,8 @@ Entity* spawnMagicParticle(Entity* parentent)
 	{
 		return nullptr;
 	}
-	Entity* entity;
 
-	entity = newEntity(parentent->sprite, 1, map.entities, nullptr); //Particle entity.
+	Entity* entity = newEntity(parentent->sprite, 1, map.entities, nullptr); //Particle entity.
 
 	entity->x = parentent->x + (local_rng.rand() % 50 - 25) / 20.f;
 	entity->y = parentent->y + (local_rng.rand() % 50 - 25) / 20.f;
@@ -7732,9 +7727,8 @@ Entity* spawnMagicParticleCustom(Entity* parentent, int sprite, real_t scale, re
 	{
 		return nullptr;
 	}
-	Entity* entity;
 
-	entity = newEntity(sprite, 1, map.entities, nullptr); //Particle entity.
+	Entity* entity = newEntity(sprite, 1, map.entities, nullptr); //Particle entity.
 
 	int size = 50 / spreadReduce;
 	entity->x = parentent->x + (local_rng.rand() % size - size / 2) / 20.f;
@@ -14651,8 +14645,7 @@ bool Entity::magicFallingCollision()
 		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
-			node_t* node;
-			for ( node = currentList->first; node != nullptr; node = node->next )
+			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				if ( entity )
@@ -14724,8 +14717,7 @@ bool Entity::magicOrbitingCollision()
 	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
-		node_t* node;
-		for ( node = currentList->first; node != nullptr; node = node->next )
+		for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 		{
 			auto entity = static_cast<Entity*>(node->element);
 			if ( entity == this )
@@ -18391,8 +18383,7 @@ void actParticleDemesneDoor(Entity* my)
 		auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1);
 		for ( auto it : entLists )
 		{
-			node_t* node;
-			for ( node = it->first; node != nullptr; node = node->next )
+			for ( node_t* node = it->first; node != nullptr; node = node->next )
 			{
 				if (auto entity = static_cast<Entity*>(node->element) )
 				{
@@ -18512,8 +18503,7 @@ void actParticleWave(Entity* my)
 				{
 					break;
 				}
-				node_t* node;
-				for ( node = it->first; node != nullptr; node = node->next )
+				for ( node_t* node = it->first; node != nullptr; node = node->next )
 				{
 					if ( my->actParticleWaveVariable1 >= chronomicLimit )
 					{
@@ -18592,8 +18582,7 @@ void actParticleWave(Entity* my)
 			std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
 			for ( auto it : entLists )
 			{
-				node_t* node;
-				for ( node = it->first; node != nullptr; node = node->next )
+				for ( node_t* node = it->first; node != nullptr; node = node->next )
 				{
 					auto entity = static_cast<Entity*>(node->element);
 					if ( entity->getStats() )
@@ -18692,8 +18681,7 @@ void actParticleWave(Entity* my)
 			real_t size = 2;
 			for ( auto it : entLists )
 			{
-				node_t* node;
-				for ( node = it->first; node != nullptr; node = node->next )
+				for ( node_t* node = it->first; node != nullptr; node = node->next )
 				{
 					auto entity = static_cast<Entity*>(node->element);
 					if ( true/*entity->behavior == &actPlayer || (entity->behavior == &actMonster && !entity->isInertMimic())*/ )
@@ -21099,8 +21087,7 @@ void doSpellExplosionArea(int spellID, Entity* my, Entity* caster, real_t x, rea
 	std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadius(x / 16, y / 16, 1 + (radius / 16));
 	for ( auto it : entLists )
 	{
-		node_t* node;
-		for ( node = it->first; node != nullptr; node = node->next )
+		for ( node_t* node = it->first; node != nullptr; node = node->next )
 		{
 			auto entity = static_cast<Entity*>(node->element);
 			if ( entityDist(my, entity) > radius )

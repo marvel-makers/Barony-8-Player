@@ -32,9 +32,6 @@ enum GnomeVariant
 
 void initGnome(Entity* my, Stat* myStats)
 {
-	int c;
-	node_t* node;
-
 	my->flags[BURNABLE] = true;
 	std::string gnome_type = myStats ? myStats->getAttribute("gnome_type") : "";
 	if ( gnome_type.find("gnome2") != std::string::npos )
@@ -284,7 +281,7 @@ void initGnome(Entity* my, Stat* myStats)
 							else
 							{
 								int i = 1 + rng.rand() % 4;
-								for ( c = 0; c < i; c++ )
+								for ( int c = 0; c < i; c++ )
 								{
 									newItem(static_cast<ItemType>(GEM_GARNET + rng.rand() % 15), static_cast<Status>(1 + rng.rand() % 4), 0, 1, rng.rand(), false, &myStats->inventory);
 								}
@@ -623,7 +620,7 @@ void initGnome(Entity* my, Stat* myStats)
 	entity->focalz = limbs[GNOME][1][2]; // 0
 	entity->behavior = &actGnomeLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

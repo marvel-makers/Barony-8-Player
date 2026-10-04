@@ -26,10 +26,7 @@ See LICENSE for details.
 
 void initVampire(Entity* my, Stat* myStats)
 {
-	int c;
-	node_t* node;
-
-    my->flags[BURNABLE] = true;
+	my->flags[BURNABLE] = true;
 	my->initMonster(437); //Sprite 437 = Vampire head model
 	my->z = -1;
 
@@ -87,7 +84,7 @@ void initVampire(Entity* my, Stat* myStats)
 				myStats->RANDOM_GOLD = 0;
 				if ( !myStats->MISC_FLAGS[STAT_FLAG_DISABLE_MINIBOSS] )
 				{
-					for ( c = 0; c < 4; ++c )
+					for ( int c = 0; c < 4; ++c )
 					{
 						if ( rng.rand() % 2 == 0 )
 						{
@@ -251,7 +248,7 @@ void initVampire(Entity* my, Stat* myStats)
 	entity->focalz = limbs[VAMPIRE][1][2]; // 0
 	entity->behavior = &actVampireLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

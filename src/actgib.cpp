@@ -963,7 +963,6 @@ Entity* spawnGib(Entity* parentent, int customGibSprite)
 {
 	Entity* entity = nullptr;
 	Stat* parentstats = nullptr;
-	double vel;
 	int gibsprite = 5;
 
 	if ( !parentent )
@@ -1062,7 +1061,7 @@ Entity* spawnGib(Entity* parentent, int customGibSprite)
 	entity->yaw = (local_rng.rand() % 360) * PI / 180.0;
 	entity->pitch = (local_rng.rand() % 360) * PI / 180.0;
 	entity->roll = (local_rng.rand() % 360) * PI / 180.0;
-	vel = (local_rng.rand() % 10) / 10.f;
+	double vel = (local_rng.rand() % 10) / 10.f;
 	entity->vel_x = vel * cos(entity->yaw);
 	entity->vel_y = vel * sin(entity->yaw);
 	entity->vel_z = -.5;
@@ -1538,8 +1537,6 @@ Entity* spawnDamageGib(Entity* parentent, Sint32 dmgAmount, int gibDmgType, int 
 
 Entity* spawnGibClient(Sint16 x, Sint16 y, Sint16 z, Sint16 sprite)
 {
-	double vel;
-
 	Entity* entity = newEntity(sprite, 1, map.entities, nullptr); //Gib entity.
 	entity->x = x;
 	entity->y = y;
@@ -1549,7 +1546,7 @@ Entity* spawnGibClient(Sint16 x, Sint16 y, Sint16 z, Sint16 sprite)
 	entity->yaw = (local_rng.rand() % 360) * PI / 180.0;
 	entity->pitch = (local_rng.rand() % 360) * PI / 180.0;
 	entity->roll = (local_rng.rand() % 360) * PI / 180.0;
-	vel = (local_rng.rand() % 10) / 10.f;
+	double vel = (local_rng.rand() % 10) / 10.f;
 	if ( sprite >= 1871 && sprite <= 1876 ) // earth sprite
 	{
 		vel *= 0.1;
@@ -1570,14 +1567,13 @@ Entity* spawnGibClient(Sint16 x, Sint16 y, Sint16 z, Sint16 sprite)
 
 void serverSpawnGibForClient(Entity* gib)
 {
-	int c;
 	if ( !gib )
 	{
 		return;
 	}
 	if ( multiplayer == SERVER )
 	{
-		for ( c = 1; c < MAXPLAYERS; c++ )
+		for ( int c = 1; c < MAXPLAYERS; c++ )
 		{
 			if ( client_disconnected[c] || players[c]->isLocalPlayer() )
 			{

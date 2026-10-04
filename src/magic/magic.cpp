@@ -3556,8 +3556,7 @@ bool Entity::pinpointDamageProc(Entity* attacker, int damage)
 				auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 1);
 				for ( auto it : entLists )
 				{
-					node_t* node;
-					for ( node = it->first; node != nullptr && !found; node = node->next )
+					for ( node_t* node = it->first; node != nullptr && !found; node = node->next )
 					{
 						if (auto entity = static_cast<Entity*>(node->element) )
 						{
@@ -3641,8 +3640,7 @@ bool Entity::defyFleshProc(Entity* attacker)
 			auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 1);
 			for ( auto it : entLists )
 			{
-				node_t* node;
-				for ( node = it->first; node != nullptr; node = node->next )
+				for ( node_t* node = it->first; node != nullptr; node = node->next )
 				{
 					if (auto entity = static_cast<Entity*>(node->element) )
 					{
@@ -4021,8 +4019,7 @@ Entity* spellEffectDemesneDoor(Entity& caster, Entity& target)
 	int mapy = target.y / 16;
 	for ( auto it : entLists )
 	{
-		node_t* node;
-		for ( node = it->first; node != nullptr; node = node->next )
+		for ( node_t* node = it->first; node != nullptr; node = node->next )
 		{
 			if (auto entity = static_cast<Entity*>(node->element) )
 			{

@@ -10393,8 +10393,7 @@ void doIntro() {
 		introstage = 1;
 		intromovietime = 0;
 		intromoviestage = 0;
-		int c;
-		for ( c = 0; c < 30; c++ )
+		for ( int c = 0; c < 30; c++ )
 		{
 			intromoviealpha[c] = 0;
 		}
@@ -10419,8 +10418,7 @@ void doEndgameHerx() {
 		introstage = 4;
 		firstendmovietime = 0;
 		firstendmoviestage = 0;
-		int c;
-		for ( c = 0; c < 30; c++ )
+		for ( int c = 0; c < 30; c++ )
 		{
 			firstendmoviealpha[c] = 0;
 		}
@@ -10447,8 +10445,7 @@ void doEndgameDevil() {
 		introstage = 4;
 		secondendmovietime = 0;
 		secondendmoviestage = 0;
-		int c;
-		for ( c = 0; c < 30; c++ )
+		for ( int c = 0; c < 30; c++ )
 		{
 			secondendmoviealpha[c] = 0;
 		}
@@ -10472,8 +10469,7 @@ void doMidgame() {
 	thirdendmoviestage++;
 	if ( thirdendmoviestage >= thirdEndNumLines )
 	{
-		int c;
-		for ( c = 0; c < 30; c++ )
+		for ( int c = 0; c < 30; c++ )
 		{
 			thirdendmoviealpha[c] = 0;
 		}
@@ -10507,8 +10503,7 @@ void doEndgameCitadel() {
 	fourthendmoviestage++;
 	if ( fourthendmoviestage >= fourthEndNumLines )
 	{
-		int c;
-		for ( c = 0; c < 30; c++ )
+		for ( int c = 0; c < 30; c++ )
 		{
 			fourthendmoviealpha[c] = 0;
 		}
@@ -10551,8 +10546,7 @@ void doEndgameClassicAndExtraMidGame() {
 			introstage = 4;
 			DLCendmovieStageAndTime[movieType][MOVIE_TIME] = 0;
 			DLCendmovieStageAndTime[movieType][MOVIE_STAGE] = 0;
-			int c;
-			for ( c = 0; c < 30; c++ )
+			for ( int c = 0; c < 30; c++ )
 			{
 				DLCendmoviealpha[movieType][c] = 0;
 			}
@@ -10570,8 +10564,7 @@ void doEndgameClassicAndExtraMidGame() {
 		// mid-game sequences
 		if ( DLCendmovieStageAndTime[movieType][MOVIE_STAGE] >= DLCendmovieNumLines[movieType] )
 		{
-			int c;
-			for ( c = 0; c < 30; c++ )
+			for ( int c = 0; c < 30; c++ )
 			{
 				DLCendmoviealpha[movieType][c] = 0;
 			}
@@ -10623,8 +10616,7 @@ void doEndgameExpansion() {
 	DLCendmovieStageAndTime[movieType][MOVIE_STAGE]++;
 	if ( DLCendmovieStageAndTime[movieType][MOVIE_STAGE] >= DLCendmovieNumLines[movieType] )
 	{
-		int c;
-		for ( c = 0; c < 30; c++ )
+		for ( int c = 0; c < 30; c++ )
 		{
 			DLCendmoviealpha[movieType][c] = 0;
 		}
@@ -11435,7 +11427,6 @@ void buttonOpenSteamLeaderboards(button_t* my)
 // handles slider
 void doSlider(int x, int y, int dots, int minvalue, int maxvalue, int increment, int* var, SDL_Surface* slider_font, int slider_font_char_width)
 {
-	int c;
 	Sint32 mousex = inputs.getMouse(clientnum, Inputs::MouseInputs::X);
 	Sint32 mousey = inputs.getMouse(clientnum, Inputs::MouseInputs::Y);
 	Sint32 omousex = inputs.getMouse(clientnum, Inputs::MouseInputs::OX);
@@ -11443,7 +11434,7 @@ void doSlider(int x, int y, int dots, int minvalue, int maxvalue, int increment,
 
 	// build bar
 	strcpy(tempstr, "| ");
-	for ( c = 0; c < dots; c++ )
+	for ( int c = 0; c < dots; c++ )
 	{
 		strcat(tempstr, ". ");
 	}
@@ -11480,7 +11471,6 @@ void doSlider(int x, int y, int dots, int minvalue, int maxvalue, int increment,
 // handles slider (float)
 void doSliderF(int x, int y, int dots, real_t minvalue, real_t maxvalue, real_t increment, real_t* var)
 {
-	int c;
 	Sint32 mousex = inputs.getMouse(clientnum, Inputs::MouseInputs::X);
 	Sint32 mousey = inputs.getMouse(clientnum, Inputs::MouseInputs::Y);
 	Sint32 omousex = inputs.getMouse(clientnum, Inputs::MouseInputs::OX);
@@ -11488,7 +11478,7 @@ void doSliderF(int x, int y, int dots, real_t minvalue, real_t maxvalue, real_t 
 
 	// build bar
 	strcpy(tempstr, "| ");
-	for ( c = 0; c < dots; c++ )
+	for ( int c = 0; c < dots; c++ )
 	{
 		strcat(tempstr, ". ");
 	}
@@ -11555,8 +11545,6 @@ void buttonConfirmDeleteMultiplayerFile(button_t* my)
 
 void buttonOpenCharacterCreationWindow(button_t* my)
 {
-	button_t* button;
-
 	playing_random_char = false;
 	loadingsavegame = 0;
 	loadinglobbykey = 0;
@@ -11592,7 +11580,7 @@ void buttonOpenCharacterCreationWindow(button_t* my)
 	strcpy(subtext, "");
 
 	// close button
-	button = newButton();
+	button_t* button = newButton();
 	strcpy(button->label, "x");
 	button->x = subx2 - 20;
 	button->y = suby1;
@@ -12860,11 +12848,9 @@ bool gamemodsDrawClickableButton(int padx, int pady, int padw, int padh, Uint32 
 
 bool gamemodsRemovePathFromMountedFiles(std::string findStr)
 {
-	std::vector<std::pair<std::string, std::string>>::iterator it;
-	std::pair<std::string, std::string> line;
-	for ( it = gamemods_mountedFilepaths.begin(); it != gamemods_mountedFilepaths.end(); ++it )
+	for ( std::vector<std::pair<std::string, std::string>>::iterator it = gamemods_mountedFilepaths.begin(); it != gamemods_mountedFilepaths.end(); ++it )
 	{
-		line = *it;
+		std::pair<std::string, std::string> line = *it;
 		if ( line.first.compare(findStr) == 0 )
 		{
 			// found entry, remove from list.
@@ -12888,11 +12874,9 @@ bool gamemodsRemovePathFromMountedFiles(std::string findStr)
 
 bool gamemodsIsPathInMountedFiles(std::string findStr)
 {
-	std::vector<std::pair<std::string, std::string>>::iterator it;
-	std::pair<std::string, std::string> line;
-	for ( it = gamemods_mountedFilepaths.begin(); it != gamemods_mountedFilepaths.end(); ++it )
+	for ( std::vector<std::pair<std::string, std::string>>::iterator it = gamemods_mountedFilepaths.begin(); it != gamemods_mountedFilepaths.end(); ++it )
 	{
-		line = *it;
+		std::pair<std::string, std::string> line = *it;
 		if ( line.first.compare(findStr) == 0 )
 		{
 			// found entry

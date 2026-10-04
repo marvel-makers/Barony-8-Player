@@ -929,8 +929,7 @@ void Entity::actChest()
 		}
 
 		// wood chunk particles
-		int c;
-		for ( c = 0; c < 10; c++ )
+		for ( int c = 0; c < 10; c++ )
 		{
 			Entity* entity = spawnGib(this);
 			entity->flags[INVISIBLE] = false;
@@ -1150,8 +1149,6 @@ void Entity::actChest()
 
 void actChestLid(Entity* my)
 {
-	int i;
-
 	Entity* parent = uidToEntity(my->parent);
 	if ( !parent )
 	{
@@ -1171,7 +1168,7 @@ void actChestLid(Entity* my)
 			}
 		}
 
-		for (i = 0; i < MAXPLAYERS; ++i)
+		for (int i = 0; i < MAXPLAYERS; ++i)
 		{
 			if ( selectedEntity[i] == my || client_selected[i] == my )
 			{

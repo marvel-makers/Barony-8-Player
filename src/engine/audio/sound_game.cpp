@@ -1083,8 +1083,6 @@ void* playSound(Uint16 snd, Uint8 vol)
 
 void* playSoundPos(real_t x, real_t y, Uint16 snd, Uint8 vol)
 {
-	int c;
-
 	if (intro || vol == 0)
 	{
 		return nullptr;
@@ -1092,7 +1090,7 @@ void* playSoundPos(real_t x, real_t y, Uint16 snd, Uint8 vol)
 
 	if (multiplayer == SERVER)
 	{
-		for (c = 1; c < MAXPLAYERS; c++)
+		for (int c = 1; c < MAXPLAYERS; c++)
 		{
 			if ( client_disconnected[c] == true || players[c]->isLocalPlayer() )
 			{

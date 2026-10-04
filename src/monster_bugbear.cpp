@@ -25,7 +25,6 @@
 void initBugbear(Entity* my, Stat* myStats)
 {
 	int c;
-	node_t* node;
 
 	my->flags[BURNABLE] = true;
 	my->initMonster(1412);
@@ -179,7 +178,7 @@ void initBugbear(Entity* my, Stat* myStats)
 	entity->focalz = limbs[BUGBEAR][1][2]; // 0
 	entity->behavior = &actBugbearLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

@@ -1082,7 +1082,6 @@ void putPixel(SDL_Surface* surface, int x, int y, Uint32 pixel)
 SDL_Surface* flipSurface( SDL_Surface* surface, int flags )
 {
 	SDL_Surface* flipped = nullptr;
-	Uint32 pixel;
 	int x, rx;
 	int y, ry;
 
@@ -1101,7 +1100,7 @@ SDL_Surface* flipSurface( SDL_Surface* surface, int flags )
 	{
 		for ( y = 0, ry = flipped->h - 1; y < flipped->h; y++, ry-- )
 		{
-			pixel = getPixel( surface, x, y );
+			Uint32 pixel = getPixel(surface, x, y);
 
 			// copy pixel
 			if ( ( flags & FLIP_VERTICAL ) && ( flags & FLIP_HORIZONTAL ) )
@@ -1587,8 +1586,6 @@ void drawImageScaledColor(SDL_Surface* image, SDL_Rect* src, SDL_Rect* pos, Uint
 
 SDL_Surface* scaleSurface(SDL_Surface* Surface, Uint16 Width, Uint16 Height)
 {
-	Sint32 x, y, o_x, o_y;
-
 	if (!Surface || !Width || !Height)
 	{
 		return nullptr;
@@ -1599,10 +1596,10 @@ SDL_Surface* scaleSurface(SDL_Surface* Surface, Uint16 Width, Uint16 Height)
 	real_t _stretch_factor_x = static_cast<real_t>(Width) / static_cast<real_t>(Surface->w);
 	real_t _stretch_factor_y = static_cast<real_t>(Height) / static_cast<real_t>(Surface->h);
 
-	for (y = 0; y < Surface->h; y++)
-		for (x = 0; x < Surface->w; x++)
-			for (o_y = 0; o_y < _stretch_factor_y; ++o_y)
-				for (o_x = 0; o_x < _stretch_factor_x; ++o_x)
+	for (Sint32 y = 0; y < Surface->h; y++)
+		for (Sint32 x = 0; x < Surface->w; x++)
+			for (Sint32 o_y = 0; o_y < _stretch_factor_y; ++o_y)
+				for (Sint32 o_x = 0; o_x < _stretch_factor_x; ++o_x)
 				{
 					putPixel(_ret, static_cast<Sint32>(_stretch_factor_x * x) + o_x, static_cast<Sint32>(_stretch_factor_y * y) + o_y, getPixel(Surface, x, y));
 				}
@@ -1649,20 +1646,17 @@ void drawSky3D( view_t* camera, SDL_Surface* tex )
 
 void drawLayer(long camx, long camy, int z, map_t* map)
 {
-	long x, y;
-	long minx, miny, maxx, maxy;
-	int index;
 	SDL_Rect pos;
 
-	minx = std::max<long int>(camx >> TEXTUREPOWER, 0);
-	maxx = std::min<long int>((camx >> TEXTUREPOWER) + xres / TEXTURESIZE + 2, map->width); //TODO: Why are long int and unsigned int being compared?
-	miny = std::max<long int>(camy >> TEXTUREPOWER, 0);
-	maxy = std::min<long int>((camy >> TEXTUREPOWER) + yres / TEXTURESIZE + 2, map->height); //TODO: Why are long int and unsigned int being compared?
-	for ( y = miny; y < maxy; y++ )
+	long minx = std::max<long int>(camx >> TEXTUREPOWER, 0);
+	long maxx = std::min<long int>((camx >> TEXTUREPOWER) + xres / TEXTURESIZE + 2, map->width); //TODO: Why are long int and unsigned int being compared?
+	long miny = std::max<long int>(camy >> TEXTUREPOWER, 0);
+	long maxy = std::min<long int>((camy >> TEXTUREPOWER) + yres / TEXTURESIZE + 2, map->height); //TODO: Why are long int and unsigned int being compared?
+	for ( long y = miny; y < maxy; y++ )
 	{
-		for ( x = minx; x < maxx; x++ )
+		for ( long x = minx; x < maxx; x++ )
 		{
-			index = map->tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map->height];
+			int index = map->tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map->height];
 			if ( index > 0)
 			{
 				pos.x = static_cast<int>((x << TEXTUREPOWER) - camx);
@@ -3576,8 +3570,6 @@ SDL_Rect ttfPrintTextFormatted( TTF_Font* font, int x, int y, char const * const
 
 void printText( SDL_Surface* font_bmp, int x, int y, const char* str )
 {
-	int c;
-	int numbytes;
 	SDL_Rect src, dest, odest;
 
 	if ( strlen(str) > 2048 )
@@ -3587,7 +3579,7 @@ void printText( SDL_Surface* font_bmp, int x, int y, const char* str )
 	}
 
 	// format the string
-	numbytes = static_cast<int>(strlen(str));
+	int numbytes = static_cast<int>(strlen(str));
 
 	// define font dimensions
 	dest.x = x;
@@ -3598,7 +3590,7 @@ void printText( SDL_Surface* font_bmp, int x, int y, const char* str )
 	src.h = font_bmp->h / 16;
 
 	// print the characters in the string
-	for ( c = 0; c < numbytes; c++ )
+	for ( int c = 0; c < numbytes; c++ )
 	{
 		src.x = (str[c] * src.w) % font_bmp->w;
 		src.y = str[c] * src.w / font_bmp->w * src.h;
@@ -3668,15 +3660,13 @@ void debugPrintText(int x, int y, const SDL_Rect& viewport, char const * const f
 
 void printTextFormatted( SDL_Surface* font_bmp, int x, int y, char const * const fmt, ... )
 {
-	int c;
-	int numbytes;
 	char str[1024] = { 0 };
 	va_list argptr;
 	SDL_Rect src, dest, odest;
 
 	// format the string
 	va_start( argptr, fmt );
-	numbytes = vsnprintf( str, 1023, fmt, argptr );
+	int numbytes = vsnprintf(str, 1023, fmt, argptr);
 	va_end( argptr );
 
 	// define font dimensions
@@ -3688,7 +3678,7 @@ void printTextFormatted( SDL_Surface* font_bmp, int x, int y, char const * const
 	src.h = font_bmp->h / 16;
 
 	// print the characters in the string
-	for ( c = 0; c < numbytes; c++ )
+	for ( int c = 0; c < numbytes; c++ )
 	{
 		src.x = (str[c] * src.w) % font_bmp->w;
 		src.y = str[c] * src.w / font_bmp->w * src.h;
@@ -3733,15 +3723,13 @@ void printTextFormattedAlpha(SDL_Surface* font_bmp, int x, int y, Uint8 alpha, c
 
 void printTextFormattedColor(SDL_Surface* font_bmp, int x, int y, Uint32 color, char const * const fmt, ...)
 {
-	int c;
-	int numbytes;
 	char str[1024] = { 0 };
 	va_list argptr;
 	SDL_Rect src, dest, odest;
 
 	// format the string
 	va_start( argptr, fmt );
-	numbytes = vsnprintf( str, 1023, fmt, argptr );
+	int numbytes = vsnprintf(str, 1023, fmt, argptr);
 	va_end( argptr );
 
 	// define font dimensions
@@ -3753,7 +3741,7 @@ void printTextFormattedColor(SDL_Surface* font_bmp, int x, int y, Uint32 color, 
 	src.h = font_bmp->h / 16;
 
 	// print the characters in the string
-	for ( c = 0; c < numbytes; c++ )
+	for ( int c = 0; c < numbytes; c++ )
 	{
 		src.x = (str[c] * src.w) % font_bmp->w;
 		src.y = str[c] * src.w / font_bmp->w * src.h;

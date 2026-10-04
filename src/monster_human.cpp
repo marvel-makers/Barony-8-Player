@@ -26,8 +26,6 @@
 
 void initHuman(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->flags[BURNABLE] = true;
 	my->initMonster(113);
 	my->z = -1;
@@ -246,8 +244,7 @@ void initHuman(Entity* my, Stat* myStats)
 							myStats->helmet = newItem(HAT_CIRCLET_WISDOM, EXCELLENT, -2 + rng.rand() % 5, 1, rng.rand(), false, nullptr);
 							int status = DECREPIT + (currentlevel > 5) + (currentlevel > 15) + (currentlevel > 20);
 							myStats->weapon = newItem(ARTIFACT_MACE, static_cast<Status>(status), 1, 1, rng.rand(), false, nullptr);
-							int c;
-							for ( c = 0; c < 2; c++ )
+							for ( int c = 0; c < 2; c++ )
 							{
 								Entity* entity = summonMonster(SPIDER, my->x, my->y);
 								if ( entity )
@@ -723,7 +720,7 @@ void initHuman(Entity* my, Stat* myStats)
 	entity->focalz = limbs[HUMAN][1][2]; // 0
 	entity->behavior = &actHumanLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

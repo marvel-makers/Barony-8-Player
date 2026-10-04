@@ -11,8 +11,6 @@
 
 void serverUpdateEffects(int player)
 {
-	int j;
-
 	if ( multiplayer != SERVER || clientnum == player )
 	{
 		return;
@@ -35,7 +33,7 @@ void serverUpdateEffects(int player)
 	}
 
 	std::vector<std::pair<Uint8, Uint8>> effectStrengths;
-	for (j = 0; j < NUMEFFECTS; j++)
+	for (int j = 0; j < NUMEFFECTS; j++)
 	{
 		Uint8 effectValue = stats[player]->getEffectActive(j);
 		if ( effectValue > 0 )
@@ -145,12 +143,11 @@ Updates all player current HP/MP for clients
 
 void serverUpdatePlayerStats()
 {
-	int c;
 	if ( multiplayer != SERVER )
 	{
 		return;
 	}
-	for ( c = 1; c < barony::net::playerCapacity(); c++ )
+	for ( int c = 1; c < barony::net::playerCapacity(); c++ )
 	{
 		if ( client_disconnected[c] || players[c]->isLocalPlayer() )
 		{

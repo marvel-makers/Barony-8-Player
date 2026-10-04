@@ -24,9 +24,6 @@
 
 void initScarab(Entity* my, Stat* myStats)
 {
-	int c;
-	node_t* node;
-
 	my->flags[BURNABLE] = true;
 	my->flags[UPDATENEEDED] = true;
 	my->flags[INVISIBLE] = false;
@@ -96,8 +93,7 @@ void initScarab(Entity* my, Stat* myStats)
 				newItem(ENCHANTED_FEATHER, EXCELLENT, 0, 1, (ENCHANTED_FEATHER_MAX_DURABILITY - 1), false, &myStats->inventory);
 				myStats->weapon = newItem(SPELLBOOK_COLD, EXCELLENT, 0, 1, 0, false, nullptr);
 				customItemsToGenerate = customItemsToGenerate - 1;
-				int c;
-				for ( c = 0; c < 4; ++c )
+				for ( int c = 0; c < 4; ++c )
 				{
 					Entity* entity = summonMonster(SCARAB, my->x, my->y);
 					if ( entity )
@@ -128,7 +124,7 @@ void initScarab(Entity* my, Stat* myStats)
 			my->setHardcoreStats(*myStats);
 
 			int playerCount = 0;
-			for ( c = 0; c < MAXPLAYERS; ++c )
+			for ( int c = 0; c < MAXPLAYERS; ++c )
 			{
 				if ( !client_disconnected[c] )
 				{
@@ -213,7 +209,7 @@ void initScarab(Entity* my, Stat* myStats)
 	entity->focalz = limbs[SCARAB][1][2]; // 0
 	entity->behavior = &actScarabLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

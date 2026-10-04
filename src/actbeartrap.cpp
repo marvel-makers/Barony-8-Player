@@ -46,7 +46,6 @@ std::map<Uint32, MonsterTrapIgnoreEntities_t> monsterTrapIgnoreEntities;
 
 void actBeartrap(Entity* my)
 {
-	int i;
 	if ( my->sprite == 667 )
 	{	
 		my->roll = 0;
@@ -64,7 +63,7 @@ void actBeartrap(Entity* my)
 	}
 
 	// undo beartrap
-	for (i = 0; i < MAXPLAYERS; i++)
+	for (int i = 0; i < MAXPLAYERS; i++)
 	{
 		if ( selectedEntity[i] == my || client_selected[i] == my )
 		{
@@ -110,9 +109,8 @@ void actBeartrap(Entity* my)
 	}
 
 	// launch beartrap
-	node_t* node;
 	Entity* parent = uidToEntity(my->parent);
-	for ( node = map.creatures->first; node != nullptr; node = node->next )
+	for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 	{
 		auto entity = static_cast<Entity*>(node->element);
 		if ( my->parent == entity->getUID() )
@@ -843,8 +841,7 @@ void actBomb(Entity* my)
 	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
-		node_t* node;
-		for ( node = currentList->first; node != nullptr; node = node->next )
+		for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 		{
 			entitiesWithinRadius.push_back(static_cast<Entity*>(node->element));
 		}
@@ -1231,8 +1228,7 @@ bool Entity::entityCheckIfTriggeredWallButton()
 		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
-			node_t* node;
-			for ( node = currentList->first; node != nullptr; node = node->next )
+			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
 				if (auto entity = static_cast<Entity*>(node->element) )
 				{
@@ -1280,8 +1276,7 @@ bool Entity::entityCheckIfTriggeredBomb(bool triggerBomb)
 	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
-		node_t* node;
-		for ( node = currentList->first; node != nullptr; node = node->next )
+		for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 		{
 			auto entity = static_cast<Entity*>(node->element);
 			if ( entity && entity->behavior == &actBomb && entity->skill[24] == 0 )
@@ -1350,8 +1345,7 @@ void actDecoyBox(Entity* my)
 		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
-			node_t* node;
-			for ( node = currentList->first; node != nullptr; node = node->next )
+			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				if ( entity && entity->behavior == &actDecoyBox && entity != my )
@@ -1369,8 +1363,7 @@ void actDecoyBox(Entity* my)
 		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
-			node_t* node;
-			for ( node = currentList->first; node != nullptr; node = node->next )
+			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				if ( parent && entity && entity->behavior == &actMonster

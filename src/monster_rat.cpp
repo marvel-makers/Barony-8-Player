@@ -75,8 +75,7 @@ void initRat(Entity* my, Stat* myStats)
 				myStats->LVL = 10;
 				newItem(GEM_EMERALD, static_cast<Status>(1 + rng.rand() % 4), 0, 1, rng.rand(), true, &myStats->inventory);
 				customItemsToGenerate = customItemsToGenerate - 1;
-				int c;
-				for ( c = 0; c < 6; c++ )
+				for ( int c = 0; c < 6; c++ )
 				{
 					Entity* entity = summonMonster(RAT, my->x, my->y);
 					if ( entity )

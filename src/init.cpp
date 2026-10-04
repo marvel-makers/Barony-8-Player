@@ -645,8 +645,6 @@ int initApp(char const * const title, int fullscreen)
 	// asynchronous loading tasks
 	std::atomic_bool loading_done {false};
 	auto loading_task = std::async(std::launch::async, [&loading_done](){
-		File* fp;
-
 		updateLoadingScreen(20);
 
 		// load models
@@ -654,7 +652,7 @@ int initApp(char const * const title, int fullscreen)
 		modelsDirectory.append(PHYSFS_getDirSeparator()).append("models/models.txt");
 		printlog("loading models from directory %s...\n", modelsDirectory.c_str());
 
-		fp = openDataFile(modelsDirectory.c_str(), "rb");
+		File* fp = openDataFile(modelsDirectory.c_str(), "rb");
 		for ( nummodels = 0; !fp->eof(); nummodels++ )
 		{
 			while ( fp->getc() != '\n' ) if ( fp->eof() )
@@ -919,8 +917,7 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
 	}
 
 	// read file
-	Uint32 line;
-	for ( line = 1; !fp->eof(); )
+	for ( Uint32 line = 1; !fp->eof(); )
 	{
 		//printlog( "loading line %d...\n", line);
 		char data[1024];

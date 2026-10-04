@@ -144,8 +144,7 @@ void startTradingServer(Entity* entity, int player)
 		sendPacketSafe(net_sock, -1, net_packet, player - 1);
 
 		// fill client's shop inventory with items
-		node_t* node;
-		for ( node = entitystats->inventory.first; node != nullptr; node = node->next )
+		for ( node_t* node = entitystats->inventory.first; node != nullptr; node = node->next )
 		{
 			auto item = static_cast<Item*>(node->element);
 			strcpy((char*)net_packet->data, "SHPI");

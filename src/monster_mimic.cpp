@@ -27,8 +27,6 @@
 
 void initMimic(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->z = 0;
 	my->initMonster(1247);
 	my->flags[INVISIBLE] = true; // hide the "AI" bodypart
@@ -100,7 +98,7 @@ void initMimic(Entity* my, Stat* myStats)
 	entity->focalz = limbs[MIMIC][1][2];
 	entity->behavior = &actMimicLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -134,8 +132,6 @@ void initMimic(Entity* my, Stat* myStats)
 
 void initMiniMimic(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->z = 0;
 	my->initMonster(1794);
 	my->flags[INVISIBLE] = true; // hide the "AI" bodypart
@@ -207,7 +203,7 @@ void initMiniMimic(Entity* my, Stat* myStats)
 	entity->focalz = limbs[MINIMIMIC][1][2];
 	entity->behavior = &actMiniMimicLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

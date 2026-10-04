@@ -38,7 +38,6 @@
 void actArrowTrap(Entity* my)
 {
 	int x, y;
-	int c;
 
 	// eliminate arrow traps that have been destroyed.
 	// check wall inside me.
@@ -202,7 +201,7 @@ void actArrowTrap(Entity* my)
 		{
 			ARROWTRAP_FIRED++;
 			ARROWTRAP_REFIRE = 5;
-			for ( c = 0; c < 4; c++ )
+			for ( int c = 0; c < 4; c++ )
 			{
 				switch ( c )
 				{

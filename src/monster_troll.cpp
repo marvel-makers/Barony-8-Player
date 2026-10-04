@@ -25,7 +25,6 @@
 void initTroll(Entity* my, Stat* myStats)
 {
 	int c;
-	node_t* node;
 
 	my->flags[BURNABLE] = true;
 	my->initMonster(204);
@@ -153,7 +152,7 @@ void initTroll(Entity* my, Stat* myStats)
 	entity->focalz = limbs[TROLL][1][2]; // 0
 	entity->behavior = &actTrollLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

@@ -1118,10 +1118,9 @@ void saveAllScores(const std::string& scoresfilename)
 		}
 
 		// inventory
-		node_t* node2;
 		int inventorySize = list_Size(&score->stats->inventory);
 		fp->write(&inventorySize, sizeof(ItemType), 1);
-		for ( node2 = score->stats->inventory.first; node2 != nullptr; node2 = node2->next )
+		for ( node_t* node2 = score->stats->inventory.first; node2 != nullptr; node2 = node2->next )
 		{
 			auto item = static_cast<Item*>(node2->element);
 			fp->write(&item->type, sizeof(ItemType), 1);
@@ -5261,8 +5260,7 @@ bool AchievementObserver::PlayerAchievements::checkTraditionKill(Entity* player,
 	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
-		node_t* node;
-		for ( node = currentList->first; node != nullptr; node = node->next )
+		for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 		{
 			auto entity = static_cast<Entity*>(node->element);
 			if ( entity && entity->behavior == &actFountain )

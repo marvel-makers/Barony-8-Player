@@ -110,8 +110,7 @@ void Entity::actPedestalBase()
 			// wait for external source to trigger the initialisation.
 			if ( multiplayer != CLIENT )
 			{
-				node_t* node;
-				for ( node = map.entities->first; node != nullptr; node = node->next )
+				for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 				{
 					auto entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actMonster )

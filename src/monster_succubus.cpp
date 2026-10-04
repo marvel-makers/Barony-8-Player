@@ -25,9 +25,6 @@
 
 void initSuccubus(Entity* my, Stat* myStats)
 {
-	int c;
-	node_t* node;
-
 	my->flags[BURNABLE] = true;
 	my->initMonster(190);
 	my->z = -1;
@@ -73,7 +70,7 @@ void initSuccubus(Entity* my, Stat* myStats)
 				strcpy(myStats->name, MonsterData_t::getSpecialNPCName(*myStats).c_str());
 				my->sprite = MonsterData_t::getSpecialNPCBaseModel(*myStats);
 				myStats->DEX = 10;
-				for ( c = 0; c < 2; c++ )
+				for ( int c = 0; c < 2; c++ )
 				{
 					Entity* entity = summonMonster(SUCCUBUS, my->x, my->y);
 					if ( entity )
@@ -156,7 +153,7 @@ void initSuccubus(Entity* my, Stat* myStats)
 	entity->focalz = limbs[SUCCUBUS][1][2]; // 0
 	entity->behavior = &actSuccubusLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

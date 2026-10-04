@@ -40,8 +40,6 @@ void actTeleporter(Entity* my)
 
 void Entity::actTeleporter()
 {
-	int i;
-
 	if ( this->ticks == 1 )
 	{
 		createWorldUITooltip();
@@ -117,7 +115,7 @@ void Entity::actTeleporter()
 			}
 			this->clearMonsterInteract();
 		}
-		for ( i = 0; i < MAXPLAYERS; i++ )
+		for ( int i = 0; i < MAXPLAYERS; i++ )
 		{
 			if ( selectedEntity[i] == this || client_selected[i] == this )
 			{

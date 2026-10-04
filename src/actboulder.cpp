@@ -567,8 +567,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
 							serverSpawnMiscParticles(entity, PARTICLE_EFFECT_ABILITY_ROCK, 78);
 						}
 					}
-					int c;
-					for ( c = 0; c < i; c++ )
+					for ( int c = 0; c < i; c++ )
 					{
 						Entity* entity = newEntity(-1, 1, map.entities, nullptr); //Rock/item entity.
 						entity->flags[INVISIBLE] = true;
@@ -770,8 +769,6 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
 
 void actBoulder(Entity* my)
 {
-	int i;
-
 	if ( multiplayer == CLIENT )
 	{
 		if ( my->sprite == 989 ) // boulder_lava.vox
@@ -902,8 +899,7 @@ void actBoulder(Entity* my)
 				for (auto it = entLists.begin(); it != entLists.end(); ++it )
 				{
 					list_t* currentList = *it;
-					node_t* node;
-					for ( node = currentList->first; node != nullptr; node = node->next )
+					for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 					{
 						auto entity = static_cast<Entity*>(node->element);
 						if ( entity == my )
@@ -1109,8 +1105,7 @@ void actBoulder(Entity* my)
 				for (auto it = entLists.begin(); it != entLists.end(); ++it )
 				{
 					list_t* currentList = *it;
-					node_t* node;
-					for ( node = currentList->first; node != nullptr; node = node->next )
+					for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 					{
 						auto entity = static_cast<Entity*>(node->element);
 						if ( entity == my )
@@ -1208,7 +1203,7 @@ void actBoulder(Entity* my)
 			int playerTelekinesis = BOULDER_TELEKINESIS_PULL - 1;
 			int playerKineticPush = BOULDER_TELEKINESIS_PUSH - 1;
 
-			for (i = 0; i < MAXPLAYERS; i++)
+			for (int i = 0; i < MAXPLAYERS; i++)
 			{
 				if ( selectedEntity[i] == my || client_selected[i] == my || playerTelekinesis == i || playerKineticPush == i )
 				{
@@ -1823,7 +1818,6 @@ void actBoulderTrap(Entity* my)
 
 void actBoulderTrapEast(Entity* my)
 {
-	int x, y;
 	int c;
 
 	if ( my->actTrapSabotaged == 0 )
@@ -1898,8 +1892,8 @@ void actBoulderTrapEast(Entity* my)
 			my->boulderTrapFired = 1;
 
 			c = 0; // direction
-			x = static_cast<int>(my->x) >> 4;
-			y = static_cast<int>(my->y) >> 4;
+			int x = static_cast<int>(my->x) >> 4;
+			int y = static_cast<int>(my->y) >> 4;
 			if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder
@@ -1943,7 +1937,6 @@ void actBoulderTrapEast(Entity* my)
 
 void actBoulderTrapSouth(Entity* my)
 {
-	int x, y;
 	int c;
 
 	if ( my->actTrapSabotaged == 0 )
@@ -2018,8 +2011,8 @@ void actBoulderTrapSouth(Entity* my)
 			my->boulderTrapFired = 1;
 
 			c = 1; // direction
-			x = static_cast<int>(my->x) >> 4;
-			y = static_cast<int>(my->y) >> 4;
+			int x = static_cast<int>(my->x) >> 4;
+			int y = static_cast<int>(my->y) >> 4;
 			if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder
@@ -2063,7 +2056,6 @@ void actBoulderTrapSouth(Entity* my)
 
 void actBoulderTrapWest(Entity* my)
 {
-	int x, y;
 	int c;
 
 	if ( my->actTrapSabotaged == 0 )
@@ -2138,8 +2130,8 @@ void actBoulderTrapWest(Entity* my)
 			my->boulderTrapFired = 1;
 
 			c = 2; // direction
-			x = static_cast<int>(my->x) >> 4;
-			y = static_cast<int>(my->y) >> 4;
+			int x = static_cast<int>(my->x) >> 4;
+			int y = static_cast<int>(my->y) >> 4;
 			if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder
@@ -2183,7 +2175,6 @@ void actBoulderTrapWest(Entity* my)
 
 void actBoulderTrapNorth(Entity* my)
 {
-	int x, y;
 	int c;
 
 	if ( my->actTrapSabotaged == 0 )
@@ -2258,8 +2249,8 @@ void actBoulderTrapNorth(Entity* my)
 			my->boulderTrapFired = 1;
 
 			c = 3; // direction
-			x = static_cast<int>(my->x) >> 4;
-			y = static_cast<int>(my->y) >> 4;
+			int x = static_cast<int>(my->x) >> 4;
+			int y = static_cast<int>(my->y) >> 4;
 			if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder

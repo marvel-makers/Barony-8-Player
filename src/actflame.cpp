@@ -179,7 +179,6 @@ Entity* spawnFlame(Entity* parentent, Sint32 sprite )
 		}
 	}
 
-	double vel;
 	Entity* entity = newEntity(sprite, 1, map.entities, nullptr); // flame particle
 	if ( intro )
 	{
@@ -197,7 +196,7 @@ Entity* spawnFlame(Entity* parentent, Sint32 sprite )
 	entity->yaw = (local_rng.rand() % 360) * PI / 180.0;
 	entity->pitch = (local_rng.rand() % 360) * PI / 180.0;
 	entity->roll = (local_rng.rand() % 360) * PI / 180.0;
-	vel = (local_rng.rand() % 10) / 10.0;
+	double vel = (local_rng.rand() % 10) / 10.0;
 	if (flickerLights)
 	{
 	    entity->skill[0] = 5; // life-span

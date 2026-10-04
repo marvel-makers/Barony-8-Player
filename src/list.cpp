@@ -28,10 +28,10 @@ void list_FreeAll(list_t* list)
 	{
 		return;
 	}
-	node_t* node, *nextnode;
+	node_t*nextnode;
 	if (list == map.entities)
 		map.entities_map.clear();
-	for ( node = list->first; node != nullptr; node = nextnode )
+	for ( node_t* node = list->first; node != nullptr; node = nextnode )
 	{
 		nextnode = node->next;
 		list_RemoveNode(node);
@@ -395,8 +395,7 @@ Uint32 list_Size(list_t* list)
 
 list_t* list_Copy(list_t* destlist, list_t* srclist)
 {
-	node_t* node;
-	for ( node = srclist->first; node != nullptr; node = node->next )
+	for ( node_t* node = srclist->first; node != nullptr; node = node->next )
 	{
 		if ( node->size == 0 )
 		{
@@ -437,8 +436,7 @@ list_t* list_CopyNew(list_t* srclist)
 	destlist->first = nullptr;
 	destlist->last = nullptr;
 
-	node_t* node;
-	for ( node = srclist->first; node != nullptr; node = node->next )
+	for ( node_t* node = srclist->first; node != nullptr; node = node->next )
 	{
 		if ( node->size == 0 )
 		{

@@ -295,10 +295,9 @@ void actSpriteWorldTooltip(Entity* my)
 
 Entity* spawnBang(Sint16 x, Sint16 y, Sint16 z)
 {
-	int c;
 	if ( multiplayer == SERVER )
 	{
-		for ( c = 1; c < MAXPLAYERS; c++ )
+		for ( int c = 1; c < MAXPLAYERS; c++ )
 		{
 			if ( client_disconnected[c] || players[c]->isLocalPlayer() )
 			{
@@ -341,10 +340,9 @@ Entity* spawnBang(Sint16 x, Sint16 y, Sint16 z)
 
 Entity* spawnExplosion(Sint16 x, Sint16 y, Sint16 z)
 {
-	int c, i;
 	if ( multiplayer == SERVER )
 	{
-		for ( c = 1; c < MAXPLAYERS; c++ )
+		for ( int c = 1; c < MAXPLAYERS; c++ )
 		{
 			if ( client_disconnected[c] || players[c]->isLocalPlayer() )
 			{
@@ -381,7 +379,7 @@ Entity* spawnExplosion(Sint16 x, Sint16 y, Sint16 z)
 	SPRITE_LIT = 1;
 	playSoundEntityLocal(entity, 153, 128);
 	Entity* explosion = entity;
-	for (i = 0; i < 10; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		entity = newEntity(16, 1, map.entities, nullptr); //Sprite entity.
 		entity->behavior = &actFlame;
@@ -564,11 +562,9 @@ void actSleepZ(Entity* my)
 
 Entity* spawnSleepZ(Sint16 x, Sint16 y, Sint16 z)
 {
-	int c;
-
 	if ( multiplayer == SERVER )
 	{
-		for ( c = 1; c < MAXPLAYERS; c++ )
+		for ( int c = 1; c < MAXPLAYERS; c++ )
 		{
 			if ( client_disconnected[c] || players[c]->isLocalPlayer() )
 			{
@@ -612,11 +608,9 @@ Entity* spawnSleepZ(Sint16 x, Sint16 y, Sint16 z)
 
 Entity* spawnFloatingSpriteMisc(int sprite, Sint16 x, Sint16 y, Sint16 z)
 {
-	int c;
-
 	if ( multiplayer == SERVER )
 	{
-		for ( c = 1; c < MAXPLAYERS; c++ )
+		for ( int c = 1; c < MAXPLAYERS; c++ )
 		{
 			if ( client_disconnected[c] || players[c]->isLocalPlayer() )
 			{

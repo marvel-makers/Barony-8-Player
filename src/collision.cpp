@@ -41,9 +41,8 @@
 
 real_t entityDist(Entity* my, Entity* your)
 {
-	real_t dx, dy;
-	dx = my->x - your->x;
-	dy = my->y - your->y;
+	real_t dx = my->x - your->x;
+	real_t dy = my->y - your->y;
 	return sqrt(dx * dx + dy * dy);
 }
 
@@ -1699,12 +1698,11 @@ int barony_clear(real_t tx, real_t ty, Entity* my)
 
 real_t clipMove(real_t* x, real_t* y, real_t vx, real_t vy, Entity* my)
 {
-	real_t tx, ty;
 	hit.entity = nullptr;
 
 	// move x and y
-	tx = *x + vx;
-	ty = *y + vy;
+	real_t tx = *x + vx;
+	real_t ty = *y + vy;
 
 	if (barony_clear(tx, ty, my))
 	{
@@ -1761,7 +1759,6 @@ real_t clipMove(real_t* x, real_t* y, real_t vx, real_t vy, Entity* my)
 Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int entities, Entity* target, list_t* entityListToUse)
 {
 	Entity* result = nullptr;
-	node_t* node;
 	real_t lowestDist = 9999;
 	int quadrant = 0;
 
@@ -1900,7 +1897,7 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
 	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
-		for ( node = currentList->first; node != nullptr; node = node->next )
+		for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 		{
 			auto entity = static_cast<Entity*>(node->element);
 			if ( (entity != target && target != nullptr) || entity->flags[PASSABLE] || entity == my
@@ -2196,40 +2193,31 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
 
 real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, int entities, bool ground )
 {
-	int posx, posy;
-	real_t fracx, fracy;
-	real_t rx, ry;
-	real_t ix, iy;
-	int inx, iny;
-	real_t arx, ary;
-	real_t dincx, dval0, dincy, dval1;
-	real_t d;
+	int posx = floor(x1);
+	int posy = floor(y1); // integer coordinates
+	real_t fracx = x1 - posx;
+	real_t fracy = y1 - posy; // fraction coordinates
+	real_t rx = cos(angle);
+	real_t ry = sin(angle);
+	real_t ix = 0;
+	real_t iy = 0;
 
-	posx = floor(x1);
-	posy = floor(y1); // integer coordinates
-	fracx = x1 - posx;
-	fracy = y1 - posy; // fraction coordinates
-	rx = cos(angle);
-	ry = sin(angle);
-	ix = 0;
-	iy = 0;
-
-	inx = posx;
-	iny = posy;
-	arx = 0;
+	int inx = posx;
+	int iny = posy;
+	real_t arx = 0;
 	if (rx)
 	{
 		arx = 1.0 / fabs(rx);
 	}
-	ary = 0;
+	real_t ary = 0;
 	if (ry)
 	{
 		ary = 1.0 / fabs(ry);
 	}
-	dincx = 0;
-	dval0 = 1e32;
-	dincy = 0;
-	dval1 = 1e32;
+	real_t dincx = 0;
+	real_t dval0 = 1e32;
+	real_t dincy = 0;
+	real_t dval1 = 1e32;
 	if (rx < 0)
 	{
 		dincx = -1;
@@ -2250,7 +2238,7 @@ real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, 
 		dincy = 1;
 		dval1 = (1.0 - fracy) * ary;
 	}
-	d = 0;
+	real_t d = 0;
 
 	Stat* stats = nullptr;
 	bool waterWalking = my && my->isWaterWalking();
@@ -2425,40 +2413,31 @@ real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, 
 
 real_t lineTraceTarget(Entity* my, real_t x1, real_t y1, real_t angle, real_t range, int entities, bool ground, Entity* target, list_t* entityListToUse)
 {
-	int posx, posy;
-	real_t fracx, fracy;
-	real_t rx, ry;
-	real_t ix, iy;
-	int inx, iny;
-	real_t arx, ary;
-	real_t dincx, dval0, dincy, dval1;
-	real_t d;
+	int posx = floor(x1);
+	int posy = floor(y1); // integer coordinates
+	real_t fracx = x1 - posx;
+	real_t fracy = y1 - posy; // fraction coordinates
+	real_t rx = cos(angle);
+	real_t ry = sin(angle);
+	real_t ix = 0;
+	real_t iy = 0;
 
-	posx = floor(x1);
-	posy = floor(y1); // integer coordinates
-	fracx = x1 - posx;
-	fracy = y1 - posy; // fraction coordinates
-	rx = cos(angle);
-	ry = sin(angle);
-	ix = 0;
-	iy = 0;
-
-	inx = posx;
-	iny = posy;
-	arx = 0;
+	int inx = posx;
+	int iny = posy;
+	real_t arx = 0;
 	if ( rx )
 	{
 		arx = 1.0 / fabs(rx);
 	}
-	ary = 0;
+	real_t ary = 0;
 	if ( ry )
 	{
 		ary = 1.0 / fabs(ry);
 	}
-	dincx = 0;
-	dval0 = 1e32;
-	dincy = 0;
-	dval1 = 1e32;
+	real_t dincx = 0;
+	real_t dval0 = 1e32;
+	real_t dincy = 0;
+	real_t dval1 = 1e32;
 	if ( rx < 0 )
 	{
 		dincx = -1;
@@ -2479,7 +2458,7 @@ real_t lineTraceTarget(Entity* my, real_t x1, real_t y1, real_t angle, real_t ra
 		dincy = 1;
 		dval1 = (1.0 - fracy) * ary;
 	}
-	d = 0;
+	real_t d = 0;
 
 	Entity* entity = findEntityInLine(my, x1, y1, angle, entities, target, entityListToUse);
 

@@ -29,8 +29,6 @@ std::unordered_map<Uint32, int> gyroBotDetectedUids;
 
 void initSentryBot(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->flags[BURNABLE] = false;
 	my->initMonster(my->sprite);
 	my->z = 0;
@@ -107,7 +105,7 @@ void initSentryBot(Entity* my, Stat* myStats)
 	entity->focalz = limbs[race][1][2];
 	entity->behavior = &actSentryBotLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -271,7 +269,6 @@ void initSentryBot(Entity* my, Stat* myStats)
 
 void initGyroBot(Entity* my, Stat* myStats)
 {
-	node_t* node;
 	gyroBotDetectedUids.clear();
 
     my->z = 5;
@@ -334,7 +331,7 @@ void initGyroBot(Entity* my, Stat* myStats)
 	entity->focalz = limbs[GYROBOT][1][2];
 	entity->behavior = &actGyroBotLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -450,8 +447,7 @@ void sentryBotDie(Entity* my)
 	my->removeMonsterDeathNodes();
 	if ( gibs )
 	{
-		int c;
-		for ( c = 0; c < 6; c++ )
+		for ( int c = 0; c < 6; c++ )
 		{
 			Entity* entity = spawnGib(my);
 			if ( entity )
@@ -1562,8 +1558,7 @@ void gyroBotDie(Entity* my)
 	{
 		playSoundEntity(my, 451 + local_rng.rand() % 2, 128);
 		playSoundEntity(my, 450, 128);
-		int c;
-		for ( c = 0; c < 4; c++ )
+		for ( int c = 0; c < 4; c++ )
 		{
 			Entity* entity = spawnGib(my);
 			if ( entity )
@@ -1596,8 +1591,6 @@ void gyroBotDie(Entity* my)
 
 void initDummyBot(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->z = 0;
 	my->initMonster(889);
 	my->flags[INVISIBLE] = true; // hide the "AI" bodypart
@@ -1656,7 +1649,7 @@ void initDummyBot(Entity* my, Stat* myStats)
 	entity->focalz = limbs[DUMMYBOT][1][2];
 	entity->behavior = &actDummyBotLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -1832,8 +1825,7 @@ void dummyBotDie(Entity* my)
 	if ( gibs )
 	{
 		playSoundEntity(my, 451 + local_rng.rand() % 2, 128);
-		int c;
-		for ( c = 0; c < 5; c++ )
+		for ( int c = 0; c < 5; c++ )
 		{
 			Entity* entity = spawnGib(my);
 			if ( entity )

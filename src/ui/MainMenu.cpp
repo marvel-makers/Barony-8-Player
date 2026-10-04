@@ -13204,9 +13204,8 @@ bind_failed:
             address_len = std::min(address_len, static_cast<int>(sizeof(address_copy) - 1));
             memcpy(address_copy, address, address_len);
             address_copy[address_len] = '\0';
-            Uint16 port;
 
-            // find appended port number
+			// find appended port number
             int port_index = 0;
 	        for (; port_index <= address_len; ++port_index) {
 		        if (address_copy[port_index] == ':') {
@@ -13218,7 +13217,7 @@ bind_failed:
 
             // read port number
 		    char *port_err;
-		    port = static_cast<Uint16>(strtol(&address_copy[port_index], &port_err, 10));
+		    Uint16 port = static_cast<Uint16>(strtol(&address_copy[port_index], &port_err, 10));
 		    if (*port_err != '\0' || port < 1024) {
 			    printlog("warning: invalid port number (%hu). Using default (%hu)\n", port, DEFAULT_PORT);
                 port = DEFAULT_PORT;
@@ -21431,8 +21430,7 @@ failed:
 				    if (packetId == 'SCAN') {
                         if (scan.packet->len > 4) {
 				            char hostname[256] = { '\0' };
-				            Uint32 hostname_len;
-				            hostname_len = SDLNet_Read32(&scan.packet->data[4]);
+				            Uint32 hostname_len = SDLNet_Read32(&scan.packet->data[4]);
 				            memcpy(hostname, &scan.packet->data[8], hostname_len);
 
 				            Uint32 offset = 8 + hostname_len;
@@ -28307,8 +28305,7 @@ failed:
 			return;
 		}
 
-		Frame* old_prompt;
-        old_prompt = main_menu_frame->findFrame("controller_prompt");
+        Frame* old_prompt = main_menu_frame->findFrame("controller_prompt");
         if (old_prompt) {
 			// obviously we don't need disconnect prompts
 			// if we're in the reassignment menu...

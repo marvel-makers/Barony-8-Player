@@ -168,7 +168,6 @@ void Entity::actGate()
 	}
 
 	//Setting collision
-	node_t* node;
 	bool somebodyinside = false;
 	if ( this->z > gateStartHeight - 6 && this->flags[PASSABLE] )
 	{
@@ -184,7 +183,7 @@ void Entity::actGate()
 		for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
 		{
 			list_t* currentList = *it;
-			for ( node = currentList->first; node != nullptr; node = node->next )
+			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				if ( entity == this || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost)

@@ -24,9 +24,6 @@
 
 void initDemon(Entity* my, Stat* myStats)
 {
-	int c;
-	node_t* node;
-
 	my->flags[BURNABLE] = false;
 	my->initMonster(258);
 	my->z = -8.5;
@@ -67,7 +64,7 @@ void initDemon(Entity* my, Stat* myStats)
 				my->sprite = MonsterData_t::getSpecialNPCBaseModel(*myStats);
 				myStats->sex = MALE;
 				myStats->LVL = 30;
-				for ( c = 0; c < 3; c++ )
+				for ( int c = 0; c < 3; c++ )
 				{
 					Entity* entity = summonMonster(DEMON, my->x, my->y);
 					if ( entity )
@@ -132,7 +129,7 @@ void initDemon(Entity* my, Stat* myStats)
 	entity->focalz = limbs[DEMON][1][2]; // 0
 	entity->behavior = &actDemonLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

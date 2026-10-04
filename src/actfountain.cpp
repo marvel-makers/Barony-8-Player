@@ -177,8 +177,7 @@ void actFountain(Entity* my)
 	}
 
 	//Using the fountain (TODO: Monsters using it?).
-	int i;
-	for (i = 0; i < MAXPLAYERS; ++i)
+	for (int i = 0; i < MAXPLAYERS; ++i)
 	{
 		if ( selectedEntity[i] == my || client_selected[i] == my )
 		{

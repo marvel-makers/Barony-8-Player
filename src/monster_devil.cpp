@@ -25,9 +25,6 @@
 
 void initDevil(Entity* my, Stat* myStats)
 {
-	int c;
-	node_t* node;
-
 	my->flags[BURNABLE] = false;
 	my->initMonster(304);
 	my->z = -4;
@@ -46,7 +43,7 @@ void initDevil(Entity* my, Stat* myStats)
 	{
 		if ( myStats->HP == 1250 )
 		{
-			for ( c = 0; c < MAXPLAYERS; ++c )
+			for ( int c = 0; c < MAXPLAYERS; ++c )
 			{
 				if ( !client_disconnected[c] )
 				{
@@ -80,7 +77,7 @@ void initDevil(Entity* my, Stat* myStats)
 	entity->focalz = limbs[DEVIL][1][2]; // -4
 	entity->behavior = &actDevilLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -170,8 +167,6 @@ void actDevilLimb(Entity* my)
 
 void devilDie(Entity* my)
 {
-	node_t* node;
-
 	int c;
 	for ( c = 0; c < 5; c++ )
 	{
@@ -209,7 +204,7 @@ void devilDie(Entity* my)
 			}
 		}
 	}
-	for ( node = map.entities->first; node != nullptr; node = node->next )
+	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
 		auto entity = static_cast<Entity*>(node->element);
 		if ( entity->skill[28] )
@@ -456,9 +451,8 @@ void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			case 2:
 			{
 				entity->z -= 16;
-				node_t* tempNode;
 				Entity* playertotrack = nullptr;
-				for ( tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Searching for players only? Don't search full map.entities then.
+				for ( node_t* tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Searching for players only? Don't search full map.entities then.
 				{
 					auto tempEntity = static_cast<Entity*>(tempNode->element);
 					double lowestdist = 5000;
@@ -707,8 +701,7 @@ int Entity::devilGetNumMonstersInArena(Monster creature)
 	int hellArena_y0 = 15;
 	int hellArena_y1 = 49;
 	int numMonstersActiveInArena = 0;
-	node_t* tempNode;
-	for ( tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next )
+	for ( node_t* tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next )
 	{
 		auto monster = static_cast<Entity*>(tempNode->element);
 		if ( monster && monster->getMonsterTypeFromSprite() == creature )

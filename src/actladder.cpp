@@ -44,7 +44,7 @@ void actLadder(Entity* my)
 {
 	int playercount = 0;
 	double dist;
-	int i, c;
+	int c;
 
 	if ( my->ticks == 1 )
 	{
@@ -80,7 +80,7 @@ void actLadder(Entity* my)
 	// use ladder (climb)
 	if (multiplayer != CLIENT)
 	{
-		for (i = 0; i < MAXPLAYERS; i++)
+		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			if ( selectedEntity[i] == my || client_selected[i] == my )
 			{
@@ -202,8 +202,7 @@ void actLadderUp(Entity* my)
 void actPortal(Entity* my)
 {
 	int playercount = 0;
-	double dist;
-	int i, c;
+	int c;
 
 	if ( !my->portalInit )
 	{
@@ -309,7 +308,7 @@ void actPortal(Entity* my)
 	}
 
 	// step through portal
-	for (i = 0; i < MAXPLAYERS; i++)
+	for (int i = 0; i < MAXPLAYERS; i++)
 	{
 		if ( selectedEntity[i] == my || client_selected[i] == my )
 		{
@@ -325,7 +324,7 @@ void actPortal(Entity* my)
 					{
 						playercount++;
 					}
-					dist = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
+					double dist = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
 					if (dist > TOUCHRANGE)
 					{
 						sendMinimapPing(i, my->x / 16.0, my->y / 16.0);
@@ -362,8 +361,7 @@ void actPortal(Entity* my)
 						{
 							; //lol
 							bool visiblegrave = false;
-							node_t* node;
-							for ( node = map.entities->first; node != nullptr; node = node->next )
+							for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 							{
 								auto entity = static_cast<Entity*>(node->element);
 								if ( entity->sprite == 224 && !entity->flags[INVISIBLE] )
@@ -428,8 +426,7 @@ void actPortal(Entity* my)
 void actWinningPortal(Entity* my)
 {
 	int playercount = 0;
-	double dist;
-	int i, c;
+	int c;
 
 	if ( my->ticks == 1 )
 	{
@@ -448,8 +445,7 @@ void actWinningPortal(Entity* my)
 					return; // classic mode disabled.
 				}
 			}
-			node_t* node;
-			for ( node = map.creatures->first; node != nullptr; node = node->next )
+			for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				if ( entity->behavior == &actMonster )
@@ -524,7 +520,7 @@ void actWinningPortal(Entity* my)
 	}
 
 	// step through portal
-	for (i = 0; i < MAXPLAYERS; i++)
+	for (int i = 0; i < MAXPLAYERS; i++)
 	{
 		if ( selectedEntity[i] == my || client_selected[i] == my )
 		{
@@ -540,7 +536,7 @@ void actWinningPortal(Entity* my)
 					{
 						playercount++;
 					}
-					dist = sqrt( pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
+					double dist = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
 					if (dist > TOUCHRANGE)
 					{
 						sendMinimapPing(i, my->x / 16.0, my->y / 16.0);
@@ -694,8 +690,7 @@ void actExpansionEndGamePortal(Entity* my)
 void Entity::actExpansionEndGamePortal()
 {
 	int playercount = 0;
-	double dist;
-	int i, c;
+	int c;
 
 	if ( this->ticks == 1 )
 	{
@@ -707,8 +702,7 @@ void Entity::actExpansionEndGamePortal()
 	{
 		if ( flags[INVISIBLE] )
 		{
-			node_t* node;
-			for ( node = map.creatures->first; node != nullptr; node = node->next )
+			for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				if ( entity )
@@ -774,7 +768,7 @@ void Entity::actExpansionEndGamePortal()
 	}
 
 	// step through portal
-	for ( i = 0; i < MAXPLAYERS; i++ )
+	for ( int i = 0; i < MAXPLAYERS; i++ )
 	{
 		if ( selectedEntity[i] == this || client_selected[i] == this )
 		{
@@ -790,7 +784,7 @@ void Entity::actExpansionEndGamePortal()
 					{
 						playercount++;
 					}
-					dist = sqrt(pow(x - players[c]->entity->x, 2) + pow(y - players[c]->entity->y, 2));
+					double dist = sqrt(pow(x - players[c]->entity->x, 2) + pow(y - players[c]->entity->y, 2));
 					if ( dist > TOUCHRANGE )
 					{
 						sendMinimapPing(i, this->x / 16.0, this->y / 16.0);
@@ -899,8 +893,6 @@ void actMidGamePortal(Entity* my)
 void Entity::actMidGamePortal()
 {
 	int playercount = 0;
-	double dist;
-	int i, c;
 
 	if ( this->ticks == 1 )
 	{
@@ -919,8 +911,7 @@ void Entity::actMidGamePortal()
 					return; // classic mode enabled, don't process.
 				}
 			}
-			node_t* node;
-			for ( node = map.creatures->first; node != nullptr; node = node->next )
+			for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				if ( entity )
@@ -998,13 +989,13 @@ void Entity::actMidGamePortal()
 	}
 
 	// step through portal
-	for ( i = 0; i < MAXPLAYERS; i++ )
+	for ( int i = 0; i < MAXPLAYERS; i++ )
 	{
 		if ( selectedEntity[i] == this || client_selected[i] == this )
 		{
 			if ( inrange[i] )
 			{
-				for ( c = 0; c < MAXPLAYERS; c++ )
+				for ( int c = 0; c < MAXPLAYERS; c++ )
 				{
 					if ( client_disconnected[c] || players[c] == nullptr || players[c]->entity == nullptr )
 					{
@@ -1014,7 +1005,7 @@ void Entity::actMidGamePortal()
 					{
 						playercount++;
 					}
-					dist = sqrt(pow(x - players[c]->entity->x, 2) + pow(y - players[c]->entity->y, 2));
+					double dist = sqrt(pow(x - players[c]->entity->x, 2) + pow(y - players[c]->entity->y, 2));
 					if ( dist > TOUCHRANGE )
 					{
 						sendMinimapPing(i, this->x / 16.0, this->y / 16.0);
@@ -1315,8 +1306,6 @@ int customPortalLookForMapWithName(char* mapToSearch, bool isSecretLevel, int le
 void actCustomPortal(Entity* my)
 {
 	int playercount = 0;
-	double dist;
-	int i, c;
 
 	if ( my->ticks == 1 )
 	{
@@ -1417,13 +1406,13 @@ void actCustomPortal(Entity* my)
 	}
 
 	// step through portal
-	for ( i = 0; i < MAXPLAYERS; i++ )
+	for ( int i = 0; i < MAXPLAYERS; i++ )
 	{
 		if ( selectedEntity[i] == my || client_selected[i] == my )
 		{
 			if ( inrange[i] )
 			{
-				for ( c = 0; c < MAXPLAYERS; c++ )
+				for ( int c = 0; c < MAXPLAYERS; c++ )
 				{
 					if ( client_disconnected[c] || players[c] == nullptr || players[c]->entity == nullptr )
 					{
@@ -1433,7 +1422,7 @@ void actCustomPortal(Entity* my)
 					{
 						playercount++;
 					}
-					dist = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
+					double dist = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
 					if ( dist > TOUCHRANGE )
 					{
 						sendMinimapPing(i, my->x / 16.0, my->y / 16.0);

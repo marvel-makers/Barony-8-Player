@@ -181,8 +181,7 @@ public:
 					bool isImpassable = false;
 					if ( list )
 					{
-						node_t* node;
-						for ( node = list->first; node != nullptr; node = node->next )
+						for ( node_t* node = list->first; node != nullptr; node = node->next )
 						{
 							auto entity = static_cast<Entity*>(node->element);
 							if ( entity )
@@ -303,8 +302,7 @@ void updateGatePath(Entity& entity)
 
 Uint32 heuristic(int x1, int y1, int x2, int y2)
 {
-	Uint32 h;
-	h = (abs(x2 - x1) + abs(y2 - y1)) * STRAIGHTCOST;
+	Uint32 h = (abs(x2 - x1) + abs(y2 - y1)) * STRAIGHTCOST;
 	return h;
 }
 
@@ -941,8 +939,6 @@ void fillPathMap(int* pathMap, int x, int y, int zone);
 
 void generatePathMaps()
 {
-	int x, y;
-
 	if ( pathMapGrounded )
 	{
 		free(pathMapGrounded);
@@ -955,9 +951,9 @@ void generatePathMaps()
 	pathMapFlying = static_cast<int*>(calloc(map.width * map.height, sizeof(int)));
 
 	pathMapZone = 1;
-	for ( y = 0; y < map.height; y++ )
+	for ( int y = 0; y < map.height; y++ )
 	{
-		for ( x = 0; x < map.width; x++ )
+		for ( int x = 0; x < map.width; x++ )
 		{
 			if ( !pathMapGrounded[y + x * map.height] )
 			{
@@ -995,11 +991,10 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 	}
 	if ( obstacle == false )
 	{
-		node_t* node;
 		list_t* list = checkTileForEntity(x, y);
 		if ( list )
 		{
-			for ( node = list->first; node != nullptr; node = node->next )
+			for ( node_t* node = list->first; node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				if ( entity )
@@ -1032,10 +1027,9 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 	{
 		repeat = false;
 
-		int u, v;
-		for ( u = 0; u < map.width; u++ )
+		for ( int u = 0; u < map.width; u++ )
 		{
-			for ( v = 0; v < map.height; v++ )
+			for ( int v = 0; v < map.height; v++ )
 			{
 				if ( pathMap[v + u * map.height] == zone )
 				{
@@ -1048,8 +1042,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							list_t* list = checkTileForEntity(u + 1, v);
 							if ( list )
 							{
-								node_t* node;
-								for ( node = list->first; node != nullptr; node = node->next )
+								for ( node_t* node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1095,8 +1088,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							list_t* list = checkTileForEntity(u - 1, v);
 							if ( list )
 							{
-								node_t* node;
-								for ( node = list->first; node != nullptr; node = node->next )
+								for ( node_t* node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1142,8 +1134,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							list_t* list = checkTileForEntity(u, v + 1);
 							if ( list )
 							{
-								node_t* node;
-								for ( node = list->first; node != nullptr; node = node->next )
+								for ( node_t* node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1189,8 +1180,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 							list_t* list = checkTileForEntity(u, v - 1);
 							if ( list )
 							{
-								node_t* node;
-								for ( node = list->first; node != nullptr; node = node->next )
+								for ( node_t* node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1425,11 +1415,10 @@ void GateGraph::fillPathMap(int x, int y)
 		parentMap = pathMapFlying;
 	}
 
-	node_t* node;
 	list_t* list = checkTileForEntity(x, y);
 	if ( list )
 	{
-		for ( node = list->first; node != nullptr; node = node->next )
+		for ( node_t* node = list->first; node != nullptr; node = node->next )
 		{
 			auto entity = static_cast<Entity*>(node->element);
 			if ( entity )
@@ -1449,10 +1438,9 @@ void GateGraph::fillPathMap(int x, int y)
 	{
 		repeat = false;
 
-		int u, v;
-		for ( u = 0; u < map.width; u++ )
+		for ( int u = 0; u < map.width; u++ )
 		{
-			for ( v = 0; v < map.height; v++ )
+			for ( int v = 0; v < map.height; v++ )
 			{
 				if ( mapSubzones[v + u * map.height] == numSubzones )
 				{
@@ -1464,8 +1452,7 @@ void GateGraph::fillPathMap(int x, int y)
 							list_t* list = checkTileForEntity(u + 1, v);
 							if ( list )
 							{
-								node_t* node;
-								for ( node = list->first; node != nullptr; node = node->next )
+								for ( node_t* node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1496,8 +1483,7 @@ void GateGraph::fillPathMap(int x, int y)
 							list_t* list = checkTileForEntity(u - 1, v);
 							if ( list )
 							{
-								node_t* node;
-								for ( node = list->first; node != nullptr; node = node->next )
+								for ( node_t* node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1528,8 +1514,7 @@ void GateGraph::fillPathMap(int x, int y)
 							list_t* list = checkTileForEntity(u, v + 1);
 							if ( list )
 							{
-								node_t* node;
-								for ( node = list->first; node != nullptr; node = node->next )
+								for ( node_t* node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
@@ -1560,8 +1545,7 @@ void GateGraph::fillPathMap(int x, int y)
 							list_t* list = checkTileForEntity(u, v - 1);
 							if ( list )
 							{
-								node_t* node;
-								for ( node = list->first; node != nullptr; node = node->next )
+								for ( node_t* node = list->first; node != nullptr; node = node->next )
 								{
 									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )

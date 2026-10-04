@@ -1354,8 +1354,7 @@ void actShopkeeperLimb(Entity* my)
 
 void shopkeeperDie(Entity* my)
 {
-	int c;
-	for ( c = 0; c < 10; c++ )
+	for ( int c = 0; c < 10; c++ )
 	{
 		Entity* gib = spawnGib(my);
 		if (c < 6) {

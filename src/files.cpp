@@ -2250,7 +2250,6 @@ voxel_t* loadVoxel(char* filename)
 {
 	//char filename2[1024];
 	File* file;
-	voxel_t* model;
 
 	if ( filename != nullptr )
 	{
@@ -2277,7 +2276,7 @@ voxel_t* loadVoxel(char* filename)
 			printlog("error: loadVoxel file: %s is using magicavoxel .vox file format, export as slab .vox instead!", filename);
 			return nullptr;
 		}
-		model = static_cast<voxel_t*>(malloc(sizeof(voxel_t)));
+		voxel_t* model = static_cast<voxel_t*>(malloc(sizeof(voxel_t)));
 		model->sizex = header;
 		model->sizey = 0;
 		file->read(&model->sizey, sizeof(Sint32), 1);
@@ -2287,8 +2286,7 @@ voxel_t* loadVoxel(char* filename)
 		memset(model->data, 0, sizeof(Uint8)*model->sizex * model->sizey * model->sizez);
 		file->read(model->data, sizeof(Uint8), model->sizex * model->sizey * model->sizez);
 		file->read(&model->palette, sizeof(Uint8), 256 * 3);
-		int c;
-		for ( c = 0; c < 256; c++ )
+		for ( int c = 0; c < 256; c++ )
 		{
 			model->palette[c][0] = model->palette[c][0] << 2;
 			model->palette[c][1] = model->palette[c][1] << 2;
@@ -3284,7 +3282,6 @@ int saveMap(const char* filename2)
 	File* fp;
 	Uint32 numentities = 0;
 	node_t* node;
-	Entity* entity;
 	char filename[256];
 	Sint32 x, y;
 	Stat* myStats;
@@ -3335,7 +3332,7 @@ int saveMap(const char* filename2)
 		fp->write(&numentities, sizeof(Uint32), 1); // number of entities on the map
 		for (node = map.entities->first; node != nullptr; node = node->next)
 		{
-			entity = static_cast<Entity*>(node->element);
+			Entity* entity = static_cast<Entity*>(node->element);
 			fp->write(&entity->sprite, sizeof(Sint32), 1);
 
 			switch ( checkSpriteType(entity->sprite) )
@@ -3899,11 +3896,9 @@ std::list<std::string> physfsGetFileNamesInDirectory(const char* dir)
 		printlog("[PhysFS]: Error: Failed to enumerate filenames in directory '%s': %s", dir, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 		return filenames;
 	}
-	char **i;
-	std::string file;
-	for ( i = rc; *i != nullptr; i++ )
+	for ( char** i = rc; *i != nullptr; i++ )
 	{
-		file = *i;
+		std::string file = *i;
 		//printlog(" * We've got [%s].\n", file.c_str());
 		filenames.push_back(file);
 	}
@@ -5877,8 +5872,8 @@ void physfsReloadItemSprites(bool reloadAll)
 		{
 			// free the image data.
 			//list_FreeAll(&items[c].images);
-			node_t* node, *nextnode;
-			for ( node = items[c].surfaces.first; node != nullptr; node = nextnode )
+			node_t*nextnode;
+			for ( node_t* node = items[c].surfaces.first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
 				auto surface = static_cast<SDL_Surface**>(node->element);
@@ -5982,8 +5977,7 @@ void physfsReloadMonsterLimbFiles()
 		}
 
 		// read file
-		int line;
-		for ( line = 1; !fp->eof(); line++ )
+		for ( int line = 1; !fp->eof(); line++ )
 		{
 			char data[256];
 			int limb = 20;

@@ -2,8 +2,8 @@
 
 int power(int a, int b)
 {
-	int c, result = 1;
-	for ( c = 0; c < b; c++ )
+	int result = 1;
+	for ( int c = 0; c < b; c++ )
 	{
 		result *= a;
 	}
@@ -176,9 +176,8 @@ bool messagePlayerColor(int player, Uint32 type, Uint32 color, char const * cons
 	}
 
     // player death messages trigger this achievement
-	int c;
 	char tempstr[256];
-	for ( c = 0; c < barony::net::playerCapacity(); c++ )
+	for ( int c = 0; c < barony::net::playerCapacity(); c++ )
 	{
 		if ( client_disconnected[c] )
 		{

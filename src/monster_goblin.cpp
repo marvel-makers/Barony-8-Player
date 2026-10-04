@@ -25,8 +25,6 @@
 
 void initGoblin(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->flags[BURNABLE] = true;
 
 	//Sprite 180 = Goblin head model.
@@ -82,8 +80,7 @@ void initGoblin(Entity* my, Stat* myStats)
 				myStats->weapon = newItem(ARTIFACT_MACE, static_cast<Status>(status), 1, 1, rng.rand(), true, nullptr);
 				myStats->helmet = newItem(HAT_JESTER, SERVICABLE, 3 + rng.rand() % 3, 1, rng.rand(), false, nullptr);
 
-				int c;
-				for ( c = 0; c < 3; c++ )
+			    for ( int c = 0; c < 3; c++ )
 				{
 					Entity* entity = summonMonster(GOBLIN, my->x, my->y);
 					if ( entity )
@@ -317,7 +314,7 @@ void initGoblin(Entity* my, Stat* myStats)
 	entity->focalz = limbs[GOBLIN][1][2]; // 0
 	entity->behavior = &actGoblinLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

@@ -24,8 +24,6 @@
 
 void initCockatrice(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->flags[BURNABLE] = true;
 	my->initMonster(413);
 	my->z = -4.5;
@@ -158,7 +156,7 @@ void initCockatrice(Entity* my, Stat* myStats)
 	entity->focalz = limbs[COCKATRICE][1][2]; // 0
 	entity->behavior = &actCockatriceLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -286,8 +284,7 @@ void actCockatriceLimb(Entity* my)
 
 void cockatriceDie(Entity* my)
 {
-	int c;
-	for ( c = 0; c < 12; c++ )
+	for ( int c = 0; c < 12; c++ )
 	{
 		Entity* gib = spawnGib(my);
 	    if (c < 8) {

@@ -13188,7 +13188,6 @@ void Entity::clearMonsterInteract()
 
 bool Entity::monsterSetPathToLocation(int destX, int destY, int adjacentTilesToCheck, int pathingType, bool tryRandomSpot, bool shortByShortest)
 {
-	int u, v;
 	bool foundplace = false;
 	int pathToX = destX;
 	int pathToY = destY;
@@ -13217,9 +13216,9 @@ bool Entity::monsterSetPathToLocation(int destX, int destY, int adjacentTilesToC
 
 	if ( !foundplace )
 	{
-		for ( u = destX - adjacentTilesToCheck; u <= destX + adjacentTilesToCheck; u++ )
+		for ( int u = destX - adjacentTilesToCheck; u <= destX + adjacentTilesToCheck; u++ )
 		{
-			for ( v = destY - adjacentTilesToCheck; v <= destY + adjacentTilesToCheck; v++ )
+			for ( int v = destY - adjacentTilesToCheck; v <= destY + adjacentTilesToCheck; v++ )
 			{
 				if ( static_cast<int>(x / 16) == u && static_cast<int>(y / 16) == v )
 				{
@@ -13284,7 +13283,6 @@ bool Entity::monsterSetPathToLocation(int destX, int destY, int adjacentTilesToC
 
 bool Entity::gyrobotSetPathToReturnLocation(int destX, int destY, int adjacentTilesToCheck, bool tryRandomSpot)
 {
-	int u, v;
 	bool foundplace = false;
 	int pathToX = destX;
 	int pathToY = destY;
@@ -13306,9 +13304,9 @@ bool Entity::gyrobotSetPathToReturnLocation(int destX, int destY, int adjacentTi
 
 	if ( !foundplace )
 	{
-		for ( u = destX - adjacentTilesToCheck; u <= destX + adjacentTilesToCheck; u++ )
+		for ( int u = destX - adjacentTilesToCheck; u <= destX + adjacentTilesToCheck; u++ )
 		{
-			for ( v = destY - adjacentTilesToCheck; v <= destY + adjacentTilesToCheck; v++ )
+			for ( int v = destY - adjacentTilesToCheck; v <= destY + adjacentTilesToCheck; v++ )
 			{
 				if ( static_cast<int>(x / 16) == u && static_cast<int>(y / 16) == v )
 				{

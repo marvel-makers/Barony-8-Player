@@ -42,10 +42,9 @@ void actHeadstone(Entity* my)
 	{
 		if ( multiplayer != CLIENT )
 		{
-			node_t* node;
 			int goldbags = 0;
 			bool artifact = false;
-			for ( node = map.entities->first; node != nullptr; node = node->next )
+			for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 			{
 				auto entity = static_cast<Entity*>(node->element);
 				if ( entity->sprite == 130 )   // gold bag

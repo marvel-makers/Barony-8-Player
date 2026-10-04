@@ -553,11 +553,9 @@ spell_t* spellConstructor(int ID, int difficulty, const char* internal_name, std
 
 void spellChanneledClientDeconstructor(void* data)
 {
-	spell_t* spell;
-
 	if ( data != nullptr)
 	{
-		spell = static_cast<spell_t*>(data);
+		spell_t* spell = static_cast<spell_t*>(data);
 
 		if ( spell_isChanneled(spell) )
 		{
@@ -594,11 +592,9 @@ void spellChanneledClientDeconstructor(void* data)
 
 void spellDeconstructor(void* data)
 {
-	spell_t* spell;
-
 	if ( data != nullptr)
 	{
-		spell = static_cast<spell_t*>(data);
+		spell_t* spell = static_cast<spell_t*>(data);
 
 		if ( spell_isChanneled(spell) )
 		{
@@ -666,10 +662,9 @@ void spellElementConstructor(int elementID, int mana, int base_mana, int overloa
 
 void spellElementDeconstructor(void* data)
 {
-	spellElement_t* spellElement;
 	if (data != nullptr)
 	{
-		spellElement = static_cast<spellElement_t*>(data);
+		spellElement_t* spellElement = static_cast<spellElement_t*>(data);
 
 		list_FreeAll(&spellElement->elements);
 		free(spellElement);
@@ -678,8 +673,6 @@ void spellElementDeconstructor(void* data)
 
 spell_t* copySpell(spell_t* spell, int subElementIndexToCopy)
 {
-	node_t* node;
-
 	auto result = static_cast<spell_t*>(malloc(sizeof(spell_t)));
 	*result = *spell; // copy over all the static data members.
 
@@ -689,7 +682,7 @@ spell_t* copySpell(spell_t* spell, int subElementIndexToCopy)
 	result->elements.first = nullptr;
 	result->elements.last = nullptr;
 
-	for ( node = spell->elements.first; node != nullptr; node = node->next )
+	for ( node_t* node = spell->elements.first; node != nullptr; node = node->next )
 	{
 		auto tempElement = static_cast<spellElement_t*>(node->element);
 
@@ -751,8 +744,6 @@ void copySpellElement(spellElement_t* spellElement, spellElement_t* spellElement
 
 spellElement_t* copySpellElement(spellElement_t* spellElement)
 {
-	node_t* node;
-
 	auto result = static_cast<spellElement_t*>(malloc(sizeof(spellElement_t)));
 	*result = *spellElement; // copy over all the static data members.
 
@@ -760,7 +751,7 @@ spellElement_t* copySpellElement(spellElement_t* spellElement)
 	result->elements.first = nullptr;
 	result->elements.last = nullptr;
 
-	for ( node = spellElement->elements.first; node != nullptr; node = node->next )
+	for ( node_t* node = spellElement->elements.first; node != nullptr; node = node->next )
 	{
 		auto tempElement = static_cast<spellElement_t*>(node->element);
 
@@ -816,8 +807,7 @@ int getSustainCostOfSpell(spell_t* spell, Entity* caster)
 		return 0;
 	}
 
-	node_t* node;
-	for ( node = spell->elements.first; node != nullptr; node = node->next )
+	for ( node_t* node = spell->elements.first; node != nullptr; node = node->next )
 	{
 		auto spellElement = static_cast<spellElement_t*>(node->element);
 		cost += spellElement->channeledMana;
@@ -1795,8 +1785,7 @@ bool spellInList(list_t* list, spell_t* spell)
 	{
 		return false;
 	}
-	node_t* node;
-	for ( node = list->first; node != nullptr; node = node->next )
+	for ( node_t* node = list->first; node != nullptr; node = node->next )
 	{
 		auto current = static_cast<spell_t*>(node->element);
 		if (current)

@@ -33,10 +33,8 @@ static ConsoleVariable<bool> cvar_fullBright("/fullbright", false);
 
 static void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar)
 {
-	GLdouble fW, fH;
-
-	fH = tan(fovY / 360 * PI) * zNear;
-	fW = fH * aspect;
+    GLdouble fH = tan(fovY / 360 * PI) * zNear;
+	GLdouble fW = fH * aspect;
 
     GL_CHECK_ERR(glFrustum(-fW, fW, -fH, fH, zNear, zFar));
 }

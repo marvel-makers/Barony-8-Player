@@ -23,8 +23,6 @@
 
 void initImp(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->flags[BURNABLE] = false;
 	my->initMonster(289);
 	my->z = -4.5;
@@ -119,7 +117,7 @@ void initImp(Entity* my, Stat* myStats)
 	entity->focalz = limbs[CREATURE_IMP][1][2]; // 0
 	entity->behavior = &actImpLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -247,8 +245,7 @@ void actImpLimb(Entity* my)
 
 void impDie(Entity* my)
 {
-	int c;
-	for ( c = 0; c < 12; c++ )
+	for ( int c = 0; c < 12; c++ )
 	{
 		Entity* gib = spawnGib(my);
 	    if (c < 6) {

@@ -4082,9 +4082,7 @@ void gameLogic(void)
 
 void handleButtons(void)
 {
-    node_t* node;
     node_t* nextnode;
-    button_t* button;
     int w = 0, h = 0;
 
     Sint32 mousex = inputs.getMouse(clientnum, Inputs::MouseInputs::X);
@@ -4093,14 +4091,14 @@ void handleButtons(void)
     Sint32 omousey = inputs.getMouse(clientnum, Inputs::MouseInputs::OY);
 
     // handle buttons
-    for (node = button_l.first; node != nullptr; node = nextnode)
+    for (node_t* node = button_l.first; node != nullptr; node = nextnode)
     {
         nextnode = node->next;
         if (node->element == nullptr)
         {
             continue;
         }
-        button = static_cast<button_t*>(node->element);
+        button_t* button = static_cast<button_t*>(node->element);
         if (button == nullptr)
         {
             continue;
@@ -4167,8 +4165,7 @@ void handleButtons(void)
                     if (mousey >= button->y && mousey < button->y + button->sizey && omousey >= button->y && omousey <
                         button->y + button->sizey)
                     {
-                        node_t* node;
-                        for (node = button_l.first; node != nullptr; node = node->next)
+                        for (node_t* node = button_l.first; node != nullptr; node = node->next)
                         {
                             if (node->element == nullptr)
                             {

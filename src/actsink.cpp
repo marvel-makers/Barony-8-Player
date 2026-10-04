@@ -98,8 +98,7 @@ void actSink(Entity* my)
 	}
 
 	//Using the sink. //TODO: Monsters using it?
-	int i;
-	for (i = 0; i < MAXPLAYERS; ++i)
+	for (int i = 0; i < MAXPLAYERS; ++i)
 	{
 		if ( selectedEntity[i] == my || client_selected[i] == my )
 		{

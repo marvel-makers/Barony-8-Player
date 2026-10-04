@@ -1247,8 +1247,8 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		spell_t* thespell = getSpellFromID(SDLNet_Read32(&net_packet->data[5]));
 		if (spellInList(&channeledSpells[client], thespell))
 		{
-			node_t *node, *nextnode;
-			for (node = channeledSpells[client].first; node; node = nextnode )
+			node_t*nextnode;
+			for (node_t* node = channeledSpells[client].first; node; node = nextnode )
 			{
 				nextnode = node->next;
 				auto spell_search = static_cast<spell_t*>(node->element);

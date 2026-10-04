@@ -43464,10 +43464,9 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::update()
     auto& setting = WorldDialogueSettings_t::settings[dialogueType];
     updateWorldCoordinates();
 
-    real_t dx, dy;
     auto& camera = cameras[player];
-    dx = x - camera.x * 16.0;
-    dy = y - camera.y * 16.0;
+    real_t dx = x - camera.x * 16.0;
+    real_t dy = y - camera.y * 16.0;
     if (dx * dx + dy * dy > setting.fadeDist * setting.fadeDist)
     {
         active = false;

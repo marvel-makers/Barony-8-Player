@@ -196,8 +196,6 @@ void writeLevelsTxt(std::string modFolder)
 
 void buttonExit(button_t* my)
 {
-	button_t* button;
-
 	// this shouldn't work if a window is already open
 	if ( subwindow )
 	{
@@ -212,7 +210,7 @@ void buttonExit(button_t* my)
 	suby2 = yres / 2 + 32;
 	strcpy(subtext, "Are you sure you want to quit?\nAny unsaved work will be lost.");
 
-	button = newButton();
+	button_t* button = newButton();
 	strcpy(button->label, "Yes");
 	button->x = subx1 + 32;
 	button->y = suby2 - 24;
@@ -303,8 +301,6 @@ void buttonFile(button_t* my)
 
 void buttonNew(button_t* my)
 {
-	button_t* button;
-
 	editproperty = 0;
 	inputstr = map.name;
 	snprintf(widthtext, 4, "%d", map.width);
@@ -422,7 +418,7 @@ void buttonNew(button_t* my)
 	suby2 = yres / 2 + 200;
 	strcpy(subtext, "New map:");
 
-	button = newButton();
+	button_t* button = newButton();
 	strcpy(button->label, "Create");
 	button->x = subx2 - 64;
 	button->y = suby2 - 48;
@@ -455,7 +451,7 @@ void buttonNew(button_t* my)
 
 void buttonNewConfirm(button_t* my)
 {
-	int x, y, z, c;
+	int z, c;
 	clearUndos();
 	map.tiles.clear();
 	free(camera.vismap);
@@ -565,9 +561,9 @@ void buttonNewConfirm(button_t* my)
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	for ( z = 0; z < MAP_LAYERS; z++ )
 	{
-		for ( y = 0; y < map.height; y++ )
+		for ( int y = 0; y < map.height; y++ )
 		{
-			for ( x = 0; x < map.width; x++ )
+			for ( int x = 0; x < map.width; x++ )
 			{
 				if ( z == OBSTACLELAYER )
 				{
@@ -602,7 +598,6 @@ void buttonNewConfirm(button_t* my)
 
 void buttonOpen(button_t* my)
 {
-	button_t* button;
 	DIR* dir = nullptr;
 	struct dirent* ent = nullptr;
 	unsigned long c = 0;
@@ -620,7 +615,7 @@ void buttonOpen(button_t* my)
 	suby2 = yres / 2 + 120;
 	strcpy(subtext, "Open file:");
 
-	button = newButton();
+	button_t* button = newButton();
 	strcpy(button->label, " Open ");
 	button->x = subx2 - 64;
 	button->y = suby2 - 48;
@@ -782,8 +777,6 @@ void buttonPHYSFSDirDefault(button_t* my)
 
 void buttonOpenDirectory(button_t* my)
 {
-	button_t* button;
-
 	inputstr = foldername;
 	cursorflash = ticks;
 	menuVisible = 0;
@@ -797,7 +790,7 @@ void buttonOpenDirectory(button_t* my)
 	suby2 = yres / 2 + 150;
 	strcpy(subtext, "Choose mod folders to read/write maps:");
 
-	button = newButton();
+	button_t* button = newButton();
 	strcpy(button->label, "Set as save directory");
 	button->x = subx2 - 16 - strlen(button->label) * TTF12_WIDTH;
 	button->y = suby2 - 90;
@@ -842,11 +835,11 @@ void buttonOpenDirectory(button_t* my)
 
 void buttonOpenConfirm(button_t* my)
 {
-	int c, c2;
+	int c2;
 	clearUndos();
 	strcpy(oldfilename, filename);
 	strcpy(message, "");
-	for ( c = 0; c < 32; c++ )
+	for ( int c = 0; c < 32; c++ )
 	{
 		if (filename[c] == 0)
 		{
@@ -876,7 +869,7 @@ void buttonOpenConfirm(button_t* my)
 
 void buttonSave(button_t* my)
 {
-	int c, c2;
+	int c2;
 	menuVisible = 0;
 	strcpy(oldfilename, filename);
 	inputstr = filename;
@@ -887,7 +880,7 @@ void buttonSave(button_t* my)
 	else
 	{
 		strcpy(message, "");
-		for ( c = 0; c < 32; c++ )
+		for ( int c = 0; c < 32; c++ )
 		{
 			if (filename[c] == 0)
 			{
@@ -920,8 +913,6 @@ void buttonSave(button_t* my)
 
 void buttonSaveAs(button_t* my)
 {
-	button_t* button;
-
 	cursorflash = ticks;
 	menuVisible = 0;
 	subwindow = 1;
@@ -934,7 +925,7 @@ void buttonSaveAs(button_t* my)
 	suby2 = yres / 2 + 120;
 	strcpy(subtext, "Save file:");
 
-	button = newButton();
+	button_t* button = newButton();
 	strcpy(button->label, " Save ");
 	button->x = subx2 - 64;
 	button->y = suby2 - 48;
@@ -996,7 +987,6 @@ void buttonCut(button_t* my)
 void buttonCopy(button_t* my)
 {
 	menuVisible = 0;
-	int x, y;
 
 	// copy the selected tiles
 	if (selectedarea && !pasting)
@@ -1009,9 +999,9 @@ void buttonCopy(button_t* my)
 		}
 		copymap.tiles = static_cast<Sint32*>(malloc(sizeof(Sint32) * copymap.width * copymap.height * MAP_LAYERS));
 		memset(copymap.tiles, 0, sizeof(Sint32)*copymap.width * copymap.height * MAP_LAYERS);
-		for ( x = 0; x < copymap.width; x++ )
+		for ( int x = 0; x < copymap.width; x++ )
 		{
-			for ( y = 0; y < copymap.height; y++ )
+			for ( int y = 0; y < copymap.height; y++ )
 			{
 				copymap.tiles[drawlayer + y * MAP_LAYERS + x * MAP_LAYERS * copymap.height] = map.tiles[drawlayer + (y + selectedarea_y1) * MAP_LAYERS + (x + selectedarea_x1) * MAP_LAYERS * map.height];
 			}
@@ -1048,10 +1038,9 @@ void buttonDelete(button_t* my)
 	if (selectedarea)
 	{
 		// delete all selected tiles
-		int x, y;
-		for ( x = selectedarea_x1; x <= selectedarea_x2; x++ )
+		for ( int x = selectedarea_x1; x <= selectedarea_x2; x++ )
 		{
-			for ( y = selectedarea_y1; y <= selectedarea_y2; y++ )
+			for ( int y = selectedarea_y1; y <= selectedarea_y2; y++ )
 			{
 				map.tiles[drawlayer + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 0;
 			}
@@ -1198,8 +1187,6 @@ void buttonMap(button_t* my)
 
 void buttonAttributes(button_t* my)
 {
-	button_t* button;
-
 	editproperty = 0;
 	inputstr = map.name;
 	snprintf(widthtext, 4, "%d", map.width);
@@ -1319,7 +1306,7 @@ void buttonAttributes(button_t* my)
 	suby2 = yres / 2 + 200;
 	strcpy(subtext, "Map properties:");
 
-	button = newButton();
+	button_t* button = newButton();
 	strcpy(button->label, "  OK  ");
 	button->x = subx2 - 64;
 	button->y = suby2 - 48;
@@ -1524,8 +1511,6 @@ void buttonAttributesConfirm(button_t* my)
 
 void buttonClearMap(button_t* my)
 {
-	button_t* button;
-
 	menuVisible = 0;
 	subwindow = 1;
 	subx1 = xres / 2 - 160;
@@ -1534,7 +1519,7 @@ void buttonClearMap(button_t* my)
 	suby2 = yres / 2 + 56;
 	strcpy(subtext, "Warning:\n\nThis option will completely erase your\nentire map.\n\nAre you sure you want to continue?\n");
 
-	button = newButton();
+	button_t* button = newButton();
 	strcpy(button->label, "OK");
 	button->x = subx1 + 64;
 	button->y = suby2 - 24;
@@ -1567,13 +1552,12 @@ void buttonClearMap(button_t* my)
 
 void buttonClearMapConfirm(button_t* my)
 {
-	long x, y, z;
 	makeUndo();
-	for ( z = 0; z < MAP_LAYERS; z++ )
+	for ( long z = 0; z < MAP_LAYERS; z++ )
 	{
-		for ( y = 0; y < map.height; y++ )
+		for ( long y = 0; y < map.height; y++ )
 		{
-			for ( x = 0; x < map.width; x++ )
+			for ( long x = 0; x < map.width; x++ )
 			{
 				map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = 0;
 			}
@@ -1600,8 +1584,6 @@ void buttonHelp(button_t* my)
 
 void buttonAbout(button_t* my)
 {
-	button_t* button;
-
 	menuVisible = 0;
 	subwindow = 1;
 	subx1 = xres / 2 - 160;
@@ -1614,7 +1596,7 @@ void buttonAbout(button_t* my)
 		"\nSheridan Rathbun, all rights reserved."
 		"\n\nSee LICENSE for details.\n");
 
-	button = newButton();
+	button_t* button = newButton();
 	strcpy(button->label, "OK");
 	button->x = xres / 2 - 12;
 	button->y = suby2 - 24;
@@ -1637,10 +1619,9 @@ void buttonAbout(button_t* my)
 
 void buttonEditorToolsHelp(button_t* my)
 {
-	node_t* node;
 	node_t* nextnode;
 	button_t* button;
-	for ( node = button_l.first; node != nullptr; node = nextnode )
+	for ( node_t* node = button_l.first; node != nullptr; node = nextnode )
 	{
 		nextnode = node->next;
 		button = static_cast<button_t*>(node->element);
@@ -1697,8 +1678,6 @@ void buttonEditorToolsHelp(button_t* my)
 
 void buttonEditorControls(button_t* my)
 {
-	button_t* button;
-
 	menuVisible = 0;
 	subwindow = 1;
 	newwindow = 16;
@@ -1707,7 +1686,7 @@ void buttonEditorControls(button_t* my)
 	suby1 = yres / 2 - 210;
 	suby2 = yres / 2 + 210;
 
-	button = newButton();
+	button_t* button = newButton();
 	strcpy(button->label, "OK");
 	button->sizex = 9 * 12 + 8;
 	button->x = xres / 2 - button->sizex - 4;
@@ -1849,9 +1828,6 @@ void buttonSpriteProperties(button_t* my)
 	Stat* tmpSpriteStats = nullptr;
 	int spriteType = 0;
 	int spacing = 20;
-	int pad_y2;
-	int pad_x3;
-	int pad_x4;
 	char tmpStr[32] = "";
 	int itemIndex = 0;
 
@@ -2605,9 +2581,9 @@ void buttonSpriteProperties(button_t* my)
 					butMonsterX->visible = 1;
 					butMonsterX->focused = 1;
 
-					pad_y2 = suby1 + 28 + 2 * spacing;
-					pad_x3 = 40;
-					pad_x4 = subx2 - 112;
+					int pad_y2 = suby1 + 28 + 2 * spacing;
+					int pad_x3 = 40;
+					int pad_x4 = subx2 - 112;
 					itemIndex = 0;
 					if ( tmpSpriteStats->EDITOR_ITEMS[itemIndex * ITEM_SLOT_NUMPROPERTIES] == 0 )
 					{

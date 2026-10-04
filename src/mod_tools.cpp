@@ -11423,11 +11423,9 @@ void Mods::verifyAchievements(const char* fullpath, bool ignoreBaseFolder)
 
 bool Mods::isPathInMountedFiles(std::string findStr)
 {
-	std::vector<std::pair<std::string, std::string>>::iterator it;
-	std::pair<std::string, std::string> line;
-	for ( it = Mods::mountedFilepaths.begin(); it != Mods::mountedFilepaths.end(); ++it )
+	for ( std::vector<std::pair<std::string, std::string>>::iterator it = Mods::mountedFilepaths.begin(); it != Mods::mountedFilepaths.end(); ++it )
 	{
-		line = *it;
+		std::pair<std::string, std::string> line = *it;
 		if ( line.first.compare(findStr) == 0 )
 		{
 			// found entry
@@ -11439,11 +11437,9 @@ bool Mods::isPathInMountedFiles(std::string findStr)
 
 bool Mods::removePathFromMountedFiles(std::string findStr)
 {
-	std::vector<std::pair<std::string, std::string>>::iterator it;
-	std::pair<std::string, std::string> line;
-	for ( it = Mods::mountedFilepaths.begin(); it != Mods::mountedFilepaths.end(); ++it )
+	for ( std::vector<std::pair<std::string, std::string>>::iterator it = Mods::mountedFilepaths.begin(); it != Mods::mountedFilepaths.end(); ++it )
 	{
-		line = *it;
+		std::pair<std::string, std::string> line = *it;
 		if ( line.first.compare(findStr) == 0 )
 		{
 			// found entry, remove from list.
@@ -11500,8 +11496,7 @@ bool Mods::clearAllMountedPaths()
 bool Mods::mountAllExistingPaths()
 {
 	bool success = true;
-	std::vector<std::pair<std::string, std::string>>::iterator it;
-	for ( it = Mods::mountedFilepaths.begin(); it != Mods::mountedFilepaths.end(); ++it )
+	for ( std::vector<std::pair<std::string, std::string>>::iterator it = Mods::mountedFilepaths.begin(); it != Mods::mountedFilepaths.end(); ++it )
 	{
 		std::pair<std::string, std::string> itpair = *it;
 		if ( PHYSFS_mount(itpair.first.c_str(), nullptr, 0) )

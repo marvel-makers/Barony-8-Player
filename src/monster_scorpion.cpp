@@ -77,8 +77,7 @@ void initScorpion(Entity* my, Stat* myStats)
 				myStats->LVL = 15;
 				newItem(GEM_RUBY, static_cast<Status>(1 + rng.rand() % 4), 0, 1, rng.rand(), true, &myStats->inventory);
 				customItemsToGenerate = customItemsToGenerate - 1;
-				int c;
-				for ( c = 0; c < 3; c++ )
+				for ( int c = 0; c < 3; c++ )
 				{
 					Entity* entity = summonMonster(SCORPION, my->x, my->y);
 					if ( entity )
@@ -164,8 +163,6 @@ void scorpionDie(Entity* my)
 }
 void actScorpionTail(Entity* my)
 {
-	int i;
-
 	Entity* parent = nullptr;
 	if ( (parent = uidToEntity(my->skill[2])) == nullptr)
 	{
@@ -175,7 +172,7 @@ void actScorpionTail(Entity* my)
 
 	if ( multiplayer != CLIENT )
 	{
-		for ( i = 0; i < MAXPLAYERS; i++ )
+		for ( int i = 0; i < MAXPLAYERS; i++ )
 		{
 			if ( inrange[i] )
 			{

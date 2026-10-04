@@ -25,8 +25,6 @@
 
 void initInsectoid(Entity* my, Stat* myStats)
 {
-	node_t* node;
-
 	my->flags[BURNABLE] = true;
 	my->initMonster(455); //Sprite 455 = Insectoid head model
 	my->z = 0;
@@ -462,7 +460,7 @@ void initInsectoid(Entity* my, Stat* myStats)
 	entity->focalz = limbs[INSECTOID][1][2]; // 0
 	entity->behavior = &actInsectoidLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);

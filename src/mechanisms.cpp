@@ -405,8 +405,6 @@ void actTrap(Entity* my)
 	}
 
 	// activates circuit when certain entities are occupying its tile
-	node_t* node;
-	Entity* entity;
 	bool somebodyonme = false;
 	my->flags[PASSABLE] = true; // these should ALWAYS be passable. No exceptions
 
@@ -419,9 +417,9 @@ void actTrap(Entity* my)
 	for (auto it = entLists.begin(); it != entLists.end() && !somebodyonme; ++it )
 	{
 		list_t* currentList = *it;
-		for ( node = currentList->first; node != nullptr; node = node->next )
+		for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 		{
-			entity = static_cast<Entity*>(node->element);
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entity->behavior == &actItem && entity->flags[INVISIBLE] )
 			{
 				continue;

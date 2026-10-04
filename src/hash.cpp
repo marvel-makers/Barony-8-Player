@@ -35,13 +35,11 @@ void ttfTextHash_deconstructor(void* data)
 
 SDL_Surface* ttfTextHashRetrieve(list_t* buckets, char* str, TTF_Font* font, bool outline)
 {
-	node_t* node;
-
 	// retrieve bucket
 	list_t* list = &buckets[djb2Hash(str) % HASH_SIZE];
 
 	// find data in bucket (linear search)
-	for ( node = list->first; node != nullptr; node = node->next )
+	for ( node_t* node = list->first; node != nullptr; node = node->next )
 	{
 		auto hashedVal = static_cast<ttfTextHash_t*>(node->element);
 		if ( !strcmp(hashedVal->str, str) && hashedVal->font == font && hashedVal->outline == outline )
@@ -55,7 +53,6 @@ SDL_Surface* ttfTextHashRetrieve(list_t* buckets, char* str, TTF_Font* font, boo
 
 SDL_Surface* ttfTextHashStore(list_t* buckets, char* str, TTF_Font* font, bool outline, SDL_Surface* surf)
 {
-	ttfTextHash_t* hashedVal;
 	node_t* node;
 
 	// retrieve bucket
@@ -68,7 +65,7 @@ SDL_Surface* ttfTextHashStore(list_t* buckets, char* str, TTF_Font* font, bool o
 	}
 	else
 	{
-		hashedVal = static_cast<ttfTextHash_t*>(malloc(sizeof(ttfTextHash_t)));
+		ttfTextHash_t* hashedVal = static_cast<ttfTextHash_t*>(malloc(sizeof(ttfTextHash_t)));
 		hashedVal->str = static_cast<char*>(calloc(strlen(str) + 1, sizeof(char)));
 		strcpy(hashedVal->str, str);
 		hashedVal->surf = surf;

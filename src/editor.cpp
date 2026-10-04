@@ -637,16 +637,13 @@ void mainLogic(void)
 
 void handleButtons(void)
 {
-	node_t* node;
 	node_t* nextnode;
-	button_t* button;
-	int w, h;
 
 	// handle buttons
-	for ( node = button_l.first; node != nullptr; node = nextnode )
+	for ( node_t* node = button_l.first; node != nullptr; node = nextnode )
 	{
 		nextnode = node->next;
-		button = static_cast<button_t*>(node->element);
+		button_t* button = static_cast<button_t*>(node->element);
 		if ( !subwindow && button->focused )
 		{
 			list_RemoveNode(button->node);
@@ -656,8 +653,8 @@ void handleButtons(void)
 		{
 			continue;    // invisible buttons are not processed
 		}
-		w = strlen(button->label) * 8;
-		h = 8;
+		int w = strlen(button->label) * 8;
+		int h = 8;
 		if ( subwindow && !button->focused )
 		{
 			// unfocused buttons do not work when a subwindow is active
@@ -764,10 +761,6 @@ void handleButtons(void)
 
 bool handleEvents(void)
 {
-	real_t d;
-	int j;
-
-
 	// calculate app rate
 	t = SDL_GetTicks();
 	real_t timesync = t - ot;
@@ -790,8 +783,8 @@ bool handleEvents(void)
 	{
 		frameval[cycles & (AVERAGEFRAMES - 1)] = 1.0;
 	}
-	d = frameval[0];
-	for (j = 1; j < AVERAGEFRAMES; j++)
+	real_t d = frameval[0];
+	for (int j = 1; j < AVERAGEFRAMES; j++)
 	{
 		d += frameval[j];
 	}
@@ -1028,14 +1021,13 @@ Uint32 timerCallback(Uint32 interval, void* param)
 void editFill(int x, int y, int layer, int type)
 {
 	int repeat = 1;
-	int fillspot;
 
 	if ( type == map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 	{
 		return;
 	}
 
-	fillspot = map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height];
+	int fillspot = map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height];
 	map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = type + numtiles;
 
 	while ( repeat )
@@ -1187,7 +1179,6 @@ void clearUndos()
 
 void undo()
 {
-	node_t* node;
 	if ( undospot == nullptr)
 	{
 		return;
@@ -1209,7 +1200,7 @@ void undo()
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
 	list_FreeAll(map.entities);
-	for ( node = undomap->entities->first; node != nullptr; node = node->next )
+	for ( node_t* node = undomap->entities->first; node != nullptr; node = node->next )
 	{
 		Entity* entity = newEntity(static_cast<Entity*>(node->element)->sprite, 1, map.entities, nullptr);
 
@@ -1228,8 +1219,6 @@ void undo()
 
 void redo()
 {
-	node_t* node;
-
 	if ( redospot == nullptr)
 	{
 		return;
@@ -1245,7 +1234,7 @@ void redo()
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
 	list_FreeAll(map.entities);
-	for ( node = undomap->entities->first; node != nullptr; node = node->next )
+	for ( node_t* node = undomap->entities->first; node != nullptr; node = node->next )
 	{
 		Entity* entity = newEntity(static_cast<Entity*>(node->element)->sprite, 1, map.entities, nullptr);
 
@@ -1355,9 +1344,8 @@ int loadTilePalettes()
 		char data[1024];
 
 		// read line from file
-		int i;
 		bool fileEnd = false;
-		for ( i = 0; ; i++ )
+		for ( int i = 0; ; i++ )
 		{
 			data[i] = fp->getc();
 			if ( fp->eof() )

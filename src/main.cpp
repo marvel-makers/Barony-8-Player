@@ -537,8 +537,8 @@ hit_t hit;
 
 int longestline(char const * const str)
 {
-	int c, x = 0, result = 0;
-	for ( c = 0; c < strlen(str); c++ )
+	int x = 0, result = 0;
+	for ( int c = 0; c < strlen(str); c++ )
 	{
 		if ( str[c] == 10 )
 		{

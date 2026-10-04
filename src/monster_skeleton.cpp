@@ -27,7 +27,6 @@
 void initSkeleton(Entity* my, Stat* myStats)
 {
 	int c;
-	node_t* node;
 
 	my->flags[BURNABLE] = false;
 
@@ -413,7 +412,7 @@ void initSkeleton(Entity* my, Stat* myStats)
 	entity->focalz = limbs[SKELETON][1][2]; // 0
 	entity->behavior = &actSkeletonLimb;
 	entity->parent = my->getUID();
-	node = list_AddNodeLast(&my->children);
+	node_t* node = list_AddNodeLast(&my->children);
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
@@ -708,8 +707,7 @@ void skeletonDie(Entity* my)
 
 	my->removeMonsterDeathNodes();
 
-	int c;
-	for ( c = 0; c < 6; c++ )
+	for ( int c = 0; c < 6; c++ )
 	{
 		Entity* entity = spawnGib(my);
 		if ( entity )

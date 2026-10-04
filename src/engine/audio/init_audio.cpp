@@ -368,7 +368,6 @@ bool initSoundEngine()
 
 int loadSoundResources(real_t base_load_percent, real_t top_load_percent)
 {
-	File* fp;
 	Uint32 c;
 	char name[128];
 
@@ -382,7 +381,7 @@ int loadSoundResources(real_t base_load_percent, real_t top_load_percent)
 	std::string soundsDirectory = PHYSFS_getRealDir("sound/sounds.txt");
 	soundsDirectory.append(PHYSFS_getDirSeparator()).append("sound/sounds.txt");
 	printlog("loading sounds...\n");
-	fp = openDataFile(soundsDirectory.c_str(), "rb");
+	File* fp = openDataFile(soundsDirectory.c_str(), "rb");
 	for ( numsounds = 0; !fp->eof(); ++numsounds )
 	{
 		while ( fp->getc() != '\n' )
