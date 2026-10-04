@@ -58,7 +58,7 @@ void actArrowTrap(Entity* my)
 	{
 		if ( multiplayer != CLIENT )
 		{
-			ItemType quiver = static_cast<ItemType>(ARROWTRAP_TYPE);
+			auto quiver = static_cast<ItemType>(ARROWTRAP_TYPE);
 			int qty = 2 + (5 - ARROWTRAP_FIRED / 2); // 2 to 7
 			Compendium_t::Events_t::eventUpdateWorld(ARROWTRAP_DISABLED - 1, Compendium_t::CPDM_ARROWS_PILFERED, "arrow trap", qty);
 			Entity* dropped = dropItemMonster(newItem(quiver, SERVICABLE, 0, qty, ITEM_GENERATED_QUIVER_APPEARANCE, false, nullptr), my, nullptr, qty);
@@ -189,7 +189,7 @@ void actArrowTrap(Entity* my)
 			// misfire from a lockpick, try to find a nearby target.
 			for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity && entity->behavior == &actPlayer && entityDist(my, entity) < TOUCHRANGE )
 				{
 					targetToAutoHit = entity;

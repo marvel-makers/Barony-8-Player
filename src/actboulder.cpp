@@ -74,7 +74,7 @@ bool boulderCheckIfBlockedExit(Entity* my)
 	// check if this blocked the exit.
 	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
-		Entity* ladder = static_cast<Entity*>(node->element);
+		auto ladder = static_cast<Entity*>(node->element);
 		if ( ladder && (ladder->behavior == &actLadder || ladder->behavior == &actPortal) )
 		{
 			//if ( ladder->behavior == &actPortal && (ladder->portalNotSecret == 0) )
@@ -507,7 +507,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
 							int secondManaToRefund = 0;
 							for ( node_t* node = stats->FOLLOWERS.first; node != nullptr; node = node->next )
 							{
-								Uint32* c = static_cast<Uint32*>(node->element);
+								auto c = static_cast<Uint32*>(node->element);
 								Entity* mySummon = nullptr;
 								if ( c )
 								{
@@ -899,13 +899,13 @@ void actBoulder(Entity* my)
 			if ( my->z >= -8 && my->z < 0.0 && fabs(my->vel_z) > 2 )
 			{
 				std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
-				for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+				for (auto it = entLists.begin(); it != entLists.end(); ++it )
 				{
 					list_t* currentList = *it;
 					node_t* node;
 					for ( node = currentList->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity == my )
 						{
 							continue;
@@ -1106,13 +1106,13 @@ void actBoulder(Entity* my)
 			if ( dist && !BOULDER_NOGROUND )
 			{
 				std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
-				for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+				for (auto it = entLists.begin(); it != entLists.end(); ++it )
 				{
 					list_t* currentList = *it;
 					node_t* node;
 					for ( node = currentList->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity == my )
 						{
 							continue;
@@ -1763,7 +1763,7 @@ void actBoulderTrap(Entity* my)
 							list_t* trapdoors = TileEntityList.getTileList(x, y);
 							for ( node_t* trapNode = trapdoors->first; trapNode != nullptr; trapNode = trapNode->next )
 							{
-								Entity* trapEntity = static_cast<Entity*>(trapNode->element);
+								auto trapEntity = static_cast<Entity*>(trapNode->element);
 								if ( trapEntity && trapEntity->sprite == 252 && trapEntity->z <= -10 )
 								{
 									foundTrapdoor = c;
@@ -2316,7 +2316,7 @@ void boulderSokobanOnDestroy(bool pushedOffLedge)
 	{
 		for ( node_t* node = map.entities->first; node != nullptr; )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			node = node->next;
 			if ( entity )
 			{
@@ -2334,7 +2334,7 @@ void boulderSokobanOnDestroy(bool pushedOffLedge)
 
 	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		if ( entity )
 		{
 			if ( !bouldersAround && entity->behavior == &actBoulder )
@@ -2351,7 +2351,7 @@ void boulderSokobanOnDestroy(bool pushedOffLedge)
 		Entity* sokobanItemReward = nullptr;
 		for ( node = map.entities->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( entity )
 			{
 				if ( entity->behavior == &actGoldBag && entity->goldSokoban == 1 )

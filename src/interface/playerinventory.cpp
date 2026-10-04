@@ -1729,7 +1729,7 @@ void select_spell_slot(int player, int currentx, int currenty, int diffx, int di
 	int lowestItemY = players[player]->inventoryUI.spellPanel.getNumSpellsToDisplayVertical() - 1;
 	for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( !item ) { continue; }
 		if ( itemCategory(item) != SPELL_CAT ) { continue; }
 
@@ -2326,7 +2326,7 @@ std::string getItemSpritePath(const int player, Item& item)
 		}
 		if ( imagePathsNode )
 		{
-			string_t* imagePath = static_cast<string_t*>(imagePathsNode->element);
+			auto imagePath = static_cast<string_t*>(imagePathsNode->element);
 			return imagePath->data;
 		}
 	}
@@ -2673,7 +2673,7 @@ void releaseChestItem(const int player)
 		{
 			toggleclick = false;
 			nextnode = node->next;
-			Item* tempItem = static_cast<Item*>(node->element);
+			auto tempItem = static_cast<Item*>(node->element);
 			if ( tempItem == selectedItem )
 			{
 				continue;
@@ -2926,7 +2926,7 @@ void releaseChestItem(const int player)
 			{
 				toggleclick = false;
 				nextnode = node->next;
-				Item* tempItem = static_cast<Item*>(node->element);
+				auto tempItem = static_cast<Item*>(node->element);
 				if ( tempItem == selectedItem )
 				{
 					continue;
@@ -3015,7 +3015,7 @@ void releaseChestItem(const int player)
 			for ( node_t* node = stats[player]->inventory.first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* tempItem = static_cast<Item*>(node->element);
+				auto tempItem = static_cast<Item*>(node->element);
 				if ( !tempItem ) { continue; }
 
 				if ( players[player]->paperDoll.getSlotForItem(*tempItem) == dollSlot )
@@ -3457,7 +3457,7 @@ void releaseItem(const int player)
 				{
 					toggleclick = false;
 					nextnode = node->next;
-					Item* tempItem = static_cast<Item*>(node->element);
+					auto tempItem = static_cast<Item*>(node->element);
 					if (tempItem == selectedItem)
 					{
 						continue;
@@ -3724,7 +3724,7 @@ void releaseItem(const int player)
 					{
 						toggleclick = false;
 						nextnode = node->next;
-						Item* tempItem = static_cast<Item*>(node->element);
+						auto tempItem = static_cast<Item*>(node->element);
 						if ( tempItem == selectedItem )
 						{
 							continue;
@@ -4017,7 +4017,7 @@ void releaseItem(const int player)
 						node = nextnode )
 					{
 						nextnode = node->next;
-						Item* tempItem = static_cast<Item*>(node->element); 
+						auto tempItem = static_cast<Item*>(node->element); 
 						if ( !tempItem ) { continue; }
 						if ( tempItem == selectedItem )	{ continue;	}
 
@@ -4505,7 +4505,7 @@ void Player::HUD_t::updateFrameTooltip(Item* item, const int x, const int y, int
         return;
     }
     
-    static const char* bigfont = "fonts/pixelmix.ttf#18";
+    static auto bigfont = "fonts/pixelmix.ttf#18";
     
     auto frameAttr = frameMain->findFrame("inventory mouse tooltip attributes frame");
     auto frameDesc = frameMain->findFrame("inventory mouse tooltip description frame");
@@ -7992,7 +7992,7 @@ int Player::Inventory_t::getKeyAmountForWallLock(Entity& entity) const
 
 	for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* tempItem = static_cast<Item*>(node->element);
+		auto tempItem = static_cast<Item*>(node->element);
 		if ( !tempItem ) { continue; }
 		if ( tempItem->type == key )
 		{
@@ -8039,7 +8039,7 @@ Item* Player::Inventory_t::hasKeyForWallLock(Entity& entity) const
 
 	for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* tempItem = static_cast<Item*>(node->element);
+		auto tempItem = static_cast<Item*>(node->element);
 		if ( !tempItem ) { continue; }
 		if ( tempItem->type == key )
 		{
@@ -9019,7 +9019,7 @@ void Player::Inventory_t::updateInventory()
 						for ( node_t* node = stats[player]->inventory.first; node != NULL; node = nextnode )
 						{
 							nextnode = node->next;
-							Item* tempItem = static_cast<Item*>(node->element);
+							auto tempItem = static_cast<Item*>(node->element);
 							if ( !tempItem ) { continue; }
 							if ( players[player]->paperDoll.getSlotForItem(*tempItem) == dollSlot )
 							{
@@ -9192,7 +9192,7 @@ void Player::Inventory_t::updateInventory()
 		for ( node = shopInv[player]->first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( !item ) { continue; }
 
 			if ( shopGUI.buybackView && !item->playerSoldItemToShop )
@@ -9249,7 +9249,7 @@ void Player::Inventory_t::updateInventory()
 			for ( node = chest_inventory->first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				if ( !item ) { continue; }
 
 				if ( item == selectedItem )
@@ -9300,7 +9300,7 @@ void Player::Inventory_t::updateInventory()
 	for ( node = stats[player]->inventory.first; node != NULL; node = nextnode )
 	{
 		nextnode = node->next;
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( !item ) { continue; }
 
 		if ( item == selectedItem )
@@ -9612,7 +9612,7 @@ void Player::Inventory_t::updateInventory()
 			for ( node = player_inventory->first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				if ( !item ) { continue; }
 
 				if ( !GenericGUI[player].isNodeScribingCraftableItem(item->node) )
@@ -9666,7 +9666,7 @@ void Player::Inventory_t::updateInventory()
 			for ( node = player_inventory->first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				if ( !item ) { continue; }
 
 				if ( !GenericGUI[player].isNodeTinkeringCraftableItem(item->node) )
@@ -9722,7 +9722,7 @@ void Player::Inventory_t::updateInventory()
 		for ( node = shopInv[player]->first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( !item ) { continue; }
 
 			bool mouseOverSlot = false;
@@ -9800,7 +9800,7 @@ void Player::Inventory_t::updateInventory()
 			for ( node = chest_inventory->first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				if ( !item )
 				{
 					continue;
@@ -10089,7 +10089,7 @@ void Player::Inventory_t::updateInventory()
 		for ( node = stats[player]->inventory.first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( !item )
 			{
 				continue;
@@ -10904,7 +10904,7 @@ void Player::Inventory_t::updateInventory()
 			for ( node = stats[player]->inventory.first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				if ( !item ) { continue; }
 
 				int itemx = item->x;
@@ -11088,7 +11088,7 @@ void Player::Inventory_t::updateInventory()
 					for ( node = chest_inventory->first; node != NULL; node = nextnode )
 					{
 						nextnode = node->next;
-						Item* item = static_cast<Item*>(node->element);
+						auto item = static_cast<Item*>(node->element);
 						if ( !item ) { continue; }
 
 						int itemx = item->x;
@@ -11880,12 +11880,12 @@ void quickStackItems(int player)
 {
 	for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* itemToStack = static_cast<Item*>(node->element);
+		auto itemToStack = static_cast<Item*>(node->element);
 		if ( itemToStack && itemToStack->shouldItemStack(player) )
 		{
 			for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
 			{
-				Item* item2 = static_cast<Item*>(node->element);
+				auto item2 = static_cast<Item*>(node->element);
 				// if items are the same, check to see if they should stack
 				if ( item2 && item2 != itemToStack && !itemCompare(itemToStack, item2, false) )
 				{
@@ -11921,7 +11921,7 @@ void autosortInventory(int player, bool sortPaperDoll)
 
 	for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item )
 		{
 			if ( sortPaperDoll )
@@ -11941,7 +11941,7 @@ void autosortInventory(int player, bool sortPaperDoll)
 	std::sort(autosortPairs.begin(), autosortPairs.end());
 
 	// iterate and sort from highest to lowest priority, 1 to 9
-	for ( std::vector<std::pair<int, int>>::reverse_iterator it = autosortPairs.rbegin(); it != autosortPairs.rend(); ++it )
+	for (auto it = autosortPairs.rbegin(); it != autosortPairs.rend(); ++it )
 	{
 		std::pair<int, int> tmpPair = *it;
 		if ( tmpPair.first > 0 )
@@ -11996,7 +11996,7 @@ void autosortInventory(int player, bool sortPaperDoll)
 	}
 
 	// iterate and sort from lowest to highest priority, -9 to -1
-	for ( std::vector<std::pair<int, int>>::iterator it = autosortPairs.begin(); it != autosortPairs.end(); ++it )
+	for (auto it = autosortPairs.begin(); it != autosortPairs.end(); ++it )
 	{
 		std::pair<int, int> tmpPair = *it;
 		if ( tmpPair.first < 0 )
@@ -12070,7 +12070,7 @@ bool Player::Inventory_t::moveItemToFreeInventorySlot(Item* item)
 			{
 				for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
 				{
-					Item* tempItem = static_cast<Item*>(node->element);
+					auto tempItem = static_cast<Item*>(node->element);
 					if ( tempItem == item )
 					{
 						continue;
@@ -12145,7 +12145,7 @@ bool Player::Inventory_t::moveItemToFreeInventorySlot(Item* item)
 			{
 				for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
 				{
-					Item* tempItem = static_cast<Item*>(node->element);
+					auto tempItem = static_cast<Item*>(node->element);
 					if ( tempItem == item )
 					{
 						continue;
@@ -12202,7 +12202,7 @@ bool Player::Inventory_t::moveItemToFreeInventorySlot(Item* item)
 				{
 					for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
 					{
-						Item* tempItem = static_cast<Item*>(node->element);
+						auto tempItem = static_cast<Item*>(node->element);
 						if ( tempItem == item )
 						{
 							continue;
@@ -12260,13 +12260,13 @@ bool Player::Inventory_t::moveItemToFreeInventorySlot(Item* item)
 
 void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
 {
-	Category cat = static_cast<Category>(categoryInt);
+	auto cat = static_cast<Category>(categoryInt);
 
 	std::map<int, std::vector<Item*>> itemsToSort;
 	std::vector<int> itemTypeSortOrder;
 	for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* itemBeingSorted = static_cast<Item*>(node->element);
+		auto itemBeingSorted = static_cast<Item*>(node->element);
 		if ( itemBeingSorted && (itemBeingSorted->x == -1 || itemBeingSorted->x == Player::PaperDoll_t::ITEM_RETURN_TO_INVENTORY_COORDINATE) )
 		{
 			if ( itemCategory(itemBeingSorted) == SPELL_CAT )
@@ -12342,7 +12342,7 @@ void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
 						node_t* node2 = nullptr;
 						for ( node2 = stats[player]->inventory.first; node2 != nullptr; node2 = node2->next )
 						{
-							Item* tempItem = static_cast<Item*>(node2->element);
+							auto tempItem = static_cast<Item*>(node2->element);
 							if ( tempItem == itemBeingSorted )
 							{
 								continue;
@@ -12406,7 +12406,7 @@ void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
 							node_t* node2 = nullptr;
 							for ( node2 = stats[player]->inventory.first; node2 != nullptr; node2 = node2->next )
 							{
-								Item* tempItem = static_cast<Item*>(node2->element);
+								auto tempItem = static_cast<Item*>(node2->element);
 								if ( tempItem == itemBeingSorted )
 								{
 									continue;
@@ -12516,7 +12516,7 @@ bool playerLearnedSpellbook(int player, Item* current_item)
 	}
 	for ( node_t* node = stats[player]->inventory.first; node && current_item->identified; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( !item )
 		{
 			continue;

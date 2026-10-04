@@ -246,7 +246,7 @@ protected:
 		long size = fp->size();
 
 		// reserve an extra byte for the null terminator
-		char * data = static_cast<char*>(calloc(sizeof(char), size + 1));
+		auto data = static_cast<char*>(calloc(sizeof(char), size + 1));
 		assert(data);
 
 		size_t bytesRead = fp->read(data, sizeof(char), size);

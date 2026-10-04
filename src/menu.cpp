@@ -9007,7 +9007,7 @@ void doNewGame(bool makeHighscore) {
 
 		for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			entity->flags[NOUPDATE] = true;
 		}
 		lastEntityUIDs = entity_uids;
@@ -9069,7 +9069,7 @@ void doNewGame(bool makeHighscore) {
 			std::vector<Entity*> shopkeepersToInsert;
 			for ( node_t* node = map.creatures->first; node; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity->sprite == 35 )
 				{
 					shopkeepersToInsert.push_back(entity);
@@ -9132,7 +9132,7 @@ void doNewGame(bool makeHighscore) {
 					node_t* tempNode = list_Node(followers, c);
 					if ( tempNode )
 					{
-						list_t* tempFollowers = static_cast<list_t*>(tempNode->element);
+						auto tempFollowers = static_cast<list_t*>(tempNode->element);
 						if (players[c] && players[c]->entity && !client_disconnected[c])
 						{
 							node_t* node;
@@ -9141,7 +9141,7 @@ void doNewGame(bool makeHighscore) {
 							std::vector<node_t*> allyRobotNodes;
 							for ( node = tempFollowers->first; node != NULL; node = node->next )
 							{
-								Stat* tempStats = static_cast<Stat*>(node->element);
+								auto tempStats = static_cast<Stat*>(node->element);
 								if ( tempStats && tempStats->type == GYROBOT )
 								{
 									gyrobotNode = node;
@@ -9150,7 +9150,7 @@ void doNewGame(bool makeHighscore) {
 							}
 							for ( node = tempFollowers->first; node != NULL; node = node->next )
 							{
-								Stat* tempStats = static_cast<Stat*>(node->element);
+								auto tempStats = static_cast<Stat*>(node->element);
 								if ( tempStats && (tempStats->type == DUMMYBOT
 									|| tempStats->type == SENTRYBOT
 									|| tempStats->type == SPELLBOT) )
@@ -9177,7 +9177,7 @@ void doNewGame(bool makeHighscore) {
 									newNode->deconstructor = &statDeconstructor;
 									newNode->size = sizeof(tempStats);
 
-									Stat* monsterStats = static_cast<Stat*>(newNode->element);
+									auto monsterStats = static_cast<Stat*>(newNode->element);
 									monsterStats->leader_uid = players[c]->entity->getUID();
 									monster->flags[USERFLAG2] = true;
 									monster->monsterAllyIndex = c;
@@ -9209,7 +9209,7 @@ void doNewGame(bool makeHighscore) {
 
 									newNode = list_AddNodeLast(&stats[c]->FOLLOWERS);
 									newNode->deconstructor = &defaultDeconstructor;
-									Uint32* myuid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
+									auto myuid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
 									newNode->element = myuid;
 									*myuid = monster->getUID();
 
@@ -9271,7 +9271,7 @@ void doNewGame(bool makeHighscore) {
 									node_t* botNode = *it;
 									if ( botNode )
 									{
-										Stat* tempStats = static_cast<Stat*>(botNode->element);
+										auto tempStats = static_cast<Stat*>(botNode->element);
 										if ( tempStats )
 										{
 											ItemType type = WOODEN_SHIELD;
@@ -9474,7 +9474,7 @@ void doNewGame(bool makeHighscore) {
 		for ( node_t* node = map.entities->first; node != nullptr; node = nextnode )
 		{
 			nextnode = node->next;
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( entity->flags[NOUPDATE] )
 			{
 				list_RemoveNode(entity->mynode);    // we're anticipating this entity data from server
@@ -10726,7 +10726,7 @@ void openGameoverWindow()
 			}
 			for ( node = stats[i]->inventory.first; node != NULL; node = node->next )
 			{
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				item->identified = true;
 			}
 		}

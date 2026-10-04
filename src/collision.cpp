@@ -162,7 +162,7 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
 		{
 			for ( node_t* node = map.worldUI->first; node; node = node->next )
 			{
-				Entity* tooltip = static_cast<Entity*>(node->element);
+				auto tooltip = static_cast<Entity*>(node->element);
 				if ( !tooltip || tooltip->behavior != &actSpriteWorldTooltip )
 				{
 					continue;
@@ -493,12 +493,12 @@ bool entityInsideSomething(Entity* entity)
 
 	// test against entities
 	std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(entity, 2);
-	for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
 		for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* testEntity = static_cast<Entity*>(node->element);
+			auto testEntity = static_cast<Entity*>(node->element);
 			if ( testEntity == entity || testEntity->flags[PASSABLE] )
 			{
 				continue;
@@ -592,7 +592,7 @@ bool Entity::collisionProjectileMiss(Entity* parent, Entity* projectile)
 			{
 				if ( projectile->children.first && projectile->children.first->element )
 				{
-					if ( spell_t* spell = static_cast<spell_t*>(projectile->children.first->element) )
+					if (auto spell = static_cast<spell_t*>(projectile->children.first->element) )
 					{
 						if ( spell->ID == SPELL_FIREBALL || spell->ID == SPELL_SLIME_FIRE
 							|| spell->ID == SPELL_FLAMES || spell->ID == SPELL_METEOR
@@ -1151,7 +1151,7 @@ int barony_clear(real_t tx, real_t ty, Entity* my)
 		type = my->getMonsterTypeFromSprite();
 	}
 	bool entityDodgeChance = false;
-	for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
 		for ( node = currentList->first; node != nullptr; node = node->next )
@@ -1897,12 +1897,12 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
 			|| myStats->type == FLAME_ELEMENTAL
 			);
 
-	for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( (entity != target && target != nullptr) || entity->flags[PASSABLE] || entity == my
 				|| ((entities & LINETRACE_IGNORE_ENTITIES) && 
 						( (!entity->flags[BLOCKSIGHT] && entity->behavior != &actMonster) 
@@ -2673,7 +2673,7 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
 				// for map generation to detect if decorations have obstacles without entities being assigned actions
 				std::vector<list_t*> entLists{ map.entities };
 				bool ceilingTilesAllowed = !strncmp(map.filename, "fortress", 8);
-				for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+				for (auto it = entLists.begin(); it != entLists.end(); ++it )
 				{
 					list_t* currentList = *it;
 					for ( node = currentList->first; node != nullptr; node = node->next )
@@ -2703,7 +2703,7 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
 			else
 			{
 				std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadius(static_cast<int>(x) >> 4, static_cast<int>(y) >> 4, 2);
-				for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+				for (auto it = entLists.begin(); it != entLists.end(); ++it )
 				{
 					list_t* currentList = *it;
 					for ( node = currentList->first; node != nullptr; node = node->next )

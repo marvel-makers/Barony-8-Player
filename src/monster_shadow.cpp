@@ -83,7 +83,7 @@ void initShadow(Entity* my, Stat* myStats)
 				my->monsterShadowDontChangeName = 1;
 				myStats->weapon = newItem(ARTIFACT_BOW, WORN, 0, 1, rng.rand(), false, nullptr);
 
-				ItemType type = static_cast<ItemType>(QUIVER_SILVER + rng.rand() % 7);
+				auto type = static_cast<ItemType>(QUIVER_SILVER + rng.rand() % 7);
 				int amount = 10 + rng.rand() % 11;
 				newItem(type, SERVICABLE, 0, amount, ITEM_GENERATED_QUIVER_APPEARANCE, true, &myStats->inventory);
 
@@ -562,7 +562,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* shieldNode = list_Node(&my->children, 8);
 				if ( shieldNode )
 				{
-					Entity* shield = static_cast<Entity*>(shieldNode->element);
+					auto shield = static_cast<Entity*>(shieldNode->element);
 					if ( shield->flags[INVISIBLE] )
 					{
 						Entity* weaponarm = nullptr;
@@ -599,7 +599,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 					node_t* shieldNode = list_Node(&my->children, 8);
 					if ( shieldNode )
 					{
-						Entity* shield = static_cast<Entity*>(shieldNode->element);
+						auto shield = static_cast<Entity*>(shieldNode->element);
 						if ( dist > 0.1 && (bodypart != LIMB_HUMANOID_LEFTARM || shield->sprite == 0) )
 						{
 							// walking to destination
@@ -949,7 +949,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
 				if ( weaponNode )
 				{
-					Entity* weapon = static_cast<Entity*>(weaponNode->element);
+					auto weapon = static_cast<Entity*>(weaponNode->element);
 					if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT) )
 					{
 						// if weapon invisible and I'm not attacking, relax arm.
@@ -986,7 +986,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* shieldNode = list_Node(&my->children, 8);
 				if ( shieldNode )
 				{
-					Entity* shield = static_cast<Entity*>(shieldNode->element);
+					auto shield = static_cast<Entity*>(shieldNode->element);
 					if ( shield->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT )
 					{
 						// if weapon invisible and I'm not attacking, relax arm.
@@ -1387,7 +1387,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	node_t* shieldNode = list_Node(&my->children, 8);
 	if ( shieldNode )
 	{
-		Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
+		auto shieldEntity = static_cast<Entity*>(shieldNode->element);
 		if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 		{
 			shieldEntity->yaw -= PI / 6;
@@ -1515,7 +1515,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
 
 		if ( bestMeleeWeapon && !shadowAlreadyStartedWithWeapon )
 		{
-			Item* wieldedCopy = new Item();
+			auto wieldedCopy = new Item();
 			copyItem(wieldedCopy, bestMeleeWeapon);
 			wieldedCopy->appearance = MONSTER_ITEM_UNDROPPABLE_APPEARANCE;
 			monsterEquipItem(*wieldedCopy, &myStats->weapon);
@@ -1523,7 +1523,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
 
 		if ( bestShield )
 		{
-			Item* wieldedCopy = new Item();
+			auto wieldedCopy = new Item();
 			copyItem(wieldedCopy, bestShield);
 			wieldedCopy->appearance = MONSTER_ITEM_UNDROPPABLE_APPEARANCE;
 			monsterEquipItem(*wieldedCopy, &myStats->shield);
@@ -1583,7 +1583,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
 	}
 	for ( node_t* node = targetStats->inventory.first; node; node = node->next)
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( !item )
 		{
 			continue;

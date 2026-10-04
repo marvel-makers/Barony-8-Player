@@ -551,7 +551,7 @@ void Player::BookGUI_t::openBook(int index, Item* item)
 	}
 	if ( !hasreadbook )
 	{
-		char* bookName = static_cast<char*>(malloc(sizeof(char) * (strlen(openBookName.c_str()) + 1)));
+		auto bookName = static_cast<char*>(malloc(sizeof(char) * (strlen(openBookName.c_str()) + 1)));
 		strcpy(bookName, openBookName.c_str());
 
 		node = list_AddNodeFirst(&booksRead);

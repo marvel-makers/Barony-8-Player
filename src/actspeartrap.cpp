@@ -144,7 +144,7 @@ void actSpearTrap(Entity* my)
 				node_t* node;
 				for ( node = map.creatures->first; node != nullptr; node = node->next ) //Searching explicitly for players and monsters, so search only creature list, not map.entities.
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actPlayer || entity->behavior == &actMonster )
 					{
 						Stat* stats = entity->getStats();

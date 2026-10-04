@@ -250,7 +250,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 				continue;
 			}
 
-			Entity* limb = static_cast<Entity*>(tmpNode->element);
+			auto limb = static_cast<Entity*>(tmpNode->element);
 			if ( limb )
 			{
 				// adjust headgear/mask yaw/pitch variations as these do not update always.
@@ -747,7 +747,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 				}
 			}
 			CalloutMenu[pnum].lockOnEntityUid = uid;
-			CalloutRadialMenu::CalloutCommand cmd = static_cast<CalloutRadialMenu::CalloutCommand>(net_packet->data[9]);
+			auto cmd = static_cast<CalloutRadialMenu::CalloutCommand>(net_packet->data[9]);
 			CalloutMenu[pnum].clientCalloutHelpFlags = SDLNet_Read32(&net_packet->data[10]);
 			if ( uid == 0 )
 			{
@@ -1119,7 +1119,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		for ( auto node = entitystats->inventory.first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item2 = static_cast<Item*>(node->element);
+			auto item2 = static_cast<Item*>(node->element);
 			if ( !item2 )
 			{
 				continue;
@@ -1251,7 +1251,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			for (node = channeledSpells[client].first; node; node = nextnode )
 			{
 				nextnode = node->next;
-				spell_t* spell_search = static_cast<spell_t*>(node->element);
+				auto spell_search = static_cast<spell_t*>(node->element);
 				if (spell_search->ID == thespell->ID)
 				{
 					spell_search->sustain = false;
@@ -1649,7 +1649,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			nullptr);
 
 		Item* slot = nullptr;
-		ItemType newType = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[27]));
+		auto newType = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[27]));
 
 		switch ( net_packet->data[26] )
 		{
@@ -1757,7 +1757,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		}
 		if (players[player] && players[player]->entity)
 		{
-			ItemType type = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[7]));
+			auto type = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[7]));
 			Uint32 appearance = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[11]));
 			if ( stats[player]->weapon && stats[player]->weapon->type == type )
 			{

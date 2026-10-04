@@ -242,7 +242,7 @@ void BaronyRNG::getBytes(void* data_, size_t size) {
         uint32_t t = static_cast<uint32_t>(getTime());
 	    seedImpl(&t, sizeof(t));
 	}
-	for (uint8_t* data = static_cast<uint8_t*>(data_); size-- > 0; ++data) {
+	for (auto data = static_cast<uint8_t*>(data_); size-- > 0; ++data) {
 	    i1 = (static_cast<int>(i1) + 1) & 255;
 	    i2 = (static_cast<int>(i2) + buf[i1]) & 255;
 	    swap_byte(buf[i1], buf[i2]);

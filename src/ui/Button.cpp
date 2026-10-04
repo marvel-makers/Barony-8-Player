@@ -188,7 +188,7 @@ void Button::draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const 
 			}
 			int fullH = lines * (_font->height(false) + paddingPerTextLine) + _font->getOutline() * 2;
 
-			char* buf = static_cast<char*>(malloc(text.size() + 1));
+			auto buf = static_cast<char*>(malloc(text.size() + 1));
 			memcpy(buf, text.c_str(), text.size() + 1);
 			int yoff = 0;
 			char* nexttoken;
@@ -456,7 +456,7 @@ Button::result_t Button::process(SDL_Rect _size, SDL_Rect _actualSize, const boo
 }
 
 void Button::scrollParent() {
-	Frame* fparent = static_cast<Frame*>(parent);
+	auto fparent = static_cast<Frame*>(parent);
 	auto fActualSize = fparent->getActualSize();
 	auto fSize = fparent->getSize();
 

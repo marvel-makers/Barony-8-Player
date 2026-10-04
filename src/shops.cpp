@@ -147,7 +147,7 @@ void startTradingServer(Entity* entity, int player)
 		node_t* node;
 		for ( node = entitystats->inventory.first; node != NULL; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			strcpy((char*)net_packet->data, "SHPI");
 			SDLNet_Write32(item->type, &net_packet->data[4]);
 			net_packet->data[8] = static_cast<Sint8>(item->status);
@@ -789,7 +789,7 @@ void buyItemFromMysteriousShopkeepConsumeOrb(const int player, Entity& entity, I
 				for ( node_t* node = inventory->first; node; node = nextnode )
 				{
 					nextnode = node->next;
-					Item* orb = static_cast<Item*>(node->element);
+					auto orb = static_cast<Item*>(node->element);
 					if ( orb && orb->type == orbCategories.first )
 					{
 						consumeItem(orb, -1);

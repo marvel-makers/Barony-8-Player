@@ -1835,7 +1835,7 @@ void Entity::effectTimes()
 							{
 								for ( node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next )
 								{
-									Entity* mapCreature = static_cast<Entity*>(mapNode->element);
+									auto mapCreature = static_cast<Entity*>(mapNode->element);
 									if ( mapCreature )
 									{
 										// undo telepath rendering.
@@ -2855,7 +2855,7 @@ void Entity::checkBetterEquipment(Stat* myStats)
 			//Turn the entity into an item.
 			if ( node->element )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				Item* item = nullptr;
 				if ( entity != nullptr )
 				{
@@ -6123,7 +6123,7 @@ void Entity::handleEffects(Stat* myStats)
 
 							for ( node_t* node = map.creatures->first; node && effect >= 0; node = node->next )
 							{
-								if ( Entity* entity = static_cast<Entity*>(node->element) )
+								if (auto entity = static_cast<Entity*>(node->element) )
 								{
 									if ( entity->behavior != &actPlayer && entity->behavior != &actMonster )
 									{
@@ -6888,7 +6888,7 @@ void Entity::handleEffects(Stat* myStats)
 				continue;
 			}
 		}
-		if ( Entity* entity = static_cast<Entity*>(node->element) )
+		if (auto entity = static_cast<Entity*>(node->element) )
 		{
 			entity->flags[STASIS_DITHER] = flags[STASIS_DITHER];
 		}
@@ -7154,12 +7154,12 @@ void Entity::handleEffects(Stat* myStats)
 		{
 			int mapIndex = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
 			auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 2);
-			for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+			for (auto it = entLists.begin(); it != entLists.end(); ++it )
 			{
 				list_t* currentList = *it;
 				for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity == this )
 					{
 						continue;
@@ -7579,7 +7579,7 @@ void Entity::handleEffects(Stat* myStats)
 			int secondManaToRefund = 0;
 			for ( node_t* node = myStats->FOLLOWERS.first; node != nullptr; node = node->next )
 			{
-				Uint32* c = static_cast<Uint32*>(node->element);
+				auto c = static_cast<Uint32*>(node->element);
 				Entity* mySummon = nullptr;
 				if ( c )
 				{
@@ -8031,7 +8031,7 @@ void Entity::handleEffects(Stat* myStats)
 			node_t* node;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( !entity ) { continue; }
 				if ( entity && !entity->flags[INVISIBLE] && entity->behavior == &actItem && entityDist(entity, this) < dist )
 				{
@@ -10031,7 +10031,7 @@ void getItemsOnTile(int x, int y, list_t** list)
 	{
 		if ( node->element )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			//Check if the entity is an item.
 			if ( entity && entity->behavior == &actItem )
 			{
@@ -10306,7 +10306,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 			{
 				for ( node = aoeTargets->first; node != NULL; node = node->next )
 				{
-					Entity* tmpEntity = static_cast<Entity*>(node->element);
+					auto tmpEntity = static_cast<Entity*>(node->element);
 					if ( tmpEntity != nullptr )
 					{
 						spawnExplosion(tmpEntity->x, tmpEntity->y, tmpEntity->z);
@@ -10630,7 +10630,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 									bool foundCharmSpell = false;
 									for ( node_t* spellnode = stats[player]->inventory.first; spellnode != nullptr; spellnode = spellnode->next )
 									{
-										Item* item = static_cast<Item*>(spellnode->element);
+										auto item = static_cast<Item*>(spellnode->element);
 										if ( item && itemCategory(item) == SPELL_CAT )
 										{
 											spell_t* spell = getSpellFromItem(player, item, false);
@@ -11869,7 +11869,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 				//Maybe should send a signal to each follower, with some kind of attached priority, which determines if they change their target to bumrush the player's assailant.
 				for ( node = hitstats->FOLLOWERS.first; node != nullptr && alertAllies; node = node->next )
 				{
-					Uint32* c = static_cast<Uint32*>(node->element);
+					auto c = static_cast<Uint32*>(node->element);
 					Entity* entity = nullptr;
 					if ( c )
 					{
@@ -15636,7 +15636,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 						}
 						else if ( parriedSkill >= 0 )
 						{
-							DamageTableType dmgType = static_cast<DamageTableType>(parriedSkill - PRO_SWORD);
+							auto dmgType = static_cast<DamageTableType>(parriedSkill - PRO_SWORD);
 							parriedWeaponMultipliers = Entity::getDamageTableMultiplier(this, *myStats, dmgType);
 						}
 
@@ -17297,7 +17297,7 @@ bool teleportCoordHasTrap(const int x, const int y)
 		node_t* node;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( !entity ) { continue; }
 			if ( entity->behavior == &actSpearTrap )
 			{
@@ -19037,7 +19037,7 @@ bool Entity::checkEnemy(Entity* your)
 		bool foundFollower = false;
 		for ( t_node = myStats->FOLLOWERS.first; t_node != NULL; t_node = t_node->next )
 		{
-			Uint32* uid = static_cast<Uint32*>(t_node->element);
+			auto uid = static_cast<Uint32*>(t_node->element);
 			if ( *uid == your->uid )
 			{
 				foundFollower = true;
@@ -19658,7 +19658,7 @@ bool Entity::checkFriend(Entity* your)
 		bool foundFollower = false;
 		for ( t_node = myStats->FOLLOWERS.first; t_node != NULL; t_node = t_node->next )
 		{
-			Uint32* uid = static_cast<Uint32*>(t_node->element);
+			auto uid = static_cast<Uint32*>(t_node->element);
 			if ( *uid == your->uid )
 			{
 				foundFollower = true;
@@ -22198,7 +22198,7 @@ void Entity::humanoidAnimateWalk(Entity* limb, node_t* bodypartNode, int bodypar
 		node_t* shieldNode = list_Node(&this->children, 8);
 		if ( shieldNode )
 		{
-			Entity* shield = static_cast<Entity*>(shieldNode->element);
+			auto shield = static_cast<Entity*>(shieldNode->element);
 			if ( dist > 0.1 && (bodypart != LIMB_HUMANOID_LEFTARM || shield->sprite <= 0) )
 			{
 				// walking to destination
@@ -22219,7 +22219,7 @@ void Entity::humanoidAnimateWalk(Entity* limb, node_t* bodypartNode, int bodypar
 										node_t* tempNode = list_Node(&this->children, 3);
 										if ( tempNode )
 										{
-											Entity* foot = static_cast<Entity*>(tempNode->element);
+											auto foot = static_cast<Entity*>(tempNode->element);
 											playSoundEntityLocal(this, getMonsterFootstepSound(this->monsterFootstepType, foot->sprite), 32);
 										}
 									}
@@ -22250,7 +22250,7 @@ void Entity::humanoidAnimateWalk(Entity* limb, node_t* bodypartNode, int bodypar
 										node_t* tempNode = list_Node(&this->children, 3);
 										if ( tempNode )
 										{
-											Entity* foot = static_cast<Entity*>(tempNode->element);
+											auto foot = static_cast<Entity*>(tempNode->element);
 											playSoundEntityLocal(this, getMonsterFootstepSound(this->monsterFootstepType, foot->sprite), 32);
 										}
 									}
@@ -23523,7 +23523,7 @@ void Entity::handleEffectsClient()
 				continue;
 			}
 		}
-		if ( Entity* entity = static_cast<Entity*>(node->element) )
+		if (auto entity = static_cast<Entity*>(node->element) )
 		{
 			entity->flags[STASIS_DITHER] = flags[STASIS_DITHER];
 		}
@@ -24752,7 +24752,7 @@ bool Entity::monsterAddNearbyItemToInventory(Stat* myStats, int rangeToFind, int
 					break;
 				}
 
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					continue; // ignore invisible items like Sokoban gloves or other scripted events.
@@ -25030,7 +25030,7 @@ bool Entity::monsterAddNearbyItemToInventory(Stat* myStats, int rangeToFind, int
 				else if ( replaceInventoryItem )
 				{
 					//Drop that item out of the monster's inventory, and add this item to the monster's inventory.
-					Item* itemToDrop = static_cast<Item*>(replaceInventoryItem->element);
+					auto itemToDrop = static_cast<Item*>(replaceInventoryItem->element);
 					if ( itemToDrop )
 					{
 						if ( !(myStats->type == AUTOMATON && list_Size(&myStats->inventory) < maxInventoryItems) )
@@ -25055,7 +25055,7 @@ bool Entity::monsterAddNearbyItemToInventory(Stat* myStats, int rangeToFind, int
 					if ( myStats->type == GYROBOT && list_Size(&myStats->inventory) >= 1 )
 					{
 						node_t* inv = myStats->inventory.first;
-						Item* toStack = static_cast<Item*>(inv->element);
+						auto toStack = static_cast<Item*>(inv->element);
 						if ( toStack )
 						{
 							if ( toStack->type >= TOOL_BOMB && toStack->type <= TOOL_TELEPORT_BOMB )
@@ -25124,7 +25124,7 @@ node_t* Entity::addItemToMonsterInventory(Item* item)
 		std::vector<std::pair<int, Item*>> priceAndItems;
 		for ( node_t* node = myStats->inventory.first; node != nullptr; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( !item ) { continue; }
 
 			if ( !item->itemSpecialShopConsumable )
@@ -25640,7 +25640,7 @@ Item* Entity::getBestMeleeWeaponIHave() const
 	//Loop through the creature's inventory & find the best item. //TODO: Make it work on multiplayer clients?
 	for ( node_t* node = myStats->inventory.first; node; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item )
 		{
 			if ( isMeleeWeapon(*item) && Item::isThisABetterWeapon(*item, currentBest) )
@@ -25679,7 +25679,7 @@ Item* Entity::getBestShieldIHave() const
 	//Loop through the creature's inventory & find the best item. //TODO: Make it work on multiplayer clients?
 	for ( node_t* node = myStats->inventory.first; node; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item )
 		{
 			if ( item->isShield() && Item::isThisABetterArmor(*item, currentBest) )
@@ -26161,7 +26161,7 @@ bool Entity::monsterHasSpellbook(int spellbookType)
 
 	for ( node_t* node = myStats->inventory.first; node; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( !item )
 		{
 			continue;
@@ -31459,7 +31459,7 @@ void Entity::alertAlliesOnBeingHit(Entity* attacker, std::unordered_set<Entity*>
 	Entity* ohitentity = hit.entity;
 	for ( node_t* node = map.creatures->first; node != nullptr; node = node->next ) //Only searching for monsters, so don't iterate full map.entities.
 	{
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		if ( !entity ) { continue; }
 		if ( skipEntitiesToAlert && (skipEntitiesToAlert->find(entity) != skipEntitiesToAlert->end()) )
 		{

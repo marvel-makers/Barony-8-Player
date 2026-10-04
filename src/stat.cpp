@@ -390,7 +390,7 @@ Stat::~Stat()
 	{
 		node_t* oldnode = spellnode;
 		spellnode = spellnode->next;
-		spell_t* spell = static_cast<spell_t*>(oldnode->element);
+		auto spell = static_cast<spell_t*>(oldnode->element);
 		spell->magic_effects_node = NULL;
 	}
 	list_FreeAll(&this->magic_effects);
@@ -633,7 +633,7 @@ Stat* Stat::copyStats()
 
 	// create new stat, using the type (HUMAN, SKELETON) as a reference.
 	// this is handled in stat_shared.cpp by adding 1000 to the type.
-	Stat* newStat = new Stat(this->type + 1000);
+	auto newStat = new Stat(this->type + 1000);
 
 	newStat->type = this->type;
 	newStat->sex = this->sex;
@@ -700,7 +700,7 @@ Stat* Stat::copyStats()
 	list_Copy(&newStat->inventory, &this->inventory);
 	for (node = newStat->inventory.first; node != NULL; node = node->next)
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		item->node = node;
 	}
 	newStat->void_chest_inventory.first = nullptr;
@@ -708,7 +708,7 @@ Stat* Stat::copyStats()
 	list_Copy(&newStat->void_chest_inventory, &this->void_chest_inventory);
 	for ( node = newStat->void_chest_inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		item->node = node;
 	}
 
@@ -1456,7 +1456,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 
 	for ( node_t* node = src.inventory.first; node; node = node->next )
 	{
-		Item* invItem = static_cast<Item*>(node->element);
+		auto invItem = static_cast<Item*>(node->element);
 		if ( invItem )
 		{
 			if ( player >= 0 )

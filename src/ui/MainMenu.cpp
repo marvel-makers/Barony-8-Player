@@ -453,7 +453,7 @@ namespace MainMenu {
         },
     };
 
-    static const char* defaultControlLayout = "";
+    static auto defaultControlLayout = "";
 
     inline static const auto& getBindings(const char* name) {
         for (auto& layout : defaultBindings) {
@@ -483,7 +483,7 @@ namespace MainMenu {
     // saves/applies the settings menu
     static bool restartPromptRequired = false;
 
-	static FadeDestination main_menu_fade_destination = FadeDestination::None;
+	static auto main_menu_fade_destination = FadeDestination::None;
 	static std::string tutorial_map_destination;
 
 	enum class LobbyType {
@@ -494,7 +494,7 @@ namespace MainMenu {
 		LobbyJoined
 	};
 
-	static LobbyType currentLobbyType = LobbyType::None;
+	static auto currentLobbyType = LobbyType::None;
 	static bool playersInLobby[MAXPLAYERS];
 	static bool playerSlotsLocked[MAXPLAYERS];
 	static bool newPlayer[MAXPLAYERS];
@@ -521,12 +521,12 @@ namespace MainMenu {
 		fadefinished = false;
 	}
 
-	static const char* bigfont_outline = "fonts/pixelmix.ttf#16#2";
-	static const char* bigfont_no_outline = "fonts/pixelmix.ttf#16#0";
-	static const char* smallfont_outline = "fonts/pixel_maz_multiline.ttf#16#2";
-	static const char* smallfont_no_outline = "fonts/pixel_maz_multiline.ttf#16#0";
-	static const char* menu_option_font = "fonts/kongtext.ttf#16#2";
-	static const char* banner_font = "fonts/pixelmix.ttf#16#2";
+	static auto bigfont_outline = "fonts/pixelmix.ttf#16#2";
+	static auto bigfont_no_outline = "fonts/pixelmix.ttf#16#0";
+	static auto smallfont_outline = "fonts/pixel_maz_multiline.ttf#16#2";
+	static auto smallfont_no_outline = "fonts/pixel_maz_multiline.ttf#16#0";
+	static auto menu_option_font = "fonts/kongtext.ttf#16#2";
+	static auto banner_font = "fonts/pixelmix.ttf#16#2";
 
     // Inventory sorting options
 	struct InventorySorting {
@@ -1074,7 +1074,7 @@ namespace MainMenu {
 		assert(fireSurface);
 	    SDL_LockSurface(fireSurface);
         const int fireSize = (Frame::virtualScreenX * Frame::virtualScreenY) / (firePixelSize * firePixelSize);
-	    Uint32* const sp = static_cast<Uint32*>(fireSurface->pixels);
+	    const auto sp = static_cast<Uint32*>(fireSurface->pixels);
 	    Uint32* const ep = static_cast<Uint32*>(fireSurface->pixels) + fireSize;
 		constexpr Uint32 defaultColor = makeColor(0, 0, 0, fireDefault);
 	    for (Uint32* p = sp; p < ep; ++p) {
@@ -1113,7 +1113,7 @@ namespace MainMenu {
         const int w = Frame::virtualScreenX / firePixelSize;
         const int fireSize = (Frame::virtualScreenX * Frame::virtualScreenY) / (firePixelSize * firePixelSize);
         const int size = fireSize - w;
-	    Uint32* const sp = static_cast<Uint32*>(fireSurface->pixels);
+	    const auto sp = static_cast<Uint32*>(fireSurface->pixels);
 	    Uint32* const mp = static_cast<Uint32*>(fireSurface->pixels) + size;
 	    for (Uint32* p = sp; p < mp; ++p) {
             fireUpdate(p);
@@ -1225,7 +1225,7 @@ namespace MainMenu {
 /******************************************************************************/
 
 	static void updateMenuCursor(Widget& widget) {
-		Frame* buttons = static_cast<Frame*>(&widget);
+		auto buttons = static_cast<Frame*>(&widget);
 		bool buttonSelected = false;
 		for (auto button : buttons->getButtons()) {
 			if (button->isSelected()) {
@@ -2283,7 +2283,7 @@ namespace MainMenu {
 		slider->setHandleImage("*images/ui/Main Menus/Settings/GenericWindow/UI_MM14_ScrollBoulder00.png");
 		slider->setGlyphPosition(Button::glyph_position_t::CENTERED);
 		slider->setCallback([](Slider& slider){
-			Frame* frame = static_cast<Frame*>(slider.getParent());
+			auto frame = static_cast<Frame*>(slider.getParent());
 			auto actualSize = frame->getActualSize();
 			actualSize.y = slider.getValue();
 			frame->setActualSize(actualSize);
@@ -2296,8 +2296,8 @@ namespace MainMenu {
 			gradient_background->pos.y = actualSize.y;
 			});
 		slider->setTickCallback([](Widget& widget){
-			Slider* slider = static_cast<Slider*>(&widget);
-			Frame* frame = static_cast<Frame*>(slider->getParent());
+			auto slider = static_cast<Slider*>(&widget);
+			auto frame = static_cast<Frame*>(slider->getParent());
 			auto actualSize = frame->getActualSize();
 			slider->setValue(actualSize.y);
 			auto railSize = slider->getRailSize();
@@ -3732,7 +3732,7 @@ namespace MainMenu {
 						auto text = textbox2->findField("text");
 						assert(text);
 						size_t text_index = 0u;
-						char* buf = const_cast<char*>(text->getText());
+						auto buf = const_cast<char*>(text->getText());
 						int chars = story_text_chars;
 						size_t len = strlen(buf);
 					    for (;
@@ -4467,7 +4467,7 @@ namespace MainMenu {
 			icon->ontop = true;
 			icon->disabled = true;
 			slider->setTickCallback([](Widget& widget){
-				Slider* slider = static_cast<Slider*>(&widget);
+				auto slider = static_cast<Slider*>(&widget);
 				slider->setValue(static_cast<int>(slider->getValue()));
 				auto window = main_menu_frame->findFrame("inventory_sorting_window");
 				if (window) {
@@ -4627,7 +4627,7 @@ namespace MainMenu {
 		);
 
 		dropdown_list->setTickCallback([](Widget& widget){
-			Frame* dropdown_list = static_cast<Frame*>(&widget); assert(dropdown_list);
+			auto dropdown_list = static_cast<Frame*>(&widget); assert(dropdown_list);
 			auto selection = dropdown_list->findImage("selection"); assert(selection);
 			bool inFrame = dropdown_list->capturesMouse() || !inputs.getVirtualMouse(0)->draw_cursor;
 			if (inFrame && dropdown_list->getSelection() >= 0 && dropdown_list->getSelection() < dropdown_list->getEntries().size()) {
@@ -5406,7 +5406,7 @@ namespace MainMenu {
 		slider->setHandleImage("*images/ui/Main Menus/Settings/Settings_Slider_Boulder00.png");
 		slider->setGlyphPosition(Button::glyph_position_t::CENTERED);
 		slider->setCallback([](Slider& slider){
-			Frame* frame = static_cast<Frame*>(slider.getParent());
+			auto frame = static_cast<Frame*>(slider.getParent());
 			auto actualSize = frame->getActualSize();
 			actualSize.y = slider.getValue();
 			frame->setActualSize(actualSize);
@@ -5419,8 +5419,8 @@ namespace MainMenu {
 			gradient_background->pos.y = actualSize.y;
 			});
 		slider->setTickCallback([](Widget& widget){
-			Slider* slider = static_cast<Slider*>(&widget);
-			Frame* frame = static_cast<Frame*>(slider->getParent());
+			auto slider = static_cast<Slider*>(&widget);
+			auto frame = static_cast<Frame*>(slider->getParent());
 			auto actualSize = frame->getActualSize();
 			slider->setValue(actualSize.y);
 			auto railSize = slider->getRailSize();
@@ -9593,7 +9593,7 @@ bind_failed:
             conduct->setWidgetLeft(name);
             };
 
-        static const char* fmt = "  #%d %s";
+        static auto fmt = "  #%d %s";
 
 		static std::set<std::string> statChecks;
 		static ConsoleCommand ccmd_leaderboard_stat_checks(
@@ -9706,7 +9706,7 @@ bind_failed:
                         }
                     }
                     if (!isMouseVisible()) {
-                        const char* unselected = "*images/ui/Main Menus/Leaderboards/AA_NameList_Unselected_00.png";
+	                    auto unselected = "*images/ui/Main Menus/Leaderboards/AA_NameList_Unselected_00.png";
                         if (strcmp(button->getBackground(), unselected) == 0) {
                             button->activate();
                         }
@@ -10363,15 +10363,15 @@ bind_failed:
 		slider->setValue(0.f);
 		slider->setMinValue(0.f);
 		slider->setCallback([](Slider& slider){
-			Frame* frame = static_cast<Frame*>(slider.getParent());
+			auto frame = static_cast<Frame*>(slider.getParent());
 			Frame* list = frame->findFrame("list"); assert(list);
 			auto actualSize = list->getActualSize();
 			actualSize.y = slider.getValue();
 			list->setActualSize(actualSize);
 			});
 		slider->setTickCallback([](Widget& widget){
-			Slider* slider = static_cast<Slider*>(&widget);
-			Frame* frame = static_cast<Frame*>(slider->getParent());
+			auto slider = static_cast<Slider*>(&widget);
+			auto frame = static_cast<Frame*>(slider->getParent());
 			Frame* list = frame->findFrame("list"); assert(list);
 			auto actualSize = list->getActualSize();
 			slider->setValue(actualSize.y);
@@ -14657,7 +14657,7 @@ failed:
 		achievements->setFont(smallfont_no_outline);
 		achievements->setJustify(Field::justify_t::CENTER);
 		achievements->setTickCallback([](Widget& widget){
-			Field* achievements = static_cast<Field*>(&widget);
+			auto achievements = static_cast<Field*>(&widget);
             if (multiplayer != CLIENT) {
 				if ( gameModeManager.currentSession.challengeRun.isActive()
 					&& gameModeManager.currentSession.challengeRun.lid.find("challenge") != std::string::npos )
@@ -14697,7 +14697,7 @@ failed:
                     achievements->setColor(makeColor(37, 90, 255, 255));
                     achievements->setText(Language::get(5390));
                 }
-                Frame* card = static_cast<Frame*>(widget.getParent());
+                auto card = static_cast<Frame*>(widget.getParent());
                 for (auto button : card->getButtons()) {
                     auto i = reinterpret_cast<intptr_t>(button->getUserData());
                     switch (i) {
@@ -14949,7 +14949,7 @@ failed:
 			seed_field->setWidgetRight("randomize_seed");
 			seed_field->setCallback([](Field& field) {seed_field_fn(field.getText(), field.getOwner()); });
 			seed_field->setTickCallback([](Widget& widget) {
-				Field* field = static_cast<Field*>(&widget);
+				auto field = static_cast<Field*>(&widget);
 				seed_field_fn(field->getText(), field->getOwner());
 			});
 
@@ -16017,15 +16017,15 @@ failed:
 		slider->setMinValue(0.f);
 		slider->setMaxValue(subframe->getActualSize().h - subframe->getSize().h);
 		slider->setCallback([](Slider& slider){
-			Frame* frame = static_cast<Frame*>(slider.getParent());
+			auto frame = static_cast<Frame*>(slider.getParent());
 			Frame* subframe = frame->findFrame("subframe"); assert(subframe);
 			auto actualSize = subframe->getActualSize();
 			actualSize.y = slider.getValue();
 			subframe->setActualSize(actualSize);
 			});
 		slider->setTickCallback([](Widget& widget){
-			Slider* slider = static_cast<Slider*>(&widget);
-			Frame* frame = static_cast<Frame*>(slider->getParent());
+			auto slider = static_cast<Slider*>(&widget);
+			auto frame = static_cast<Frame*>(slider->getParent());
 			Frame* subframe = frame->findFrame("subframe"); assert(subframe);
 			auto actualSize = subframe->getActualSize();
 			slider->setValue(actualSize.y);
@@ -17032,15 +17032,15 @@ failed:
 			slider->setMinValue(0.f);
 			slider->setMaxValue(subframe->getActualSize().h - subframe->getSize().h);
 			slider->setCallback([](Slider& slider){
-				Frame* frame = static_cast<Frame*>(slider.getParent());
+				auto frame = static_cast<Frame*>(slider.getParent());
 				Frame* subframe = frame->findFrame("subframe"); assert(subframe);
 				auto actualSize = subframe->getActualSize();
 				actualSize.y = slider.getValue();
 				subframe->setActualSize(actualSize);
 				});
 			slider->setTickCallback([](Widget& widget){
-				Slider* slider = static_cast<Slider*>(&widget);
-				Frame* frame = static_cast<Frame*>(slider->getParent());
+				auto slider = static_cast<Slider*>(&widget);
+				auto frame = static_cast<Frame*>(slider->getParent());
 				Frame* subframe = frame->findFrame("subframe"); assert(subframe);
 				auto actualSize = subframe->getActualSize();
 				slider->setValue(actualSize.y);
@@ -17599,7 +17599,7 @@ failed:
 		};
 		name_field->setCallback([](Field& field) {name_field_fn(&field, nullptr, field.getOwner()); });
 		name_field->setTickCallback([](Widget& widget){
-			Field* field = static_cast<Field*>(&widget);
+			auto field = static_cast<Field*>(&widget);
 			name_field_fn(field, nullptr, field->getOwner());
 
 			// rescue this player's focus
@@ -18948,7 +18948,7 @@ failed:
 	}
 
 	static void createCountdownTimer() {
-		static const char* timer_font = "fonts/pixelmix_bold.ttf#64#2";
+		static auto timer_font = "fonts/pixelmix_bold.ttf#64#2";
 
 		auto lobby = main_menu_frame->findFrame("lobby");
         if (!lobby) {
@@ -19318,7 +19318,7 @@ failed:
 				{
 					field->setSize(SDL_Rect{ 36, 9, static_cast<int>(textGet->getWidth()), 26 });
 
-					SDL_Rect right_pos = SDL_Rect{ field->getSize().x + field->getSize().w - 4, 0, 16, 38 };
+					auto right_pos = SDL_Rect{ field->getSize().x + field->getSize().w - 4, 0, 16, 38 };
 					Frame::image_t* right = frame->findImage("bg_right");
 					if ( !right )
 					{
@@ -19327,7 +19327,7 @@ failed:
 					}
 					right->pos = right_pos;
 
-					SDL_Rect mid_pos = SDL_Rect{ 16, 0, right->pos.x - 16, 38 };
+					auto mid_pos = SDL_Rect{ 16, 0, right->pos.x - 16, 38 };
 					Frame::image_t* mid = frame->findImage("bg_mid");
 					if ( !mid )
 					{
@@ -21560,7 +21560,7 @@ failed:
 		frame_right->setBorder(0);
 		frame_right->setColor(0);
 		frame_right->setTickCallback([](Widget& widget) {
-			if ( Frame* frame = static_cast<Frame*>(&widget) )
+			if (auto frame = static_cast<Frame*>(&widget) )
 			{
 				for ( auto button : frame->getButtons() )
 				{
@@ -21642,7 +21642,7 @@ failed:
 		        checkbox->setSelectorOffset(SDL_Rect{0, 2, -6, 0});
 		        checkbox->setCallback([](Button& button){
 		            soundCheckmark();
-                    Filter* filter = static_cast<Filter*>(button.getUserData());
+                    auto filter = static_cast<Filter*>(button.getUserData());
                     switch (*filter) {
                     default:
                     case Filter::UNCHECKED: *filter = Filter::ON; break;
@@ -21664,7 +21664,7 @@ failed:
                         addLobby(lobby);
                     }
 
-					if ( Frame* parent = static_cast<Frame*>(button.getParent()) ) 
+					if (auto parent = static_cast<Frame*>(button.getParent()) ) 
 					{
 						if ( Frame* parent2 = parent->getParent() )
 						{
@@ -21753,7 +21753,7 @@ failed:
 		        char buf[1024];
                 
                 auto values1 = frame->findField("values1"); assert(values1);
-                const char* values1_fmt = "\n%s (%s)";
+                auto values1_fmt = "\n%s (%s)";
                 snprintf(buf, sizeof(buf), values1_fmt, lobby.name.c_str(), lobby.version.c_str());
                 values1->setText(buf);
                 values1->reflowTextToFit(0);
@@ -22158,7 +22158,7 @@ failed:
 		    name_column_header->setColor(makeColor(106, 192, 159, 255));
 		    name_column_header->setText(Language::get(5528));
 			name_column_header->setTickCallback([](Widget& widget) {
-				Field* name_column_header = static_cast<Field*>(&widget);
+				auto name_column_header = static_cast<Field*>(&widget);
 				if ( lobbyFiltersEnabled )
 				{
 					auto names = static_cast<Frame*>(widget.getParent())->findFrame("names");
@@ -22199,7 +22199,7 @@ failed:
 
 			static auto tick_callback = [](Widget& widget) {
 				widget.setHideSelectors(!inputs.hasController(widget.getOwner()));
-				Frame* frame = static_cast<Frame*>(&widget);
+				auto frame = static_cast<Frame*>(&widget);
 				if ( frame->isActivated() )
 				{
 					widget.setHideSelectors(true);
@@ -22450,7 +22450,7 @@ failed:
 	    //slider->setWidgetLeft("pings");
 		slider->setWidgetLeft("names");
 		slider->setCallback([](Slider& slider){
-			Frame* frame = static_cast<Frame*>(slider.getParent()); assert(frame);
+			auto frame = static_cast<Frame*>(slider.getParent()); assert(frame);
 			{
 			    Frame* column = frame->findFrame("names"); assert(column);
 			    auto actualSize = column->getActualSize();
@@ -22478,8 +22478,8 @@ failed:
 			slider.updateHandlePosition();
 			});
 		slider->setTickCallback([](Widget& widget){
-			Slider* slider = static_cast<Slider*>(&widget);
-			Frame* frame = static_cast<Frame*>(slider->getParent()); assert(frame);
+			auto slider = static_cast<Slider*>(&widget);
+			auto frame = static_cast<Frame*>(slider->getParent()); assert(frame);
 			Frame* names = frame->findFrame("names"); assert(names);
 			auto actualSize = names->getActualSize();
 			slider->setValue(actualSize.y);
@@ -22805,7 +22805,7 @@ failed:
 		slider->setHandleImage("*images/ui/Main Menus/Play/HallofTrials/HoT_Scroll_Boulder_00.png");
 		slider->setGlyphPosition(Button::glyph_position_t::CENTERED);
 		slider->setCallback([](Slider& slider){
-			Frame* frame = static_cast<Frame*>(slider.getParent());
+			auto frame = static_cast<Frame*>(slider.getParent());
 			auto actualSize = frame->getActualSize();
 			actualSize.y = slider.getValue();
 			frame->setActualSize(actualSize);
@@ -22818,8 +22818,8 @@ failed:
 			gradient_background->pos.y = actualSize.y;
 			});
 		slider->setTickCallback([](Widget& widget){
-			Slider* slider = static_cast<Slider*>(&widget);
-			Frame* frame = static_cast<Frame*>(slider->getParent());
+			auto slider = static_cast<Slider*>(&widget);
+			auto frame = static_cast<Frame*>(slider->getParent());
 			auto actualSize = frame->getActualSize();
 			slider->setValue(actualSize.y);
 			auto railSize = slider->getRailSize();
@@ -24590,13 +24590,13 @@ failed:
 						{
 							field->setSize(SDL_Rect{ 36, 9, static_cast<int>(textGet->getWidth()), 26 });
 
-							SDL_Rect right_pos = SDL_Rect{ field->getSize().x + field->getSize().w - 4, 0, 16, 38 };
+							auto right_pos = SDL_Rect{ field->getSize().x + field->getSize().w - 4, 0, 16, 38 };
 							Frame::image_t* right = frame->addImage(right_pos, 0xFFFFFFFF,
 									"*#images/ui/Main Menus/Play/PlayerCreation/LobbySettings/UI_Lobby_Warning_Right.png", "bg_right");
 							right->pos = right_pos;
 							right->disabled = true;
 
-							SDL_Rect mid_pos = SDL_Rect{ 16, 0, right->pos.x - 16, 38 };
+							auto mid_pos = SDL_Rect{ 16, 0, right->pos.x - 16, 38 };
 							Frame::image_t* mid = frame->addImage(mid_pos, 0xFFFFFFFF,
 								"*#images/ui/Main Menus/Play/PlayerCreation/LobbySettings/UI_Lobby_Warning_Mid.png", "bg_mid");
 							mid->pos = mid_pos;
@@ -24739,7 +24739,7 @@ failed:
 		singleplayer->addWidgetAction("MenuPageRight", "multiplayer");
 		singleplayer->setCallback([](Button& button){
 		    continueSingleplayer = true;
-            Frame* window = static_cast<Frame*>(button.getParent());
+            auto window = static_cast<Frame*>(button.getParent());
             button.setTextColor(makeColor(255, 255, 255, 255));
             button.setBackground("*images/ui/Main Menus/ContinueGame/UI_Cont_Tab_Single_ON_00.png");
             auto multiplayer = window->findButton("multiplayer");
@@ -24789,7 +24789,7 @@ failed:
 		multiplayer->addWidgetAction("MenuPageRight", "multiplayer");
 		multiplayer->setCallback([](Button& button){
 		    continueSingleplayer = false;
-            Frame* window = static_cast<Frame*>(button.getParent());
+            auto window = static_cast<Frame*>(button.getParent());
             button.setTextColor(makeColor(255, 255, 255, 255));
             button.setBackground("*images/ui/Main Menus/ContinueGame/UI_Cont_Tab_Multi_ON_00.png");
             auto singleplayer = window->findButton("singleplayer");
@@ -25378,7 +25378,7 @@ failed:
 			for (auto tab : tabs) {
 				auto button = settings->findButton(tab);
                 if (button) {
-                    const char* name = "*images/ui/Main Menus/Settings/Settings_Button_SubTitleSelect00.png";
+	                auto name = "*images/ui/Main Menus/Settings/Settings_Button_SubTitleSelect00.png";
                     if (strcmp(button->getBackground(), name) == 0) {
                         if (prevtab) {
                             auto prevbutton = settings->findButton(prevtab); assert(prevbutton);
@@ -25425,7 +25425,7 @@ failed:
 			for (auto tab : tabs) {
                 auto button = settings->findButton(tab);
                 if (button) {
-                    const char* name = "*images/ui/Main Menus/Settings/Settings_Button_SubTitleSelect00.png";
+	                auto name = "*images/ui/Main Menus/Settings/Settings_Button_SubTitleSelect00.png";
                     if (strcmp(button->getBackground(), name) == 0) {
                         if (nexttab) {
                             auto nextbutton = settings->findButton(nexttab); assert(nextbutton);
@@ -25482,7 +25482,7 @@ failed:
 			for (auto tab : tabs) {
 				auto button = settings->findButton(tab);
                 if (button) {
-                    const char* name = "*images/ui/Main Menus/Settings/Settings_Button_SubTitleSelect00.png";
+	                auto name = "*images/ui/Main Menus/Settings/Settings_Button_SubTitleSelect00.png";
                     if (strcmp(button->getBackground(), name) == 0) {
                         button->select();
                         button->activate();
@@ -27229,7 +27229,7 @@ failed:
 			achievements->setHJustify(Field::justify_t::CENTER);
 			achievements->setVJustify(Field::justify_t::TOP);
 			achievements->setTickCallback([](Widget& widget) {
-				Field* achievements = static_cast<Field*>(&widget);
+				auto achievements = static_cast<Field*>(&widget);
 				if ( gameModeManager.currentSession.challengeRun.isActive()
 					&& gameModeManager.currentSession.challengeRun.lid.find("challenge") != std::string::npos )
 				{
@@ -27452,7 +27452,7 @@ failed:
 				auto banner = banners->addButton(name.c_str());
 				banner->setBackground(banner_images[c][0]);
 				banner->setBackgroundHighlighted(banner_images[c][1]);
-				SDL_Rect bannerPos = SDL_Rect{ 0, c * 92, 472, 76 };
+				auto bannerPos = SDL_Rect{ 0, c * 92, 472, 76 };
 				if ( auto imgGet = Image::get(banner_images[c][0]) )
 				{
 					bannerPos.w = imgGet->getWidth();
@@ -27501,7 +27501,7 @@ failed:
 
 				button->setBackground("#images/ui/Main Menus/Banners/UI_MainMenu_DiscordLink_base.png");
 				button->setBackgroundHighlighted("#images/ui/Main Menus/Banners/UI_MainMenu_DiscordLink_high.png");
-				SDL_Rect btnPos = SDL_Rect{ 0, 0, 0, 0 };
+				auto btnPos = SDL_Rect{ 0, 0, 0, 0 };
 				if ( auto imgGet = Image::get(button->getBackground()) )
 				{
 					btnPos.w = imgGet->getWidth();
@@ -27717,7 +27717,7 @@ failed:
 			    }
 	            //players[i]->shootmode = false; // open inventory
 			    for (auto node = stats[i]->inventory.first; node != NULL; node = node->next) {
-				    Item* item = static_cast<Item*>(node->element);
+				    auto item = static_cast<Item*>(node->element);
 				    item->identified = true;
 			    }
 		    }
@@ -28958,7 +28958,7 @@ failed:
 		const int padx = 54;
 
 		const int padleft = padx + 4 + 64;
-		SDL_Rect titlePos = SDL_Rect{ padx + 4 + 64, 8, 524, 24 };
+		auto titlePos = SDL_Rect{ padx + 4 + 64, 8, 524, 24 };
 
 		if ( latestVersionStr != "" )
 		{
@@ -29148,7 +29148,7 @@ failed:
 						{
 							char buf[32];
 							snprintf(buf, sizeof(buf), "%s%d", Language::get(5856), i + 1);
-							Field* field = static_cast<Field*>(&widget);
+							auto field = static_cast<Field*>(&widget);
 							field->setText(buf);
 							break;
 						}
@@ -30170,7 +30170,7 @@ failed:
 		load_status_totals->setTickCallback([](Widget& widget) {
 			if ( Mods::numCurrentModsLoaded >= 0 )
 			{
-				Field* field = static_cast<Field*>(&widget);
+				auto field = static_cast<Field*>(&widget);
 				char buf[128] = "";
 #ifndef STEAMWORKS
 				snprintf(buf, sizeof(buf), "\n%d\n",
@@ -30198,7 +30198,7 @@ failed:
 		achievements_status->setVJustify(Field::justify_t::CENTER);
 		achievements_status->setIndividualLinePadding(1, 8);
 		achievements_status->setTickCallback([](Widget& widget) {
-			Field* field = static_cast<Field*>(&widget);
+			auto field = static_cast<Field*>(&widget);
 		if ( Mods::disableSteamAchievements )
 		{
 			field->setText(Language::get(5874));
@@ -30286,7 +30286,7 @@ failed:
 		slider->setHandleImage("*images/ui/Main Menus/Mods/Mod_Scroll_Boulder_00.png");
 		slider->setGlyphPosition(Button::glyph_position_t::CENTERED);
 		slider->setCallback([](Slider& slider) {
-			Frame* frame = static_cast<Frame*>(slider.getParent());
+			auto frame = static_cast<Frame*>(slider.getParent());
 		auto actualSize = frame->getActualSize();
 		actualSize.y = slider.getValue();
 		frame->setActualSize(actualSize);
@@ -30299,8 +30299,8 @@ failed:
 		gradient_background->pos.y = actualSize.y;
 			});
 		slider->setTickCallback([](Widget& widget) {
-			Slider* slider = static_cast<Slider*>(&widget);
-			Frame* frame = static_cast<Frame*>(slider->getParent());
+			auto slider = static_cast<Slider*>(&widget);
+			auto frame = static_cast<Frame*>(slider->getParent());
 			auto actualSize = frame->getActualSize();
 			slider->setMaxValue(actualSize.h - frame->getSize().h);
 			slider->setValue(actualSize.y);
@@ -30674,7 +30674,7 @@ failed:
 			button->setTickCallback([](Widget& widget) {
 				auto button = static_cast<Button*>(&widget);
 				button->setWidgetDown("");
-				if ( Frame* window = static_cast<Frame*>(button->getParent()) )
+				if (auto window = static_cast<Frame*>(button->getParent()) )
 				{
 					if ( auto subwindow = window->findFrame("subwindow") )
 					{
@@ -30736,7 +30736,7 @@ failed:
 				for ( auto& tab : mod_tabs ) {
 					auto button = mods_menu->findButton(tab.name);
 					if ( button ) {
-						const char* name = "*images/ui/Main Menus/Settings/Settings_Button_SubTitleSelect00.png";
+						auto name = "*images/ui/Main Menus/Settings/Settings_Button_SubTitleSelect00.png";
 						if ( strcmp(button->getBackground(), name) == 0 ) {
 							if ( prevtab ) {
 								auto prevbutton = mods_menu->findButton(prevtab); assert(prevbutton);
@@ -30781,7 +30781,7 @@ failed:
 					auto tab = (*it);
 					auto button = mods_menu->findButton(tab.name);
 					if ( button ) {
-						const char* name = "*images/ui/Main Menus/Settings/Settings_Button_SubTitleSelect00.png";
+						auto name = "*images/ui/Main Menus/Settings/Settings_Button_SubTitleSelect00.png";
 						if ( strcmp(button->getBackground(), name) == 0 ) {
 							if ( nexttab ) {
 								auto nextbutton = mods_menu->findButton(nexttab); assert(nextbutton);
@@ -36041,7 +36041,7 @@ failed:
 										if ( auto txt = frame->findField("txt_1") )
 										{
 											bool toggle = ticks % TICKS_PER_SECOND < TICKS_PER_SECOND / 2;
-											const char* binding = "MenuPageRight";
+											auto binding = "MenuPageRight";
 											if ( input.input("MenuUp").isBindingUsingKeyboard() )
 											{
 												binding = "MenuUp";
@@ -36071,7 +36071,7 @@ failed:
 										}
 										if ( auto txt = frame->findField("txt_2") )
 										{
-											const char* binding = "MenuPageRightAlt";
+											auto binding = "MenuPageRightAlt";
 											if ( input.input("MenuRight").isBindingUsingKeyboard() )
 											{
 												binding = "MenuRight";
@@ -37767,11 +37767,11 @@ failed:
 							txt->setText(buf);
 						}
 
-						const char* res_neutral = "*images/ui/Main Menus/AdventureArchives/res_neutral.png";
-						const char* res_hi1 = "*images/ui/Main Menus/AdventureArchives/res_hi1.png";
-						const char* res_hi2 = "*images/ui/Main Menus/AdventureArchives/res_hi2.png";
-						const char* res_lo1 = "*images/ui/Main Menus/AdventureArchives/res_lo1.png";
-						const char* res_lo2 = "*images/ui/Main Menus/AdventureArchives/res_lo2.png";
+						auto res_neutral = "*images/ui/Main Menus/AdventureArchives/res_neutral.png";
+						auto res_hi1 = "*images/ui/Main Menus/AdventureArchives/res_hi1.png";
+						auto res_hi2 = "*images/ui/Main Menus/AdventureArchives/res_hi2.png";
+						auto res_lo1 = "*images/ui/Main Menus/AdventureArchives/res_lo1.png";
+						auto res_lo2 = "*images/ui/Main Menus/AdventureArchives/res_lo2.png";
 
 						std::vector<std::pair<std::pair<const char*, const char*>, int>> res_strs = {
 							{{"res_txt_unarmed", "res_unarmed"}, DAMAGE_TABLE_UNARMED},
@@ -38873,7 +38873,7 @@ failed:
 
 	static auto compendium_page_right_inner_fn = [](Widget& widget)
 	{
-		Frame* page_right_inner = static_cast<Frame*>(&widget);
+		auto page_right_inner = static_cast<Frame*>(&widget);
 		if ( isMouseVisible() )
 		{
 			page_right_inner->setAllowScrollBinds(true);
@@ -39898,7 +39898,7 @@ failed:
 					size_t line = 0;
 					if ( compendiumRecordsSectionLoadedValues.size() > line && compendiumRecordsSectionLoadedValues[line].size() > 0 )
 					{
-						Field* txt = static_cast<Field*>(&widget);
+						auto txt = static_cast<Field*>(&widget);
 						size_t index = compendiumRecordsSectionRandSequence % compendiumRecordsSectionLoadedValues[line].size();
 						txt->setText(compendiumRecordsSectionLoadedValues[line][index].c_str());
 					}
@@ -39923,7 +39923,7 @@ failed:
 					size_t line = 1;
 					if ( compendiumRecordsSectionLoadedValues.size() > line && compendiumRecordsSectionLoadedValues[line].size() > 0 )
 					{
-						Field* txt = static_cast<Field*>(&widget);
+						auto txt = static_cast<Field*>(&widget);
 						size_t index = compendiumRecordsSectionRandSequence % compendiumRecordsSectionLoadedValues[line].size();
 						txt->setText(compendiumRecordsSectionLoadedValues[line][index].c_str());
 					}
@@ -39948,7 +39948,7 @@ failed:
 					size_t line = 2;
 					if ( compendiumRecordsSectionLoadedValues.size() > line && compendiumRecordsSectionLoadedValues[line].size() > 0 )
 					{
-						Field* txt = static_cast<Field*>(&widget);
+						auto txt = static_cast<Field*>(&widget);
 						size_t index = compendiumRecordsSectionRandSequence % compendiumRecordsSectionLoadedValues[line].size();
 						txt->setText(compendiumRecordsSectionLoadedValues[line][index].c_str());
 					}
@@ -39973,7 +39973,7 @@ failed:
 					size_t line = 3;
 					if ( compendiumRecordsSectionLoadedValues.size() > line && compendiumRecordsSectionLoadedValues[line].size() > 0 )
 					{
-						Field* txt = static_cast<Field*>(&widget);
+						auto txt = static_cast<Field*>(&widget);
 						size_t index = compendiumRecordsSectionRandSequence % compendiumRecordsSectionLoadedValues[line].size();
 						txt->setText(compendiumRecordsSectionLoadedValues[line][index].c_str());
 					}
@@ -40084,7 +40084,7 @@ failed:
 				charTxt->setSize(SDL_Rect{ padx, pady, 300, 24 });
 				charTxt->setColor(makeColor(198, 190, 179, 255));
 				charTxt->setTickCallback([](Widget& widget) {
-					Field* txt = static_cast<Field*>(&widget);
+					auto txt = static_cast<Field*>(&widget);
 					if ( !intro && (svFlags & SV_FLAG_HARDCORE) )
 					{
 						txt->setText(Language::get(6250));
@@ -40479,7 +40479,7 @@ failed:
 	static void compendiumRevealSection(Button* button)
 	{
 		if ( !button ) { return; }
-		Frame* parent = static_cast<Frame*>(button->getParent());
+		auto parent = static_cast<Frame*>(button->getParent());
 		if ( !parent ) { return; }
 		parent = parent->getParent();
 		if ( !parent ) { return; }
@@ -40917,7 +40917,7 @@ failed:
 			txt->setSize(size);
 				});
 			txt->setTickCallback([](Widget& widget) {
-				Field* txt = static_cast<Field*>(&widget);
+				auto txt = static_cast<Field*>(&widget);
 			/*if ( keystatus[SDLK_g] )
 			{
 				keystatus[SDLK_g] = 0;
@@ -40982,7 +40982,7 @@ failed:
 			txt->setText("");
 			txt->setOntop(true);
 			txt->setTickCallback([](Widget& widget) {
-				Field* txt = static_cast<Field*>(&widget);
+				auto txt = static_cast<Field*>(&widget);
 				if ( auto parent = static_cast<Frame*>(txt->getParent()) )
 				{
 					if ( auto lore_points_balance = parent->findFrame("lore_points_balance") )
@@ -41099,7 +41099,7 @@ failed:
 				txt->setVJustify(Field::justify_t::TOP);
 				txt->setHJustify(Field::justify_t::RIGHT);
 				txt->setTickCallback([](Widget& widget) {
-					Field* txt = static_cast<Field*>(&widget);
+					auto txt = static_cast<Field*>(&widget);
 				int totalCompletion = Compendium_t::AchievementData_t::completionPercent;
 				totalCompletion += Compendium_t::CompendiumCodex_t::completionPercent;
 				totalCompletion += Compendium_t::CompendiumWorld_t::completionPercent;
@@ -41201,7 +41201,7 @@ failed:
 					{
 						if ( compendium_current == compendiumCategories[i] )
 						{
-							if ( Frame* parent = static_cast<Frame*>(button.getParent()) )
+							if (auto parent = static_cast<Frame*>(button.getParent()) )
 							{
 								if ( i > 0 )
 								{
@@ -41864,7 +41864,7 @@ failed:
 					{
 						if ( compendium_current == compendiumCategories[i] )
 						{
-							if ( Frame* parent = static_cast<Frame*>(button.getParent()) )
+							if (auto parent = static_cast<Frame*>(button.getParent()) )
 							{
 								if ( i + 1 < compendiumCategories.size() )
 								{
@@ -42264,7 +42264,7 @@ failed:
 			nav_filter_sort_txt2->setVJustify(Field::justify_t::TOP);
 			nav_filter_sort_txt2->setColor(makeColorRGB(220, 178, 113));
 			nav_filter_sort_txt2->setTickCallback([](Widget& widget) {
-				Field* txt = static_cast<Field*>(&widget);
+				auto txt = static_cast<Field*>(&widget);
 				if ( compendium_current == "achievements" )
 				{
 					txt->setText(Language::get(6247));
@@ -42804,7 +42804,7 @@ failed:
 			}
 		});
 		page_right->setTickCallback([](Widget& widget) {
-			Frame* page_right = static_cast<Frame*>(&widget);
+			auto page_right = static_cast<Frame*>(&widget);
 			if ( !page_right ) {
 				return;
 			}
@@ -42895,7 +42895,7 @@ failed:
 					if ( compendium && !compendium->findFrame("right_back") )
 					{
 						Button* right_back_button = createBackWidget(compendium, [](Button& button) {
-							Frame* back = static_cast<Frame*>(button.getParent());
+							auto back = static_cast<Frame*>(button.getParent());
 							if ( !back ) 
 							{
 								return;

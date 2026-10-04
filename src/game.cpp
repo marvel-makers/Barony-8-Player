@@ -664,7 +664,7 @@ void TimerExperiments::updateClocks()
     std::vector<Entity*> entitiesToInterpolate;
     for (node_t* node = map.entities->first; node != nullptr; node = node->next)
     {
-        Entity* entity = static_cast<Entity*>(node->element);
+        auto entity = static_cast<Entity*>(node->element);
         if (entity->bUseRenderInterpolation)
         {
             entitiesToInterpolate.push_back(entity);
@@ -1229,7 +1229,7 @@ void gameLogic(void)
         {
             nextnode = node->next;
 
-            packetsend_t* packet = static_cast<packetsend_t*>(node->element);
+            auto packet = static_cast<packetsend_t*>(node->element);
             //printlog("Packet resend: %d", packet->hostnum);
             sendPacket(packet->sock, packet->channel, packet->packet, packet->hostnum, true);
             packet->tries++;
@@ -2530,7 +2530,7 @@ void gameLogic(void)
                             std::vector<node_t*> allyRobotNodes;
                             for (node = tempFollowers[c].first; node != NULL; node = node->next)
                             {
-                                Stat* tempStats = static_cast<Stat*>(node->element);
+                                auto tempStats = static_cast<Stat*>(node->element);
                                 if (tempStats && tempStats->type == GYROBOT)
                                 {
                                     gyrobotNode = node;
@@ -2539,7 +2539,7 @@ void gameLogic(void)
                             }
                             for (node = tempFollowers[c].first; node != nullptr; node = node->next)
                             {
-                                Stat* tempStats = static_cast<Stat*>(node->element);
+                                auto tempStats = static_cast<Stat*>(node->element);
                                 if (tempStats && (tempStats->type == DUMMYBOT
                                     || tempStats->type == SENTRYBOT
                                     || tempStats->type == SPELLBOT))
@@ -2567,7 +2567,7 @@ void gameLogic(void)
                                     newNode->deconstructor = &statDeconstructor;
                                     newNode->size = sizeof(tempStats);
 
-                                    Stat* monsterStats = static_cast<Stat*>(newNode->element);
+                                    auto monsterStats = static_cast<Stat*>(newNode->element);
                                     monsterStats->leader_uid = players[c]->entity->getUID();
                                     messagePlayerMonsterEvent(c, 0xFFFFFFFF, *monsterStats, Language::get(721),
                                                               Language::get(720), MSG_COMBAT_BASIC);
@@ -2611,7 +2611,7 @@ void gameLogic(void)
 
                                     newNode = list_AddNodeLast(&stats[c]->FOLLOWERS);
                                     newNode->deconstructor = &defaultDeconstructor;
-                                    Uint32* myuid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
+                                    auto myuid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
                                     newNode->element = myuid;
                                     *myuid = monster->getUID();
 
@@ -2688,7 +2688,7 @@ void gameLogic(void)
                                     node_t* botNode = *it;
                                     if (botNode)
                                     {
-                                        Stat* tempStats = static_cast<Stat*>(botNode->element);
+                                        auto tempStats = static_cast<Stat*>(botNode->element);
                                         if (tempStats)
                                         {
                                             ItemType type = WOODEN_SHIELD;
@@ -2795,7 +2795,7 @@ void gameLogic(void)
                         {
                             node_t* oldnode = spellnode;
                             spellnode = spellnode->next;
-                            if (spell_t* spell = static_cast<spell_t*>(oldnode->element))
+                            if (auto spell = static_cast<spell_t*>(oldnode->element))
                             {
                                 spell->magic_effects_node = NULL;
                                 if (spell->sustainEffectDissipate >= 0)
@@ -3086,7 +3086,7 @@ void gameLogic(void)
                 for (node = stats[player]->inventory.first; node != NULL; node = nextnode)
                 {
                     nextnode = node->next;
-                    Item* item = static_cast<Item*>(node->element);
+                    auto item = static_cast<Item*>(node->element);
                     if (!item)
                     {
                         continue;
@@ -3485,7 +3485,7 @@ void gameLogic(void)
                 node_t* nodeToCheck = list_Node(map.entities, ticks % list_Size(map.entities));
                 if (nodeToCheck)
                 {
-                    Entity* entity = static_cast<Entity*>(nodeToCheck->element);
+                    auto entity = static_cast<Entity*>(nodeToCheck->element);
                     if (entity)
                     {
                         if (!entity->flags[NOUPDATE] && entity->getUID() > 0 && entity->getUID() != -2 && entity->
@@ -3766,7 +3766,7 @@ void gameLogic(void)
                                             // update the players' head and mask as these will otherwise wait until actPlayer to update their rotation. stops clipping.
                                             if (bodypartNum == 9 || bodypartNum == 10)
                                             {
-                                                Entity* limb = static_cast<Entity*>(tmpNode->element);
+                                                auto limb = static_cast<Entity*>(tmpNode->element);
                                                 if (limb)
                                                 {
                                                     limb->pitch = entity->pitch;
@@ -3845,7 +3845,7 @@ void gameLogic(void)
             for (node = stats[clientnum]->inventory.first; node != NULL; node = nextnode)
             {
                 nextnode = node->next;
-                Item* item = static_cast<Item*>(node->element);
+                auto item = static_cast<Item*>(node->element);
                 if (!item)
                 {
                     continue;
@@ -4174,7 +4174,7 @@ void handleButtons(void)
                             {
                                 continue;
                             }
-                            button_t* button = static_cast<button_t*>(node->element);
+                            auto button = static_cast<button_t*>(node->element);
                             button->pressed = false;
                         }
                         button->pressed = true;
@@ -7035,7 +7035,7 @@ void drawAllPlayerCameras()
                                 for (node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->
                                      next)
                                 {
-                                    Entity* mapCreature = static_cast<Entity*>(mapNode->element);
+                                    auto mapCreature = static_cast<Entity*>(mapNode->element);
                                     if (mapCreature &&
                                         (selfTelepath
                                             /*|| (mapCreature->getStats() && mapCreature->getStats()->getEffectActive(EFF_DETECT_ENEMY))*/
@@ -7080,7 +7080,7 @@ void drawAllPlayerCameras()
                     {
                         for (node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next)
                         {
-                            Entity* mapCreature = static_cast<Entity*>(mapNode->element);
+                            auto mapCreature = static_cast<Entity*>(mapNode->element);
                             if (mapCreature)
                             {
                                 mapCreature->monsterEntityRenderAsTelepath = 0;
@@ -7114,7 +7114,7 @@ void drawAllPlayerCameras()
                 {
                     for (node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next)
                     {
-                        Entity* mapCreature = static_cast<Entity*>(mapNode->element);
+                        auto mapCreature = static_cast<Entity*>(mapNode->element);
                         if (mapCreature)
                         {
                             mapCreature->monsterEntityRenderAsTelepath = 0;
@@ -8594,7 +8594,7 @@ int main(int argc, char** argv)
             DebugStats.t10FrameLimiter = std::chrono::high_resolution_clock::now();
             if (logCheckMainLoopTimers)
             {
-                std::chrono::duration<double> time_span =
+                auto time_span =
                     std::chrono::duration_cast<std::chrono::duration<double>>(
                         DebugStats.t10FrameLimiter - DebugStats.t11End);
                 double timer = time_span.count() * 1000;

@@ -148,7 +148,7 @@ void serverUpdateBodypartIDs(Entity* entity)
 			{
 				continue;
 			}
-			Entity* tempEntity = static_cast<Entity*>(node->element);
+			auto tempEntity = static_cast<Entity*>(node->element);
 			if ( entity->behavior == &actMonster )
 			{
 				SDLNet_Write32(tempEntity->getUID(), &net_packet->data[8 + 4 * (i - 2)]);
@@ -198,7 +198,7 @@ void serverUpdateEntityBodypart(Entity* entity, int bodypart)
 		{
 			continue;
 		}
-		Entity* tempEntity = static_cast<Entity*>(node->element);
+		auto tempEntity = static_cast<Entity*>(node->element);
 		SDLNet_Write32(tempEntity->sprite, &net_packet->data[9]);
 		net_packet->data[13] = (tempEntity->flags[INVISIBLE] ? 1 : 0);
 		net_packet->data[13] |= (tempEntity->flags[INVISIBLE_DITHER] ? (1 << 1) : 0);

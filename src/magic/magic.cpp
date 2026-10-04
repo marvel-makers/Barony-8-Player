@@ -219,7 +219,7 @@ bool spellEffectDominate(Entity& my, spellElement_t& element, Entity& caster, En
 			{
 				if ( bodypart >= LIMB_HUMANOID_TORSO )
 				{
-					Entity* tmp = static_cast<Entity*>(node->element);
+					auto tmp = static_cast<Entity*>(node->element);
 					if ( tmp )
 					{
 						tmp->flags[USERFLAG2] = true;
@@ -1186,7 +1186,7 @@ spell_t* spellEffectVampiricAura(Entity* caster, spell_t* spell)
 	{
 		return nullptr;
 	}
-	spellElement_t* element = static_cast<spellElement_t*>(node->element);
+	auto element = static_cast<spellElement_t*>(node->element);
 	if ( !element )
 	{
 		return nullptr;
@@ -1199,7 +1199,7 @@ spell_t* spellEffectVampiricAura(Entity* caster, spell_t* spell)
 
 	node_t* spellnode = list_AddNodeLast(&myStats->magic_effects);
 	spellnode->element = copySpell(spell); //We need to save the spell since this is a channeled spell.
-	spell_t* channeled_spell = static_cast<spell_t*>(spellnode->element);
+	auto channeled_spell = static_cast<spell_t*>(spellnode->element);
 	channeled_spell->magic_effects_node = spellnode;
 	spellnode->size = sizeof(spell_t);
 	static_cast<spell_t*>(spellnode->element)->caster = caster->getUID();
@@ -1387,7 +1387,7 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
 						// search followers for charmed.
 						for ( node_t* node = casterStats->FOLLOWERS.first; node != NULL; node = node->next )
 						{
-							Uint32* c = static_cast<Uint32*>(node->element);
+							auto c = static_cast<Uint32*>(node->element);
 							Entity* follower = nullptr;
 							if ( c )
 							{
@@ -1554,7 +1554,7 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
 						{
 							if ( bodypart >= LIMB_HUMANOID_TORSO )
 							{
-								Entity* tmp = static_cast<Entity*>(node->element);
+								auto tmp = static_cast<Entity*>(node->element);
 								if ( tmp )
 								{
 									tmp->flags[USERFLAG2] = true;
@@ -1633,7 +1633,7 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
 						hit.entity->monsterReleaseAttackTarget();
 						for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = static_cast<Entity*>(node->element);
+							auto entity = static_cast<Entity*>(node->element);
 							if ( !entity ) { continue; }
 							if ( entity->behavior == &actMonster && entity != hit.entity )
 							{
@@ -1765,7 +1765,7 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
 			std::vector<Monster> possibleTypes;
 			for ( int i = 0; i < NUMMONSTERS; ++i )
 			{
-				const Monster mon = static_cast<Monster>(i);
+				const auto mon = static_cast<Monster>(i);
 				if ( typesToSkip.find(mon) == typesToSkip.end() )
 				{
 					possibleTypes.push_back(mon);
@@ -2061,7 +2061,7 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
 				{
 					if ( bodypart >= LIMB_HUMANOID_TORSO )
 					{
-						Entity* tmp = static_cast<Entity*>(node->element);
+						auto tmp = static_cast<Entity*>(node->element);
 						if ( tmp )
 						{
 							tmp->flags[USERFLAG2] = true;
@@ -2286,7 +2286,7 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
 		for ( node_t* node = targetStats->inventory.first; node; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( item && item->appearance != MONSTER_ITEM_UNDROPPABLE_APPEARANCE 
 				&& item->isDroppable
 				&& itemSlot(targetStats, item) == nullptr )
@@ -2349,7 +2349,7 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
 		{
 			for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 			{
-				Entity* creature = static_cast<Entity*>(node->element);
+				auto creature = static_cast<Entity*>(node->element);
 				if ( creature && creature->behavior == &actMonster && creature != target && creature != summonedEntity )
 				{
 					if ( creature->monsterTarget == target->getUID() )
@@ -2437,7 +2437,7 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
 
 			for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 			{
-				Entity* creature = static_cast<Entity*>(node->element);
+				auto creature = static_cast<Entity*>(node->element);
 				if ( creature && creature->behavior == &actMonster && creature != target )
 				{
 					if ( creature->monsterTarget == target->getUID() )
@@ -2905,7 +2905,7 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
 							{
 								if ( bodypart >= LIMB_HUMANOID_TORSO )
 								{
-									Entity* tmp = static_cast<Entity*>(node->element);
+									auto tmp = static_cast<Entity*>(node->element);
 									if ( tmp )
 									{
 										tmp->flags[USERFLAG2] = true;
@@ -3128,7 +3128,7 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
 						Entity* newTarget = nullptr;
 						for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 						{
-							Entity* target = static_cast<Entity*>(node->element);
+							auto target = static_cast<Entity*>(node->element);
 							if ( target->behavior == &actMonster && monster->checkEnemy(target) )
 							{
 								real_t oldDist = dist;
@@ -3225,7 +3225,7 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
 							{
 								if ( bodypart >= LIMB_HUMANOID_TORSO )
 								{
-									Entity* tmp = static_cast<Entity*>(node->element);
+									auto tmp = static_cast<Entity*>(node->element);
 									if ( tmp )
 									{
 										tmp->flags[USERFLAG2] = true;
@@ -3378,7 +3378,7 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
 							{
 								if ( bodypart >= LIMB_HUMANOID_TORSO )
 								{
-									Entity* tmp = static_cast<Entity*>(node->element);
+									auto tmp = static_cast<Entity*>(node->element);
 									if ( tmp )
 									{
 										tmp->flags[USERFLAG2] = true;
@@ -3559,7 +3559,7 @@ bool Entity::pinpointDamageProc(Entity* attacker, int damage)
 					node_t* node;
 					for ( node = it->first; node != nullptr && !found; node = node->next )
 					{
-						if ( Entity* entity = static_cast<Entity*>(node->element) )
+						if (auto entity = static_cast<Entity*>(node->element) )
 						{
 							if ( entity->behavior == &actParticleAestheticOrbit
 								&& entity->parent == this->getUID()
@@ -3644,7 +3644,7 @@ bool Entity::defyFleshProc(Entity* attacker)
 				node_t* node;
 				for ( node = it->first; node != nullptr; node = node->next )
 				{
-					if ( Entity* entity = static_cast<Entity*>(node->element) )
+					if (auto entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity->behavior == &actParticleAestheticOrbit 
 							&& entity->parent == this->getUID()
@@ -4024,7 +4024,7 @@ Entity* spellEffectDemesneDoor(Entity& caster, Entity& target)
 		node_t* node;
 		for ( node = it->first; node != nullptr; node = node->next )
 		{
-			if ( Entity* entity = static_cast<Entity*>(node->element) )
+			if (auto entity = static_cast<Entity*>(node->element) )
 			{
 				if ( static_cast<int>(entity->x / 16) == mapx && static_cast<int>(entity->y / 16) == mapy )
 				{

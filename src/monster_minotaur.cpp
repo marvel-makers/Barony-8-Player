@@ -926,13 +926,13 @@ void actMinotaurCeilingBuster(Entity* my)
 				}
 				node_t* node, *nextnode;
 				std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
-				for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+				for (auto it = entLists.begin(); it != entLists.end(); ++it )
 				{
 					list_t* currentList = *it;
 					for ( node = currentList->first; node != nullptr; node = nextnode )
 					{
 						nextnode = node->next;
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( static_cast<int>(x / 16) == static_cast<int>(entity->x / 16) && static_cast<int>(y / 16) == static_cast<int>(entity->y / 16) )
 						{
 							if ( entity->behavior == &actDoorFrame )

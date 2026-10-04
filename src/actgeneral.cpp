@@ -934,7 +934,7 @@ void actColliderMushroomCap(Entity* my)
 					node_t* node;
 					for ( node = it->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( !(entity->behavior == &actPlayer || entity->behavior == &actMonster) )
 						{
 							continue;
@@ -1389,13 +1389,13 @@ void Entity::colliderOnDestroy()
 
 						// find other matching gold piles
 						auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(entity, 2);
-						for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+						for (auto it = entLists.begin(); it != entLists.end(); ++it )
 						{
 							list_t* currentList = *it;
 							node_t* node;
 							for ( node = currentList->first; node != nullptr; node = node->next )
 							{
-								Entity* ent = static_cast<Entity*>(node->element);
+								auto ent = static_cast<Entity*>(node->element);
 								if ( ent && ent->behavior == &actGoldBag && ent != entity && ent->goldInContainer != 0
 									&& ent->goldInContainer == entity->goldInContainer )
 								{
@@ -1959,12 +1959,12 @@ void actColliderDecoration(Entity* my)
 			entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1);
 		}
 		bool somebodyinside = false;
-		for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
+		for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
 		{
 			list_t* currentList = *it;
 			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( !(entity->behavior == &actPlayer || entity->behavior == &actMonster) )
 				{
 					continue;
@@ -2114,13 +2114,13 @@ void actColliderDecoration(Entity* my)
 							int range = colliderGetSpellRange(my);
 							auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1 + (range / 16));
 							std::vector<Entity*> entitiesInRange;
-							for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !found; ++it )
+							for (auto it = entLists.begin(); it != entLists.end() && !found; ++it )
 							{
 								list_t* currentList = *it;
 								node_t* node;
 								for ( node = currentList->first; node != nullptr; node = node->next )
 								{
-									Entity* entity = static_cast<Entity*>(node->element);
+									auto entity = static_cast<Entity*>(node->element);
 									if ( !entity || !(entity->behavior == &actPlayer || entity->behavior == &actMonster) ) { continue; }
 									if ( !entity->monsterIsTargetable() ) { continue; }
 									if ( caster )
@@ -2234,13 +2234,13 @@ void actColliderDecoration(Entity* my)
 					if ( ticks % TICKS_PER_SECOND == 0 )
 					{
 						auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
-						for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !found; ++it )
+						for (auto it = entLists.begin(); it != entLists.end() && !found; ++it )
 						{
 							list_t* currentList = *it;
 							node_t* node;
 							for ( node = currentList->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = static_cast<Entity*>(node->element);
+								auto entity = static_cast<Entity*>(node->element);
 								if ( entity && (entity->behavior == &actPlayer || (entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader())) )
 								{
 									real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
@@ -3030,7 +3030,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 			textSourceScript.setAttachedToEntityType(src.textSourceIsScript, attachTo);
 			for ( node_t* node = map.entities->first; node; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity )
 				{
 					if ( (entity->behavior == &actMonster && attachTo == TO_MONSTERS)
@@ -3056,7 +3056,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					{
 						node_t* node = list_AddNodeLast(&src.children);
 						node->deconstructor = &defaultDeconstructor;
-						Uint32* entityUid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
+						auto entityUid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
 						node->element = entityUid;
 						node->size = sizeof(Uint32);
 						*entityUid = entity->getUID();
@@ -3308,7 +3308,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				std::unordered_set<int> plateSpots;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* pressurePlate = static_cast<Entity*>(node->element);
+					auto pressurePlate = static_cast<Entity*>(node->element);
 					if ( pressurePlate && pressurePlate->behavior == &actTrapPermanent )
 					{
 						int findx = static_cast<int>(pressurePlate->x) >> 4;
@@ -3358,7 +3358,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				int y2 = (result >> 24) & 0xFF;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* pressurePlate = static_cast<Entity*>(node->element);
+					auto pressurePlate = static_cast<Entity*>(node->element);
 					if ( pressurePlate && pressurePlate->behavior == &actTrapPermanent )
 					{
 						int findx = static_cast<int>(pressurePlate->x) >> 4;
@@ -3388,7 +3388,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				std::unordered_set<int> wireSpots;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* wire = static_cast<Entity*>(node->element);
+					auto wire = static_cast<Entity*>(node->element);
 					if ( wire && wire->behavior == &actCircuit )
 					{
 						int findx = static_cast<int>(wire->x) >> 4;
@@ -3436,7 +3436,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				for ( node_t* node = map.entities->first; node; node = nextnode )
 				{
 					nextnode = node->next;
-					Entity* wire = static_cast<Entity*>(node->element);
+					auto wire = static_cast<Entity*>(node->element);
 					if ( wire && wire->behavior == &actCircuit )
 					{
 						int findx = static_cast<int>(wire->x) >> 4;
@@ -3480,7 +3480,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -3523,7 +3523,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -3625,7 +3625,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 						Entity* toAttack = nullptr;
 						for ( node_t* node = map.creatures->first; node; node = node->next )
 						{
-							Entity* target = static_cast<Entity*>(node->element);
+							auto target = static_cast<Entity*>(node->element);
 							if ( (target->behavior == &actMonster || target->behavior == &actPlayer) && target != entity
 								&& entity->checkEnemy(target) )
 							{
@@ -3691,7 +3691,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -3734,7 +3734,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster && !entity->monsterAllyGetPlayerLeader() )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -3849,7 +3849,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster && !entity->monsterAllyGetPlayerLeader() )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -3891,7 +3891,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* scriptEntity = static_cast<Entity*>(node->element);
+					auto scriptEntity = static_cast<Entity*>(node->element);
 					if ( scriptEntity && scriptEntity->behavior == &actMonster )
 					{
 						Stat* scriptStats = scriptEntity->getStats();
@@ -3959,7 +3959,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster && !entity->monsterAllyGetPlayerLeader() )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -4009,7 +4009,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster && !entity->monsterAllyGetPlayerLeader() )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -4111,7 +4111,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					std::vector<Entity*> monsters;
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -4167,7 +4167,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					{
 						for ( node_t* node = map.entities->first; node; node = node->next )
 						{
-							Entity* entity = static_cast<Entity*>(node->element);
+							auto entity = static_cast<Entity*>(node->element);
 							if ( entity && entity->behavior == &actItem )
 							{
 								int findx = static_cast<int>(entity->x) >> 4;
@@ -4289,7 +4289,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					{
 						for ( node_t* node = map.entities->first; node; node = node->next )
 						{
-							Entity* entity = static_cast<Entity*>(node->element);
+							auto entity = static_cast<Entity*>(node->element);
 							if ( entity && entity->behavior == &actItem )
 							{
 								int findx = static_cast<int>(entity->x) >> 4;
@@ -4364,7 +4364,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					Entity* chest = nullptr;
 					for ( node_t* node = map.entities->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actChest )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -4429,7 +4429,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					Entity* breakable = nullptr;
 					for ( node_t* node = map.entities->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->isColliderBreakableContainer() )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -5321,7 +5321,7 @@ void TextSourceScript::parseScriptInMapGeneration(Entity& src)
 		textSourceScript.setAttachedToEntityType(src.textSourceIsScript, attachTo);
 		for ( node_t* node = map.entities->first; node; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( entity )
 			{
 				if ( (entity->behavior == &actMonster && attachTo == TO_MONSTERS)
@@ -5347,7 +5347,7 @@ void TextSourceScript::parseScriptInMapGeneration(Entity& src)
 				{
 					node_t* node = list_AddNodeLast(&src.children);
 					node->deconstructor = &defaultDeconstructor;
-					Uint32* entityUid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
+					auto entityUid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
 					node->element = entityUid;
 					node->size = sizeof(Uint32);
 					*entityUid = entity->getUID();
@@ -5363,13 +5363,13 @@ void bellAttractMonsters(Entity* my)
 
 	auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, decoyBoxRange);
 
-	for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
 		node_t* node;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader() == nullptr )
 			{
 				if ( (entity->monsterState == MONSTER_STATE_WAIT || entity->monsterTarget == 0) )
@@ -5606,7 +5606,7 @@ void bellBreakBulb(Entity* my, bool minotaurBreak)
 	{
 		if ( node->element != nullptr )
 		{
-			Entity* child = static_cast<Entity*>(node->element);
+			auto child = static_cast<Entity*>(node->element);
 			if ( child )
 			{
 				if ( child->sprite == 1475 && !child->flags[INVISIBLE] ) // bell
@@ -6049,7 +6049,7 @@ void actBell(Entity* my)
 		nextnode = node->next;
 		if ( node->element != nullptr )
 		{
-			Entity* child = static_cast<Entity*>(node->element);
+			auto child = static_cast<Entity*>(node->element);
 			if ( child )
 			{
 				if ( child->sprite == 1475 ) // bell
@@ -6072,13 +6072,13 @@ void actBell(Entity* my)
 						{
 							Entity* puller = uidToEntity(BELL_PULLED_TO_BREAK);
 							auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(child, 2);
-							for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !collided; ++it )
+							for (auto it = entLists.begin(); it != entLists.end() && !collided; ++it )
 							{
 								list_t* currentList = *it;
 								node_t* node;
 								for ( node = currentList->first; node != nullptr && !collided; node = node->next )
 								{
-									Entity* entity = static_cast<Entity*>(node->element);
+									auto entity = static_cast<Entity*>(node->element);
 									if ( !entity ) { continue; }
 
 									if ( (entity->behavior == &actMonster && !(entity->getRace() == MIMIC)) 
@@ -6525,13 +6525,13 @@ void actBell(Entity* my)
 			spawnMagicEffectParticlesBell(my, 1479);
 
 			auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
-			for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+			for (auto it = entLists.begin(); it != entLists.end(); ++it )
 			{
 				list_t* currentList = *it;
 				node_t* node;
 				for ( node = currentList->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( (entity->behavior == &actMonster && !(entity->getRace() == MIMIC))
 						|| entity->behavior == &actPlayer )
 					{

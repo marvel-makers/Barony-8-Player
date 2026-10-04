@@ -240,12 +240,12 @@ void actDoor(Entity* my)
 			real_t oldmyy = my->y;
 			my->x = (static_cast<int>(my->x) >> 4) * 16.0 + 8.0; // door positioning isn't centred on tile so adjust
 			my->y = (static_cast<int>(my->y) >> 4) * 16.0 + 8.0;
-			for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
+			for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
 			{
 				list_t* currentList = *it;
 				for ( node = currentList->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity == my || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost) 
 						|| entity->behavior == &actDoorFrame )
 					{
@@ -632,12 +632,12 @@ void Entity::actIronDoor()
 			real_t oldmyy = y;
 			x = (static_cast<int>(x) >> 4) * 16.0 + 8.0; // door positioning isn't centred on tile so adjust
 			y = (static_cast<int>(y) >> 4) * 16.0 + 8.0;
-			for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
+			for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
 			{
 				list_t* currentList = *it;
 				for ( node = currentList->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity == this || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost)
 						|| entity->behavior == &actDoorFrame )
 					{

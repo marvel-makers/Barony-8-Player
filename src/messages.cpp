@@ -22,7 +22,7 @@ void messageDeconstructor(void* data)
 {
 	if (data != NULL)
 	{
-		Message* message = static_cast<Message*>(data);
+		auto message = static_cast<Message*>(data);
 		stringDeconstructor(message->text);
 		free(data);
 	}

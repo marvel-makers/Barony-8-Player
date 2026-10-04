@@ -241,7 +241,7 @@ void actFountain(Entity* my)
 						for ( int j = 0; j < potionDropQuantity; ++j )
 						{
 							std::pair<int, int> generatedPotion = fountainGeneratePotionDrop(rng);
-							ItemType type = static_cast<ItemType>(generatedPotion.first);
+							auto type = static_cast<ItemType>(generatedPotion.first);
 							int appearance = generatedPotion.second;
 							Item* item = newItem(type, EXCELLENT, 0, 1, appearance, false, NULL);
 							if ( Entity* dropped = dropItemMonster(item, my, NULL) )

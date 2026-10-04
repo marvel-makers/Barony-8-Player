@@ -3983,7 +3983,7 @@ bool physfsModelIndexUpdate(int &start, int &end)
 		fp->gets2(modelName, PATH_MAX);
 		bool modelHasBeenModified = false;
 		// has this model index been modified?
-		std::vector<int>::iterator it = Mods::modelsListModifiedIndexes.end();
+		auto it = Mods::modelsListModifiedIndexes.end();
 		if ( !Mods::modelsListModifiedIndexes.empty() )
 		{
 			it = std::find(Mods::modelsListModifiedIndexes.begin(),
@@ -5114,7 +5114,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 		for ( uint64_t i = 0; i < polymodels[c].numfaces; i++ )
 		{
 			node_t* node = list_Node(&quads, static_cast<int>(i) / 2);
-			polyquad_t* quad = static_cast<polyquad_t*>(node->element);
+			auto quad = static_cast<polyquad_t*>(node->element);
             auto& face = polymodels[c].faces[i];
             switch (quad->side) {
             case 0: face.normal = { 1.f,  0.f,  0.f}; break; // front
@@ -5413,7 +5413,7 @@ void physfsReloadSounds(bool reloadAll)
 		fp->gets2(name, PATH_MAX);
 		bool soundHasBeenModified = false;
 		// has this sound index been modified?
-		std::vector<int>::iterator it = Mods::soundsListModifiedIndexes.end();
+		auto it = Mods::soundsListModifiedIndexes.end();
 		if ( !Mods::soundsListModifiedIndexes.empty() )
 		{
 			it = std::find(Mods::soundsListModifiedIndexes.begin(),
@@ -5835,7 +5835,7 @@ bool physfsSearchItemSpritesToUpdate()
 		for ( int x = 0; x < list_Size(&items[c].images); x++ )
 		{
 			node_t* node = list_Node(&items[c].images, x);
-			string_t* string = static_cast<string_t*>(node->element);
+			auto string = static_cast<string_t*>(node->element);
 			std::string itemImgDir;
 			if ( PHYSFS_getRealDir(string->data) != NULL )
 			{
@@ -5861,7 +5861,7 @@ void physfsReloadItemSprites(bool reloadAll)
 			for ( int x = 0; x < list_Size(&items[c].images); x++ )
 			{
 				node_t* node = list_Node(&items[c].images, x);
-				string_t* string = static_cast<string_t*>(node->element);
+				auto string = static_cast<string_t*>(node->element);
 				std::string itemImgDir;
 				if ( PHYSFS_getRealDir(string->data) != NULL )
 				{
@@ -5881,7 +5881,7 @@ void physfsReloadItemSprites(bool reloadAll)
 			for ( node = items[c].surfaces.first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				SDL_Surface** surface = static_cast<SDL_Surface**>(node->element);
+				auto surface = static_cast<SDL_Surface**>(node->element);
 				if ( surface )
 				{
 					if ( *surface )
@@ -5895,14 +5895,14 @@ void physfsReloadItemSprites(bool reloadAll)
 			// now reload the image data.
 			for ( int x = 0; x < list_Size(&items[c].images); x++ )
 			{
-				SDL_Surface** surface = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*)));
+				auto surface = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*)));
 				node_t* node = list_AddNodeLast(&items[c].surfaces);
 				node->element = surface;
 				node->deconstructor = &defaultDeconstructor;
 				node->size = sizeof(SDL_Surface*);
 
 				node_t* node2 = list_Node(&items[c].images, x);
-				string_t* string = static_cast<string_t*>(node2->element);
+				auto string = static_cast<string_t*>(node2->element);
 				std::string itemImgDir;
 				if ( PHYSFS_getRealDir(string->data) != NULL )
 				{

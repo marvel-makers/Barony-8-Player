@@ -124,7 +124,7 @@ static void updateModFolderNames()
 	modFolderNames = directoryContents(path.c_str(), true, false);
 	if ( !modFolderNames.empty() )
 	{
-		std::list<std::string>::iterator it = std::find(modFolderNames.begin(), modFolderNames.end(), "..");
+		auto it = std::find(modFolderNames.begin(), modFolderNames.end(), "..");
 		if ( it != modFolderNames.end() )
 		{
 			modFolderNames.erase(it);

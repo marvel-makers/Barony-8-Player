@@ -381,7 +381,7 @@ Item* uidToItem(const Uint32 uid)
 		}
 		for ( node_t* node = stats[i]->inventory.first; node != nullptr; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( item->uid == uid )
 			{
 				return item;
@@ -2628,7 +2628,7 @@ void useItem(Item* item, const int player, Entity* usedBy, bool unequipForDroppi
 			bool havetinopener = false;
 			for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
 			{
-				Item* tempitem = static_cast<Item*>(node->element);
+				auto tempitem = static_cast<Item*>(node->element);
 				if ( tempitem->type == TOOL_TINOPENER )
 				{
 					if ( tempitem->status != BROKEN )
@@ -4233,7 +4233,7 @@ ItemStackResult getItemStackingBehaviorIntoChest(const int player, Item* itemToC
 
 	for ( node_t* node = chest_inventory->first; node != nullptr; node = node->next )
 	{
-		Item* item2 = static_cast<Item*>(node->element);
+		auto item2 = static_cast<Item*>(node->element);
 		if ( item2 )
 		{
 			int tmpQtyCheckedItem = newQtyForCheckedItem;
@@ -4342,7 +4342,7 @@ ItemStackResult getItemStackingBehavior(const int player, Item* itemToCheck, Ite
 
 	for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* item2 = static_cast<Item*>(node->element);
+		auto item2 = static_cast<Item*>(node->element);
 		if ( item2 )
 		{
 			int tmpQtyCheckedItem = newQtyForCheckedItem;
@@ -6102,7 +6102,7 @@ void Item::applyLockpickToWall(const int player, const int x, const int y) const
 
 	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		if ( entity && entity->behavior == &actArrowTrap
 			&& static_cast<int>(entity->x / 16) == x
 			&& static_cast<int>(entity->y / 16) == y )
@@ -6311,7 +6311,7 @@ void createCustomInventory(Stat* const stats, const int itemLimit, BaronyRNG& rn
 
 			if ( itemId >= 0 )
 			{
-				Status itemStatus = static_cast<Status>(stats->EDITOR_ITEMS[itemSlots[i] + 1]);
+				auto itemStatus = static_cast<Status>(stats->EDITOR_ITEMS[itemSlots[i] + 1]);
 				if ( itemStatus == 0 )
 				{
 					itemStatus = static_cast<Status>(DECREPIT + rng.rand() % 4);
@@ -6363,7 +6363,7 @@ node_t* itemNodeInInventory(const Stat* const myStats, Sint32 itemToFind, const 
 	for ( node = myStats->inventory.first; node != nullptr; node = nextnode )
 	{
 		nextnode = node->next;
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item != nullptr )
 		{
 			if ( cat >= WEAPON && itemCategory(item) == cat )
@@ -6417,7 +6417,7 @@ node_t* spellbookNodeInInventory(const Stat* const myStats, const int spellIDToF
 
 	for ( node_t* node = myStats->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item != nullptr && itemCategory(item) == SPELLBOOK && getSpellIDFromSpellbook(item->type) == spellIDToFind )
 		{
 			return node;
@@ -6445,7 +6445,7 @@ node_t* getRangedWeaponItemNodeInInventory(const Stat* const myStats, const bool
 
 	for ( node_t* node = myStats->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item != nullptr )
 		{
 			if ( isRangedWeapon(*item) )
@@ -6471,7 +6471,7 @@ node_t* getMeleeWeaponItemNodeInInventory(const Stat* const myStats)
 
 	for ( node_t* node = myStats->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item != nullptr )
 		{
 			if ( isMeleeWeapon(*item) )
@@ -7741,7 +7741,7 @@ void Item::onItemIdentified(int player, Item* tempItem)
 		std::unordered_set<Uint32> appearancesOfSimilarItems;
 		for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
 		{
-			Item* item2 = static_cast<Item*>(node->element);
+			auto item2 = static_cast<Item*>(node->element);
 			if ( item2 && item2 != tempItem && !itemCompare(tempItem, item2, true) )
 			{
 				// items are the same (incl. appearance!)

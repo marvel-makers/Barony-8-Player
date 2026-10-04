@@ -374,7 +374,7 @@ void actArrow(Entity* my)
 			{
 				for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity && (entity->behavior == &actMonster || entity->behavior == &actPlayer) )
 					{
 						if ( entityInsideEntity(my, entity) )
@@ -410,7 +410,7 @@ void actArrow(Entity* my)
 					}
 					for ( node_t* node = it->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity->behavior == &actGate || entity->behavior == &actDoor || entity->behavior == &actIronDoor )
 						{
 							if ( entityDist(my, entity) <= my->arrowSpeed )

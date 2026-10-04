@@ -40,7 +40,7 @@ public:
 		}
 		size_t readSize = 0U;
 		size_t end = std::min(this->size(), pos + size * count);
-		uint8_t* buf = static_cast<uint8_t*>(buffer);
+		auto buf = static_cast<uint8_t*>(buffer);
 		for (size_t c = pos; c < end; ++c) {
 			*buf = data[c]; ++buf;
 			++readSize;

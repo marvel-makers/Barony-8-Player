@@ -134,7 +134,7 @@ void Entity::actMagicTrapCeiling()
 	++spellTrapCounter;
 
 	node_t* node = children.first;
-	Entity* ceilingModel = static_cast<Entity*>(node->element);
+	auto ceilingModel = static_cast<Entity*>(node->element);
 	int triggerSprite = 0;
 	switch ( spellTrapType )
 	{
@@ -391,7 +391,7 @@ void Entity::actTeleportShrine()
 				std::vector<std::pair<Entity*, std::pair<int, int>>> allShrines;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( !entity ) { continue; }
 					if ( entity->behavior == &::actTeleportShrine )
 					{
@@ -464,7 +464,7 @@ void Entity::actTeleportShrine()
 				std::vector<std::pair<Entity*, std::pair<int, int>>> allShrines;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( !entity ) { continue; }
 					if ( entity->behavior == &::actTeleportShrine )
 					{
@@ -566,7 +566,7 @@ void daedalusShrineInteract(Entity* my, Entity* touched)
 		Entity* exitEntity = nullptr;
 		for ( node_t* node = map.entities->first; node; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( !entity ) { continue; }
 			if ( (entity->behavior == &actLadder && strcmp(map.name, "Hell")) || (entity->behavior == &actPortal && !strcmp(map.name, "Hell")) )
 			{

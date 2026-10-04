@@ -46,13 +46,13 @@ void actSummonTrap(Entity* my)
 		if ( ticks % TICKS_PER_SECOND == 0 || SUMMONTRAP_TICKS_TO_FIRE > 0 )
 		{
 			auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, SUMMONTRAP_SPAWN_IN_PLAYER_PROXIMITY);
-			for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !foundTriggerEntity; ++it )
+			for (auto it = entLists.begin(); it != entLists.end() && !foundTriggerEntity; ++it )
 			{
 				list_t* currentList = *it;
 				node_t* node;
 				for ( node = currentList->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity && (entity->behavior == &actPlayer || (entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader())) )
 					{
 						real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
@@ -131,7 +131,7 @@ void actSummonTrap(Entity* my)
 					std::vector<Monster> possibleTypes;
 					for ( int i = 0; i < NUMMONSTERS; ++i )
 					{
-						const Monster mon = static_cast<Monster>(i);
+						const auto mon = static_cast<Monster>(i);
 						if ( typesToSkip.find(mon) == typesToSkip.end() )
 						{
 							possibleTypes.push_back(mon);

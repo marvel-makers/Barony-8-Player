@@ -181,12 +181,12 @@ void Entity::actGate()
 		{
 			entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 1);
 		}
-		for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
+		for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
 		{
 			list_t* currentList = *it;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity == this || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost)
 					|| entity->behavior == &actDoorFrame || entity->behavior == &::actGate )
 				{

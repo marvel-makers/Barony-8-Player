@@ -23,8 +23,8 @@
 #include "../ui/Button.hpp"
 #include "../ui/Field.hpp"
 
-static const char* smallfont_outline = "fonts/pixel_maz_multiline.ttf#16#2";
-static const char* smallfont_no_outline = "fonts/pixel_maz_multiline.ttf#16#0";
+static auto smallfont_outline = "fonts/pixel_maz_multiline.ttf#16#2";
+static auto smallfont_no_outline = "fonts/pixel_maz_multiline.ttf#16#0";
 
 void UIToastNotification::init()
 {
@@ -901,7 +901,7 @@ void UIToastNotificationManager_t::createAchievementNotification(const char* nam
 		}
 	}
 
-	const char* achievementName = "Unknown Achievement";
+	auto achievementName = "Unknown Achievement";
 	{
 		auto it = Compendium_t::achievements.find(name);
 		if (it != Compendium_t::achievements.end())
@@ -914,7 +914,7 @@ void UIToastNotificationManager_t::createAchievementNotification(const char* nam
 	n = UIToastNotificationManager.addNotification(imgName.c_str());
 	n->setHeaderText("Achievement Unlocked!");
 
-	std::string achStr = std::string(achievementName);
+	auto achStr = std::string(achievementName);
 	truncateMainText(achStr);
 	n->setMainText(achStr.c_str());
 
@@ -949,7 +949,7 @@ void UIToastNotificationManager_t::createStatisticUpdateNotification(const char*
 	}
 
 	const bool unlocked = (currentValue >= maxValue);
-	const char* achievementName = "Unknown Achievement";
+	auto achievementName = "Unknown Achievement";
 	bool challenge = false;
 	if ( !strcmp(name, "CHALLENGE_MONSTER_KILLS") )
 	{
@@ -979,7 +979,7 @@ void UIToastNotificationManager_t::createStatisticUpdateNotification(const char*
 		n->setHeaderText(unlocked ? "Achievement Unlocked!" : "Achievement Updated!");
 	}
 
-	std::string achStr = std::string(achievementName);
+	auto achStr = std::string(achievementName);
 	truncateMainText(achStr);
 	n->setMainText(achStr.c_str());
 	n->setAchievementName(name);

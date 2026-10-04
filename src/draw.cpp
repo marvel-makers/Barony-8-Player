@@ -2091,7 +2091,7 @@ void drawEntities3D(view_t* camera, int mode)
 	node_t* nextnode = nullptr;
 	for ( node_t* node = map.entities->first; node != nullptr; node = nextnode )
     {
-        Entity* entity = static_cast<Entity*>(node->element);
+        auto entity = static_cast<Entity*>(node->element);
         nextnode = node->next;
         if ( node->next == nullptr && node->list == map.entities )
         {
@@ -2372,7 +2372,7 @@ void drawEntities3D(view_t* camera, int mode)
 	{
 		if ( std::get<2>(distSpriteType) == SPRITE_ENTITY )
 		{
-			Entity* entity = static_cast<Entity*>(std::get<1>(distSpriteType));
+			auto entity = static_cast<Entity*>(std::get<1>(distSpriteType));
 			if ( entity->behavior == &actSpriteNametag )
 			{
 				if ( intro ) { continue; } // don't draw on main menu
@@ -3455,7 +3455,7 @@ void drawWindowFancy(int x1, int y1, int x2, int y2)
 
 SDL_Rect ttfPrintTextColor( TTF_Font* font, int x, int y, Uint32 color, bool outline, const char* str )
 {
-    const char* filename = "lang/en.ttf#12#1"; // default
+	auto filename = "lang/en.ttf#12#1"; // default
     if (outline) {
         if (font == ttf8) {
             filename = "lang/en.ttf#12#1";

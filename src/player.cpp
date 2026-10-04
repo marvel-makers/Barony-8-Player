@@ -2851,7 +2851,7 @@ GameController::Haptic_t::HapticEffect* GameController::handleRumble()
 		++it;
 	}
 
-	std::vector<std::pair<Uint32, Haptic_t::Rumble>>::iterator rumbleToPlay = haptics.activeRumbles.end();
+	auto rumbleToPlay = haptics.activeRumbles.end();
 	for ( auto it = haptics.activeRumbles.begin(); it != haptics.activeRumbles.end(); ++it )
 	{
 		Uint32 priority = it->first;
@@ -4808,7 +4808,7 @@ void Player::WorldUI_t::handleTooltips()
 			players[player]->worldUI.reset();
 			for ( node_t* node = map.worldUI->first; node; node = node->next )
 			{
-				Entity* tooltip = static_cast<Entity*>(node->element);
+				auto tooltip = static_cast<Entity*>(node->element);
 				if ( !tooltip || tooltip->behavior != &actSpriteWorldTooltip )
 				{
 					continue;
@@ -4845,7 +4845,7 @@ void Player::WorldUI_t::handleTooltips()
 			real_t dist = 10000.0;
 			for ( node_t* node = map.worldUI->first; node; node = node->next )
 			{
-				Entity* tooltip = static_cast<Entity*>(node->element);
+				auto tooltip = static_cast<Entity*>(node->element);
 				if ( !tooltip || tooltip->behavior != &actSpriteWorldTooltip )
 				{
 					continue;
@@ -5834,7 +5834,7 @@ const bool Player::Inventory_t::bItemInventoryHasFreeSlot() const
 	}
 	for ( node_t* node = stats[player.playernum]->inventory.first; node; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( !item )
 		{
 			continue;
@@ -6644,7 +6644,7 @@ SDL_Rect Inputs::getGlyphRectForInput(const int player, bool pressed, const unsi
 	}
 	else
 	{
-		SDL_GameControllerButton but = static_cast<SDL_GameControllerButton>(controllerImpulse);
+		auto but = static_cast<SDL_GameControllerButton>(controllerImpulse);
 		/*if ( but == SDL_CONTROLLER_BUTTON_INVALID && controllerImpulse >= 299 )
 		{
 			but = static_cast<SDL_GameControllerButton>(controllerImpulse - 301);
@@ -7297,7 +7297,7 @@ static const char* getDirectConnectPlayerName(const int playernum)
 
 const char* Player::getAccountName() const
 {
-	const char* unknown = "...";
+	auto unknown = "...";
 	if ( directConnect )
 	{
 		return getDirectConnectPlayerName(playernum);
@@ -7766,7 +7766,7 @@ bool Player::PlayerMechanics_t::updateSustainedSpellEvent(int spellID, real_t va
 
 		for ( node_t* node = stats[player.playernum]->magic_effects.first; node; node = node->next )
 		{
-			if ( spell_t* sustainedSpell = static_cast<spell_t*>(node->element) )
+			if (auto sustainedSpell = static_cast<spell_t*>(node->element) )
 			{
 				if ( sustainedSpell->ID == spellID )
 				{

@@ -1171,7 +1171,7 @@ void monsterSMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			node_t* weaponNode = list_Node(&my->children, 7);
 			if ( weaponNode )
 			{
-				Entity* weapon = static_cast<Entity*>(weaponNode->element);
+				auto weapon = static_cast<Entity*>(weaponNode->element);
 				if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT) )
 				{
 					// if weapon invisible and I'm not attacking, relax arm.
@@ -1275,7 +1275,7 @@ void monsterSMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			node_t* shieldNode = list_Node(&my->children, 8);
 			if ( shieldNode )
 			{
-				Entity* shield = static_cast<Entity*>(shieldNode->element);
+				auto shield = static_cast<Entity*>(shieldNode->element);
 				if ( shield->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT )
 				{
 					entity->focalx = limbs[SALAMANDER][5][0]; // 0
@@ -1764,7 +1764,7 @@ void monsterSMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	node_t* shieldNode = list_Node(&my->children, 8);
 	if ( shieldNode )
 	{
-		Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
+		auto shieldEntity = static_cast<Entity*>(shieldNode->element);
 		if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 		{
 			shieldEntity->yaw -= PI / 6;

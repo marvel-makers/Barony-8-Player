@@ -476,7 +476,7 @@ void actFociGib(Entity* my)
 				particle->z = 0;*/
 
 				auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1);
-				for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && spell; ++it )
+				for (auto it = entLists.begin(); it != entLists.end() && spell; ++it )
 				{
 					list_t* currentList = *it;
 					bool lastEntity = false;
@@ -1416,13 +1416,13 @@ Entity* spawnDamageGib(Entity* parentent, Sint32 dmgAmount, int gibDmgType, int 
 		{
 			if ( node_t* node = list_Node(&parentent->children, 2) )
 			{
-				if ( Entity* entity2 = static_cast<Entity*>(node->element) )
+				if (auto entity2 = static_cast<Entity*>(node->element) )
 				{
 					if ( Entity::getMonsterTypeFromSprite(entity2->sprite) == DUCK_SMALL )
 					{
 						if ( node_t* node = list_Node(&entity2->children, 2) )
 						{
-							if ( Entity* entity3 = static_cast<Entity*>(node->element) )
+							if (auto entity3 = static_cast<Entity*>(node->element) )
 							{
 								entity->z = entity3->z - 4;
 							}
@@ -1435,7 +1435,7 @@ Entity* spawnDamageGib(Entity* parentent, Sint32 dmgAmount, int gibDmgType, int 
 		{
 			if ( node_t* node = list_Node(&parentent->children, 2) )
 			{
-				if ( Entity* entity2 = static_cast<Entity*>(node->element) )
+				if (auto entity2 = static_cast<Entity*>(node->element) )
 				{
 					entity->z = entity2->z - 4;
 				}
@@ -1612,12 +1612,12 @@ void spawnGreasePuddleSpawner(Entity* caster, real_t x, real_t y, int duration)
 			return;
 		}
 		auto entLists = TileEntityList.getEntitiesWithinRadius(ox, oy, 0);
-		for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
 			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity->behavior == &actGreasePuddleSpawner && entity->skill[0] > 0 )
 				{
 					entity->skill[0] = std::max(entity->skill[0], duration);
@@ -1736,12 +1736,12 @@ void actGreasePuddleSpawner(Entity* my)
 			{
 				bool foundGrease = false;
 				auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 0);
-				for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !foundGrease; ++it )
+				for (auto it = entLists.begin(); it != entLists.end() && !foundGrease; ++it )
 				{
 					list_t* currentList = *it;
 					for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actGreasePuddleSpawner && entity != my )
 						{
 							int x2 = entity->x / 16;
@@ -1787,12 +1787,12 @@ void actGreasePuddleSpawner(Entity* my)
 
 			auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 0);
 			Entity* parent = my->parent == 0 ? nullptr : uidToEntity(my->parent);
-			for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+			for (auto it = entLists.begin(); it != entLists.end(); ++it )
 			{
 				list_t* currentList = *it;
 				for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 				{
-					if ( Entity* entity = static_cast<Entity*>(node->element) )
+					if (auto entity = static_cast<Entity*>(node->element) )
 					{
 						if ( Stat* stats = entity->getStats() )
 						{
@@ -1876,12 +1876,12 @@ void actGreasePuddleSpawner(Entity* my)
 					my->skill[6] = 0;
 
 					auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1);
-					for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+					for (auto it = entLists.begin(); it != entLists.end(); ++it )
 					{
 						list_t* currentList = *it;
 						for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = static_cast<Entity*>(node->element);
+							auto entity = static_cast<Entity*>(node->element);
 							if ( entity && entity->behavior == &actGreasePuddleSpawner && entity != my )
 							{
 								int x2 = entity->x / 16;
@@ -2349,7 +2349,7 @@ void actLeafPile(Entity* my)
 				}
 				for ( node_t* node = it->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actMonster || entity->behavior == &actPlayer )
 					{
 						if ( !entity->monsterIsTargetable() ) { continue; }
@@ -2461,7 +2461,7 @@ void actLeafPile(Entity* my)
 				{
 					for ( node_t* node = it->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity->behavior == &actMonster || entity->behavior == &actPlayer )
 						{
 							if ( !entity->monsterIsTargetable() ) { continue; }

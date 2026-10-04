@@ -101,10 +101,10 @@ const Uint32 playerColor(int index, bool colorblind, bool ally)
     }
 }
 
-static const char* bigfont_outline = "fonts/pixelmix.ttf#16#2";
-static const char* bigfont_no_outline = "fonts/pixelmix.ttf#16#0";
-static const char* smallfont_outline = "fonts/pixel_maz_multiline.ttf#16#2";
-static const char* smallfont_no_outline = "fonts/pixel_maz_multiline.ttf#16#0";
+static auto bigfont_outline = "fonts/pixelmix.ttf#16#2";
+static auto bigfont_no_outline = "fonts/pixelmix.ttf#16#0";
+static auto smallfont_outline = "fonts/pixel_maz_multiline.ttf#16#2";
+static auto smallfont_no_outline = "fonts/pixel_maz_multiline.ttf#16#0";
 
 static ConsoleVariable<Vector4> mapBgColor("/map_background_color", Vector4{22.f, 24.f, 29.f, 223.f});
 static ConsoleVariable<Vector4> logBgColor("/log_background_color", Vector4{22.f, 24.f, 29.f, 223.f});
@@ -4946,7 +4946,7 @@ void createUINavigation(const int player)
     uiNavFrame->setDisabled(true);
     {
         const int glyphSize = 32;
-        const char* buttonFont = "fonts/pixel_maz.ttf#32#2";
+        auto buttonFont = "fonts/pixel_maz.ttf#32#2";
         auto magicButton = uiNavFrame->addButton("magic button");
         magicButton->setText(Language::get(4115));
         magicButton->setFont(buttonFont);
@@ -5090,7 +5090,7 @@ void createUINavigation(const int player)
     }
     {
         const int glyphSize = 32;
-        const char* navFont = "fonts/pixel_maz.ttf#32#2";
+        auto navFont = "fonts/pixel_maz.ttf#32#2";
         auto leftBumperNavigationTxt = uiNavFrame->addField("left bumper txt", 64);
         leftBumperNavigationTxt->setFont(navFont);
         leftBumperNavigationTxt->setHJustify(Field::justify_t::RIGHT);
@@ -6029,7 +6029,7 @@ std::string StatusEffectQueue_t::StatusEffectDefinitions_t::getEffectImgPath(
         }
         if (spellImageNode)
         {
-            string_t* string = static_cast<string_t*>(spellImageNode->element);
+            auto string = static_cast<string_t*>(spellImageNode->element);
             if (string)
             {
                 return string->data;
@@ -6616,7 +6616,7 @@ static ConsoleVariable<bool> cvar_statusfx_align_text_right("/statusfx_align_tex
 
 void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
 {
-    Frame* frame = (Frame*)&widget;
+    auto frame = (Frame*)&widget;
     if (auto parent = frame->getParent())
     {
         int player = parent->getOwner();
@@ -8524,7 +8524,7 @@ bool StatusEffectQueue_t::doStatusEffectTooltip(StatusEffectQueueEntry_t& entry,
                     bool sustained = false;
                     for (node_t* node = channeledSpells[player].first; node != nullptr; node = node->next)
                     {
-                        spell_t* spell = static_cast<spell_t*>(node->element);
+                        auto spell = static_cast<spell_t*>(node->element);
                         if (spell && spell->ID == SPELL_VAMPIRIC_AURA)
                         {
                             sustained = true;
@@ -9132,7 +9132,7 @@ void StatusEffectQueue_t::updateAllQueuedEffects()
     int count = 0; //This is just for debugging purposes.
     for (node_t* node = channeledSpells[player].first; node && effectsEnabled; node = node->next, count++)
     {
-        spell_t* spell = static_cast<spell_t*>(node->element);
+        auto spell = static_cast<spell_t*>(node->element);
         if (!spell)
         {
             break;
@@ -9900,7 +9900,7 @@ void StatusEffectQueue_t::updateAllQueuedEffects()
                             bool sustained = false;
                             for (node_t* node = channeledSpells[player].first; node != nullptr; node = node->next)
                             {
-                                spell_t* spell = static_cast<spell_t*>(node->element);
+                                auto spell = static_cast<spell_t*>(node->element);
                                 if (spell && spell->ID == SPELL_VAMPIRIC_AURA)
                                 {
                                     sustained = true;
@@ -10773,7 +10773,7 @@ void Player::Inventory_t::updateInventoryMiscTooltip()
         Player::GUI_t::imageResizeToContainer9x9(tooltipFrame, SDL_Rect{0, 0, 200, 200},
                                                  Player::GUI_t::tooltipEffectBackgroundImages);
         auto txt = tooltipFrame->addField("tooltip text", 1024);
-        const char* tooltipFont = "fonts/pixel_maz_multiline.ttf#16#2";
+        auto tooltipFont = "fonts/pixel_maz_multiline.ttf#16#2";
         txt->setFont(tooltipFont);
         txt->setColor(makeColor(188, 154, 114, 255));
     }
@@ -10849,7 +10849,7 @@ void Player::Inventory_t::updateInventoryMiscTooltip()
         const int pady2 = 8;
         const int padyMid = 4;
         const int padxMid = 4;
-        SDL_Rect tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
+        auto tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
         bool usingMouse = !inputs.getVirtualMouse(player.playernum)->lastMovementFromController;
         bool updateTxt = false;
         if (player.bUseCompactGUIHeight())
@@ -10870,7 +10870,7 @@ void Player::Inventory_t::updateInventoryMiscTooltip()
             }
         }
 
-        SDL_Rect txtPos = SDL_Rect{padx, pady1, maxWidth - padx * 2, 80};
+        auto txtPos = SDL_Rect{padx, pady1, maxWidth - padx * 2, 80};
         txt->setSize(txtPos);
         Font* actualFont = Font::get(txt->getFont());
         int txtHeight = txt->getNumTextLines() * actualFont->height(true);
@@ -10941,7 +10941,7 @@ void createWorldTooltipPrompts(const int player)
     worldTooltipFrame->setSize(SDL_Rect{0, 0, 0, 0});
     worldTooltipFrame->setDisabled(true);
 
-    const char* promptFont = "fonts/pixel_maz_multiline.ttf#16#2";
+    auto promptFont = "fonts/pixel_maz_multiline.ttf#16#2";
 
     Uint32 iconColor = makeColor(255, 255, 255, Player::HUD_t::actionPromptIconOpacity);
     Uint32 iconBackingColor = makeColor(255, 255, 255, Player::HUD_t::actionPromptIconBackingOpacity);
@@ -11514,7 +11514,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
 
         textPos.x += 40;
         textPos.y += 20;
-        const char* inputstr = "Attack";
+        auto inputstr = "Attack";
         if (inputs.hasController(player.playernum))
         {
             inputstr = "Cast Spell";
@@ -12300,7 +12300,7 @@ void createActionPrompts(const int player)
         iconBackingSize
     };
 
-    const char* promptFont = "fonts/pixel_maz_multiline.ttf#16#2";
+    auto promptFont = "fonts/pixel_maz_multiline.ttf#16#2";
 
     Uint32 iconColor = makeColor(255, 255, 255, Player::HUD_t::actionPromptIconOpacity);
     Uint32 iconBackingColor = makeColor(255, 255, 255, Player::HUD_t::actionPromptIconBackingOpacity);
@@ -12366,7 +12366,7 @@ void drawActionPromptCooldownCallback(const Widget& widget, SDL_Rect rect)
 {
     const int player = widget.getOwner();
 
-    const Frame* parent = static_cast<const Frame*>(widget.getParent());
+    auto parent = static_cast<const Frame*>(widget.getParent());
     {
         SDL_Rect drawRect = rect;
         drawRect.x += 22;
@@ -13422,7 +13422,7 @@ void Player::MessageZone_t::createChatbox()
         messages->setHollow(true);
         messages->setInheritParentFrameOpacity(false);
 
-        static const char* bigfont = "fonts/pixelmix.ttf#16#2";
+        static auto bigfont = "fonts/pixelmix.ttf#16#2";
         SDL_Rect entryPos{0, 0, messages->getSize().w, messages->getSize().h};
         for (int i = 0; i < MESSAGE_MAX_ENTRIES; ++i)
         {
@@ -13474,8 +13474,8 @@ void Player::MessageZone_t::processChatbox()
         return;
     }
 
-    static const char* bigfont = "fonts/pixelmix.ttf#16#2";
-    static const char* smallfont = "fonts/pixel_maz_multiline.ttf#16#2";
+    static auto bigfont = "fonts/pixelmix.ttf#16#2";
+    static auto smallfont = "fonts/pixel_maz_multiline.ttf#16#2";
     static ConsoleVariable<bool> cvar_smallmessages("/smallmessages", false);
     //static ConsoleVariable<bool> cvar_top_aligned("/topmessages", false);
     //static ConsoleVariable<std::string> alignment("/alignmessages", "");
@@ -15046,7 +15046,7 @@ void openLogWindow(int player)
     });
     close_button->setDrawCallback([](const Widget& widget, SDL_Rect rect)
     {
-        Button* button = (Button*)(&widget);
+        auto button = (Button*)(&widget);
         const int player = button->getOwner();
         if (inputs.getVirtualMouse(player)->draw_cursor)
         {
@@ -15257,7 +15257,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
             fullscreenBg->addImage(SDL_Rect{0, 0, fullscreenBg->getSize().w, 360},
                                    0xFFFFFFFF, "*#images/ui/CharSheet/HUD_CharSheet_Window_01A_Top.png", "bg image");
 
-            const char* titleFont = "fonts/pixel_maz.ttf#32#2";
+            auto titleFont = "fonts/pixel_maz.ttf#32#2";
             auto characterSheetTitleText = fullscreenBg->addField("character sheet title text", 32);
             characterSheetTitleText->setFont(titleFont);
             characterSheetTitleText->setSize(SDL_Rect{6, 177, 202, 32});
@@ -15268,7 +15268,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
 
         // log / map buttons
         {
-            const char* buttonFont = "fonts/pixel_maz.ttf#32#2";
+            auto buttonFont = "fonts/pixel_maz.ttf#32#2";
             SDL_Rect buttonFramePos{leftAlignX + 9, 6, 196, 82};
             auto buttonFrame = sheetFrame->addFrame("log map buttons");
             buttonFrame->setSize(buttonFramePos);
@@ -15352,7 +15352,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
 
         // game timer
         {
-            const char* timerFont = "fonts/pixel_maz.ttf#32#2";
+            auto timerFont = "fonts/pixel_maz.ttf#32#2";
             Uint32 timerTextColor = makeColor(188, 154, 114, 255);
 
             Frame* timerFrame = sheetFrame->addFrame("game timer");
@@ -15440,7 +15440,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
 
         // skills button
         {
-            const char* skillsFont = "fonts/pixel_maz.ttf#32#2";
+            auto skillsFont = "fonts/pixel_maz.ttf#32#2";
             Frame* skillsButtonFrame = sheetFrame->addFrame("skills button frame");
             skillsButtonFrame->setSize(SDL_Rect{leftAlignX + 14, 360 - 8 - 42, 186, 42});
             auto skillsButton = skillsButtonFrame->addButton("skills button");
@@ -15465,7 +15465,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
 
         // dungeon floor and level descriptor
         {
-            const char* dungeonFont = "fonts/pixel_maz.ttf#32#2";
+            auto dungeonFont = "fonts/pixel_maz.ttf#32#2";
             Uint32 dungeonTextColor = makeColor(188, 154, 114, 255);
             Frame* dungeonFloorFrame = sheetFrame->addFrame("dungeon floor frame");
 
@@ -15498,7 +15498,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
         }
 
         Frame* characterFrame = sheetFrame->addFrame("character info");
-        const char* infoFont = "fonts/pixel_maz.ttf#32#2";
+        auto infoFont = "fonts/pixel_maz.ttf#32#2";
         characterFrame->setSize(SDL_Rect{leftAlignX, 206, bgWidth, 116});
         characterFrame->setHollow(true);
         Uint32 infoTextColor = makeColor(188, 154, 114, 255);
@@ -15668,7 +15668,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
             SDL_Rect textPos{headingLeftX, iconPos.y, 40, iconPos.h};
             Uint32 statTextColor = hudColors.characterSheetNeutral;
 
-            const char* statFont = "fonts/pixel_maz.ttf#32#2";
+            auto statFont = "fonts/pixel_maz.ttf#32#2";
             textPos.y = iconPos.y + 1;
             statsInnerFrame->addImage(iconPos, 0xFFFFFFFF, "*#images/ui/CharSheet/HUD_CharSheet_STR_00.png",
                                       "str icon");
@@ -15926,7 +15926,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
             SDL_Rect textPos{headingLeftX, iconPos.y, 80, iconPos.h};
             Uint32 statTextColor = hudColors.characterSheetNeutral;
 
-            const char* attributeFont = "fonts/pixel_maz.ttf#32#2";
+            auto attributeFont = "fonts/pixel_maz.ttf#32#2";
             textPos.y = iconPos.y + 1;
             attributesInnerFrame->addImage(iconPos, 0xFFFFFFFF, "*#images/ui/CharSheet/HUD_CharSheet_ATT_00.png",
                                            "atk icon");
@@ -16197,7 +16197,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
                                                      Player::GUI_t::tooltipEffectBackgroundImages);
             auto txt = tooltipFrame->addField("tooltip text", 1024);
             auto txtRightAlignHint = tooltipFrame->addField("tooltip text right align hint", 128);
-            const char* tooltipFont = "fonts/pixel_maz_multiline.ttf#16#2";
+            auto tooltipFont = "fonts/pixel_maz_multiline.ttf#16#2";
             txt->setFont(tooltipFont);
             txt->setColor(makeColor(188, 154, 114, 255));
             txtRightAlignHint->setFont(tooltipFont);
@@ -17018,7 +17018,7 @@ void Player::GUIDropdown_t::process()
         {
             for (node_t* node = chest_inventory->first; node != NULL; node = node->next)
             {
-                Item* chestItem = static_cast<Item*>(node->element);
+                auto chestItem = static_cast<Item*>(node->element);
                 if (!chestItem)
                 {
                     continue;
@@ -17623,7 +17623,7 @@ void Player::GUIDropdown_t::create(const std::string name)
                             "*#images/ui/Inventory/tooltips/HoverItemMenu_SelectBack_R03.png",
                             "interact selected highlight right");
 
-    const char* interactFont = "fonts/pixel_maz.ttf#32#2";
+    auto interactFont = "fonts/pixel_maz.ttf#32#2";
 
     auto interactText = dropdownFrame->addField("interact text", 32);
     interactText->setText(dropDown.title.c_str());
@@ -18989,7 +18989,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         const int pady2 = 4;
         const int padxMid = 4;
         const int padyMid = 8;
-        SDL_Rect tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
+        auto tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
 
         std::string titleText = "";
         std::string descText = "";
@@ -19025,7 +19025,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         }
 
         txt->setText(titleText.c_str());
-        SDL_Rect txtPos = SDL_Rect{padx, pady1 - 2, maxWidth - padx * 2, 80};
+        auto txtPos = SDL_Rect{padx, pady1 - 2, maxWidth - padx * 2, 80};
         txt->setSize(txtPos);
         if (charsheetTooltipCache[player.playernum].textEntries[element].title != txt->getText())
         {
@@ -19934,7 +19934,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         const int pady2 = 4;
         const int padxMid = 4;
         const int padyMid = 8;
-        SDL_Rect tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
+        auto tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
 
         std::string titleText = "";
         std::string descText = "";
@@ -20122,7 +20122,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         }
 
         txt->setText(titleText.c_str());
-        SDL_Rect txtPos = SDL_Rect{padx, pady1 - 2, maxWidth - padx * 2, 80};
+        auto txtPos = SDL_Rect{padx, pady1 - 2, maxWidth - padx * 2, 80};
         txt->setSize(txtPos);
         if (charsheetTooltipCache[player.playernum].textEntries[element].title != txt->getText())
         {
@@ -22144,7 +22144,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         const int pady2 = 4;
         const int padxMid = 4;
         const int padyMid = 4;
-        SDL_Rect tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
+        auto tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
 
         std::string descriptionText = mapDisplayNamesDescriptions[map.name].second.c_str();
         std::string mapDetailsText = "";
@@ -22163,7 +22163,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         {
             txt->setText(descriptionText.c_str());
         }
-        SDL_Rect txtPos = SDL_Rect{padx, pady1, maxWidth - padx * 2, 80};
+        auto txtPos = SDL_Rect{padx, pady1, maxWidth - padx * 2, 80};
         txt->setSize(txtPos);
         if (charsheetTooltipCache[player.playernum].textEntries[element].title != txt->getText())
         {
@@ -22239,14 +22239,14 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         const int pady2 = 8;
         const int padyMid = 4;
         const int padxMid = 4;
-        SDL_Rect tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
+        auto tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
         bool usingMouse = !inputs.getVirtualMouse(player.playernum)->lastMovementFromController;
         if (strcmp(getHoverTextString("gold_mouse").c_str(), txt->getText()))
         {
             txt->setText(getHoverTextString("gold_mouse").c_str());
         }
 
-        SDL_Rect txtPos = SDL_Rect{padx, pady1, maxWidth - padx * 2, 80};
+        auto txtPos = SDL_Rect{padx, pady1, maxWidth - padx * 2, 80};
         txt->setSize(txtPos);
         if (charsheetTooltipCache[player.playernum].textEntries[element].title != txt->getText())
         {
@@ -22299,7 +22299,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         const int pady2 = 4;
         const int padxMid = 4;
         const int padyMid = 8;
-        SDL_Rect tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
+        auto tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
 
         Monster race = HUMAN;
         if (stats[player.playernum]->stat_appearance == 0 && stats[player.playernum]->playerRace != RACE_HUMAN)
@@ -22333,7 +22333,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         }
 
         txt->setText(titleText.c_str());
-        SDL_Rect txtPos = SDL_Rect{padx, pady1 - 2, maxWidth - padx * 2, 80};
+        auto txtPos = SDL_Rect{padx, pady1 - 2, maxWidth - padx * 2, 80};
         txt->setSize(txtPos);
         if (charsheetTooltipCache[player.playernum].textEntries[element].title != txt->getText())
         {
@@ -22459,7 +22459,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         const int pady2 = 4;
         const int padxMid = 4;
         const int padyMid = 8;
-        SDL_Rect tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
+        auto tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
 
         Monster race = HUMAN;
         if (stats[player.playernum]->stat_appearance == 0 && stats[player.playernum]->playerRace != RACE_HUMAN)
@@ -22487,7 +22487,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         {
             txt->setText(getHoverTextString("class_title").c_str());
         }
-        SDL_Rect txtPos = SDL_Rect{padx, pady1 - 2, maxWidth - padx * 2, 80};
+        auto txtPos = SDL_Rect{padx, pady1 - 2, maxWidth - padx * 2, 80};
         txt->setSize(txtPos);
         if (charsheetTooltipCache[player.playernum].textEntries[element].title != txt->getText())
         {
@@ -22614,7 +22614,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         const int pady2 = 8;
         const int padyMid = 4;
         const int padxMid = 4;
-        SDL_Rect tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
+        auto tooltipPos = SDL_Rect{400, 0, maxWidth, 100};
         bool usingMouse = !inputs.getVirtualMouse(player.playernum)->lastMovementFromController;
 
         if (player.characterSheet.showGameTimerAlways)
@@ -22636,7 +22636,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
 
         int currentHeight = padyMid;
 
-        SDL_Rect txtPos = SDL_Rect{padx, pady1, maxWidth - padx * 2, 80};
+        auto txtPos = SDL_Rect{padx, pady1, maxWidth - padx * 2, 80};
         txt->setSize(txtPos);
         if (charsheetTooltipCache[player.playernum].textEntries[element].title != txt->getText())
         {
@@ -23700,7 +23700,7 @@ void drawUnidentifiedItemEffectHotbarCallback(const Widget& widget, SDL_Rect rec
         return;
     }
 
-    const Frame* parent = static_cast<const Frame*>(widget.getParent());
+    auto parent = static_cast<const Frame*>(widget.getParent());
     {
         SDL_Rect drawRect = rect;
         drawRect.x += 4;
@@ -23769,7 +23769,7 @@ void drawUnidentifiedItemEffectCallback(const Widget& widget, SDL_Rect rect)
         return;
     }
 
-    const Frame* parent = static_cast<const Frame*>(widget.getParent());
+    auto parent = static_cast<const Frame*>(widget.getParent());
     {
         SDL_Rect drawRect = rect;
         drawRect.x += 2;
@@ -23830,8 +23830,8 @@ void drawUnidentifiedItemEffectCallback(const Widget& widget, SDL_Rect rect)
 
 void createPlayerInventorySlotFrameElements(Frame* slotFrame)
 {
-    const SDL_Rect slotSize = SDL_Rect{0, 0, slotFrame->getSize().w, slotFrame->getSize().h};
-    SDL_Rect coloredBackgroundPos = SDL_Rect{slotSize.x + 2, slotSize.y + 2, slotSize.w - 2, slotSize.h - 2};
+    const auto slotSize = SDL_Rect{0, 0, slotFrame->getSize().w, slotFrame->getSize().h};
+    auto coloredBackgroundPos = SDL_Rect{slotSize.x + 2, slotSize.y + 2, slotSize.w - 2, slotSize.h - 2};
 
     auto beatitudeFrame = slotFrame->addFrame("beatitude status frame"); // covers unidentified status as well
     beatitudeFrame->setSize(slotSize);
@@ -23893,7 +23893,7 @@ void createPlayerInventorySlotFrameElements(Frame* slotFrame)
     appraisalFrame->addImage(SDL_Rect{4, 4, 6, 14}, 0xFFFFFFFF,
                              "images/ui/Inventory/tooltips/ExclamationAnim00.png", "new notif img");
 
-    static const char* qtyfont = "fonts/pixel_maz.ttf#32#2";
+    static auto qtyfont = "fonts/pixel_maz.ttf#32#2";
     auto quantityFrame = slotFrame->addFrame("quantity frame");
     quantityFrame->setSize(slotSize);
     quantityFrame->setHollow(true);
@@ -24111,7 +24111,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         return;
     }
 
-    Item* item = static_cast<Item*>(itemPtr);
+    auto item = static_cast<Item*>(itemPtr);
 
     int player = slotFrame->getOwner();
 
@@ -24421,7 +24421,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
                     {
                         if (!item->identified)
                         {
-                            static const char* unidentifyHotbarPath =
+                            static auto unidentifyHotbarPath =
                                 "*#images/ui/HUD/hotbar/HUD_Quickbar_Slot_Box_Overlay_App01.png";
                             if (strcmp(unidentifyHotbarPath, beatitudeImg->path.c_str()))
                             {
@@ -24430,7 +24430,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
                         }
                         else if (item->beatitude > 0)
                         {
-                            static const char* blessHotbarPath =
+                            static auto blessHotbarPath =
                                 "*#images/ui/HUD/hotbar/HUD_Quickbar_Slot_Box_Overlay_Bless01.png";
                             if (strcmp(blessHotbarPath, beatitudeImg->path.c_str()))
                             {
@@ -24439,7 +24439,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
                         }
                         else if (item->beatitude < 0)
                         {
-                            static const char* curseHotbarPath =
+                            static auto curseHotbarPath =
                                 "*#images/ui/HUD/hotbar/HUD_Quickbar_Slot_Box_Overlay_Curse01.png";
                             if (strcmp(curseHotbarPath, beatitudeImg->path.c_str()))
                             {
@@ -24451,7 +24451,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
                     {
                         if (!item->identified)
                         {
-                            static const char* unidentifyPath = "*#images/ui/Inventory/HUD_Inventory_Item_App00B.png";
+                            static auto unidentifyPath = "*#images/ui/Inventory/HUD_Inventory_Item_App00B.png";
                             if (strcmp(unidentifyPath, beatitudeImg->path.c_str()))
                             {
                                 beatitudeImg->path = unidentifyPath;
@@ -24459,7 +24459,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
                         }
                         else if (item->beatitude > 0)
                         {
-                            static const char* blessPath = "*#images/ui/Inventory/HUD_Inventory_Item_Bless00B.png";
+                            static auto blessPath = "*#images/ui/Inventory/HUD_Inventory_Item_Bless00B.png";
                             if (strcmp(blessPath, beatitudeImg->path.c_str()))
                             {
                                 beatitudeImg->path = blessPath;
@@ -24467,7 +24467,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
                         }
                         else if (item->beatitude < 0)
                         {
-                            static const char* cursePath = "*#images/ui/Inventory/HUD_Inventory_Item_Curse00B.png";
+                            static auto cursePath = "*#images/ui/Inventory/HUD_Inventory_Item_Curse00B.png";
                             if (strcmp(cursePath, beatitudeImg->path.c_str()))
                             {
                                 beatitudeImg->path = cursePath;
@@ -25153,7 +25153,7 @@ void createInventoryTooltipFrame(const int player,
                                 "interact selected highlight right");
 
 
-        const char* interactFont = "fonts/pixel_maz.ttf#32#2";
+        auto interactFont = "fonts/pixel_maz.ttf#32#2";
 
         auto interactText = interactFrame->addField("interact text", 32);
         interactText->setText(Language::get(4040));
@@ -25354,7 +25354,7 @@ void createInventoryTooltipFrame(const int player,
         const int textHeight = glyphSizeH + 8;
 
         Uint32 promptTextColor = makeColor(188, 154, 114, 255);
-        const char* promptFont = "fonts/pixel_maz.ttf#32#2";
+        auto promptFont = "fonts/pixel_maz.ttf#32#2";
         int textAlignY = interactGlyph1->pos.y - 4;
         int textAlignXRightJustify = interactGlyph1->pos.x - 6 - textWidth;
         auto promptText = promptFrame->addField("txt 1", 32);
@@ -26498,11 +26498,11 @@ void drawObjectPreview(std::string modelsPath, Entity* object, SDL_Rect pos, rea
 
                 for (auto node = limb.children.first; node;)
                 {
-                    Entity* entity = static_cast<Entity*>(node->element);
+                    auto entity = static_cast<Entity*>(node->element);
                     node = node->next;
                     for (auto node2 = entity->children.first; node2;)
                     {
-                        Entity* entity2 = static_cast<Entity*>(node2->element);
+                        auto entity2 = static_cast<Entity*>(node2->element);
                         node2 = node2->next;
                         if (entity2->behavior)
                         {
@@ -26533,7 +26533,7 @@ void drawObjectPreview(std::string modelsPath, Entity* object, SDL_Rect pos, rea
 
                 for (auto node = entity->children.first; node; node = node->next)
                 {
-                    Entity* entity = static_cast<Entity*>(node->element);
+                    auto entity = static_cast<Entity*>(node->element);
                     bool b = entity->flags[BRIGHT];
                     if (!dark) { entity->flags[BRIGHT] = true; }
                     if (entity->flags[SPRITE])
@@ -26548,7 +26548,7 @@ void drawObjectPreview(std::string modelsPath, Entity* object, SDL_Rect pos, rea
 
                     for (auto node2 = entity->children.first; node2; node2 = node2->next)
                     {
-                        Entity* entity = static_cast<Entity*>(node2->element);
+                        auto entity = static_cast<Entity*>(node2->element);
                         bool b = entity->flags[BRIGHT];
                         if (!dark) { entity->flags[BRIGHT] = true; }
                         if (entity->flags[SPRITE])
@@ -26575,7 +26575,7 @@ void drawObjectPreview(std::string modelsPath, Entity* object, SDL_Rect pos, rea
                 c++;
                 continue;
             }
-            Entity* entity = static_cast<Entity*>(node->element);
+            auto entity = static_cast<Entity*>(node->element);
             if (!entity->flags[INVISIBLE])
             {
                 bool b = entity->flags[BRIGHT];
@@ -26651,7 +26651,7 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
         {
             if (auto node = list_Node(&playerEntity->children, 2))
             {
-                if (Entity* entity = static_cast<Entity*>(node->element))
+                if (auto entity = static_cast<Entity*>(node->element))
                 {
                     view.z = entity->z * 2;
                 }
@@ -26714,7 +26714,7 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
                         continue;
                     }
                 }
-                Entity* entity = static_cast<Entity*>(node->element);
+                auto entity = static_cast<Entity*>(node->element);
                 if (!entity->flags[INVISIBLE] || (entity->flags[INVISIBLE] && entity->flags[INVISIBLE_DITHER]))
                 {
                     bool b = entity->flags[BRIGHT];
@@ -26740,7 +26740,7 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
             {
                 for (node_t* node = map.entities->first; node != NULL; node = node->next)
                 {
-                    Entity* entity = static_cast<Entity*>(node->element);
+                    auto entity = static_cast<Entity*>(node->element);
                     if (static_cast<Sint32>(entity->getUID()) == -4) // torch sprites
                     {
                         if ((entity->skill[1] - 1) != player)
@@ -26767,7 +26767,7 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
         {
             for (node_t* node = map.entities->first; node != NULL; node = node->next)
             {
-                Entity* entity = static_cast<Entity*>(node->element);
+                auto entity = static_cast<Entity*>(node->element);
                 if (playerEntity->behavior == &actPlayer)
                 {
                     if ((entity->behavior == &actPlayerLimb && entity->skill[2] == player
@@ -28706,7 +28706,7 @@ void createPlayerSpellList(const int player)
                                               "spell slider bot");
         sliderCapBot->ontop = true;
 
-        const char* font = "fonts/pixel_maz.ttf#32#2";
+        auto font = "fonts/pixel_maz.ttf#32#2";
         auto titleText = bgFrame->addField("title txt", 64);
         titleText->setFont(font);
         titleText->setText(Language::get(5958));
@@ -28883,7 +28883,7 @@ bool takeAllChestGUIAction(const int player)
     std::vector<std::pair<int, Item*>> chestSlotOrder;
     for (node_t* node = chest_inventory->first; node != nullptr; node = node->next)
     {
-        Item* item2 = static_cast<Item*>(node->element);
+        auto item2 = static_cast<Item*>(node->element);
         if (item2)
         {
             int key = item2->x + item2->y * 100;
@@ -29062,7 +29062,7 @@ void createChestGUI(const int player)
         //slider->setHideSelectors(true);
         //slider->setMenuConfirmControlType(0);
 
-        const char* font = "fonts/pixel_maz.ttf#32#2";
+        auto font = "fonts/pixel_maz.ttf#32#2";
         auto titleText = bgFrame->addField("title txt", 64);
         titleText->setFont(font);
         titleText->setText(Language::get(5959));
@@ -29270,7 +29270,7 @@ void createShopGUI(const int player)
                                         makeColor(255, 255, 255, 64),
                                         "*#images/ui/Shop/Shop_ItemSlots_Areas03.png", "shop grid img");
 
-        const char* font = "fonts/pixel_maz_multiline.ttf#16#2";
+        auto font = "fonts/pixel_maz_multiline.ttf#16#2";
         Uint32 titleColor = makeColor(219, 157, 20, 255);
         Uint32 titleOutline = makeColor(29, 16, 11, 255);
         auto titleText = bgFrame->addField("shop name", 64);
@@ -29282,7 +29282,7 @@ void createShopGUI(const int player)
         titleText->setTextColor(titleColor);
         titleText->setOutlineColor(titleOutline);
 
-        const char* shoptypefont = "fonts/pixelmix.ttf#16#2";
+        auto shoptypefont = "fonts/pixelmix.ttf#16#2";
         auto shopTypeText = bgFrame->addField("shop type", 64);
         shopTypeText->setFont(shoptypefont);
         shopTypeText->setText("");
@@ -29764,7 +29764,7 @@ void createPlayerInventory(const int player)
             charFrame->setSize(charSize);
             charFrame->setTickCallback([](Widget& widget)
             {
-                Frame* frame = static_cast<Frame*>(&widget);
+                auto frame = static_cast<Frame*>(&widget);
                 int player = widget.getOwner();
                 auto& scrollInertia = players[player]->paperDoll.portraitRotationInertia;
                 auto& scrollPercent = players[player]->paperDoll.portraitRotationPercent;
@@ -30150,7 +30150,7 @@ void Player::Inventory_t::updateItemContextMenu()
                 for (node_t* node = chest_inventory->first; node != NULL; node = nextnode)
                 {
                     nextnode = node->next;
-                    Item* chestItem = static_cast<Item*>(node->element);
+                    auto chestItem = static_cast<Item*>(node->element);
                     if (!chestItem) { continue; }
                     if (chestItem->uid == itemMenuItem)
                     {
@@ -33493,7 +33493,7 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
                                                0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
     for (auto& img : frame->getImages())
     {
-        SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+        auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
         Uint8 r, g, b, a;
         getColor(img->color, &r, &g, &b, &a);
         SDL_SetSurfaceAlphaMod(srcSurf, a * frameOpacity);
@@ -33504,7 +33504,7 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
     }
     for (auto& img : dmgFrame->getImages())
     {
-        SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+        auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
         Uint8 r, g, b, a;
         getColor(img->color, &r, &g, &b, &a);
         if (EnemyHPDamageBarHandler::bEnemyBarSimpleBlit && a < 255) { continue; }
@@ -33518,7 +33518,7 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
     }
     for (auto& img : foregroundFrame->getImages())
     {
-        SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+        auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
         Uint8 r, g, b, a;
         getColor(img->color, &r, &g, &b, &a);
         SDL_SetSurfaceAlphaMod(srcSurf, a * frameOpacity);
@@ -33531,7 +33531,7 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
     }
     for (auto& img : skullFrame->getImages())
     {
-        SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+        auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
         Uint8 r, g, b, a;
         getColor(img->color, &r, &g, &b, &a);
         if (EnemyHPDamageBarHandler::bEnemyBarSimpleBlit && a < 255) { continue; }
@@ -33546,7 +33546,7 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
     {
         auto textGet = Text::get(txt->getText(), txt->getFont(),
                                  makeColor(255, 255, 255, 255), makeColor(0, 0, 0, 255));
-        SDL_Surface* txtSurf = const_cast<SDL_Surface*>(textGet->getSurf());
+        auto txtSurf = const_cast<SDL_Surface*>(textGet->getSurf());
         SDL_Rect pos;
         pos.w = textGet->getWidth();
         pos.h = textGet->getHeight();
@@ -34057,7 +34057,7 @@ void Player::HUD_t::updateEnemyBar2(Frame* whichFrame, void* enemyHPDetails)
         return;
     }
 
-    EnemyHPDamageBarHandler::EnemyHPDetails* enemyDetails = static_cast<EnemyHPDamageBarHandler::EnemyHPDetails*>(
+    auto enemyDetails = static_cast<EnemyHPDamageBarHandler::EnemyHPDetails*>(
         enemyHPDetails);
 
     Entity* entity = uidToEntity(enemyDetails->enemy_uid);
@@ -36798,11 +36798,11 @@ void Player::SkillSheet_t::createSkillSheet()
     const int skillEntryStartY = 38;
     SDL_Rect skillEntryPos{0, skillEntryStartY, 182, 40};
     SDL_Rect skillSelectorPos{0, 2, 146, 32};
-    const char* boldFont = "fonts/pixel_maz_multiline.ttf#16#2";
-    const char* numberFont = "fonts/pixelmix.ttf#16";
+    auto boldFont = "fonts/pixel_maz_multiline.ttf#16#2";
+    auto numberFont = "fonts/pixelmix.ttf#16";
     //const char* titleFont = "fonts/pixel_maz_multiline.ttf#24#2";
-    const char* titleFont = "fonts/pixelmix.ttf#24#2";
-    const char* descFont = "fonts/pixel_maz_multiline.ttf#16#2";
+    auto titleFont = "fonts/pixelmix.ttf#24#2";
+    auto descFont = "fonts/pixel_maz_multiline.ttf#16#2";
     for (int i = 0; i < 8; ++i)
     {
         char skillname[32];
@@ -38568,7 +38568,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 }
                 if (node && node->element)
                 {
-                    if (spell_t* spell = static_cast<spell_t*>(node->element))
+                    if (auto spell = static_cast<spell_t*>(node->element))
                     {
                         if (spell->skillID != proficiency)
                         {
@@ -41193,7 +41193,7 @@ void Player::Inventory_t::SpellPanel_t::updateSpellPanel()
     int lowestItemY = getNumSpellsToDisplayVertical() - 1;
     for (node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next)
     {
-        Item* item = static_cast<Item*>(node->element);
+        auto item = static_cast<Item*>(node->element);
         if (!item) { continue; }
         if (itemCategory(item) != SPELL_CAT) { continue; }
 
@@ -41537,7 +41537,7 @@ void Player::Inventory_t::SpellPanel_t::scrollToSlot(int x, int y, bool instantl
     int lowestItemY = getNumSpellsToDisplayVertical() - 1;
     for (node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next)
     {
-        Item* item = static_cast<Item*>(node->element);
+        auto item = static_cast<Item*>(node->element);
         if (!item) { continue; }
         if (itemCategory(item) != SPELL_CAT) { continue; }
 
@@ -42151,7 +42151,7 @@ void Player::Inventory_t::ChestGUI_t::scrollToSlot(int x, int y, bool instantly)
     int lowestItemY = getNumItemsToDisplayVertical() - 1;
     for (node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next)
     {
-        Item* item = static_cast<Item*>(node->element);
+        auto item = static_cast<Item*>(node->element);
         if (!item) { continue; }
         if (itemCategory(item) != SPELL_CAT) { continue; }
 
@@ -42709,7 +42709,7 @@ void Player::HUD_t::updateMinotaurWarning()
             {
                 for (node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next)
                 {
-                    Entity* monster = static_cast<Entity*>(mapNode->element);
+                    auto monster = static_cast<Entity*>(mapNode->element);
                     if (monster && monster->getMonsterTypeFromSprite() == MINOTAUR)
                     {
                         m.minotaurSpawned = true;
@@ -43001,7 +43001,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
         {
             if (numHeaderLines == 1 && textGet->getWidth() > 300)
             {
-                Field* f = new Field(1024);
+                auto f = new Field(1024);
                 f->setText(buf);
                 f->setSize(SDL_Rect{0, 0, 300, 0});
                 f->reflowTextToFit(0);
@@ -43065,7 +43065,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
             {
                 imgPos.w = img->getWidth();
                 imgPos.h = img->getHeight();
-                SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+                auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
                 SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
             }
             imgPos.x += imgPos.w;
@@ -43073,7 +43073,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
             {
                 imgPos.w = tooltip.w - imgPos.w * 2;
                 imgPos.h = img->getHeight();
-                SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+                auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
                 SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
             }
             imgPos.x += imgPos.w;
@@ -43081,7 +43081,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
             {
                 imgPos.w = img->getWidth();
                 imgPos.h = img->getHeight();
-                SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+                auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
                 SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
             }
         }
@@ -43091,7 +43091,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
             {
                 imgPos.w = img->getWidth();
                 imgPos.h = img->getHeight();
-                SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+                auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
                 SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
             }
             imgPos.x += imgPos.w;
@@ -43099,7 +43099,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
             {
                 imgPos.w = tooltip.w - imgPos.w * 2;
                 imgPos.h = img->getHeight();
-                SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+                auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
                 SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
             }
             imgPos.x += imgPos.w;
@@ -43107,7 +43107,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
             {
                 imgPos.w = img->getWidth();
                 imgPos.h = img->getHeight();
-                SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+                auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
                 SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
             }
         }
@@ -43118,21 +43118,21 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
         {
             imgPos.w = img->getWidth();
             imgPos.h = tooltip.h - imgPos.h - 26;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/Inventory/tooltips/Hover_C00.png"))
         {
             imgPos.w = tooltip.w - imgPos.w * 2;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/Inventory/tooltips/Hover_R00.png"))
         {
             imgPos.w = img->getWidth();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
         }
 
@@ -43142,14 +43142,14 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/Inventory/tooltips/Hover_B00_NoPrompt.png"))
         {
             imgPos.w = tooltip.w - imgPos.w * 2;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
@@ -43157,15 +43157,15 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &imgPos);
         }
     }
 
     {
-        SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get("images/ui/HUD/hotbar/HUD_Quickbar_Slot_Box_02.png")
+        auto srcSurf = const_cast<SDL_Surface*>(Image::get("images/ui/HUD/hotbar/HUD_Quickbar_Slot_Box_02.png")
             ->getSurf());
-        SDL_Rect pos = SDL_Rect{
+        auto pos = SDL_Rect{
             itemFrame->getSize().x, itemFrame->getSize().y,
             player.hotbar.getSlotSize(), player.hotbar.getSlotSize()
         };
@@ -43183,7 +43183,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
         {
             if (img->disabled) { continue; }
             if (img->path == "") { continue; }
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
             Uint8 r, g, b, a;
             getColor(img->color, &r, &g, &b, &a);
             SDL_SetSurfaceAlphaMod(srcSurf, a);
@@ -43221,7 +43221,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
 
     GLuint itemTexid = 0;
     SDL_Rect pos;
-    if (SDL_Surface* textSurf = const_cast<SDL_Surface*>(Text::get(buf, font->getName(),
+    if (auto textSurf = const_cast<SDL_Surface*>(Text::get(buf, font->getName(),
                                                                    makeColor(67, 195, 157, 255), 0)->getSurf()))
     {
         pos.x = 16 + 4;
@@ -43234,7 +43234,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
     }
     if (numHeaderLines > 1)
     {
-        if (SDL_Surface* textSurf = const_cast<SDL_Surface*>(Text::get(buf2, font->getName(),
+        if (auto textSurf = const_cast<SDL_Surface*>(Text::get(buf2, font->getName(),
                                                                        hudColors.characterSheetHeadingText,
                                                                        0)->getSurf()))
         {
@@ -43266,7 +43266,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
         if (auto textGet = Text::get(identifyStr.c_str(), font->getName(),
                                      hudColors.characterSheetNeutral, 0))
         {
-            if (SDL_Surface* textSurf = const_cast<SDL_Surface*>(textGet->getSurf()))
+            if (auto textSurf = const_cast<SDL_Surface*>(textGet->getSurf()))
             {
                 SDL_BlitSurface(textSurf, nullptr, itemWorldTooltipSurface, &identifyPos);
             }
@@ -43277,10 +43277,10 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
         SDL_Rect wgtPos = pos;
         wgtPos.y = identifyPos.y + identifyPos.h + 2;
         wgtPos.x = identifyPos.x;
-        const char* wgtImg = "images/ui/Inventory/tooltips/HUD_Tooltip_Icon_WGT_00.png";
+        auto wgtImg = "images/ui/Inventory/tooltips/HUD_Tooltip_Icon_WGT_00.png";
         if (auto imgGet = Image::get(wgtImg))
         {
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(imgGet->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(imgGet->getSurf());
             wgtPos.w = imgGet->getWidth();
             wgtPos.h = imgGet->getHeight();
             SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &wgtPos);
@@ -43290,7 +43290,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
             if (auto textGet = Text::get(wgtBuf, font->getName(),
                                          hudColors.characterSheetNeutral, 0))
             {
-                SDL_Surface* textSurf = const_cast<SDL_Surface*>(textGet->getSurf());
+                auto textSurf = const_cast<SDL_Surface*>(textGet->getSurf());
                 wgtPos.x += wgtPos.w + 4;
                 wgtPos.y = wgtPos.y + wgtPos.h / 2 - font->height() / 2;
                 if (wgtPos.y % 2 == 1)
@@ -43304,10 +43304,10 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
 
         SDL_Rect goldPos = wgtPos;
         goldPos.y = identifyPos.y + identifyPos.h;
-        const char* goldImg = "images/ui/Inventory/tooltips/HUD_Tooltip_Icon_Money_00.png";
+        auto goldImg = "images/ui/Inventory/tooltips/HUD_Tooltip_Icon_Money_00.png";
         if (auto imgGet = Image::get(goldImg))
         {
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(imgGet->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(imgGet->getSurf());
             goldPos.w = imgGet->getWidth();
             goldPos.h = imgGet->getHeight();
             SDL_BlitScaled(srcSurf, nullptr, itemWorldTooltipSurface, &goldPos);
@@ -43340,7 +43340,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
             {
                 snprintf(goldBuf, sizeof(goldBuf), "%d", item->getGoldValue());
             }
-            if (SDL_Surface* textSurf = const_cast<SDL_Surface*>(Text::get(goldBuf, font->getName(),
+            if (auto textSurf = const_cast<SDL_Surface*>(Text::get(goldBuf, font->getName(),
                                                                            hudColors.characterSheetNeutral,
                                                                            0)->getSurf()))
             {
@@ -43724,7 +43724,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
@@ -43732,7 +43732,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = tooltip.w - imgPos.w * 2;
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
@@ -43740,7 +43740,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
 
@@ -43750,21 +43750,21 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = tooltip.h - imgPos.h - 26 - pointerExtraHeight;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/TextBubbles/Textbox_Grave_Color.png"))
         {
             imgPos.w = tooltip.w - imgPos.w * 2;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/TextBubbles/Textbox_Grave_R.png"))
         {
             imgPos.w = img->getWidth();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
 
@@ -43774,14 +43774,14 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/TextBubbles/Textbox_Grave_B.png"))
         {
             imgPos.w = tooltip.w - imgPos.w * 2;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
@@ -43789,7 +43789,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
 
@@ -43803,7 +43803,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
             imgPos.y += imgPos.h - 6;
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
     }
@@ -43816,7 +43816,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
@@ -43824,7 +43824,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = tooltip.w - imgPos.w * 2;
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
@@ -43832,7 +43832,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
 
@@ -43842,21 +43842,21 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = tooltip.h - imgPos.h - 26 - pointerExtraHeight;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/TextBubbles/Textbox_Sign_Color.png"))
         {
             imgPos.w = tooltip.w - imgPos.w * 2;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/TextBubbles/Textbox_Sign_R.png"))
         {
             imgPos.w = img->getWidth();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
 
@@ -43866,14 +43866,14 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/TextBubbles/Textbox_Sign_B.png"))
         {
             imgPos.w = tooltip.w - imgPos.w * 2;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
@@ -43881,7 +43881,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
 
@@ -43895,7 +43895,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
             imgPos.y += imgPos.h - 6;
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
     }
@@ -43911,7 +43911,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
@@ -43919,7 +43919,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = tooltip.w - imgPos.w * 2;
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
@@ -43927,7 +43927,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
 
@@ -43937,21 +43937,21 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = tooltip.h - imgPos.h - 26 - pointerExtraHeight;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/TextBubbles/Textbox_NPC_Color.png"))
         {
             imgPos.w = tooltip.w - imgPos.w * 2;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/TextBubbles/Textbox_NPC_R.png"))
         {
             imgPos.w = img->getWidth();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
 
@@ -43961,14 +43961,14 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
         if (auto img = Image::get("*#images/ui/TextBubbles/Textbox_NPC_B.png"))
         {
             imgPos.w = tooltip.w - imgPos.w * 2;
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
         imgPos.x += imgPos.w;
@@ -43976,7 +43976,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
         {
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
 
@@ -43990,7 +43990,7 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::blitDialogue
             imgPos.y += imgPos.h - 6;
             imgPos.w = img->getWidth();
             imgPos.h = img->getHeight();
-            SDL_Surface* srcSurf = const_cast<SDL_Surface*>(img->getSurf());
+            auto srcSurf = const_cast<SDL_Surface*>(img->getSurf());
             SDL_BlitScaled(srcSurf, nullptr, dialogueTooltipSurface, &imgPos);
         }
     }
@@ -45537,7 +45537,7 @@ void updateSkillUpFrame(const int player)
             node_t* spellImageNode = ItemTooltips.getSpellNodeFromSpellID(skillUp.spellID);
             if (spellImageNode)
             {
-                if (string_t* string = static_cast<string_t*>(spellImageNode->element))
+                if (auto string = static_cast<string_t*>(spellImageNode->element))
                 {
                     skillImg->path = string->data;
                 }

@@ -365,7 +365,7 @@ void actPortal(Entity* my)
 							node_t* node;
 							for ( node = map.entities->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = static_cast<Entity*>(node->element);
+								auto entity = static_cast<Entity*>(node->element);
 								if ( entity->sprite == 224 && !entity->flags[INVISIBLE] )
 								{
 									visiblegrave = true;
@@ -451,7 +451,7 @@ void actWinningPortal(Entity* my)
 			node_t* node;
 			for ( node = map.creatures->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity->behavior == &actMonster )
 				{
 					Stat* stats = entity->getStats();
@@ -710,7 +710,7 @@ void Entity::actExpansionEndGamePortal()
 			node_t* node;
 			for ( node = map.creatures->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity )
 				{
 					if ( entity->behavior == &actMonster )
@@ -922,7 +922,7 @@ void Entity::actMidGamePortal()
 			node_t* node;
 			for ( node = map.creatures->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity )
 				{
 					if ( entity->behavior == &actMonster )

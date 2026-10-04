@@ -73,7 +73,7 @@ void Entity::updateCircuitNeighbors()
 		{
 			if (node->element)
 			{
-				Entity* powerable = static_cast<Entity*>(node->element);
+				auto powerable = static_cast<Entity*>(node->element);
 
 				if (powerable)
 				{
@@ -416,7 +416,7 @@ void actTrap(Entity* my)
 	}
 
 	std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
-	for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !somebodyonme; ++it )
+	for (auto it = entLists.begin(); it != entLists.end() && !somebodyonme; ++it )
 	{
 		list_t* currentList = *it;
 		for ( node = currentList->first; node != nullptr; node = node->next )
@@ -597,7 +597,7 @@ void actTrapPermanent(Entity* my)
 			return;
 		}
 		std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
-		for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
 			for ( node = currentList->first; node != nullptr; node = node->next )
@@ -704,7 +704,7 @@ void Entity::toggleSwitch(int skillIndexForPower)
 		{
 			if (node->element)
 			{
-				Entity* powerable = static_cast<Entity*>(node->element);
+				auto powerable = static_cast<Entity*>(node->element);
 
 				if (powerable)
 				{
@@ -780,7 +780,7 @@ void Entity::switchUpdateNeighbors()
 		{
 			if (node->element)
 			{
-				Entity* powerable = static_cast<Entity*>(node->element);
+				auto powerable = static_cast<Entity*>(node->element);
 
 				if (powerable)
 				{
@@ -871,7 +871,7 @@ void getPowerablesOnTile(int x, int y, list_t** list)
 	{
 		if (node->element)
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			//Check if the entity is powerable.
 			if (entity && entity->skill[28])   //If skill 28 = 0, the entity is not a powerable.
 			{
@@ -1130,7 +1130,7 @@ void Entity::actSignalTimer()
 			{
 				if ( node->element )
 				{
-					Entity* powerable = static_cast<Entity*>(node->element);
+					auto powerable = static_cast<Entity*>(node->element);
 
 					if ( powerable )
 					{
@@ -1427,7 +1427,7 @@ void Entity::actSignalGateAND()
 			{
 				if ( node->element )
 				{
-					Entity* powerable = static_cast<Entity*>(node->element);
+					auto powerable = static_cast<Entity*>(node->element);
 
 					if ( powerable )
 					{
@@ -1716,7 +1716,7 @@ void Entity::actWallButton()
 				{
 					if ( node->element )
 					{
-						Entity* powerable = static_cast<Entity*>(node->element);
+						auto powerable = static_cast<Entity*>(node->element);
 
 						if ( powerable )
 						{
@@ -2122,7 +2122,7 @@ void Entity::actWallLock()
 				{
 					if ( node->element )
 					{
-						Entity* powerable = static_cast<Entity*>(node->element);
+						auto powerable = static_cast<Entity*>(node->element);
 
 						if ( powerable )
 						{
@@ -2269,12 +2269,12 @@ void Entity::actWind()
 		int map_x = static_cast<int>(x / 16);
 		int map_y = static_cast<int>(y / 16);
 		std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadius(map_x, map_y, actWindTileBonusLength + 2);
-		for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
 			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( windEffectsEntity(entity) && entityInsideWind(entity, this) )
 				{
 					auto hitProps = getParticleEmitterHitProps(getUID(), entity);

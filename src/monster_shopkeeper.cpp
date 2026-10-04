@@ -959,7 +959,7 @@ void initShopkeeper(Entity* my, Stat* myStats)
 					// general store
 					for ( c = 0; c < numitems; c++ )
 					{
-						Category cat = static_cast<Category>(rng.rand() % (Category::CATEGORY_MAX - 2));
+						auto cat = static_cast<Category>(rng.rand() % (Category::CATEGORY_MAX - 2));
 						tmpItem = newItem(itemLevelCurveEntity(*my, cat, 0, shoplevel + 5, rng), static_cast<Status>(WORN + rng.rand() % 3), 0, 1 + rng.rand() % 3, rng.rand(), false, &myStats->inventory);
 						if ( tmpItem && (itemCategory(tmpItem) == WEAPON || itemCategory(tmpItem) == ARMOR || itemCategory(tmpItem) == RING || itemCategory(tmpItem) == AMULET) )
 						{
@@ -1066,7 +1066,7 @@ void initShopkeeper(Entity* my, Stat* myStats)
 			for ( node_t* node = myStats->inventory.first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				if ( !item ) { continue; }
 
 				priceAndItems.push_back(std::make_pair(item->buyValue(clientnum), item));
@@ -1124,7 +1124,7 @@ void initShopkeeper(Entity* my, Stat* myStats)
 		for ( node_t* node = myStats->inventory.first; node != nullptr; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( !item ) { continue; }
 
 			if ( itemCategory(item) == POTION )
@@ -1675,7 +1675,7 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
 				if ( weaponNode )
 				{
-					Entity* weapon = static_cast<Entity*>(weaponNode->element);
+					auto weapon = static_cast<Entity*>(weaponNode->element);
 					if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState != MONSTER_STATE_ATTACK) )
 					{
 						// if weapon invisible and I'm not attacking, relax arm.
@@ -1709,7 +1709,7 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* shieldNode = list_Node(&my->children, 8);
 				if ( shieldNode )
 				{
-					Entity* shield = static_cast<Entity*>(shieldNode->element);
+					auto shield = static_cast<Entity*>(shieldNode->element);
 					if ( shield->flags[INVISIBLE] && (my->monsterState != MONSTER_STATE_ATTACK) )
 					{
 						// if shield invisible and I'm not attacking, relax arm.
@@ -2093,7 +2093,7 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
 	if ( shieldNode )
 	{
-		Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
+		auto shieldEntity = static_cast<Entity*>(shieldNode->element);
 		if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 		{
 			shieldEntity->yaw -= PI / 6;

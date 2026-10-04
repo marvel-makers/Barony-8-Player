@@ -387,7 +387,7 @@ bool jewelItemRecruit(Entity* parent, Entity* entity, int itemStatus, const char
 			{
 				if ( bodypart >= LIMB_HUMANOID_TORSO )
 				{
-					Entity* tmp = static_cast<Entity*>(node->element);
+					auto tmp = static_cast<Entity*>(node->element);
 					if ( tmp )
 					{
 						tmp->flags[USERFLAG2] = true;
@@ -459,7 +459,7 @@ void actItem(Entity* my)
 					node_t* node;
 					for ( node = map.creatures->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity->behavior == &actPlayer || entity->behavior == &actMonster )
 						{
 							if ( entityInsideEntity(my, entity) )
@@ -476,7 +476,7 @@ void actItem(Entity* my)
 				node_t* node;
 				for ( node = map.creatures->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actPlayer || entity->behavior == &actMonster )
 					{
 						if ( entityInsideEntity(my, entity) )
@@ -579,13 +579,13 @@ void actItem(Entity* my)
 				{
 					int tier = my->skill[11];
 					auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
-					for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+					for (auto it = entLists.begin(); it != entLists.end(); ++it )
 					{
 						list_t* currentList = *it;
 						node_t* node;
 						for ( node = currentList->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = static_cast<Entity*>(node->element);
+							auto entity = static_cast<Entity*>(node->element);
 							if ( entity && entity->behavior == &actMonster )
 							{
 								if ( Stat* entitystats = entity->getStats() )
@@ -677,7 +677,7 @@ void actItem(Entity* my)
 								node_t* inv = monsterInteracting->getStats()->inventory.last;
 								if ( inv )
 								{
-									Item* toDrop = static_cast<Item*>(inv->element);
+									auto toDrop = static_cast<Item*>(inv->element);
 									Entity* dropped = dropItemMonster(toDrop, monsterInteracting, monsterInteracting->getStats(), toDrop->count);
 									if ( dropped )
 									{

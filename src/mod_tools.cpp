@@ -1008,7 +1008,7 @@ void ItemTooltips_t::readItemsFromFile()
 			//auto s = static_cast<string_t*>(list_Node(&items[i].images, j)->element);
 			//assert(!strcmp(s->data, tmpItems[i].imagePaths[j].c_str()));
 
-			string_t* string = static_cast<string_t*>(malloc(sizeof(string_t)));
+			auto string = static_cast<string_t*>(malloc(sizeof(string_t)));
 			const size_t len = 64;
 			string->data = static_cast<char*>(malloc(sizeof(char) * len));
 			memset(string->data, 0, sizeof(char) * len);
@@ -2875,7 +2875,7 @@ real_t ItemTooltips_t::getSpellSustainCostPerSecond(int spellID)
 		{
 			if ( spell->elements.first )
 			{
-				if ( spellElement_t* element = static_cast<spellElement_t*>(spell->elements.first->element) )
+				if (auto element = static_cast<spellElement_t*>(spell->elements.first->element) )
 				{
 					if ( element->channeledMana > 0 )
 					{
@@ -3159,7 +3159,7 @@ std::string ItemTooltips_t::getSpellIconPath(const int player, Item& item, int s
 	}
 	if ( spellImageNode )
 	{
-		string_t* string = static_cast<string_t*>(spellImageNode->element);
+		auto string = static_cast<string_t*>(spellImageNode->element);
 		if ( string )
 		{
 			return string->data;
@@ -7392,7 +7392,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 		if ( base->getWidth() != 0 )
 		{
 			// successfully loaded, do unpressed glyph
-			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(base->getSurf());
+			auto srcSurf = const_cast<SDL_Surface*>(base->getSurf());
 			SDL_Rect pos{ 0, 0, static_cast<int>(base->getWidth()), static_cast<int>(base->getHeight()) };
 			SDL_Surface* sprite = SDL_CreateRGBSurface(0, pos.w, pos.h, 32,
 				0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
@@ -7409,7 +7409,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 			if ( key->getWidth() != 0 )
 			{
 				// successfully loaded
-				SDL_Surface* keySurf = const_cast<SDL_Surface*>(key->getSurf());
+				auto keySurf = const_cast<SDL_Surface*>(key->getSurf());
 				SDL_Rect keyPos{ 0, 0, static_cast<int>(key->getWidth()), static_cast<int>(key->getHeight()) };
 				keyPos.x = pos.w / 2 - keyPos.w / 2;
 				keyPos.y = keyValue.second.render_offsety;
@@ -7452,7 +7452,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 		if ( base->getWidth() != 0 )
 		{
 			// successfully loaded, do pressed glyph
-			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(base->getSurf());
+			auto srcSurf = const_cast<SDL_Surface*>(base->getSurf());
 			SDL_Rect pos{ 0, 0, static_cast<int>(base->getWidth()), static_cast<int>(base->getHeight()) };
 			SDL_Surface* sprite = SDL_CreateRGBSurface(0, pos.w, pos.h, 32,
 				0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
@@ -7469,7 +7469,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 			if ( key->getWidth() != 0 )
 			{
 				// successfully loaded
-				SDL_Surface* keySurf = const_cast<SDL_Surface*>(key->getSurf());
+				auto keySurf = const_cast<SDL_Surface*>(key->getSurf());
 				SDL_Rect keyPos{ 0, 0, static_cast<int>(key->getWidth()), static_cast<int>(key->getHeight()) };
 				keyPos.x = pos.w / 2 - keyPos.w / 2;
 				keyPos.y = keyValue.second.render_offsety;
@@ -10082,7 +10082,7 @@ void ClassHotbarConfig_t::assignHotbarSlots(const int player)
 	std::map<int, MatchingItem_t> matchingItems;
 	for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item )
 		{
 			int itemType = item->type;
@@ -12312,7 +12312,7 @@ void EquipmentModelOffsets_t::readBaseItemsFromFile()
 			{
 				continue;
 			}
-			ItemType itemType = static_cast<ItemType>(ItemTooltips.itemNameStringToItemID[itemName]);
+			auto itemType = static_cast<ItemType>(ItemTooltips.itemNameStringToItemID[itemName]);
 			std::vector<int> models;
 			if ( it2->value.HasMember("models") )
 			{
@@ -12475,7 +12475,7 @@ void EquipmentModelOffsets_t::readFromFile(std::string monsterName, int monsterT
 			{
 				continue;
 			}
-			ItemType itemType = static_cast<ItemType>(ItemTooltips.itemNameStringToItemID[itemName]);
+			auto itemType = static_cast<ItemType>(ItemTooltips.itemNameStringToItemID[itemName]);
 			std::vector<int> models;
 			if ( it2->value.HasMember("models") )
 			{
@@ -12757,7 +12757,7 @@ void GameModeManager_t::CurrentSession_t::ChallengeRun_t::updateKillEvent(Entity
 	{
 		if ( killTotal % 10 == 0 || killTotal == 1 || killTotal == gameModeManager.currentSession.challengeRun.numKills )
 		{
-			const char* challengeName = "CHALLENGE_MONSTER_KILLS";
+			auto challengeName = "CHALLENGE_MONSTER_KILLS";
 			if ( eventType == CHEVENT_KILLS_FURNITURE )
 			{
 				challengeName = "CHALLENGE_FURNITURE_KILLS";
@@ -16329,7 +16329,7 @@ void Compendium_t::Events_t::readEventsFromFile()
 		++index;
 		for ( auto itr2 = itr->MemberBegin(); itr2 != itr->MemberEnd(); ++itr2 )
 		{
-			const EventTags id = static_cast<EventTags>(std::min(index, (int)CPDM_EVENT_TAGS_MAX));
+			const auto id = static_cast<EventTags>(std::min(index, (int)CPDM_EVENT_TAGS_MAX));
 			auto& entry = events[id];
 			entry.id = id;
 			entry.name = itr2->name.GetString();
@@ -16484,7 +16484,7 @@ void Compendium_t::Events_t::loadItemsSaveData()
 		{
 			continue;
 		}
-		const EventTags id = static_cast<EventTags>(std::min((int)find->second, (int)CPDM_EVENT_TAGS_MAX));
+		const auto id = static_cast<EventTags>(std::min((int)find->second, (int)CPDM_EVENT_TAGS_MAX));
 		for ( auto itr2 = itr->value.MemberBegin(); itr2 != itr->value.MemberEnd(); ++itr2 )
 		{
 			int itemType = std::stoi(itr2->name.GetString());
@@ -17190,7 +17190,7 @@ void Compendium_t::Events_t::updateEventsInMainLoop(const int playernum)
 		int numDeathBoxes = 0;
 		for ( node_t* node = stats[playernum]->inventory.first; node != NULL; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( !item )
 			{
 				continue;
@@ -17403,7 +17403,7 @@ void Player::CompendiumProgress_t::updateFloorEvents()
 	{
 		if ( p1.first >= 0 && p1.first < Compendium_t::EventTags::CPDM_EVENT_TAGS_MAX )
 		{
-			Compendium_t::EventTags tag = static_cast<Compendium_t::EventTags>(p1.first);
+			auto tag = static_cast<Compendium_t::EventTags>(p1.first);
 			for ( auto& p2 : p1.second )
 			{
 				const char* category = p2.first.c_str();
@@ -17467,7 +17467,7 @@ void Compendium_t::Events_t::onLevelChangeEvent(const int playernum, const int p
 				int numDeathBoxes = 0;
 				for ( node_t* node = stats[playernum]->inventory.first; node; node = node->next )
 				{
-					Item* item = static_cast<Item*>(node->element);
+					auto item = static_cast<Item*>(node->element);
 					if ( !item )
 					{
 						continue;

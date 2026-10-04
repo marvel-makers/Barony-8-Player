@@ -121,7 +121,7 @@ void statDeconstructor(void* data)
 void lightDeconstructor(void* data)
 {
 	if (data != nullptr) {
-        light_t* light = static_cast<light_t*>(data);
+        auto light = static_cast<light_t*>(data);
 		if (light->tiles != nullptr) {
             const auto lightsize = (light->radius * 2 + 1) * (light->radius * 2 + 1);
             const auto mapsize = map.width * map.height;

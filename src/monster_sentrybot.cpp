@@ -1022,7 +1022,7 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
 			for ( node_t* invNode = myStats->inventory.first; invNode; invNode = invNodeNext )
 			{
 				invNodeNext = invNode->next;
-				Item* item = static_cast<Item*>(invNode->element);
+				auto item = static_cast<Item*>(invNode->element);
 				if ( item && (item->type == TOOL_DUMMYBOT || item->type == TOOL_SENTRYBOT || item->type == TOOL_SPELLBOT) )
 				{
 					for ( int c = item->count; c > 0; c-- )
@@ -1057,7 +1057,7 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
 		int foundBadSound = 0;
 		for ( node_t* searchNode = map.entities->first; searchNode != nullptr; searchNode = searchNode->next )
 		{
-			Entity* ent = static_cast<Entity*>(searchNode->element);
+			auto ent = static_cast<Entity*>(searchNode->element);
 			if ( !ent || ent == my )
 			{
 				continue;
@@ -1469,7 +1469,7 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
 					entity->sprite = -1;
 					for ( node_t* inv = myStats->inventory.first; inv; inv = inv->next )
 					{
-						Item* holding = static_cast<Item*>(inv->element);
+						auto holding = static_cast<Item*>(inv->element);
 						if ( holding && itemIsThrowableTinkerTool(holding) )
 						{
 							entity->sprite = items[holding->type].index;

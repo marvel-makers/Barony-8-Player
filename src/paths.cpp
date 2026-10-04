@@ -184,7 +184,7 @@ public:
 						node_t* node;
 						for ( node = list->first; node != NULL; node = node->next )
 						{
-							Entity* entity = static_cast<Entity*>(node->element);
+							auto entity = static_cast<Entity*>(node->element);
 							if ( entity )
 							{
 								if ( entity->behavior == &actGate )
@@ -332,7 +332,7 @@ int pathCheckObstacle(int x, int y, Entity* my, Entity* target)
 	// entities not passable during this stage normally, hell generation makes entry gates passable
 	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		if (entity == my || entity == target)
 		{
 			continue;
@@ -471,7 +471,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 	bool playerCheckAchievement = (my && my->behavior == &actPlayer
 		&& target && (target->behavior == &actBomb || target->behavior == &actPlayerLimb || target->behavior == &actItem || target->behavior == &actSwitch));
 
-	int* pathMap = static_cast<int*>(calloc(map.width * map.height, sizeof(int)));
+	auto pathMap = static_cast<int*>(calloc(map.width * map.height, sizeof(int)));
 	int pathMapType = GateGraph::GATE_GRAPH_GROUNDED;
 	bool waterWalking = my && my->isWaterWalking();
 	bool lavaWalking = my && my->isLavaWalking();
@@ -578,7 +578,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 	Uint32 standingOnTrap = 0; // 0 - not checked.
 	for ( auto entityNode = map.entities->first; entityNode != nullptr; entityNode = entityNode->next )
 	{
-		Entity* entity = static_cast<Entity*>(entityNode->element);
+		auto entity = static_cast<Entity*>(entityNode->element);
 		if ( entity->flags[PASSABLE] )
 		{
 			if ( entity->behavior == &actSpearTrap 
@@ -596,7 +596,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 					}
 
 					std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 0);
-					for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !standingOnTrap; ++it )
+					for (auto it = entLists.begin(); it != entLists.end() && !standingOnTrap; ++it )
 					{
 						list_t* currentList = *it;
 						node_t* node;
@@ -604,7 +604,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 						{
 							for ( node = currentList->first; node != nullptr && !standingOnTrap; node = node->next )
 							{
-								Entity* entity = static_cast<Entity*>(node->element);
+								auto entity = static_cast<Entity*>(node->element);
 								if ( entity && entity->behavior == &actSpearTrap )
 								{
 									standingOnTrap = 1; // 1 - standing on the trap.
@@ -1001,7 +1001,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 		{
 			for ( node = list->first; node != NULL; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity )
 				{
 					if ( isPathObstacle(entity) )
@@ -1051,7 +1051,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = static_cast<Entity*>(node->element);
+									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( isPathObstacle(entity) )
@@ -1098,7 +1098,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = static_cast<Entity*>(node->element);
+									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( isPathObstacle(entity) )
@@ -1145,7 +1145,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = static_cast<Entity*>(node->element);
+									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( isPathObstacle(entity) )
@@ -1192,7 +1192,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = static_cast<Entity*>(node->element);
+									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( isPathObstacle(entity) )
@@ -1356,7 +1356,7 @@ void GateGraph::buildGraph(const int parentMapType)
 
 	for ( node_t* entityNode = map.entities->first; entityNode != nullptr; entityNode = entityNode->next )
 	{
-		Entity* entity = static_cast<Entity*>(entityNode->element);
+		auto entity = static_cast<Entity*>(entityNode->element);
 		if ( entity->behavior == &actGate )
 		{
 			int ix = (static_cast<int>(entity->x) >> 4);
@@ -1431,7 +1431,7 @@ void GateGraph::fillPathMap(int x, int y)
 	{
 		for ( node = list->first; node != NULL; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( entity )
 			{
 				if ( entity->behavior == &actGate )
@@ -1467,7 +1467,7 @@ void GateGraph::fillPathMap(int x, int y)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = static_cast<Entity*>(node->element);
+									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( entity->behavior == &actGate )
@@ -1499,7 +1499,7 @@ void GateGraph::fillPathMap(int x, int y)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = static_cast<Entity*>(node->element);
+									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( entity->behavior == &actGate )
@@ -1531,7 +1531,7 @@ void GateGraph::fillPathMap(int x, int y)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = static_cast<Entity*>(node->element);
+									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( entity->behavior == &actGate )
@@ -1563,7 +1563,7 @@ void GateGraph::fillPathMap(int x, int y)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = static_cast<Entity*>(node->element);
+									auto entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( entity->behavior == &actGate )

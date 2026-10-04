@@ -365,7 +365,7 @@ bool addSpell(int spell, int player, bool ignoreSkill)
 		{
 			for ( node = stats[player]->inventory.first; node != NULL; node = node->next )
 			{
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				if ( item->type == SPELL_ITEM )
 				{
 					if ( item->appearance >= 1000 )
@@ -520,7 +520,7 @@ void spellConstructor(spell_t* spell, int ID)
 
 spell_t* spellConstructor(int ID, int difficulty, const char* internal_name, std::vector<int> elements)
 {
-	spell_t* spell = static_cast<spell_t*>(malloc(sizeof(spell_t)));
+	auto spell = static_cast<spell_t*>(malloc(sizeof(spell_t)));
 	if ( spell )
 	{
 		spellConstructor(spell, ID);
@@ -538,7 +538,7 @@ spell_t* spellConstructor(int ID, int difficulty, const char* internal_name, std
 				node->element = copySpellElement(&find->second);
 				node->size = sizeof(spellElement_t);
 				node->deconstructor = &spellElementDeconstructor;
-				spellElement_t* element = static_cast<spellElement_t*>(node->element);
+				auto element = static_cast<spellElement_t*>(node->element);
 				element->node = node; //Tell the element what list it resides in.
 				if ( list == &spell->elements )
 				{
@@ -680,7 +680,7 @@ spell_t* copySpell(spell_t* spell, int subElementIndexToCopy)
 {
 	node_t* node;
 
-	spell_t* result = static_cast<spell_t*>(malloc(sizeof(spell_t)));
+	auto result = static_cast<spell_t*>(malloc(sizeof(spell_t)));
 	*result = *spell; // copy over all the static data members.
 
 	result->needsDataFreed = 0;
@@ -691,14 +691,14 @@ spell_t* copySpell(spell_t* spell, int subElementIndexToCopy)
 
 	for ( node = spell->elements.first; node != NULL; node = node->next )
 	{
-		spellElement_t* tempElement = static_cast<spellElement_t*>(node->element);
+		auto tempElement = static_cast<spellElement_t*>(node->element);
 
 		node_t* tempNode = list_AddNodeLast(&result->elements);
 		tempNode->deconstructor = &spellElementDeconstructor;
 		tempNode->size = sizeof(spellElement_t);
 		tempNode->element = copySpellElement(tempElement);
 
-		spellElement_t* newElement = static_cast<spellElement_t*>(tempNode->element);
+		auto newElement = static_cast<spellElement_t*>(tempNode->element);
 		newElement->node = tempNode;
 
 		if ( subElementIndexToCopy >= 0 ) // only select 1 sub element
@@ -737,14 +737,14 @@ void copySpellElement(spellElement_t* spellElement, spellElement_t* spellElement
 
 	for ( node_t* node = spellElement->elements.first; node != NULL; node = node->next )
 	{
-		spellElement_t* tempElement = static_cast<spellElement_t*>(node->element);
+		auto tempElement = static_cast<spellElement_t*>(node->element);
 
 		node_t* tempNode = list_AddNodeLast(&spellElementToSet->elements);
 		tempNode->deconstructor = &spellElementDeconstructor;
 		tempNode->size = sizeof(spellElement_t);
 		tempNode->element = copySpellElement(tempElement);
 
-		spellElement_t* newElement = static_cast<spellElement_t*>(tempNode->element);
+		auto newElement = static_cast<spellElement_t*>(tempNode->element);
 		newElement->node = tempNode;
 	}
 }
@@ -753,7 +753,7 @@ spellElement_t* copySpellElement(spellElement_t* spellElement)
 {
 	node_t* node;
 
-	spellElement_t* result = static_cast<spellElement_t*>(malloc(sizeof(spellElement_t)));
+	auto result = static_cast<spellElement_t*>(malloc(sizeof(spellElement_t)));
 	*result = *spellElement; // copy over all the static data members.
 
 	result->node = NULL;
@@ -762,14 +762,14 @@ spellElement_t* copySpellElement(spellElement_t* spellElement)
 
 	for ( node = spellElement->elements.first; node != NULL; node = node->next )
 	{
-		spellElement_t* tempElement = static_cast<spellElement_t*>(node->element);
+		auto tempElement = static_cast<spellElement_t*>(node->element);
 
 		node_t* tempNode = list_AddNodeLast(&result->elements);
 		tempNode->deconstructor = &spellElementDeconstructor;
 		tempNode->size = sizeof(spellElement_t);
 		tempNode->element = copySpellElement(tempElement);
 
-		spellElement_t* newElement = static_cast<spellElement_t*>(tempNode->element);
+		auto newElement = static_cast<spellElement_t*>(tempNode->element);
 		newElement->node = tempNode;
 	}
 
@@ -819,7 +819,7 @@ int getSustainCostOfSpell(spell_t* spell, Entity* caster)
 	node_t* node;
 	for ( node = spell->elements.first; node != NULL; node = node->next )
 	{
-		spellElement_t* spellElement = static_cast<spellElement_t*>(node->element);
+		auto spellElement = static_cast<spellElement_t*>(node->element);
 		cost += spellElement->channeledMana;
 	}
 	return cost;
@@ -878,7 +878,7 @@ bool spell_isChanneled(spell_t* spell)
 
 	for ( node = spell->elements.first; node != NULL; node = node->next )
 	{
-		spellElement_t* spellElement = static_cast<spellElement_t*>(node->element);
+		auto spellElement = static_cast<spellElement_t*>(node->element);
 		if ( spellElement_isChanneled(spellElement) )
 		{
 			return true;
@@ -1186,7 +1186,7 @@ bool spellElement_isChanneled(spellElement_t* spellElement)
 	}
 	for ( node = spellElement->elements.first; node != NULL; node = node->next )
 	{
-		if ( spellElement_t* tempElement = static_cast<spellElement_t*>(node->element) )
+		if (auto tempElement = static_cast<spellElement_t*>(node->element) )
 		{
 			if ( spellElement_isChanneled(tempElement) )
 			{
@@ -1798,7 +1798,7 @@ bool spellInList(list_t* list, spell_t* spell)
 	node_t* node;
 	for ( node = list->first; node != NULL; node = node->next )
 	{
-		spell_t* current = static_cast<spell_t*>(node->element);
+		auto current = static_cast<spell_t*>(node->element);
 		if (current)
 		{
 			if (current->ID == spell->ID)

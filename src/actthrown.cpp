@@ -174,7 +174,7 @@ void actThrown(Entity* my)
 					node_t* node;
 					for ( node = map.creatures->first; node != nullptr; node = node->next ) //Since searching for players and monsters, don't search full map.entities.
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity->behavior == &actPlayer || entity->behavior == &actMonster )
 						{
 							if ( entityInsideEntity(my, entity) )
@@ -191,7 +191,7 @@ void actThrown(Entity* my)
 				node_t* node;
 				for ( node = map.creatures->first; node != nullptr; node = node->next ) //Monsters and players? Creature list, not entity list.
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actPlayer || entity->behavior == &actMonster )
 					{
 						if ( entityInsideEntity(my, entity) )
@@ -1009,7 +1009,7 @@ void actThrown(Entity* my)
 			}
 			for ( node_t* node = it->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity->behavior == &actGate || entity->behavior == &actDoor || entity->behavior == &actIronDoor )
 				{
 					if ( entityDist(my, entity) <= speed )
@@ -1541,7 +1541,7 @@ void actThrown(Entity* my)
 													{
 														if ( bodypart >= LIMB_HUMANOID_TORSO )
 														{
-															Entity* tmp = static_cast<Entity*>(node->element);
+															auto tmp = static_cast<Entity*>(node->element);
 															if ( tmp )
 															{
 																tmp->flags[USERFLAG2] = true;

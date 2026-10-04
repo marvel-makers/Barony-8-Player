@@ -81,7 +81,7 @@ void updateChestInventory(const int player)
 		{
 			if ( node->element )
 			{
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				if ( item )
 				{
 					int key = item->x + 100 * item->y;

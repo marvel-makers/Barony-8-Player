@@ -246,7 +246,7 @@ void Player::Ghost_t::handleGhostMovement(const bool useRefreshRateDelta)
 		{
 			if ( node_t* node = list_Node(&my->children, 2) )
 			{
-				if ( Entity* entity = static_cast<Entity*>(node->element) )
+				if (auto entity = static_cast<Entity*>(node->element) )
 				{
 					if ( Entity::getMonsterTypeFromSprite(entity->sprite) == DUCK_SMALL )
 					{
@@ -2351,7 +2351,7 @@ void actDeathGhost(Entity* my)
 	{
 		if ( node_t* node = list_Node(&my->children, 2) )
 		{
-			if ( Entity* entity = static_cast<Entity*>(node->element) )
+			if (auto entity = static_cast<Entity*>(node->element) )
 			{
 				if ( Entity::getMonsterTypeFromSprite(entity->sprite) == DUCK_SMALL )
 				{
@@ -2492,11 +2492,11 @@ void actDeathGhost(Entity* my)
 		{
 			if ( node_t* node = list_Node(&my->children, 2) )
 			{
-				if ( Entity* entity = static_cast<Entity*>(node->element) )
+				if (auto entity = static_cast<Entity*>(node->element) )
 				{
 					if ( node_t* innerNode = list_Node(&entity->children, 2) )
 					{
-						if ( Entity* entity2 = static_cast<Entity*>(innerNode->element) )
+						if (auto entity2 = static_cast<Entity*>(innerNode->element) )
 						{
 							if ( GHOSTCAM_COSMETIC_SPRITE > 0 )
 							{
@@ -2947,7 +2947,7 @@ void actDeathGhost(Entity* my)
 					{
 						continue;
 					}
-					if ( Entity* entity = static_cast<Entity*>(node->element) )
+					if (auto entity = static_cast<Entity*>(node->element) )
 					{
 						if ( !player->ghost.isActive() )
 						{
@@ -2974,7 +2974,7 @@ void actDeathGhost(Entity* my)
 					{
 						continue;
 					}
-					if ( Entity* entity = static_cast<Entity*>(node->element) )
+					if (auto entity = static_cast<Entity*>(node->element) )
 					{
 						entity->flags[INVISIBLE] = true;
 						entity->flags[INVISIBLE_DITHER] = false;
@@ -4287,7 +4287,7 @@ int Player::PlayerMovement_t::getCharacterEquippedWeight()
 	int weight = 0;
 	for ( node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item != NULL && player.paperDoll.isItemOnDoll(*item) )
 		{
 			if ( item->type >= 0 && item->type < NUMITEMS )
@@ -4304,7 +4304,7 @@ int Player::PlayerMovement_t::getCharacterWeight()
 	int weight = 0;
 	for ( node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item != NULL )
 		{
 			if ( item->type >= 0 && item->type < NUMITEMS )
@@ -4465,7 +4465,7 @@ real_t Player::PlayerMovement_t::getSpeedFactor(real_t weightratio, Sint32 DEX)
 
 	for ( node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item != NULL )
 		{
 			if ( item->type == TOOL_PLAYER_LOOT_BAG )
@@ -5080,7 +5080,7 @@ void followerDebugEquipment(int player)
 	{
 		for ( node_t* node = stats[player]->FOLLOWERS.first; node != nullptr; node = node->next )
 		{
-			Uint32* c = static_cast<Uint32*>(node->element);
+			auto c = static_cast<Uint32*>(node->element);
 			if ( c )
 			{
 				follower = uidToEntity(*c);
@@ -5941,7 +5941,7 @@ void playerDebugTests(Entity* my)
 		bool killingDone = true;
 		for ( auto node = map.entities->first; node; node = node->next )
 		{
-			if ( Entity* entity = static_cast<Entity*>(node->element) )
+			if (auto entity = static_cast<Entity*>(node->element) )
 			{
 				if ( entity->behavior == &actMonster )
 				{
@@ -7813,7 +7813,7 @@ void actPlayer(Entity* my)
 			for ( auto node = stats[PLAYER_NUM]->void_chest_inventory.first; node; node = nextnode )
 			{
 				nextnode = node->next;
-				if ( Item* item = static_cast<Item*>(node->element) )
+				if (auto item = static_cast<Item*>(node->element) )
 				{
 					if ( item->type == TOOL_DUCK )
 					{
@@ -7843,7 +7843,7 @@ void actPlayer(Entity* my)
 				bool birdInHand = false;
 				for ( auto node = stats[PLAYER_NUM]->inventory.first; node; node = node->next )
 				{
-					if ( Item* item = static_cast<Item*>(node->element) )
+					if (auto item = static_cast<Item*>(node->element) )
 					{
 						if ( item->type == TOOL_DUCK )
 						{
@@ -7921,7 +7921,7 @@ void actPlayer(Entity* my)
 					bool foundherx = false;
 					for ( node = map.creatures->first; node != nullptr; node = node->next ) //Herx is in the creature list, so only search that.
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity->sprite == 274 )
 						{
 							foundherx = true;
@@ -8431,7 +8431,7 @@ void actPlayer(Entity* my)
 		bool anyUnid = false;
 		for ( auto node = stats[PLAYER_NUM]->inventory.first; node; node = node->next )
 		{
-			if ( Item* item = static_cast<Item*>(node->element) )
+			if (auto item = static_cast<Item*>(node->element) )
 			{
 				if ( !item->identified )
 				{
@@ -8490,7 +8490,7 @@ void actPlayer(Entity* my)
 				std::unordered_set<Uint32> appearancesOfSimilarItems;
 				for ( node = stats[PLAYER_NUM]->inventory.first; node != NULL; node = node->next )
 				{
-					Item* item2 = static_cast<Item*>(node->element);
+					auto item2 = static_cast<Item*>(node->element);
 					if ( item2 == tempItem )
 					{
 						continue;
@@ -8707,7 +8707,7 @@ void actPlayer(Entity* my)
 						std::unordered_set<Uint32> appearancesOfSimilarItems;
 						for ( node = stats[PLAYER_NUM]->inventory.first; node != NULL; node = node->next )
 						{
-							Item* item2 = static_cast<Item*>(node->element);
+							auto item2 = static_cast<Item*>(node->element);
 							if ( item2 && item2 != tempItem && !itemCompare(tempItem, item2, false) )
 							{
 								if ( ((itemTypeIsQuiver(item2->type) || itemTypeIsThrownBall(item2->type)) && (tempItem->count + item2->count) >= QUIVER_MAX_AMMO_QTY)
@@ -10802,7 +10802,7 @@ void actPlayer(Entity* my)
 						}
 						if ( node->element )
 						{
-							Entity* tempEntity = static_cast<Entity*>(node->element);
+							auto tempEntity = static_cast<Entity*>(node->element);
 							if ( tempEntity )
 							{
 								list_RemoveNode(tempEntity->mynode);
@@ -10882,7 +10882,7 @@ void actPlayer(Entity* my)
 						{
 							node_t* oldnode = spellnode;
 							spellnode = spellnode->next;
-							spell_t* spell = static_cast<spell_t*>(oldnode->element);
+							auto spell = static_cast<spell_t*>(oldnode->element);
 							spell->magic_effects_node = NULL;
 							if ( spell->sustainEffectDissipate >= 0 )
 							{
@@ -10945,7 +10945,7 @@ void actPlayer(Entity* my)
 						for ( node_t* node = stats[PLAYER_NUM]->FOLLOWERS.first; node != nullptr; node = nextnode )
 						{
 							nextnode = node->next;
-							Uint32* c = static_cast<Uint32*>(node->element);
+							auto c = static_cast<Uint32*>(node->element);
 							Entity* myFollower = nullptr;
 							if ( c )
 							{
@@ -10975,7 +10975,7 @@ void actPlayer(Entity* my)
 									{
 										if ( bodypart >= LIMB_HUMANOID_TORSO )
 										{
-											Entity* tmp = static_cast<Entity*>(node->element);
+											auto tmp = static_cast<Entity*>(node->element);
 											if ( tmp )
 											{
 												tmp->flags[USERFLAG2] = false;
@@ -11111,7 +11111,7 @@ void actPlayer(Entity* my)
 								for ( node = stats[PLAYER_NUM]->inventory.first; node != nullptr; node = nextnode )
 								{
 									nextnode = node->next;
-									Item* item = static_cast<Item*>(node->element);
+									auto item = static_cast<Item*>(node->element);
 									if ( itemCategory(item) == SPELL_CAT )
 									{
 										continue;    // don't drop spells on death, stupid!
@@ -11174,7 +11174,7 @@ void actPlayer(Entity* my)
 								for ( node = stats[PLAYER_NUM]->inventory.first; node != nullptr; node = nextnode )
 								{
 									nextnode = node->next;
-									Item* item = static_cast<Item*>(node->element);
+									auto item = static_cast<Item*>(node->element);
 									if ( itemCategory(item) == SPELL_CAT )
 									{
 										continue;
@@ -11219,7 +11219,7 @@ void actPlayer(Entity* my)
 							}
 							for ( node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next )
 							{
-								Entity* mapCreature = static_cast<Entity*>(mapNode->element);
+								auto mapCreature = static_cast<Entity*>(mapNode->element);
 								if ( mapCreature )
 								{
 									mapCreature->monsterEntityRenderAsTelepath = 0; // do a final pass to undo any telepath rendering.
@@ -11900,7 +11900,7 @@ void actPlayer(Entity* my)
 	{
 		for ( node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next )
 		{
-			Entity* mapCreature = static_cast<Entity*>(mapNode->element);
+			auto mapCreature = static_cast<Entity*>(mapNode->element);
 			if ( mapCreature )
 			{
 				if ( (stats[PLAYER_NUM]->getEffectActive(EFF_TELEPATH) 
@@ -12012,7 +12012,7 @@ void actPlayer(Entity* my)
 				node_t* shieldNode = list_Node(&my->children, 7);
 				if ( shieldNode )
 				{
-					Entity* shield = static_cast<Entity*>(shieldNode->element);
+					auto shield = static_cast<Entity*>(shieldNode->element);
 					bool bendArm = true;
 					if ( shield->flags[INVISIBLE] && !shield->flags[INVISIBLE_DITHER] )
 					{
@@ -12089,7 +12089,7 @@ void actPlayer(Entity* my)
 									node_t* tempNode = list_Node(&my->children, 2);
 									if ( tempNode )
 									{
-										Entity* foot = static_cast<Entity*>(tempNode->element);
+										auto foot = static_cast<Entity*>(tempNode->element);
 										if ( playerRace == TROLL )
 										{
 											playSoundEntityLocal(my, my->getMonsterFootstepSound(MONSTER_FOOTSTEP_STOMP, foot->sprite), 32);
@@ -12117,7 +12117,7 @@ void actPlayer(Entity* my)
 									node_t* tempNode = list_Node(&my->children, 2);
 									if ( tempNode )
 									{
-										Entity* foot = static_cast<Entity*>(tempNode->element);
+										auto foot = static_cast<Entity*>(tempNode->element);
 										if ( playerRace == TROLL )
 										{
 											playSoundEntityLocal(my, my->getMonsterFootstepSound(MONSTER_FOOTSTEP_STOMP, foot->sprite), 32);
@@ -12961,7 +12961,7 @@ void actPlayer(Entity* my)
 				node_t* tempNode = list_Node(&my->children, 6);
 				if ( tempNode )
 				{
-					Entity* weapon = static_cast<Entity*>(tempNode->element);
+					auto weapon = static_cast<Entity*>(tempNode->element);
 
 					bool bendArm = PLAYER_ARMBENDED || playerRace == CREATURE_IMP;
 					if ( !((PLAYER_ATTACK == MONSTER_POSE_MAGIC_WINDUP1 || PLAYER_ATTACK == MONSTER_POSE_MAGIC_WINDUP2) 
@@ -13128,7 +13128,7 @@ void actPlayer(Entity* my)
 				node_t* tempNode = list_Node(&my->children, 7);
 				if ( tempNode )
 				{
-					Entity* shield = static_cast<Entity*>(tempNode->element);
+					auto shield = static_cast<Entity*>(tempNode->element);
 					bool bendArm = true;
 					if ( shield->flags[INVISIBLE] && !shield->flags[INVISIBLE_DITHER] )
 					{
@@ -14631,7 +14631,7 @@ void actPlayer(Entity* my)
 		node_t* shieldNode = list_Node(&my->children, 7);
 		if ( shieldNode )
 		{
-			Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
+			auto shieldEntity = static_cast<Entity*>(shieldNode->element);
 			if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 			{
 				shieldEntity->yaw -= PI / 6;
@@ -14674,7 +14674,7 @@ void Entity::playerShakeGrowthHelmet()
 		{
 			if ( node_t* node = list_Node(&children, 9) )
 			{
-				if ( Entity* entity = static_cast<Entity*>(node->element) )
+				if (auto entity = static_cast<Entity*>(node->element) )
 				{
 					entity->skill[1] = 1;
 					serverUpdateEntitySkill(entity, 1);
@@ -15854,7 +15854,7 @@ void playerAnimateRat(Entity* my)
 			}
 			continue;
 		}
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -15932,7 +15932,7 @@ void playerAnimateSpider(Entity* my)
 	int bodypart = 0;
 	for ( bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++ )
 	{
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		if ( bodypart == 0 )
 		{
 			// hudweapon case

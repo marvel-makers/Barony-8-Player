@@ -104,7 +104,7 @@ template ConsoleVariable<Vector4>::ConsoleVariable(const char*, Vector4 const&, 
 template<> void ConsoleVariable<Vector4>::set(const char* arg)
 {
 	if (arg && arg[0] != '\0') {
-		char* ptr = const_cast<char*>(arg);
+		auto ptr = const_cast<char*>(arg);
 		data.x = strtof(ptr, &ptr);
 		data.y = strtof(ptr, &ptr);
 		data.z = strtof(ptr, &ptr);
@@ -1525,7 +1525,7 @@ namespace ConsoleCommands {
 			for (node = map.entities->first; node != NULL; node = nextnode)
 			{
 				nextnode = node->next;
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if (entity->behavior == &actMonster)
 				{
 					entity->setHP(0);
@@ -3601,7 +3601,7 @@ namespace ConsoleCommands {
 
 		if (creature != NOTHING)
 		{
-			Stat* monsterStats = new Stat(1000 + creature);
+			auto monsterStats = new Stat(1000 + creature);
 			monsterStatCustomManager.writeAllFromStats(monsterStats);
 			delete monsterStats;
 		}
@@ -4081,7 +4081,7 @@ namespace ConsoleCommands {
 		for ( auto node = stats[clientnum]->inventory.first; node; node = nextnode )
 		{
 			nextnode = node->next;
-			if ( Item* item = static_cast<Item*>(node->element) )
+			if (auto item = static_cast<Item*>(node->element) )
 			{
 				if ( getSpellFromItem(clientnum, item, true) )
 				{
@@ -4361,7 +4361,7 @@ namespace ConsoleCommands {
 		for ( auto node = map.entities->first; node; node = nextnode )
 		{
 			nextnode = node->next;
-			if ( Entity* entity = static_cast<Entity*>(node->element) )
+			if (auto entity = static_cast<Entity*>(node->element) )
 			{
 				if ( entity->behavior == &actItem && (items[entity->skill[10]].category == SPELLBOOK || items[entity->skill[10]].category == TOME_SPELL) )
 				{
@@ -5317,7 +5317,7 @@ namespace ConsoleCommands {
 				auto& loot = treasureLoot[mapPath];
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					if ( Entity* entity = static_cast<Entity*>(node->element) )
+					if (auto entity = static_cast<Entity*>(node->element) )
 					{
 						int x = entity->x / 16;
 						int y = entity->y / 16;
@@ -5841,7 +5841,7 @@ namespace ConsoleCommands {
 				loadMap(fullMapPath.c_str(), &map, map.entities, map.creatures, nullptr);
 				for (const node_t* node = map.entities->first; node; node = node->next )
 				{
-					if ( Entity* entity = static_cast<Entity*>(node->element) )
+					if (auto entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity->sprite == 179 )
 						{

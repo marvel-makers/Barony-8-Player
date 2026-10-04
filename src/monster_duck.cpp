@@ -520,7 +520,7 @@ bool duckAreaQuck(Entity* my)
 	std::priority_queue<std::pair<real_t, Entity*>> possibleTargets;
 	for ( auto node = map.creatures->first; node; node = node->next )
 	{
-		if ( Entity* target = static_cast<Entity*>(node->element) )
+		if (auto target = static_cast<Entity*>(node->element) )
 		{
 			if ( target->monsterIsTargetable() && entityDist(target, my) < 2 * TOUCHRANGE )
 			{
@@ -930,7 +930,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 			{
 				for ( auto node = map.creatures->first; node; node = node->next )
 				{
-					if ( Entity* entity = static_cast<Entity*>(node->element) )
+					if (auto entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity != my )
 						{

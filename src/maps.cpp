@@ -1412,7 +1412,7 @@ bool loadSubRoomData(const std::string& fullMapPath, list_t* mapList)
 	}
 
 	// level is successfully loaded, add it to the pool
-	list_t* subRoomList = static_cast<list_t*>(malloc(sizeof(list_t)));
+	auto subRoomList = static_cast<list_t*>(malloc(sizeof(list_t)));
 	subRoomList->first = nullptr;
 	subRoomList->last = nullptr;
 
@@ -1433,7 +1433,7 @@ bool loadSubRoomData(const std::string& fullMapPath, list_t* mapList)
 			{
 				if ( !subRoomMap->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * subRoomMap->height] )
 				{
-					door_t* door = static_cast<door_t*>(malloc(sizeof(door_t)));
+					auto door = static_cast<door_t*>(malloc(sizeof(door_t)));
 					door->x = x;
 					door->y = y;
 					if ( x == subRoomMap->width - 1 )
@@ -2215,7 +2215,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		possiblelocations2 = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
 		firstroomtile = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
 		secretlevelexittile = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
-		bool* possiblerooms = static_cast<bool*>(malloc(sizeof(bool) * numlevels));
+		auto possiblerooms = static_cast<bool*>(malloc(sizeof(bool) * numlevels));
 		for ( c = 0; c < numlevels; c++ )
 		{
 			possiblerooms[c] = true;
@@ -2407,7 +2407,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							return false;
 						}
 						node_t* roomNode = static_cast<list_t*>(mapNode->element)->first;
-						map_t* candidateMap = static_cast<map_t*>(roomNode->element);
+						auto candidateMap = static_cast<map_t*>(roomNode->element);
 						outLevelnum2 = mapIndex;
 						outNode = mapNode;
 						outMap = candidateMap;
@@ -2981,7 +2981,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						for ( node = map.entities->first; node != nullptr; node = nextnode )
 						{
 							nextnode = node->next;
-							Entity* entity = static_cast<Entity*>(node->element);
+							auto entity = static_cast<Entity*>(node->element);
 							if ( static_cast<int>(entity->x) == x0 << 4 && static_cast<int>(entity->y) == y0 << 4 )
 							{
 								list_RemoveNode(entity->mynode);
@@ -3581,7 +3581,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 	{
 		for ( node = map.entities->first; node != nullptr; node = node->next )
 		{
-			Entity* gateEntity = static_cast<Entity*>(node->element);
+			auto gateEntity = static_cast<Entity*>(node->element);
 			if ( gateEntity->sprite == 19 || gateEntity->sprite == 20 ) // N/S E/W gates take these sprite numbers in the editor.
 			{
 				int gatex = static_cast<int>(gateEntity->x) / 16;
@@ -3730,7 +3730,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		// don't spawn traps in doors
 		for ( node_t* doorNode = doorList.first; doorNode != nullptr; doorNode = doorNode->next )
 		{
-			door_t* door = static_cast<door_t*>(doorNode->element);
+			auto door = static_cast<door_t*>(doorNode->element);
 			int x = std::min<unsigned int>(std::max(0, door->x), map.width - 1); //TODO: Why are const int and unsigned int being compared?
 			int y = std::min<unsigned int>(std::max(0, door->y), map.height - 1); //TODO: Why are const int and unsigned int being compared?
 			if ( possiblelocations[y + x * map.height] == true )
@@ -4059,7 +4059,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					for ( tempNode = map.entities->first; tempNode != nullptr; tempNode = nextTempNode )
 					{
 						nextTempNode = tempNode->next;
-						Entity* tempEntity = static_cast<Entity*>(tempNode->element);
+						auto tempEntity = static_cast<Entity*>(tempNode->element);
 						if ( tempEntity->sprite >= 4 && tempEntity->sprite <= 7 )
 						{
 							if ( static_cast<int>(floor(tempEntity->x + 8)) / 16 == x && static_cast<int>(floor(tempEntity->y + 8)) / 16 == y )
@@ -5725,7 +5725,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 	static ConsoleVariable<bool> cvar_debug_station_spawn("/debug_station_spawn", false);
 	if ( treasure_room_generator.bForceStationSpawnForCurrentFloor(secretlevelexit) )
 	{
-		bool* possibleLocationsStations = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
+		auto possibleLocationsStations = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
 		memcpy(possibleLocationsStations, possiblelocations, map.width * map.height * sizeof(bool));
 		int numpossibleStationLocations = numpossiblelocations;
 
@@ -6122,7 +6122,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		std::set<int> allMushrooms;
 		for ( auto node = map.entities->first; node; node = node->next )
 		{
-			if ( Entity* entity = static_cast<Entity*>(node->element) )
+			if (auto entity = static_cast<Entity*>(node->element) )
 			{
 				if ( entity->sprite == 179 && (entity->colliderDecorationModel == 1607 || entity->colliderDecorationModel == 1610) )
 				{
@@ -6350,7 +6350,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		}
 	}
 
-	bool* possibleLocationsBreakables = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
+	auto possibleLocationsBreakables = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
 	memcpy(possibleLocationsBreakables, possiblelocations, map.width * map.height * sizeof(bool));
 	int numpossibleBreakableLocations = numpossiblelocations;
 	for ( c = 0; c < std::min(numBreakables, numpossibleBreakableLocations); ++c )
@@ -7261,7 +7261,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					break;
 				}
 
-				GenerateKeyPlaces pickedGenType = static_cast<GenerateKeyPlaces>(map_rng.discrete(chances.data(), chances.size()));
+				auto pickedGenType = static_cast<GenerateKeyPlaces>(map_rng.discrete(chances.data(), chances.size()));
 				auto& entities = goodEntities[pickedGenType];
 
 				int pick = map_rng.rand() % entities.size();
@@ -7567,7 +7567,7 @@ void debugMap(map_t* map)
 	std::set<Uint32> takenSlots;
 	for ( auto node = map->entities->first; node != nullptr; )
 	{
-		Entity* postProcessEntity = static_cast<Entity*>(node->element);
+		auto postProcessEntity = static_cast<Entity*>(node->element);
 		node = node->next;
 		if ( postProcessEntity )
 		{
@@ -7793,7 +7793,7 @@ void assignActions(map_t* map)
                             for ( node = stats[numplayers]->inventory.first; node != nullptr; node = nextnode )
                             {
                                 nextnode = node->next;
-                                Item* item = static_cast<Item*>(node->element);
+                                auto item = static_cast<Item*>(node->element);
                                 if ( itemCategory(item) == SPELL_CAT )
                                 {
                                     continue;    // don't drop spells on death, stupid!
@@ -8590,7 +8590,7 @@ void assignActions(map_t* map)
 					monsterType = static_cast<Monster>(monsterCurve(currentlevel));
 					if ( customMonsterCurveExists )
 					{
-						Monster customMonsterType = static_cast<Monster>(monsterCurveCustomManager.rollMonsterFromCurve(map->name));
+						auto customMonsterType = static_cast<Monster>(monsterCurveCustomManager.rollMonsterFromCurve(map->name));
 						if ( customMonsterType != NOTHING )
 						{
 							monsterType = customMonsterType;
@@ -11386,7 +11386,7 @@ void assignActions(map_t* map)
 
 	for ( auto node = map->entities->first; node != nullptr; )
 	{
-		Entity* postProcessEntity = static_cast<Entity*>(node->element);
+		auto postProcessEntity = static_cast<Entity*>(node->element);
 		node = node->next;
 		if ( postProcessEntity )
 		{
@@ -11415,7 +11415,7 @@ void assignActions(map_t* map)
 				// see if there's any platforms to set items upon.
 				for ( node_t* tmpnode = map->entities->first; tmpnode != nullptr; tmpnode = tmpnode->next )
 				{
-					Entity* tmpentity = static_cast<Entity*>(tmpnode->element);
+					auto tmpentity = static_cast<Entity*>(tmpnode->element);
 					if ( (tmpentity->behavior == &actFurniture
 							&& (tmpentity->x == postProcessEntity->x) && (tmpentity->y == postProcessEntity->y)
 						) )
@@ -11447,7 +11447,7 @@ void assignActions(map_t* map)
 				list_t* entitiesOnTile = TileEntityList.getTileList(findx, findy);
 				for ( node_t* tmpnode = entitiesOnTile->first; tmpnode != nullptr; tmpnode = tmpnode->next )
 				{
-					Entity* tmpentity = static_cast<Entity*>(tmpnode->element);
+					auto tmpentity = static_cast<Entity*>(tmpnode->element);
 					if ( tmpentity && tmpentity != postProcessEntity )
 					{
 						if ( tmpentity->behavior != &actMonster
@@ -11496,7 +11496,7 @@ void assignActions(map_t* map)
 	}
 	for ( auto node = map->entities->first; node != nullptr; )
 	{
-		Entity* postProcessEntity = static_cast<Entity*>(node->element);
+		auto postProcessEntity = static_cast<Entity*>(node->element);
 		node = node->next;
 		if ( postProcessEntity )
 		{
@@ -11670,7 +11670,7 @@ void assignActions(map_t* map)
 	{
 		for ( auto node = map->entities->first; node != nullptr; )
 		{
-			Entity* postProcessEntity = static_cast<Entity*>(node->element);
+			auto postProcessEntity = static_cast<Entity*>(node->element);
 			node = node->next;
 
 			list_t* inventory = nullptr;
@@ -11693,7 +11693,7 @@ void assignActions(map_t* map)
 			{
 				for ( auto node2 = inventory->first; node2; node2 = node2->next )
 				{
-					if ( Item* item = static_cast<Item*>(node2->element) )
+					if (auto item = static_cast<Item*>(node2->element) )
 					{
 						if ( items[item->type].category == SPELLBOOK )
 						{
@@ -11831,7 +11831,7 @@ void mapFoodOnLevel(int player)
 	bool previouslyIdentifiedFood = false;
 	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		if ( entity && entity->behavior == &actItem )
 		{
 			Item* item = newItemFromEntity(entity);
@@ -11888,7 +11888,7 @@ int loadMainMenuMap(bool blessedAdditionMaps, bool forceVictoryMap, int forcemap
 	bool foundVictory = false;
 	for ( node_t* node = topscores_json.first; node != nullptr && !foundVictory; node = node->next )
 	{
-		score_t* score = static_cast<score_t*>(node->element);
+		auto score = static_cast<score_t*>(node->element);
 		if ( score && (score->victory == 3 || score->victory == 4 || score->victory == 5) )
 		{
 			foundVictory = true;
@@ -11896,7 +11896,7 @@ int loadMainMenuMap(bool blessedAdditionMaps, bool forceVictoryMap, int forcemap
 	}
 	for ( node_t* node = topscoresMultiplayer_json.first; node != nullptr && !foundVictory; node = node->next )
 	{
-		score_t* score = static_cast<score_t*>(node->element);
+		auto score = static_cast<score_t*>(node->element);
 		if ( score && (score->victory == 3 || score->victory == 4 || score->victory == 5) )
 		{
 			foundVictory = true;

@@ -48,7 +48,7 @@ void actGoldBag(Entity* my)
 			node_t* node;
 			for ( node = map.entities->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity->isBoulderSprite() )   // boulder.vox
 				{
 					return;

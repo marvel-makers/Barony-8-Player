@@ -197,7 +197,7 @@ void Field::buildCache() {
 		}
 		cache.pop_back();
 	}
-	char* buf = static_cast<char*>(malloc(textlen + 1));
+	auto buf = static_cast<char*>(malloc(textlen + 1));
 	if ( buf ) {
 		dirty = false;
 		memcpy(buf, text ? text : "\0", textlen + 1);
@@ -605,7 +605,7 @@ void Field::setText(const char* _text) {
 }
 
 void Field::scrollParent() {
-	Frame* fparent = static_cast<Frame*>(parent);
+	auto fparent = static_cast<Frame*>(parent);
 	auto fActualSize = fparent->getActualSize();
 	auto fSize = fparent->getSize();
 	if (size.y < fActualSize.y) {

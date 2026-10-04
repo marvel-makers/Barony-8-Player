@@ -806,7 +806,7 @@ public:
 		CustomHelpers::addMemberToRoot(d, "inventory_items", invItemsArray);
 		for ( node_t* node = myStats->inventory.first; node; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				addArrayMemberFromItem(d, "inventory_items", item);
@@ -1118,7 +1118,7 @@ public:
 				printlog("[JSON]: Error: No 'version' value in json file, or JSON syntax incorrect! %s", inputPath.c_str());
 				return nullptr;
 			}
-			StatEntry* statEntry = new StatEntry();
+			auto statEntry = new StatEntry();
 			int version = d["version"].GetInt();
 			const rapidjson::Value& stats = d["stats"];
 			for ( rapidjson::Value::ConstMemberIterator stat_itr = stats.MemberBegin(); stat_itr != stats.MemberEnd(); ++stat_itr )

@@ -1915,7 +1915,7 @@ void FollowerRadialMenu::createFollowerMenuGUI()
 	bgFrame->setInheritParentFrameOpacity(false);
 	bgFrame->setOpacity(0.0);
 
-	const char* font = "fonts/pixel_maz_multiline.ttf#16#2";
+	auto font = "fonts/pixel_maz_multiline.ttf#16#2";
 
 	int panelIndex = 0;
 	for ( auto& entry : panelEntries )
@@ -6283,7 +6283,7 @@ void GenericGUIMenu::updateGUI()
 				{
 					if ( node->element )
 					{
-						Item* item = static_cast<Item*>(node->element);
+						auto item = static_cast<Item*>(node->element);
 						itemCounts[item->type] += item->count;
 					}
 				}
@@ -6291,7 +6291,7 @@ void GenericGUIMenu::updateGUI()
 				{
 					if ( node->element )
 					{
-						Item* item = static_cast<Item*>(node->element);
+						auto item = static_cast<Item*>(node->element);
 						if ( isNodeTinkeringCraftableItem(item->node) )
 						{
 							// make the displayed items reflect how many you are carrying.
@@ -7095,7 +7095,7 @@ void GenericGUIMenu::alterItem(Item* item)
 	// reroll any other conflicting items
 	for ( node_t* node = stats[gui_player]->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* item2 = static_cast<Item*>(node->element);
+		auto item2 = static_cast<Item*>(node->element);
 		if ( item2 && item2 != item && !itemCompare(item, item2, true) )
 		{
 			// items are the same (incl. appearance!)
@@ -7546,7 +7546,7 @@ void GenericGUIMenu::openGUI(int type, Item* effectItem, int effectBeatitude, in
 	{
 		for ( node_t* node = stats[gui_player]->inventory.first; node; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( !item )
 			{
 				continue;
@@ -8115,7 +8115,7 @@ void GenericGUIMenu::rechargeScepterUsingItem(Item* item)
 				nextnode = node->next;
 				if ( node->element )
 				{
-					spell_t* spell2 = static_cast<spell_t*>(node->element);
+					auto spell2 = static_cast<spell_t*>(node->element);
 					if ( spell2 == spell )
 					{
 						if ( spell == players[gui_player]->magic.selectedSpell() )
@@ -8287,7 +8287,7 @@ bool GenericGUIMenu::executeOnItemClick(Item* item)
 				{
 					if ( node->element )
 					{
-						Item* checkItem = static_cast<Item*>(node->element);
+						auto checkItem = static_cast<Item*>(node->element);
 						if ( checkItem && isItemMixable(checkItem) )
 						{
 							return true;
@@ -9069,7 +9069,7 @@ bool alchemyAddRecipe(int player, int basePotion, int secondaryPotion, int resul
 					imagePathsNode = list_Node(&items[result].images, index);
 					if ( imagePathsNode )
 					{
-						string_t* imagePath = static_cast<string_t*>(imagePathsNode->element);
+						auto imagePath = static_cast<string_t*>(imagePathsNode->element);
 						iconPath = imagePath->data;
 					}
 				}
@@ -9234,7 +9234,7 @@ void GenericGUIMenu::alchemyCookCombination()
 			Item* torchesEquipped;
 			for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != NULL; invnode = invnode->next )
 			{
-				Item* item = static_cast<Item*>(invnode->element);
+				auto item = static_cast<Item*>(invnode->element);
 				if ( item && item->type == TOOL_TORCH )
 				{
 					if ( itemIsEquipped(item, gui_player) )
@@ -10395,7 +10395,7 @@ bool GenericGUIMenu::alchemyLearnRecipe(int type, bool increaseskill, bool notif
 					imagePathsNode = list_Node(&items[type].images, index);
 					if ( imagePathsNode )
 					{
-						string_t* imagePath = static_cast<string_t*>(imagePathsNode->element);
+						auto imagePath = static_cast<string_t*>(imagePathsNode->element);
 						iconPath = imagePath->data;
 					}
 					alchemyGUI.notifications.push_back(std::make_pair(ticks, 
@@ -12431,7 +12431,7 @@ Item* GenericGUIMenu::tinkeringKitFindInInventory()
 
 		for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != NULL; invnode = invnode->next )
 		{
-			Item* tinkerItem = static_cast<Item*>(invnode->element);
+			auto tinkerItem = static_cast<Item*>(invnode->element);
 			if ( tinkerItem && tinkerItem->type == TOOL_TINKERING_KIT && tinkerItem->status > BROKEN )
 			{
 				return tinkerItem;
@@ -12486,7 +12486,7 @@ bool GenericGUIMenu::tinkeringRepairItem(Item* item)
 				}
 				
 				Status newStatus = DECREPIT;
-				Status maxStatus = static_cast<Status>(tinkeringUpgradeMaxStatus(item));
+				auto maxStatus = static_cast<Status>(tinkeringUpgradeMaxStatus(item));
 
 				if ( maxStatus <= item->status )
 				{
@@ -13101,7 +13101,7 @@ Item* GenericGUIMenu::scribingToolFindInInventory()
 	{
 		for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != NULL; invnode = invnode->next )
 		{
-			Item* scribeItem = static_cast<Item*>(invnode->element);
+			auto scribeItem = static_cast<Item*>(invnode->element);
 			if ( scribeItem && scribeItem->type == ENCHANTED_FEATHER && scribeItem->status > BROKEN )
 			{
 				return scribeItem;
@@ -14170,8 +14170,8 @@ void tinkerScrapChangeEvent(const int player, int metalAmount, int magicAmount, 
 
 void GenericGUIMenu::TinkerGUI_t::updateTinkerScrapHeld(void* metalHeldText, void* magicHeldText, int realMetalScrap, int realMagicScrap)
 {
-	Field* metalField = static_cast<Field*>(metalHeldText);
-	Field* magicField = static_cast<Field*>(magicHeldText);
+	auto metalField = static_cast<Field*>(metalHeldText);
+	auto magicField = static_cast<Field*>(magicHeldText);
 
 	bool pauseChangeScrapAnim = false;
 	if ( playerChangeMetalScrap != 0 || playerChangeMagicScrap != 0 )
@@ -15658,7 +15658,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerMenu()
 				nextnode = node->next;
 				if ( node->element )
 				{
-					Item* item = static_cast<Item*>(node->element);
+					auto item = static_cast<Item*>(node->element);
 					if ( parentGUI.tinkeringFilter == TINKER_FILTER_CRAFTABLE )
 					{
 						if ( isTinkerConstructItemSelected(item) )
@@ -17566,7 +17566,7 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 
 	for ( node_t* node = stats[playernum]->inventory.first; node != NULL && !hasTinOpener; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( !item ) { continue; }
 
 		if ( item->type == TOOL_TINOPENER && item->identified )
@@ -18957,7 +18957,7 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 			{
 				for ( node_t* node = stats[playernum]->inventory.first; node != NULL; node = node->next )
 				{
-					Item* item = static_cast<Item*>(node->element);
+					auto item = static_cast<Item*>(node->element);
 					if ( !item )
 					{
 						continue;
@@ -20367,7 +20367,7 @@ void buildRecipeList(const int player)
 	alchemy.torchCount.count = 0;
 	for ( node_t* node = stats[player]->inventory.first; node; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( !item ) { continue; }
 		if ( item->type == TOOL_TORCH )
 		{
@@ -20404,13 +20404,13 @@ void buildRecipeList(const int player)
 		else if ( players[player] && players[player]->entity )
 		{
 			auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(players[player]->entity, 2);
-			for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+			for (auto it = entLists.begin(); it != entLists.end(); ++it )
 			{
 				list_t* currentList = *it;
 				node_t* node;
 				for ( node = currentList->first; node != nullptr; node = node->next )
 				{
-					if ( Entity* entity = static_cast<Entity*>(node->element) )
+					if (auto entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity->behavior == &actCampfire && entity->skill[3] > 0 /*fire health */ && entityDist(entity, players[player]->entity) < 32.0 )
 						{
@@ -21200,8 +21200,8 @@ void featherChangeChargeEvent(const int player, int chargeAmount, int realCharge
 
 void GenericGUIMenu::FeatherGUI_t::updateFeatherCharge(void* featherChargeText, void* featherChangeChargeText, int currentCharge)
 {
-	Field* featherChargeField = static_cast<Field*>(featherChargeText);
-	Field* featherChangeChargeField = static_cast<Field*>(featherChangeChargeText);
+	auto featherChargeField = static_cast<Field*>(featherChargeText);
+	auto featherChangeChargeField = static_cast<Field*>(featherChangeChargeText);
 
 	bool pauseChangeChargeAnim = false;
 	if ( changeFeatherCharge != 0 )
@@ -21352,7 +21352,7 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
 		}
 		if ( parentGUI.isNodeScribingCraftableItem(node) )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				std::string label = item->getScrollLabel();
@@ -21394,7 +21394,7 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
 			}
 			if ( node->element )
 			{
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				if ( item && scroll.first == item->getScrollLabel() )
 				{
 					item->x = 0;
@@ -22886,7 +22886,7 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherMenu()
 				nextnode = node->next;
 				if ( node->element )
 				{
-					Item* item = static_cast<Item*>(node->element);
+					auto item = static_cast<Item*>(node->element);
 					if ( isInscriptionDrawerItemSelected(item) )
 					{
 						foundItem = true;
@@ -25757,7 +25757,7 @@ void GenericGUIMenu::ItemEffectGUI_t::updateItemEffectMenu()
 					{
 						if ( node_t* spellImageNode = ItemTooltips.getSpellNodeFromSpellID(spell->ID) )
 						{
-							string_t* string = static_cast<string_t*>(spellImageNode->element);
+							auto string = static_cast<string_t*>(spellImageNode->element);
 							if ( string )
 							{
 								itemIcon->path = "*";
@@ -25788,7 +25788,7 @@ void GenericGUIMenu::ItemEffectGUI_t::updateItemEffectMenu()
 				if ( node_t* spellImageNode = 
 					ItemTooltips.getSpellNodeFromSpellID(getSpellIDFromSpellbook(parentGUI.itemEffectItemType)) )
 				{
-					string_t* string = static_cast<string_t*>(spellImageNode->element);
+					auto string = static_cast<string_t*>(spellImageNode->element);
 					if ( string )
 					{
 						itemIcon->path = "*";
@@ -26882,7 +26882,7 @@ void GenericGUIMenu::ItemEffectGUI_t::updateItemEffectMenu()
 				nextnode = node->next;
 				if ( node->element )
 				{
-					Item* item = static_cast<Item*>(node->element);
+					auto item = static_cast<Item*>(node->element);
 					if ( (!transmuteActivate && isItemSelectedToEffect(item)) || (transmuteActivate && item == parentGUI.transmuteItemTarget) )
 					{
 						foundItem = true;
@@ -27009,7 +27009,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
 	}
 
 	SDL_Rect basePos{ 0, 0, itemEffectBaseWidth, 242 };
-	const char* baseWindow = "*images/ui/ScrollSpells/Scroll_Window_00.png";
+	auto baseWindow = "*images/ui/ScrollSpells/Scroll_Window_00.png";
 	if ( modeHasCostEffect == COST_EFFECT_GOLD
 		|| modeHasCostEffect == COST_EFFECT_MANA )
 	{
@@ -28970,7 +28970,7 @@ void CalloutRadialMenu::createCalloutMenuGUI()
 	bgFrame->setInheritParentFrameOpacity(false);
 	bgFrame->setOpacity(0.0);
 
-	const char* font = "fonts/pixel_maz_multiline.ttf#16#2";
+	auto font = "fonts/pixel_maz_multiline.ttf#16#2";
 
 	int panelIndex = 0;
 	for ( auto& entry : panelEntries )
@@ -32901,7 +32901,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
 			Player::GUI_t::imageResizeToContainer9x9(tooltipFrame, SDL_Rect{ 0, 0, 200, 200 }, Player::GUI_t::tooltipEffectBackgroundImages);
 			auto txt = tooltipFrame->addField("tooltip text", 1024);
 			auto txtRightAlignHint = tooltipFrame->addField("tooltip text right align hint", 128);
-			const char* tooltipFont = "fonts/pixel_maz_multiline.ttf#16#2";
+			auto tooltipFont = "fonts/pixel_maz_multiline.ttf#16#2";
 			txt->setFont(tooltipFont);
 			txt->setColor(makeColor(188, 154, 114, 255));
 			txtRightAlignHint->setFont(tooltipFont);
@@ -32977,7 +32977,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
 							auto& calloutMenu = CalloutMenu[player];
 							for ( auto node = map.entities->first; node; node = node->next )
 							{
-								Entity* shrine = static_cast<Entity*>(node->element);
+								auto shrine = static_cast<Entity*>(node->element);
 								if ( shrine && (shrine->behavior == &::actAssistShrine) )
 								{
 									calloutMenu.lockOnEntityUid = shrine->getUID();
@@ -37303,10 +37303,10 @@ void GenericGUIMenu::AssistShrineGUI_t::updateAssistShrine()
 			const int pady2 = 4;
 			const int padxMid = 4;
 			const int padyMid = 8;
-			SDL_Rect tooltipPos = SDL_Rect{ 400, 0, maxWidth, 100 };
+			auto tooltipPos = SDL_Rect{ 400, 0, maxWidth, 100 };
 
 			txt->setText(Language::get(6340));
-			SDL_Rect txtPos = SDL_Rect{ padx, pady1 - 3, maxWidth - padx * 2, 80 };
+			auto txtPos = SDL_Rect{ padx, pady1 - 3, maxWidth - padx * 2, 80 };
 			txt->setSize(txtPos);
 			txt->setColor(hudColors.characterSheetHeadingText);
 			Font* actualFont = Font::get(txt->getFont());
@@ -37509,13 +37509,13 @@ void GenericGUIMenu::AssistShrineGUI_t::updateAssistShrine()
 							const int pady2 = 4;
 							const int padxMid = 4;
 							const int padyMid = 8;
-							SDL_Rect tooltipPos = SDL_Rect{ 400, 0, maxWidth, 100 };
+							auto tooltipPos = SDL_Rect{ 400, 0, maxWidth, 100 };
 
 							char titleBuf[64];
 							std::string classname = playerClassLangEntry(itemType, parentGUI.gui_player);
 							uppercaseString(classname);
 							txt->setText(classname.c_str());
-							SDL_Rect txtPos = SDL_Rect{ padx, pady1 - 3, maxWidth - padx * 2, 80 };
+							auto txtPos = SDL_Rect{ padx, pady1 - 3, maxWidth - padx * 2, 80 };
 							txt->setSize(txtPos);
 							if ( itemType >= CLASS_CONJURER && itemType <= CLASS_BREWER )
 							{
@@ -37691,7 +37691,7 @@ void GenericGUIMenu::AssistShrineGUI_t::updateAssistShrine()
 							const int pady2 = 4;
 							const int padxMid = 4;
 							const int padyMid = 8;
-							SDL_Rect tooltipPos = SDL_Rect{ 400, 0, maxWidth, 100 };
+							auto tooltipPos = SDL_Rect{ 400, 0, maxWidth, 100 };
 
 							Monster race = getMonsterFromPlayerRace(itemType);
 
@@ -37710,7 +37710,7 @@ void GenericGUIMenu::AssistShrineGUI_t::updateAssistShrine()
 							}
 							uppercaseString(racename);
 							txt->setText(racename.c_str());
-							SDL_Rect txtPos = SDL_Rect{ padx, pady1 - 3, maxWidth - padx * 2, 80 };
+							auto txtPos = SDL_Rect{ padx, pady1 - 3, maxWidth - padx * 2, 80 };
 							txt->setSize(txtPos);
 							if ( itemType >= RACE_SKELETON
 								&& itemType <= RACE_GOATMAN )
@@ -40377,7 +40377,7 @@ void GenericGUIMenu::MailboxGui_t::updateMailMenu()
 			{
 				for ( node_t* node = stats[playernum]->inventory.first; node != NULL; node = node->next )
 				{
-					Item* item = static_cast<Item*>(node->element);
+					auto item = static_cast<Item*>(node->element);
 					if ( !item )
 					{
 						continue;

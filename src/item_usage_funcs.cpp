@@ -513,7 +513,7 @@ bool item_PotionWater(Item*& item, Entity* entity, Entity* usedBy)
 		int items = 0;
 		for ( node = stats->inventory.first; node != NULL; node = node->next )
 		{
-			Item* target = static_cast<Item*>(node->element);
+			auto target = static_cast<Item*>(node->element);
 			if ( target && !itemIsEquipped(target, player) && itemCategory(target) != SPELL_CAT && target->beatitude >= 0 )
 			{
 				items++;
@@ -529,7 +529,7 @@ bool item_PotionWater(Item*& item, Entity* entity, Entity* usedBy)
 		items = 0;
 		for ( node = stats->inventory.first; node != NULL; node = node->next )
 		{
-			Item* target = static_cast<Item*>(node->element);
+			auto target = static_cast<Item*>(node->element);
 			if ( target && !itemIsEquipped(target, player) && itemCategory(target) != SPELL_CAT && target->beatitude >= 0 )
 			{
 				if ( items == itemToCurse )
@@ -1506,7 +1506,7 @@ bool item_PotionInvisibility(Item*& item, Entity* entity, Entity* usedBy)
 	{
 		for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 		{
-			Entity* creature = static_cast<Entity*>(node->element);
+			auto creature = static_cast<Entity*>(node->element);
 			if ( creature && creature->behavior == &actMonster && creature->monsterTarget == entity->getUID() )
 			{
 				if ( !creature->isBossMonster() )
@@ -3744,7 +3744,7 @@ void item_ScrollConjureArrow(Item* item, int player)
 
 	messagePlayer(player, MESSAGE_INVENTORY, Language::get(848));
 	messagePlayer(player, MESSAGE_HINT, Language::get(3762));
-	ItemType type = static_cast<ItemType>(QUIVER_SILVER + local_rng.rand() % 7);
+	auto type = static_cast<ItemType>(QUIVER_SILVER + local_rng.rand() % 7);
 
 	int amount = 20 + local_rng.rand() % 6;
 	if ( item->beatitude < 0 )
@@ -4392,7 +4392,7 @@ void item_ScrollSummon(Item* item, int player)
 						{
 							if ( bodypart >= LIMB_HUMANOID_TORSO )
 							{
-								Entity* tmp = static_cast<Entity*>(node->element);
+								auto tmp = static_cast<Entity*>(node->element);
 								if ( tmp )
 								{
 									tmp->flags[USERFLAG2] = true;
@@ -4746,7 +4746,7 @@ Entity* item_ToolBeartrap(Item*& item, Entity* usedBy)
 		trapProps.parent = entity->parent;
 		for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 		{
-			Entity* creature = static_cast<Entity*>(node->element);
+			auto creature = static_cast<Entity*>(node->element);
 			if ( creature && usedBy->checkFriend(creature) )
 			{
 				trapProps.ignoreEntities.insert(creature->getUID());
@@ -5909,7 +5909,7 @@ void item_Spellbook(Item*& item, int player)
 			// randomly delete a spell
 			int spellToDelete = local_rng.rand() % list_Size(&players[player]->magic.spellList);
 			node = list_Node(&players[player]->magic.spellList, spellToDelete);
-			spell_t* spell = static_cast<spell_t*>(node->element);
+			auto spell = static_cast<spell_t*>(node->element);
 			int spellID = spell->ID;
 			bool deleted = false;
 			bool rerollSpell = false;
@@ -5937,7 +5937,7 @@ void item_Spellbook(Item*& item, int player)
 			for ( node_t* node2 = stats[player]->inventory.first; node2 != NULL; node2 = nextnode )
 			{
 				nextnode = node2->next;
-				Item* itemInventory = static_cast<Item*>(node2->element);
+				auto itemInventory = static_cast<Item*>(node2->element);
 				if ( itemInventory && itemInventory->type == SPELL_ITEM )
 				{
 					if ( rerollSpell )

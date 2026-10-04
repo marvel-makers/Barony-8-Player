@@ -434,7 +434,7 @@ void createChestInventory(Entity* my, int chestType)
 	case 5:
 	{
 		//Tools.
-		Status durability = static_cast<Status>(WORN + rng.rand() % 3);
+		auto durability = static_cast<Status>(WORN + rng.rand() % 3);
 		switch ( rng.rand() % 3 )
 		{
 		case 0:
@@ -764,7 +764,7 @@ void createChestInventory(Entity* my, int chestType)
 		for ( node_t* node = inventory->first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( !item ) { continue; }
 
 			item->x = slotx;

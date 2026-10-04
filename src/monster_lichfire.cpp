@@ -249,7 +249,7 @@ void lichFireDie(Entity* my)
 	for ( node = map.creatures->first; my->monsterLichAllyStatus == LICH_ALLY_DEAD && node != NULL; node = nextnode )
 	{
 		nextnode = node->next;
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		if ( entity )
 		{
 			if ( entity == my || entity->sprite == 650 )

@@ -100,7 +100,7 @@ void castSpellInit(Uint32 caster_uid, spell_t* spell, bool usingSpellbook, bool 
 			for (node = channeledSpells[player].first; node; node = nextnode)
 			{
 				nextnode = node->next;
-				spell_t* spell_search = static_cast<spell_t*>(node->element);
+				auto spell_search = static_cast<spell_t*>(node->element);
 				if (spell_search->ID == spell->ID)
 				{
 					//list_RemoveNode(node);
@@ -451,7 +451,7 @@ Entity* getSpellTarget(node_t* node, int radius, Entity* caster, bool targetCast
 	{
 		return nullptr;
 	}
-	Entity* entity = static_cast<Entity*>(node->element);
+	auto entity = static_cast<Entity*>(node->element);
 	if ( !entity )
 	{
 		return nullptr;
@@ -981,7 +981,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 
 	//Right. First, grab the root element, which is what determines the delivery system.
 	//spellElement_t *element = (spellElement_t *)spell->elements->first->element;
-	spellElement_t* const element = static_cast<spellElement_t*>(node->element);
+	const auto element = static_cast<spellElement_t*>(node->element);
 	spellElement_t* const innerElement = element->elements.first ? static_cast<spellElement_t*>(element->elements.first->element) : nullptr;
 	if (element)
 	{
@@ -1219,7 +1219,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 			{
 				for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 				{
-					Entity* creature = static_cast<Entity*>(node->element);
+					auto creature = static_cast<Entity*>(node->element);
 					if ( creature && creature->behavior == &actMonster && creature->monsterTarget == caster->getUID() )
 					{
 						if ( !creature->isBossMonster() )
@@ -1425,7 +1425,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 				}
 				for ( node_t* node3 = map.creatures->first; node3 != nullptr; node3 = node3->next )
 				{
-					Entity* creature = static_cast<Entity*>(node3->element);
+					auto creature = static_cast<Entity*>(node3->element);
 					if ( creature && creature != caster && creature->behavior == &actMonster 
 						&& !caster->checkFriend(creature) && entityDist(caster, creature) < TOUCHRANGE * 2 )
 					{
@@ -1477,7 +1477,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 				int foundTarget = 0;
 				for ( node_t* node3 = map.creatures->first; node3 != nullptr; node3 = node3->next )
 				{
-					Entity* creature = static_cast<Entity*>(node3->element);
+					auto creature = static_cast<Entity*>(node3->element);
 					if ( creature && creature != caster
 						&& !caster->checkFriend(creature) && entityDist(caster, creature) < TOUCHRANGE * 2 )
 					{
@@ -2155,7 +2155,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 				bool foundExisting = false;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					if ( Entity* ent = static_cast<Entity*>(node->element) )
+					if (auto ent = static_cast<Entity*>(node->element) )
 					{
 						if ( ent->behavior == &actBoulderTrapHole || ent->behavior == &actArrowTrap
 							|| ent->behavior == &actMagicTrap || ent->behavior == &actMagicTrapCeiling
@@ -2173,7 +2173,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 								node_t* node;
 								for ( node = it->first; node != nullptr; node = node->next )
 								{
-									if ( Entity* entity2 = static_cast<Entity*>(node->element) )
+									if (auto entity2 = static_cast<Entity*>(node->element) )
 									{
 										if ( entity2->behavior == &actParticlePinpointTarget
 											&& entity2->parent == ent->getUID() )
@@ -2246,7 +2246,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 				std::set<int> mapTilesWithPinpoints;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					if ( Entity* ent = static_cast<Entity*>(node->element) )
+					if (auto ent = static_cast<Entity*>(node->element) )
 					{
 						if ( ent->behavior == &actChest || ent->isInertMimic()
 							|| ent->behavior == &actItem || ent->behavior == &actGoldBag )
@@ -2297,7 +2297,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 								node_t* node;
 								for ( node = it->first; node != nullptr; node = node->next )
 								{
-									if ( Entity* entity2 = static_cast<Entity*>(node->element) )
+									if (auto entity2 = static_cast<Entity*>(node->element) )
 									{
 										if ( entity2->behavior == &actParticlePinpointTarget )
 										{
@@ -2379,7 +2379,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 					std::vector<Entity*> breakables;
 					for ( node_t* node = map.entities->first; node; node = node->next )
 					{
-						if ( Entity* entity = static_cast<Entity*>(node->element) )
+						if (auto entity = static_cast<Entity*>(node->element) )
 						{
 							if ( entity->isColliderBreakableContainer() )
 							{
@@ -2576,7 +2576,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 											node_t* node;
 											for ( node = it->first; node != nullptr; node = node->next )
 											{
-												if ( Entity* entity2 = static_cast<Entity*>(node->element) )
+												if (auto entity2 = static_cast<Entity*>(node->element) )
 												{
 													if ( entity2->behavior == &actParticlePinpointTarget
 														&& entity2->parent == entity->getUID() )
@@ -4496,7 +4496,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 									target->monsterReleaseAttackTarget();
 									for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 									{
-										Entity* entity2 = static_cast<Entity*>(node->element);
+										auto entity2 = static_cast<Entity*>(node->element);
 										if ( !entity2 ) { continue; }
 										if ( entity2->behavior == &actMonster && entity2 != target )
 										{
@@ -5083,7 +5083,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 								newItem(WOODEN_SHIELD, WORN, 0, 1, rng.rand(), false, nullptr),
 								10);
 
-							ItemType potionType = static_cast<ItemType>(POTION_WATER + rng.rand() % 15);
+							auto potionType = static_cast<ItemType>(POTION_WATER + rng.rand() % 15);
 							int potionAppearance = 0;
 							for ( size_t p = 0; p < potionStandardAppearanceMap.size(); ++p )
 							{
@@ -5858,7 +5858,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 							entity->monsterReleaseAttackTarget();
 							for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 							{
-								Entity* entity2 = static_cast<Entity*>(node->element);
+								auto entity2 = static_cast<Entity*>(node->element);
 								if ( !entity2 ) { continue; }
 								if ( entity2->behavior == &actMonster && entity2 != entity )
 								{
@@ -5940,7 +5940,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 						for ( itemNode = currentList->first; itemNode != nullptr; itemNode = nextItemNode )
 						{
 							nextItemNode = itemNode->next;
-							Entity* itemEntity = static_cast<Entity*>(itemNode->element);
+							auto itemEntity = static_cast<Entity*>(itemNode->element);
 							if ( itemEntity && !itemEntity->flags[INVISIBLE] && itemEntity->behavior == &actItem && entityDist(itemEntity, caster) < TOUCHRANGE )
 							{
 								Item* toSalvage = newItemFromEntity(itemEntity);
@@ -6062,7 +6062,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 					messagePlayerColor(i, MESSAGE_HINT, color, Language::get(3490));
 					for ( node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( !entity || entity == caster )
 						{
 							continue;
@@ -6129,7 +6129,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 							node_t* node;
 							for ( node = it->first; node != nullptr; node = node->next )
 							{
-								if ( Entity* entity2 = static_cast<Entity*>(node->element) )
+								if (auto entity2 = static_cast<Entity*>(node->element) )
 								{
 									if ( entity2->behavior == &actRadiusMagic
 										&& entity2->actRadiusMagicID == spell->ID
@@ -6368,7 +6368,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 
 						for ( node_t* node = caster->getStats()->magic_effects.first; node; node = node->next )
 						{
-							if ( spell_t* spell = static_cast<spell_t*>(node->element) )
+							if (auto spell = static_cast<spell_t*>(node->element) )
 							{
 								if ( spell->ID == SPELL_GUARD_SPIRIT || spell->ID == SPELL_DIVINE_GUARD )
 								{
@@ -6415,7 +6415,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 
 						for ( node_t* node = caster->getStats()->magic_effects.first; node; node = node->next )
 						{
-							if ( spell_t* spell = static_cast<spell_t*>(node->element) )
+							if (auto spell = static_cast<spell_t*>(node->element) )
 							{
 								if ( spell->ID == SPELL_DIVINE_GUARD || spell->ID == SPELL_GUARD_BODY )
 								{
@@ -6462,7 +6462,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 
 						for ( node_t* node = caster->getStats()->magic_effects.first; node; node = node->next )
 						{
-							if ( spell_t* spell = static_cast<spell_t*>(node->element) )
+							if (auto spell = static_cast<spell_t*>(node->element) )
 							{
 								if ( spell->ID == SPELL_GUARD_SPIRIT || spell->ID == SPELL_GUARD_BODY )
 								{
@@ -6914,7 +6914,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 					messagePlayerColor(i, MESSAGE_STATUS, uint32ColorGreen, Language::get(768));
 					for ( node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( !entity || entity == caster )
 						{
 							continue;
@@ -7014,7 +7014,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 						}
 						for ( node = map.creatures->first; node; node = node->next )
 						{
-							Entity* entity = static_cast<Entity*>(node->element);
+							auto entity = static_cast<Entity*>(node->element);
 							if ( !entity ||  entity == caster )
 							{
 								continue;
@@ -7119,7 +7119,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 
 				for ( node = map.creatures->first; node && stat; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( !entity || entity == caster )
 					{
 						continue;
@@ -7251,7 +7251,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 					int numAlliesEffectsCured = 0;
 					for ( node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( !entity || entity == caster )
 						{
 							continue;
@@ -8001,7 +8001,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 				for ( auto node = map.entities->first; node; node = nextnode )
 				{
 					nextnode = node->next;
-					if ( Entity* entity = static_cast<Entity*>(node->element) )
+					if (auto entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity->behavior == &actDeathGhost && entity->skill[2] == caster->skill[2] )
 						{
@@ -8452,7 +8452,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 				if ( caster->behavior == &actMagicTrapCeiling )
 				{
 					node_t* node = caster->children.first;
-					Entity* ceilingModel = static_cast<Entity*>(node->element);
+					auto ceilingModel = static_cast<Entity*>(node->element);
 					missileEntity->z = ceilingModel->z;
 				}
 			}

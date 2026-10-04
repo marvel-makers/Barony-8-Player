@@ -1388,7 +1388,7 @@ void Item::applyEmptyPotion(int player, Entity& entity)
 				for ( int j = 0; j < potionDropQuantity; ++j )
 				{
 					std::pair<int, int> generatedPotion = fountainGeneratePotionDrop(rng);
-					ItemType type = static_cast<ItemType>(generatedPotion.first);
+					auto type = static_cast<ItemType>(generatedPotion.first);
 					int appearance = generatedPotion.second;
 					Item* item = newItem(type, EXCELLENT, 0, 1, appearance, false, NULL);
 					if ( Entity* dropped = dropItemMonster(item, &entity, NULL) )
@@ -1492,7 +1492,7 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
 				trapProps.parent = entity->parent;
 				for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 				{
-					Entity* creature = static_cast<Entity*>(node->element);
+					auto creature = static_cast<Entity*>(node->element);
 					if ( creature && parent->checkFriend(creature) )
 					{
 						trapProps.ignoreEntities.insert(creature->getUID());
@@ -1643,7 +1643,7 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
 				trapProps.parent = entity->parent;
 				for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 				{
-					Entity* creature = static_cast<Entity*>(node->element);
+					auto creature = static_cast<Entity*>(node->element);
 					if ( creature && parent->checkFriend(creature) )
 					{
 						trapProps.ignoreEntities.insert(creature->getUID());
@@ -1861,7 +1861,7 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
 				trapProps.parent = entity->parent;
 				for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 				{
-					Entity* creature = static_cast<Entity*>(node->element);
+					auto creature = static_cast<Entity*>(node->element);
 					if ( creature && parent->checkFriend(creature) )
 					{
 						trapProps.ignoreEntities.insert(creature->getUID());

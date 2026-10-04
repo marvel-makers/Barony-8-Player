@@ -32,7 +32,7 @@
 void initClassStats(const int classnum, void* myStats)
 {
 	if ( !myStats ) { return; }
-	Stat* stat = static_cast<Stat*>(myStats);
+	auto stat = static_cast<Stat*>(myStats);
 	// CLASS LOADOUTS
 	// barbarian
 	if ( classnum == CLASS_BARBARIAN )
@@ -3623,7 +3623,7 @@ void initClass(const int player)
 		// move default items to the right
 		for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				if ( items[item->type].item_slot == EQUIPPABLE_IN_SLOT_HELM
@@ -3750,7 +3750,7 @@ void initShapeshiftHotbar(int player)
 	// find "shapeshift" only spells, add em to view.
 	for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item && item->type == SPELL_ITEM )
 		{
 			spell_t* spell = getSpellFromItem(player, item, true);
@@ -3793,7 +3793,7 @@ void initShapeshiftHotbar(int player)
 							{
 								for ( node_t* node2 = stats[player]->inventory.first; node2 != nullptr; node2 = node2->next )
 								{
-									Item* tempItem = static_cast<Item*>(node2->element);
+									auto tempItem = static_cast<Item*>(node2->element);
 									if ( tempItem == item )
 									{
 										continue;
@@ -3941,7 +3941,7 @@ void deinitShapeshiftHotbar(int player)
 
 	for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item )
 		{
 			if ( item->type == SPELL_ITEM && item->appearance >= 1000 )

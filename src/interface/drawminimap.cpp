@@ -143,7 +143,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 	// get special points of interest (exits, items, revealed monsters, etc)
 	for ( node_t* node = map.entities->first; node != NULL; node = node->next )
 	{
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		if ( entity->flags[SPRITE] )
 		{
 			if ( entity->getEntityShowOnMapDuration() == 0 )
@@ -860,7 +860,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 	    int minimapTotalScale = minimapScale;
 		const int DEFAULT_PING_TIME = TICKS_PER_SECOND * 2.5;
 		const int DEATH_PING_TIME = TICKS_PER_SECOND * 9.5;
-		for ( std::vector<MinimapPing>::iterator it = minimapPings[player].begin(); it != minimapPings[player].end();)
+		for (auto it = minimapPings[player].begin(); it != minimapPings[player].end();)
 		{
 			MinimapPing ping = *it;
 
@@ -1085,7 +1085,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 	{
 		for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			int drawMonsterAlly = -1;
 			int foundplayer = -1;
 			if ( c == 1 && entity->behavior != &actPlayer )
@@ -1265,7 +1265,7 @@ void minimapPingAdd(const int srcPlayer, const int destPlayer, MinimapPing newPi
 	if ( !minimapPings[destPlayer].empty() )
 	{
 		int numPlayerPings = 0;
-		for ( std::vector<MinimapPing>::iterator it = minimapPings[destPlayer].begin(); it != minimapPings[destPlayer].end();)
+		for (auto it = minimapPings[destPlayer].begin(); it != minimapPings[destPlayer].end();)
 		{
 			MinimapPing ping = *it;
 			if ( ping.player == newPing.player && !newPing.radiusPing && newPing.pingType == MinimapPing::PING_DEFAULT )
@@ -1306,7 +1306,7 @@ void shrineDaedalusRevealMap(Entity& my)
 	Entity* exitEntity = nullptr;
 	for ( node_t* node = map.entities->first; node; node = node->next )
 	{
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		if ( !entity ) { continue; }
 
 		if ( (entity->behavior == &actLadder && strcmp(map.name, "Hell"))

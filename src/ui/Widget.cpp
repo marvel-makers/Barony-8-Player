@@ -54,7 +54,7 @@ void Widget::select() {
 	}
 	Widget* head = findHead();
 	if (head && head->getType() == WIDGET_FRAME) {
-		Frame* f = static_cast<Frame*>(head);
+		auto f = static_cast<Frame*>(head);
 		f->deselect(); // this deselects everything in the gui
 	}
 	if (owner >= 0 && owner < MAXPLAYERS) {

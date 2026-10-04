@@ -378,7 +378,7 @@ bool invertMatrix4x4(mat4x4_t* result, const mat4x4_t* m)
 
 	det = 1.f / det;
 
-    float* out = (float*)result;
+    auto out = (float*)result;
     for (int i = 0; i < 16; ++i) {
         out[i] = inv[i] * det;
     }

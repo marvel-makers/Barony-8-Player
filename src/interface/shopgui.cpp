@@ -83,7 +83,7 @@ bool getShopFreeSlot(const int player, list_t* shopInventory, Item* itemToSell, 
 	{
 		for ( node_t* node = shopkeeperInv->first; node != NULL; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				if ( hideItemFromShopView(*item) )
@@ -108,7 +108,7 @@ bool getShopFreeSlot(const int player, list_t* shopInventory, Item* itemToSell, 
 	std::unordered_set<int> takenSlots;
 	for ( node_t* node = shopkeeperInv->first; node != NULL; node = node->next )
 	{
-		Item* item = static_cast<Item*>(node->element);
+		auto item = static_cast<Item*>(node->element);
 		if ( item )
 		{
 			if ( hideItemFromShopView(*item) )
@@ -186,7 +186,7 @@ void updateShopWindow(const int player)
 	{
 		for ( node_t* node = shopInv[player]->first; node != NULL; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				if ( item->type == ARTIFACT_ORB_BLUE )
@@ -208,7 +208,7 @@ void updateShopWindow(const int player)
 		}
 		for ( node = shopInv[player]->first; node != NULL; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				if ( shopkeeperMysteriousItems[ARTIFACT_ORB_BLUE].find(item->type) != shopkeeperMysteriousItems[ARTIFACT_ORB_BLUE].end() )
@@ -1220,7 +1220,7 @@ void Player::ShopGUI_t::updateShop()
 	{
 		for ( node_t* node = shopInv[player.playernum]->first; node != NULL; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				if ( hideItemFromShopView(*item) )
@@ -1263,7 +1263,7 @@ void Player::ShopGUI_t::updateShop()
 	{
 		for ( node_t* node = shopInv[player.playernum]->first; node != NULL; node = node->next )
 		{
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				if ( hideItemFromShopView(*item) )

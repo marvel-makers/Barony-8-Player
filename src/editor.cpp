@@ -1131,7 +1131,7 @@ void makeUndo()
 	}
 
 	// copy all the current map data
-	map_t* undomap = static_cast<map_t*>(malloc(sizeof(map_t)));
+	auto undomap = static_cast<map_t*>(malloc(sizeof(map_t)));
 	strcpy(undomap->author, map.author);
 	strcpy(undomap->name, map.name);
 	undomap->skybox = map.skybox;
@@ -1201,7 +1201,7 @@ void undo()
 	}
 	map.tiles.clear();
 	free(camera.vismap);
-	map_t* undomap = static_cast<map_t*>(undospot->element);
+	auto undomap = static_cast<map_t*>(undospot->element);
 	map.width = undomap->width;
 	map.height = undomap->height;
 	map.tiles = static_cast<Sint32*>(malloc(sizeof(Sint32) * map.width * map.height * MAP_LAYERS));
@@ -1237,7 +1237,7 @@ void redo()
 	selectedEntity[0] = NULL;
 	map.tiles.clear();
 	free(camera.vismap);
-	map_t* undomap = static_cast<map_t*>(redospot->element);
+	auto undomap = static_cast<map_t*>(redospot->element);
 	map.width = undomap->width;
 	map.height = undomap->height;
 	map.tiles = static_cast<Sint32*>(malloc(sizeof(Sint32) * map.width * map.height * MAP_LAYERS));
@@ -2930,7 +2930,7 @@ int main(int argc, char** argv)
 							slidery = std::min(std::max(suby1 + 21, slidery), suby2 - 113 - slidersize);
 							y2 = (static_cast<real_t>(slidery - suby1 - 20) / ((suby2 - 112) - (suby1 + 20))) * modFolderNames.size();
 							selectedFile = std::min<long unsigned int>(std::max(y2, selectedFile), std::min<long unsigned int>(modFolderNames.size() - 1, y2 + 19)); //TODO: Why are long unsigned int and int being compared? TWICE. On the same line.
-							std::list<std::string>::iterator it = modFolderNames.begin();
+							auto it = modFolderNames.begin();
 							std::advance(it, selectedFile);
 							strcpy(foldername, it->c_str());
 							inputstr = foldername;
@@ -2943,7 +2943,7 @@ int main(int argc, char** argv)
 							y2 = (static_cast<real_t>(slidery - suby1 - 20) / ((suby2 - 112) - (suby1 + 20))) * modFolderNames.size();
 							mclick = 1;
 							selectedFile = std::min<long unsigned int>(std::max(y2, selectedFile), std::min<long unsigned int>(modFolderNames.size() - 1, y2 + 19)); //TODO: Why are long unsigned int and int being compared? TWICE. On the same line.
-							std::list<std::string>::iterator it = modFolderNames.begin();
+							auto it = modFolderNames.begin();
 							std::advance(it, selectedFile);
 							strcpy(foldername, it->c_str());
 							inputstr = foldername;
@@ -2960,7 +2960,7 @@ int main(int argc, char** argv)
 							{
 								selectedFile = y2 + ((omousey - suby1 - 24) >> 3);
 								selectedFile = std::min<long unsigned int>(std::max(y2, selectedFile), std::min<long unsigned int>(modFolderNames.size() - 1, y2 + 19)); //TODO: Why are long unsigned int and int being compared? TWICE. On the same line.
-								std::list<std::string>::iterator it = modFolderNames.begin();
+								auto it = modFolderNames.begin();
 								std::advance(it, selectedFile);
 								strcpy(foldername, it->c_str());
 								inputstr = foldername;
@@ -2978,7 +2978,7 @@ int main(int argc, char** argv)
 						c = std::min<long unsigned int>(modFolderNames.size(), 20 + y2); //TODO: Why are long unsigned int and int being compared?
 						for ( z = y2; z < c; z++ )
 						{
-							std::list<std::string>::iterator it = modFolderNames.begin();
+							auto it = modFolderNames.begin();
 							std::advance(it, z);
 							printText(font8x8_bmp, x, y, it->c_str());
 							y += 8;
@@ -9804,7 +9804,7 @@ int main(int argc, char** argv)
 						makeUndo();
 						if ( selectedarea_y2 < map.height - 1 )
 						{
-							for ( std::vector<Entity*>::iterator it = groupedEntities.begin(); it != groupedEntities.end(); ++it )
+							for (auto it = groupedEntities.begin(); it != groupedEntities.end(); ++it )
 							{
 								Entity* tmpEntity = *it;
 								tmpEntity->y += 16;
@@ -9823,7 +9823,7 @@ int main(int argc, char** argv)
 						makeUndo();
 						if ( selectedarea_y1 > 0 )
 						{
-							for ( std::vector<Entity*>::iterator it = groupedEntities.begin(); it != groupedEntities.end(); ++it )
+							for (auto it = groupedEntities.begin(); it != groupedEntities.end(); ++it )
 							{
 								Entity* tmpEntity = *it;
 								tmpEntity->y -= 16;
@@ -9842,7 +9842,7 @@ int main(int argc, char** argv)
 						makeUndo();
 						if ( selectedarea_x1 > 0 )
 						{
-							for ( std::vector<Entity*>::iterator it = groupedEntities.begin(); it != groupedEntities.end(); ++it )
+							for (auto it = groupedEntities.begin(); it != groupedEntities.end(); ++it )
 							{
 								Entity* tmpEntity = *it;
 								tmpEntity->x -= 16;
@@ -9861,7 +9861,7 @@ int main(int argc, char** argv)
 						makeUndo();
 						if ( selectedarea_x2 < map.width - 1 )
 						{
-							for ( std::vector<Entity*>::iterator it = groupedEntities.begin(); it != groupedEntities.end(); ++it )
+							for (auto it = groupedEntities.begin(); it != groupedEntities.end(); ++it )
 							{
 								Entity* tmpEntity = *it;
 								tmpEntity->x += 16;

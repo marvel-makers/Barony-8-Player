@@ -54,7 +54,7 @@ void actPedestalOrb(Entity* my)
 void Entity::actPedestalBase()
 {
 	node_t* node = children.first;
-	Entity* orbEntity = static_cast<Entity*>(node->element);
+	auto orbEntity = static_cast<Entity*>(node->element);
 	if ( pedestalInit == 0 )
 	{
 		pedestalPowerStatus = -1;
@@ -113,7 +113,7 @@ void Entity::actPedestalBase()
 				node_t* node;
 				for ( node = map.entities->first; node != NULL; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actMonster )
 					{
 						Stat* stats = entity->getStats();
@@ -268,7 +268,7 @@ void Entity::actPedestalBase()
 		node_t* node2 = nullptr;
 		for ( node2 = map.entities->first; node2 != nullptr; node2 = node2->next )
 		{
-			Entity* entity = static_cast<Entity*>(node2->element);
+			auto entity = static_cast<Entity*>(node2->element);
 			if ( entity == this || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost)
 				|| entity->behavior == &actDoorFrame || entity == orbEntity )
 			{

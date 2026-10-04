@@ -772,7 +772,7 @@ void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* weaponNode = list_Node(&my->children, 7);
 				if ( weaponNode )
 				{
-					Entity* weapon = static_cast<Entity*>(weaponNode->element);
+					auto weapon = static_cast<Entity*>(weaponNode->element);
 					if ( my->monsterState != MONSTER_STATE_ATTACK && my->monsterAttack == 0 )
 					{
 						if ( weapon )
@@ -837,7 +837,7 @@ void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* shieldNode = list_Node(&my->children, 8);
 				if ( shieldNode )
 				{
-					Entity* shield = static_cast<Entity*>(shieldNode->element);
+					auto shield = static_cast<Entity*>(shieldNode->element);
 					if ( shield->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT )
 					{
 						// relax arm
@@ -1148,7 +1148,7 @@ void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	node_t* shieldNode = list_Node(&my->children, 8);
 	if ( shieldNode )
 	{
-		Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
+		auto shieldEntity = static_cast<Entity*>(shieldNode->element);
 		if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 		{
 			shieldEntity->yaw -= 2 * PI / 6;

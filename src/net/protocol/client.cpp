@@ -200,7 +200,7 @@ static void changeLevel() {
 	    for ( node = map.entities->first; node != nullptr; node = nextnode )
 	    {
 		    nextnode = node->next;
-		    Entity* entity = static_cast<Entity*>(node->element);
+		    auto entity = static_cast<Entity*>(node->element);
 		    if ( entity->flags[NOUPDATE] )
 		    {
 			    list_RemoveNode(entity->mynode);    // we're anticipating this entity data from server
@@ -606,7 +606,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 			node_t* childNode = list_Node(&entity->children, net_packet->data[8]);
 			if ( childNode )
 			{
-				Entity* tempEntity = static_cast<Entity*>(childNode->element);
+				auto tempEntity = static_cast<Entity*>(childNode->element);
 				tempEntity->sprite = SDLNet_Read32(&net_packet->data[9]);
 				tempEntity->skill[7] = tempEntity->sprite;
 				tempEntity->flags[INVISIBLE] = (net_packet->data[13] & (1 << 0)) > 0 ? true : false;
@@ -639,7 +639,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 				{
 					continue;
 				}
-				Entity* tempEntity = static_cast<Entity*>(childNode->element);
+				auto tempEntity = static_cast<Entity*>(childNode->element);
 				if ( tempEntity )
 				{
 					if ( entity->behavior == &actMonster )
@@ -671,7 +671,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 					{
 						if ( bodypart >= LIMB_HUMANOID_TORSO )
 						{
-							Entity* tmp = static_cast<Entity*>(node->element);
+							auto tmp = static_cast<Entity*>(node->element);
 							if ( tmp )
 							{
 								tmp->flags[USERFLAG2] = entity->flags[net_packet->data[8]];
@@ -1686,7 +1686,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 	{ 'CHCT', []() {
 		int value = SDLNet_Read16(&net_packet->data[4]);
 		int max = SDLNet_Read16(&net_packet->data[6]);
-		const char* challengeName = "CHALLENGE_MONSTER_KILLS";
+		auto challengeName = "CHALLENGE_MONSTER_KILLS";
 		int eventType = net_packet->data[8];
 		if ( eventType == static_cast<int>(GameModeManager_t::CurrentSession_t::ChallengeRun_t::CHEVENT_KILLS_FURNITURE) )
 		{
@@ -1919,7 +1919,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		{
 			if ( stats[clientnum]->defending && stats[clientnum]->shield )
 			{
-				ItemType itemType = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[4]));
+				auto itemType = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[4]));
 				if ( stats[clientnum]->shield->type == itemType )
 				{
 					Input& input = Input::inputs[clientnum];
@@ -1934,8 +1934,8 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// a torch burns out
 	{'TORC', [](){
-		ItemType itemType = static_cast<ItemType>(SDLNet_Read16(&net_packet->data[4]));
-		Status itemStatus = static_cast<Status>(net_packet->data[6]);
+		auto itemType = static_cast<ItemType>(SDLNet_Read16(&net_packet->data[4]));
+		auto itemStatus = static_cast<Status>(net_packet->data[6]);
 		int qty = net_packet->data[7];
 		if ( stats[clientnum]->shield && stats[clientnum]->shield->type == itemType )
 		{
@@ -2069,7 +2069,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 							bool foundCharmSpell = false;
 							for ( node_t* spellnode = stats[clientnum]->inventory.first; spellnode != nullptr; spellnode = spellnode->next )
 							{
-								Item* item = static_cast<Item*>(spellnode->element);
+								auto item = static_cast<Item*>(spellnode->element);
 								if ( item && itemCategory(item) == SPELL_CAT )
 								{
 									spell_t* spell = getSpellFromItem(clientnum, item, false);
@@ -2106,7 +2106,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 					std::vector<Item*> itemsToReroll;
 					for ( node_t* node = stats[clientnum]->inventory.first; node != NULL; node = node->next )
 					{
-						Item* item2 = static_cast<Item*>(node->element);
+						auto item2 = static_cast<Item*>(node->element);
 						if ( item2 && item2 != item && !itemCompare(item, item2, true) )
 						{
 							itemsToReroll.push_back(item2);
@@ -2169,8 +2169,8 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		}
 
 
-		ItemType checkType = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[5]));
-		Status checkStatus = static_cast<Status>(SDLNet_Read32(&net_packet->data[9]));
+		auto checkType = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[5]));
+		auto checkStatus = static_cast<Status>(SDLNet_Read32(&net_packet->data[9]));
 		Sint16 checkBeatitude = static_cast<Sint16>(SDLNet_Read32(&net_packet->data[13]));
 		Sint16 checkCount = static_cast<Sint16>(SDLNet_Read32(&net_packet->data[17]));
 		Uint32 checkAppearance = SDLNet_Read32(&net_packet->data[21]);
@@ -2219,7 +2219,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		{
 			for ( node_t* node = stats[clientnum]->inventory.first; node != nullptr; node = node->next )
 			{
-				if ( Item* item2 = static_cast<Item*>(node->element) )
+				if (auto item2 = static_cast<Item*>(node->element) )
 				{
 					if ( item2->type == checkType
 						&& item2->status == checkStatus
@@ -2582,8 +2582,8 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 			return;
 		}
 
-		ItemType type = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[4]));
-		Status status = static_cast<Status>(static_cast<Sint8>(net_packet->data[8]));
+		auto type = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[4]));
+		auto status = static_cast<Status>(static_cast<Sint8>(net_packet->data[8]));
 		Sint16 beatitude = static_cast<Sint8>(net_packet->data[9]);
 		Sint16 count = net_packet->data[10];
 		Uint32 appearance = SDLNet_Read32(&net_packet->data[11]);
@@ -2615,7 +2615,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// you died
 	{'UDIE', [](){
-		KilledBy killer = static_cast<KilledBy>(SDLNet_Read32(&net_packet->data[4]));
+		auto killer = static_cast<KilledBy>(SDLNet_Read32(&net_packet->data[4]));
 		stats[clientnum]->killer = killer;
 
 		if (killer == KilledBy::MONSTER) {
@@ -2627,15 +2627,15 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		        name[len] = '\0';
 		        stats[clientnum]->killer_name = name;
 
-				Monster monster = static_cast<Monster>(SDLNet_Read32(&net_packet->data[9]));
+				auto monster = static_cast<Monster>(SDLNet_Read32(&net_packet->data[9]));
 				stats[clientnum]->killer_monster = monster;
 		    } else { // anonymous monster
-		        Monster monster = static_cast<Monster>(SDLNet_Read32(&net_packet->data[9]));
+		        auto monster = static_cast<Monster>(SDLNet_Read32(&net_packet->data[9]));
 		        stats[clientnum]->killer_monster = monster;
 				stats[clientnum]->killer_name = "";
 		    }
 		} else if (killer == KilledBy::ITEM) {
-		    ItemType item = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[8]));
+		    auto item = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[8]));
 		    stats[clientnum]->killer_item = item;
 		}
 
@@ -2681,7 +2681,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 			for ( auto node = stats[clientnum]->inventory.first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				if ( itemCategory(item) == SPELL_CAT )
 				{
 					continue;    // don't drop spells on death, stupid!
@@ -2713,7 +2713,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 			for ( node = stats[clientnum]->inventory.first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = static_cast<Item*>(node->element);
+				auto item = static_cast<Item*>(node->element);
 				if ( itemCategory(item) == SPELL_CAT )
 				{
 					continue;
@@ -2749,7 +2749,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 		for ( node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next )
 		{
-			Entity* mapCreature = static_cast<Entity*>(mapNode->element);
+			auto mapCreature = static_cast<Entity*>(mapNode->element);
 			if ( mapCreature )
 			{
 				if ( mapCreature->monsterEntityRenderAsTelepath == 1 )
@@ -2780,7 +2780,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 				}
 			}
 			CalloutMenu[pnum].lockOnEntityUid = uid;
-			CalloutRadialMenu::CalloutCommand cmd = static_cast<CalloutRadialMenu::CalloutCommand>(net_packet->data[9]);
+			auto cmd = static_cast<CalloutRadialMenu::CalloutCommand>(net_packet->data[9]);
 			CalloutMenu[pnum].clientCalloutHelpFlags = SDLNet_Read32(&net_packet->data[10]);
 			if ( uid )
 			{
@@ -2802,8 +2802,8 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 	// textbox message
 	{'MSGS', [](){
 		Uint32 color = SDLNet_Read32(&net_packet->data[4]);
-		MessageType type = static_cast<MessageType>(SDLNet_Read32(&net_packet->data[8]));
-		const char* msg = (const char*)(&net_packet->data[12]);
+		auto type = static_cast<MessageType>(SDLNet_Read32(&net_packet->data[8]));
+		auto msg = (const char*)(&net_packet->data[12]);
 
 		if ( ticks != 1 )
 		{
@@ -3218,7 +3218,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// lead a monster
 	{'LEAD', [](){
-		Uint32* uidnum = static_cast<Uint32*>(malloc(sizeof(Uint32)));
+		auto uidnum = static_cast<Uint32*>(malloc(sizeof(Uint32)));
 		*uidnum = SDLNet_Read32(&net_packet->data[4]);
 		node_t* node = list_AddNodeLast(&stats[clientnum]->FOLLOWERS);
 		node->element = uidnum;
@@ -3496,7 +3496,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// monster summon
 	{'SUMM', [](){
-		Monster monster = static_cast<Monster>(SDLNet_Read32(&net_packet->data[4]));
+		auto monster = static_cast<Monster>(SDLNet_Read32(&net_packet->data[4]));
 		Sint32 x = static_cast<Sint32>(SDLNet_Read32(&net_packet->data[8]));
 		Sint32 y = static_cast<Sint32>(SDLNet_Read32(&net_packet->data[12]));
 		Uint32 uid = SDLNet_Read32(&net_packet->data[16]);
@@ -3541,8 +3541,8 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	//Add an item to the chest.
 	{'CITM', [](){
-		ItemType itemType = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[4]));
-		Status status = static_cast<Status>(SDLNet_Read32(&net_packet->data[8]));
+		auto itemType = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[4]));
+		auto status = static_cast<Status>(SDLNet_Read32(&net_packet->data[8]));
 		Sint16 beatitude = SDLNet_Read32(&net_packet->data[12]);
 		Sint16 count = SDLNet_Read32(&net_packet->data[16]);
 		Uint32 appearance = SDLNet_Read32(&net_packet->data[20]);
@@ -3632,7 +3632,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 			for (node = channeledSpells[clientnum].first; node; node = nextnode)
 			{
 				nextnode = node->next;
-				spell_t* spell_search = static_cast<spell_t*>(node->element);
+				auto spell_search = static_cast<spell_t*>(node->element);
 				if (spell_search->ID == thespell->ID)
 				{
 					list_RemoveNode(node);
@@ -3681,7 +3681,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 	{'BDTH', [](){
 		for ( auto node = map.entities->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( strstr(map.name, "Hell") )
 			{
 				if ( entity->behavior == &actWinningPortal )
@@ -4070,7 +4070,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		Uint32 uid = SDLNet_Read32(&net_packet->data[4]);
 		if ( Entity* sign = uidToEntity(uid) )
 		{
-			char* key = (char*)(&net_packet->data[8]);
+			auto key = (char*)(&net_packet->data[8]);
 			players[clientnum]->signGUI.openSign(key, uid);
 		}
 	}},
@@ -4119,16 +4119,16 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 	// text bubbles
 	{'BUBL', []() {
 		Uint32 uid = SDLNet_Read32(&net_packet->data[4]);
-		Player::WorldUI_t::WorldTooltipDialogue_t::DialogueType_t type =
+		auto type =
 			static_cast<Player::WorldUI_t::WorldTooltipDialogue_t::DialogueType_t>(net_packet->data[8]);
-		const char* msg = (const char*)(&net_packet->data[9]);
+		auto msg = (const char*)(&net_packet->data[9]);
 		players[clientnum]->worldUI.worldTooltipDialogue.createDialogueTooltip(uid, type, msg);
 		return;
 	}},
 
 	// shopkeeper player hostility
 	{ 'SHPH', []() {
-		ShopkeeperPlayerHostility_t::WantedLevel wantedLevel = static_cast<ShopkeeperPlayerHostility_t::WantedLevel>(net_packet->data[4]);
+		auto wantedLevel = static_cast<ShopkeeperPlayerHostility_t::WantedLevel>(net_packet->data[4]);
 		Uint16 numKills = SDLNet_Read16(&net_packet->data[5]);
 		Uint16 numAggressions = SDLNet_Read16(&net_packet->data[7]);
 		Uint16 numAccessories = SDLNet_Read16(&net_packet->data[9]);

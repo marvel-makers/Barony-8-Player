@@ -516,7 +516,7 @@ void ghoulMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					 //vertical chop
 					 //get leftarm from bodypart 6 element if ready to attack
-					Entity* leftarm = static_cast<Entity*>(node->next->element);
+					auto leftarm = static_cast<Entity*>(node->next->element);
 					if ( my->monsterAttack == 1 || my->monsterAttack == MONSTER_POSE_MELEE_WINDUP1 )
 					{
 						if ( leftarm != nullptr )

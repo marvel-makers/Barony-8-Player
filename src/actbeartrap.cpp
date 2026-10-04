@@ -114,7 +114,7 @@ void actBeartrap(Entity* my)
 	Entity* parent = uidToEntity(my->parent);
 	for ( node = map.creatures->first; node != nullptr; node = node->next )
 	{
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		if ( my->parent == entity->getUID() )
 		{
 			continue;
@@ -467,7 +467,7 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
 		bool teleported = false;
 		for ( node_t* node = map.entities->first; node != NULL; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( entity && entity != my && entity->behavior == &actBomb )
 			{
 				if ( entity->skill[21] == TOOL_TELEPORT_BOMB && entity->skill[22] == Item::ItemBombTriggerType::BOMB_TELEPORT_RECEIVER )
@@ -840,7 +840,7 @@ void actBomb(Entity* my)
 	// launch bomb
 	std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1);
 	std::vector<Entity*> entitiesWithinRadius;
-	for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
 		node_t* node;
@@ -1228,13 +1228,13 @@ bool Entity::entityCheckIfTriggeredWallButton()
 	if ( z < height_limit_low && z > height_limit_high )
 	{
 		std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 1);
-		for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
 			node_t* node;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				if ( Entity* entity = static_cast<Entity*>(node->element) )
+				if (auto entity = static_cast<Entity*>(node->element) )
 				{
 					if ( entity->behavior == &::actWallButton )
 					{
@@ -1277,13 +1277,13 @@ bool Entity::entityCheckIfTriggeredBomb(bool triggerBomb)
 	}
 	bool foundBomb = false;
 	std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 2);
-	for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
 		node_t* node;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( entity && entity->behavior == &actBomb && entity->skill[24] == 0 )
 			{
 				if ( entityInsideEntity(this, entity) )
@@ -1347,13 +1347,13 @@ void actDecoyBox(Entity* my)
 		std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, decoyBoxRange * 2 + 1);
 		std::vector<Entity*> listOfOtherDecoys;
 		// find other decoys (so monsters don't wiggle back and forth.)
-		for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
 			node_t* node;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity && entity->behavior == &actDecoyBox && entity != my )
 				{
 					listOfOtherDecoys.push_back(entity);
@@ -1366,13 +1366,13 @@ void actDecoyBox(Entity* my)
 		bool message = false;
 		bool detected = false;
 		int lured = 0;
-		for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
 			node_t* node;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( parent && entity && entity->behavior == &actMonster
 					&& parent->checkEnemy(entity) && entity->isMobile() )
 				{
@@ -1389,7 +1389,7 @@ void actDecoyBox(Entity* my)
 							bool foundMoreRecentDecoy = false;
 							if ( !listOfOtherDecoys.empty() )
 							{
-								for ( std::vector<Entity*>::iterator decoyIt = listOfOtherDecoys.begin(); decoyIt != listOfOtherDecoys.end(); ++decoyIt )
+								for (auto decoyIt = listOfOtherDecoys.begin(); decoyIt != listOfOtherDecoys.end(); ++decoyIt )
 								{
 									Entity* decoy = *decoyIt;
 									if ( entityDist(decoy, entity) < (decoyBoxRange * 16) ) // less than x tiles from our monster
@@ -1487,7 +1487,7 @@ void actDecoyBox(Entity* my)
 									// see if we have a gyrobot follower to tell us what's goin on
 									for ( node_t* tmpNode = stats[parent->skill[2]]->FOLLOWERS.first; tmpNode != nullptr; tmpNode = tmpNode->next )
 									{
-										Uint32* c = static_cast<Uint32*>(tmpNode->element);
+										auto c = static_cast<Uint32*>(tmpNode->element);
 										Entity* gyrobot = uidToEntity(*c);
 										if ( gyrobot && gyrobot->getRace() == GYROBOT )
 										{

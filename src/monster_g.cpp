@@ -1031,7 +1031,7 @@ void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				bool bentArm = false;
 				if ( weaponNode )
 				{
-					Entity* weapon = static_cast<Entity*>(weaponNode->element);
+					auto weapon = static_cast<Entity*>(weaponNode->element);
 					if ( my->monsterArmbended || (weapon->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT) )
 					{
 						entity->focalx = limbs[GREMLIN][4][0]; // 0
@@ -1126,7 +1126,7 @@ void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* shieldNode = list_Node(&my->children, 8);
 				if ( shieldNode )
 				{
-					Entity* shield = static_cast<Entity*>(shieldNode->element);
+					auto shield = static_cast<Entity*>(shieldNode->element);
 					if ( shield->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT )
 					{
 						entity->focalx = limbs[GREMLIN][5][0]; // 0
@@ -1484,7 +1484,7 @@ void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	node_t* shieldNode = list_Node(&my->children, 8);
 	if ( shieldNode )
 	{
-		Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
+		auto shieldEntity = static_cast<Entity*>(shieldNode->element);
 		if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 		{
 			shieldEntity->yaw -= PI / 6;

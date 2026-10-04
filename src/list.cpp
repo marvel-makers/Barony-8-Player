@@ -56,7 +56,7 @@ void list_RemoveNode(node_t* node)
 	}
 	if (node->list && node->list == map.entities)
 	{
-		Entity* entity = static_cast<Entity*>(node->element);
+		auto entity = static_cast<Entity*>(node->element);
 		map.entities_map.erase(entity->getUID());
 #ifndef EDITOR
 		for ( int i = 0; i < MAXPLAYERS; ++i )
@@ -98,7 +98,7 @@ void list_RemoveNode(node_t* node)
 
 			if ( chest_inventory )
 			{
-				Item* tmp = static_cast<Item*>(node->element);
+				auto tmp = static_cast<Item*>(node->element);
 				if ( tmp == inputs.getUIInteraction(i)->selectedItem )
 				{
 					// important! crashes occur when deleting items you've selected...
@@ -109,7 +109,7 @@ void list_RemoveNode(node_t* node)
 		}
 		if ( stats[i] && node->list && node->list == &stats[i]->inventory )
 		{
-			Item* tmp = static_cast<Item*>(node->element);
+			auto tmp = static_cast<Item*>(node->element);
 			if ( tmp )
 			{
 				if ( tmp == inputs.getUIInteraction(i)->selectedItem )
@@ -428,7 +428,7 @@ list_t* list_CopyNew(list_t* srclist)
 	{
 		return NULL;
 	}
-	list_t* destlist = static_cast<list_t*>(malloc(sizeof(list_t)));
+	auto destlist = static_cast<list_t*>(malloc(sizeof(list_t)));
 	if ( !destlist )
 	{
 		printlog("critical error: list_CopyNew() failed to allocate memory for new list!\n");

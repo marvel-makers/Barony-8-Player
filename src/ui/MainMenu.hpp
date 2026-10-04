@@ -32,8 +32,8 @@ namespace MainMenu {
     extern ConsoleVariable<int> cvar_displayHz;
 	extern ConsoleVariable<bool> cvar_hdrEnabled;
 	
-	static constexpr const char* emptyBinding = "[unbound]"; // string appended to default empty bindings
-	static constexpr const char* hiddenBinding = "[hidden]"; // string appended to hidden bindings on the UI
+	static constexpr auto emptyBinding = "[unbound]"; // string appended to default empty bindings
+	static constexpr auto hiddenBinding = "[hidden]"; // string appended to hidden bindings on the UI
 
 	enum class FadeDestination : Uint8 {
 		None,           // don't fade anywhere (???)

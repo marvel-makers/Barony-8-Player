@@ -81,12 +81,12 @@ void actWallBuilder(Entity* my)
 	{
 		bool somebodyinside = false;
 		std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1);
-		for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
+		for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
 		{
 			list_t* currentList = *it;
 			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity == my || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost)
 					|| entity->behavior == &actDoorFrame 
 					|| (entity->behavior != &actMonster 

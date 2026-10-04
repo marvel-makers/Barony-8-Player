@@ -60,7 +60,7 @@ static const Uint32 tooltip_background = makeColor(0, 0, 0, 191);
 static const Uint32 tooltip_border_color = makeColor(51, 33, 26, 255);
 static const int tooltip_border_width = 2;
 static const Uint32 tooltip_text_color = makeColor(255, 255, 255, 255);
-static const char* tooltip_text_font = "fonts/pixel_maz_multiline.ttf#16#2";
+static auto tooltip_text_font = "fonts/pixel_maz_multiline.ttf#16#2";
 
 static framebuffer gui_fb, gui_fb_upscaled, gui_fb_downscaled;
 
@@ -463,7 +463,7 @@ void frameDrawBlitSurface(const Frame* frame, SDL_Rect _size, SDL_Surface* surf,
     }
     
 	int owner = frame->getOwner();
-	SDL_Rect pos = SDL_Rect{ _size.x, _size.y, surf->w, surf->h };
+	auto pos = SDL_Rect{ _size.x, _size.y, surf->w, surf->h };
 	SDL_Rect dest;
 	dest.x = std::max(_size.x, pos.x);
 	dest.y = std::max(_size.y, pos.y);
@@ -676,7 +676,7 @@ void Frame::draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const W
 
 	if ( bBlitChildrenToTexture )
 	{
-		Frame* f = const_cast<Frame*>(this);
+		auto f = const_cast<Frame*>(this);
 		if ( !blitTexture && blitSurface )
 		{
 			f->blitTexture = new TempTexture();
@@ -991,7 +991,7 @@ void Frame::draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const W
 	}
 #endif
 
-	Frame* f = const_cast<Frame*>(this);
+	auto f = const_cast<Frame*>(this);
 	if ( f->bBlitDirty )
 	{
 		f->bBlitDirty = false;
@@ -1874,13 +1874,13 @@ Frame* Frame::addFrame(const char* name) {
 }
 
 Button* Frame::addButton(const char* name) {
-	Button* button = new Button(*this);
+	auto button = new Button(*this);
 	button->setName(name);
 	return button;
 }
 
 Field* Frame::addField(const char* name, const int len) {
-	Field* field = new Field(*this, len);
+	auto field = new Field(*this, len);
 	field->setName(name);
 	return field;
 }
@@ -1889,7 +1889,7 @@ Frame::image_t* Frame::addImage(const SDL_Rect pos, const Uint32 color, const ch
 	if (!image || !name) {
 		return nullptr;
 	}
-	image_t* imageObj = new image_t();
+	auto imageObj = new image_t();
 	imageObj->pos = pos;
 	imageObj->color = color;
 	imageObj->name = name;
@@ -1902,14 +1902,14 @@ Slider* Frame::addSlider(const char* name) {
 	if (!name) {
 		return nullptr;
 	}
-	Slider* slider = new Slider(*this);
+	auto slider = new Slider(*this);
 	slider->setName(name);
 	sliders.push_back(slider);
 	return slider;
 }
 
 Frame::entry_t* Frame::addEntry(const char* name, bool resizeFrame) {
-	entry_t* entry = new entry_t(*this);
+	auto entry = new entry_t(*this);
 	entry->name = name;
 	entry->color = 0xffffffff;
 	list.push_back(entry);
@@ -2166,8 +2166,8 @@ SDL_Rect Frame::getRelativeMousePositionImpl(SDL_Rect& _size, SDL_Rect& _actualS
 }
 
 SDL_Rect Frame::getRelativeMousePosition(bool realtime) const {
-	SDL_Rect _size = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
-	SDL_Rect _actualSize = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
+	auto _size = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
+	auto _actualSize = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
 	return getRelativeMousePositionImpl(_size, _actualSize, realtime);
 }
 
@@ -2221,14 +2221,14 @@ bool Frame::capturesMouseImpl(SDL_Rect& _size, SDL_Rect& _actualSize, bool realt
 }
 
 bool Frame::capturesMouseInRealtimeCoords() const {
-	SDL_Rect _size = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
-	SDL_Rect _actualSize = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
+	auto _size = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
+	auto _actualSize = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
 	return capturesMouseImpl(_size, _actualSize, true);
 }
 
 bool Frame::capturesMouse() const {
-	SDL_Rect _size = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
-	SDL_Rect _actualSize = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
+	auto _size = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
+	auto _actualSize = SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY};
 	return capturesMouseImpl(_size, _actualSize, false);
 }
 
@@ -2389,7 +2389,7 @@ void createTestUI() {
 		bt->setTooltip("Close window");
 		bt->setCallback([](Button& bt){
 			Widget* w = bt.getParent();
-			Frame* frame = static_cast<Frame*>(w);
+			auto frame = static_cast<Frame*>(w);
 			frame->removeSelf();
 		});
 	}
@@ -2580,7 +2580,7 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
 						if ( !f->bBlitDirty ) {
 							return;
 						}
-						SDL_Surface* srcSurf = const_cast<SDL_Surface*>(actualImage->getSurf());
+						auto srcSurf = const_cast<SDL_Surface*>(actualImage->getSurf());
 						scaledDest.x -= f->getAbsoluteSize().x;
 						scaledDest.y -= f->getAbsoluteSize().y;
 						SDL_SetSurfaceColorMod(srcSurf, r, g, b);
@@ -2639,7 +2639,7 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
 					if ( !f->bBlitDirty ) {
 						return;
 					}
-					SDL_Surface* srcSurf = const_cast<SDL_Surface*>(actualImage->getSurf());
+					auto srcSurf = const_cast<SDL_Surface*>(actualImage->getSurf());
 					scaledDest.x -= f->getAbsoluteSize().x;
 					scaledDest.y -= f->getAbsoluteSize().y;
 					//SDL_SetSurfaceAlphaMod(srcSurf, 255);
@@ -2711,7 +2711,7 @@ Frame* Frame::findParentToBlitTo()
 	{ 
 		return this;
 	}
-	Frame* parent = this;
+	auto parent = this;
 	while ((parent = parent->getParent()) != nullptr)
 	{
 		if ( parent->blitSurface )
@@ -2834,7 +2834,7 @@ void Frame::scrollParent() {
 	{
 		return;
 	}
-	Frame* fparent = static_cast<Frame*>(parent);
+	auto fparent = static_cast<Frame*>(parent);
 	auto fActualSize = fparent->getActualSize();
 	auto fSize = fparent->getSize();
 

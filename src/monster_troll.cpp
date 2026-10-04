@@ -129,7 +129,7 @@ void initTroll(Entity* my, Stat* myStats)
 						int i = 1 + rng.rand() % 3;
 						for ( c = 0; c < i; c++ )
 						{
-							Category cat = static_cast<Category>(rng.rand() % (Category::CATEGORY_MAX - 2));
+							auto cat = static_cast<Category>(rng.rand() % (Category::CATEGORY_MAX - 2));
 							newItem(itemLevelCurve(cat, 0, currentlevel + 10, rng), static_cast<Status>(1 + rng.rand() % 4), -1 + rng.rand() % 3, 1, rng.rand(), false, &myStats->inventory);
 						}
 					}
@@ -479,7 +479,7 @@ void trollMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					// vertical chop
 					// get leftarm from bodypart 6 element if ready to attack
-					Entity* leftarm = static_cast<Entity*>(node->next->element);
+					auto leftarm = static_cast<Entity*>(node->next->element);
 
 					if ( my->monsterAttack == 1 || my->monsterAttack == MONSTER_POSE_MELEE_WINDUP1 )
 					{

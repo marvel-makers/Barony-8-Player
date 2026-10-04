@@ -402,7 +402,7 @@ void spellcasting_animation_manager_t::setRangeFinderLocation()
 			{
 				for ( node_t* node = map.worldUI->first; node; node = node->next )
 				{
-					Entity* tooltip = static_cast<Entity*>(node->element);
+					auto tooltip = static_cast<Entity*>(node->element);
 					if ( !tooltip || tooltip->behavior != &actSpriteWorldTooltip )
 					{
 						continue;
@@ -645,7 +645,7 @@ void spellcasting_animation_manager_t::setRangeFinderLocation()
 		std::priority_queue<EntitySpellTargetLocation, std::vector<EntitySpellTargetLocation>, decltype(compFunc)> entitiesInRange(compFunc);
 		for ( auto node = entityList->first; node; node = node->next ) // TODO - grab a shortened list from somewhere else iterating entities
 		{
-			if ( Entity* entity = static_cast<Entity*>(node->element) )
+			if (auto entity = static_cast<Entity*>(node->element) )
 			{
 				if ( rangefinderTargetEnemyType(*spell, *entity) )
 				{

@@ -365,7 +365,7 @@ void Slider::deselect() {
 }
 
 void Slider::scrollParent() {
-	Frame* fparent = static_cast<Frame*>(parent);
+	auto fparent = static_cast<Frame*>(parent);
 	auto fActualSize = fparent->getActualSize();
 	auto fSize = fparent->getSize();
 	if (orientation == SLIDER_HORIZONTAL) {

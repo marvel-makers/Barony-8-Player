@@ -1072,7 +1072,7 @@ void MonsterAllyFormation_t::updateFormation(Uint32 leaderUid, Uint32 monsterUpd
 		{
 			for ( node_t* allyNode = leaderStats->FOLLOWERS.first; allyNode != nullptr; allyNode = allyNode->next )
 			{
-				Uint32* c = static_cast<Uint32*>(allyNode->element);
+				auto c = static_cast<Uint32*>(allyNode->element);
 				if ( !c ) {	continue; }
 				Uint32 allyUid = *c;
 				Entity* ally = uidToEntity(allyUid);
@@ -2095,7 +2095,7 @@ bool makeFollower(int monsterclicked, bool ringconflict, char namesays[64],
 
 	node_t* newNode = list_AddNodeLast(&stats[monsterclicked]->FOLLOWERS);
 	newNode->deconstructor = &defaultDeconstructor;
-	Uint32* myuid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
+	auto myuid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
 	newNode->element = myuid;
 	*myuid = my->getUID();
     
@@ -2201,7 +2201,7 @@ bool makeFollower(int monsterclicked, bool ringconflict, char namesays[64],
 		{
 			if ( bodypart >= LIMB_HUMANOID_TORSO )
 			{
-				Entity* tmp = static_cast<Entity*>(node->element);
+				auto tmp = static_cast<Entity*>(node->element);
 				if ( tmp )
 				{
 					tmp->flags[USERFLAG2] = true;
@@ -2214,7 +2214,7 @@ bool makeFollower(int monsterclicked, bool ringconflict, char namesays[64],
 
 	for ( node_t* node = stats[monsterclicked]->FOLLOWERS.first; node != nullptr; node = node->next )
 	{
-		Uint32* c = static_cast<Uint32*>(node->element);
+		auto c = static_cast<Uint32*>(node->element);
 		Entity* entity = nullptr;
 		if ( c )
 		{
@@ -2968,7 +2968,7 @@ void actMonster(Entity* my)
 			for ( node = map.entities->first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
-				Entity* tempEntity = static_cast<Entity*>(node->element);
+				auto tempEntity = static_cast<Entity*>(node->element);
 
 				if ( tempEntity->behavior == &actTorch || tempEntity->behavior == &actCampfire )
 				{
@@ -3563,7 +3563,7 @@ void actMonster(Entity* my)
 				lichDist = 1024;
 				for ( node = map.creatures->first; node != nullptr; node = node->next ) //Only creatures need to be targeted.
 				{
-					Entity* tempEntity = static_cast<Entity*>(node->element);
+					auto tempEntity = static_cast<Entity*>(node->element);
 					if ( tempEntity->behavior == &actPlayer 
 						&& (sqrt(pow(my->x - tempEntity->x, 2) + pow(my->y - tempEntity->y, 2)) < lichDist)
 						)
@@ -3591,7 +3591,7 @@ void actMonster(Entity* my)
 				lichDist = 1024;
 				for ( node = map.creatures->first; node != nullptr; node = node->next ) //Only creatures need to be targeted.
 				{
-					Entity* tempEntity = static_cast<Entity*>(node->element);
+					auto tempEntity = static_cast<Entity*>(node->element);
 					if ( tempEntity && tempEntity->behavior == &actPlayer
 						&& (sqrt(pow(my->x - tempEntity->x, 2) + pow(my->y - tempEntity->y, 2)) < lichDist)
 						)
@@ -3772,7 +3772,7 @@ void actMonster(Entity* my)
 		for ( node = myStats->inventory.first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = static_cast<Item*>(node->element);
+			auto item = static_cast<Item*>(node->element);
 			for ( int c = item->count; c > 0; c-- )
 			{
 				bool wasDroppable = item->isDroppable;
@@ -4194,7 +4194,7 @@ void actMonster(Entity* my)
 							{
 								if ( bodypart >= LIMB_HUMANOID_TORSO )
 								{
-									Entity* tmp = static_cast<Entity*>(node->element);
+									auto tmp = static_cast<Entity*>(node->element);
 									if ( tmp )
 									{
 										tmp->flags[USERFLAG2] = true;
@@ -4353,7 +4353,7 @@ void actMonster(Entity* my)
 	{
 		for ( node = map.creatures->first; node != nullptr; node = node->next ) //Only creatures can wear rings, so don't search map.entities.
 		{
-			Entity* tempentity = static_cast<Entity*>(node->element);
+			auto tempentity = static_cast<Entity*>(node->element);
 			if ( tempentity != nullptr && tempentity != my )
 			{
 				Stat* tempstats = tempentity->getStats();
@@ -4429,7 +4429,7 @@ void actMonster(Entity* my)
 			my->flags[INVISIBLE] = true;
 			for ( node = list_Node(&my->children, 2); node != NULL; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				entity->flags[INVISIBLE] = true;
 			}
 		}
@@ -4438,7 +4438,7 @@ void actMonster(Entity* my)
 			my->flags[INVISIBLE] = false;
 			for ( node = list_Node(&my->children, 2); node != NULL; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				entity->flags[INVISIBLE] = false;
 			}
 		}
@@ -4701,7 +4701,7 @@ void actMonster(Entity* my)
 						bool hasOrb = false;
 						for ( node_t* node = myStats->inventory.first; node; node = node->next )
 						{
-							Item* item = static_cast<Item*>(node->element);
+							auto item = static_cast<Item*>(node->element);
 							if ( item && (item->type == ARTIFACT_ORB_BLUE
 									|| item->type == ARTIFACT_ORB_GREEN
 									|| item->type == ARTIFACT_ORB_RED)
@@ -4845,7 +4845,7 @@ void actMonster(Entity* my)
 					{
 						if ( bodypart >= LIMB_HUMANOID_TORSO )
 						{
-							Entity* tmp = static_cast<Entity*>(node->element);
+							auto tmp = static_cast<Entity*>(node->element);
 							if ( tmp )
 							{
 								tmp->flags[USERFLAG2] = false;
@@ -4889,7 +4889,7 @@ void actMonster(Entity* my)
 
 		// being bumped by someone friendly
 		std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1);
-		for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
 			for ( node2 = currentList->first; node2 != nullptr; node2 = node2->next ) //Can't convert to map.creatures because of doorframes.
@@ -5805,7 +5805,7 @@ void actMonster(Entity* my)
 						}
 						for ( node = map.creatures->first; node != nullptr; node = node->next )
 						{
-							Entity* target = static_cast<Entity*>(node->element);
+							auto target = static_cast<Entity*>(node->element);
 							if ( target->behavior == &actMonster && my->checkEnemy(target) )
 							{
 								real_t oldDist = dist;
@@ -8198,7 +8198,7 @@ timeToGoAgain:
 								real_t dist = sightranges[myStats->type];
 								for ( node = map.creatures->first; node != nullptr; node = node->next )
 								{
-									Entity* target = static_cast<Entity*>(node->element);
+									auto target = static_cast<Entity*>(node->element);
 									if ( target && target->behavior == &actMonster && !target->isInertMimic() && my->checkEnemy(target) )
 									{
 										real_t oldDist = dist;
@@ -8239,7 +8239,7 @@ timeToGoAgain:
 							real_t dist = sightranges[myStats->type];
 							for ( node = map.creatures->first; node != nullptr; node = node->next )
 							{
-								Entity* target = static_cast<Entity*>(node->element);
+								auto target = static_cast<Entity*>(node->element);
 								if ( target && target->behavior == &actMonster && !target->isInertMimic() && my->checkEnemy(target) )
 								{
 									real_t oldDist = dist;
@@ -8351,7 +8351,7 @@ timeToGoAgain:
 							real_t dist = sightranges[myStats->type];
 							for ( node = map.creatures->first; node != nullptr; node = node->next )
 							{
-								Entity* target = static_cast<Entity*>(node->element);
+								auto target = static_cast<Entity*>(node->element);
 								if ( target && target->behavior == &actMonster && !target->isInertMimic() && my->checkEnemy(target) )
 								{
 									real_t oldDist = dist;
@@ -8749,7 +8749,7 @@ timeToGoAgain:
 				int c = 0;
 				for ( node = map.entities->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actDevilTeleport )
 					{
 						if ( entity->x == my->x && entity->y == my->y )
@@ -8787,7 +8787,7 @@ timeToGoAgain:
 					c = 0;
 					for ( node = map.entities->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity->behavior == &actDevilTeleport )
 						{
 							if ( entity->x == my->x && entity->y == my->y )
@@ -8871,7 +8871,7 @@ timeToGoAgain:
 					node_t* node;
 					for ( node = map.creatures->first; node != nullptr; node = node->next ) //Since it only looks at entities that have stats, only creatures can have stats; don't iterate map.entities.
 					{
-						Entity* entity = static_cast<Entity*>(node->element);
+						auto entity = static_cast<Entity*>(node->element);
 						if ( entity == my )
 						{
 							continue;
@@ -8924,7 +8924,7 @@ timeToGoAgain:
 				Entity* playertotrack = nullptr;
 				for ( tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Only inspects players, so don't iterate map.entities.
 				{
-					Entity* tempEntity = static_cast<Entity*>(tempNode->element);
+					auto tempEntity = static_cast<Entity*>(tempNode->element);
 					double lowestdist = 5000;
 					if ( tempEntity->behavior == &actPlayer )
 					{
@@ -9067,7 +9067,7 @@ timeToGoAgain:
 				Entity* playertotrack = nullptr;
 				for ( tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Only inspects players, so don't iterate map.entities. Technically, only needs to iterate through the players[] array, eh?
 				{
-					Entity* tempEntity = static_cast<Entity*>(tempNode->element);
+					auto tempEntity = static_cast<Entity*>(tempNode->element);
 					double lowestdist = 5000;
 					if ( tempEntity->behavior == &actPlayer )
 					{
@@ -9376,7 +9376,7 @@ timeToGoAgain:
 				Entity* playertotrack = nullptr;
 				for ( tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Iterate map.creatures, since only inspecting players, not all entities. Technically should just iterate over players[]?
 				{
-					Entity* tempEntity = static_cast<Entity*>(tempNode->element);
+					auto tempEntity = static_cast<Entity*>(tempNode->element);
 					double lowestdist = 5000;
 					if ( tempEntity->behavior == &actPlayer )
 					{
@@ -9866,7 +9866,7 @@ timeToGoAgain:
 			{
 				for ( node_t* node2 = map.creatures->first; node2 != nullptr; node2 = node2->next )
 				{
-					Entity* entity = static_cast<Entity*>(node2->element);
+					auto entity = static_cast<Entity*>(node2->element);
 					if ( entity == my || entity->flags[PASSABLE] )
 					{
 						continue;
@@ -10003,7 +10003,7 @@ timeToGoAgain:
 			{
 				for ( node_t* node2 = map.creatures->first; node2 != nullptr; node2 = node2->next )
 				{
-					Entity* entity = static_cast<Entity*>(node2->element);
+					auto entity = static_cast<Entity*>(node2->element);
 					if ( entity == my || entity->flags[PASSABLE] )
 					{
 						continue;
@@ -11142,7 +11142,7 @@ bool forceFollower(Entity& leader, Entity& follower)
 		return false;
 	}
 
-	Uint32* myuid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
+	auto myuid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
 	*myuid = follower.getUID();
 
 	//Deal with the old leader.
@@ -11179,7 +11179,7 @@ bool forceFollower(Entity& leader, Entity& follower)
 
 	for ( node_t* node = leaderStats->FOLLOWERS.first; node != nullptr; node = node->next )
 	{
-		Uint32* c = static_cast<Uint32*>(node->element);
+		auto c = static_cast<Uint32*>(node->element);
 		Entity* entity = nullptr;
 		if ( c )
 		{
@@ -12762,7 +12762,7 @@ void Entity::monsterAllySendCommand(int command, int destX, int destY, Uint32 ui
 				for ( node_t* node = myStats->inventory.first; node; node = nextnode )
 				{
 					nextnode = node->next;
-					Item* item = static_cast<Item*>(node->element);
+					auto item = static_cast<Item*>(node->element);
 					if ( item )
 					{
 						if ( itemIsThrowableTinkerTool(item) && item->status > BROKEN )
@@ -14802,12 +14802,12 @@ void batResetIdle(Entity* my)
 	int x = my->x / 16;
 	int y = my->y / 16;
 	std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
-	for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end() && canRest; ++it )
+	for (auto it = entLists.begin(); it != entLists.end() && canRest; ++it )
 	{
 		list_t* currentList = *it;
 		for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( entity == my )
 			{
 				continue;

@@ -426,7 +426,7 @@ void Entity::removeMonsterDeathNodes()
 		nextnode = node->next;
 		if ( node->element != nullptr && i >= 2 )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( entity->light != nullptr )
 			{
 				list_RemoveNode(entity->light->node);

@@ -1904,7 +1904,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 	{
 		return;
 	}
-	spell_t* spell = static_cast<spell_t*>(my->children.first->element);
+	auto spell = static_cast<spell_t*>(my->children.first->element);
 	if (!spell)
 	{
 		return;
@@ -1954,7 +1954,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 					{
 						if ( node_t* node = spell->elements.first )
 						{
-							spellElement_t* element = static_cast<spellElement_t*>(node->element);
+							auto element = static_cast<spellElement_t*>(node->element);
 							if ( node_t* node2 = element->elements.first )
 							{
 								if ( element = static_cast<spellElement_t*>(node2->element) )
@@ -2154,7 +2154,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 							}
 							for ( node_t* node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = static_cast<Entity*>(node->element);
+								auto entity = static_cast<Entity*>(node->element);
 								if ( entity->behavior == &actGate || entity->behavior == &actDoor || entity->behavior == &actIronDoor )
 								{
 									if ( entityDist(my, entity) <= speed )
@@ -2262,7 +2262,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 							}
 							for ( node_t* node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = static_cast<Entity*>(node->element);
+								auto entity = static_cast<Entity*>(node->element);
 								if ( entity->behavior == &actGate || entity->behavior == &actDoor || entity->behavior == &actIronDoor )
 								{
 									if ( entityDist(my, entity) <= speed )
@@ -10658,7 +10658,7 @@ void floorMagicCreateSpores(Entity* spawnOnEntity, real_t x, real_t y, Entity* c
 			}
 			for ( node_t* node = it->first; node != nullptr; node = node->next )
 			{
-				if ( Entity* entity = static_cast<Entity*>(node->element) )
+				if (auto entity = static_cast<Entity*>(node->element) )
 				{
 					if ( entity->behavior == &actParticleTimer && entity->particleTimerCountdownAction == PARTICLE_TIMER_ACTION_SPORES )
 					{
@@ -11650,7 +11650,7 @@ void actParticleTimer(Entity* my)
 							node->element = copySpell(spell);
 							static_cast<spell_t*>(node->element)->caster = parent->getUID();
 							node_t* elementNode = static_cast<spell_t*>(node->element)->elements.first;
-							spellElement_t* element = static_cast<spellElement_t*>(elementNode->element);
+							auto element = static_cast<spellElement_t*>(elementNode->element);
 							{
 								elementNode = element->elements.first;
 								element = static_cast<spellElement_t*>(elementNode->element);
@@ -11701,7 +11701,7 @@ void actParticleTimer(Entity* my)
 							{
 								if ( newSpell->elements.first )
 								{
-									if ( spellElement_t* element = static_cast<spellElement_t*>(newSpell->elements.first->element) )
+									if (auto element = static_cast<spellElement_t*>(newSpell->elements.first->element) )
 									{
 										// rename the propulsion
 										auto find = spellElementMap.find(SPELL_ELEMENT_PROPULSION_FOCI_SPRAY);
@@ -11839,7 +11839,7 @@ void actParticleTimer(Entity* my)
 									node_t* node;
 									for ( node = it->first; node != nullptr; node = node->next )
 									{
-										Entity* entity = static_cast<Entity*>(node->element);
+										auto entity = static_cast<Entity*>(node->element);
 										if ( !entity->flags[BURNABLE] || entity->flags[BURNING] )
 										{
 											continue;
@@ -12044,7 +12044,7 @@ void actParticleTimer(Entity* my)
 							node_t* node;
 							for ( node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = static_cast<Entity*>(node->element);
+								auto entity = static_cast<Entity*>(node->element);
 								if ( !(entity->behavior == &actPlayer || entity->behavior == &actMonster) )
 								{
 									continue;
@@ -12076,7 +12076,7 @@ void actParticleTimer(Entity* my)
 										{
 											for ( node_t* node = it->first; node != nullptr; node = node->next )
 											{
-												if ( Entity* entity2 = static_cast<Entity*>(node->element) )
+												if (auto entity2 = static_cast<Entity*>(node->element) )
 												{
 													if ( entity2->behavior == &actParticleTimer
 														&& entity2->particleTimerCountdownAction == PARTICLE_TIMER_ACTION_VORTEX )
@@ -12238,7 +12238,7 @@ void actParticleTimer(Entity* my)
 									node_t* node;
 									for ( node = it->first; node != nullptr; node = node->next )
 									{
-										Entity* entity = static_cast<Entity*>(node->element);
+										auto entity = static_cast<Entity*>(node->element);
 										if ( entityDist(caster, entity) > 32.0 + 4.0 )
 										{
 											continue;
@@ -12331,7 +12331,7 @@ void actParticleTimer(Entity* my)
 						node_t* node;
 						for ( node = it->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = static_cast<Entity*>(node->element);
+							auto entity = static_cast<Entity*>(node->element);
 							if ( entity == parent )
 							{
 								continue;
@@ -12425,7 +12425,7 @@ void actParticleTimer(Entity* my)
 						node_t* node;
 						for ( node = it->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = static_cast<Entity*>(node->element);
+							auto entity = static_cast<Entity*>(node->element);
 							if ( entity == parent )
 							{
 								continue;
@@ -12516,7 +12516,7 @@ void actParticleTimer(Entity* my)
 						node_t* node;
 						for ( node = it->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = static_cast<Entity*>(node->element);
+							auto entity = static_cast<Entity*>(node->element);
 							if ( entity == parent )
 							{
 								continue;
@@ -12652,7 +12652,7 @@ void actParticleTimer(Entity* my)
 							node_t* node;
 							for ( node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = static_cast<Entity*>(node->element);
+								auto entity = static_cast<Entity*>(node->element);
 								if ( entityDist(my, entity) > 32.0 + 4.0 )
 								{
 									continue;
@@ -12775,7 +12775,7 @@ void actParticleTimer(Entity* my)
 						{
 							for ( node_t* node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = static_cast<Entity*>(node->element);
+								auto entity = static_cast<Entity*>(node->element);
 								if ( parent && entity == parent )
 								{
 									continue;
@@ -13039,7 +13039,7 @@ void actParticleTimer(Entity* my)
 						{
 							for ( node_t* node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = static_cast<Entity*>(node->element);
+								auto entity = static_cast<Entity*>(node->element);
 								if ( parent && entity == parent )
 								{
 									continue;
@@ -13239,7 +13239,7 @@ void actParticleTimer(Entity* my)
 							node_t* node;
 							for ( node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = static_cast<Entity*>(node->element);
+								auto entity = static_cast<Entity*>(node->element);
 								if ( !(entity->behavior == &actPlayer || entity->behavior == &actMonster) )
 								{
 									continue;
@@ -13383,7 +13383,7 @@ void actParticleTimer(Entity* my)
 						{
 							for ( node_t* node = stats->magic_effects.first; node; node = node->next )
 							{
-								if ( spell_t* spell = static_cast<spell_t*>(node->element) )
+								if (auto spell = static_cast<spell_t*>(node->element) )
 								{
 									if ( spell->ID == SPELL_BASTION_ROOTS && spell->sustain )
 									{
@@ -13629,7 +13629,7 @@ void actParticleTimer(Entity* my)
 								}
 								for ( node_t* node = it->first; node != nullptr; node = node->next )
 								{
-									if ( Entity* entity = static_cast<Entity*>(node->element) )
+									if (auto entity = static_cast<Entity*>(node->element) )
 									{
 										if ( entity->behavior == &actParticleFloorMagic &&
 											(entity->actfloorMagicType == data.effectType
@@ -13693,7 +13693,7 @@ void actParticleTimer(Entity* my)
 								}
 								for ( node_t* node = it->first; node != nullptr; node = node->next )
 								{
-									if ( Entity* entity = static_cast<Entity*>(node->element) )
+									if (auto entity = static_cast<Entity*>(node->element) )
 									{
 										if ( entity->behavior == &actParticleFloorMagic && 
 											(entity->actfloorMagicType == data.effectType
@@ -14334,7 +14334,7 @@ void actParticleSapCenter(Entity* my)
 								{
 									if ( bodypart >= LIMB_HUMANOID_TORSO )
 									{
-										Entity* tmp = static_cast<Entity*>(node->element);
+										auto tmp = static_cast<Entity*>(node->element);
 										if ( tmp )
 										{
 											tmp->flags[USERFLAG2] = true;
@@ -14396,7 +14396,7 @@ void actParticleSapCenter(Entity* my)
 											{
 												if ( bodypart >= LIMB_HUMANOID_TORSO )
 												{
-													Entity* tmp = static_cast<Entity*>(node->element);
+													auto tmp = static_cast<Entity*>(node->element);
 													if ( tmp )
 													{
 														tmp->flags[USERFLAG2] = true;
@@ -14648,13 +14648,13 @@ bool Entity::magicFallingCollision()
 	if ( actmagicIsVertical == MAGIC_ISVERTICAL_Z )
 	{
 		std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 1);
-		for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+		for (auto it = entLists.begin(); it != entLists.end(); ++it )
 		{
 			list_t* currentList = *it;
 			node_t* node;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = static_cast<Entity*>(node->element);
+				auto entity = static_cast<Entity*>(node->element);
 				if ( entity )
 				{
 					if ( entity == this )
@@ -14721,13 +14721,13 @@ bool Entity::magicOrbitingCollision()
 
 	std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 1);
 
-	for ( std::vector<list_t*>::iterator it = entLists.begin(); it != entLists.end(); ++it )
+	for (auto it = entLists.begin(); it != entLists.end(); ++it )
 	{
 		list_t* currentList = *it;
 		node_t* node;
 		for ( node = currentList->first; node != NULL; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( entity == this )
 			{
 				continue;
@@ -15707,7 +15707,7 @@ Entity* createParticleSpellPinpointTarget(Entity* parent, Uint32 casterUid, int 
 
 	for ( auto node = map.entities->first; node; node = node->next )
 	{
-		if ( Entity* entity2 = static_cast<Entity*>(node->element) )
+		if (auto entity2 = static_cast<Entity*>(node->element) )
 		{
 			if ( entity2->behavior == &actParticlePinpointTarget
 				&& entity2 != entity
@@ -17464,7 +17464,7 @@ void actParticleFloorMagic(Entity* my)
 				node_t* node;
 				for ( node = it->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actPlayer || (entity->behavior == &actMonster && !entity->isInertMimic())
 						|| my->actfloorMagicType == ParticleTimerEffect_t::EffectType::EFFECT_DISRUPT_EARTH /*hits furniture*/
 						|| my->actfloorMagicType == ParticleTimerEffect_t::EffectType::EFFECT_LIGHTNING_BOLT /*hits furniture*/ )
@@ -17953,7 +17953,7 @@ void actParticleFloorMagic(Entity* my)
 											node_t* node;
 											for ( node = it->first; node != nullptr; node = node->next )
 											{
-												Entity* entity2 = static_cast<Entity*>(node->element);
+												auto entity2 = static_cast<Entity*>(node->element);
 												if ( entity2->behavior == &actParticleRoot 
 													&& !entity2->flags[INVISIBLE]
 													&& entity2->parent == my->getUID()
@@ -18394,7 +18394,7 @@ void actParticleDemesneDoor(Entity* my)
 			node_t* node;
 			for ( node = it->first; node != nullptr; node = node->next )
 			{
-				if ( Entity* entity = static_cast<Entity*>(node->element) )
+				if (auto entity = static_cast<Entity*>(node->element) )
 				{
 					if ( static_cast<int>(entity->x / 16) == mapx && static_cast<int>(entity->y / 16) == mapy )
 					{
@@ -18519,7 +18519,7 @@ void actParticleWave(Entity* my)
 					{
 						break;
 					}
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actArrow || entity->behavior == &actMagicMissile
 						|| entity->behavior == &actThrown )
 					{
@@ -18595,7 +18595,7 @@ void actParticleWave(Entity* my)
 				node_t* node;
 				for ( node = it->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( entity->getStats() )
 					{
 						if ( !entity->monsterIsTargetable() ) { continue; }
@@ -18695,7 +18695,7 @@ void actParticleWave(Entity* my)
 				node_t* node;
 				for ( node = it->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = static_cast<Entity*>(node->element);
+					auto entity = static_cast<Entity*>(node->element);
 					if ( true/*entity->behavior == &actPlayer || (entity->behavior == &actMonster && !entity->isInertMimic())*/ )
 					{
 						real_t yaw = my->yaw + PI / 2;
@@ -20266,7 +20266,7 @@ void actRadiusMagic(Entity* my)
 				node_t* node;
 				for ( node = it->first; node != nullptr; node = node->next )
 				{
-					if ( Entity* entity = static_cast<Entity*>(node->element) )
+					if (auto entity = static_cast<Entity*>(node->element) )
 					{
 						if ( my->actRadiusMagicID == SPELL_HEAL_PULSE )
 						{
@@ -20615,7 +20615,7 @@ void actRadiusMagic(Entity* my)
 							{
 								if ( ent->children.first )
 								{
-									if ( spell_t* spell = static_cast<spell_t*>(ent->children.first->element) )
+									if (auto spell = static_cast<spell_t*>(ent->children.first->element) )
 									{
 										if ( Entity* spellCaster = uidToEntity(spell->caster) )
 										{
@@ -21102,7 +21102,7 @@ void doSpellExplosionArea(int spellID, Entity* my, Entity* caster, real_t x, rea
 		node_t* node;
 		for ( node = it->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = static_cast<Entity*>(node->element);
+			auto entity = static_cast<Entity*>(node->element);
 			if ( entityDist(my, entity) > radius )
 			{
 				continue;

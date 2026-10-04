@@ -341,7 +341,7 @@ void revenantSkullDie(Entity* my)
 			continue;
 		}
 
-		if ( Entity* entity = static_cast<Entity*>(node->element) )
+		if (auto entity = static_cast<Entity*>(node->element) )
 		{
 			real_t gibx = entity->x;
 			real_t giby = entity->y;
@@ -1388,7 +1388,7 @@ void hologramAnimate(Entity* my, Stat* myStats, double dist)
 			continue;
 		}
 
-		if ( Entity* entity = static_cast<Entity*>(node->element) )
+		if (auto entity = static_cast<Entity*>(node->element) )
 		{
 			entity->flags[INVISIBLE] = true;
 			entity->flags[INVISIBLE_DITHER] = false;
@@ -1412,7 +1412,7 @@ void hologramAnimate(Entity* my, Stat* myStats, double dist)
 		{
 			if ( node_t* nodeCopy = list_Node(&hologramParent->children, i) )
 			{
-				if ( Entity* limb = static_cast<Entity*>(nodeCopy->element) )
+				if (auto limb = static_cast<Entity*>(nodeCopy->element) )
 				{
 					limbsCopy.push_back(limb);
 				}
