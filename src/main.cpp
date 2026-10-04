@@ -625,7 +625,7 @@ void printlog(const char* str, ...)
 	// print to the log
 	if ( newstr[strlen(newstr) - 1] != '\n' )
 	{
-		int c = (int)strlen(newstr);
+		int c = static_cast<int>(strlen(newstr));
 		newstr[c] = '\n';
 		newstr[c + 1] = 0;
 	}

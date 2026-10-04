@@ -499,8 +499,8 @@ void mainLogic(void)
 		{
 			if ( omousey >= 24 && omousey < 136 )
 			{
-				camx = ((long)map.width << TEXTUREPOWER) * (real_t)(mousex - xres + 120) / 112 - xres / 2;
-				camy = ((long)map.height << TEXTUREPOWER) * (real_t)(mousey - 24) / 112 - yres / 2;
+				camx = (static_cast<long>(map.width) << TEXTUREPOWER) * static_cast<real_t>(mousex - xres + 120) / 112 - xres / 2;
+				camy = (static_cast<long>(map.height) << TEXTUREPOWER) * static_cast<real_t>(mousey - 24) / 112 - yres / 2;
 			}
 		}
 	}
@@ -545,17 +545,17 @@ void mainLogic(void)
 	{
 		camx = -xres / 2;
 	}
-	if ( camx > ((long)map.width << TEXTUREPOWER) - ((long)xres / 2) )
+	if ( camx > (static_cast<long>(map.width) << TEXTUREPOWER) - (static_cast<long>(xres) / 2) )
 	{
-		camx = ((long)map.width << TEXTUREPOWER) - ((long)xres / 2);
+		camx = (static_cast<long>(map.width) << TEXTUREPOWER) - (static_cast<long>(xres) / 2);
 	}
 	if ( camy < -yres / 2 )
 	{
 		camy = -yres / 2;
 	}
-	if ( camy > ((long)map.height << TEXTUREPOWER) - ((long)yres / 2) )
+	if ( camy > (static_cast<long>(map.height) << TEXTUREPOWER) - (static_cast<long>(yres) / 2) )
 	{
-		camy = ((long)map.height << TEXTUREPOWER) - ((long)yres / 2);
+		camy = (static_cast<long>(map.height) << TEXTUREPOWER) - (static_cast<long>(yres) / 2);
 	}
 
 	if (scroll < 0 )   // mousewheel up
@@ -646,7 +646,7 @@ void handleButtons(void)
 	for ( node = button_l.first; node != NULL; node = nextnode )
 	{
 		nextnode = node->next;
-		button = (button_t*)node->element;
+		button = static_cast<button_t*>(node->element);
 		if ( !subwindow && button->focused )
 		{
 			list_RemoveNode(button->node);
@@ -775,7 +775,7 @@ bool handleEvents(void)
 
 	// do timer
 	time_diff += timesync;
-	constexpr real_t frame = (real_t)1000 / (real_t)TICKS_PER_SECOND;
+	constexpr real_t frame = static_cast<real_t>(1000) / static_cast<real_t>(TICKS_PER_SECOND);
 	while (time_diff >= frame) {
 		time_diff -= frame;
 		timerCallback(0, NULL);
@@ -881,14 +881,14 @@ bool handleEvents(void)
 								if ( textInsertCaratPosition == strlen(inputstr) )
 								{
 									strncat(inputstr, event.text.text, std::max<size_t>(0, inputlen - strlen(inputstr)));
-									textInsertCaratPosition = std::min((int)strlen(inputstr), textInsertCaratPosition + 1);
+									textInsertCaratPosition = std::min(static_cast<int>(strlen(inputstr)), textInsertCaratPosition + 1);
 								}
-								else if ( inputlen - ((int)strlen(inputstr) + 1) >= 0)
+								else if ( inputlen - (static_cast<int>(strlen(inputstr)) + 1) >= 0)
 								{
 									std::string tmp = inputstr;
 									tmp.insert(textInsertCaratPosition, event.text.text);
 									strcpy(inputstr, tmp.c_str());
-									textInsertCaratPosition = std::min((int)strlen(inputstr), textInsertCaratPosition + 1);
+									textInsertCaratPosition = std::min(static_cast<int>(strlen(inputstr)), textInsertCaratPosition + 1);
 								}
 							}
 							else
@@ -907,8 +907,8 @@ bool handleEvents(void)
                     int w1, w2, h1, h2;
                     SDL_GL_GetDrawableSize(screen, &w1, &h1);
                     SDL_GetWindowSize(screen, &w2, &h2);
-                    factorX = (float)w1 / w2;
-                    factorY = (float)h1 / h2;
+                    factorX = static_cast<float>(w1) / w2;
+                    factorY = static_cast<float>(h1) / h2;
                 }
                 mousex = event.motion.x * factorX;
                 mousey = event.motion.y * factorY;
@@ -958,8 +958,8 @@ bool handleEvents(void)
                         int w1, w2, h1, h2;
                         SDL_GL_GetDrawableSize(screen, &w1, &h1);
                         SDL_GetWindowSize(screen, &w2, &h2);
-                        factorX = (float)w1 / w2;
-                        factorY = (float)h1 / h2;
+                        factorX = static_cast<float>(w1) / w2;
+                        factorY = static_cast<float>(h1) / h2;
                     }
                     const int x = event.window.data1 * factorX;
                     const int y = event.window.data2 * factorY;
@@ -972,7 +972,7 @@ bool handleEvents(void)
 					{
 						free(palette);
 					}
-					palette = (int*) malloc(sizeof(unsigned int) * xres * yres);
+					palette = static_cast<int*>(malloc(sizeof(unsigned int) * xres * yres));
 				}
 				break;
 		}
@@ -1131,7 +1131,7 @@ void makeUndo()
 	}
 
 	// copy all the current map data
-	map_t* undomap = (map_t*) malloc(sizeof(map_t));
+	map_t* undomap = static_cast<map_t*>(malloc(sizeof(map_t)));
 	strcpy(undomap->author, map.author);
 	strcpy(undomap->name, map.name);
 	undomap->skybox = map.skybox;
@@ -1141,9 +1141,9 @@ void makeUndo()
 	{
 		undomap->flags[c] = map.flags[c];
 	}
-	undomap->tiles = (Sint32*) malloc(sizeof(Sint32) * undomap->width * undomap->height * MAP_LAYERS);
+	undomap->tiles = static_cast<Sint32*>(malloc(sizeof(Sint32) * undomap->width * undomap->height * MAP_LAYERS));
 	memcpy(undomap->tiles, map.tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
-	undomap->entities = (list_t*) malloc(sizeof(list_t));
+	undomap->entities = static_cast<list_t*>(malloc(sizeof(list_t)));
 	undomap->entities->first = nullptr;
 	undomap->entities->last = nullptr;
 	undomap->creatures = nullptr;
@@ -1153,9 +1153,9 @@ void makeUndo()
 	undomap->lootexcludelocations = nullptr;
 	for ( node = map.entities->first; node != nullptr; node = node->next )
 	{
-		Entity* entity = newEntity(((Entity*)node->element)->sprite, 1, undomap->entities, nullptr);
+		Entity* entity = newEntity(static_cast<Entity*>(node->element)->sprite, 1, undomap->entities, nullptr);
 
-		setSpriteAttributes(entity, (Entity*)node->element, (Entity*)node->element);
+		setSpriteAttributes(entity, static_cast<Entity*>(node->element), static_cast<Entity*>(node->element));
 	}
 
 	// add the new node to the undo list
@@ -1201,19 +1201,19 @@ void undo()
 	}
 	map.tiles.clear();
 	free(camera.vismap);
-	map_t* undomap = (map_t*)undospot->element;
+	map_t* undomap = static_cast<map_t*>(undospot->element);
 	map.width = undomap->width;
 	map.height = undomap->height;
-	map.tiles = (Sint32*) malloc(sizeof(Sint32) * map.width * map.height * MAP_LAYERS);
-	camera.vismap = (bool*) malloc(sizeof(bool) * map.height * map.width);
+	map.tiles = static_cast<Sint32*>(malloc(sizeof(Sint32) * map.width * map.height * MAP_LAYERS));
+	camera.vismap = static_cast<bool*>(malloc(sizeof(bool) * map.height * map.width));
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
 	list_FreeAll(map.entities);
 	for ( node = undomap->entities->first; node != NULL; node = node->next )
 	{
-		Entity* entity = newEntity(((Entity*)node->element)->sprite, 1, map.entities, nullptr);
+		Entity* entity = newEntity(static_cast<Entity*>(node->element)->sprite, 1, map.entities, nullptr);
 
-		setSpriteAttributes(entity, (Entity*)node->element, (Entity*)node->element);
+		setSpriteAttributes(entity, static_cast<Entity*>(node->element), static_cast<Entity*>(node->element));
 	}
 	if ( redospot != NULL )
 	{
@@ -1237,19 +1237,19 @@ void redo()
 	selectedEntity[0] = NULL;
 	map.tiles.clear();
 	free(camera.vismap);
-	map_t* undomap = (map_t*)redospot->element;
+	map_t* undomap = static_cast<map_t*>(redospot->element);
 	map.width = undomap->width;
 	map.height = undomap->height;
-	map.tiles = (Sint32*) malloc(sizeof(Sint32) * map.width * map.height * MAP_LAYERS);
-	camera.vismap = (bool*) malloc(sizeof(bool) * map.height * map.width);
+	map.tiles = static_cast<Sint32*>(malloc(sizeof(Sint32) * map.width * map.height * MAP_LAYERS));
+	camera.vismap = static_cast<bool*>(malloc(sizeof(bool) * map.height * map.width));
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
 	list_FreeAll(map.entities);
 	for ( node = undomap->entities->first; node != NULL; node = node->next )
 	{
-		Entity* entity = newEntity(((Entity*)node->element)->sprite, 1, map.entities, nullptr);
+		Entity* entity = newEntity(static_cast<Entity*>(node->element)->sprite, 1, map.entities, nullptr);
 
-		setSpriteAttributes(entity, (Entity*)node->element, (Entity*)node->element);
+		setSpriteAttributes(entity, static_cast<Entity*>(node->element), static_cast<Entity*>(node->element));
 	}
 	if ( undospot != NULL )
 	{
@@ -1684,13 +1684,13 @@ int main(int argc, char** argv)
 	// create an empty map
 	map.width = 32;
 	map.height = 24;
-	map.entities = (list_t*) malloc(sizeof(list_t));
+	map.entities = static_cast<list_t*>(malloc(sizeof(list_t)));
 	map.creatures = nullptr;
 	map.worldUI = nullptr;
 	map.entities->first = nullptr;
 	map.entities->last = nullptr;
-	map.tiles = (int*) malloc(sizeof(int) * map.width * map.height * MAP_LAYERS);
-	camera.vismap = (bool*) malloc(sizeof(bool) * map.height * map.width);
+	map.tiles = static_cast<int*>(malloc(sizeof(int) * map.width * map.height * MAP_LAYERS));
+	camera.vismap = static_cast<bool*>(malloc(sizeof(bool) * map.height * map.width));
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	strcpy(map.name, "");
 	strcpy(map.author, "");
@@ -1739,7 +1739,7 @@ int main(int argc, char** argv)
 
 	// initialize editor settings
 	strcpy(layerstatus, "BACKGROUND");
-	palette = (int*) malloc(sizeof(unsigned int) * xres * yres);
+	palette = static_cast<int*>(malloc(sizeof(unsigned int) * xres * yres));
 
 	// main interface
 	button = butFile = newButton();
@@ -2259,7 +2259,7 @@ int main(int argc, char** argv)
 					for ( node = map.entities->first; node != NULL; node = nextnode )
 					{
 						nextnode = node->next;
-						entity = (Entity*)node->element;
+						entity = static_cast<Entity*>(node->element);
 						if ( entity == selectedEntity[0] )
 						{
 							if ( mousestatus[SDL_BUTTON_LEFT] )
@@ -2297,8 +2297,8 @@ int main(int argc, char** argv)
 								mousestatus[SDL_BUTTON_RIGHT] = 0;
 								break;
 							}
-							entity->x = (long)(drawx << 4);
-							entity->y = (long)(drawy << 4);
+							entity->x = static_cast<long>(drawx << 4);
+							entity->y = static_cast<long>(drawy << 4);
 						}
 						else
 						{
@@ -2523,7 +2523,7 @@ int main(int argc, char** argv)
 				light = addLight(camera.x, camera.y, "editor");
 				for ( node = map.entities->first; node != NULL; node = node->next )
 				{
-					entity = (Entity*)node->element;
+					entity = static_cast<Entity*>(node->element);
 					entity->flags[SPRITE] = true; // all entities rendered as SPRITES in the editor
 					entity->x += 8;
 					entity->y += 8;
@@ -2539,7 +2539,7 @@ int main(int argc, char** argv)
 				list_RemoveNode(light->node);
 				for ( node = map.entities->first; node != NULL; node = node->next )
 				{
-					entity = (Entity*)node->element;
+					entity = static_cast<Entity*>(node->element);
 					entity->x -= 8;
 					entity->y -= 8;
 				}
@@ -2836,17 +2836,17 @@ int main(int argc, char** argv)
 					drawDepressed(subx2 - 20, suby1 + 20, subx2 - 4, suby2 - 52);
 					if ( !mapNames.empty() )
 					{
-						slidersize = std::min<int>(((suby2 - 53) - (suby1 + 21)), ((suby2 - 53) - (suby1 + 21)) / ((real_t)mapNames.size() / 20)); //TODO: Why are int and real_t being compared?
+						slidersize = std::min<int>(((suby2 - 53) - (suby1 + 21)), ((suby2 - 53) - (suby1 + 21)) / (static_cast<real_t>(mapNames.size()) / 20)); //TODO: Why are int and real_t being compared?
 						slidery = std::min(std::max(suby1 + 21, slidery), suby2 - 53 - slidersize);
 						drawWindowFancy(subx2 - 19, slidery, subx2 - 5, slidery + slidersize);
 
 						// directory list offset from slider
-						y2 = ((real_t)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * (mapNames.size() + 1);
+						y2 = (static_cast<real_t>(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * (mapNames.size() + 1);
 						if ( scroll )
 						{
 							slidery -= 8 * scroll;
 							slidery = std::min(std::max(suby1 + 21, slidery), suby2 - 53 - slidersize);
-							y2 = ((real_t)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * (mapNames.size() + 1);
+							y2 = (static_cast<real_t>(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * (mapNames.size() + 1);
 							selectedFile = std::min<long unsigned int>(std::max(y2, selectedFile), std::min<long unsigned int>(mapNames.size() - 1, y2 + 19)); //TODO: Why are long unsigned int and int being compared? TWICE. On the same line.
 							strcpy(filename, mapNames[selectedFile].c_str());
 							inputstr = filename;
@@ -2856,7 +2856,7 @@ int main(int argc, char** argv)
 						{
 							slidery = oslidery + mousey - omousey;
 							slidery = std::min(std::max(suby1 + 21, slidery), suby2 - 53 - slidersize);
-							y2 = ((real_t)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * (mapNames.size() + 1);
+							y2 = (static_cast<real_t>(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * (mapNames.size() + 1);
 							mclick = 1;
 							selectedFile = std::min<long unsigned int>(std::max(y2, selectedFile), std::min<long unsigned int>(mapNames.size() - 1, y2 + 19)); //TODO: Why are long unsigned int and int being compared? TWICE. On the same line.
 							strcpy(filename, mapNames[selectedFile].c_str());
@@ -2918,17 +2918,17 @@ int main(int argc, char** argv)
 					drawDepressed(subx2 - 20, suby1 + 20, subx2 - 4, suby2 - 112);
 					if ( !modFolderNames.empty() )
 					{
-						slidersize = std::min<int>(((suby2 - 113) - (suby1 + 21)), ((suby2 - 113) - (suby1 + 21)) / ((real_t)modFolderNames.size() / 20)); //TODO: Why are int and real_t being compared?
+						slidersize = std::min<int>(((suby2 - 113) - (suby1 + 21)), ((suby2 - 113) - (suby1 + 21)) / (static_cast<real_t>(modFolderNames.size()) / 20)); //TODO: Why are int and real_t being compared?
 						slidery = std::min(std::max(suby1 + 21, slidery), suby2 - 113 - slidersize);
 						drawWindowFancy(subx2 - 19, slidery, subx2 - 5, slidery + slidersize);
 
 						// directory list offset from slider
-						y2 = ((real_t)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * modFolderNames.size();
+						y2 = (static_cast<real_t>(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * modFolderNames.size();
 						if ( scroll )
 						{
 							slidery -= 8 * scroll;
 							slidery = std::min(std::max(suby1 + 21, slidery), suby2 - 113 - slidersize);
-							y2 = ((real_t)(slidery - suby1 - 20) / ((suby2 - 112) - (suby1 + 20))) * modFolderNames.size();
+							y2 = (static_cast<real_t>(slidery - suby1 - 20) / ((suby2 - 112) - (suby1 + 20))) * modFolderNames.size();
 							selectedFile = std::min<long unsigned int>(std::max(y2, selectedFile), std::min<long unsigned int>(modFolderNames.size() - 1, y2 + 19)); //TODO: Why are long unsigned int and int being compared? TWICE. On the same line.
 							std::list<std::string>::iterator it = modFolderNames.begin();
 							std::advance(it, selectedFile);
@@ -2940,7 +2940,7 @@ int main(int argc, char** argv)
 						{
 							slidery = oslidery + mousey - omousey;
 							slidery = std::min(std::max(suby1 + 21, slidery), suby2 - 113 - slidersize);
-							y2 = ((real_t)(slidery - suby1 - 20) / ((suby2 - 112) - (suby1 + 20))) * modFolderNames.size();
+							y2 = (static_cast<real_t>(slidery - suby1 - 20) / ((suby2 - 112) - (suby1 + 20))) * modFolderNames.size();
 							mclick = 1;
 							selectedFile = std::min<long unsigned int>(std::max(y2, selectedFile), std::min<long unsigned int>(modFolderNames.size() - 1, y2 + 19)); //TODO: Why are long unsigned int and int being compared? TWICE. On the same line.
 							std::list<std::string>::iterator it = modFolderNames.begin();
@@ -4464,17 +4464,17 @@ int main(int argc, char** argv)
 
 						drawDepressed(pad_x1, pad_y1, subx2 - 20, pad_y2);
 						drawDepressed(subx2 - 20, pad_y1, subx2 - 4, pad_y2);
-						slidersize = std::min<int>(((pad_y2 - 1) - (pad_y1 + 1)), ((pad_y2 - 1) - (pad_y1 + 1)) / ((real_t)(editorNumItems + 1) / 20)); //TODO: Why are int and real_t being compared?
+						slidersize = std::min<int>(((pad_y2 - 1) - (pad_y1 + 1)), ((pad_y2 - 1) - (pad_y1 + 1)) / (static_cast<real_t>(editorNumItems + 1) / 20)); //TODO: Why are int and real_t being compared?
 						slidery = std::min(std::max(pad_y1, slidery), pad_y2 - 1 - slidersize);
 						drawWindowFancy(subx2 - 19, slidery, subx2 - 5, slidery + slidersize);
 
 						// directory list offset from slider
-						y2 = ((real_t)(slidery - (pad_y1)) / (pad_y2 - (pad_y1))) * editorNumItems;
+						y2 = (static_cast<real_t>(slidery - (pad_y1)) / (pad_y2 - (pad_y1))) * editorNumItems;
 						if ( scroll )
 						{
 							slidery -= 8 * scroll;
 							slidery = std::min(std::max(pad_y1, slidery), pad_y2 - 1 - slidersize);
-							y2 = ((real_t)(slidery - (pad_y1)) / ((pad_y2) - (pad_y1))) * editorNumItems;
+							y2 = (static_cast<real_t>(slidery - (pad_y1)) / ((pad_y2) - (pad_y1))) * editorNumItems;
 							itemSelect = std::min<long unsigned int>(std::max(y2, itemSelect), std::min<long unsigned int>(editorNumItems - 1, y2 + 19)); //TODO: Why are long unsigned int and int being compared? TWICE. On the same line.
 							scroll = 0;
 						}
@@ -4482,7 +4482,7 @@ int main(int argc, char** argv)
 						{
 							slidery = oslidery + mousey - omousey;
 							slidery = std::min(std::max(pad_y1, slidery), pad_y2 - 1 - slidersize);
-							y2 = ((real_t)(slidery - (pad_y1)) / ((pad_y2) - (pad_y1))) * editorNumItems;
+							y2 = (static_cast<real_t>(slidery - (pad_y1)) / ((pad_y2) - (pad_y1))) * editorNumItems;
 							mclick = 1;
 							itemSelect = std::min<long unsigned int>(std::max(y2, itemSelect), std::min<long unsigned int>(editorNumItems - 1, y2 + 19)); //TODO: Why are long unsigned int and int being compared? TWICE. On the same line.
 						}
@@ -6462,8 +6462,8 @@ int main(int argc, char** argv)
 
 								if ( i == 9 )
 								{
-									Uint32 colorPreview = makeColorRGB((Uint32)atoi(spriteProperties[7]),
-										(Uint32)atoi(spriteProperties[8]), (Uint32)atoi(spriteProperties[9]));
+									Uint32 colorPreview = makeColorRGB(static_cast<Uint32>(atoi(spriteProperties[7])),
+										static_cast<Uint32>(atoi(spriteProperties[8])), static_cast<Uint32>(atoi(spriteProperties[9])));
 									SDL_Rect src;
 									src.x = subx1 + 8 + (inputFieldWidth + 8) * 3;
 									src.h = 16;
@@ -6677,8 +6677,8 @@ int main(int argc, char** argv)
 								inputField_x = subx1 + 8 + (inputFieldWidth + 8) * i;
 								if ( i == 2 )
 								{
-									Uint32 colorPreview = makeColorRGB((Uint32)atoi(spriteProperties[0]),
-										(Uint32)atoi(spriteProperties[1]), (Uint32)atoi(spriteProperties[2]));
+									Uint32 colorPreview = makeColorRGB(static_cast<Uint32>(atoi(spriteProperties[0])),
+										static_cast<Uint32>(atoi(spriteProperties[1])), static_cast<Uint32>(atoi(spriteProperties[2])));
 									SDL_Rect src;
 									src.x = subx1 + 8 + (inputFieldWidth + 8) * 3;
 									src.h = 16;
@@ -6859,7 +6859,7 @@ int main(int argc, char** argv)
 							{
 								if ( textInsertCaratPosition >= 0 )
 								{
-									textInsertCaratPosition = std::min(textInsertCaratPosition, (int)strlen(inputstr));
+									textInsertCaratPosition = std::min(textInsertCaratPosition, static_cast<int>(strlen(inputstr)));
 									if ( editproperty < 3 || editproperty > 8 )
 									{
 										textInsertCaratPosition = -1;
@@ -6892,7 +6892,7 @@ int main(int argc, char** argv)
 									else
 									{
 										++textInsertCaratPosition;
-										textInsertCaratPosition = std::min((int)strlen(inputstr), textInsertCaratPosition);
+										textInsertCaratPosition = std::min(static_cast<int>(strlen(inputstr)), textInsertCaratPosition);
 									}
 									cursorflash = ticks;
 								}
@@ -10392,7 +10392,7 @@ void reselectEntityGroup()
 	for ( node_t* node = map.entities->first; node != nullptr; node = nextnode )
 	{
 		nextnode = node->next;
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		if ( entity->x / 16 >= selectedarea_x1 && entity->x / 16 <= selectedarea_x2
 			&& entity->y / 16 >= selectedarea_y1 && entity->y / 16 <= selectedarea_y2 )
 		{

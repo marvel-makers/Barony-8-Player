@@ -39,10 +39,10 @@ void actAnimator(Entity* my)
 	if ( my->skill[4] == 0 )
 	{
 		my->skill[4] = 1;
-		map.tiles[my->skill[0] + (int)my->y * MAP_LAYERS + (int)my->x * MAP_LAYERS * map.height] -= my->skill[1] - 1;
+		map.tiles[my->skill[0] + static_cast<int>(my->y) * MAP_LAYERS + static_cast<int>(my->x) * MAP_LAYERS * map.height] -= my->skill[1] - 1;
 	}
 
-	if ( (int)floor(my->x) < 0 || (int)floor(my->x) >= map.width || (int)floor(my->y) < 0 || (int)floor(my->y) >= map.height )
+	if ( static_cast<int>(floor(my->x)) < 0 || static_cast<int>(floor(my->x)) >= map.width || static_cast<int>(floor(my->y)) < 0 || static_cast<int>(floor(my->y)) >= map.height )
 	{
 		list_RemoveNode(my->mynode);
 		return;
@@ -52,12 +52,12 @@ void actAnimator(Entity* my)
 	if ( my->skill[3] >= 10 )
 	{
 		my->skill[3] = 0;
-		map.tiles[my->skill[0] + (int)floor(my->y)*MAP_LAYERS + (int)floor(my->x)*MAP_LAYERS * map.height]++;
+		map.tiles[my->skill[0] + static_cast<int>(floor(my->y))*MAP_LAYERS + static_cast<int>(floor(my->x))*MAP_LAYERS * map.height]++;
 		my->skill[5]++;
 		if (my->skill[5] == my->skill[1])
 		{
 			my->skill[5] = 0;
-			map.tiles[my->skill[0] + (int)floor(my->y)*MAP_LAYERS + (int)floor(my->x)*MAP_LAYERS * map.height] -= my->skill[1];
+			map.tiles[my->skill[0] + static_cast<int>(floor(my->y))*MAP_LAYERS + static_cast<int>(floor(my->x))*MAP_LAYERS * map.height] -= my->skill[1];
 		}
 	}
 }
@@ -934,7 +934,7 @@ void actColliderMushroomCap(Entity* my)
 					node_t* node;
 					for ( node = it->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( !(entity->behavior == &actPlayer || entity->behavior == &actMonster) )
 						{
 							continue;
@@ -1297,7 +1297,7 @@ void Entity::colliderOnDestroy()
 		int successes = 0;
 		for ( int i = 0; i < numSpawns; ++i )
 		{
-			auto monster = summonMonster((Monster)type, ((int)(x / 16)) * 16 + 8, ((int)(y / 16)) * 16 + 8);
+			auto monster = summonMonster(static_cast<Monster>(type), static_cast<int>(x / 16) * 16 + 8, static_cast<int>(y / 16) * 16 + 8);
 			if ( monster )
 			{
 				monster->yaw = yaw;
@@ -1340,13 +1340,13 @@ void Entity::colliderOnDestroy()
 					else
 					{
 						messagePlayer(killer->skill[2], MESSAGE_INTERACTION, Language::get(getColliderOnJumpLangEntry()),
-							getMonsterLocalizedName((Monster)type).c_str(), Language::get(getColliderLangName()));
+							getMonsterLocalizedName(static_cast<Monster>(type)).c_str(), Language::get(getColliderLangName()));
 					}
 				}
 				else if ( successes > 1 )
 				{
 					messagePlayer(killer->skill[2], MESSAGE_INTERACTION, Language::get(6253),
-						getMonsterLocalizedPlural((Monster)type).c_str(), Language::get(getColliderLangName()));
+						getMonsterLocalizedPlural(static_cast<Monster>(type)).c_str(), Language::get(getColliderLangName()));
 				}
 			}
 		}
@@ -1395,7 +1395,7 @@ void Entity::colliderOnDestroy()
 							node_t* node;
 							for ( node = currentList->first; node != nullptr; node = node->next )
 							{
-								Entity* ent = (Entity*)node->element;
+								Entity* ent = static_cast<Entity*>(node->element);
 								if ( ent && ent->behavior == &actGoldBag && ent != entity && ent->goldInContainer != 0
 									&& ent->goldInContainer == entity->goldInContainer )
 								{
@@ -1602,9 +1602,9 @@ Entity* Entity::createBreakableCollider(int colliderDamageType, real_t _x, real_
 void Entity::colliderSetServerSkillOnSpawned()
 {
 	Sint32 val = (1 << 31);
-	val |= (Uint8)(25);
-	val |= (Uint8)(colliderDamageTypes) << 8;
-	val |= (Uint8)(colliderSpellEvent % 1000) << 16;
+	val |= static_cast<Uint8>(25);
+	val |= static_cast<Uint8>(colliderDamageTypes) << 8;
+	val |= static_cast<Uint8>(colliderSpellEvent % 1000) << 16;
 	skill[2] = val;
 }
 
@@ -1964,7 +1964,7 @@ void actColliderDecoration(Entity* my)
 			list_t* currentList = *it;
 			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( !(entity->behavior == &actPlayer || entity->behavior == &actMonster) )
 				{
 					continue;
@@ -2120,7 +2120,7 @@ void actColliderDecoration(Entity* my)
 								node_t* node;
 								for ( node = currentList->first; node != nullptr; node = node->next )
 								{
-									Entity* entity = (Entity*)node->element;
+									Entity* entity = static_cast<Entity*>(node->element);
 									if ( !entity || !(entity->behavior == &actPlayer || entity->behavior == &actMonster) ) { continue; }
 									if ( !entity->monsterIsTargetable() ) { continue; }
 									if ( caster )
@@ -2240,7 +2240,7 @@ void actColliderDecoration(Entity* my)
 							node_t* node;
 							for ( node = currentList->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = (Entity*)node->element;
+								Entity* entity = static_cast<Entity*>(node->element);
 								if ( entity && (entity->behavior == &actPlayer || (entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader())) )
 								{
 									real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
@@ -2269,7 +2269,7 @@ void actColliderDecoration(Entity* my)
 						int successes = 0;
 						for ( int i = 0; i < numSpawns; ++i )
 						{
-							auto monster = summonMonster((Monster)type, ((int)(my->x / 16)) * 16 + 8, ((int)(my->y / 16)) * 16 + 8);
+							auto monster = summonMonster(static_cast<Monster>(type), static_cast<int>(my->x / 16) * 16 + 8, static_cast<int>(my->y / 16) * 16 + 8);
 							if ( monster )
 							{
 								monster->yaw = my->yaw;
@@ -2315,13 +2315,13 @@ void actColliderDecoration(Entity* my)
 								else
 								{
 									messagePlayer(found->skill[2], MESSAGE_INTERACTION, Language::get(6234),
-										getMonsterLocalizedName((Monster)type).c_str(), Language::get(my->getColliderLangName()));
+										getMonsterLocalizedName(static_cast<Monster>(type)).c_str(), Language::get(my->getColliderLangName()));
 								}
 							}
 							else if ( successes > 1 )
 							{
 								messagePlayer(found->skill[2], MESSAGE_INTERACTION, Language::get(6253),
-									getMonsterLocalizedPlural((Monster)type).c_str(), Language::get(my->getColliderLangName()));
+									getMonsterLocalizedPlural(static_cast<Monster>(type)).c_str(), Language::get(my->getColliderLangName()));
 							}
 						}
 
@@ -2773,10 +2773,10 @@ int TextSourceScript::textSourceProcessScriptTag(std::string& input, std::string
 			y1 += src.mapGenerationRoomY;
 			y2 += src.mapGenerationRoomY;
 
-			x1 = std::min(std::max(0, x1), (int)map.width - 1);
-			y1 = std::min(std::max(0, y1), (int)map.height - 1);
-			x2 = std::min(std::max(x1, x2), (int)map.width - 1);
-			y2 = std::min(std::max(y1, y2), (int)map.height - 1);
+			x1 = std::min(std::max(0, x1), static_cast<int>(map.width) - 1);
+			y1 = std::min(std::max(0, y1), static_cast<int>(map.height) - 1);
+			x2 = std::min(std::max(x1, x2), static_cast<int>(map.width) - 1);
+			y2 = std::min(std::max(y1, y2), static_cast<int>(map.height) - 1);
 
 			if ( findTag.compare("@explode=") == 0 )
 			{
@@ -3030,7 +3030,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 			textSourceScript.setAttachedToEntityType(src.textSourceIsScript, attachTo);
 			for ( node_t* node = map.entities->first; node; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( entity )
 				{
 					if ( (entity->behavior == &actMonster && attachTo == TO_MONSTERS)
@@ -3056,7 +3056,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					{
 						node_t* node = list_AddNodeLast(&src.children);
 						node->deconstructor = &defaultDeconstructor;
-						Uint32* entityUid = (Uint32*)(malloc(sizeof(Uint32)));
+						Uint32* entityUid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
 						node->element = entityUid;
 						node->size = sizeof(Uint32);
 						*entityUid = entity->getUID();
@@ -3308,7 +3308,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				std::unordered_set<int> plateSpots;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* pressurePlate = (Entity*)node->element;
+					Entity* pressurePlate = static_cast<Entity*>(node->element);
 					if ( pressurePlate && pressurePlate->behavior == &actTrapPermanent )
 					{
 						int findx = static_cast<int>(pressurePlate->x) >> 4;
@@ -3358,7 +3358,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				int y2 = (result >> 24) & 0xFF;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* pressurePlate = (Entity*)node->element;
+					Entity* pressurePlate = static_cast<Entity*>(node->element);
 					if ( pressurePlate && pressurePlate->behavior == &actTrapPermanent )
 					{
 						int findx = static_cast<int>(pressurePlate->x) >> 4;
@@ -3388,7 +3388,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				std::unordered_set<int> wireSpots;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* wire = (Entity*)node->element;
+					Entity* wire = static_cast<Entity*>(node->element);
 					if ( wire && wire->behavior == &actCircuit )
 					{
 						int findx = static_cast<int>(wire->x) >> 4;
@@ -3436,7 +3436,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				for ( node_t* node = map.entities->first; node; node = nextnode )
 				{
 					nextnode = node->next;
-					Entity* wire = (Entity*)node->element;
+					Entity* wire = static_cast<Entity*>(node->element);
 					if ( wire && wire->behavior == &actCircuit )
 					{
 						int findx = static_cast<int>(wire->x) >> 4;
@@ -3480,7 +3480,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -3523,7 +3523,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -3625,7 +3625,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 						Entity* toAttack = nullptr;
 						for ( node_t* node = map.creatures->first; node; node = node->next )
 						{
-							Entity* target = (Entity*)node->element;
+							Entity* target = static_cast<Entity*>(node->element);
 							if ( (target->behavior == &actMonster || target->behavior == &actPlayer) && target != entity
 								&& entity->checkEnemy(target) )
 							{
@@ -3691,7 +3691,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -3734,7 +3734,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster && !entity->monsterAllyGetPlayerLeader() )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -3849,7 +3849,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster && !entity->monsterAllyGetPlayerLeader() )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -3891,7 +3891,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* scriptEntity = (Entity*)node->element;
+					Entity* scriptEntity = static_cast<Entity*>(node->element);
 					if ( scriptEntity && scriptEntity->behavior == &actMonster )
 					{
 						Stat* scriptStats = scriptEntity->getStats();
@@ -3959,7 +3959,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster && !entity->monsterAllyGetPlayerLeader() )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -4009,7 +4009,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				{
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster && !entity->monsterAllyGetPlayerLeader() )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -4111,7 +4111,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					std::vector<Entity*> monsters;
 					for ( node_t* node = map.creatures->first; node; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actMonster )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -4167,7 +4167,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					{
 						for ( node_t* node = map.entities->first; node; node = node->next )
 						{
-							Entity* entity = (Entity*)node->element;
+							Entity* entity = static_cast<Entity*>(node->element);
 							if ( entity && entity->behavior == &actItem )
 							{
 								int findx = static_cast<int>(entity->x) >> 4;
@@ -4289,7 +4289,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					{
 						for ( node_t* node = map.entities->first; node; node = node->next )
 						{
-							Entity* entity = (Entity*)node->element;
+							Entity* entity = static_cast<Entity*>(node->element);
 							if ( entity && entity->behavior == &actItem )
 							{
 								int findx = static_cast<int>(entity->x) >> 4;
@@ -4364,7 +4364,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					Entity* chest = nullptr;
 					for ( node_t* node = map.entities->first; node; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actChest )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -4429,7 +4429,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 					Entity* breakable = nullptr;
 					for ( node_t* node = map.entities->first; node; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->isColliderBreakableContainer() )
 						{
 							int findx = static_cast<int>(entity->x) >> 4;
@@ -4856,7 +4856,7 @@ void Entity::actTextSource()
 		// check if our attached entities still exist.
 		for ( node_t* node = children.first; node; node = node->next )
 		{
-			Uint32 entityUid = *((Uint32*)node->element);
+			Uint32 entityUid = *static_cast<Uint32*>(node->element);
 			Entity* child = uidToEntity(entityUid);
 			if ( child )
 			{
@@ -4888,7 +4888,7 @@ void Entity::actTextSource()
 					bool doEffect = false;
 					for ( node_t* node = children.first; node; node = node->next )
 					{
-						Uint32 entityUid = *((Uint32*)node->element);
+						Uint32 entityUid = *static_cast<Uint32*>(node->element);
 						Entity* child = uidToEntity(entityUid);
 						if ( child )
 						{
@@ -5082,18 +5082,18 @@ void TextSourceScript::updateClientInformation(int player, bool clearInventory, 
 		// update client attributes
 		strcpy((char*)net_packet->data, "SCRU");
 		net_packet->data[4] = clientnum;
-		net_packet->data[5] = (Sint8)stats[player]->STR;
-		net_packet->data[6] = (Sint8)stats[player]->DEX;
-		net_packet->data[7] = (Sint8)stats[player]->CON;
-		net_packet->data[8] = (Sint8)stats[player]->INT;
-		net_packet->data[9] = (Sint8)stats[player]->PER;
-		net_packet->data[10] = (Sint8)stats[player]->CHR;
-		net_packet->data[11] = (Uint8)stats[player]->EXP;
-		net_packet->data[12] = (Uint8)stats[player]->LVL;
-		SDLNet_Write16((Sint16)stats[player]->HP, &net_packet->data[13]);
-		SDLNet_Write16((Sint16)stats[player]->MAXHP, &net_packet->data[15]);
-		SDLNet_Write16((Sint16)stats[player]->MP, &net_packet->data[17]);
-		SDLNet_Write16((Sint16)stats[player]->MAXMP, &net_packet->data[19]);
+		net_packet->data[5] = static_cast<Sint8>(stats[player]->STR);
+		net_packet->data[6] = static_cast<Sint8>(stats[player]->DEX);
+		net_packet->data[7] = static_cast<Sint8>(stats[player]->CON);
+		net_packet->data[8] = static_cast<Sint8>(stats[player]->INT);
+		net_packet->data[9] = static_cast<Sint8>(stats[player]->PER);
+		net_packet->data[10] = static_cast<Sint8>(stats[player]->CHR);
+		net_packet->data[11] = static_cast<Uint8>(stats[player]->EXP);
+		net_packet->data[12] = static_cast<Uint8>(stats[player]->LVL);
+		SDLNet_Write16(static_cast<Sint16>(stats[player]->HP), &net_packet->data[13]);
+		SDLNet_Write16(static_cast<Sint16>(stats[player]->MAXHP), &net_packet->data[15]);
+		SDLNet_Write16(static_cast<Sint16>(stats[player]->MP), &net_packet->data[17]);
+		SDLNet_Write16(static_cast<Sint16>(stats[player]->MAXMP), &net_packet->data[19]);
 		SDLNet_Write32((Sint32)stats[player]->GOLD, &net_packet->data[21]);
 		if ( clearInventory )
 		{
@@ -5114,7 +5114,7 @@ void TextSourceScript::updateClientInformation(int player, bool clearInventory, 
 
 		for ( int i = 0; i < NUMPROFICIENCIES; ++i )
 		{
-			net_packet->data[27 + i] = (Uint8)stats[player]->getProficiency(i);
+			net_packet->data[27 + i] = static_cast<Uint8>(stats[player]->getProficiency(i));
 		}
 		net_packet->address.host = net_clients[player - 1].host;
 		net_packet->address.port = net_clients[player - 1].port;
@@ -5321,7 +5321,7 @@ void TextSourceScript::parseScriptInMapGeneration(Entity& src)
 		textSourceScript.setAttachedToEntityType(src.textSourceIsScript, attachTo);
 		for ( node_t* node = map.entities->first; node; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entity )
 			{
 				if ( (entity->behavior == &actMonster && attachTo == TO_MONSTERS)
@@ -5347,7 +5347,7 @@ void TextSourceScript::parseScriptInMapGeneration(Entity& src)
 				{
 					node_t* node = list_AddNodeLast(&src.children);
 					node->deconstructor = &defaultDeconstructor;
-					Uint32* entityUid = (Uint32*)(malloc(sizeof(Uint32)));
+					Uint32* entityUid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
 					node->element = entityUid;
 					node->size = sizeof(Uint32);
 					*entityUid = entity->getUID();
@@ -5369,7 +5369,7 @@ void bellAttractMonsters(Entity* my)
 		node_t* node;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader() == nullptr )
 			{
 				if ( (entity->monsterState == MONSTER_STATE_WAIT || entity->monsterTarget == 0) )
@@ -5493,7 +5493,7 @@ int getBellDmgOnEntity(Entity* entity)
 				{
 					if ( stats->helmet->status > BROKEN )
 					{
-						stats->helmet->status = (Status)((int)stats->helmet->status - 1);
+						stats->helmet->status = static_cast<Status>((int)stats->helmet->status - 1);
 					}
 				}
 			}
@@ -5517,7 +5517,7 @@ int getBellDmgOnEntity(Entity* entity)
 					strcpy((char*)net_packet->data, "ARMR");
 					net_packet->data[4] = 0;
 					net_packet->data[5] = stats->helmet->status;
-					SDLNet_Write16((int)stats->helmet->type, &net_packet->data[6]);
+					SDLNet_Write16(static_cast<int>(stats->helmet->type), &net_packet->data[6]);
 					net_packet->address.host = net_clients[player - 1].host;
 					net_packet->address.port = net_clients[player - 1].port;
 					net_packet->len = 8;
@@ -5543,8 +5543,8 @@ void spawnMagicEffectParticlesBell(Entity* my, Uint32 sprite)
 	for ( int c = 0; c < numParticles; c++ )
 	{
 		Entity* entity = newEntity(1479, 1, map.entities, nullptr); //Particle entity.
-		entity->x = posx + 24.0 * cos(2 * PI * (c / (real_t)numParticles));
-		entity->y = posy + 24.0 * sin(2 * PI * (c / (real_t)numParticles));
+		entity->x = posx + 24.0 * cos(2 * PI * (c / static_cast<real_t>(numParticles)));
+		entity->y = posy + 24.0 * sin(2 * PI * (c / static_cast<real_t>(numParticles)));
 		entity->z = z;
 		entity->scalex = 0.7;
 		entity->scaley = 0.7;
@@ -5606,7 +5606,7 @@ void bellBreakBulb(Entity* my, bool minotaurBreak)
 	{
 		if ( node->element != nullptr )
 		{
-			Entity* child = (Entity*)node->element;
+			Entity* child = static_cast<Entity*>(node->element);
 			if ( child )
 			{
 				if ( child->sprite == 1475 && !child->flags[INVISIBLE] ) // bell
@@ -5798,7 +5798,7 @@ void actBell(Entity* my)
 	if ( keystatus[SDLK_g] && enableDebugKeys && *cvar_bell_crash )
 	{
 		keystatus[SDLK_g] = 0;
-		BELL_CURRENT_EVENT = (BellEvents)(BELL_CURRENT_EVENT + 1);
+		BELL_CURRENT_EVENT = static_cast<BellEvents>((BELL_CURRENT_EVENT + 1));
 		if ( BELL_CURRENT_EVENT >= BELL_ENUM_END )
 		{
 			BELL_CURRENT_EVENT = BELL_RING_BUFF;
@@ -6028,14 +6028,14 @@ void actBell(Entity* my)
 		//my->focalz += -2 + (interval - (my->skill[0] - pullTimerFirstAnim)) * 2.0 / (interval / 2.0);
 
 		const int interval = pullTimerStart - pullTimerFirstAnim;
-		my->focalz += 2.0 * cos(PI * (interval - (my->skill[0] - pullTimerFirstAnim) / (real_t)interval));
+		my->focalz += 2.0 * cos(PI * (interval - (my->skill[0] - pullTimerFirstAnim) / static_cast<real_t>(interval)));
 	}
 	else
 	{
 		//my->focalz += 2.0 * cos((-my->skill[0] + pullTimerFirstAnim) * PI / (real_t)pullTimerFirstAnim);
 		
 		const int interval = pullTimerFirstAnim;
-		my->focalz += -2.0 + 4.0 * cos(1.5 * PI * (interval - my->skill[0]) / (real_t)interval);
+		my->focalz += -2.0 + 4.0 * cos(1.5 * PI * (interval - my->skill[0]) / static_cast<real_t>(interval));
 	}
 
 	const real_t baseZ = 0.0;
@@ -6049,7 +6049,7 @@ void actBell(Entity* my)
 		nextnode = node->next;
 		if ( node->element != nullptr )
 		{
-			Entity* child = (Entity*)node->element;
+			Entity* child = static_cast<Entity*>(node->element);
 			if ( child )
 			{
 				if ( child->sprite == 1475 ) // bell
@@ -6078,7 +6078,7 @@ void actBell(Entity* my)
 								node_t* node;
 								for ( node = currentList->first; node != nullptr && !collided; node = node->next )
 								{
-									Entity* entity = (Entity*)node->element;
+									Entity* entity = static_cast<Entity*>(node->element);
 									if ( !entity ) { continue; }
 
 									if ( (entity->behavior == &actMonster && !(entity->getRace() == MIMIC)) 
@@ -6246,7 +6246,7 @@ void actBell(Entity* my)
 					Entity* clapper = nullptr;
 					if ( nextnode )
 					{
-						clapper = (Entity*)nextnode->element;
+						clapper = static_cast<Entity*>(nextnode->element);
 					}
 					if ( startBellAnim )
 					{
@@ -6275,14 +6275,14 @@ void actBell(Entity* my)
 					if ( abs(child->fskill[0]) > 0.0001 )
 					{
 						real_t oldPitch = child->pitch;
-						child->fskill[0] = (1 / (real_t)((1 + std::max(0, (dongs - 1))))) * PI / 8;
+						child->fskill[0] = (1 / static_cast<real_t>((1 + std::max(0, (dongs - 1))))) * PI / 8;
 						if ( dongs >= 3 || (shortRing && dongs >= 1) )
 						{
 							endDamp = std::min(endDamp + 1, 100);
-							child->fskill[0] *= (float)(100 - endDamp) / 100.f;
+							child->fskill[0] *= static_cast<float>(100 - endDamp) / 100.f;
 						}
 
-						if ( (int)(*cvar_bell_max_spd * rotation) >= *cvar_bell_clap_rot )
+						if ( static_cast<int>(*cvar_bell_max_spd * rotation) >= *cvar_bell_clap_rot )
 						{
 							if ( clapper && clapper->skill[6] == 0 )
 							{
@@ -6393,7 +6393,7 @@ void actBell(Entity* my)
 						{
 							if ( child->x >= 0 && child->y >= 0 && child->x < map.width << 4 && child->y < map.height << 4 )
 							{
-								const int tile = map.tiles[(int)(child->y / 16) * MAP_LAYERS + (int)(child->x / 16) * MAP_LAYERS * map.height];
+								const int tile = map.tiles[static_cast<int>(child->y / 16) * MAP_LAYERS + static_cast<int>(child->x / 16) * MAP_LAYERS * map.height];
 								if ( tile )
 								{
 									onground = true;
@@ -6455,11 +6455,11 @@ void actBell(Entity* my)
 					if ( abs(child->fskill[0]) > 0.0001 )
 					{
 						real_t oldPitch = child->pitch;
-						child->fskill[0] = -(1 / (real_t)((1 + std::max(0, (dongs - 1))))) * PI / 8;
+						child->fskill[0] = -(1 / static_cast<real_t>((1 + std::max(0, (dongs - 1))))) * PI / 8;
 						if ( dongs >= 3 || (shortRing && dongs >= 1) )
 						{
 							endDamp = std::min(endDamp + 1, 100);
-							child->fskill[0] *= (float)(100 - endDamp) / 100.f;
+							child->fskill[0] *= static_cast<float>(100 - endDamp) / 100.f;
 						}
 						child->pitch = child->fskill[0] * sin((*cvar_bell_max_spd * rotation) * PI / 180.f);
 						if ( child->pitch < -0.0 && oldPitch >= 0.0 )
@@ -6531,7 +6531,7 @@ void actBell(Entity* my)
 				node_t* node;
 				for ( node = currentList->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( (entity->behavior == &actMonster && !(entity->getRace() == MIMIC))
 						|| entity->behavior == &actPlayer )
 					{
@@ -6638,7 +6638,7 @@ void actBell(Entity* my)
 			std::vector<Entity*> enemies;
 			for ( int i = 0; i < 4; ++i )
 			{
-				if ( Entity* monster = summonMonster(type, ((int)(my->x / 16)) * 16 + 8, ((int)(my->y / 16)) * 16 + 8) )
+				if ( Entity* monster = summonMonster(type, static_cast<int>(my->x / 16) * 16 + 8, static_cast<int>(my->y / 16) * 16 + 8) )
 				{
 					++successes;
 					if ( BELL_LAST_TOUCHED_PLAYER >= 0 )

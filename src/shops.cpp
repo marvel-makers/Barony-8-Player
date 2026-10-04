@@ -147,12 +147,12 @@ void startTradingServer(Entity* entity, int player)
 		node_t* node;
 		for ( node = entitystats->inventory.first; node != NULL; node = node->next )
 		{
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			strcpy((char*)net_packet->data, "SHPI");
 			SDLNet_Write32(item->type, &net_packet->data[4]);
-			net_packet->data[8] = (Sint8)item->status;
-			net_packet->data[9] = (Sint8)item->beatitude;
-			net_packet->data[10] = (unsigned char)item->count;
+			net_packet->data[8] = static_cast<Sint8>(item->status);
+			net_packet->data[9] = static_cast<Sint8>(item->beatitude);
+			net_packet->data[10] = static_cast<unsigned char>(item->count);
 			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[11]);
 			if ( item->identified )
 			{
@@ -171,8 +171,8 @@ void startTradingServer(Entity* entity, int player)
 				net_packet->data[15] |= (1 << 2);
 			}
 			net_packet->data[15] |= ((0xF & item->itemRequireTradingSkillInShop) << 4);
-			net_packet->data[16] = (Sint8)item->x;
-			net_packet->data[17] = (Sint8)item->y;
+			net_packet->data[16] = static_cast<Sint8>(item->x);
+			net_packet->data[17] = static_cast<Sint8>(item->y);
 			net_packet->address.host = net_clients[player - 1].host;
 			net_packet->address.port = net_clients[player - 1].port;
 			net_packet->len = 18;
@@ -357,12 +357,12 @@ bool buyItemFromShop(const int player, Item* item, bool& bOutConsumedEntireStack
 			SDLNet_Write32(item->type, &net_packet->data[8]);
 			SDLNet_Write32(item->status, &net_packet->data[12]);
 			SDLNet_Write16(item->beatitude, &net_packet->data[16]);
-			net_packet->data[18] = (Sint8)item->x;
-			net_packet->data[19] = (Sint8)item->y;
+			net_packet->data[18] = static_cast<Sint8>(item->x);
+			net_packet->data[19] = static_cast<Sint8>(item->y);
 			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
 			if ( itemTypeIsQuiver(item->type) )
 			{
-				SDLNet_Write32((Uint32)item->count, &net_packet->data[24]);
+				SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[24]);
 			}
 			else
 			{
@@ -718,12 +718,12 @@ bool sellItemToShop(const int player, Item* item)
 		SDLNet_Write32(item->type, &net_packet->data[8]);
 		SDLNet_Write32(item->status, &net_packet->data[12]);
 		SDLNet_Write16(item->beatitude, &net_packet->data[16]);
-		net_packet->data[18] = (Sint8)xout;
-		net_packet->data[19] = (Sint8)yout;
+		net_packet->data[18] = static_cast<Sint8>(xout);
+		net_packet->data[19] = static_cast<Sint8>(yout);
 		SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
 		if ( itemTypeIsQuiver(item->type) )
 		{
-			SDLNet_Write32((Uint32)item->count, &net_packet->data[24]);
+			SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[24]);
 		}
 		else
 		{
@@ -789,7 +789,7 @@ void buyItemFromMysteriousShopkeepConsumeOrb(const int player, Entity& entity, I
 				for ( node_t* node = inventory->first; node; node = nextnode )
 				{
 					nextnode = node->next;
-					Item* orb = (Item*)node->element;
+					Item* orb = static_cast<Item*>(node->element);
 					if ( orb && orb->type == orbCategories.first )
 					{
 						consumeItem(orb, -1);

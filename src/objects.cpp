@@ -44,7 +44,7 @@ void stringDeconstructor(void* data)
 	string_t* string;
 	if (data != NULL)
 	{
-		string = (string_t*)data;
+		string = static_cast<string_t*>(data);
 		if ( string->data != NULL )
 		{
 			free(string->data);
@@ -81,7 +81,7 @@ void entityDeconstructor(void* data)
 
 	if ( data != nullptr )
 	{
-		entity = (Entity*)data;
+		entity = static_cast<Entity*>(data);
 
 		//TODO: If I am part of the creaturelist, remove my node from that list.)
 
@@ -104,7 +104,7 @@ void statDeconstructor(void* data)
 
 	if ( data != nullptr )
 	{
-		stat = (Stat*)data;
+		stat = static_cast<Stat*>(data);
 		//free(data);
 		delete stat;
 	}
@@ -121,7 +121,7 @@ void statDeconstructor(void* data)
 void lightDeconstructor(void* data)
 {
 	if (data != nullptr) {
-        light_t* light = (light_t*)data;
+        light_t* light = static_cast<light_t*>(data);
 		if (light->tiles != nullptr) {
             const auto lightsize = (light->radius * 2 + 1) * (light->radius * 2 + 1);
             const auto mapsize = map.width * map.height;
@@ -206,7 +206,7 @@ void listDeconstructor(void* data)
 
 	if (data != NULL)
 	{
-		list = (list_t*)data;
+		list = static_cast<list_t*>(data);
 		list_FreeAll(list);
 		free(data);
 	}
@@ -265,7 +265,7 @@ button_t* newButton(void)
 	button_t* button;
 
 	// allocate memory for button
-	if ( (button = (button_t*) malloc(sizeof(button_t))) == NULL )
+	if ( (button = static_cast<button_t*>(malloc(sizeof(button_t)))) == NULL )
 	{
 		printlog( "failed to allocate memory for new button!\n" );
 		exit(1);
@@ -309,7 +309,7 @@ light_t* newLight(int index, Sint32 x, Sint32 y, Sint32 radius)
 	light_t* light;
 
 	// allocate memory for light
-	if ((light = (light_t*) malloc(sizeof(light_t))) == nullptr) {
+	if ((light = static_cast<light_t*>(malloc(sizeof(light_t)))) == nullptr) {
 		printlog( "failed to allocate memory for new light!\n" );
 		exit(1);
 	}
@@ -327,7 +327,7 @@ light_t* newLight(int index, Sint32 x, Sint32 y, Sint32 radius)
 	light->radius = radius;
 	if (light->radius > 0) {
         const auto size = sizeof(vec4_t) * (radius * 2 + 1) * (radius * 2 + 1);
-		light->tiles = (vec4_t*)malloc(size);
+		light->tiles = static_cast<vec4_t*>(malloc(size));
 		memset(light->tiles, 0, size);
 	} else {
 		light->tiles = nullptr;
@@ -351,7 +351,7 @@ string_t* newString(list_t* list, Uint32 color, Uint32 time, int player, char co
 	int c, i;
 
 	// allocate memory for string
-	if ( (string = (string_t*) malloc(sizeof(string_t))) == NULL )
+	if ( (string = static_cast<string_t*>(malloc(sizeof(string_t)))) == NULL )
 	{
 		printlog( "failed to allocate memory for new string!\n" );
 		exit(1);
@@ -390,7 +390,7 @@ string_t* newString(list_t* list, Uint32 color, Uint32 time, int player, char co
 			i = vsnprintf(str, 1023, content, argptr);
 			va_end(argptr);
 		}
-		string->data = (char*) malloc(sizeof(char) * (i + 1));
+		string->data = static_cast<char*>(malloc(sizeof(char) * (i + 1)));
 		if ( !string->data )
 		{
 			printlog( "error creating new string: couldn't allocate string data.\n" );

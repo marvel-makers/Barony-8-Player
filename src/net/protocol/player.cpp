@@ -54,7 +54,7 @@ void serverUpdateEffects(int player)
 		}
 	}
 	
-	net_packet->data[4 + numBytes * 2] = (Uint8)effectStrengths.size();
+	net_packet->data[4 + numBytes * 2] = static_cast<Uint8>(effectStrengths.size());
 	net_packet->len = 4 + numBytes * 2 + 1;
 	for ( auto& pair : effectStrengths )
 	{
@@ -402,8 +402,8 @@ void serverSendItemToPickupAndEquip(int player, Item* item)
 	strcpy((char*)net_packet->data, "ITEQ");
 	SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
 	SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
-	SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[12]);
-	SDLNet_Write32((Uint32)item->count, &net_packet->data[16]);
+	SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
+	SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
 	SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
 	SDLNet_Write32((Uint32)item->ownerUid, &net_packet->data[24]);
 	net_packet->data[28] = item->identified;
@@ -523,7 +523,7 @@ void sendMinimapPing(Uint8 player, Uint8 x, Uint8 y, Uint8 pingType, bool radius
 			}
 			if ( players[c]->isLocalPlayer() )
 			{
-				minimapPingAdd(player, c, MinimapPing(ticks, player, x, y, radius, (MinimapPing::PingType)pingType));
+				minimapPingAdd(player, c, MinimapPing(ticks, player, x, y, radius, static_cast<MinimapPing::PingType>(pingType)));
 				continue;
 			}
 

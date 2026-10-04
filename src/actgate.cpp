@@ -186,7 +186,7 @@ void Entity::actGate()
 			list_t* currentList = *it;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( entity == this || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost)
 					|| entity->behavior == &actDoorFrame || entity->behavior == &::actGate )
 				{

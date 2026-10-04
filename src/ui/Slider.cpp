@@ -241,10 +241,10 @@ Slider::result_t Slider::process(SDL_Rect _size, SDL_Rect _actualSize, const boo
 #else
 	const bool clicking = mousestatus[SDL_BUTTON_LEFT];
 	const int mouseowner = intro || gamePaused ? inputs.getPlayerIDAllowedKeyboard() : owner;
-	Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
-	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / (float)yres) * (float)Frame::virtualScreenY;
+	Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 #endif
 
 #ifndef EDITOR
@@ -274,10 +274,10 @@ Slider::result_t Slider::process(SDL_Rect _size, SDL_Rect _actualSize, const boo
 			pressed = true;
 			float oldValue = value;
 			if (orientation == SLIDER_HORIZONTAL) {
-				value = ((float)(mousex - offX) / (railSize.w - border * 2)) * (float)(maxValue - minValue) + minValue;
+				value = (static_cast<float>(mousex - offX) / (railSize.w - border * 2)) * (float)(maxValue - minValue) + minValue;
 			}
 			else if (orientation == SLIDER_VERTICAL) {
-				value = ((float)(mousey - offY) / (railSize.h - border * 2)) * (float)(maxValue - minValue) + minValue;
+				value = (static_cast<float>(mousey - offY) / (railSize.h - border * 2)) * (float)(maxValue - minValue) + minValue;
 			}
 			value = std::min(std::max(minValue, value), maxValue);
 			if (oldValue != value) {

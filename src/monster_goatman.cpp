@@ -789,7 +789,7 @@ void goatmanMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -814,7 +814,7 @@ void goatmanMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -857,7 +857,7 @@ void goatmanMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			}
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -889,7 +889,7 @@ void goatmanMoveBodyparts(Entity* my, Stat* myStats, double dist)
 						node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
 						if ( rightbodyNode )
 						{
-							rightbody = (Entity*)rightbodyNode->element;
+							rightbody = static_cast<Entity*>(rightbodyNode->element);
 						}
 						else
 						{
@@ -1071,7 +1071,7 @@ void goatmanMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* weaponNode = list_Node(&my->children, 7);
 				if ( weaponNode )
 				{
-					Entity* weapon = (Entity*)weaponNode->element;
+					Entity* weapon = static_cast<Entity*>(weaponNode->element);
 					if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT) )
 					{
 						// if weapon invisible and I'm not attacking, relax arm.
@@ -1100,7 +1100,7 @@ void goatmanMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* shieldNode = list_Node(&my->children, 8);
 				if ( shieldNode )
 				{
-					Entity* shield = (Entity*)shieldNode->element;
+					Entity* shield = static_cast<Entity*>(shieldNode->element);
 					if ( shield->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT )
 					{
 						entity->focalx = limbs[GOATMAN][5][0]; // 0
@@ -1450,7 +1450,7 @@ void goatmanMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	node_t* shieldNode = list_Node(&my->children, 8);
 	if ( shieldNode )
 	{
-		Entity* shieldEntity = (Entity*)shieldNode->element;
+		Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
 		if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 		{
 			shieldEntity->yaw -= PI / 6;

@@ -4937,7 +4937,7 @@ void actHudShield(Entity* my)
 
 		if ( HUDSHIELD_DUCK_CHARGE >= 60.0 || (!defending && HUDSHIELD_DUCK_CHARGE >= 30.0) )
 		{
-			if ( playerThrowDuck(HUDSHIELD_PLAYERNUM, stats[HUDSHIELD_PLAYERNUM]->shield, std::min(50, (int)HUDSHIELD_DUCK_CHARGE)) )
+			if ( playerThrowDuck(HUDSHIELD_PLAYERNUM, stats[HUDSHIELD_PLAYERNUM]->shield, std::min(50, static_cast<int>(HUDSHIELD_DUCK_CHARGE))) )
 			{
 				my->flags[INVISIBLE] = true;
 				my->flags[INVISIBLE_DITHER] = false;
@@ -4952,7 +4952,7 @@ void actHudShield(Entity* my)
 		if ( defending )
 		{
 			int rate = 20;
-			int chargeTimeInit = (float)(TICKS_PER_SECOND / 4);
+			int chargeTimeInit = static_cast<float>((TICKS_PER_SECOND / 4));
 			chargeTimeInit *= getSpellPropertyFromID(spell_t::SPELLPROP_MODIFIED_FOCI_CAST_TIME, getSpellIDFromFoci(stats[HUDSHIELD_PLAYERNUM]->shield->type),
 				nullptr, stats[HUDSHIELD_PLAYERNUM], nullptr);
 			chargeTimeInit = std::max(TICKS_PER_SECOND, chargeTimeInit + TICKS_PER_SECOND);
@@ -4965,7 +4965,7 @@ void actHudShield(Entity* my)
 				}
 				else
 				{
-					HUDSHIELD_FOCI_SPIN += 0.15 + 0.25 * (chargeTimeInit - HUDSHIELD_DEFEND_TIME) / (real_t)TICKS_PER_SECOND;
+					HUDSHIELD_FOCI_SPIN += 0.15 + 0.25 * (chargeTimeInit - HUDSHIELD_DEFEND_TIME) / static_cast<real_t>(TICKS_PER_SECOND);
 				}
 
 			}

@@ -424,7 +424,7 @@ void succubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -449,7 +449,7 @@ void succubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -481,7 +481,7 @@ void succubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
 		{
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -618,7 +618,7 @@ void succubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
 				if ( weaponNode )
 				{
-					Entity* weapon = (Entity*)weaponNode->element;
+					Entity* weapon = static_cast<Entity*>(weaponNode->element);
 					if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterAttack == 0) )
 					{
 						// if weapon invisible and I'm not attacking, relax arm.
@@ -651,7 +651,7 @@ void succubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* shieldNode = list_Node(&my->children, 8);
 				if ( shieldNode )
 				{
-					Entity* shield = (Entity*)shieldNode->element;
+					Entity* shield = static_cast<Entity*>(shieldNode->element);
 					if ( shield->flags[INVISIBLE] )
 					{
 						// if weapon invisible, relax arm.
@@ -1013,7 +1013,7 @@ void succubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
 	if ( shieldNode )
 	{
-		Entity* shieldEntity = (Entity*)shieldNode->element;
+		Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
 		if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 		{
 			shieldEntity->yaw -= PI / 6;

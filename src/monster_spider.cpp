@@ -342,7 +342,7 @@ void spiderMoveBodyparts(Entity* my, Stat* myStats, double dist)
 					bodypart++;
 					continue;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -363,7 +363,7 @@ void spiderMoveBodyparts(Entity* my, Stat* myStats, double dist)
 					bodypart++;
 					continue;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -386,11 +386,11 @@ void spiderMoveBodyparts(Entity* my, Stat* myStats, double dist)
 		{
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		Entity* previous = NULL; // previous part
 		if ( bodypart > 2 )
 		{
-			previous = (Entity*)node->prev->element;
+			previous = static_cast<Entity*>(node->prev->element);
 		}
 		entity->x = my->x;
 		entity->y = my->y;

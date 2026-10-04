@@ -106,7 +106,7 @@ void Player::Ghost_t::handleGhostCameraBobbing(bool useRefreshRateDelta)
 	double refreshRateDelta = 1.0;
 	if ( useRefreshRateDelta && fps > 0.0 )
 	{
-		refreshRateDelta *= TICKS_PER_SECOND / (real_t)fpsLimit;
+		refreshRateDelta *= TICKS_PER_SECOND / static_cast<real_t>(fpsLimit);
 	}
 
 	Input& input = Input::inputs[playernum];
@@ -195,7 +195,7 @@ void Player::Ghost_t::handleGhostMovement(const bool useRefreshRateDelta)
 	double refreshRateDelta = 1.0;
 	if ( useRefreshRateDelta && fps > 0.0 )
 	{
-		refreshRateDelta *= TICKS_PER_SECOND / (real_t)fpsLimit;
+		refreshRateDelta *= TICKS_PER_SECOND / static_cast<real_t>(fpsLimit);
 	}
 
 	// calculate movement forces
@@ -216,7 +216,7 @@ void Player::Ghost_t::handleGhostMovement(const bool useRefreshRateDelta)
 			if ( !inputs.hasController(player.playernum) )
 			{
 				x_force = (input.binary("Move Right") - input.binary("Move Left"));
-				y_force = input.binary("Move Forward") - (double)input.binary("Move Backward") * backpedalMultiplier;
+				y_force = input.binary("Move Forward") - static_cast<double>(input.binary("Move Backward")) * backpedalMultiplier;
 			}
 
 			if ( inputs.hasController(player.playernum) /*&& !input.binary("Move Left") && !input.binary("Move Right")*/ )
@@ -246,7 +246,7 @@ void Player::Ghost_t::handleGhostMovement(const bool useRefreshRateDelta)
 		{
 			if ( node_t* node = list_Node(&my->children, 2) )
 			{
-				if ( Entity* entity = (Entity*)node->element )
+				if ( Entity* entity = static_cast<Entity*>(node->element) )
 				{
 					if ( Entity::getMonsterTypeFromSprite(entity->sprite) == DUCK_SMALL )
 					{
@@ -328,7 +328,7 @@ bool Player::Ghost_t::handleQuickTurn(bool useRefreshRateDelta)
 	double refreshRateDelta = 1.0;
 	if ( useRefreshRateDelta && fps > 0.0 )
 	{
-		refreshRateDelta *= TICKS_PER_SECOND / (real_t)fpsLimit;
+		refreshRateDelta *= TICKS_PER_SECOND / static_cast<real_t>(fpsLimit);
 	}
 
 	if ( abs(quickTurnRotation) > 0.001 )
@@ -1668,8 +1668,8 @@ Entity* Player::Ghost_t::respawn()
 
 		int x = (spawnX);
 		int y = (spawnY);
-		SDLNet_Write16((Sint16)(x), &net_packet->data[6]);
-		SDLNet_Write16((Sint16)(y), &net_packet->data[8]);
+		SDLNet_Write16(static_cast<Sint16>(x), &net_packet->data[6]);
+		SDLNet_Write16(static_cast<Sint16>(y), &net_packet->data[8]);
 		net_packet->data[10] = secretlevel;
 		net_packet->address.host = net_server.host;
 		net_packet->address.port = net_server.port;
@@ -1896,8 +1896,8 @@ Entity* Player::Ghost_t::spawnGhost()
 
 		int x = (spawnX);
 		int y = (spawnY);
-		SDLNet_Write16((Sint16)(x), &net_packet->data[6]);
-		SDLNet_Write16((Sint16)(y), &net_packet->data[8]);
+		SDLNet_Write16(static_cast<Sint16>(x), &net_packet->data[6]);
+		SDLNet_Write16(static_cast<Sint16>(y), &net_packet->data[8]);
 		net_packet->data[10] = secretlevel;
 		net_packet->address.host = net_server.host;
 		net_packet->address.port = net_server.port;
@@ -1930,7 +1930,7 @@ void Player::Ghost_t::handleGhostCameraUpdate(const bool useRefreshRateDelta)
 	double refreshRateDelta = 1.0;
 	if ( useRefreshRateDelta && fps > 0.0 )
 	{
-		refreshRateDelta *= TICKS_PER_SECOND / (real_t)fpsLimit;
+		refreshRateDelta *= TICKS_PER_SECOND / static_cast<real_t>(fpsLimit);
 	}
 
 	if ( player.shootmode && !player.usingCommand()
@@ -2345,13 +2345,13 @@ void actDeathGhost(Entity* my)
 	{
 		spawnAnimationPlaying = false;
 	}
-	float floatAnimationPercent = std::min(1.f, (float)GHOSTCAM_SPAWN_ANIM / (spawnAnimationHalfway));
+	float floatAnimationPercent = std::min(1.f, static_cast<float>(GHOSTCAM_SPAWN_ANIM) / (spawnAnimationHalfway));
 	float thirdPersonAnimationPercent = 0.f;
 	if ( players[playernum]->ghost.isSpiritGhost() )
 	{
 		if ( node_t* node = list_Node(&my->children, 2) )
 		{
-			if ( Entity* entity = (Entity*)node->element )
+			if ( Entity* entity = static_cast<Entity*>(node->element) )
 			{
 				if ( Entity::getMonsterTypeFromSprite(entity->sprite) == DUCK_SMALL )
 				{
@@ -2369,7 +2369,7 @@ void actDeathGhost(Entity* my)
 		thirdPersonAnimationPercent = 1.f;
 		if ( GHOSTCAM_SPAWN_ANIM > (spawnAnimationHalfway) )
 		{
-			thirdPersonAnimationPercent -= (GHOSTCAM_SPAWN_ANIM - (spawnAnimationHalfway)) / (float)(spawnAnimationDuration - (spawnAnimationHalfway));
+			thirdPersonAnimationPercent -= (GHOSTCAM_SPAWN_ANIM - (spawnAnimationHalfway)) / static_cast<float>(spawnAnimationDuration - (spawnAnimationHalfway));
 		}
 		thirdPersonAnimationPercent = std::max(0.f, thirdPersonAnimationPercent);
 	}
@@ -2492,11 +2492,11 @@ void actDeathGhost(Entity* my)
 		{
 			if ( node_t* node = list_Node(&my->children, 2) )
 			{
-				if ( Entity* entity = (Entity*)node->element )
+				if ( Entity* entity = static_cast<Entity*>(node->element) )
 				{
 					if ( node_t* innerNode = list_Node(&entity->children, 2) )
 					{
-						if ( Entity* entity2 = (Entity*)innerNode->element )
+						if ( Entity* entity2 = static_cast<Entity*>(innerNode->element) )
 						{
 							if ( GHOSTCAM_COSMETIC_SPRITE > 0 )
 							{
@@ -2623,12 +2623,12 @@ void actDeathGhost(Entity* my)
 			strcpy((char*)net_packet->data, "GMOV");
 			net_packet->data[4] = playernum;
 			net_packet->data[5] = currentlevel;
-			SDLNet_Write16((Sint16)(my->x * 32), &net_packet->data[6]);
-			SDLNet_Write16((Sint16)(my->y * 32), &net_packet->data[8]);
-			SDLNet_Write16((Sint16)(my->vel_x * 128), &net_packet->data[10]);
-			SDLNet_Write16((Sint16)(my->vel_y * 128), &net_packet->data[12]);
-			SDLNet_Write16((Sint16)(my->yaw * 128), &net_packet->data[14]);
-			SDLNet_Write16((Sint16)(my->pitch * 128), &net_packet->data[16]);
+			SDLNet_Write16(static_cast<Sint16>(my->x * 32), &net_packet->data[6]);
+			SDLNet_Write16(static_cast<Sint16>(my->y * 32), &net_packet->data[8]);
+			SDLNet_Write16(static_cast<Sint16>(my->vel_x * 128), &net_packet->data[10]);
+			SDLNet_Write16(static_cast<Sint16>(my->vel_y * 128), &net_packet->data[12]);
+			SDLNet_Write16(static_cast<Sint16>(my->yaw * 128), &net_packet->data[14]);
+			SDLNet_Write16(static_cast<Sint16>(my->pitch * 128), &net_packet->data[16]);
 			net_packet->data[18] = secretlevel;
 			// continued after clipmove...
 		}
@@ -2947,7 +2947,7 @@ void actDeathGhost(Entity* my)
 					{
 						continue;
 					}
-					if ( Entity* entity = (Entity*)node->element )
+					if ( Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						if ( !player->ghost.isActive() )
 						{
@@ -2974,7 +2974,7 @@ void actDeathGhost(Entity* my)
 					{
 						continue;
 					}
-					if ( Entity* entity = (Entity*)node->element )
+					if ( Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						entity->flags[INVISIBLE] = true;
 						entity->flags[INVISIBLE_DITHER] = false;
@@ -3640,7 +3640,7 @@ bool Player::PlayerMovement_t::handleQuickTurn(bool useRefreshRateDelta)
 	double refreshRateDelta = 1.0;
 	if ( useRefreshRateDelta && fps > 0.0 )
 	{
-		refreshRateDelta *= TICKS_PER_SECOND / (real_t)fpsLimit;
+		refreshRateDelta *= TICKS_PER_SECOND / static_cast<real_t>(fpsLimit);
 	}
 
 	if ( abs(quickTurnRotation) > 0.001 )
@@ -3794,7 +3794,7 @@ void Player::PlayerMovement_t::handlePlayerCameraUpdate(bool useRefreshRateDelta
 	double refreshRateDelta = 1.0;
 	if ( useRefreshRateDelta && fps > 0.0 )
 	{
-		refreshRateDelta *= TICKS_PER_SECOND / (real_t)fpsLimit;
+		refreshRateDelta *= TICKS_PER_SECOND / static_cast<real_t>(fpsLimit);
 	}
 	if ( player.shootmode && !player.usingCommand()
 		&& !gamePaused
@@ -4063,7 +4063,7 @@ void Player::PlayerMovement_t::handlePlayerCameraBobbing(bool useRefreshRateDelt
 	double refreshRateDelta = 1.0;
 	if ( useRefreshRateDelta && fps > 0.0 )
 	{
-		refreshRateDelta *= TICKS_PER_SECOND / (real_t)fpsLimit;
+		refreshRateDelta *= TICKS_PER_SECOND / static_cast<real_t>(fpsLimit);
 	}
 
 	Input& input = Input::inputs[playernum];
@@ -4287,7 +4287,7 @@ int Player::PlayerMovement_t::getCharacterEquippedWeight()
 	int weight = 0;
 	for ( node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( item != NULL && player.paperDoll.isItemOnDoll(*item) )
 		{
 			if ( item->type >= 0 && item->type < NUMITEMS )
@@ -4304,7 +4304,7 @@ int Player::PlayerMovement_t::getCharacterWeight()
 	int weight = 0;
 	for ( node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( item != NULL )
 		{
 			if ( item->type >= 0 && item->type < NUMITEMS )
@@ -4335,20 +4335,20 @@ int Player::PlayerMovement_t::getCharacterModifiedWeight(int* customWeight)
 	}
 	if ( stats[player.playernum]->getEffectActive(EFF_LIGHTEN_LOAD) > 0 )
 	{
-		weight = weight * (100 - std::min(100, std::max(0, (int)stats[player.playernum]->getEffectActive(EFF_LIGHTEN_LOAD)))) / 100.0;
+		weight = weight * (100 - std::min(100, std::max(0, static_cast<int>(stats[player.playernum]->getEffectActive(EFF_LIGHTEN_LOAD))))) / 100.0;
 	}
 	return weight;
 }
 
 real_t Player::PlayerMovement_t::getWeightRatio(int weight, Sint32 STR)
 {
-	real_t weightratio_zero = (1000 - weight) / (double)(1000);
+	real_t weightratio_zero = (1000 - weight) / static_cast<double>(1000);
 	weightratio_zero = fmin(fmax(0, weightratio_zero), 1);
 	real_t curveExponentFactor = 2.0;
 	int curveYoffset = 1;
 	weightratio_zero = -pow(1.0 - weightratio_zero, curveExponentFactor) + curveYoffset;
 
-	real_t weightratio = (1000 + STR * 100 - weight) / (double)(1000 + STR * 100);
+	real_t weightratio = (1000 + STR * 100 - weight) / static_cast<double>(1000 + STR * 100);
 	weightratio = fmin(fmax(0, weightratio), 1);
 
 	if ( weight <= 1000 )
@@ -4465,7 +4465,7 @@ real_t Player::PlayerMovement_t::getSpeedFactor(real_t weightratio, Sint32 DEX)
 
 	for ( node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( item != NULL )
 		{
 			if ( item->type == TOOL_PLAYER_LOOT_BAG )
@@ -4503,7 +4503,7 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
 	double refreshRateDelta = 1.0;
 	if ( useRefreshRateDelta && fps > 0.0 )
 	{
-		refreshRateDelta *= TICKS_PER_SECOND / (real_t)fpsLimit;
+		refreshRateDelta *= TICKS_PER_SECOND / static_cast<real_t>(fpsLimit);
 	}
 
 	// calculate weight
@@ -4642,7 +4642,7 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
 					{
 						//Normal controls.
 						x_force = (input.binary("Move Right") - input.binary("Move Left"));
-						y_force = input.binary("Move Forward") - (double)input.binary("Move Backward") * backpedalMultiplier;
+						y_force = input.binary("Move Forward") - static_cast<double>(input.binary("Move Backward")) * backpedalMultiplier;
 						if ( noclip )
 						{
 							if ( keystatus[SDLK_LSHIFT] )
@@ -4656,7 +4656,7 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
 					{
 						//Confused controls.
 						x_force = input.binary("Move Left") - input.binary("Move Right");
-						y_force = input.binary("Move Backward") - (double)input.binary("Move Forward") * backpedalMultiplier;
+						y_force = input.binary("Move Backward") - static_cast<double>(input.binary("Move Forward")) * backpedalMultiplier;
 					}
 				}
 
@@ -4702,7 +4702,7 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
 		if ( *cvar_debugspeedfactor && ticks % 50 == 0 )
 		{
 			Sint32 STR = statGetSTR(stats[PLAYER_NUM], players[PLAYER_NUM]->entity);
-			real_t weightratioOld = (1000 + STR * 100 - weight) / (double)(1000 + STR * 100);
+			real_t weightratioOld = (1000 + STR * 100 - weight) / static_cast<double>(1000 + STR * 100);
 			weightratioOld = fmin(fmax(0, weightratioOld), 1);
 			real_t maxSpeed = getMaximumSpeed();
 			Sint32 DEX = statGetDEX(stats[PLAYER_NUM], players[PLAYER_NUM]->entity);
@@ -4902,7 +4902,7 @@ void Player::PlayerMovement_t::handlePlayerCameraPosition(bool useRefreshRateDel
 	double refreshRateDelta = 1.0;
 	if ( useRefreshRateDelta && fps > 0.0 )
 	{
-		refreshRateDelta *= TICKS_PER_SECOND / (real_t)fpsLimit;
+		refreshRateDelta *= TICKS_PER_SECOND / static_cast<real_t>(fpsLimit);
 	}
 
 	// camera
@@ -5050,7 +5050,7 @@ void statueCycleItem(Item& item, bool dirForward)
 			}
 			if ( items[i].item_slot == cat )
 			{
-				item.type = ItemType(i);
+				item.type = static_cast<ItemType>(i);
 				break;
 			}
 		}
@@ -5065,7 +5065,7 @@ void statueCycleItem(Item& item, bool dirForward)
 			}
 			if ( items[i].item_slot == cat )
 			{
-				item.type = ItemType(i);
+				item.type = static_cast<ItemType>(i);
 				break;
 			}
 		}
@@ -5080,7 +5080,7 @@ void followerDebugEquipment(int player)
 	{
 		for ( node_t* node = stats[player]->FOLLOWERS.first; node != nullptr; node = node->next )
 		{
-			Uint32* c = (Uint32*)node->element;
+			Uint32* c = static_cast<Uint32*>(node->element);
 			if ( c )
 			{
 				follower = uidToEntity(*c);
@@ -5861,7 +5861,7 @@ bool shieldSpriteAllowedImpForm(int sprite)
 	{
 		for ( int i = 0; i < NUMITEMS; ++i )
 		{
-			if ( items[i].category == SPELLBOOK || itemTypeIsFoci(ItemType(i)) )
+			if ( items[i].category == SPELLBOOK || itemTypeIsFoci(static_cast<ItemType>(i)) )
 			{
 				for ( int j = 0; j < items[i].variations; ++j )
 				{
@@ -5941,7 +5941,7 @@ void playerDebugTests(Entity* my)
 		bool killingDone = true;
 		for ( auto node = map.entities->first; node; node = node->next )
 		{
-			if ( Entity* entity = (Entity*)node->element )
+			if ( Entity* entity = static_cast<Entity*>(node->element) )
 			{
 				if ( entity->behavior == &actMonster )
 				{
@@ -6074,7 +6074,7 @@ void playerDebugTests(Entity* my)
 
 				for ( auto& pair : xpGained )
 				{
-					sortedXP.push_back(std::make_pair(pair.first, pair.second.numXP / (real_t)(std::max(1, pair.second.numKills))));
+					sortedXP.push_back(std::make_pair(pair.first, pair.second.numXP / static_cast<real_t>(std::max(1, pair.second.numKills))));
 				}
 				std::sort(sortedXP.begin(), sortedXP.end(), [](std::pair<std::string, real_t>& a, std::pair<std::string, real_t>& b) {
 					return a.second > b.second;
@@ -6084,7 +6084,7 @@ void playerDebugTests(Entity* my)
 					auto pair = xpGained.find(p.first);
 					if ( pair != xpGained.end() )
 					{
-						printlog("Total XP: %s: XP: %d Kills: %d: Ratio: %.2f", pair->first.c_str(), pair->second.numXP, pair->second.numKills, (real_t)pair->second.numXP / (real_t)std::max(1, pair->second.numKills));
+						printlog("Total XP: %s: XP: %d Kills: %d: Ratio: %.2f", pair->first.c_str(), pair->second.numXP, pair->second.numKills, static_cast<real_t>(pair->second.numXP) / static_cast<real_t>(std::max(1, pair->second.numKills)));
 					}
 				}
 				for ( auto& pair : xpGainedBiome )
@@ -6092,7 +6092,7 @@ void playerDebugTests(Entity* my)
 					sortedXP.clear();
 					for ( auto& pair2 : pair.second )
 					{
-						sortedXP.push_back(std::make_pair(pair2.first, pair2.second.numXP / (real_t)(std::max(1, pair2.second.numKills))));
+						sortedXP.push_back(std::make_pair(pair2.first, pair2.second.numXP / static_cast<real_t>(std::max(1, pair2.second.numKills))));
 					}
 					std::sort(sortedXP.begin(), sortedXP.end(), [](std::pair<std::string, real_t>& a, std::pair<std::string, real_t>& b) {
 						return a.second > b.second;
@@ -6102,7 +6102,7 @@ void playerDebugTests(Entity* my)
 						auto pair2 = pair.second.find(p.first);
 						if ( pair2 != pair.second.end() )
 						{
-							printlog("%s XP: %s: XP: %d Kills: %d: Ratio: %.2f", pair.first.c_str(), pair2->first.c_str(), pair2->second.numXP, pair2->second.numKills, (real_t)pair2->second.numXP / (real_t)std::max(1, pair2->second.numKills));
+							printlog("%s XP: %s: XP: %d Kills: %d: Ratio: %.2f", pair.first.c_str(), pair2->first.c_str(), pair2->second.numXP, pair2->second.numKills, static_cast<real_t>(pair2->second.numXP) / static_cast<real_t>(std::max(1, pair2->second.numKills)));
 						}
 					}
 				}
@@ -6502,9 +6502,9 @@ void actPlayer(Entity* my)
 			spellTimer->x = my->x + 16.0 * cos(my->yaw);
 			spellTimer->y = my->y + 16.0 * sin(my->yaw);
 			Sint32 val = (1 << 31);
-			val |= (Uint8)(19);
-			val |= (((Uint16)(spellTimer->particleTimerDuration) & 0xFFF) << 8);
-			val |= (Uint8)(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
+			val |= static_cast<Uint8>(19);
+			val |= ((static_cast<Uint16>(spellTimer->particleTimerDuration) & 0xFFF) << 8);
+			val |= static_cast<Uint8>(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
 			spellTimer->skill[2] = val;
 		}
 		else if ( *cvar_pbaoe == 8 )
@@ -6571,9 +6571,9 @@ void actPlayer(Entity* my)
 			spellTimer->x = my->x + 16.0 * cos(my->yaw);
 			spellTimer->y = my->y + 16.0 * sin(my->yaw);
 			Sint32 val = (1 << 31);
-			val |= (Uint8)(19);
-			val |= (((Uint16)(spellTimer->particleTimerDuration) & 0xFFF) << 8);
-			val |= (Uint8)(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
+			val |= static_cast<Uint8>(19);
+			val |= ((static_cast<Uint16>(spellTimer->particleTimerDuration) & 0xFFF) << 8);
+			val |= static_cast<Uint8>(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
 			spellTimer->skill[2] = val;
 		}
 		else if ( *cvar_pbaoe == 12 )
@@ -6587,9 +6587,9 @@ void actPlayer(Entity* my)
 			spellTimer->x = my->x + 16.0 * cos(my->yaw);
 			spellTimer->y = my->y + 16.0 * sin(my->yaw);
 			Sint32 val = (1 << 31);
-			val |= (Uint8)(19);
-			val |= (((Uint16)(spellTimer->particleTimerDuration) & 0xFFF) << 8);
-			val |= (Uint8)(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
+			val |= static_cast<Uint8>(19);
+			val |= ((static_cast<Uint16>(spellTimer->particleTimerDuration) & 0xFFF) << 8);
+			val |= static_cast<Uint8>(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
 			spellTimer->skill[2] = val;
 		}
 		else if ( *cvar_pbaoe == 11 )
@@ -6603,9 +6603,9 @@ void actPlayer(Entity* my)
 			spellTimer->x = my->x + 16.0 * cos(my->yaw);
 			spellTimer->y = my->y + 16.0 * sin(my->yaw);
 			Sint32 val = (1 << 31);
-			val |= (Uint8)(19);
-			val |= (((Uint16)(spellTimer->particleTimerDuration) & 0xFFF) << 8);
-			val |= (Uint8)(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
+			val |= static_cast<Uint8>(19);
+			val |= ((static_cast<Uint16>(spellTimer->particleTimerDuration) & 0xFFF) << 8);
+			val |= static_cast<Uint8>(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
 			spellTimer->skill[2] = val;
 		}
 		else if ( *cvar_pbaoe == 5 || *cvar_pbaoe == 16 )
@@ -6714,9 +6714,9 @@ void actPlayer(Entity* my)
 			spellTimer->x = my->x + 16.0 * cos(my->yaw);
 			spellTimer->y = my->y + 16.0 * sin(my->yaw);
 			Sint32 val = (1 << 31);
-			val |= (Uint8)(19);
-			val |= (((Uint16)(spellTimer->particleTimerDuration) & 0xFFF) << 8);
-			val |= (Uint8)(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
+			val |= static_cast<Uint8>(19);
+			val |= ((static_cast<Uint16>(spellTimer->particleTimerDuration) & 0xFFF) << 8);
+			val |= static_cast<Uint8>(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
 			spellTimer->skill[2] = val;
 		}
 		else if ( *cvar_particle_test == ParticleTimerEffect_t::EffectType::EFFECT_ROOTS_TILE )
@@ -6730,9 +6730,9 @@ void actPlayer(Entity* my)
 			spellTimer->x = my->x + 16.0 * cos(my->yaw);
 			spellTimer->y = my->y + 16.0 * sin(my->yaw);
 			Sint32 val = (1 << 31);
-			val |= (Uint8)(19);
-			val |= (((Uint16)(spellTimer->particleTimerDuration) & 0xFFF) << 8);
-			val |= (Uint8)(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
+			val |= static_cast<Uint8>(19);
+			val |= ((static_cast<Uint16>(spellTimer->particleTimerDuration) & 0xFFF) << 8);
+			val |= static_cast<Uint8>(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
 			spellTimer->skill[2] = val;
 		}
 		else if ( *cvar_particle_test == ParticleTimerEffect_t::EffectType::EFFECT_ROOTS_PATH )
@@ -6746,9 +6746,9 @@ void actPlayer(Entity* my)
 			spellTimer->x = my->x + 16.0 * cos(my->yaw);
 			spellTimer->y = my->y + 16.0 * sin(my->yaw);
 			Sint32 val = (1 << 31);
-			val |= (Uint8)(19);
-			val |= (((Uint16)(spellTimer->particleTimerDuration) & 0xFFF) << 8);
-			val |= (Uint8)(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
+			val |= static_cast<Uint8>(19);
+			val |= ((static_cast<Uint16>(spellTimer->particleTimerDuration) & 0xFFF) << 8);
+			val |= static_cast<Uint8>(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
 			spellTimer->skill[2] = val;
 		}
 		else if ( *cvar_particle_test == ParticleTimerEffect_t::EffectType::EFFECT_LIGHTNING_BOLT )
@@ -6766,9 +6766,9 @@ void actPlayer(Entity* my)
 			spellTimer->flags[UPDATENEEDED] = true;
 			spellTimer->skill[2] = -18;
 			Sint32 val = (1 << 31);
-			val |= (Uint8)(19);
-			val |= (((Uint16)(spellTimer->particleTimerDuration) & 0xFFF) << 8);
-			val |= (Uint8)(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
+			val |= static_cast<Uint8>(19);
+			val |= ((static_cast<Uint16>(spellTimer->particleTimerDuration) & 0xFFF) << 8);
+			val |= static_cast<Uint8>(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
 			spellTimer->skill[2] = val;
 			spellTimer->particleTimerEffectLifetime = lifetime;
 			floorMagicCreateLightningSequence(spellTimer, 0);
@@ -7019,8 +7019,8 @@ void actPlayer(Entity* my)
 			{
 				++index;
 				auto& effect = timerEffects.effectMap[lifetime_tick == 0 ? 1 : lifetime_tick]; // first behavior tick only occurs at 1
-				real_t ratio = lifetime_tick / (real_t)lifetime;
-				effect.effectType = (ParticleTimerEffect_t::EffectType)(*cvar_particle_test);
+				real_t ratio = lifetime_tick / static_cast<real_t>(lifetime);
+				effect.effectType = static_cast<ParticleTimerEffect_t::EffectType>(*cvar_particle_test);
 				effect.x = my->x + dist * (0.75 * ratio + 0.25) * cos(my->yaw);
 				effect.y = my->y + dist * (0.75 * ratio + 0.25) * sin(my->yaw);
 				if ( effect.effectType == ParticleTimerEffect_t::EffectType::EFFECT_ICE_WAVE )
@@ -7813,7 +7813,7 @@ void actPlayer(Entity* my)
 			for ( auto node = stats[PLAYER_NUM]->void_chest_inventory.first; node; node = nextnode )
 			{
 				nextnode = node->next;
-				if ( Item* item = (Item*)node->element )
+				if ( Item* item = static_cast<Item*>(node->element) )
 				{
 					if ( item->type == TOOL_DUCK )
 					{
@@ -7843,7 +7843,7 @@ void actPlayer(Entity* my)
 				bool birdInHand = false;
 				for ( auto node = stats[PLAYER_NUM]->inventory.first; node; node = node->next )
 				{
-					if ( Item* item = (Item*)node->element )
+					if ( Item* item = static_cast<Item*>(node->element) )
 					{
 						if ( item->type == TOOL_DUCK )
 						{
@@ -7921,7 +7921,7 @@ void actPlayer(Entity* my)
 					bool foundherx = false;
 					for ( node = map.creatures->first; node != nullptr; node = node->next ) //Herx is in the creature list, so only search that.
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity->sprite == 274 )
 						{
 							foundherx = true;
@@ -8431,7 +8431,7 @@ void actPlayer(Entity* my)
 		bool anyUnid = false;
 		for ( auto node = stats[PLAYER_NUM]->inventory.first; node; node = node->next )
 		{
-			if ( Item* item = (Item*)node->element )
+			if ( Item* item = static_cast<Item*>(node->element) )
 			{
 				if ( !item->identified )
 				{
@@ -8439,11 +8439,11 @@ void actPlayer(Entity* my)
 					auto find = appraisal.appraisalProgressionItems.find(item->uid);
 					if ( find == appraisal.appraisalProgressionItems.end() )
 					{
-						appraisal.appraisalProgressionItems[item->uid] = std::max((int)(appraisalTimerReduce * appraisal.getAppraisalTime(item)), 1);
+						appraisal.appraisalProgressionItems[item->uid] = std::max(static_cast<int>(appraisalTimerReduce * appraisal.getAppraisalTime(item)), 1);
 					}
 					else
 					{
-						appraisal.appraisalProgressionItems[item->uid] = std::max((int)(appraisalTimerReduce * appraisal.appraisalProgressionItems[item->uid]), 1);
+						appraisal.appraisalProgressionItems[item->uid] = std::max(static_cast<int>(appraisalTimerReduce * appraisal.appraisalProgressionItems[item->uid]), 1);
 					}
 
 					if ( appraisal.current_item == item->uid )
@@ -8490,7 +8490,7 @@ void actPlayer(Entity* my)
 				std::unordered_set<Uint32> appearancesOfSimilarItems;
 				for ( node = stats[PLAYER_NUM]->inventory.first; node != NULL; node = node->next )
 				{
-					Item* item2 = (Item*)node->element;
+					Item* item2 = static_cast<Item*>(node->element);
 					if ( item2 == tempItem )
 					{
 						continue;
@@ -8707,7 +8707,7 @@ void actPlayer(Entity* my)
 						std::unordered_set<Uint32> appearancesOfSimilarItems;
 						for ( node = stats[PLAYER_NUM]->inventory.first; node != NULL; node = node->next )
 						{
-							Item* item2 = (Item*)node->element;
+							Item* item2 = static_cast<Item*>(node->element);
 							if ( item2 && item2 != tempItem && !itemCompare(tempItem, item2, false) )
 							{
 								if ( ((itemTypeIsQuiver(item2->type) || itemTypeIsThrownBall(item2->type)) && (tempItem->count + item2->count) >= QUIVER_MAX_AMMO_QTY)
@@ -8973,7 +8973,7 @@ void actPlayer(Entity* my)
 						{
 							break;
 						}
-						entity = (Entity*)node->element;
+						entity = static_cast<Entity*>(node->element);
 						if ( !entity->flags[INVISIBLE] )
 						{
 							entity->flags[INVISIBLE] = true;
@@ -9008,7 +9008,7 @@ void actPlayer(Entity* my)
 						{
 							break;
 						}
-						entity = (Entity*)node->element;
+						entity = static_cast<Entity*>(node->element);
 						if ( entity->flags[INVISIBLE] )
 						{
 							if ( stats[PLAYER_NUM]->type == RAT )
@@ -10802,7 +10802,7 @@ void actPlayer(Entity* my)
 						}
 						if ( node->element )
 						{
-							Entity* tempEntity = (Entity*)node->element;
+							Entity* tempEntity = static_cast<Entity*>(node->element);
 							if ( tempEntity )
 							{
 								list_RemoveNode(tempEntity->mynode);
@@ -10882,7 +10882,7 @@ void actPlayer(Entity* my)
 						{
 							node_t* oldnode = spellnode;
 							spellnode = spellnode->next;
-							spell_t* spell = (spell_t*)oldnode->element;
+							spell_t* spell = static_cast<spell_t*>(oldnode->element);
 							spell->magic_effects_node = NULL;
 							if ( spell->sustainEffectDissipate >= 0 )
 							{
@@ -10918,7 +10918,7 @@ void actPlayer(Entity* my)
 			                    memcpy(net_packet->data, "UDIE", 4);
 			                    SDLNet_Write32((Uint32)stats[PLAYER_NUM]->killer, &net_packet->data[4]);
 			                    if (stats[PLAYER_NUM]->killer == KilledBy::MONSTER) {
-			                        net_packet->data[8] = (Uint8)stats[PLAYER_NUM]->killer_name.size();
+			                        net_packet->data[8] = static_cast<Uint8>(stats[PLAYER_NUM]->killer_name.size());
 			                        SDLNet_Write32((Uint32)stats[PLAYER_NUM]->killer_monster, &net_packet->data[9]);
 			                        net_packet->len = 13;
 			                        if (net_packet->data[8]) {
@@ -10945,7 +10945,7 @@ void actPlayer(Entity* my)
 						for ( node_t* node = stats[PLAYER_NUM]->FOLLOWERS.first; node != nullptr; node = nextnode )
 						{
 							nextnode = node->next;
-							Uint32* c = (Uint32*)node->element;
+							Uint32* c = static_cast<Uint32*>(node->element);
 							Entity* myFollower = nullptr;
 							if ( c )
 							{
@@ -10975,7 +10975,7 @@ void actPlayer(Entity* my)
 									{
 										if ( bodypart >= LIMB_HUMANOID_TORSO )
 										{
-											Entity* tmp = (Entity*)node->element;
+											Entity* tmp = static_cast<Entity*>(node->element);
 											if ( tmp )
 											{
 												tmp->flags[USERFLAG2] = false;
@@ -11111,7 +11111,7 @@ void actPlayer(Entity* my)
 								for ( node = stats[PLAYER_NUM]->inventory.first; node != nullptr; node = nextnode )
 								{
 									nextnode = node->next;
-									Item* item = (Item*)node->element;
+									Item* item = static_cast<Item*>(node->element);
 									if ( itemCategory(item) == SPELL_CAT )
 									{
 										continue;    // don't drop spells on death, stupid!
@@ -11174,7 +11174,7 @@ void actPlayer(Entity* my)
 								for ( node = stats[PLAYER_NUM]->inventory.first; node != nullptr; node = nextnode )
 								{
 									nextnode = node->next;
-									Item* item = (Item*)node->element;
+									Item* item = static_cast<Item*>(node->element);
 									if ( itemCategory(item) == SPELL_CAT )
 									{
 										continue;
@@ -11219,7 +11219,7 @@ void actPlayer(Entity* my)
 							}
 							for ( node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next )
 							{
-								Entity* mapCreature = (Entity*)mapNode->element;
+								Entity* mapCreature = static_cast<Entity*>(mapNode->element);
 								if ( mapCreature )
 								{
 									mapCreature->monsterEntityRenderAsTelepath = 0; // do a final pass to undo any telepath rendering.
@@ -11230,8 +11230,8 @@ void actPlayer(Entity* my)
 						{
 							if ( !keepInventoryGlobal )
 							{
-								my->x = ((int)(my->x / 16)) * 16 + 8;
-								my->y = ((int)(my->y / 16)) * 16 + 8;
+								my->x = static_cast<int>(my->x / 16) * 16 + 8;
+								my->y = static_cast<int>(my->y / 16) * 16 + 8;
 
                                 Item* items[] = {
                                     stats[PLAYER_NUM]->helmet,
@@ -11447,12 +11447,12 @@ void actPlayer(Entity* my)
 			strcpy((char*)net_packet->data, "PMOV");
 			net_packet->data[4] = PLAYER_NUM;
 			net_packet->data[5] = currentlevel;
-			SDLNet_Write16((Sint16)(my->x * 32), &net_packet->data[6]);
-			SDLNet_Write16((Sint16)(my->y * 32), &net_packet->data[8]);
+			SDLNet_Write16(static_cast<Sint16>(my->x * 32), &net_packet->data[6]);
+			SDLNet_Write16(static_cast<Sint16>(my->y * 32), &net_packet->data[8]);
 			SDLNet_Write16((Sint16)(PLAYER_VELX * 128), &net_packet->data[10]);
 			SDLNet_Write16((Sint16)(PLAYER_VELY * 128), &net_packet->data[12]);
-			SDLNet_Write16((Sint16)(my->yaw * 128), &net_packet->data[14]);
-			SDLNet_Write16((Sint16)(my->pitch * 128), &net_packet->data[16]);
+			SDLNet_Write16(static_cast<Sint16>(my->yaw * 128), &net_packet->data[14]);
+			SDLNet_Write16(static_cast<Sint16>(my->pitch * 128), &net_packet->data[16]);
 			net_packet->data[18] = secretlevel;
 			net_packet->address.host = net_server.host;
 			net_packet->address.port = net_server.port;
@@ -11686,15 +11686,15 @@ void actPlayer(Entity* my)
 		{
 			if ( itemslots[slot] )
 			{
-				players[PLAYER_NUM]->compendiumProgress.playerEquipSlotTime[(int)(itemslots[slot]->type)]++;
+				players[PLAYER_NUM]->compendiumProgress.playerEquipSlotTime[static_cast<int>(itemslots[slot]->type)]++;
 			}
 		}
 		for ( node_t* node = stats[PLAYER_NUM]->FOLLOWERS.first; node != nullptr; node = node->next, ++i )
 		{
 			Entity* follower = nullptr;
-			if ( (Uint32*)node->element )
+			if ( static_cast<Uint32*>(node->element) )
 			{
-				follower = uidToEntity(*((Uint32*)node->element));
+				follower = uidToEntity(*static_cast<Uint32*>(node->element));
 				if ( follower )
 				{
 					int type = follower->getMonsterTypeFromSprite();
@@ -11706,16 +11706,16 @@ void actPlayer(Entity* my)
 		{
 			if ( gameModeManager.getMode() != GameModeManager_t::GAME_MODE_TUTORIAL )
 			{
-				Compendium_t::Events_t::eventUpdateCodex(PLAYER_NUM, Compendium_t::CPDM_DISTANCE_MAX_RUN, "strafing", (int)players[PLAYER_NUM]->compendiumProgress.playerDistAccum);
-				Compendium_t::Events_t::eventUpdateCodex(PLAYER_NUM, Compendium_t::CPDM_DISTANCE_MAX_FLOOR, "strafing", (int)players[PLAYER_NUM]->compendiumProgress.playerDistAccum, false, -1, true);
+				Compendium_t::Events_t::eventUpdateCodex(PLAYER_NUM, Compendium_t::CPDM_DISTANCE_MAX_RUN, "strafing", static_cast<int>(players[PLAYER_NUM]->compendiumProgress.playerDistAccum));
+				Compendium_t::Events_t::eventUpdateCodex(PLAYER_NUM, Compendium_t::CPDM_DISTANCE_MAX_FLOOR, "strafing", static_cast<int>(players[PLAYER_NUM]->compendiumProgress.playerDistAccum), false, -1, true);
 			}
-			Compendium_t::Events_t::eventUpdateCodex(PLAYER_NUM, Compendium_t::CPDM_DISTANCE_TRAVELLED, "strafing", (int)players[PLAYER_NUM]->compendiumProgress.playerDistAccum);
+			Compendium_t::Events_t::eventUpdateCodex(PLAYER_NUM, Compendium_t::CPDM_DISTANCE_TRAVELLED, "strafing", static_cast<int>(players[PLAYER_NUM]->compendiumProgress.playerDistAccum));
 			players[PLAYER_NUM]->compendiumProgress.playerDistAccum = 0.0;
 
-			Compendium_t::Events_t::eventUpdateCodex(PLAYER_NUM, Compendium_t::CPDM_CLASS_MOVING_TIME, "strafing", (int)players[PLAYER_NUM]->compendiumProgress.playerAliveTimeMoving);
+			Compendium_t::Events_t::eventUpdateCodex(PLAYER_NUM, Compendium_t::CPDM_CLASS_MOVING_TIME, "strafing", static_cast<int>(players[PLAYER_NUM]->compendiumProgress.playerAliveTimeMoving));
 			players[PLAYER_NUM]->compendiumProgress.playerAliveTimeMoving = 0;
 
-			Compendium_t::Events_t::eventUpdateCodex(PLAYER_NUM, Compendium_t::CPDM_CLASS_IDLING_TIME, "strafing", (int)players[PLAYER_NUM]->compendiumProgress.playerAliveTimeStopped);
+			Compendium_t::Events_t::eventUpdateCodex(PLAYER_NUM, Compendium_t::CPDM_CLASS_IDLING_TIME, "strafing", static_cast<int>(players[PLAYER_NUM]->compendiumProgress.playerAliveTimeStopped));
 			players[PLAYER_NUM]->compendiumProgress.playerAliveTimeStopped = 0;
 
 			Compendium_t::Events_t::eventUpdateCodex(PLAYER_NUM, Compendium_t::CPDM_CLASS_SNEAK_TIME, "sneaking", players[PLAYER_NUM]->compendiumProgress.playerSneakTime);
@@ -11727,7 +11727,7 @@ void actPlayer(Entity* my)
 				{
 					if ( items[pair.first].item_slot == EQUIPPABLE_IN_SLOT_RING )
 					{
-						Compendium_t::Events_t::eventUpdate(PLAYER_NUM, Compendium_t::CPDM_TIME_WORN, (ItemType)(pair.first), pair.second);
+						Compendium_t::Events_t::eventUpdate(PLAYER_NUM, Compendium_t::CPDM_TIME_WORN, static_cast<ItemType>(pair.first), pair.second);
 					}
 				}
 				pair.second = 0;
@@ -11900,7 +11900,7 @@ void actPlayer(Entity* my)
 	{
 		for ( node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next )
 		{
-			Entity* mapCreature = (Entity*)mapNode->element;
+			Entity* mapCreature = static_cast<Entity*>(mapNode->element);
 			if ( mapCreature )
 			{
 				if ( (stats[PLAYER_NUM]->getEffectActive(EFF_TELEPATH) 
@@ -11934,7 +11934,7 @@ void actPlayer(Entity* my)
 
 	if ( auto node = list_Node(&my->children, 11) )
 	{
-		additionalLimb = (Entity*)node->element;
+		additionalLimb = static_cast<Entity*>(node->element);
 	}
 
 
@@ -11948,7 +11948,7 @@ void actPlayer(Entity* my)
 				// hudweapon case
 				continue;
 			}
-			entity = (Entity*)node->element;
+			entity = static_cast<Entity*>(node->element);
 			entity->x = my->x;
 			entity->y = my->y;
 			entity->z = my->z;
@@ -11991,7 +11991,7 @@ void actPlayer(Entity* my)
 			{
 				if ( bodypart == 2 )
 				{
-					rightbody = (Entity*)node->next->element;
+					rightbody = static_cast<Entity*>(node->next->element);
 					legright = entity;
 				}
 				if ( bodypart == 5 )
@@ -12012,7 +12012,7 @@ void actPlayer(Entity* my)
 				node_t* shieldNode = list_Node(&my->children, 7);
 				if ( shieldNode )
 				{
-					Entity* shield = (Entity*)shieldNode->element;
+					Entity* shield = static_cast<Entity*>(shieldNode->element);
 					bool bendArm = true;
 					if ( shield->flags[INVISIBLE] && !shield->flags[INVISIBLE_DITHER] )
 					{
@@ -12089,7 +12089,7 @@ void actPlayer(Entity* my)
 									node_t* tempNode = list_Node(&my->children, 2);
 									if ( tempNode )
 									{
-										Entity* foot = (Entity*)tempNode->element;
+										Entity* foot = static_cast<Entity*>(tempNode->element);
 										if ( playerRace == TROLL )
 										{
 											playSoundEntityLocal(my, my->getMonsterFootstepSound(MONSTER_FOOTSTEP_STOMP, foot->sprite), 32);
@@ -12117,7 +12117,7 @@ void actPlayer(Entity* my)
 									node_t* tempNode = list_Node(&my->children, 2);
 									if ( tempNode )
 									{
-										Entity* foot = (Entity*)tempNode->element;
+										Entity* foot = static_cast<Entity*>(tempNode->element);
 										if ( playerRace == TROLL )
 										{
 											playSoundEntityLocal(my, my->getMonsterFootstepSound(MONSTER_FOOTSTEP_STOMP, foot->sprite), 32);
@@ -12221,11 +12221,11 @@ void actPlayer(Entity* my)
 						entity->pitch = circleAmount * cos(2 * PI * (PLAYER_ATTACKTIME / (real_t)circleTime));
 						if ( playerRace == TROLL )
 						{
-							entity->pitch -= scaleDown * (PI / 4) * std::min(1.0, (PLAYER_ATTACKTIME / (real_t)5));
+							entity->pitch -= scaleDown * (PI / 4) * std::min(1.0, (PLAYER_ATTACKTIME / static_cast<real_t>(5)));
 						}
 						else if ( playerRace == CREATURE_IMP )
 						{
-							entity->pitch -= scaleDown * (PI / 8) * std::min(1.0, (PLAYER_ATTACKTIME / (real_t)5));
+							entity->pitch -= scaleDown * (PI / 8) * std::min(1.0, (PLAYER_ATTACKTIME / static_cast<real_t>(5)));
 						}
 						PLAYER_WEAPONYAW = circleAmount * sin(2 * PI * (PLAYER_ATTACKTIME / (real_t)circleTime));
 						
@@ -12253,11 +12253,11 @@ void actPlayer(Entity* my)
 
 						if ( playerRace == TROLL )
 						{
-							entity->pitch -= (PI / 4) * std::min(1.0, (PLAYER_ATTACKTIME / (real_t)5));
+							entity->pitch -= (PI / 4) * std::min(1.0, (PLAYER_ATTACKTIME / static_cast<real_t>(5)));
 						}
 						else if ( playerRace == CREATURE_IMP )
 						{
-							entity->pitch -= (PI / 8) * std::min(1.0, (PLAYER_ATTACKTIME / (real_t)5));
+							entity->pitch -= (PI / 8) * std::min(1.0, (PLAYER_ATTACKTIME / static_cast<real_t>(5)));
 						}
 					}
 					else if ( PLAYER_ATTACK == MONSTER_POSE_MAGIC_CAST2 )
@@ -12961,7 +12961,7 @@ void actPlayer(Entity* my)
 				node_t* tempNode = list_Node(&my->children, 6);
 				if ( tempNode )
 				{
-					Entity* weapon = (Entity*)tempNode->element;
+					Entity* weapon = static_cast<Entity*>(tempNode->element);
 
 					bool bendArm = PLAYER_ARMBENDED || playerRace == CREATURE_IMP;
 					if ( !((PLAYER_ATTACK == MONSTER_POSE_MAGIC_WINDUP1 || PLAYER_ATTACK == MONSTER_POSE_MAGIC_WINDUP2) 
@@ -13128,7 +13128,7 @@ void actPlayer(Entity* my)
 				node_t* tempNode = list_Node(&my->children, 7);
 				if ( tempNode )
 				{
-					Entity* shield = (Entity*)tempNode->element;
+					Entity* shield = static_cast<Entity*>(tempNode->element);
 					bool bendArm = true;
 					if ( shield->flags[INVISIBLE] && !shield->flags[INVISIBLE_DITHER] )
 					{
@@ -14631,7 +14631,7 @@ void actPlayer(Entity* my)
 		node_t* shieldNode = list_Node(&my->children, 7);
 		if ( shieldNode )
 		{
-			Entity* shieldEntity = (Entity*)shieldNode->element;
+			Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
 			if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 			{
 				shieldEntity->yaw -= PI / 6;
@@ -14674,7 +14674,7 @@ void Entity::playerShakeGrowthHelmet()
 		{
 			if ( node_t* node = list_Node(&children, 9) )
 			{
-				if ( Entity* entity = (Entity*)node->element )
+				if ( Entity* entity = static_cast<Entity*>(node->element) )
 				{
 					entity->skill[1] = 1;
 					serverUpdateEntitySkill(entity, 1);
@@ -15854,7 +15854,7 @@ void playerAnimateRat(Entity* my)
 			}
 			continue;
 		}
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -15932,7 +15932,7 @@ void playerAnimateSpider(Entity* my)
 	int bodypart = 0;
 	for ( bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++ )
 	{
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		if ( bodypart == 0 )
 		{
 			// hudweapon case
@@ -15973,7 +15973,7 @@ void playerAnimateSpider(Entity* my)
 		Entity* previous = NULL; // previous part
 		if ( bodypart > 12 )
 		{
-			previous = (Entity*)node->prev->element;
+			previous = static_cast<Entity*>(node->prev->element);
 			// for GENIUS flag to draw into the camera
 			entity->sizex = 1;
 			entity->sizey = 1;
@@ -16085,7 +16085,7 @@ void playerAnimateSpider(Entity* my)
 
 				real_t circleTime = 20.0;
 				entity->pitch = circleAmount * cos(2 * PI * (PLAYER_ATTACKTIME / (real_t)circleTime));
-				entity->pitch -= scaleDown * (PI / 2) * std::min(1.0, (PLAYER_ATTACKTIME / (real_t)5));
+				entity->pitch -= scaleDown * (PI / 2) * std::min(1.0, (PLAYER_ATTACKTIME / static_cast<real_t>(5)));
 
 				if ( bodypart == 11 )
 				{
@@ -16155,7 +16155,7 @@ void playerAnimateSpider(Entity* my)
 				entity->pitch = 0;
 				entity->yaw = my->yaw;
 
-				entity->pitch -= (PI / 2) * std::min(1.0, (PLAYER_ATTACKTIME / (real_t)5));
+				entity->pitch -= (PI / 2) * std::min(1.0, (PLAYER_ATTACKTIME / static_cast<real_t>(5)));
 
 				doParticleEffectForTouchSpell(*my, my, SPIDER);
 			}

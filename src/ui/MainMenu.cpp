@@ -794,7 +794,7 @@ namespace MainMenu {
 		{
 			if ( auto window = parent->getParent() )
 			{
-				window->setUserData((void*)(intptr_t)SETTING_MODIFIED);
+				window->setUserData((void*)static_cast<intptr_t>(SETTING_MODIFIED));
 			}
 		}
 		playSound(492, 48);
@@ -809,7 +809,7 @@ namespace MainMenu {
 		{
 			if ( auto window = parent->getParent() )
 			{
-				window->setUserData((void*)(intptr_t)SETTING_MODIFIED);
+				window->setUserData((void*)static_cast<intptr_t>(SETTING_MODIFIED));
 			}
 		}
 		playSound(494, 48);
@@ -831,7 +831,7 @@ namespace MainMenu {
 		{
 			if ( auto window = parent->getParent() )
 			{
-				window->setUserData((void*)(intptr_t)SETTING_MODIFIED);
+				window->setUserData((void*)static_cast<intptr_t>(SETTING_MODIFIED));
 			}
 		}
 	    if (inputs.getVirtualMouse(getMenuOwner())->draw_cursor && deafen_unless_gamepad) {
@@ -877,9 +877,9 @@ namespace MainMenu {
 	static ConsoleCommand ccmd_testFont("/testfont", "display test font window (args: fontFilename minSize maxSize outlineSize)",
 	    [](int argc, const char** argv){
         const char* font = argc >= 2 ? argv[1] : "fonts/alphbeta.ttf";
-        const int minSize = argc >= 3 ? (int)strtol(argv[2], nullptr, 10) : 4;
-        const int maxSize = argc >= 4 ? (int)strtol(argv[3], nullptr, 10) : 16;
-        const int outline = argc >= 5 ? (int)strtol(argv[4], nullptr, 10) : 2;
+        const int minSize = argc >= 3 ? static_cast<int>(strtol(argv[2], nullptr, 10)) : 4;
+        const int maxSize = argc >= 4 ? static_cast<int>(strtol(argv[3], nullptr, 10)) : 16;
+        const int outline = argc >= 5 ? static_cast<int>(strtol(argv[4], nullptr, 10)) : 2;
 
         auto frame = gui->addFrame("test_font_frame");
         frame->setSize(SDL_Rect{16, 16, Frame::virtualScreenX - 32, Frame::virtualScreenY - 32});
@@ -906,7 +906,7 @@ namespace MainMenu {
             field->setText(str);
             field->setFont(buf);
             auto text = field->getTextObject();
-            field->setSize(SDL_Rect{0, y, frame->getSize().w, (int)text->getHeight()});
+            field->setSize(SDL_Rect{0, y, frame->getSize().w, static_cast<int>(text->getHeight())});
             y += text->getHeight();
         }
 	    });
@@ -1074,8 +1074,8 @@ namespace MainMenu {
 		assert(fireSurface);
 	    SDL_LockSurface(fireSurface);
         const int fireSize = (Frame::virtualScreenX * Frame::virtualScreenY) / (firePixelSize * firePixelSize);
-	    Uint32* const sp = (Uint32*)fireSurface->pixels;
-	    Uint32* const ep = (Uint32*)fireSurface->pixels + fireSize;
+	    Uint32* const sp = static_cast<Uint32*>(fireSurface->pixels);
+	    Uint32* const ep = static_cast<Uint32*>(fireSurface->pixels) + fireSize;
 		constexpr Uint32 defaultColor = makeColor(0, 0, 0, fireDefault);
 	    for (Uint32* p = sp; p < ep; ++p) {
             *p = defaultColor;
@@ -1100,7 +1100,7 @@ namespace MainMenu {
 	    const int diff = std::max(0, RNG.uniform(-3, 1));
 	    const int below = (p[w] & 0xff000000) >> 24;
 	    const int intensity = std::max(below - diff, 0);
-	    Uint32* const newPixel = std::max(p - diff, (Uint32*)fireSurface->pixels);
+	    Uint32* const newPixel = std::max(p - diff, static_cast<Uint32*>(fireSurface->pixels));
 	    *newPixel = makeColor(0, 0, 0, intensity);
     }
 
@@ -1113,13 +1113,13 @@ namespace MainMenu {
         const int w = Frame::virtualScreenX / firePixelSize;
         const int fireSize = (Frame::virtualScreenX * Frame::virtualScreenY) / (firePixelSize * firePixelSize);
         const int size = fireSize - w;
-	    Uint32* const sp = (Uint32*)fireSurface->pixels;
-	    Uint32* const mp = (Uint32*)fireSurface->pixels + size;
+	    Uint32* const sp = static_cast<Uint32*>(fireSurface->pixels);
+	    Uint32* const mp = static_cast<Uint32*>(fireSurface->pixels) + size;
 	    for (Uint32* p = sp; p < mp; ++p) {
             fireUpdate(p);
 	    }
 	    constexpr Uint32 defaultColor = makeColor(0, 0, 0, fireDefault);
-		Uint32* const ep = (Uint32*)fireSurface->pixels + fireSize;
+		Uint32* const ep = static_cast<Uint32*>(fireSurface->pixels) + fireSize;
 	    for (Uint32* p = mp; p < ep; ++p) {
             *p = defaultColor;
 	    }
@@ -1237,10 +1237,10 @@ namespace MainMenu {
 		}
 
 		// bob cursor
-		const float bobrate = (float)PI * 2.f / (float)fpsLimit;
+		const float bobrate = static_cast<float>(PI) * 2.f / static_cast<float>(fpsLimit);
 		main_menu_cursor_bob += bobrate;
-		if (main_menu_cursor_bob >= (float)PI * 2.f) {
-			main_menu_cursor_bob -= (float)PI * 2.f;
+		if (main_menu_cursor_bob >= static_cast<float>(PI) * 2.f) {
+			main_menu_cursor_bob -= static_cast<float>(PI) * 2.f;
 		}
 
 		// update cursor position
@@ -1255,7 +1255,7 @@ namespace MainMenu {
 					diff = std::min(-1, diff / 2);
 				}
 				cursor->pos = SDL_Rect{
-					main_menu_cursor_x + (int)(sinf(main_menu_cursor_bob) * 16.f) - 16,
+					main_menu_cursor_x + static_cast<int>(sinf(main_menu_cursor_bob) * 16.f) - 16,
 					diff + cursor->pos.y,
 					37 * 2,
 					23 * 2
@@ -1528,7 +1528,7 @@ namespace MainMenu {
 		tip->setSize(SDL_Rect{(364 - 242) / 2, 36, 242, 28});
 		tip->setFont(smallfont_outline);
 		tip->setText(tip_text);
-		tip->setUserData(const_cast<void*>((const void*)tip_text));
+		tip->setUserData(const_cast<void*>(static_cast<const void*>(tip_text)));
 		tip->setHJustify(Field::justify_t::LEFT);
 		tip->setVJustify(Field::justify_t::CENTER);
 		tip->setColor(makeColor(166, 123, 81, 127));
@@ -1540,7 +1540,7 @@ namespace MainMenu {
 		    if (field && field->getText()[0] != '\0') {
 		        tip->setText("");
 		    } else {
-		        tip->setText((const char*)tip->getUserData());
+		        tip->setText(static_cast<const char*>(tip->getUserData()));
 		    }
 		    });
 
@@ -2657,7 +2657,7 @@ namespace MainMenu {
 		Uint32 num_players = MAX_SPLITSCREEN;
 		file->propertyName("players");
 		file->beginArray(num_players);
-		for (int c = 0; c < std::min(num_players, (Uint32)MAX_SPLITSCREEN); ++c) {
+		for (int c = 0; c < std::min(num_players, static_cast<Uint32>(MAX_SPLITSCREEN)); ++c) {
 			file->beginObject();
 			for (int j = 0; j < 3; ++j) {
 				auto& bindings =
@@ -2671,7 +2671,7 @@ namespace MainMenu {
 				if (file->isReading()) {
 					bindings.clear();
 				}
-				Uint32 count = (Uint32)bindings.size();
+				Uint32 count = static_cast<Uint32>(bindings.size());
 				file->beginArray(count);
 				if (file->isReading()) {
                     for (auto& binding : getBindings(defaultControlLayout)) {
@@ -3012,7 +3012,7 @@ namespace MainMenu {
 		*clipped_splitscreen = clipped_split_enabled;
 		TimerExperiments::bUseTimerInterpolation = use_frame_interpolation;
 		::fov = std::min(std::max(40.f, fov), 100.f);
-        *cvar_desiredFps = (int)fps;
+        *cvar_desiredFps = static_cast<int>(fps);
         if (*cvar_desiredFps == AUTO_FPS) {
             if (*cvar_displayHz) {
                 fpsLimit = std::min(std::max(MIN_FPS, *cvar_displayHz), MAX_FPS);
@@ -3085,13 +3085,13 @@ namespace MainMenu {
 		}
 	    sendSvFlagsOverNet();
 		::skipintro = skipintro;
-		::portnumber = (Uint16)port_number ? (Uint16)port_number : DEFAULT_PORT;
+		::portnumber = static_cast<Uint16>(port_number) ? static_cast<Uint16>(port_number) : DEFAULT_PORT;
 		hidden_roomcode = !show_lobby_code;
 		for ( int i = 0; i < MAX_LOBBY_FILTERS_SAVED; ++i )
 		{
 			if ( i < numFilters )
 			{
-				lobbyFilters[i] = (MainMenu::Filter)lobby_filter_settings[i];
+				lobbyFilters[i] = static_cast<MainMenu::Filter>(lobby_filter_settings[i]);
 			}
 		}
 
@@ -3170,11 +3170,11 @@ namespace MainMenu {
         settings.speaker_mode = (int)fmod_speakermode;
 #endif
 		settings.master_volume = MainMenu::master_volume * 100.f;
-		settings.gameplay_volume = (float)sfxvolume * 100.f;
-		settings.ambient_volume = (float)sfxAmbientVolume * 100.f;
-		settings.environment_volume = (float)sfxEnvironmentVolume * 100.f;
-		settings.notification_volume = (float)sfxNotificationVolume * 100.f;
-		settings.music_volume = (float)musvolume * 100.f;
+		settings.gameplay_volume = static_cast<float>(sfxvolume) * 100.f;
+		settings.ambient_volume = static_cast<float>(sfxAmbientVolume) * 100.f;
+		settings.environment_volume = static_cast<float>(sfxEnvironmentVolume) * 100.f;
+		settings.notification_volume = static_cast<float>(sfxNotificationVolume) * 100.f;
+		settings.music_volume = static_cast<float>(musvolume) * 100.f;
 		settings.set_instrument_bg_enabled = instrument_bg_enabled;
 		settings.set_instrument_fg_enabled = instrument_fg_enabled;
 		settings.minimap_pings_enabled = !minimapPingMute;
@@ -3549,7 +3549,7 @@ namespace MainMenu {
 		    back_button->setSize(SDL_Rect{Frame::virtualScreenX - 416, Frame::virtualScreenY - 70, 380, 50});
 		    back_button->setCallback([](Button& button){
 		        ++story_skip;
-		        story_skip_timer = (float)TICKS_PER_SECOND;
+		        story_skip_timer = static_cast<float>(TICKS_PER_SECOND);
 		        switch (story_skip) {
 		        case 0: button.setText(Language::get(5026)); break;
 		        case 1: button.setText(Language::get(5027)); break;
@@ -3635,9 +3635,9 @@ namespace MainMenu {
 		    auto textbox1 = main_menu_frame->findFrame("story_text_box");
 		    textbox1->setSize(SDL_Rect{
 		        160,
-		        Frame::virtualScreenY - (int)(font->height() * std::max(lines + 2.f, 0.f)),
+		        Frame::virtualScreenY - static_cast<int>(font->height() * std::max(lines + 2.f, 0.f)),
 		        Frame::virtualScreenX - 320,
-		        (int)(font->height() * std::max(lines + 1.f, 0.f)),
+		        static_cast<int>(font->height() * std::max(lines + 1.f, 0.f)),
 		        });
 		    textbox1->setActualSize(SDL_Rect{
 		        0,
@@ -3650,7 +3650,7 @@ namespace MainMenu {
 		        font->height() / 2,
 		        font->height() / 2 - 2,
 		        Frame::virtualScreenX - 320 - font->height(),
-		        (int)(font->height() * std::max(lines, 0.f)),
+		        static_cast<int>(font->height() * std::max(lines, 0.f)),
 		        });
 		    textbox2->setActualSize(SDL_Rect{
 		        textbox2->getActualSize().x,
@@ -3683,7 +3683,7 @@ namespace MainMenu {
 		field->setColor(makeColor(255, 255, 255, 255));
 
 		textbox1->setTickCallback([](Widget& widget){
-			const float inc = 1.f * ((float)TICKS_PER_SECOND / (float)fpsLimit);
+			const float inc = 1.f * (static_cast<float>(TICKS_PER_SECOND) / static_cast<float>(fpsLimit));
 			auto textbox1 = static_cast<Frame*>(&widget);
 			auto story_font = Font::get(bigfont_outline); assert(story_font);
 			auto storyboard = main_menu_frame->findImage("storyboard"); assert(storyboard);
@@ -3699,16 +3699,16 @@ namespace MainMenu {
 		        }
 			}
 			if (story_text_scroll > 0.f) {
-				int old_story_text_scroll = (int)story_text_scroll;
+				int old_story_text_scroll = static_cast<int>(story_text_scroll);
 				story_text_scroll -= inc;
 				if (story_text_scroll < 0.f) {
 					story_text_scroll = 0.f;
 				}
-				if ((int)story_text_scroll != old_story_text_scroll) {
+				if (static_cast<int>(story_text_scroll) != old_story_text_scroll) {
 					auto textbox2 = textbox1->findFrame("story_text_box");
 					assert(textbox2);
 					auto size = textbox2->getActualSize();
-					size.y += std::max(0, (old_story_text_scroll - (int)story_text_scroll));
+					size.y += std::max(0, (old_story_text_scroll - static_cast<int>(story_text_scroll)));
 					textbox2->setActualSize(size);
 				}
 			} else {
@@ -3881,10 +3881,10 @@ namespace MainMenu {
 		credits->setHollow(true);
 		credits->setBorder(0);
 		credits->setTickCallback([](Widget& widget){
-			const float inc = 1.f * ((float)TICKS_PER_SECOND / (float)fpsLimit);
-			int old_credits_scroll = (int)credits_scroll;
+			const float inc = 1.f * (static_cast<float>(TICKS_PER_SECOND) / static_cast<float>(fpsLimit));
+			int old_credits_scroll = static_cast<int>(credits_scroll);
 			credits_scroll += inc;
-			if (old_credits_scroll != (int)credits_scroll) {
+			if (old_credits_scroll != static_cast<int>(credits_scroll)) {
 				auto credits = static_cast<Frame*>(&widget);
 				auto size = credits->getActualSize();
 				size.y += 1;
@@ -4003,7 +4003,7 @@ namespace MainMenu {
 		
 		char buf[1024];
 		const char date[] = __DATE__;
-		const char* year = (const char*)date + sizeof(date) - 5;
+		const char* year = static_cast<const char*>(date) + sizeof(date) - 5;
 		snprintf(buf, sizeof(buf), text2_str, year);
 
 		// entries
@@ -4114,7 +4114,7 @@ namespace MainMenu {
 			{
 				if ( auto dimmer = window->getParent() )
 				{
-					dimmer->setUserData((void*)(intptr_t)SETTING_MODIFIED);
+					dimmer->setUserData((void*)static_cast<intptr_t>(SETTING_MODIFIED));
 				}
 			}
 		}
@@ -4468,7 +4468,7 @@ namespace MainMenu {
 			icon->disabled = true;
 			slider->setTickCallback([](Widget& widget){
 				Slider* slider = static_cast<Slider*>(&widget);
-				slider->setValue((int)slider->getValue());
+				slider->setValue(static_cast<int>(slider->getValue()));
 				auto window = main_menu_frame->findFrame("inventory_sorting_window");
 				if (window) {
 					auto number = std::string(slider->getName()).substr(sizeof("sort_slider") - 1);
@@ -4532,7 +4532,7 @@ namespace MainMenu {
 		{
 			if ( auto window = parent->getParent() )
 			{
-				window->setUserData((void*)(intptr_t)SETTING_MODIFIED);
+				window->setUserData((void*)static_cast<intptr_t>(SETTING_MODIFIED));
 			}
 		}
 		std::string dropdown_name = "setting_" + std::string(name) + "_dropdown";
@@ -5016,7 +5016,7 @@ namespace MainMenu {
 			// Press X or Y to clear binding
 			if (widget.isSelected() && !bind_mode) {
 				if (inputs.hasController(player) && input.consumeBinaryToggle("MenuAlt2")) {
-					auto binding = (const char*)widget.getUserData();
+					auto binding = static_cast<const char*>(widget.getUserData());
 					(void)settingsBind(player, 1 /* Gamepad */, binding, emptyBinding);
 
 					button->setText(emptyBinding);
@@ -5269,13 +5269,13 @@ namespace MainMenu {
 
     static const char* sliderPercent(float v) {
         static char buf[8];
-        snprintf(buf, sizeof(buf), "%d%%", (int)v);
+        snprintf(buf, sizeof(buf), "%d%%", static_cast<int>(v));
         return buf;
     }
 
 	static const char* sliderFloorInt(float v) {
 		static char buf[8];
-		snprintf(buf, sizeof(buf), "%d", (int)floor(v));
+		snprintf(buf, sizeof(buf), "%d", static_cast<int>(floor(v)));
 		return buf;
 	};
 
@@ -5287,7 +5287,7 @@ namespace MainMenu {
 
 	static const char* sliderNormalizeAmp(float v) {
 		static char buf[8];
-		snprintf(buf, sizeof(buf), "%dx", (int)floor(v));
+		snprintf(buf, sizeof(buf), "%dx", static_cast<int>(floor(v)));
 		return buf;
 	};
 
@@ -5333,7 +5333,7 @@ namespace MainMenu {
                 field->setText(fmt(slider->getValue()));
             } else {
                 char buf[16];
-                snprintf(buf, sizeof(buf), "%d", (int)slider->getValue());
+                snprintf(buf, sizeof(buf), "%d", static_cast<int>(slider->getValue()));
                 field->setText(buf);
             }
             });
@@ -5656,7 +5656,7 @@ namespace MainMenu {
 				{
 					if ( auto window = main_menu_frame->findFrame("minimap") )
 					{
-						window->setUserData((void*)(intptr_t)SETTING_MODIFIED);
+						window->setUserData((void*)static_cast<intptr_t>(SETTING_MODIFIED));
 					}
 				}
 			},
@@ -5807,7 +5807,7 @@ namespace MainMenu {
 				{
 					if ( auto window = main_menu_frame->findFrame("messages") )
 					{
-						window->setUserData((void*)(intptr_t)SETTING_MODIFIED);
+						window->setUserData((void*)static_cast<intptr_t>(SETTING_MODIFIED));
 					}
 				}
 			},
@@ -6041,7 +6041,7 @@ namespace MainMenu {
 				{
 					if ( auto window = main_menu_frame->findFrame("bindings") )
 					{
-						window->setUserData((void*)(intptr_t)SETTING_MODIFIED);
+						window->setUserData((void*)static_cast<intptr_t>(SETTING_MODIFIED));
 					}
 				}
 			},
@@ -6579,11 +6579,11 @@ bind_failed:
 			allSettings.fov, 40, 100, nullptr, [](Slider& slider){soundSliderSetting(slider, true); allSettings.fov = slider.getValue();});
 #ifndef NINTENDO
         auto sliderFPS = [](float v) -> const char* {
-            if ((int)v == AUTO_FPS) {
+            if (static_cast<int>(v) == AUTO_FPS) {
                 return Language::get(5181);
             } else {
                 static char buf[8];
-                snprintf(buf, sizeof(buf), "%d", (int)v);
+                snprintf(buf, sizeof(buf), "%d", static_cast<int>(v));
                 return buf;
             }
         };
@@ -7109,8 +7109,8 @@ bind_failed:
                 break;
             }
             const Image* image = Image::get(path); assert(image);
-            const int x = (int)(settings_subwindow->getSize().w - image->getWidth()) / 2;
-            const SDL_Rect img_pos{x, y, (int)image->getWidth(), (int)image->getHeight()};
+            const int x = static_cast<int>(settings_subwindow->getSize().w - image->getWidth()) / 2;
+            const SDL_Rect img_pos{x, y, static_cast<int>(image->getWidth()), static_cast<int>(image->getHeight())};
             auto layout = settings_subwindow->addImage(img_pos, 0xffffffff, path, "layout");
             
             struct ButtonBinding {
@@ -7123,7 +7123,7 @@ bind_failed:
             
             std::vector<ButtonBinding> list;
             if (controllerType == Input::ControllerType::PlayStation) {
-                const int r = x + (int)image->getWidth() + 4;
+                const int r = x + static_cast<int>(image->getWidth()) + 4;
                 list.insert(list.end(),{
                     {"ButtonLeftBumper", 0, 2, false, nullptr},
                     {"LeftTrigger", 0, 44, false, nullptr},
@@ -7146,7 +7146,7 @@ bind_failed:
                 });
             }
             else if (controllerType == Input::ControllerType::NintendoSwitch) {
-                const int r = x + (int)image->getWidth() + 4;
+                const int r = x + static_cast<int>(image->getWidth()) + 4;
 #ifdef NINTENDO
 				if (!nxIsHandheldMode() && nxIsProController(player)) {
 					list.insert(list.end(), {
@@ -7216,7 +7216,7 @@ bind_failed:
 #endif
             }
             else if (controllerType == Input::ControllerType::Xbox) {
-                const int r = x + (int)image->getWidth() + 4;
+                const int r = x + static_cast<int>(image->getWidth()) + 4;
                 list.insert(list.end(),{
                     {"ButtonLeftBumper", 0, 2, false, nullptr},
                     {"LeftTrigger", 0, 44, false, nullptr},
@@ -7239,7 +7239,7 @@ bind_failed:
                 });
             }
             else if (controllerType == Input::ControllerType::SteamDeck) {
-                const int r = x + (int)image->getWidth() + 4;
+                const int r = x + static_cast<int>(image->getWidth()) + 4;
                 list.insert(list.end(),{
                     {"ButtonLeftBumper", 0, 2, false, nullptr},
                     {"LeftTrigger", 0, 44, false, nullptr},
@@ -7459,12 +7459,12 @@ bind_failed:
                 {soundSliderSetting(slider, true); allSettings.controls[bound_player].mouse_sensitivity = slider.getValue();});
 
 			auto sliderMouseEventLimit = [](float v) -> const char* {
-				if ( (int)v == MOUSE_EVENT_LIMIT_AUTO ) {
+				if ( static_cast<int>(v) == MOUSE_EVENT_LIMIT_AUTO ) {
 					return Language::get(6998);
 				}
 				else {
 					static char buf[16];
-					snprintf(buf, sizeof(buf), "%d", (int)v);
+					snprintf(buf, sizeof(buf), "%d", static_cast<int>(v));
 					return buf;
 				}
 			};
@@ -7655,19 +7655,19 @@ bind_failed:
         char port_desc[1024];
         snprintf(port_desc, sizeof(port_desc), Language::get(5244), DEFAULT_PORT);
         char buf[16];
-        snprintf(buf, sizeof(buf), "%hu", (Uint16)allSettings.port_number);
+        snprintf(buf, sizeof(buf), "%hu", static_cast<Uint16>(allSettings.port_number));
 		y += settingsAddSubHeader(*settings_subwindow, y, "lan", Language::get(5245));
 		y += settingsAddField(*settings_subwindow, y, "port_number", Language::get(5246),
 			port_desc, buf, [](Field& field) {
 				auto oldPort = allSettings.port_number;
-				allSettings.port_number = (Uint16)strtol(field.getText(), nullptr, 10);
+				allSettings.port_number = static_cast<Uint16>(strtol(field.getText(), nullptr, 10));
 				if ( oldPort != allSettings.port_number )
 				{
 					if ( auto parent = field.getParent() )
 					{
 						if ( auto window = parent->getParent() )
 						{
-							window->setUserData((void*)(intptr_t)SETTING_MODIFIED);
+							window->setUserData((void*)static_cast<intptr_t>(SETTING_MODIFIED));
 						}
 					}
 				}
@@ -8877,8 +8877,8 @@ bind_failed:
             auto& input = Input::inputs[widget.getOwner()];
             real_t speed = PI / fpsLimit;
             if (frame->capturesMouse()) {
-                portrait_rotation += (real_t)input.binaryToggle("MenuMouseWheelDown") * speed * 10;
-                portrait_rotation -= (real_t)input.binaryToggle("MenuMouseWheelUp") * speed * 10;
+                portrait_rotation += static_cast<real_t>(input.binaryToggle("MenuMouseWheelDown")) * speed * 10;
+                portrait_rotation -= static_cast<real_t>(input.binaryToggle("MenuMouseWheelUp")) * speed * 10;
             }
             portrait_rotation += input.analog("MenuScrollRight") * speed;
             portrait_rotation -= input.analog("MenuScrollLeft") * speed;
@@ -9031,7 +9031,7 @@ bind_failed:
 						{
 							if ( auto btn = list->findButton(kills_toggle_target->getText()) )
 							{
-								score = (score_t*)btn->getUserData();
+								score = static_cast<score_t*>(btn->getUserData());
 							}
 						}
 					}
@@ -9047,7 +9047,7 @@ bind_failed:
 			char buf[1024];
 			if ( kills_show_proficiencies )
 			{
-				size_t numEntries = std::min((size_t)NUMPROFICIENCIES, Player::SkillSheet_t::skillSheetData.skillEntries.size());
+				size_t numEntries = std::min(static_cast<size_t>(NUMPROFICIENCIES), Player::SkillSheet_t::skillSheetData.skillEntries.size());
 				for ( size_t index = 0; index < NUMPROFICIENCIES / 2; ++index )
 				{
 					int loops = 1;
@@ -9101,8 +9101,8 @@ bind_failed:
 						continue;
 					}
 					auto name = num_kills == 1 ?
-						getMonsterLocalizedName((Monster)c) :
-						getMonsterLocalizedPlural((Monster)c);
+						getMonsterLocalizedName(static_cast<Monster>(c)) :
+						getMonsterLocalizedPlural(static_cast<Monster>(c));
 					snprintf(buf, sizeof(buf), "%3d %s", num_kills, name.c_str());
 					auto kill = kills->addEntry(buf, true);
 					kill->color = makeColor(203, 171, 101, 255);
@@ -9373,13 +9373,13 @@ bind_failed:
 							if ( score->stats->killer_monster >= 0 && score->stats->killer_monster < NUMMONSTERS )
 							{
 								cause_of_death = getMonsterLocalizedName(score->stats->killer_monster);
-								cause_of_death[0] = (char)toupper((int)cause_of_death[0]);
+								cause_of_death[0] = static_cast<char>(toupper((int)cause_of_death[0]));
 							}
 						}
 						else 
 						{
 							cause_of_death = score->stats->killer_name;
-							cause_of_death[0] = (char)toupper((int)cause_of_death[0]);
+							cause_of_death[0] = static_cast<char>(toupper((int)cause_of_death[0]));
 						}
 						break;
 					}
@@ -9407,7 +9407,7 @@ bind_failed:
 						break;
 					default: 
 					{
-						cause_of_death = Language::get(5794 + (int)score->stats->killer);
+						cause_of_death = Language::get(5794 + static_cast<int>(score->stats->killer));
 						break;
 					}
 				}
@@ -9463,27 +9463,27 @@ bind_failed:
 		    };
 
 		    Conduct conducts[] = {
-		        {(bool)score->conductGameChallenges[CONDUCT_CHEATS_ENABLED], "cheats_enabled", Language::get(5282), 0},
-				{(bool)score->conductGameChallenges[CONDUCT_ASSISTANCE_CLAIMED], "assistance", Language::get(6341), score->conductGameChallenges[CONDUCT_ASSISTANCE_CLAIMED]},
-		        {(bool)score->conductGameChallenges[CONDUCT_MODDED], "modded", Language::get(5283), 0},
-		        {(bool)score->conductGameChallenges[CONDUCT_MULTIPLAYER], "multiplayer", Language::get(5284), 0},
-		        {(bool)score->conductGameChallenges[CONDUCT_HARDCORE], "hardcore", Language::get(5285), 0},
-		        {(bool)score->conductGameChallenges[CONDUCT_CLASSIC_MODE], "classic_mode", Language::get(5286), 0},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_CHEATS_ENABLED]), "cheats_enabled", Language::get(5282), 0},
+				{static_cast<bool>(score->conductGameChallenges[CONDUCT_ASSISTANCE_CLAIMED]), "assistance", Language::get(6341), score->conductGameChallenges[CONDUCT_ASSISTANCE_CLAIMED]},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_MODDED]), "modded", Language::get(5283), 0},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_MULTIPLAYER]), "multiplayer", Language::get(5284), 0},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_HARDCORE]), "hardcore", Language::get(5285), 0},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_CLASSIC_MODE]), "classic_mode", Language::get(5286), 0},
 		        {score->conductPenniless, "penniless", Language::get(5287), 0},
 		        {score->conductFoodless, "foodless", Language::get(5288), 0},
 		        {score->conductVegetarian &&
 		            !score->conductFoodless, "vegetarian", Language::get(5289), 0},
 		        {score->conductIlliterate, "illiterate", Language::get(5290), 0},
-		        {(bool)score->conductGameChallenges[CONDUCT_BRAWLER], "brawler", Language::get(5291), 0},
-		        {(bool)score->conductGameChallenges[CONDUCT_RANGED_ONLY] &&
-		            !(bool)score->conductGameChallenges[CONDUCT_BRAWLER], "ranged_only", Language::get(5292), 0},
-		        {(bool)score->conductGameChallenges[CONDUCT_BLESSED_BOOTS_SPEED], "blessed_boots_speed", Language::get(5293), 0},
-		        {(bool)score->conductGameChallenges[CONDUCT_BOOTS_SPEED] &&
-		            !(bool)score->conductGameChallenges[CONDUCT_BLESSED_BOOTS_SPEED], "boots_speed", Language::get(5294), 0},
-		        {(bool)score->conductGameChallenges[CONDUCT_KEEPINVENTORY] &&
-		            (bool)score->conductGameChallenges[CONDUCT_MULTIPLAYER], "keep_inventory", Language::get(5295), 0},
-		        {(bool)score->conductGameChallenges[CONDUCT_LIFESAVING], "life_saving", Language::get(5296), 0},
-		        {(bool)score->conductGameChallenges[CONDUCT_ACCURSED], "accursed", Language::get(5297), 0},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_BRAWLER]), "brawler", Language::get(5291), 0},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_RANGED_ONLY]) &&
+		            !static_cast<bool>(score->conductGameChallenges[CONDUCT_BRAWLER]), "ranged_only", Language::get(5292), 0},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_BLESSED_BOOTS_SPEED]), "blessed_boots_speed", Language::get(5293), 0},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_BOOTS_SPEED]) &&
+		            !static_cast<bool>(score->conductGameChallenges[CONDUCT_BLESSED_BOOTS_SPEED]), "boots_speed", Language::get(5294), 0},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_KEEPINVENTORY]) &&
+		            static_cast<bool>(score->conductGameChallenges[CONDUCT_MULTIPLAYER]), "keep_inventory", Language::get(5295), 0},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_LIFESAVING]), "life_saving", Language::get(5296), 0},
+		        {static_cast<bool>(score->conductGameChallenges[CONDUCT_ACCURSED]), "accursed", Language::get(5297), 0},
 		    };
 		    constexpr int num_conducts = sizeof(conducts) / sizeof(conducts[0]);
 
@@ -9669,7 +9669,7 @@ bind_failed:
 					b->setTextColor(makeColor(203,171,101,255));
                     b->setBackground("*images/ui/Main Menus/Leaderboards/AA_NameList_Unselected_00.png");
                 }
-                auto score = (score_t*)button.getUserData();
+                auto score = static_cast<score_t*>(button.getUserData());
                 selectedScore = score;
                 updateStats(button, score);
                 loadScore(score);
@@ -9771,21 +9771,21 @@ bind_failed:
                     int index = 0;
                     for (auto node = scores->first; node != nullptr;
                         node = node->next, ++index) {
-                        auto score = (score_t*)node->element;
+                        auto score = static_cast<score_t*>(node->element);
                         char prev_buf[128] = "";
                         if (node->prev) {
-                            auto prev = (score_t*)node->prev->element;
+                            auto prev = static_cast<score_t*>(node->prev->element);
                             snprintf(prev_buf, sizeof(prev_buf), fmt, index, prev->stats->name);
                         } else {
-							auto prev = (score_t*)node->list->last->element;
+							auto prev = static_cast<score_t*>(node->list->last->element);
 							snprintf(prev_buf, sizeof(prev_buf), fmt, list_Size(scores), prev->stats->name);
 						}
                         char next_buf[128] = "";
                         if (node->next) {
-                            auto next = (score_t*)node->next->element;
+                            auto next = static_cast<score_t*>(node->next->element);
                             snprintf(next_buf, sizeof(next_buf), fmt, index + 2, next->stats->name);
                         } else {
-							auto next = (score_t*)node->list->first->element;
+							auto next = static_cast<score_t*>(node->list->first->element);
 							snprintf(next_buf, sizeof(next_buf), fmt, 1, next->stats->name);
 						}
                         add_score(score, score->stats->name, prev_buf, next_buf, index, -1, 0);
@@ -10245,7 +10245,7 @@ bind_failed:
 			            break;
 			        }
 			    }
-			    if (index == (int)boardType || tabs.size() == 1) {
+			    if (index == static_cast<int>(boardType) || tabs.size() == 1) {
 					tab->setBackground("*images/ui/Main Menus/Leaderboards/AA_Button_Subtitle_Selected_00.png");
 					tab->setBackgroundHighlighted("*images/ui/Main Menus/Leaderboards/AA_Button_Subtitle_SelectedHigh_00.png");
 					tab->setBackgroundActivated("*images/ui/Main Menus/Leaderboards/AA_Button_Subtitle_SelectedPress_00.png");
@@ -10375,7 +10375,7 @@ bind_failed:
 			Frame* list = frame->findFrame("list"); assert(list);
 			auto actualSize = list->getActualSize();
 			slider->setValue(actualSize.y);
-		    slider->setMaxValue((float)std::max(0, actualSize.h - list->getSize().h));
+		    slider->setMaxValue(static_cast<float>(std::max(0, actualSize.h - list->getSize().h)));
 			});
 		slider->setWidgetSearchParent(window->getName());
         slider->setWidgetSearchParent("leaderboards");
@@ -10445,7 +10445,7 @@ bind_failed:
                         auto window = main_menu_frame->findFrame("leaderboards"); assert(window);
                         auto list = window->findFrame("list"); assert(list);
                         for (auto button : list->getButtons()) {
-                            auto score = (score_t*)button->getUserData();
+                            auto score = static_cast<score_t*>(button->getUserData());
                             if (score == selectedScore) {
                                 button->select();
                                 break;
@@ -10545,7 +10545,7 @@ bind_failed:
 		int y = 0;
 
 		// count all the different types of achievements
-		const int num_achievements = (int)Compendium_t::achievements.size();
+		const int num_achievements = static_cast<int>(Compendium_t::achievements.size());
 		int num_unlocked = 0;
 		int num_locked = 0;
 		int num_hidden = 0;
@@ -10687,7 +10687,7 @@ bind_failed:
 				auto it = Compendium_t::achievements.find(name);
 				if (it != Compendium_t::achievements.end() && it->second.unlocked) {
 					char buffer[64];
-					time_t t = (time_t)it->second.unlockTime;
+					time_t t = static_cast<time_t>(it->second.unlockTime);
 
 					char tbuf[64];
 					getTimeAndDateFormatted(t, tbuf, sizeof(tbuf));
@@ -10896,13 +10896,13 @@ bind_failed:
             snprintf(buf, sizeof(buf), "[%.2u:%.2u:%.2u] %s",
                 hour, min, sec, msg):
             snprintf(buf, sizeof(buf), "%s", msg);
-        const int size = std::min(std::max(0, (int)sizeof(buf)), result);
+        const int size = std::min(std::max(0, static_cast<int>(sizeof(buf))), result);
 
         auto field = subframe->addField("field", size + 1);
         auto text = Text::get(buf, lobby_chat_font->c_str(),
             uint32ColorWhite, uint32ColorBlack);
-        const int text_h = (int)text->getHeight() * (1) + 2; // (1) = string lines
-        const int text_w = (int)text->getWidth();
+        const int text_h = static_cast<int>(text->getHeight()) * (1) + 2; // (1) = string lines
+        const int text_w = static_cast<int>(text->getWidth());
         field->setSize(SDL_Rect{8, y, text_w, text_h});
         field->setFont(lobby_chat_font->c_str());
         field->setColor(color);
@@ -11442,7 +11442,7 @@ bind_failed:
 		    stringCopy((char*)net_packet->data + 5, stats[player]->name, 32, sizeof(Stat::name));
 
 		    // encode class, sex, race, and appearance
-            SDLNet_Write32((Uint32)client_classes[player], &net_packet->data[37]);
+            SDLNet_Write32(static_cast<Uint32>(client_classes[player]), &net_packet->data[37]);
             SDLNet_Write32((Uint32)stats[player]->sex, &net_packet->data[41]);
             Uint32 raceAndAppearance =
                 ((stats[player]->stat_appearance & 0xff) << 8) |
@@ -11539,10 +11539,10 @@ bind_failed:
 
         // packet header
         memcpy(net_packet->data, "REDY", 4);
-	    net_packet->data[4] = (Uint8)index;
+	    net_packet->data[4] = static_cast<Uint8>(index);
 
 	    // data
-	    net_packet->data[5] = ready ? (Uint8)1u : (Uint8)0u;
+	    net_packet->data[5] = ready ? static_cast<Uint8>(1u) : static_cast<Uint8>(0u);
 
         // send packet
         net_packet->len = 6;
@@ -11727,7 +11727,7 @@ bind_failed:
 		memcpy((char*)net_packet->data, "CMSG", 4);
 		SDLNet_Write32(color, &net_packet->data[4]);
 		stringCopy((char*)net_packet->data + 8, msg, 256, len);
-		net_packet->len = 8 + (int)len + 1;
+		net_packet->len = 8 + static_cast<int>(len) + 1;
 		net_packet->data[net_packet->len - 1] = 0;
 
         // send packet
@@ -11871,14 +11871,14 @@ bind_failed:
 				sendPacketSafe(net_sock, -1, net_packet, i - 1);
 			}
 
-			const Uint8 player = std::min(net_packet->data[4], (Uint8)(MAXPLAYERS - 1));
+			const Uint8 player = std::min(net_packet->data[4], static_cast<Uint8>((MAXPLAYERS - 1)));
 			if (!loadingsavegame) {
 				stats[player]->clearStats();
 			}
 
 	        stringCopy(stats[player]->name, (char*)(&net_packet->data[5]), sizeof(Stat::name), 32);
-	        client_classes[player] = (int)SDLNet_Read32(&net_packet->data[37]);
-	        stats[player]->sex = static_cast<sex_t>((int)SDLNet_Read32(&net_packet->data[41]));
+	        client_classes[player] = static_cast<int>(SDLNet_Read32(&net_packet->data[37]));
+	        stats[player]->sex = static_cast<sex_t>(static_cast<int>(SDLNet_Read32(&net_packet->data[41])));
 	        Uint32 raceAndAppearance = SDLNet_Read32(&net_packet->data[45]);
 	        stats[player]->stat_appearance = (raceAndAppearance & 0xFF00) >> 8;
 	        stats[player]->playerRace = (raceAndAppearance & 0xFF);
@@ -11899,7 +11899,7 @@ bind_failed:
 				net_packet->address.port = net_clients[i - 1].port;
 				sendPacketSafe(net_sock, -1, net_packet, i - 1);
 			}
-			const Uint8 player = std::min(net_packet->data[4], (Uint8)(MAXPLAYERS - 1));
+			const Uint8 player = std::min(net_packet->data[4], static_cast<Uint8>((MAXPLAYERS - 1)));
 		    Uint8 status = net_packet->data[5];
 		    createReadyStone((int)player, false, status ? true : false);
 		}},
@@ -11947,7 +11947,7 @@ bind_failed:
 
 		// player disconnected
 		{'DISC', [](){
-			const Uint8 player = std::min(net_packet->data[4], (Uint8)(MAXPLAYERS - 1));
+			const Uint8 player = std::min(net_packet->data[4], static_cast<Uint8>((MAXPLAYERS - 1)));
             if (player == 0) {
                 // yeah right
                 return;
@@ -12026,7 +12026,7 @@ bind_failed:
 
 		// keepalive
 		{'KPAL', [](){
-			const Uint8 player = std::min(net_packet->data[4], (Uint8)(MAXPLAYERS - 1));
+			const Uint8 player = std::min(net_packet->data[4], static_cast<Uint8>((MAXPLAYERS - 1)));
 			client_keepalive[player] = ticks;
 		}},
 
@@ -12208,10 +12208,10 @@ bind_failed:
 		    if (find == serverPacketHandlers.end()) {
                 // error
 		        printlog("Got a mystery packet: %c%c%c%c",
-		            (char)net_packet->data[0],
-		            (char)net_packet->data[1],
-		            (char)net_packet->data[2],
-		            (char)net_packet->data[3]);
+		            static_cast<char>(net_packet->data[0]),
+		            static_cast<char>(net_packet->data[1]),
+		            static_cast<char>(net_packet->data[2]),
+		            static_cast<char>(net_packet->data[3]));
 		    } else {
 		        (*(find->second))(); // handle packet
 		    }
@@ -12247,7 +12247,7 @@ bind_failed:
 
 	    // new player
 	    {'JOIN', [](){
-	        const int player = std::min(net_packet->data[4], (Uint8)(MAXPLAYERS - 1));
+	        const int player = std::min(net_packet->data[4], static_cast<Uint8>((MAXPLAYERS - 1)));
 		    client_disconnected[player] = false;
 		    client_classes[player] = net_packet->data[5];
 		    stats[player]->sex = static_cast<sex_t>(net_packet->data[6]);
@@ -12266,7 +12266,7 @@ bind_failed:
 
 	    // lock/unlock a player slot
 	    {'LOCK', [](){
-	        const int player = std::min(net_packet->data[4], (Uint8)(MAXPLAYERS - 1));
+	        const int player = std::min(net_packet->data[4], static_cast<Uint8>((MAXPLAYERS - 1)));
 	        const bool locked = net_packet->data[5];
 	        playerSlotsLocked[player] = locked;
 
@@ -12282,14 +12282,14 @@ bind_failed:
 
 	    // update player attributes
 	    {'PLYR', [](){
-	        const int player = std::min(net_packet->data[4], (Uint8)(MAXPLAYERS - 1));
+	        const int player = std::min(net_packet->data[4], static_cast<Uint8>((MAXPLAYERS - 1)));
 		    if (player != clientnum) {
 				if (!loadingsavegame) {
 					stats[player]->clearStats();
 				}
                 stringCopy(stats[player]->name, (char*)(&net_packet->data[5]), sizeof(Stat::name), 32);
-                client_classes[player] = (int)SDLNet_Read32(&net_packet->data[37]);
-                stats[player]->sex = static_cast<sex_t>((int)SDLNet_Read32(&net_packet->data[41]));
+                client_classes[player] = static_cast<int>(SDLNet_Read32(&net_packet->data[37]));
+                stats[player]->sex = static_cast<sex_t>(static_cast<int>(SDLNet_Read32(&net_packet->data[41])));
                 Uint32 raceAndAppearance = SDLNet_Read32(&net_packet->data[45]);
                 stats[player]->stat_appearance = (raceAndAppearance & 0xFF00) >> 8;
                 stats[player]->playerRace = (raceAndAppearance & 0xFF);
@@ -12302,7 +12302,7 @@ bind_failed:
 
 	    // update ready status
 	    {'REDY', [](){
-	        const int player = std::min(net_packet->data[4], (Uint8)(MAXPLAYERS - 1));
+	        const int player = std::min(net_packet->data[4], static_cast<Uint8>((MAXPLAYERS - 1)));
 	        Uint8 status = net_packet->data[5];
 	        if (player != clientnum) {
 	            createReadyStone((int)player, false, status ? true : false);
@@ -12328,7 +12328,7 @@ bind_failed:
 
 		// player disconnect
 	    {'DISC', [](){
-		    const int playerDisconnected = std::min(net_packet->data[4], (Uint8)(MAXPLAYERS - 1));
+		    const int playerDisconnected = std::min(net_packet->data[4], static_cast<Uint8>((MAXPLAYERS - 1)));
 			client_disconnected[playerDisconnected] = true;
 		    if (playerDisconnected == clientnum || playerDisconnected == 0) {
 			    // we got dropped
@@ -12395,7 +12395,7 @@ bind_failed:
 			char buf[512];
 			stringCopy(buf, (char*)(&net_packet->data[5]), sizeof(buf), std::max(0, (int)net_packet->len - 5));
 			lobbyCustomScenarioClient[sequence] = buf;
-			if ( (int)lobbyCustomScenarioClient.size() == numchunks )
+			if ( static_cast<int>(lobbyCustomScenarioClient.size()) == numchunks )
 			{
 				// parse the scenario.
 				std::string str = "";
@@ -12569,7 +12569,7 @@ bind_failed:
 
 			// parse the packet:
 			if (gotPacket) {
-				clientnum = (int)SDLNet_Read32(&net_packet->data[4]);
+				clientnum = static_cast<int>(SDLNet_Read32(&net_packet->data[4]));
 				if (clientnum >= static_cast<int>(NET_JOIN_ERROR_BASE) || clientnum <= 0) {
                     int error = clientnum;
                     clientnum = 0;
@@ -12669,7 +12669,7 @@ bind_failed:
 								auto type = SDLNet_Read16(net_packet->data + 8 + c * chunk_size + 6 + 32 + e * 6);
 								auto appearance = SDLNet_Read32(net_packet->data + 8 + c * chunk_size + 6 + 32 + e * 6 + 2);
 								if (type != 0xffff) {
-									slot = newItem((ItemType)type, Status::EXCELLENT, 0, 1, (Uint32)appearance, true, nullptr);
+									slot = newItem(static_cast<ItemType>(type), Status::EXCELLENT, 0, 1, (Uint32)appearance, true, nullptr);
 								}
 							}
 						} else {
@@ -12778,10 +12778,10 @@ bind_failed:
 			    if (find == clientPacketHandlers.end()) {
                     // error
 			        printlog("Got a mystery packet: %c%c%c%c",
-			            (char)net_packet->data[0],
-			            (char)net_packet->data[1],
-			            (char)net_packet->data[2],
-			            (char)net_packet->data[3]);
+			            static_cast<char>(net_packet->data[0]),
+			            static_cast<char>(net_packet->data[1]),
+			            static_cast<char>(net_packet->data[2]),
+			            static_cast<char>(net_packet->data[3]));
 			    } else {
 			        (*(find->second))(); // handle packet
 			    }
@@ -12842,8 +12842,8 @@ bind_failed:
 
 	static void setupNetGameAsServer() {
 	    // allocate data for client connections
-	    net_clients = (IPaddress*) malloc(sizeof(IPaddress) * MAXPLAYERS);
-	    net_tcpclients = (TCPsocket*) malloc(sizeof(TCPsocket) * MAXPLAYERS);
+	    net_clients = static_cast<IPaddress*>(malloc(sizeof(IPaddress) * MAXPLAYERS));
+	    net_tcpclients = static_cast<TCPsocket*>(malloc(sizeof(TCPsocket) * MAXPLAYERS));
 	    for (int c = 0; c < MAXPLAYERS; c++) {
 		    net_tcpclients[c] = NULL;
 	    }
@@ -12911,10 +12911,10 @@ bind_failed:
 	    // construct packet
 	    memcpy(net_packet->data, "JOIN", 4);
 	    stringCopy((char*)net_packet->data + 4, stats[index]->name, 32, sizeof(Stat::name));
-	    SDLNet_Write32((Uint32)client_classes[index], &net_packet->data[36]);
+	    SDLNet_Write32(static_cast<Uint32>(client_classes[index]), &net_packet->data[36]);
 	    SDLNet_Write32((Uint32)stats[index]->sex, &net_packet->data[40]);
-	    Uint32 appearanceAndRace = ((Uint8)stats[index]->stat_appearance << 8); // store in bits 8 - 15
-	    appearanceAndRace |= (Uint8)stats[index]->playerRace; // store in bits 0 - 7
+	    Uint32 appearanceAndRace = (static_cast<Uint8>(stats[index]->stat_appearance) << 8); // store in bits 8 - 15
+	    appearanceAndRace |= static_cast<Uint8>(stats[index]->playerRace); // store in bits 0 - 7
 	    SDLNet_Write32(appearanceAndRace, &net_packet->data[44]);
 	    stringCopy((char*)net_packet->data + 48, VERSION, 8, sizeof(VERSION));
 	    net_packet->data[56] = index;
@@ -13200,8 +13200,8 @@ bind_failed:
 
             // copy address
             char address_copy[128];
-            int address_len = (int)strlen(address);
-            address_len = std::min(address_len, (int)(sizeof(address_copy) - 1));
+            int address_len = static_cast<int>(strlen(address));
+            address_len = std::min(address_len, static_cast<int>(sizeof(address_copy) - 1));
             memcpy(address_copy, address, address_len);
             address_copy[address_len] = '\0';
             Uint16 port;
@@ -13218,7 +13218,7 @@ bind_failed:
 
             // read port number
 		    char *port_err;
-		    port = (Uint16)strtol(&address_copy[port_index], &port_err, 10);
+		    port = static_cast<Uint16>(strtol(&address_copy[port_index], &port_err, 10));
 		    if (*port_err != '\0' || port < 1024) {
 			    printlog("warning: invalid port number (%hu). Using default (%hu)\n", port, DEFAULT_PORT);
                 port = DEFAULT_PORT;
@@ -13304,7 +13304,7 @@ failed:
 		}
 
 		char buf[32000];
-		const int count = (int)fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+		const int count = static_cast<int>(fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1));
 		buf[count] = '\0';
 		rapidjson::StringStream is(buf);
 		FileIO::close(fp);
@@ -13452,7 +13452,7 @@ failed:
 		}
 
 		static char buf[32000];
-		const int count = (int)fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+		const int count = static_cast<int>(fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1));
 		buf[count] = '\0';
 		rapidjson::StringStream is(buf);
 		FileIO::close(fp);
@@ -13660,7 +13660,7 @@ failed:
 				{
 					// Add (Insectoid) etc if we're polymorphed from our base race.
 					char buf[64] = "";
-					auto localizedName = getMonsterLocalizedName((Monster)race);
+					auto localizedName = getMonsterLocalizedName(static_cast<Monster>(race));
 					camelCaseString(localizedName);
 					snprintf(buf, sizeof(buf), " (%s)", localizedName.c_str());
 					for ( size_t d = 0; d < details_text_buf.size(); ++d )
@@ -14501,7 +14501,7 @@ failed:
 				setting->select();
 			}
             
-            setting->setUserData((void*)(intptr_t)c);
+            setting->setUserData((void*)static_cast<intptr_t>(c));
 			setting->setDisabled(index != 0);
 			switch (c) {
 			case 0:
@@ -14973,10 +14973,10 @@ failed:
 				char buf[64] = "";
 				if ( !prefixes.empty() && !suffixes.empty() )
 				{
-					auto choice1 = RNG.uniform(0, (int)prefixes.size() - 1);
+					auto choice1 = RNG.uniform(0, static_cast<int>(prefixes.size()) - 1);
 					auto prefix = prefixes[choice1].c_str();
 
-					auto choice2 = RNG.uniform(0, (int)suffixes.size() - 1);
+					auto choice2 = RNG.uniform(0, static_cast<int>(suffixes.size()) - 1);
 					auto suffix = suffixes[choice2].c_str();
 					
 					snprintf(buf, sizeof(buf), "%s %s", prefix, suffix);
@@ -16003,7 +16003,7 @@ failed:
             const auto grad_size = gradient->pos.h / 2;
             const auto size = subframe->getSize();
 		    const auto asize = subframe->getActualSize();
-		    const float fade = ((asize.h - grad_size) - (asize.y + size.h)) / (float)grad_size;
+		    const float fade = ((asize.h - grad_size) - (asize.y + size.h)) / static_cast<float>(grad_size);
 		    const float b_fade = std::min(std::max(0.f, fade), 1.f);
 		    gradient->color = makeColor(255, 255, 255, 127 * b_fade);
 		    });
@@ -16302,7 +16302,7 @@ failed:
 		appearance_uparrow->setCallback([](Button& button){
 			auto card = static_cast<Frame*>(button.getParent());
 			auto appearances = card->findFrame("appearances"); assert(appearances);
-			int selection = (int)stats[button.getOwner()]->stat_appearance - 1;
+			int selection = static_cast<int>(stats[button.getOwner()]->stat_appearance) - 1;
             if (selection < 0) {
                 selection = num_appearances - 1;
             }
@@ -16344,7 +16344,7 @@ failed:
 		appearance_downarrow->setCallback([](Button& button){
 			auto card = static_cast<Frame*>(button.getParent());
 			auto appearances = card->findFrame("appearances"); assert(appearances);
-            int selection = (int)stats[button.getOwner()]->stat_appearance + 1;
+            int selection = static_cast<int>(stats[button.getOwner()]->stat_appearance) + 1;
             if (selection >= num_appearances) {
                 selection = 0;
             }
@@ -16773,7 +16773,7 @@ failed:
 
         if (details) {
   		    static auto class_desc_fn = [](Field& field, int index){
-			    const int i = std::min(std::max(0, client_classes[index]), (Sint32)(ClassDescriptions::data.size() - 1));
+			    const int i = std::min(std::max(0, client_classes[index]), static_cast<Sint32>(ClassDescriptions::data.size() - 1));
 				field.setText(ClassDescriptions::data[i].text.c_str());
 			    if (i < CLASS_CONJURER) {
 			        field.addColorToLine(0, color_dlc0);
@@ -16815,8 +16815,8 @@ failed:
 
 		    for (int c = 0; c < num_class_stats; ++c) {
 		        static auto class_stat_fn = [](Field& field, int index){
-			        const int i = std::min(std::max(0, client_classes[index]), (Sint32)(ClassDescriptions::data.size() - 1));
-			        const int s = (int)strtol(field.getName(), nullptr, 10);
+			        const int i = std::min(std::max(0, client_classes[index]), static_cast<Sint32>(ClassDescriptions::data.size() - 1));
+			        const int s = static_cast<int>(strtol(field.getName(), nullptr, 10));
 			        field.setColor(ClassDescriptions::data[i].statRatings[s]);
 
 					if ( auto parent = static_cast<Frame*>(field.getParent()) )
@@ -16919,7 +16919,7 @@ failed:
 
 				static constexpr int hpmp_buf_size = 32;
 				static auto hpmp_fn = [](Field& field, int index) {
-					const int i = std::min(std::max(0, client_classes[index]), (Sint32)(ClassDescriptions::data.size() - 1));
+					const int i = std::min(std::max(0, client_classes[index]), static_cast<Sint32>(ClassDescriptions::data.size() - 1));
 					char buf[hpmp_buf_size];
 					snprintf(buf, sizeof(buf), "%d\n%d",
 						ClassDescriptions::data[i].hp,
@@ -16958,7 +16958,7 @@ failed:
 		    // difficulty stars
 		    static constexpr int star_buf_size = 32;
 	        static auto stars_fn = [](Field& field, int index){
-		        const int i = std::min(std::max(0, client_classes[index]), (Sint32)(ClassDescriptions::data.size() - 1));
+		        const int i = std::min(std::max(0, client_classes[index]), static_cast<Sint32>(ClassDescriptions::data.size() - 1));
 		        for (int c = 0; c < 2; ++c) {
 					field.addColorToLine(c, std::get<2>(ClassDescriptions::data[i].survivalComplexity[c]));
 		        }
@@ -17125,7 +17125,7 @@ failed:
             soundActivate();
 
             auto reduced_class_list = reducedClassList(index);
-            auto random_class = reduced_class_list[RNG.uniform(0, (int)reduced_class_list.size() - 1)];
+            auto random_class = reduced_class_list[RNG.uniform(0, static_cast<int>(reduced_class_list.size()) - 1)];
             for (int c = 0; c < num_classes; ++c) {
                if (strcmp(random_class, classes_in_order[c]) == 0) {
                    client_classes[index] = c;
@@ -17362,7 +17362,7 @@ failed:
 									int len = snprintf(buf, sizeof(buf), Language::get(5432),
 										players[player]->getAccountName(), widget.getName());
 									Uint32 color = playerColor(player, colorblind_lobby, false);
-									sendChatMessageOverNet(color, buf, (size_t)len);
+									sendChatMessageOverNet(color, buf, static_cast<size_t>(len));
 									lastClassRequest = ticks;
 								} else {
 									snprintf(buf, sizeof(buf), Language::get(5431),
@@ -17646,7 +17646,7 @@ failed:
 #else
 			auto& names = stats[index]->sex == sex_t::MALE ?
 				randomPlayerNamesMale : randomPlayerNamesFemale;
-			auto choice = RNG.uniform(0, (int)names.size() - 1);
+			auto choice = RNG.uniform(0, static_cast<int>(names.size()) - 1);
 			auto name = names[choice].c_str();
 			name_field_fn(nullptr, name, index);
 			auto card = static_cast<Frame*>(button.getParent());
@@ -17986,7 +17986,7 @@ failed:
                 stats[index]->sex = sex_t::MALE;
             }
             else {
-                stats[index]->sex = (sex_t)(RNG.getU8() % 2);
+                stats[index]->sex = static_cast<sex_t>(RNG.getU8() % 2);
             }
 
 			// update sex buttons
@@ -18010,7 +18010,7 @@ failed:
 			{
 				// select a random class
 				const auto reduced_class_list = reducedClassList(index);
-				const auto class_choice = RNG.uniform(0, (int)reduced_class_list.size() - 1);
+				const auto class_choice = RNG.uniform(0, static_cast<int>(reduced_class_list.size()) - 1);
 				const auto random_class = reduced_class_list[class_choice];
 				for (int c = 0; c < num_classes; ++c) {
 					if (strcmp(random_class, classes_in_order[c]) == 0) {
@@ -18302,11 +18302,11 @@ failed:
 		banner->setVJustify(Field::justify_t::TOP);
 		banner->setHJustify(Field::justify_t::CENTER);
 		banner->setColor(playerColor(index, colorblind_lobby, false));
-		banner->setUserData((void*)(intptr_t)index);
+		banner->setUserData((void*)static_cast<intptr_t>(index));
 		banner->setTickCallback([](Widget& widget) {
 			auto field = static_cast<Field*>(&widget);
 			auto index = reinterpret_cast<intptr_t>(field->getUserData());
-			field->setColor(playerColor((int)index, colorblind_lobby, false));
+			field->setColor(playerColor(static_cast<int>(index), colorblind_lobby, false));
 		});
 
 		auto start = card->addField("start", 128);
@@ -18581,11 +18581,11 @@ failed:
 		banner->setVJustify(Field::justify_t::TOP);
 		banner->setHJustify(Field::justify_t::CENTER);
 		banner->setColor(playerColor(index, colorblind_lobby, false));
-		banner->setUserData((void*)(intptr_t)index);
+		banner->setUserData((void*)static_cast<intptr_t>(index));
 		banner->setTickCallback([](Widget& widget) {
 			auto field = static_cast<Field*>(&widget);
 			auto index = reinterpret_cast<intptr_t>(field->getUserData());
-			field->setColor(playerColor((int)index, colorblind_lobby, false));
+			field->setColor(playerColor(static_cast<int>(index), colorblind_lobby, false));
 		});
 
 		auto invite = card->addButton("invite_button");
@@ -18642,11 +18642,11 @@ failed:
 		banner->setVJustify(Field::justify_t::TOP);
 		banner->setHJustify(Field::justify_t::CENTER);
 		banner->setColor(playerColor(index, colorblind_lobby, false));
-		banner->setUserData((void*)(intptr_t)index);
+		banner->setUserData((void*)static_cast<intptr_t>(index));
 		banner->setTickCallback([](Widget& widget) {
 			auto field = static_cast<Field*>(&widget);
 			auto index = reinterpret_cast<intptr_t>(field->getUserData());
-			field->setColor(playerColor((int)index, colorblind_lobby, false));
+			field->setColor(playerColor(static_cast<int>(index), colorblind_lobby, false));
 		});
 
 		auto text = card->addField("text", 128);
@@ -18757,7 +18757,7 @@ failed:
 		banner->setVJustify(Field::justify_t::TOP);
 		banner->setHJustify(Field::justify_t::CENTER);
 		banner->setColor(playerColor(index, colorblind_lobby, false));
-		banner->setUserData((void*)(intptr_t)index);
+		banner->setUserData((void*)static_cast<intptr_t>(index));
 
 		// character name needs to be updated constantly in case it gets updated over the net
 		banner->setTickCallback([](Widget& widget){
@@ -18767,7 +18767,7 @@ failed:
             // shorten the name
             constexpr int longest_name = 22;
 		    char shortname[32];
-		    int len = (int)strlen(stats[player]->name);
+		    int len = static_cast<int>(strlen(stats[player]->name));
 		    if (len > longest_name) {
 		        memcpy(shortname, stats[player]->name, longest_name);
 		        memcpy(shortname + longest_name - 2, "...", 4);
@@ -18780,7 +18780,7 @@ failed:
 
 			// set color
 			auto index = reinterpret_cast<intptr_t>(field->getUserData());
-			field->setColor(playerColor((int)index, colorblind_lobby, false));
+			field->setColor(playerColor(static_cast<int>(index), colorblind_lobby, false));
 		    });
 
 		// account name
@@ -18790,7 +18790,7 @@ failed:
 		account->setVJustify(Field::justify_t::TOP);
 		account->setHJustify(Field::justify_t::CENTER);
 		account->setColor(playerColor(index, colorblind_lobby, false));
-		account->setUserData((void*)(intptr_t)index);
+		account->setUserData((void*)static_cast<intptr_t>(index));
 
 		// account name needs to be updated constantly in case it gets updated over the net
 		account->setTickCallback([](Widget& widget) {
@@ -18816,7 +18816,7 @@ failed:
 			}
 
 			auto index = reinterpret_cast<intptr_t>(field->getUserData());
-			field->setColor(playerColor((int)index, colorblind_lobby, false));
+			field->setColor(playerColor(static_cast<int>(index), colorblind_lobby, false));
 			});
 
         if (local) {
@@ -19164,7 +19164,7 @@ failed:
 						// random name
 						auto& names = stats[c]->sex == sex_t::MALE ?
 						    randomPlayerNamesMale : randomPlayerNamesFemale;
-						const int choice = RNG.uniform(0, (int)names.size() - 1);
+						const int choice = RNG.uniform(0, static_cast<int>(names.size()) - 1);
 						auto name = names[choice].c_str();
 						size_t len = names[choice].size();
 						len = std::min(sizeof(Stat::name) - 1, len);
@@ -19316,7 +19316,7 @@ failed:
 				field->setText(text.c_str());
 				if ( auto textGet = field->getTextObject() )
 				{
-					field->setSize(SDL_Rect{ 36, 9, (int)textGet->getWidth(), 26 });
+					field->setSize(SDL_Rect{ 36, 9, static_cast<int>(textGet->getWidth()), 26 });
 
 					SDL_Rect right_pos = SDL_Rect{ field->getSize().x + field->getSize().w - 4, 0, 16, 38 };
 					Frame::image_t* right = frame->findImage("bg_right");
@@ -20310,7 +20310,7 @@ failed:
 									value *= divideInterval;
 									if ( value >= 500 )
 									{
-										snprintf(buf, sizeof(buf), ">%dMS", std::min(value, (Uint32)500));
+										snprintf(buf, sizeof(buf), ">%dMS", std::min(value, static_cast<Uint32>(500)));
 									}
 									else
 									{
@@ -20449,13 +20449,13 @@ failed:
                 auto image = frame->findImage(name.c_str());
                 if (image) {
 		            const int h = image->pos.h;
-                    const int y = frame->getSize().h - h - 32 - (int)bounce_height;
+                    const int y = frame->getSize().h - h - 32 - static_cast<int>(bounce_height);
 	                image->pos.y = y;
                 }
                 auto field = frame->findField(name.c_str());
                 if (field) {
                     auto size = field->getSize();
-                    size.y = frame->getSize().h - size.h - 32 - (int)bounce_height;
+                    size.y = frame->getSize().h - size.h - 32 - static_cast<int>(bounce_height);
                     field->setSize(size);
                 }
             }
@@ -20933,7 +20933,7 @@ failed:
             auto mouse = inputs.getVirtualMouse(entry.parent.getOwner());
             if (mouse && !mouse->draw_cursor) {
                 auto lobbyId = (intptr_t)entry.data;
-                selectedLobby = (int)lobbyId;
+                selectedLobby = static_cast<int>(lobbyId);
             }
             };
 
@@ -20952,14 +20952,14 @@ failed:
 			versions->setActivation(versions->getEntries()[selection]);
 			auto lobbyId = (intptr_t)entry.data;
 			if (selectedLobby != lobbyId) {
-				selectedLobby = (int)lobbyId;
+				selectedLobby = static_cast<int>(lobbyId);
 			} else {
 				if (!inputs.getVirtualMouse(getMenuOwner())->draw_cursor) {
                     if (lobbyId >= 0 && lobbyId < lobbies.size()) {
                         // pressing A on a lobby after selecting it will join that lobby
                         const auto& lobby = lobbies[lobbyId];
                         if (!lobby.locked) {
-							int index = (int)lobby.index;
+							int index = static_cast<int>(lobby.index);
                             if (connectToServer(lobby.address.c_str(), &index,
                                     directConnect ? LobbyType::LobbyLAN : LobbyType::LobbyOnline)) {
                                 // only deselect the list if the connection begins
@@ -21436,9 +21436,9 @@ failed:
 				            memcpy(hostname, &scan.packet->data[8], hostname_len);
 
 				            Uint32 offset = 8 + hostname_len;
-				            int players = (int)SDLNet_Read32(&scan.packet->data[offset]);
+				            int players = static_cast<int>(SDLNet_Read32(&scan.packet->data[offset]));
 
-				            int ping = (int)(ticks - scan_ticks);
+				            int ping = static_cast<int>(ticks - scan_ticks);
 
 				            // there's a server on the network!
 				            LobbyInfo info;
@@ -21458,10 +21458,10 @@ failed:
 								(uint8_t)((host & 0x000000ff) >> 0));
 #else
 							snprintf(buf, sizeof(buf), "%hhu.%hhu.%hhu.%hhu",
-								(uint8_t)((host & 0x000000ff) >> 0),
-								(uint8_t)((host & 0x0000ff00) >> 8),
-								(uint8_t)((host & 0x00ff0000) >> 16),
-								(uint8_t)((host & 0xff000000) >> 24));
+								static_cast<uint8_t>((host & 0x000000ff) >> 0),
+								static_cast<uint8_t>((host & 0x0000ff00) >> 8),
+								static_cast<uint8_t>((host & 0x00ff0000) >> 16),
+								static_cast<uint8_t>((host & 0xff000000) >> 24));
 #endif
 				            info.address = buf;
 				            addLobby(info);
@@ -21626,7 +21626,7 @@ failed:
 
 		        std::string checkbox_name = std::string("filter_checkbox") + std::to_string(index);
 
-                static const char* icons[(int)Filter::NUM] = {
+                static const char* icons[static_cast<int>(Filter::NUM)] = {
                     "",
                     "*#images/ui/Main Menus/Play/LobbyBrowser/Lobby_Checkbox_RedXSmall00.png",
                     "*#images/ui/Main Menus/Play/LobbyBrowser/Lobby_Checkbox_PickSmall00.png",
@@ -21635,21 +21635,21 @@ failed:
 		        auto checkbox = frame_right->addButton(checkbox_name.c_str());
 		        checkbox->setSize(SDL_Rect{32, 74 + index * 24, 28, 24});
 		        checkbox->setBackground("*#images/ui/Main Menus/Play/LobbyBrowser/Lobby_Checkbox_BoxSmall00.png");
-		        checkbox->setIcon(icons[(int)lobbyFilters[c]]);
+		        checkbox->setIcon(icons[static_cast<int>(lobbyFilters[c])]);
 		        checkbox->setHighlightColor(uint32ColorWhite);
 		        checkbox->setColor(uint32ColorWhite);
 		        checkbox->setUserData(&lobbyFilters[c]);
 		        checkbox->setSelectorOffset(SDL_Rect{0, 2, -6, 0});
 		        checkbox->setCallback([](Button& button){
 		            soundCheckmark();
-                    Filter* filter = (Filter*)button.getUserData();
+                    Filter* filter = static_cast<Filter*>(button.getUserData());
                     switch (*filter) {
                     default:
                     case Filter::UNCHECKED: *filter = Filter::ON; break;
                     case Filter::ON: *filter = Filter::OFF; break;
                     case Filter::OFF: *filter = Filter::UNCHECKED; break;
                     }
-                    button.setIcon(icons[(int)*filter]);
+                    button.setIcon(icons[static_cast<int>(*filter)]);
 					lobbyFiltersEnabled = false;
 					for ( int i = 0; i < numFilters; ++i )
 					{
@@ -22162,7 +22162,7 @@ failed:
 				if ( lobbyFiltersEnabled )
 				{
 					auto names = static_cast<Frame*>(widget.getParent())->findFrame("names");
-					int lobbiesFiltered = std::max(0, (int)lobbies.size() - (int)names->getEntries().size());
+					int lobbiesFiltered = std::max(0, static_cast<int>(lobbies.size()) - static_cast<int>(names->getEntries().size()));
 					if ( lobbiesFiltered > 0 )
 					{
 						char buf[64] = {'\0'};
@@ -23803,7 +23803,7 @@ failed:
 
         // create shortened player name
         char shortened_name[20] = { '\0' };
-        int len = (int)game_name.size();
+        int len = static_cast<int>(game_name.size());
         strncpy(shortened_name, game_name.c_str(), std::min(len, 16));
         if (len > 16) {
             strcat(shortened_name, "...");
@@ -23975,7 +23975,7 @@ failed:
 
         // create shortened player name
         char shortened_name[20] = { '\0' };
-        int len = (int)game_name.size();
+        int len = static_cast<int>(game_name.size());
         strncpy(shortened_name, game_name.c_str(), std::min(len, 16));
         if (len > 16) {
             strcat(shortened_name, "...");
@@ -24234,8 +24234,8 @@ failed:
         const std::string portrait_path =
             monsterData.getAllyIconFromSprite(playerHeadSprite(
                 (Monster)getMonsterFromPlayerRace(info.players[player].race),
-                (sex_t)info.players[player].stats.sex,
-                (int)info.players[player].stats.statscore_appearance));
+                static_cast<sex_t>(info.players[player].stats.sex),
+                static_cast<int>(info.players[player].stats.statscore_appearance)));
         auto portrait = subframe->addImage(
             SDL_Rect{32, 24, 32, 32},
             0xffffffff,
@@ -24328,7 +24328,7 @@ failed:
 		                int save_index = -1;
 	                    const char* name = continueSingleplayer ? "savegame" : "savegame_multiplayer";
 	                    size_t name_len = strlen(name);
-                        save_index = (int)strtol(button.getName() + name_len, nullptr, 10);
+                        save_index = static_cast<int>(strtol(button.getName() + name_len, nullptr, 10));
                         if (cursor_delete_mode) {
                             deleteSavePrompt(continueSingleplayer, save_index);
                         } else {
@@ -24411,7 +24411,7 @@ failed:
 
                 // create shortened game name
                 char shortened_name[20] = { '\0' };
-                int len = (int)game_name.size();
+                int len = static_cast<int>(game_name.size());
                 strncpy(shortened_name, game_name.c_str(), std::min(len, 16));
                 if (len > 16) {
                     strcat(shortened_name, "...");
@@ -24588,7 +24588,7 @@ failed:
 						field->setText(title.c_str());
 						if ( auto textGet = field->getTextObject() )
 						{
-							field->setSize(SDL_Rect{ 36, 9, (int)textGet->getWidth(), 26 });
+							field->setSize(SDL_Rect{ 36, 9, static_cast<int>(textGet->getWidth()), 26 });
 
 							SDL_Rect right_pos = SDL_Rect{ field->getSize().x + field->getSize().w - 4, 0, 16, 38 };
 							Frame::image_t* right = frame->addImage(right_pos, 0xFFFFFFFF,
@@ -24627,7 +24627,7 @@ failed:
                     addContinuePlayerInfo(subwindow, saveGameInfo, saveGameInfo.player_num, posX + 30, 114, false);
                 }
                 else if (numplayers == 2) {
-                    for (int c = 0, player = 0; c < (int)saveGameInfo.players_connected.size(); ++c) {
+                    for (int c = 0, player = 0; c < static_cast<int>(saveGameInfo.players_connected.size()); ++c) {
                         if (saveGameInfo.players_connected[c]) {
                             switch (player) {
                             default:
@@ -24643,7 +24643,7 @@ failed:
                     }
                 }
                 else if (numplayers >= 3) {
-                    for (int c = 0, player = 0; c < (int)saveGameInfo.players_connected.size(); ++c) {
+                    for (int c = 0, player = 0; c < static_cast<int>(saveGameInfo.players_connected.size()); ++c) {
                         if (saveGameInfo.players_connected[c]) {
                             switch (player) {
                             default:
@@ -24667,7 +24667,7 @@ failed:
 
 		        ++index;
 		    }
-		    subwindow.setActualSize(SDL_Rect{0, 0, 898 + 256 * ((int)savegames.size() - 1), 294});
+		    subwindow.setActualSize(SDL_Rect{0, 0, 898 + 256 * (static_cast<int>(savegames.size()) - 1), 294});
         }
         return first_savegame;
 	}
@@ -24860,7 +24860,7 @@ failed:
 	            const char* name = continueSingleplayer ? "savegame" : "savegame_multiplayer";
 	            size_t name_len = strlen(name);
 	            if (strncmp(savegame_selected->getName(), name, name_len) == 0) {
-                    save_index = (int)strtol(savegame_selected->getName() + name_len, nullptr, 10);
+                    save_index = static_cast<int>(strtol(savegame_selected->getName() + name_len, nullptr, 10));
 	            }
 	        }
 	        if (save_index >= 0) {
@@ -24911,7 +24911,7 @@ failed:
 	            const char* name = continueSingleplayer ? "savegame" : "savegame_multiplayer";
 	            size_t name_len = strlen(name);
 	            if (strncmp(savegame_selected->getName(), name, name_len) == 0) {
-                    save_index = (int)strtol(savegame_selected->getName() + name_len, nullptr, 10);
+                    save_index = static_cast<int>(strtol(savegame_selected->getName() + name_len, nullptr, 10));
 	            }
 	        }
 	        if (save_index >= 0) {
@@ -25296,7 +25296,7 @@ failed:
 		} else {
 			tabs.push_back({"Game", Language::get(5623), settingsGame});
 		}
-		const int num_tabs = (int)tabs.size();
+		const int num_tabs = static_cast<int>(tabs.size());
 		for (int c = 0; c < num_tabs; ++c) {
 			const int x = settings->getSize().w / (num_tabs + 1);
 			auto button = settings->addButton(tabs[c].name);
@@ -25491,7 +25491,7 @@ failed:
 						{
 							if ( auto window = main_menu_frame->findFrame("settings") )
 							{
-								window->setUserData((void*)(intptr_t)SETTING_MODIFIED);
+								window->setUserData((void*)static_cast<intptr_t>(SETTING_MODIFIED));
 							}
 						}
                         return;
@@ -26241,7 +26241,7 @@ failed:
 				    {"data/story/ClassicBaphometEndingEvil.json", classicEnding},
 				};
 				constexpr int num_scenes = sizeof(scenes) / sizeof(scenes[0]);
-				int scene = (int)main_menu_fade_destination - (int)FadeDestination::HerxMidpointHuman;
+				int scene = static_cast<int>(main_menu_fade_destination) - static_cast<int>(FadeDestination::HerxMidpointHuman);
 				assert(scene >= 0 && scene < num_scenes);
 				createStoryScreen(scenes[scene].filename, scenes[scene].end_func);
 #ifdef SOUND
@@ -26345,7 +26345,7 @@ failed:
 		            for (int i = 0; tutorial_map_destination[i]; ++i) {
 		                auto c = tutorial_map_destination[i];
 		                if (c >= '0' && c <= '9') {
-		                    tutorialNum = (int)strtol(tutorial_map_destination.c_str() + i, nullptr, 10);
+		                    tutorialNum = static_cast<int>(strtol(tutorial_map_destination.c_str() + i, nullptr, 10));
 		                }
 		            }
 		            if (tutorialNum > 0 && tutorialNum <= gameModeManager.Tutorial.getNumTutorialLevels()) {
@@ -26606,10 +26606,10 @@ failed:
 		auto title_img = Image::get("*images/system/title.png");
 		auto title = main_menu_frame->addImage(
 			SDL_Rect{
-				(int)(Frame::virtualScreenX - (int)title_img->getWidth() * title_scale) / 2,
+				static_cast<int>(Frame::virtualScreenX - (int)title_img->getWidth() * title_scale) / 2,
 				Frame::virtualScreenY / 4,
-				(int)(title_img->getWidth() * title_scale),
-				(int)(title_img->getHeight() * title_scale)
+				static_cast<int>(title_img->getWidth() * title_scale),
+				static_cast<int>(title_img->getHeight() * title_scale)
 			},
 			makeColor(255, 255, 255, 255),
 			title_img->getName(),
@@ -26618,7 +26618,7 @@ failed:
 
 		char buf[64];
 		const char date[] = __DATE__;
-		const char* year = (const char*)date + sizeof(date) - 5;
+		const char* year = static_cast<const char*>(date) + sizeof(date) - 5;
 		snprintf(buf, sizeof(buf), u8"Copyright \u00A9 %s, Turning Wheel LLC", year);
 
 		auto copyright = main_menu_frame->addField("copyright", 64);
@@ -26699,7 +26699,7 @@ failed:
 		    });
 		button->setTickCallback([](Widget& widget){
 			const int pace = TICKS_PER_SECOND * 4;
-            const real_t ang = PI * 2.0 * ((ticks % pace) / (real_t)pace);
+            const real_t ang = PI * 2.0 * ((ticks % pace) / static_cast<real_t>(pace));
 			const uint8_t alpha = 191 + fabs(sin(ang)) * 64;
             const Uint32 newColor = makeColor(255, 255, 255, alpha);
 		    auto button = static_cast<Button*>(&widget);
@@ -26957,10 +26957,10 @@ failed:
 		auto title_img = Image::get("*images/system/title.png");
 		auto title = main_menu_frame->addImage(
 			SDL_Rect{
-				(int)(Frame::virtualScreenX - (int)title_img->getWidth() * title_scale) / 2,
+				static_cast<int>(Frame::virtualScreenX - (int)title_img->getWidth() * title_scale) / 2,
 				y,
-				(int)(title_img->getWidth() * title_scale),
-				(int)(title_img->getHeight() * title_scale)
+				static_cast<int>(title_img->getWidth() * title_scale),
+				static_cast<int>(title_img->getHeight() * title_scale)
 			},
 			makeColor(255, 255, 255, 255),
 			title_img->getName(),
@@ -27111,7 +27111,7 @@ failed:
 			}
 		}
 
-		const int num_options = (int)options.size();
+		const int num_options = static_cast<int>(options.size());
 
         y = (Frame::virtualScreenY - num_options * 32) / 2 + 1;
 		main_menu_buttons_height = y;
@@ -27287,7 +27287,7 @@ failed:
 
 		main_menu_frame->addImage(
 			SDL_Rect{
-				main_menu_cursor_x + (int)(sinf(main_menu_cursor_bob) * 16.f) - 16,
+				main_menu_cursor_x + static_cast<int>(sinf(main_menu_cursor_bob) * 16.f) - 16,
 				main_menu_cursor_y,
 				37 * 2,
 				23 * 2
@@ -27533,7 +27533,7 @@ failed:
 
 			char buf[64];
 			const char date[] = __DATE__;
-			const char* year = (const char*)date + sizeof(date) - 5;
+			const char* year = static_cast<const char*>(date) + sizeof(date) - 5;
 			snprintf(buf, sizeof(buf), u8"Copyright \u00A9 %s, Turning Wheel LLC", year);
 
 			auto copyright = main_menu_frame->addField("copyright", 64);
@@ -27701,7 +27701,7 @@ failed:
 	    Uint32 total = totalScore(score);
 	    list_t* scoresPtr = multiplayer == SINGLE ? &topscores_json : &topscoresMultiplayer_json;
         for (auto node = scoresPtr->first; node != nullptr; node = node->next) {
-            if (total > totalScore((score_t*)node->element)) {
+            if (total > totalScore(static_cast<score_t*>(node->element))) {
                 break;
             }
             ++placement;
@@ -27717,7 +27717,7 @@ failed:
 			    }
 	            //players[i]->shootmode = false; // open inventory
 			    for (auto node = stats[i]->inventory.first; node != NULL; node = node->next) {
-				    Item* item = (Item*)node->element;
+				    Item* item = static_cast<Item*>(node->element);
 				    item->identified = true;
 			    }
 		    }
@@ -27758,7 +27758,7 @@ failed:
             auto size = window->getSize();
             auto height = (parent->getSize().h - size.h) / 2;
             if (size.y < height) {
-                const int fallspeed = 80 * ((real_t)TICKS_PER_SECOND / fpsLimit);
+                const int fallspeed = 80 * (static_cast<real_t>(TICKS_PER_SECOND) / fpsLimit);
                 size.y += fallspeed;
                 if (size.y >= height) {
                     size.y = height;
@@ -27800,10 +27800,10 @@ failed:
         case KilledBy::MONSTER: {
             if (stats[player]->killer_name.empty()) {
                 cause_of_death = getMonsterLocalizedName(stats[player]->killer_monster);
-                cause_of_death[0] = (char)toupper((int)cause_of_death[0]);
+                cause_of_death[0] = static_cast<char>(toupper((int)cause_of_death[0]));
             } else {
                 cause_of_death = stats[player]->killer_name;
-				cause_of_death[0] = (char)toupper((int)cause_of_death[0]);
+				cause_of_death[0] = static_cast<char>(toupper((int)cause_of_death[0]));
             }
             break;
         }
@@ -27827,7 +27827,7 @@ failed:
 			cause_of_death = Language::get(6854);
 			break;
         default: {
-            cause_of_death = Language::get(5794 + (int)stats[player]->killer);
+            cause_of_death = Language::get(5794 + static_cast<int>(stats[player]->killer));
             break;
         }
         }
@@ -27909,7 +27909,7 @@ failed:
             dismiss->setTextColor(makeColor(170, 134, 102, 255));
             dismiss->setTextHighlightColor(makeColor(170, 134, 102, 255));
             dismiss->setTickCallback(dismiss_tick);
-			dismiss->setUserData((void*)(intptr_t)(player + 1));
+			dismiss->setUserData((void*)static_cast<intptr_t>(player + 1));
             dismiss->setCallback([](Button& button){
                 soundCancel();
                 auto window = static_cast<Frame*>(button.getParent());
@@ -28066,7 +28066,7 @@ failed:
 			dismiss->setTextColor(makeColor(170, 134, 102, 255));
 			dismiss->setTextHighlightColor(makeColor(170, 134, 102, 255));
 			dismiss->setTickCallback(dismiss_tick);
-			dismiss->setUserData((void*)(intptr_t)(player + 1));
+			dismiss->setUserData((void*)static_cast<intptr_t>(player + 1));
 			dismiss->setCallback([](Button& button) {
 				soundCancel();
 			auto window = static_cast<Frame*>(button.getParent());
@@ -28341,13 +28341,13 @@ failed:
                 auto image = frame->findImage(name.c_str());
                 if (image) {
 		            const int h = image->pos.h;
-                    const int y = frame->getSize().h - h - 32 - (int)bounce_height;
+                    const int y = frame->getSize().h - h - 32 - static_cast<int>(bounce_height);
 	                image->pos.y = y;
                 }
                 auto field = frame->findField(name.c_str());
                 if (field) {
                     auto size = field->getSize();
-                    size.y = frame->getSize().h - size.h - 32 - (int)bounce_height;
+                    size.y = frame->getSize().h - size.h - 32 - static_cast<int>(bounce_height);
                     field->setSize(size);
                 }
             }
@@ -28524,7 +28524,7 @@ failed:
 		// generate a name like:
 		// Filthy Rat #5743
 		std::string monster = getMonsterLocalizedName(
-			(Monster)RNG.uniform(Monster::HUMAN, Monster::MAX_MONSTER));
+			static_cast<Monster>(RNG.uniform(Monster::HUMAN, Monster::MAX_MONSTER)));
 		monster[0] = toupper(monster[0]);
 		char buf[32];
 		snprintf(buf, sizeof(buf), "%s %s #%04d",
@@ -28807,7 +28807,7 @@ failed:
 				{
 					modOrderTxt->setDisabled(true);
 					modOrderTxt->setText("");
-					modOrderTxt->setUserData((void*)(intptr_t)-1);
+					modOrderTxt->setUserData((void*)static_cast<intptr_t>(-1));
 				}
 			}
 			auto bg = frame->findImage("bg");
@@ -28894,7 +28894,7 @@ failed:
 		{
 			itemIndex -= 1000000;
 		}
-		frame->setUserData((void*)(intptr_t)itemIndex);
+		frame->setUserData((void*)static_cast<intptr_t>(itemIndex));
 
 		int latestVersionNum = 0;
 		int currentVersionNum = 0;
@@ -29071,7 +29071,7 @@ failed:
 			button->setColor(0xffffffff);
 			button->setHighlightColor(0xffffffff);
 			button->setSize(SDL_Rect{ frame->getSize().x + frame->getSize().w, frame->getSize().y + 8, 158, 44});
-			button->setUserData((void*)(intptr_t)(isWorkshopMod ? 1 : 0));
+			button->setUserData((void*)static_cast<intptr_t>(isWorkshopMod ? 1 : 0));
 			button->setFont(smallfont_outline);
 			button->setScrollParentOffset(btnScrollParentOffset);
 			if ( isMounted )
@@ -29187,7 +29187,7 @@ failed:
 			button->setColor(0xffffffff);
 			button->setHighlightColor(0xffffffff);
 			button->setSize(SDL_Rect{ frame->getSize().x + frame->getSize().w, frame->getSize().y + 8, 158, 44 });
-			button->setUserData((void*)(intptr_t)(isWorkshopMod ? 1 : 0));
+			button->setUserData((void*)static_cast<intptr_t>(isWorkshopMod ? 1 : 0));
 			button->setFont(smallfont_outline);
 			button->setScrollParentOffset(btnScrollParentOffset);
 			button->setText(Language::get(5857));
@@ -29840,7 +29840,7 @@ failed:
 		tip->setSize(texteditPos);
 		tip->setFont(smallfont_no_outline);
 		tip->setText(tip_text);
-		tip->setUserData(const_cast<void*>((const void*)tip_text));
+		tip->setUserData(const_cast<void*>(static_cast<const void*>(tip_text)));
 		tip->setFont(smallfont_outline);
 		tip->setHJustify(Field::justify_t::LEFT);
 		tip->setVJustify(Field::justify_t::CENTER);
@@ -29856,7 +29856,7 @@ failed:
 			tip->setText("");
 		}
 		else {
-			tip->setText((const char*)tip->getUserData());
+			tip->setText(static_cast<const char*>(tip->getUserData()));
 		}
 			});
 
@@ -30619,7 +30619,7 @@ failed:
 		blank_mod_folder->setWidgetBack("back_button");
 		blank_mod_folder->setWidgetUp(mod_tabs[0].name);
 
-		const int num_tabs = (int)mod_tabs.size();
+		const int num_tabs = static_cast<int>(mod_tabs.size());
 		int buttonsLeftX = Frame::virtualScreenX;
 		int buttonsRightX = 0;
 		for ( int c = 0; c < num_tabs; ++c ) {
@@ -35255,7 +35255,7 @@ failed:
 									{
 										auto& def = CompendiumEntries.monsters[find->second];
 										output += ' ';
-										auto monsterType = (Monster)def.monsterType;
+										auto monsterType = static_cast<Monster>(def.monsterType);
 										if ( monsterType == LICH_FIRE || monsterType == LICH_ICE )
 										{
 											monsterType = LICH;
@@ -35364,7 +35364,7 @@ failed:
 										{
 											if ( find->first == SCROLL_MAIL )
 											{
-												value = std::max(0, std::min(100, (int)(100.0 * total / (real_t)(NUM_SCROLL_MAIL_OPTIONS))));
+												value = std::max(0, std::min(100, static_cast<int>(100.0 * total / (real_t)(NUM_SCROLL_MAIL_OPTIONS))));
 											}
 											else if ( find->first == READABLE_BOOK )
 											{
@@ -35390,7 +35390,7 @@ failed:
 
 												if ( numbooks > 0 )
 												{
-													value = std::max(0, std::min(100, (int)(100.0 * total / (real_t)(numbooks))));
+													value = std::max(0, std::min(100, static_cast<int>(100.0 * total / (real_t)(numbooks))));
 												}
 												else
 												{
@@ -35400,7 +35400,7 @@ failed:
 										}
 										else if ( tag == Compendium_t::EventTags::CPDM_GRAVE_EPITAPHS_PERCENT )
 										{
-											value = std::max(0, std::min(100, (int)(100.0 * total / (real_t)(17))));
+											value = std::max(0, std::min(100, static_cast<int>(100.0 * total / (real_t)(17))));
 										}
 										else
 										{
@@ -35469,7 +35469,7 @@ failed:
 													&& findTag->second[worldId].value > 0 )
 												{
 													char buf[32];
-													snprintf(buf, sizeof(buf), " (%.2f%%)", std::min(100.0, 100.0 * value / (real_t)findTag->second[worldId].value));
+													snprintf(buf, sizeof(buf), " (%.2f%%)", std::min(100.0, 100.0 * value / static_cast<real_t>(findTag->second[worldId].value)));
 													output += buf;
 												}
 											}
@@ -36430,7 +36430,7 @@ failed:
 													: ItemTooltips.itemNameStringToItemID[widget.getName()];
 												if ( itemType >= WOODEN_SHIELD && itemType < NUMITEMS )
 												{
-													Compendium_t::compendiumItem.type = (ItemType)itemType;
+													Compendium_t::compendiumItem.type = static_cast<ItemType>(itemType);
 													if ( frame->getUserData() )
 													{
 														Compendium_t::compendiumItem.appearance = (reinterpret_cast<intptr_t>(frame->getUserData()) & 0x7F);
@@ -36522,7 +36522,7 @@ failed:
 																if ( Compendium_t::compendiumItem.status > DECREPIT )
 																{
 																	soundMove();
-																	Compendium_t::compendiumItem.status = (Status)(Compendium_t::compendiumItem.status - 1);
+																	Compendium_t::compendiumItem.status = static_cast<Status>(Compendium_t::compendiumItem.status - 1);
 																}
 																else
 																{
@@ -36537,7 +36537,7 @@ failed:
 																if ( Compendium_t::compendiumItem.status < EXCELLENT )
 																{
 																	soundMove();
-																	Compendium_t::compendiumItem.status = (Status)(Compendium_t::compendiumItem.status + 1);
+																	Compendium_t::compendiumItem.status = static_cast<Status>(Compendium_t::compendiumItem.status + 1);
 																}
 																else
 																{
@@ -36552,7 +36552,7 @@ failed:
 																if ( Compendium_t::compendiumItem.status > DECREPIT )
 																{
 																	soundMove();
-																	Compendium_t::compendiumItem.status = (Status)(Compendium_t::compendiumItem.status - 1);
+																	Compendium_t::compendiumItem.status = static_cast<Status>(Compendium_t::compendiumItem.status - 1);
 																}
 																else
 																{
@@ -36567,7 +36567,7 @@ failed:
 																if ( Compendium_t::compendiumItem.status < EXCELLENT )
 																{
 																	soundMove();
-																	Compendium_t::compendiumItem.status = (Status)(Compendium_t::compendiumItem.status + 1);
+																	Compendium_t::compendiumItem.status = static_cast<Status>(Compendium_t::compendiumItem.status + 1);
 																}
 																else
 																{
@@ -36730,7 +36730,7 @@ failed:
 						}
 					}
 
-					Compendium_t::compendiumItem.type = (ItemType)id;
+					Compendium_t::compendiumItem.type = static_cast<ItemType>(id);
 					Compendium_t::compendiumItem.appearance = (modelRNGCycle + Compendium_t::compendiumEntityCurrent.modelRNG) % items[id].variations;
 					if ( id == MAGICSTAFF_SCEPTER )
 					{
@@ -36771,7 +36771,7 @@ failed:
 					{
 						itemImg->path = getItemSpritePath(0, Compendium_t::compendiumItem);
 					}
-					Uint8 userData = std::min((Uint8)127, (Uint8)(0x7F & Compendium_t::compendiumItem.appearance));
+					Uint8 userData = std::min(static_cast<Uint8>(127), static_cast<Uint8>(0x7F & Compendium_t::compendiumItem.appearance));
 
 					SDL_Rect actualPos = page_right->getActualSize();
 					actualPos.h = std::max(compendiumPageRightInnerHeight, entry->getSize().y + entry->getSize().h);
@@ -36781,7 +36781,7 @@ failed:
 					{
 						userData |= 1 << 7; // designate this as first in list
 					}
-					entry->setUserData((void*)(intptr_t)userData);
+					entry->setUserData((void*)static_cast<intptr_t>(userData));
 
 					if ( unlockStatus != Compendium_t::CompendiumUnlockStatus::LOCKED_UNKNOWN && (!toSelect || i == lastSelection) )
 					{
@@ -37149,7 +37149,7 @@ failed:
 								Uint32 min = ((playtimeTicks / TICKS_PER_SECOND) / 60) % 60;
 								Uint32 hour = (((playtimeTicks / TICKS_PER_SECOND) / 60) / 60) % 24;
 								Uint32 day = ((playtimeTicks / TICKS_PER_SECOND) / 60) / 60 / 24;
-								day = std::min(day, (Uint32)99);
+								day = std::min(day, static_cast<Uint32>(99));
 								snprintf(buf, sizeof(buf), "%02d:%02d:%02d:%02d", day, hour, min, sec);
 								name += buf;
 
@@ -37191,7 +37191,7 @@ failed:
 						userData |= 1 << 7;
 					}
 
-					entry->setUserData((void*)(intptr_t)userData);
+					entry->setUserData((void*)static_cast<intptr_t>(userData));
 					if ( i == lastSelection || i == 0 )
 					{
 						toSelect = entry;
@@ -37790,7 +37790,7 @@ failed:
 								char buf[32] = "";
 								if ( false )
 								{
-									real_t val = (100.0 * damagetables[entry.monsterType][(DamageTableType)pair.second]);
+									real_t val = (100.0 * damagetables[entry.monsterType][static_cast<DamageTableType>(pair.second)]);
 									if ( val > 100.01 )
 									{
 										field->setColor(hudColors.characterSheetGreen);
@@ -37811,7 +37811,7 @@ failed:
 								}
 								else
 								{
-									real_t val = (100.0 * damagetables[entry.monsterType][(DamageTableType)pair.second]);
+									real_t val = (100.0 * damagetables[entry.monsterType][static_cast<DamageTableType>(pair.second)]);
 									if ( val > 100.01 )
 									{
 										field->setColor(hudColors.characterSheetGreen);
@@ -38469,7 +38469,7 @@ failed:
 							++numEntries;
 						}
 					}
-					snprintf(buf, sizeof(buf), Language::get(6181), pageNum + 1, (int)numEntries);
+					snprintf(buf, sizeof(buf), Language::get(6181), pageNum + 1, static_cast<int>(numEntries));
 					if ( pageNumberLeft )
 					{
 						pageNumberLeft->setText(buf);
@@ -38502,7 +38502,7 @@ failed:
 		}
 		else if ( compendium_current == "monsters" )
 		{
-			if ( auto monster = createCompendiumMonster((Monster)CompendiumEntries.monsters[compendium_contents_current[compendium_current]].monsterType, 8, 8) )
+			if ( auto monster = createCompendiumMonster(static_cast<Monster>(CompendiumEntries.monsters[compendium_contents_current[compendium_current]].monsterType), 8, 8) )
 			{
 				if ( auto myStats = monster->getStats() )
 				{
@@ -38750,7 +38750,7 @@ failed:
 						entry->text = data.second;
 						entry->color = compendiumContentsDivColor;
 
-						contents->addImage(SDL_Rect{ 0, (int)(contents->getEntries().size() - 1) * contents->getEntrySize(), contents->getSize().w, 20 },
+						contents->addImage(SDL_Rect{ 0, static_cast<int>(contents->getEntries().size() - 1) * contents->getEntrySize(), contents->getSize().w, 20 },
 							0xFFFFFFFF, 
 							"*images/ui/Main Menus/AdventureArchives/Divider_00.png", 
 							"entry div");
@@ -38852,7 +38852,7 @@ failed:
 					if ( data.first != "-" )
 					{
 						std::string imgName = "notif_" + data.first;
-						auto img = contents_notif->addImage(SDL_Rect{ 4, 4 + (int)(contents->getEntries().size() - 1) * contents->getEntrySize(), 6, 14 },
+						auto img = contents_notif->addImage(SDL_Rect{ 4, 4 + static_cast<int>(contents->getEntries().size() - 1) * contents->getEntrySize(), 6, 14 },
 							0xFFFFFFFF,
 							"*#images/ui/Inventory/tooltips/ExclamationAnim00.png",
 							imgName.c_str());
@@ -39062,42 +39062,42 @@ failed:
 		static ConsoleVariable<Vector4> cvar_compendium_achievement_title_locked("/compendium_achievement_title_locked", { 224.f, 224.f, 224.f, 255.f });
 		static Uint32 colorTitleLocked;
 		colorTitleLocked = makeColorRGB(
-			(int)cvar_compendium_achievement_title_locked->x,
-			(int)cvar_compendium_achievement_title_locked->y,
-			(int)cvar_compendium_achievement_title_locked->z);
+			static_cast<int>(cvar_compendium_achievement_title_locked->x),
+			static_cast<int>(cvar_compendium_achievement_title_locked->y),
+			static_cast<int>(cvar_compendium_achievement_title_locked->z));
 		static ConsoleVariable<Vector4> cvar_compendium_achievement_title_unlocked("/compendium_achievement_title_unlocked", { 67.f, 195.f, 157.f, 255.f });
 		static Uint32 colorTitleUnlocked;
 		colorTitleUnlocked = makeColorRGB(
-			(int)cvar_compendium_achievement_title_unlocked->x,
-			(int)cvar_compendium_achievement_title_unlocked->y,
-			(int)cvar_compendium_achievement_title_unlocked->z);
+			static_cast<int>(cvar_compendium_achievement_title_unlocked->x),
+			static_cast<int>(cvar_compendium_achievement_title_unlocked->y),
+			static_cast<int>(cvar_compendium_achievement_title_unlocked->z));
 		static ConsoleVariable<Vector4> cvar_compendium_achievement_desc_locked("/compendium_achievement_desc_locked", { 224.f, 224.f, 224.f, 255.f });
 		static Uint32 colorDescLocked;
 		colorDescLocked = makeColorRGB(
-			(int)cvar_compendium_achievement_desc_locked->x,
-			(int)cvar_compendium_achievement_desc_locked->y,
-			(int)cvar_compendium_achievement_desc_locked->z);
+			static_cast<int>(cvar_compendium_achievement_desc_locked->x),
+			static_cast<int>(cvar_compendium_achievement_desc_locked->y),
+			static_cast<int>(cvar_compendium_achievement_desc_locked->z));
 		static ConsoleVariable<Vector4> cvar_compendium_achievement_desc_unlocked("/compendium_achievement_desc_unlocked", { 188.f, 154.f, 114.f, 255.f });
 		static Uint32 colorDescUnlocked;
 		colorDescUnlocked = makeColorRGB(
-			(int)cvar_compendium_achievement_desc_unlocked->x,
-			(int)cvar_compendium_achievement_desc_unlocked->y,
-			(int)cvar_compendium_achievement_desc_unlocked->z);
+			static_cast<int>(cvar_compendium_achievement_desc_unlocked->x),
+			static_cast<int>(cvar_compendium_achievement_desc_unlocked->y),
+			static_cast<int>(cvar_compendium_achievement_desc_unlocked->z));
 		static ConsoleVariable<Vector4> cvar_compendium_achievement_unlock("/compendium_achievement_unlock", { 221.f, 210.f, 84.f, 255.f });
 		static Uint32 colorUnlocked;
 		colorUnlocked = makeColorRGB(
-			(int)cvar_compendium_achievement_unlock->x,
-			(int)cvar_compendium_achievement_unlock->y,
-			(int)cvar_compendium_achievement_unlock->z);
+			static_cast<int>(cvar_compendium_achievement_unlock->x),
+			static_cast<int>(cvar_compendium_achievement_unlock->y),
+			static_cast<int>(cvar_compendium_achievement_unlock->z));
 
 
 		auto& achDisplay = Compendium_t::AchievementData_t::achievementsBookDisplay[name];
 
-		achDisplay.currentPage = std::min(achDisplay.currentPage, (int)achDisplay.pages.size() * 2);
+		achDisplay.currentPage = std::min(achDisplay.currentPage, static_cast<int>(achDisplay.pages.size()) * 2);
 
 		auto pageNumberLeft = parent->findField("page_left_number");
 		auto pageNumberRight = parent->findField("page_right_number");
-		int totalPages = (int)achDisplay.pages.size() * 2;
+		int totalPages = static_cast<int>(achDisplay.pages.size()) * 2;
 		if ( achDisplay.pages.back().size() <= 4 )
 		{
 			totalPages -= 1;
@@ -39157,7 +39157,7 @@ failed:
 					{
 						unlockedTxt->setDisabled(false);
 						char buffer[64];
-						time_t t = (time_t)achData.unlockTime;
+						time_t t = static_cast<time_t>(achData.unlockTime);
 
 						char tbuf[64];
 						struct tm* tm = localtime(&t);
@@ -39486,7 +39486,7 @@ failed:
 								if ( statCur > 0 )
 								{
 									fg->disabled = false;
-									fg->pos.w = std::max(2, static_cast<int>(82 * (statCur / (real_t)(max))));
+									fg->pos.w = std::max(2, static_cast<int>(82 * (statCur / static_cast<real_t>(max))));
 								}
 								else
 								{
@@ -39560,7 +39560,7 @@ failed:
 			if ( compendium_current == "achievements" )
 			{
 				auto& achDisplay = Compendium_t::AchievementData_t::achievementsBookDisplay[compendium_contents_current[compendium_current]];
-				achDisplay.currentPage = std::max(0, std::min(achDisplay.currentPage, (int)achDisplay.pages.size() - 1));
+				achDisplay.currentPage = std::max(0, std::min(achDisplay.currentPage, static_cast<int>(achDisplay.pages.size()) - 1));
 				if ( achDisplay.currentPage == 0 )
 				{
 					soundError();
@@ -39633,7 +39633,7 @@ failed:
 			if ( compendium_current == "achievements" )
 			{
 				auto& achDisplay = Compendium_t::AchievementData_t::achievementsBookDisplay[compendium_contents_current[compendium_current]];
-				achDisplay.currentPage = std::max(0, std::min(achDisplay.currentPage, (int)achDisplay.pages.size() - 1));
+				achDisplay.currentPage = std::max(0, std::min(achDisplay.currentPage, static_cast<int>(achDisplay.pages.size()) - 1));
 				if ( achDisplay.currentPage == achDisplay.pages.size() - 1 )
 				{
 					soundError();

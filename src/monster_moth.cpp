@@ -442,7 +442,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
 			}
 		}
 
-		real_t percentHP = myStats->HP / (real_t)std::max(1, myStats->MAXHP);
+		real_t percentHP = myStats->HP / static_cast<real_t>(std::max(1, myStats->MAXHP));
 		if ( percentHP < 0.1 )
 		{
 			myStats->setAttribute("moth_state", "5");
@@ -614,7 +614,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
 			continue;
 		}
 
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -740,9 +740,9 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
 					}
 					else
 					{
-						if ( BODY_ATTACKTIME >= (int)limbs[MOTH_SMALL][15][0] )
+						if ( BODY_ATTACKTIME >= static_cast<int>(limbs[MOTH_SMALL][15][0]) )
 						{
-							if ( BODY_ATTACKTIME == (int)limbs[MOTH_SMALL][15][0] )
+							if ( BODY_ATTACKTIME == static_cast<int>(limbs[MOTH_SMALL][15][0]) )
 							{
 								if ( multiplayer != CLIENT )
 								{
@@ -785,24 +785,24 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
 							entity->fskill[0] = std::max(entity->fskill[0], -((PI / 2) + PI / 32));
 						}
 
-						if ( BODY_ATTACKTIME >= (int)limbs[MOTH_SMALL][18][0] )
+						if ( BODY_ATTACKTIME >= static_cast<int>(limbs[MOTH_SMALL][18][0]) )
 						{
 							BODY_FLOAT_ATK -= limbs[MOTH_SMALL][18][1];
-							BODY_FLOAT_ATK = std::max(BODY_FLOAT_ATK, (real_t)limbs[MOTH_SMALL][18][2]);
+							BODY_FLOAT_ATK = std::max(BODY_FLOAT_ATK, static_cast<real_t>(limbs[MOTH_SMALL][18][2]));
 						}
-						else if ( BODY_ATTACKTIME >= (int)limbs[MOTH_SMALL][17][0] )
+						else if ( BODY_ATTACKTIME >= static_cast<int>(limbs[MOTH_SMALL][17][0]) )
 						{
 							BODY_FLOAT_ATK += limbs[MOTH_SMALL][17][1];
-							BODY_FLOAT_ATK = std::min(BODY_FLOAT_ATK, (real_t)limbs[MOTH_SMALL][17][2]);
+							BODY_FLOAT_ATK = std::min(BODY_FLOAT_ATK, static_cast<real_t>(limbs[MOTH_SMALL][17][2]));
 						}
-						else if ( BODY_ATTACKTIME >= (int)limbs[MOTH_SMALL][16][0] )
+						else if ( BODY_ATTACKTIME >= static_cast<int>(limbs[MOTH_SMALL][16][0]) )
 						{
 							BODY_FLOAT_ATK -= limbs[MOTH_SMALL][16][1];
-							BODY_FLOAT_ATK = std::max(BODY_FLOAT_ATK, (real_t)limbs[MOTH_SMALL][16][2]);
+							BODY_FLOAT_ATK = std::max(BODY_FLOAT_ATK, static_cast<real_t>(limbs[MOTH_SMALL][16][2]));
 						}
 					}
 
-					if ( BODY_ATTACKTIME >= (int)limbs[MOTH_SMALL][15][1] )
+					if ( BODY_ATTACKTIME >= static_cast<int>(limbs[MOTH_SMALL][15][1]) )
 					{
 						BODY_ATTACK = 0;
 					}
@@ -972,7 +972,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
 			BODY_FLOAT_Y += BODY_FLOAT_ATK * sin(entity->yaw);
 
 			real_t reduce = 1.0 - BODY_OFFSET_REDUCE;
-			real_t setpoint = std::max(0.0, (numBodies - 1) / (real_t)5);
+			real_t setpoint = std::max(0.0, (numBodies - 1) / static_cast<real_t>(5));
 			if ( BODY_OFFSET_REDUCE > setpoint + 0.01 )
 			{
 				BODY_OFFSET_REDUCE -= 0.05;

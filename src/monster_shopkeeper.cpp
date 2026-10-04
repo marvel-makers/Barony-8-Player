@@ -128,7 +128,7 @@ std::vector<Item*> generateShopkeeperConsumables(Entity& my, Stat& myStats, int 
 			(*it)->itemRequireTradingSkillInShop = std::min(previousReq + 1, 5);
 		}
 		previousReq = (*it)->itemRequireTradingSkillInShop;
-		(*it)->itemRequireTradingSkillInShop = std::min((*it)->itemRequireTradingSkillInShop, (Uint8)5);
+		(*it)->itemRequireTradingSkillInShop = std::min((*it)->itemRequireTradingSkillInShop, static_cast<Uint8>(5));
 	}
 	std::sort(shuffled.begin(), shuffled.end(), [](const Item* lhs, const Item* rhs) {
 		return lhs->itemRequireTradingSkillInShop < rhs->itemRequireTradingSkillInShop;
@@ -1066,7 +1066,7 @@ void initShopkeeper(Entity* my, Stat* myStats)
 			for ( node_t* node = myStats->inventory.first; node != nullptr; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = (Item*)node->element;
+				Item* item = static_cast<Item*>(node->element);
 				if ( !item ) { continue; }
 
 				priceAndItems.push_back(std::make_pair(item->buyValue(clientnum), item));
@@ -1124,7 +1124,7 @@ void initShopkeeper(Entity* my, Stat* myStats)
 		for ( node_t* node = myStats->inventory.first; node != nullptr; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			if ( !item ) { continue; }
 
 			if ( itemCategory(item) == POTION )
@@ -1448,7 +1448,7 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -1473,7 +1473,7 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -1507,7 +1507,7 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
 		{
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -1675,7 +1675,7 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
 				if ( weaponNode )
 				{
-					Entity* weapon = (Entity*)weaponNode->element;
+					Entity* weapon = static_cast<Entity*>(weaponNode->element);
 					if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState != MONSTER_STATE_ATTACK) )
 					{
 						// if weapon invisible and I'm not attacking, relax arm.
@@ -1709,7 +1709,7 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* shieldNode = list_Node(&my->children, 8);
 				if ( shieldNode )
 				{
-					Entity* shield = (Entity*)shieldNode->element;
+					Entity* shield = static_cast<Entity*>(shieldNode->element);
 					if ( shield->flags[INVISIBLE] && (my->monsterState != MONSTER_STATE_ATTACK) )
 					{
 						// if shield invisible and I'm not attacking, relax arm.
@@ -2093,7 +2093,7 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
 	if ( shieldNode )
 	{
-		Entity* shieldEntity = (Entity*)shieldNode->element;
+		Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
 		if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 		{
 			shieldEntity->yaw -= PI / 6;

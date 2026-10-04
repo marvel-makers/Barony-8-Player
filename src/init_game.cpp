@@ -407,14 +407,14 @@ int initGame()
 			items[c].surfaces.last = NULL;
 			for ( int x = 0; x < list_Size(&items[c].images); x++ )
 			{
-				SDL_Surface** surface = (SDL_Surface**) malloc(sizeof(SDL_Surface*));
+				SDL_Surface** surface = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*)));
 				node_t* node = list_AddNodeLast(&items[c].surfaces);
 				node->element = surface;
 				node->deconstructor = &defaultDeconstructor;
 				node->size = sizeof(SDL_Surface*);
 
 				node_t* node2 = list_Node(&items[c].images, x);
-				string_t* string = (string_t*)node2->element;
+				string_t* string = static_cast<string_t*>(node2->element);
 				std::string itemImgDir;
 				if ( PHYSFS_getRealDir(string->data) != NULL )
 				{
@@ -760,7 +760,7 @@ void deinitGame()
 		for ( node = items[c].surfaces.first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			SDL_Surface** surface = (SDL_Surface**)node->element;
+			SDL_Surface** surface = static_cast<SDL_Surface**>(node->element);
 			if ( surface )
 				if ( *surface )
 				{
@@ -889,7 +889,7 @@ void loadAchievementData(const char* path) {
 	}
 
 	static char buf[120000];
-	int count = (int)fp->read(buf, sizeof(buf[0]), sizeof(buf));
+	int count = static_cast<int>(fp->read(buf, sizeof(buf[0]), sizeof(buf)));
 	buf[count] = '\0';
 	rapidjson::StringStream is(buf);
 	FileIO::close(fp);

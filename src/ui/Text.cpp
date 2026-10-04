@@ -64,15 +64,15 @@ void Text::render() {
 			fontName = rest.substr(0, index);
 			rest = rest.substr(index + 1);
 			if ((index = rest.find(fontBreak)) != std::string::npos) {
-				textColor = (uint32_t)strtoul(rest.substr(0, index).c_str(), nullptr, 16);
+				textColor = static_cast<uint32_t>(strtoul(rest.substr(0, index).c_str(), nullptr, 16));
 				rest = rest.substr(index + 1);
 				if ((index = rest.find(fontBreak)) != std::string::npos) {
-					outlineColor = (uint32_t)strtoul(rest.substr(0, index).c_str(), nullptr, 16);
+					outlineColor = static_cast<uint32_t>(strtoul(rest.substr(0, index).c_str(), nullptr, 16));
 				} else {
-					outlineColor = (uint32_t)strtoul(rest.c_str(), nullptr, 16);
+					outlineColor = static_cast<uint32_t>(strtoul(rest.c_str(), nullptr, 16));
 				}
 			} else {
-				textColor = (uint32_t)strtoul(rest.c_str(), nullptr, 16);
+				textColor = static_cast<uint32_t>(strtoul(rest.c_str(), nullptr, 16));
 			}
 		} else {
 			fontName = rest;
@@ -339,7 +339,7 @@ static inline void uint32tox(uint32_t value, char* out) {
 
 std::pair<size_t, const char*> Text::hash(const char* str, const char* font, Uint32 textColor, Uint32 outlineColor) {
 	if (!str) {
-		return std::make_pair((size_t)0, (const char*)nullptr);
+		return std::make_pair(static_cast<size_t>(0), static_cast<const char*>(nullptr));
 	}
 	if (font == nullptr || font[0] == '\0') {
 		font = Font::defaultFont;
@@ -358,7 +358,7 @@ std::pair<size_t, const char*> Text::hash(const char* str, const char* font, Uin
 		sizeof('\0');
 	if (totalLen > sizeof(textAndFont)) {
 		assert(0 && "Trying to render > 64kb of ttf text");
-		return std::make_pair((size_t)0, (const char*)nullptr);
+		return std::make_pair(static_cast<size_t>(0), static_cast<const char*>(nullptr));
 	}
 
 	// build format string

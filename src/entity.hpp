@@ -137,7 +137,7 @@ public:
 		}
 		if ( !str ) { return; }
 		size_t len = sizeof(char) * (strlen(str) + 1);
-		if ( string = (char*)malloc(len) )
+		if ( string = static_cast<char*>(malloc(len)) )
 		{
 			memset(string, 0, len);
 			stringCopy(string, str, len, strlen(str));
@@ -749,7 +749,7 @@ public:
 	void setEntityShowOnMap(EntityShowMapSource source, int duration)
 	{
 		entityShowOnMap = 0;
-		entityShowOnMap |= ((int)source & 0xFF) << 24;
+		entityShowOnMap |= (static_cast<int>(source) & 0xFF) << 24;
 		entityShowOnMap |= duration & 0xFFFFFF;
 	}
 	void entityShowOnMapTickDuration()
@@ -771,11 +771,11 @@ public:
 	}
 	int getEntityShowOnMapDuration()
 	{
-		return (EntityShowMapSource)(entityShowOnMap & 0xFFFFFF);
+		return static_cast<EntityShowMapSource>(entityShowOnMap & 0xFFFFFF);
 	}
 	EntityShowMapSource getEntityShowOnMapSource()
 	{
-		return (EntityShowMapSource)((entityShowOnMap >> 24) & 0xFF);
+		return static_cast<EntityShowMapSource>((entityShowOnMap >> 24) & 0xFF);
 	}
 
 	//--WORLDTOOLTIP--
@@ -1733,7 +1733,7 @@ public:
 		std::vector<Entity*> entities;
 		for ( node_t* node = script.children.first; node; node = node->next )
 		{
-			Uint32 entityUid = *((Uint32*)node->element);
+			Uint32 entityUid = *static_cast<Uint32*>(node->element);
 			Entity* child = uidToEntity(entityUid);
 			if ( child )
 			{

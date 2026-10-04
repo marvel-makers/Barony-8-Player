@@ -52,7 +52,7 @@ void actSummonTrap(Entity* my)
 				node_t* node;
 				for ( node = currentList->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( entity && (entity->behavior == &actPlayer || (entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader())) )
 					{
 						real_t tangent = atan2(entity->y - my->y, entity->x - my->x);

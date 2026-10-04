@@ -162,7 +162,7 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
 		{
 			for ( node_t* node = map.worldUI->first; node; node = node->next )
 			{
-				Entity* tooltip = (Entity*)node->element;
+				Entity* tooltip = static_cast<Entity*>(node->element);
 				if ( !tooltip || tooltip->behavior != &actSpriteWorldTooltip )
 				{
 					continue;
@@ -498,7 +498,7 @@ bool entityInsideSomething(Entity* entity)
 		list_t* currentList = *it;
 		for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* testEntity = (Entity*)node->element;
+			Entity* testEntity = static_cast<Entity*>(node->element);
 			if ( testEntity == entity || testEntity->flags[PASSABLE] )
 			{
 				continue;
@@ -572,7 +572,7 @@ bool Entity::collisionProjectileMiss(Entity* parent, Entity* projectile)
 		}
 		return false; // we hit something in clipMove already
 	}
-	if ( (Sint32)getUID() < 0 )
+	if ( static_cast<Sint32>(getUID()) < 0 )
 	{
 		return false;
 	}
@@ -592,7 +592,7 @@ bool Entity::collisionProjectileMiss(Entity* parent, Entity* projectile)
 			{
 				if ( projectile->children.first && projectile->children.first->element )
 				{
-					if ( spell_t* spell = (spell_t*)projectile->children.first->element )
+					if ( spell_t* spell = static_cast<spell_t*>(projectile->children.first->element) )
 					{
 						if ( spell->ID == SPELL_FIREBALL || spell->ID == SPELL_SLIME_FIRE
 							|| spell->ID == SPELL_FLAMES || spell->ID == SPELL_METEOR
@@ -1156,7 +1156,7 @@ int barony_clear(real_t tx, real_t ty, Entity* my)
 		list_t* currentList = *it;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			entity = (Entity*)node->element;
+			entity = static_cast<Entity*>(node->element);
 			if ( entity == my || my->parent == entity->getUID() )
 			{
 				continue;
@@ -1902,7 +1902,7 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
 		list_t* currentList = *it;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( (entity != target && target != nullptr) || entity->flags[PASSABLE] || entity == my
 				|| ((entities & LINETRACE_IGNORE_ENTITIES) && 
 						( (!entity->flags[BLOCKSIGHT] && entity->behavior != &actMonster) 
@@ -2678,7 +2678,7 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
 					list_t* currentList = *it;
 					for ( node = currentList->first; node != nullptr; node = node->next )
 					{
-						entity = (Entity*)node->element;
+						entity = static_cast<Entity*>(node->element);
 						if ( !entity ) { continue; }
 						if ( entity->flags[PASSABLE]
 							|| entity == my
@@ -2690,9 +2690,9 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
 						{
 							continue;
 						}
-						if ( x >= (int)(entity->x - entity->sizex) && x <= (int)(entity->x + entity->sizex) )
+						if ( x >= static_cast<int>(entity->x - entity->sizex) && x <= static_cast<int>(entity->x + entity->sizex) )
 						{
-							if ( y >= (int)(entity->y - entity->sizey) && y <= (int)(entity->y + entity->sizey) )
+							if ( y >= static_cast<int>(entity->y - entity->sizey) && y <= static_cast<int>(entity->y + entity->sizey) )
 							{
 								return 1;
 							}
@@ -2708,7 +2708,7 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
 					list_t* currentList = *it;
 					for ( node = currentList->first; node != nullptr; node = node->next )
 					{
-						entity = (Entity*)node->element;
+						entity = static_cast<Entity*>(node->element);
 						//++entCheck;
 						if ( !entity ) { continue; }
 						if ( entity->flags[PASSABLE] || entity == my || entity == target 
@@ -2753,9 +2753,9 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
 						{
 							continue;
 						}
-						if ( x >= (int)(entity->x - entity->sizex) && x <= (int)(entity->x + entity->sizex) )
+						if ( x >= static_cast<int>(entity->x - entity->sizex) && x <= static_cast<int>(entity->x + entity->sizex) )
 						{
-							if ( y >= (int)(entity->y - entity->sizey) && y <= (int)(entity->y + entity->sizey) )
+							if ( y >= static_cast<int>(entity->y - entity->sizey) && y <= static_cast<int>(entity->y + entity->sizey) )
 							{
 								return 1;
 							}

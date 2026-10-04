@@ -385,8 +385,8 @@ public:
 	void setActualSize(SDL_Rect _actualSize) {
 		allowScrolling = true;
 		actualSize = _actualSize;
-		scrollX -= (int)scrollX;
-		scrollY -= (int)scrollY;
+		scrollX -= static_cast<int>(scrollX);
+		scrollY -= static_cast<int>(scrollY);
 		scrollX += actualSize.x;
 		scrollY += actualSize.y;
 		scrollVelocityX = 0.f;

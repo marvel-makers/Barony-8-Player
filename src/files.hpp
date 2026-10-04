@@ -105,7 +105,7 @@ public:
 		char field[64];
 		gets(field, 64);
 		long result = strtol(field, nullptr, 10);
-		return (int)result;
+		return static_cast<int>(result);
 	}
 
 	// read 1 char from the stream

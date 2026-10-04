@@ -604,7 +604,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -629,7 +629,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -674,7 +674,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 						{
 							if ( strncmp(myStats->name, "corrupted automaton", strlen("corrupted automaton")) )
 							{
-								my->setEffect(EFF_CONFUSED, Uint8(MAXPLAYERS + 1), -1, true, true, true, true);
+								my->setEffect(EFF_CONFUSED, static_cast<Uint8>(MAXPLAYERS + 1), -1, true, true, true, true);
 							}
 							myStats->setEffectActive(EFF_PARALYZED, 1);
 							myStats->EFFECTS_TIMERS[EFF_PARALYZED] = 25;
@@ -766,7 +766,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			}
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		if ( my->monsterSpecialState != AUTOMATON_MALFUNCTION_START && my->monsterSpecialState != AUTOMATON_MALFUNCTION_RUN )
@@ -820,7 +820,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 						node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
 						if ( rightbodyNode )
 						{
-							rightbody = (Entity*)rightbodyNode->element;
+							rightbody = static_cast<Entity*>(rightbodyNode->element);
 						}
 						else
 						{
@@ -1067,7 +1067,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* weaponNode = list_Node(&my->children, 7);
 				if ( weaponNode )
 				{
-					Entity* weapon = (Entity*)weaponNode->element;
+					Entity* weapon = static_cast<Entity*>(weaponNode->element);
 					if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterAttack == 0) )
 					{
 						// if weapon invisible and I'm not attacking, relax arm.
@@ -1096,7 +1096,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* shieldNode = list_Node(&my->children, 8);
 				if ( shieldNode )
 				{
-					Entity* shield = (Entity*)shieldNode->element;
+					Entity* shield = static_cast<Entity*>(shieldNode->element);
 					if ( shield->flags[INVISIBLE] )
 					{
 						// if shield invisible, relax arm.
@@ -1448,7 +1448,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
 	if ( shieldNode )
 	{
-		Entity* shieldEntity = (Entity*)shieldNode->element;
+		Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
 		if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 		{
 			shieldEntity->yaw -= PI / 6;
@@ -1564,7 +1564,7 @@ void Entity::automatonRecycleItem()
 			break;
 		}
 		nextnode = node->next;
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( item != nullptr )
 		{
 			if ( (itemCategory(item) == WEAPON || itemCategory(item) == THROWN || itemCategory(item) == ARMOR)
@@ -1610,11 +1610,11 @@ void Entity::automatonRecycleItem()
 		nextnode = node->next;
 		if ( chances[pickItem1] == itemIndex )
 		{
-			item1 = (Item*)node->element;
+			item1 = static_cast<Item*>(node->element);
 		}
 		else if ( chances[pickItem2] == itemIndex )
 		{
-			item2 = (Item*)node->element;
+			item2 = static_cast<Item*>(node->element);
 		}
 		++itemIndex;
 	}

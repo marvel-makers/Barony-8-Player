@@ -68,7 +68,7 @@ public:
 	// @param maxLength maximum number of items, 0 is no limit
 	template<typename T, typename... Args>
 	bool value(std::vector<T>& v, Uint32 maxLength = 0, Args ... args) {
-		Uint32 size = (Uint32)v.size();
+		Uint32 size = static_cast<Uint32>(v.size());
 		if (beginArray(size) && (maxLength == 0 || size <= maxLength)) {
 		    v.resize(size);
 		    bool result = true;
@@ -113,7 +113,7 @@ public:
 	value(T& v) {
 		typename std::underlying_type<T>::type temp = v;
 		return value(temp);
-		v = (T)temp;
+		v = static_cast<T>(temp);
 	}
 
 	// Serializes a class or struct to the file using it's ::serialize(FileInterface*) function

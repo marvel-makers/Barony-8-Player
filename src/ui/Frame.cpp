@@ -50,8 +50,8 @@ ConsoleCommand myCmd("/resizegui", "change gui size",
         messagePlayer(clientnum, MESSAGE_MISC, "Needs 2 args eg: /resizegui 1280 720");
         return;
     }
-    const int x = (int)strtol(argv[1], nullptr, 10);
-    const int y = (int)strtol(argv[2], nullptr, 10);
+    const int x = static_cast<int>(strtol(argv[1], nullptr, 10));
+    const int y = static_cast<int>(strtol(argv[2], nullptr, 10));
     Frame::guiResize(x, y);
     });
 #endif
@@ -583,8 +583,8 @@ void Frame::draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const W
 	const int mouseowner = intro || gamePaused ? inputs.getPlayerIDAllowedKeyboard() : owner;
 	//Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX;
 	//Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
-	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / (float)yres) * (float)Frame::virtualScreenY;
+	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 	//Sint32 mousexrel = (inputs.getMouse(mouseowner, Inputs::XREL) / (float)xres) * (float)Frame::virtualScreenX;
 	//Sint32 mouseyrel = (inputs.getMouse(mouseowner, Inputs::YREL) / (float)yres) * (float)Frame::virtualScreenY;
 #endif
@@ -602,10 +602,10 @@ void Frame::draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const W
 		white->drawColor(nullptr, barRect, viewport, borderColor);
 
 		// handle
-		float winFactor = ((float)_size.w / (float)actualSize.w);
+		float winFactor = (static_cast<float>(_size.w) / static_cast<float>(actualSize.w));
 		int handleSize = actualSize.h > size.h ?
-		    std::max((int)((size.w - sliderSize) * winFactor), sliderSize):
-		    std::max((int)(size.w * winFactor), sliderSize);
+		    std::max(static_cast<int>((size.w - sliderSize) * winFactor), sliderSize):
+		    std::max(static_cast<int>(size.w * winFactor), sliderSize);
 		int sliderPos = winFactor * actualSize.x;
 
 		SDL_Rect handleRect;
@@ -634,10 +634,10 @@ void Frame::draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const W
 		white->drawColor(nullptr, barRect, viewport, borderColor);
 
 		// handle
-		float winFactor = ((float)_size.h / (float)actualSize.h);
+		float winFactor = (static_cast<float>(_size.h) / static_cast<float>(actualSize.h));
 		int handleSize = actualSize.w > size.w ?
-		    std::max((int)((size.h - sliderSize) * winFactor), sliderSize):
-		    std::max((int)(size.h * winFactor), sliderSize);
+		    std::max(static_cast<int>((size.h - sliderSize) * winFactor), sliderSize):
+		    std::max(static_cast<int>(size.h * winFactor), sliderSize);
 		int sliderPos = winFactor * actualSize.y;
 
 		SDL_Rect handleRect;
@@ -734,7 +734,7 @@ void Frame::draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const W
 
 	// draw list entries
 	if (list.size()) {
-		int listStart = std::min(std::max(0, scroll.y / entrySize), (int)list.size() - 1);
+		int listStart = std::min(std::max(0, scroll.y / entrySize), static_cast<int>(list.size()) - 1);
 		for (int i = listStart; i < list.size(); ++i) {
 			entry_t& entry = *list[i];
 
@@ -1075,10 +1075,10 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 	Sint32 mouseyrel = (::mouseyrel / (float)yres) * (float)Frame::virtualScreenY;
 #else
 	const int mouseowner = intro || gamePaused ? inputs.getPlayerIDAllowedKeyboard() : owner;
-	Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
-	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / (float)yres) * (float)Frame::virtualScreenY;
+	Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 	//Sint32 mousexrel = (inputs.getMouse(mouseowner, Inputs::XREL) / (float)xres) * (float)Frame::virtualScreenX;
 	//Sint32 mouseyrel = (inputs.getMouse(mouseowner, Inputs::YREL) / (float)yres) * (float)Frame::virtualScreenY;
 #endif
@@ -1185,7 +1185,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 					{
 						--selection;
 						if (selection < 0) {
-							selection = (int)list.size() - 1;
+							selection = static_cast<int>(list.size()) - 1;
 						}
 						if ( selectionStart == selection )
 						{
@@ -1261,7 +1261,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 	}
 
 	// process "ontop" (widget) sliders
-	for (int i = (int)sliders.size() - 1; i >= 0; --i) {
+	for (int i = static_cast<int>(sliders.size()) - 1; i >= 0; --i) {
 		Slider* slider = sliders[i];
 		if (slider->isOntop()) {
 			processSlider(_size, *slider, destWidget, result);
@@ -1269,7 +1269,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 	}
 
 	// process "ontop" fields
-	for (int i = (int)fields.size() - 1; i >= 0; --i) {
+	for (int i = static_cast<int>(fields.size()) - 1; i >= 0; --i) {
 		Field* field = fields[i];
 		if (field->isOntop()) {
             processField(_size, *field, destWidget, result);
@@ -1277,7 +1277,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 	}
 
 	// process "ontop" buttons
-	for (int i = (int)buttons.size() - 1; i >= 0; --i) {
+	for (int i = static_cast<int>(buttons.size()) - 1; i >= 0; --i) {
 		Button* button = buttons[i];
 		if (button->isOntop()) {
 		    processButton(_size, *button, destWidget, result);
@@ -1286,7 +1286,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 
 	// process frames
 	{
-		for (int i = (int)frames.size() - 1; i >= 0; --i) {
+		for (int i = static_cast<int>(frames.size()) - 1; i >= 0; --i) {
 			Frame* frame = frames[i];
 			result_t frameResult = frame->process(_size, actualSize, result.usable);
 			result.usable = frameResult.usable;
@@ -1298,7 +1298,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 		}
 	}
 
-	const real_t timeFactor = 1.0 / (real_t)fpsLimit;
+	const real_t timeFactor = 1.0 / static_cast<real_t>(fpsLimit);
 
 	// scroll with right stick
 	if (result.usable && allowScrolling && allowScrollBinds) {
@@ -1311,7 +1311,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 			const float power = input.analog("MenuScrollRight") - input.analog("MenuScrollLeft");
 			if (power) {
 				scrollX = std::min(std::max(0.0, scrollX + speed * power),
-					(real_t)(this->actualSize.w - _size.w));
+					static_cast<real_t>(this->actualSize.w - _size.w));
 				this->actualSize.x = scrollX;
 				result.usable = false;
 		        syncScroll();
@@ -1323,7 +1323,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 			const float power = input.analog("MenuScrollDown") - input.analog("MenuScrollUp");
 			if (power) {
 				scrollY = std::min(std::max(0.0, scrollY + speed * power),
-					(real_t)(this->actualSize.h - _size.h));
+					static_cast<real_t>(this->actualSize.h - _size.h));
 				this->actualSize.y = scrollY;
 				result.usable = false;
 		        syncScroll();
@@ -1389,7 +1389,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 	    scrollX += scrollVelocityX;
 		const real_t oldScrollX = scrollX;
 		scrollX = std::min(std::max(0.0, scrollX),
-			std::max(0.0, (real_t)(this->actualSize.w - _size.w)));
+			std::max(0.0, static_cast<real_t>(this->actualSize.w - _size.w)));
 		if (oldScrollX != scrollX) {
 			scrollVelocityX = 0.0;
 		}
@@ -1404,7 +1404,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 	    scrollY += scrollVelocityY;
 		const real_t oldScrollY = scrollY;
 		scrollY = std::min(std::max(0.0, scrollY),
-			std::max(0.0, (real_t)(this->actualSize.h - _size.h)));
+			std::max(0.0, static_cast<real_t>(this->actualSize.h - _size.h)));
 		if (oldScrollY != scrollY) {
 			scrollVelocityY = 0.0;
 		}
@@ -1414,10 +1414,10 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 
 	if ((scrollbars || allowScrollBinds) && allowScrolling) {
 		scrollX = std::min(std::max(0.0, scrollX),
-			std::max(0.0, (real_t)(this->actualSize.w - _size.w)));
+			std::max(0.0, static_cast<real_t>(this->actualSize.w - _size.w)));
 		this->actualSize.x = scrollX;
 		scrollY = std::min(std::max(0.0, scrollY),
-			std::max(0.0, (real_t)(this->actualSize.h - _size.h)));
+			std::max(0.0, static_cast<real_t>(this->actualSize.h - _size.h)));
 		this->actualSize.y = scrollY;
 	}
 
@@ -1451,10 +1451,10 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 			sliderRect.h = sliderSize;
 
 			// handle
-			float winFactor = ((float)_size.w / (float)actualSize.w);
+			float winFactor = (static_cast<float>(_size.w) / static_cast<float>(actualSize.w));
 		    int handleSize = actualSize.h > size.h ?
-		        std::max((int)((size.w - sliderSize) * winFactor), sliderSize):
-		        std::max((int)(size.w * winFactor), sliderSize);
+		        std::max(static_cast<int>((size.w - sliderSize) * winFactor), sliderSize):
+		        std::max(static_cast<int>(size.w * winFactor), sliderSize);
 			int sliderPos = winFactor * actualSize.x;
 			SDL_Rect handleRect;
 			handleRect.x = _size.x + sliderPos;
@@ -1467,7 +1467,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 				if (!clicked) {
 					draggingHSlider = false;
 				} else {
-					float winFactor = ((float)_size.w / (float)this->actualSize.w);
+					float winFactor = (static_cast<float>(_size.w) / static_cast<float>(this->actualSize.w));
 					this->actualSize.x = (mousex - omousex) / winFactor + oldSliderX;
 					this->actualSize.x = std::min(std::max(0, this->actualSize.x), std::max(0, this->actualSize.w - _size.w));
 					scrollX = this->actualSize.x;
@@ -1509,10 +1509,10 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 			sliderRect.h = _size.h;
 
 			// handle
-			float winFactor = ((float)_size.h / (float)actualSize.h);
+			float winFactor = (static_cast<float>(_size.h) / static_cast<float>(actualSize.h));
 		    int handleSize = actualSize.w > size.w ?
-		        std::max((int)((size.h - sliderSize) * winFactor), sliderSize):
-		        std::max((int)(size.h * winFactor), sliderSize);
+		        std::max(static_cast<int>((size.h - sliderSize) * winFactor), sliderSize):
+		        std::max(static_cast<int>(size.h * winFactor), sliderSize);
 			int sliderPos = winFactor * actualSize.y;
 			SDL_Rect handleRect;
 			handleRect.x = _size.x + _size.w;
@@ -1525,7 +1525,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 				if (!clicked) {
 					draggingVSlider = false;
 				} else {
-					float winFactor = ((float)_size.h / (float)this->actualSize.h);
+					float winFactor = (static_cast<float>(_size.h) / static_cast<float>(this->actualSize.h));
 					this->actualSize.y = (mousey - omousey) / winFactor + oldSliderY;
 					this->actualSize.y = std::min(std::max(0, this->actualSize.y), std::max(0, this->actualSize.h - _size.h));
 					scrollY = this->actualSize.y;
@@ -1559,7 +1559,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 	}
 
 	// process buttons
-	for (int i = (int)buttons.size() - 1; i >= 0; --i) {
+	for (int i = static_cast<int>(buttons.size()) - 1; i >= 0; --i) {
 		Button* button = buttons[i];
 		if (!button->isOntop()) {
 		    processButton(_size, *button, destWidget, result);
@@ -1567,7 +1567,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 	}
 
 	// process fields
-	for (int i = (int)fields.size() - 1; i >= 0; --i) {
+	for (int i = static_cast<int>(fields.size()) - 1; i >= 0; --i) {
 		Field* field = fields[i];
 		if (!field->isOntop()) {
             processField(_size, *field, destWidget, result);
@@ -1575,7 +1575,7 @@ Frame::result_t Frame::process(SDL_Rect _size, SDL_Rect _actualSize, bool usable
 	}
 
 	// process (widget) sliders
-	for (int i = (int)sliders.size() - 1; i >= 0; --i) {
+	for (int i = static_cast<int>(sliders.size()) - 1; i >= 0; --i) {
 		Slider* slider = sliders[i];
 		if (!slider->isOntop()) {
 			processSlider(_size, *slider, destWidget, result);
@@ -2114,7 +2114,7 @@ void Frame::resizeForEntries() {
 		    entrySize += entrySize / 2;
 	    }
 	}
-	actualSize.h = (Uint32)list.size() * entrySize;
+	actualSize.h = static_cast<Uint32>(list.size()) * entrySize;
 	actualSize.y = std::min(std::max(0, actualSize.y), std::max(0, actualSize.h - size.h));
 }
 
@@ -2122,10 +2122,10 @@ SDL_Rect Frame::getRelativeMousePositionImpl(SDL_Rect& _size, SDL_Rect& _actualS
 #ifdef EDITOR
     return SDL_Rect{0, 0, 0, 0};
 #else
-	Sint32 _mousex = (inputs.getMouse(owner, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 _mousey = (inputs.getMouse(owner, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
-	Sint32 _omousex = (inputs.getMouse(owner, Inputs::OX) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 _omousey = (inputs.getMouse(owner, Inputs::OY) / (float)yres) * (float)Frame::virtualScreenY;
+	Sint32 _mousex = (inputs.getMouse(owner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 _mousey = (inputs.getMouse(owner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+	Sint32 _omousex = (inputs.getMouse(owner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 _omousey = (inputs.getMouse(owner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 	Sint32 mousex = realtime ? _mousex : _omousex;
 	Sint32 mousey = realtime ? _mousey : _omousey;
 
@@ -2197,10 +2197,10 @@ bool Frame::capturesMouseImpl(SDL_Rect& _size, SDL_Rect& _actualSize, bool realt
 				Sint32 omousex = (::omousex / (float)xres) * (float)Frame::virtualScreenX;
 				Sint32 omousey = (::omousey / (float)yres) * (float)Frame::virtualScreenY;
 #else
-				Sint32 mousex = (inputs.getMouse(owner, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX;
-				Sint32 mousey = (inputs.getMouse(owner, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
-				Sint32 omousex = (inputs.getMouse(owner, Inputs::OX) / (float)xres) * (float)Frame::virtualScreenX;
-				Sint32 omousey = (inputs.getMouse(owner, Inputs::OY) / (float)yres) * (float)Frame::virtualScreenY;
+				Sint32 mousex = (inputs.getMouse(owner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+				Sint32 mousey = (inputs.getMouse(owner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+				Sint32 omousex = (inputs.getMouse(owner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+				Sint32 omousey = (inputs.getMouse(owner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 #endif
 				if (realtime && rectContainsPoint(_size, mousex, mousey)) {
 					return true;
@@ -2237,8 +2237,8 @@ void Frame::warpMouseToFrame(const int player, Uint32 flags) const
 #ifndef EDITOR
 	SDL_Rect _size = getAbsoluteSize();
 	inputs.warpMouse(player,
-		(_size.x + _size.w / 2) * ((float)xres / (float)Frame::virtualScreenX),
-		(_size.y + _size.h / 2) * ((float)yres / (float)Frame::virtualScreenY),
+		(_size.x + _size.w / 2) * (static_cast<float>(xres) / static_cast<float>(Frame::virtualScreenX)),
+		(_size.y + _size.h / 2) * (static_cast<float>(yres) / static_cast<float>(Frame::virtualScreenY)),
 		flags);
 #endif
 }
@@ -2527,11 +2527,11 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
 		} else {
 			const int w = image->section.w ? image->section.w : (actualImage->getWidth() - image->section.x);
 			const int h = image->section.h ? image->section.h : (actualImage->getHeight() - image->section.y);
-			src.x = std::max((float)image->section.x, image->section.x + (_size.x - pos.x) * (w / (float)image->pos.w));
-			src.y = std::max((float)image->section.y, image->section.y + (_size.y - pos.y) * (h / (float)image->pos.h));
-			src.w = ((float)dest.w / pos.w) * w;
+			src.x = std::max(static_cast<float>(image->section.x), image->section.x + (_size.x - pos.x) * (w / static_cast<float>(image->pos.w)));
+			src.y = std::max(static_cast<float>(image->section.y), image->section.y + (_size.y - pos.y) * (h / static_cast<float>(image->pos.h)));
+			src.w = (static_cast<float>(dest.w) / pos.w) * w;
 			src.w = std::max(1, src.w);
-			src.h = ((float)dest.h / pos.h) * h;
+			src.h = (static_cast<float>(dest.h) / pos.h) * h;
 			src.h = std::max(1, src.h);
 			//src.x += image->section.x - std::min(0, _size.x - pos.x);
 			//src.y += image->section.y - std::min(0, _size.y - pos.y);

@@ -216,7 +216,7 @@ void scorpionAnimate(Entity* my, double dist)
 					bodypart++;
 					continue;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -237,7 +237,7 @@ void scorpionAnimate(Entity* my, double dist)
 					bodypart++;
 					continue;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -261,7 +261,7 @@ void scorpionAnimate(Entity* my, double dist)
 		{
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x - 4 * cos(my->yaw);
 		entity->y = my->y - 4 * sin(my->yaw);
 		entity->z = my->z;

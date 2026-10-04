@@ -560,8 +560,8 @@ void buttonNewConfirm(button_t* my)
 	map.height = atoi(heighttext);
 	map.width = std::min(std::max(MINWIDTH, map.width), MAXWIDTH);
 	map.height = std::min(std::max(MINHEIGHT, map.height), MAXHEIGHT);
-	map.tiles = (int*) malloc(sizeof(int) * MAP_LAYERS * map.height * map.width);
-	camera.vismap = (bool*) malloc(sizeof(bool) * map.height * map.width);
+	map.tiles = static_cast<int*>(malloc(sizeof(int) * MAP_LAYERS * map.height * map.width));
+	camera.vismap = static_cast<bool*>(malloc(sizeof(bool) * map.height * map.width));
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	for ( z = 0; z < MAP_LAYERS; z++ )
 	{
@@ -1007,7 +1007,7 @@ void buttonCopy(button_t* my)
 		{
 			free(copymap.tiles);
 		}
-		copymap.tiles = (Sint32*) malloc(sizeof(Sint32) * copymap.width * copymap.height * MAP_LAYERS);
+		copymap.tiles = static_cast<Sint32*>(malloc(sizeof(Sint32) * copymap.width * copymap.height * MAP_LAYERS));
 		memset(copymap.tiles, 0, sizeof(Sint32)*copymap.width * copymap.height * MAP_LAYERS);
 		for ( x = 0; x < copymap.width; x++ )
 		{
@@ -1069,7 +1069,7 @@ void buttonCycleSprites(button_t* my)
 	bool entityWasSelected = false;
 	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		pos.x = entity->x * (TEXTURESIZE / 16) - camx;
 		pos.y = entity->y * (TEXTURESIZE / 16) - camy;
 		if ( (omousex / TEXTURESIZE) * 32 == pos.x && (omousey / TEXTURESIZE) * 32 == pos.y )
@@ -1359,7 +1359,7 @@ void buttonAttributesConfirm(button_t* my)
 	// make a copy of the current map
 	mapcopy.width = map.width;
 	mapcopy.height = map.height;
-	mapcopy.tiles = (int*) malloc(sizeof(int) * MAP_LAYERS * mapcopy.width * mapcopy.height);
+	mapcopy.tiles = static_cast<int*>(malloc(sizeof(int) * MAP_LAYERS * mapcopy.width * mapcopy.height));
 	for ( z = 0; z < MAP_LAYERS; z++ )
 	{
 		for ( y = 0; y < map.height; y++ )
@@ -1486,8 +1486,8 @@ void buttonAttributesConfirm(button_t* my)
 		map.flags[MAP_FLAG_DISABLELOOT] = 0;
 	}
 
-	map.tiles = (int*) malloc(sizeof(int) * MAP_LAYERS * map.height * map.width);
-	camera.vismap = (bool*) malloc(sizeof(bool) * map.height * map.width);
+	map.tiles = static_cast<int*>(malloc(sizeof(int) * MAP_LAYERS * map.height * map.width));
+	camera.vismap = static_cast<bool*>(malloc(sizeof(bool) * map.height * map.width));
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
 	strcpy(map.name, nametext);
 	strcpy(map.author, authortext);
@@ -1643,7 +1643,7 @@ void buttonEditorToolsHelp(button_t* my)
 	for ( node = button_l.first; node != NULL; node = nextnode )
 	{
 		nextnode = node->next;
-		button = (button_t*)node->element;
+		button = static_cast<button_t*>(node->element);
 		if ( button->focused )
 		{
 			list_RemoveNode(button->node);
@@ -2176,9 +2176,9 @@ void buttonSpriteProperties(button_t* my)
 				break;
 			case 16:
 			{
-				Uint32 r = (Uint32)(selectedEntity[0]->textSourceColorRGB >> 16) & 0xFF;
-				Uint32 g = (Uint32)(selectedEntity[0]->textSourceColorRGB >> 8) & 0xFF;
-				Uint32 b = (Uint32)(selectedEntity[0]->textSourceColorRGB >> 0) & 0xFF;
+				Uint32 r = static_cast<Uint32>(selectedEntity[0]->textSourceColorRGB >> 16) & 0xFF;
+				Uint32 g = static_cast<Uint32>(selectedEntity[0]->textSourceColorRGB >> 8) & 0xFF;
+				Uint32 b = static_cast<Uint32>(selectedEntity[0]->textSourceColorRGB >> 0) & 0xFF;
 				snprintf(spriteProperties[0], 4, "%d", r);
 				snprintf(spriteProperties[1], 4, "%d", g);
 				snprintf(spriteProperties[2], 4, "%d", b);
@@ -3282,7 +3282,7 @@ void buttonSpritePropertiesConfirm(button_t* my)
 				}
 				break;
 			case 2: //chest
-				selectedEntity[0]->yaw = (real_t)atoi(spriteProperties[0]);
+				selectedEntity[0]->yaw = static_cast<real_t>(atoi(spriteProperties[0]));
 				selectedEntity[0]->skill[9] = (Sint32)atoi(spriteProperties[1]);
 				selectedEntity[0]->chestLocked = (Sint32)atoi(spriteProperties[2]);
 				selectedEntity[0]->chestMimicChance = (Sint32)atoi(spriteProperties[3]);
@@ -3355,7 +3355,7 @@ void buttonSpritePropertiesConfirm(button_t* my)
 				selectedEntity[0]->skill[9] = (Sint32)atoi(spriteProperties[6]); //Autospawn
 				break;
 			case 5: //power crystal
-				selectedEntity[0]->yaw = (real_t)atoi(spriteProperties[0]);
+				selectedEntity[0]->yaw = static_cast<real_t>(atoi(spriteProperties[0]));
 				selectedEntity[0]->crystalNumElectricityNodes = (Sint32)atoi(spriteProperties[1]);
 				selectedEntity[0]->crystalTurnReverse = (Sint32)atoi(spriteProperties[2]);
 				selectedEntity[0]->crystalSpellToActivate = (Sint32)atoi(spriteProperties[3]);
@@ -3495,9 +3495,9 @@ void buttonSpritePropertiesConfirm(button_t* my)
 				break;
 			case 16: // text source
 			{
-				Uint32 r = (Uint32)atoi(spriteProperties[0]);
-				Uint32 g = (Uint32)atoi(spriteProperties[1]);
-				Uint32 b = (Uint32)atoi(spriteProperties[2]);
+				Uint32 r = static_cast<Uint32>(atoi(spriteProperties[0]));
+				Uint32 g = static_cast<Uint32>(atoi(spriteProperties[1]));
+				Uint32 b = static_cast<Uint32>(atoi(spriteProperties[2]));
 				selectedEntity[0]->textSourceColorRGB = 0;
 				selectedEntity[0]->textSourceColorRGB |= (r << 16);
 				selectedEntity[0]->textSourceColorRGB |= (g << 8);
@@ -3963,7 +3963,7 @@ void buttonMonsterItems(button_t* my)
 	}
 	else
 	{
-		snprintf(spriteProperties[2], 4, "%d", (int)tmpSpriteStats->EDITOR_ITEMS[itemSlotSelected * ITEM_SLOT_NUMPROPERTIES + 2]); //bless
+		snprintf(spriteProperties[2], 4, "%d", static_cast<int>(tmpSpriteStats->EDITOR_ITEMS[itemSlotSelected * ITEM_SLOT_NUMPROPERTIES + 2])); //bless
 	}
 	snprintf(spriteProperties[3], 5, "%d", tmpSpriteStats->EDITOR_ITEMS[itemSlotSelected * ITEM_SLOT_NUMPROPERTIES + 3]);
 	snprintf(spriteProperties[4], 5, "%d", tmpSpriteStats->EDITOR_ITEMS[itemSlotSelected * ITEM_SLOT_NUMPROPERTIES + 4]);

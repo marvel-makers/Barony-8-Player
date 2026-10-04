@@ -178,7 +178,7 @@ struct Mesh {
         data{{positions}, {texcoords}, {colors}}
         {}
 
-    std::vector<float> data[(int)BufferType::Max];
+    std::vector<float> data[static_cast<int>(BufferType::Max)];
 
     void init();
     void destroy();
@@ -187,7 +187,7 @@ struct Mesh {
 
 private:
     unsigned int vao = 0; // vertex array object (mesh handle)
-    unsigned int vbo[(int)BufferType::Max]; // vertex buffer objects
+    unsigned int vbo[static_cast<int>(BufferType::Max)]; // vertex buffer objects
     unsigned int numVertices = 0; // number of vertices
 };
 
@@ -298,11 +298,11 @@ bool behindCamera(const view_t& camera, real_t x, real_t y);
 void occlusionCulling(map_t& map, view_t& camera);
 
 constexpr Uint32 makeColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-    return ((Uint32)a << 24) | ((Uint32)b << 16) | ((Uint32)g << 8) | ((Uint32)r << 0);
+    return (static_cast<Uint32>(a) << 24) | (static_cast<Uint32>(b) << 16) | (static_cast<Uint32>(g) << 8) | (static_cast<Uint32>(r) << 0);
 }
 
 constexpr Uint32 makeColorRGB(uint8_t r, uint8_t g, uint8_t b) {
-    return 0xff000000 | ((Uint32)b << 16) | ((Uint32)g << 8) | ((Uint32)r << 0);
+    return 0xff000000 | (static_cast<Uint32>(b) << 16) | (static_cast<Uint32>(g) << 8) | (static_cast<Uint32>(r) << 0);
 }
 
 extern framebuffer main_framebuffer;

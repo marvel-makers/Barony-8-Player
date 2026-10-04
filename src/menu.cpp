@@ -9007,7 +9007,7 @@ void doNewGame(bool makeHighscore) {
 
 		for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			entity->flags[NOUPDATE] = true;
 		}
 		lastEntityUIDs = entity_uids;
@@ -9069,7 +9069,7 @@ void doNewGame(bool makeHighscore) {
 			std::vector<Entity*> shopkeepersToInsert;
 			for ( node_t* node = map.creatures->first; node; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( entity->sprite == 35 )
 				{
 					shopkeepersToInsert.push_back(entity);
@@ -9132,7 +9132,7 @@ void doNewGame(bool makeHighscore) {
 					node_t* tempNode = list_Node(followers, c);
 					if ( tempNode )
 					{
-						list_t* tempFollowers = (list_t*)tempNode->element;
+						list_t* tempFollowers = static_cast<list_t*>(tempNode->element);
 						if (players[c] && players[c]->entity && !client_disconnected[c])
 						{
 							node_t* node;
@@ -9141,7 +9141,7 @@ void doNewGame(bool makeHighscore) {
 							std::vector<node_t*> allyRobotNodes;
 							for ( node = tempFollowers->first; node != NULL; node = node->next )
 							{
-								Stat* tempStats = (Stat*)node->element;
+								Stat* tempStats = static_cast<Stat*>(node->element);
 								if ( tempStats && tempStats->type == GYROBOT )
 								{
 									gyrobotNode = node;
@@ -9150,7 +9150,7 @@ void doNewGame(bool makeHighscore) {
 							}
 							for ( node = tempFollowers->first; node != NULL; node = node->next )
 							{
-								Stat* tempStats = (Stat*)node->element;
+								Stat* tempStats = static_cast<Stat*>(node->element);
 								if ( tempStats && (tempStats->type == DUMMYBOT
 									|| tempStats->type == SENTRYBOT
 									|| tempStats->type == SPELLBOT) )
@@ -9177,7 +9177,7 @@ void doNewGame(bool makeHighscore) {
 									newNode->deconstructor = &statDeconstructor;
 									newNode->size = sizeof(tempStats);
 
-									Stat* monsterStats = (Stat*)newNode->element;
+									Stat* monsterStats = static_cast<Stat*>(newNode->element);
 									monsterStats->leader_uid = players[c]->entity->getUID();
 									monster->flags[USERFLAG2] = true;
 									monster->monsterAllyIndex = c;
@@ -9209,7 +9209,7 @@ void doNewGame(bool makeHighscore) {
 
 									newNode = list_AddNodeLast(&stats[c]->FOLLOWERS);
 									newNode->deconstructor = &defaultDeconstructor;
-									Uint32* myuid = (Uint32*) malloc(sizeof(Uint32));
+									Uint32* myuid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
 									newNode->element = myuid;
 									*myuid = monster->getUID();
 
@@ -9271,7 +9271,7 @@ void doNewGame(bool makeHighscore) {
 									node_t* botNode = *it;
 									if ( botNode )
 									{
-										Stat* tempStats = (Stat*)botNode->element;
+										Stat* tempStats = static_cast<Stat*>(botNode->element);
 										if ( tempStats )
 										{
 											ItemType type = WOODEN_SHIELD;
@@ -9474,7 +9474,7 @@ void doNewGame(bool makeHighscore) {
 		for ( node_t* node = map.entities->first; node != nullptr; node = nextnode )
 		{
 			nextnode = node->next;
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entity->flags[NOUPDATE] )
 			{
 				list_RemoveNode(entity->mynode);    // we're anticipating this entity data from server
@@ -9827,9 +9827,9 @@ void doEndgame(bool saveHighscore, bool onServerDisconnect) {
 					for ( node_t* node = stats[c]->FOLLOWERS.first; node != nullptr; node = node->next )
 					{
 						Entity* follower = nullptr;
-						if ( (Uint32*)node->element )
+						if ( static_cast<Uint32*>(node->element) )
 						{
-							follower = uidToEntity(*((Uint32*)node->element));
+							follower = uidToEntity(*static_cast<Uint32*>(node->element));
 						}
 						if ( follower )
 						{
@@ -10687,7 +10687,7 @@ void openGameoverWindow()
 	{
 		madetop = true;
 	}
-	else if ( totalScore((score_t*)scoresPtr->last->element) < total )
+	else if ( totalScore(static_cast<score_t*>(scoresPtr->last->element)) < total )
 	{
 		madetop = true;
 	}
@@ -10726,7 +10726,7 @@ void openGameoverWindow()
 			}
 			for ( node = stats[i]->inventory.first; node != NULL; node = node->next )
 			{
-				Item* item = (Item*)node->element;
+				Item* item = static_cast<Item*>(node->element);
 				item->identified = true;
 			}
 		}
@@ -11459,7 +11459,7 @@ void doSlider(int x, int y, int dots, int minvalue, int maxvalue, int increment,
 		{
 			if ( omousey >= y - (slider_font->h / slider_font_char_width) / 2 && omousey < y + ((slider_font->h / slider_font_char_width) / 2) * 3 )
 			{
-				*var = ((real_t)(mousex - x - (slider_font->w / slider_font_char_width) / 2) / sliderLength) * range + minvalue;
+				*var = (static_cast<real_t>(mousex - x - (slider_font->w / slider_font_char_width) / 2) / sliderLength) * range + minvalue;
 				if ( increment )
 				{
 					*var += increment / 2;
@@ -11473,7 +11473,7 @@ void doSlider(int x, int y, int dots, int minvalue, int maxvalue, int increment,
 
 	// draw slider
 	int sliderx = x + (slider_font->w / slider_font_char_width) / 2;
-	sliderx += (((real_t)(*var) - minvalue) / range) * sliderLength;
+	sliderx += ((static_cast<real_t>(*var) - minvalue) / range) * sliderLength;
 	drawWindowFancy( sliderx - (slider_font->w / slider_font_char_width) / 2, y - (slider_font->h / slider_font_char_width) / 2, sliderx + (slider_font->w / slider_font_char_width) / 2, y + ((slider_font->h / slider_font_char_width) / 2) * 3);
 }
 
@@ -11504,7 +11504,7 @@ void doSliderF(int x, int y, int dots, real_t minvalue, real_t maxvalue, real_t 
 		{
 			if ( omousey >= y - (SLIDERFONT->h / 16) / 2 && omousey < y + ((SLIDERFONT->h / 16) / 2) * 3 )
 			{
-				*var = ((real_t)(mousex - x - (SLIDERFONT->w / 16) / 2) / sliderLength) * range + minvalue;
+				*var = (static_cast<real_t>(mousex - x - (SLIDERFONT->w / 16) / 2) / sliderLength) * range + minvalue;
 				if ( increment )
 				{
 					*var += increment / 2;
@@ -11799,7 +11799,7 @@ bool replayLastCharacter(const int index, int multiplayer)
 
 	if ( lastClass >= 0 && lastSex >= 0 && lastRace >= 0 && lastAppearance >= 0 && lastName != "" )
 	{
-		stats[index]->sex = static_cast<sex_t>(std::min(lastSex, (int)sex_t::FEMALE));
+		stats[index]->sex = static_cast<sex_t>(std::min(lastSex, static_cast<int>(sex_t::FEMALE)));
 		stats[index]->playerRace = std::min(std::max(static_cast<int>(RACE_HUMAN), lastRace), static_cast<int>(RACE_ENUM_END - 1));
 		stats[index]->stat_appearance = lastAppearance;
 		client_classes[index] = std::min(std::max(0, lastClass), static_cast<int>(NUMCLASSES - 1));

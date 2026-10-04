@@ -62,7 +62,7 @@ template ConsoleVariable<int>::ConsoleVariable(const char*, int const&, const ch
 template<> void ConsoleVariable<int>::set(const char* arg)
 {
 	if (arg && arg[0] != '\0') {
-		data = (int)strtol(arg, nullptr, 10);
+		data = static_cast<int>(strtol(arg, nullptr, 10));
 	}
 	messagePlayer(clientnum, MESSAGE_MISC, "\"%s\" is \"%d\"",
 		name + 1, data);
@@ -785,9 +785,9 @@ namespace ConsoleCommands {
 			return;
 		}
 		messagePlayer(clientnum, MESSAGE_MISC, Language::get(286),
-			(int)cameras[0].x,
-			(int)cameras[0].y,
-			(int)cameras[0].z,
+			static_cast<int>(cameras[0].x),
+			static_cast<int>(cameras[0].y),
+			static_cast<int>(cameras[0].z),
 			cameras[0].ang,
 			cameras[0].vang);
 		});
@@ -929,10 +929,10 @@ namespace ConsoleCommands {
 		}
 		for (auto node = map.entities->first; node != NULL; node = node->next)
 		{
-			const auto entity = (Entity*)node->element;
+			const auto entity = static_cast<Entity*>(node->element);
 			if (entity->behavior == &actLadder)
 			{
-				messagePlayer(clientnum, MESSAGE_MISC, Language::get(298), (int)(entity->x / 16), (int)(entity->y / 16));
+				messagePlayer(clientnum, MESSAGE_MISC, Language::get(298), static_cast<int>(entity->x / 16), static_cast<int>(entity->y / 16));
 			}
 		}
 		});
@@ -1418,7 +1418,7 @@ namespace ConsoleCommands {
 			return;
 		}
 		int num = atoi(argv[1]);
-		MainMenu::beginFade((MainMenu::FadeDestination)num);
+		MainMenu::beginFade(static_cast<MainMenu::FadeDestination>(num));
 		movie = true;
 		pauseGame(2, false);
 		});
@@ -1525,7 +1525,7 @@ namespace ConsoleCommands {
 			for (node = map.entities->first; node != NULL; node = nextnode)
 			{
 				nextnode = node->next;
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if (entity->behavior == &actMonster)
 				{
 					entity->setHP(0);
@@ -1563,7 +1563,7 @@ namespace ConsoleCommands {
 			for ( node = map.entities->first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				const Entity* entity = (Entity*)node->element;
+				const Entity* entity = static_cast<Entity*>(node->element);
 				if ( entity->behavior == &actItem )
 				{
 					list_RemoveNode(entity->mynode);
@@ -1611,7 +1611,7 @@ namespace ConsoleCommands {
 			suicide(clientnum);
 		}
  else {
-  const int player = (int)strtol(argv[1], nullptr, 10);
+  const int player = static_cast<int>(strtol(argv[1], nullptr, 10));
   suicide(player);
 }
 		});
@@ -1859,11 +1859,11 @@ namespace ConsoleCommands {
 				const Entity* monster = summonMonster(static_cast<Monster>(creature), players[clientnum]->entity->x + 32 * cos(players[clientnum]->entity->yaw), players[clientnum]->entity->y + 32 * sin(players[clientnum]->entity->yaw));
 				if (monster)
 				{
-					messagePlayer(clientnum, MESSAGE_MISC, Language::get(302), getMonsterLocalizedName((Monster)creature).c_str());
+					messagePlayer(clientnum, MESSAGE_MISC, Language::get(302), getMonsterLocalizedName(static_cast<Monster>(creature)).c_str());
 				}
 				else
 				{
-					messagePlayer(clientnum, MESSAGE_MISC, Language::get(303), getMonsterLocalizedName((Monster)creature).c_str());
+					messagePlayer(clientnum, MESSAGE_MISC, Language::get(303), getMonsterLocalizedName(static_cast<Monster>(creature)).c_str());
 				}
 			}
 			else
@@ -2354,7 +2354,7 @@ namespace ConsoleCommands {
 		}
 
         // select player
-		const int player = (int)strtol(argv[1], nullptr, 10);
+		const int player = static_cast<int>(strtol(argv[1], nullptr, 10));
         if (player < 0 || player >= MAXPLAYERS)
         {
             return;
@@ -2369,7 +2369,7 @@ namespace ConsoleCommands {
 		}
 
         // select gold
-        int amount = (int)strtol(argv[2], nullptr, 10);
+        int amount = static_cast<int>(strtol(argv[2], nullptr, 10));
         if (amount > stats[player]->GOLD)
         {
             amount = stats[player]->GOLD;
@@ -2380,8 +2380,8 @@ namespace ConsoleCommands {
         }
 
 		// drop gold
-		const int x = std::min<int>(std::max(0, (int)(players[player]->entity->x / 16)), map.width - 1);
-		const int y = std::min<int>(std::max(0, (int)(players[player]->entity->y / 16)), map.height - 1);
+		const int x = std::min<int>(std::max(0, static_cast<int>(players[player]->entity->x / 16)), map.width - 1);
+		const int y = std::min<int>(std::max(0, static_cast<int>(players[player]->entity->y / 16)), map.height - 1);
 		if (map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height])
 		{
 			if (amount == 0)
@@ -2465,7 +2465,7 @@ namespace ConsoleCommands {
 			Entity* tmpEnt = NULL;
 			for (tmpNode = map.entities->first; tmpNode != NULL; tmpNode = tmpNode->next)
 			{
-				tmpEnt = (Entity*)tmpNode->element;
+				tmpEnt = static_cast<Entity*>(tmpNode->element);
 				if (tmpEnt->sprite == 37)
 				{
 					tmpEnt->skill[0] += TICKS_PER_SECOND * 210;
@@ -2970,7 +2970,7 @@ namespace ConsoleCommands {
 		}
 		for (const node_t* node = map.creatures->first; node != nullptr; node = node->next)
 		{
-			const Entity* entity = (Entity*)node->element;
+			const Entity* entity = static_cast<Entity*>(node->element);
 			if (entity && entity->behavior == &actMonster && entity->monsterAllySummonRank != 0)
 			{
 				Stat* entityStats = entity->getStats();
@@ -3075,7 +3075,7 @@ namespace ConsoleCommands {
 		}
 
 		if (argc > 1) {
-			victory = (int)strtol(argv[1], nullptr, 10);
+			victory = static_cast<int>(strtol(argv[1], nullptr, 10));
 		}
 
 		messagePlayer(clientnum, MESSAGE_MISC, "Victory is %d", victory);
@@ -4081,7 +4081,7 @@ namespace ConsoleCommands {
 		for ( auto node = stats[clientnum]->inventory.first; node; node = nextnode )
 		{
 			nextnode = node->next;
-			if ( Item* item = (Item*)node->element )
+			if ( Item* item = static_cast<Item*>(node->element) )
 			{
 				if ( getSpellFromItem(clientnum, item, true) )
 				{
@@ -4093,7 +4093,7 @@ namespace ConsoleCommands {
 		for ( auto node = players[clientnum]->magic.spellList.first; node; node = nextnode )
 		{
 			nextnode = node->next;
-			int spellID = ((spell_t*)(node->element))->ID;
+			int spellID = static_cast<spell_t*>(node->element)->ID;
 			relearnSpells.push_back(spellID);
 			list_RemoveNode(node);
 		}
@@ -4361,7 +4361,7 @@ namespace ConsoleCommands {
 		for ( auto node = map.entities->first; node; node = nextnode )
 		{
 			nextnode = node->next;
-			if ( Entity* entity = (Entity*)node->element )
+			if ( Entity* entity = static_cast<Entity*>(node->element) )
 			{
 				if ( entity->behavior == &actItem && (items[entity->skill[10]].category == SPELLBOOK || items[entity->skill[10]].category == TOME_SPELL) )
 				{
@@ -4553,7 +4553,7 @@ namespace ConsoleCommands {
 			spellEffectPolymorph(players[clientnum]->entity, players[clientnum]->entity, true, TICKS_PER_SECOND * 60 * 5);
 			if ( argc > 1 )
 			{
-				const int type = std::min(NUMMONSTERS - 1, std::max((int)HUMAN, atoi(argv[1])));
+				const int type = std::min(NUMMONSTERS - 1, std::max(static_cast<int>(HUMAN), atoi(argv[1])));
 				players[clientnum]->entity->effectPolymorph = type;
 			}
 		}
@@ -4596,7 +4596,7 @@ namespace ConsoleCommands {
 		if ( argc == 2 )
 		{
 #ifndef NDEBUG
-			client_classes[clientnum] = std::min(NUMCLASSES - 1, std::max((int)CLASS_BARBARIAN, atoi(argv[1])));
+			client_classes[clientnum] = std::min(NUMCLASSES - 1, std::max(static_cast<int>(CLASS_BARBARIAN), atoi(argv[1])));
 #else
 			client_classes[clientnum] = std::min((int)CLASS_MONK, std::max((int)CLASS_BARBARIAN, atoi(argv[1])));
 #endif
@@ -4729,7 +4729,7 @@ namespace ConsoleCommands {
 
 	static ConsoleCommand ccmd_rocksfall("/rocksfall", "spawns a boulder over your head", []CCMD{
 		if (argc >= 2) {
-			rocksFall((int)strtol(argv[1], nullptr, 10));
+			rocksFall(static_cast<int>(strtol(argv[1], nullptr, 10)));
 		}
  else {
   rocksFall(clientnum);
@@ -4738,7 +4738,7 @@ namespace ConsoleCommands {
 
 	static ConsoleCommand ccmd_smite("/smite", "spawns a boulder over somebody's head", []CCMD{
 		if (argc >= 2) {
-			rocksFall((int)strtol(argv[1], nullptr, 10));
+			rocksFall(static_cast<int>(strtol(argv[1], nullptr, 10)));
 		}
  else {
   rocksFall(clientnum);
@@ -4751,7 +4751,7 @@ namespace ConsoleCommands {
 			return;
 		}
 		if (argc >= 2) {
-			int player = (int)strtol(argv[1], nullptr, 10);
+			int player = static_cast<int>(strtol(argv[1], nullptr, 10));
 			if (player < 0 || player >= MAXPLAYERS)
 			{
 				player = clientnum;
@@ -4783,7 +4783,7 @@ namespace ConsoleCommands {
 			return;
 		}
 		int type = atoi(argv[1]);
-		type = std::min(std::max((int)Player::Inventory_t::GAMEPAD_DROPDOWN_DISABLE, type), (int)Player::Inventory_t::GAMEPAD_DROPDOWN_COMPACT);
+		type = std::min(std::max(static_cast<int>(Player::Inventory_t::GAMEPAD_DROPDOWN_DISABLE), type), static_cast<int>(Player::Inventory_t::GAMEPAD_DROPDOWN_COMPACT));
 		for (int i = 0; i < MAXPLAYERS; ++i)
 		{
 			if (inputs.bPlayerUsingKeyboardControl(i))
@@ -4929,7 +4929,7 @@ namespace ConsoleCommands {
 
 		int cat = atoi(argv[1]);
 		cat = std::min(std::max(0, cat), Category::CATEGORY_MAX - 2);
-		const ItemType type = itemLevelCurve((Category)cat, 0, currentlevel, local_rng);
+		const ItemType type = itemLevelCurve(static_cast<Category>(cat), 0, currentlevel, local_rng);
 		Item* item = newItem(type, EXCELLENT, 0, 1, local_rng.rand(), true, &stats[clientnum]->inventory);
 		itemLevelCurvePostProcess(nullptr, item, local_rng);
 		dropItem(item, 0);
@@ -5138,7 +5138,7 @@ namespace ConsoleCommands {
 				int invertedGateOnEdge = 0;
 				for (const node_t* node = map.entities->first; node; node = node->next )
 				{
-					if (const Entity* entity = (Entity*)node->element )
+					if (const Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity->sprite == 19 || entity->sprite == 20 )
 						{
@@ -5223,7 +5223,7 @@ namespace ConsoleCommands {
 				loadMap(fullMapPath.c_str(), &map, map.entities, map.creatures, nullptr);
 				for (const node_t* node = map.entities->first; node; node = node->next )
 				{
-					if (const Entity* entity = (Entity*)node->element )
+					if (const Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity->sprite == 217 || entity->sprite == 218 )
 						{
@@ -5258,7 +5258,7 @@ namespace ConsoleCommands {
 				loadMap(fullMapPath.c_str(), &map, map.entities, map.creatures, nullptr);
 				for (const node_t* node = map.entities->first; node; node = node->next )
 				{
-					if (const Entity* entity = (Entity*)node->element )
+					if (const Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity->sprite == 127 && entity->floorDecorationInteractText1 != 0 )
 						{
@@ -5317,7 +5317,7 @@ namespace ConsoleCommands {
 				auto& loot = treasureLoot[mapPath];
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					if ( Entity* entity = (Entity*)node->element )
+					if ( Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						int x = entity->x / 16;
 						int y = entity->y / 16;
@@ -5354,7 +5354,7 @@ namespace ConsoleCommands {
 								}
 								else
 								{
-									switch ( (Status)(entity->skill[11]) )
+									switch ( static_cast<Status>(entity->skill[11]) )
 									{
 									case BROKEN:
 										item += "[broken]";
@@ -5580,13 +5580,13 @@ namespace ConsoleCommands {
 		}
 		for ( tmpNode = map.entities->first; tmpNode != NULL; tmpNode = tmpNode->next )
 		{
-			tmpEnt = (Entity*)tmpNode->element;
+			tmpEnt = static_cast<Entity*>(tmpNode->element);
 			if ( tmpEnt->behavior == &actColliderDecoration )
 			{
 				if ( tmpEnt->colliderHasCollision != 0 )
 				{
 					messagePlayer(clientnum, MESSAGE_DEBUG, "Collider: %d | z: %4.2f | pos: x: %d y: %d",
-						tmpEnt->sprite, tmpEnt->z, (int)tmpEnt->x / 16, (int)tmpEnt->y / 16);
+						tmpEnt->sprite, tmpEnt->z, static_cast<int>(tmpEnt->x) / 16, static_cast<int>(tmpEnt->y) / 16);
 				}
 			}
 		}
@@ -5607,7 +5607,7 @@ namespace ConsoleCommands {
 			for ( tmpNode = map.entities->first; tmpNode != NULL; tmpNode = nextnode )
 			{
 				nextnode = tmpNode->next;
-				tmpEnt = (Entity*)tmpNode->element;
+				tmpEnt = static_cast<Entity*>(tmpNode->element);
 				if ( tmpEnt->behavior == &actItem )
 				{
 					Item* item2 = newItemFromEntity(tmpEnt);
@@ -5651,7 +5651,7 @@ namespace ConsoleCommands {
 		std::map<int, int> allitems;
 		for ( tmpNode = map.entities->first; tmpNode != NULL; tmpNode = tmpNode->next )
 		{
-			tmpEnt = (Entity*)tmpNode->element;
+			tmpEnt = static_cast<Entity*>(tmpNode->element);
 			if ( tmpEnt->behavior == &actItem )
 			{
 				if ( Item* item = newItemFromEntity(tmpEnt) )
@@ -5702,7 +5702,7 @@ namespace ConsoleCommands {
 				{
 					for (const node_t* node = inventory->first; node; node = node->next )
 					{
-						if (const Item* item = (Item*)node->element )
+						if (const Item* item = static_cast<Item*>(node->element) )
 						{
 							int metal = 0;
 							int magic = 0;
@@ -5764,7 +5764,7 @@ namespace ConsoleCommands {
 				{
 					for (const node_t* node = inventory->first; node; node = node->next )
 					{
-						if (const Item* item = (Item*)node->element )
+						if (const Item* item = static_cast<Item*>(node->element) )
 						{
 							int metal = 0;
 							int magic = 0;
@@ -5841,12 +5841,12 @@ namespace ConsoleCommands {
 				loadMap(fullMapPath.c_str(), &map, map.entities, map.creatures, nullptr);
 				for (const node_t* node = map.entities->first; node; node = node->next )
 				{
-					if ( Entity* entity = (Entity*)node->element )
+					if ( Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity->sprite == 179 )
 						{
-							const int x = (int)(entity->x) / 16;
-							const int y = (int)(entity->y) / 16;
+							const int x = static_cast<int>(entity->x) / 16;
+							const int y = static_cast<int>(entity->y) / 16;
 							if ( entity->colliderDecorationModel == 1203
 								|| entity->colliderDecorationModel == 1204 )
 							{
@@ -5897,7 +5897,7 @@ namespace ConsoleCommands {
     });
 
     static ConsoleCommand ccmd_test_model("/test_model", "spawn an entity using a specific model", []CCMD{
-        const auto sprite = argc >= 2 ? (int)strtol(argv[1], nullptr, 10) : 1;
+        const auto sprite = argc >= 2 ? static_cast<int>(strtol(argv[1], nullptr, 10)) : 1;
         const auto entity = newEntity(sprite, 1, map.entities, nullptr);
         entity->flags[PASSABLE] = true;
         entity->x = cameras[0].x * 16;
@@ -6036,7 +6036,7 @@ namespace ConsoleCommands {
 	static ConsoleCommand ccmd_crosshair("/crosshair", "cycles crosshair type", []CCMD{
 		if ( argc >= 2 )
 		{
-			playerSettings[0].shootmodeCrosshair = (int)strtol(argv[1], nullptr, 10);
+			playerSettings[0].shootmodeCrosshair = static_cast<int>(strtol(argv[1], nullptr, 10));
 		}
 		else
 		{
@@ -6368,30 +6368,30 @@ namespace ConsoleCommands {
 		}
 		char buf[128];
 		snprintf(buf, sizeof(buf), "%.2f %.2f %.2f %.2f %.2f %.2f",
-			3 * attr[0] / float(numStatRolls),
-			3 * attr[1] / float(numStatRolls),
-			3 * attr[2] / float(numStatRolls),
-			3 * attr[3] / float(numStatRolls),
-			3 * attr[4] / float(numStatRolls),
-			3 * attr[5] / float(numStatRolls));
+			3 * attr[0] / static_cast<float>(numStatRolls),
+			3 * attr[1] / static_cast<float>(numStatRolls),
+			3 * attr[2] / static_cast<float>(numStatRolls),
+			3 * attr[3] / static_cast<float>(numStatRolls),
+			3 * attr[4] / static_cast<float>(numStatRolls),
+			3 * attr[5] / static_cast<float>(numStatRolls));
 		messagePlayer(clientnum, MESSAGE_STATUS, "%s", buf);
 
 		snprintf(buf, sizeof(buf), "%.2f %.2f %.2f %.2f %.2f %.2f",
-			3 * attr2[0] / float(numStatRolls),
-			3 * attr2[1] / float(numStatRolls),
-			3 * attr2[2] / float(numStatRolls),
-			3 * attr2[3] / float(numStatRolls),
-			3 * attr2[4] / float(numStatRolls),
-			3 * attr2[5] / float(numStatRolls));
+			3 * attr2[0] / static_cast<float>(numStatRolls),
+			3 * attr2[1] / static_cast<float>(numStatRolls),
+			3 * attr2[2] / static_cast<float>(numStatRolls),
+			3 * attr2[3] / static_cast<float>(numStatRolls),
+			3 * attr2[4] / static_cast<float>(numStatRolls),
+			3 * attr2[5] / static_cast<float>(numStatRolls));
 		messagePlayer(clientnum, MESSAGE_STATUS, "%s", buf);
 
 		snprintf(buf, sizeof(buf), "%.2f%% %.2f%% %.2f%% %.2f%% %.2f%% %.2f%%",
-			100.0 * 3 * (attr[0] - attr2[0]) / float(numStatRolls),
-			100.0 * 3 * (attr[1] - attr2[1]) / float(numStatRolls),
-			100.0 * 3 * (attr[2] - attr2[2]) / float(numStatRolls),
-			100.0 * 3 * (attr[3] - attr2[3]) / float(numStatRolls),
-			100.0 * 3 * (attr[4] - attr2[4]) / float(numStatRolls),
-			100.0 * 3 * (attr[5] - attr2[5]) / float(numStatRolls));
+			100.0 * 3 * (attr[0] - attr2[0]) / static_cast<float>(numStatRolls),
+			100.0 * 3 * (attr[1] - attr2[1]) / static_cast<float>(numStatRolls),
+			100.0 * 3 * (attr[2] - attr2[2]) / static_cast<float>(numStatRolls),
+			100.0 * 3 * (attr[3] - attr2[3]) / static_cast<float>(numStatRolls),
+			100.0 * 3 * (attr[4] - attr2[4]) / static_cast<float>(numStatRolls),
+			100.0 * 3 * (attr[5] - attr2[5]) / static_cast<float>(numStatRolls));
 		messagePlayer(clientnum, MESSAGE_STATUS, "%s", buf);
 
 		SDL_SetClipboardText(buf);
@@ -6471,7 +6471,7 @@ namespace ConsoleCommands {
 				loadMap(fullMapPath.c_str(), &map, map.entities, map.creatures, nullptr);
 				for (const node_t* node = map.entities->first; node; node = node->next )
 				{
-					if (const Entity* entity = (Entity*)node->element )
+					if (const Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						/*if ( entity->sprite == 119 || entity->sprite == 179 || entity->sprite == 127 )
 						{
@@ -6701,11 +6701,11 @@ namespace ConsoleCommands {
 			buckets[n / 5]++;
 			rollsRequired += n;
 		}
-		const real_t res = rollsRequired / (real_t)iterations;
-		messagePlayer(0, MESSAGE_DEBUG, "Rolls avg: %.2f%%, max_n: %d", 100.0 / (rollsRequired / (real_t)iterations), max_n);
+		const real_t res = rollsRequired / static_cast<real_t>(iterations);
+		messagePlayer(0, MESSAGE_DEBUG, "Rolls avg: %.2f%%, max_n: %d", 100.0 / (rollsRequired / static_cast<real_t>(iterations)), max_n);
 		for ( int i = 0; i < buckets.size(); ++i )
 		{
-			messagePlayer(0, MESSAGE_DEBUG, "Bucket: %d-%d: %.2f", i, i + 4, buckets[i] / (real_t)iterations);
+			messagePlayer(0, MESSAGE_DEBUG, "Bucket: %d-%d: %.2f", i, i + 4, buckets[i] / static_cast<real_t>(iterations));
 		}
 
 		rollsRequired = 0;
@@ -6726,7 +6726,7 @@ namespace ConsoleCommands {
 			}
 		}
 
-		messagePlayer(0, MESSAGE_DEBUG, "Rolls new: %.2f%%, max_n: %d", (100.0 * rollsRequired / (real_t)iterations), max_n);
+		messagePlayer(0, MESSAGE_DEBUG, "Rolls new: %.2f%%, max_n: %d", (100.0 * rollsRequired / static_cast<real_t>(iterations)), max_n);
 
 		return res;
 	}
@@ -6762,7 +6762,7 @@ namespace ConsoleCommands {
 		Item* item = newItem(WOODEN_SHIELD, EXCELLENT, 0, 0, 0, false, nullptr);
 		for ( int i = 0; i < NUMITEMS; ++i )
 		{
-			item->type = (ItemType)i;
+			item->type = static_cast<ItemType>(i);
 			for ( int skill = 0; skill <= 100; ++skill )
 			{
 				stats[0]->setProficiencyUnsafe(PRO_APPRAISAL, 0);
@@ -6778,7 +6778,7 @@ namespace ConsoleCommands {
 		std::sort(appraisalValues.begin(), appraisalValues.end());
 		for ( auto& pair : appraisalValues )
 		{
-			printlog("%d, %.2f, %d, %d, \"%s\"", std::get<0>(pair), std::get<1>(pair) / (real_t)TICKS_PER_SECOND, items[std::get<2>(pair)].gold_value, (int)items[std::get<2>(pair)].category, items[std::get<2>(pair)].getIdentifiedName());
+			printlog("%d, %.2f, %d, %d, \"%s\"", std::get<0>(pair), std::get<1>(pair) / static_cast<real_t>(TICKS_PER_SECOND), items[std::get<2>(pair)].gold_value, static_cast<int>(items[std::get<2>(pair)].category), items[std::get<2>(pair)].getIdentifiedName());
 		}
 
 		/*for ( auto& pair : allGameSpells )

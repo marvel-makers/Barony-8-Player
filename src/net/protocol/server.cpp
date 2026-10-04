@@ -186,12 +186,12 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		}
 
 		// get info from client
-		auto dx = ((Sint16)SDLNet_Read16(&net_packet->data[6])) / 32.0;
-		auto dy = ((Sint16)SDLNet_Read16(&net_packet->data[8])) / 32.0;
-		auto velx = ((Sint16)SDLNet_Read16(&net_packet->data[10])) / 128.0;
-		auto vely = ((Sint16)SDLNet_Read16(&net_packet->data[12])) / 128.0;
-		auto yaw = ((Sint16)SDLNet_Read16(&net_packet->data[14])) / 128.0;
-		auto pitch = ((Sint16)SDLNet_Read16(&net_packet->data[16])) / 128.0;
+		auto dx = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[6])) / 32.0;
+		auto dy = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[8])) / 32.0;
+		auto velx = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[10])) / 128.0;
+		auto vely = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[12])) / 128.0;
+		auto yaw = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[14])) / 128.0;
+		auto pitch = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[16])) / 128.0;
 
 		// update rotation
 		players[player]->entity->yaw = yaw;
@@ -223,8 +223,8 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			if ( j > 0 && j < barony::net::playerCapacity() )
 			{
 				strcpy((char*)net_packet->data, "PMOV");
-				SDLNet_Write16((Sint16)(players[j]->entity->x * 32), &net_packet->data[4]);
-				SDLNet_Write16((Sint16)(players[j]->entity->y * 32), &net_packet->data[6]);
+				SDLNet_Write16(static_cast<Sint16>(players[j]->entity->x * 32), &net_packet->data[4]);
+				SDLNet_Write16(static_cast<Sint16>(players[j]->entity->y * 32), &net_packet->data[6]);
 				net_packet->address.host = net_clients[j - 1].host;
 				net_packet->address.port = net_clients[j - 1].port;
 				net_packet->len = 8;
@@ -250,7 +250,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 				continue;
 			}
 
-			Entity* limb = (Entity*)tmpNode->element;
+			Entity* limb = static_cast<Entity*>(tmpNode->element);
 			if ( limb )
 			{
 				// adjust headgear/mask yaw/pitch variations as these do not update always.
@@ -285,12 +285,12 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		}
 
 		// get info from client
-		auto dx = ((Sint16)SDLNet_Read16(&net_packet->data[6])) / 32.0;
-		auto dy = ((Sint16)SDLNet_Read16(&net_packet->data[8])) / 32.0;
-		auto velx = ((Sint16)SDLNet_Read16(&net_packet->data[10])) / 128.0;
-		auto vely = ((Sint16)SDLNet_Read16(&net_packet->data[12])) / 128.0;
-		auto yaw = ((Sint16)SDLNet_Read16(&net_packet->data[14])) / 128.0;
-		auto pitch = ((Sint16)SDLNet_Read16(&net_packet->data[16])) / 128.0;
+		auto dx = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[6])) / 32.0;
+		auto dy = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[8])) / 32.0;
+		auto velx = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[10])) / 128.0;
+		auto vely = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[12])) / 128.0;
+		auto yaw = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[14])) / 128.0;
+		auto pitch = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[16])) / 128.0;
 		bool bounce = ((int)(net_packet->data[19] & 1) == 1) ? true : false;
 		int deactivated = ((int)((net_packet->data[19] >> 1) & 1) == 1) ? 1 : 0;
 
@@ -324,8 +324,8 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			if ( j > 0 && j < barony::net::playerCapacity() )
 			{
 				strcpy((char*)net_packet->data, "GMOV");
-				SDLNet_Write16((Sint16)(players[j]->ghost.my->x * 32), &net_packet->data[4]);
-				SDLNet_Write16((Sint16)(players[j]->ghost.my->y * 32), &net_packet->data[6]);
+				SDLNet_Write16(static_cast<Sint16>(players[j]->ghost.my->x * 32), &net_packet->data[4]);
+				SDLNet_Write16(static_cast<Sint16>(players[j]->ghost.my->y * 32), &net_packet->data[6]);
 				net_packet->address.host = net_clients[j - 1].host;
 				net_packet->address.port = net_clients[j - 1].port;
 				net_packet->len = 8;
@@ -632,7 +632,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 				{
 					messagePlayer(player, MESSAGE_INTERACTION, Language::get(6378), items[key].getIdentifiedName());
 					Compendium_t::Events_t::eventUpdateWorld(player, Compendium_t::CPDM_KEYLOCK_UNLOCKED_KEY, "wall locks", 1);
-					Compendium_t::Events_t::eventUpdate(player, Compendium_t::CPDM_KEYLOCK_UNLOCKED_KEY, (ItemType)key, 1);
+					Compendium_t::Events_t::eventUpdate(player, Compendium_t::CPDM_KEYLOCK_UNLOCKED_KEY, static_cast<ItemType>(key), 1);
 					if ( key == KEY_IRON )
 					{
 						Compendium_t::Events_t::eventUpdateWorld(player, Compendium_t::CPDM_KEYLOCK_UNLOCKED_KEY_IRON, "wall locks", 1);
@@ -747,7 +747,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 				}
 			}
 			CalloutMenu[pnum].lockOnEntityUid = uid;
-			CalloutRadialMenu::CalloutCommand cmd = (CalloutRadialMenu::CalloutCommand)net_packet->data[9];
+			CalloutRadialMenu::CalloutCommand cmd = static_cast<CalloutRadialMenu::CalloutCommand>(net_packet->data[9]);
 			CalloutMenu[pnum].clientCalloutHelpFlags = SDLNet_Read32(&net_packet->data[10]);
 			if ( uid == 0 )
 			{
@@ -1113,13 +1113,13 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		{
 			item->playerSoldItemToShop = true;
 		}
-		item->x = (Sint8)net_packet->data[18];
-		item->y = (Sint8)net_packet->data[19];
+		item->x = static_cast<Sint8>(net_packet->data[18]);
+		item->y = static_cast<Sint8>(net_packet->data[19]);
 		node_t* nextnode;
 		for ( auto node = entitystats->inventory.first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item2 = (Item*)node->element;
+			Item* item2 = static_cast<Item*>(node->element);
 			if ( !item2 )
 			{
 				continue;
@@ -1251,7 +1251,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			for (node = channeledSpells[client].first; node; node = nextnode )
 			{
 				nextnode = node->next;
-				spell_t* spell_search = (spell_t*)node->element;
+				spell_t* spell_search = static_cast<spell_t*>(node->element);
 				if (spell_search->ID == thespell->ID)
 				{
 					spell_search->sustain = false;
@@ -2186,7 +2186,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			return;
 		}
 		int itemType = SDLNet_Read16(&net_packet->data[7]);
-		if ( (int)equipment->type == itemType ) // sanity check the item type is what was changed
+		if ( static_cast<int>(equipment->type) == itemType ) // sanity check the item type is what was changed
 		{
 			equipment->beatitude = net_packet->data[6] - 100; // we sent the data beatitude + 100
 		}
@@ -2245,7 +2245,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			return;
 		}
 		const int sfx = SDLNet_Read16(&net_packet->data[5]);
-		const int vol = std::min(92, (int)(net_packet->data[7]));
+		const int vol = std::min(92, static_cast<int>(net_packet->data[7]));
 		if ( players[player] && players[player]->entity )
 		{
 			playSoundEntityLocal(players[player]->entity, sfx, vol);
@@ -2303,7 +2303,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			net_packet->data[5], 
 			net_packet->data[6],
 			net_packet->data[8] ? true : false,
-			(MinimapPing::PingType)net_packet->data[7]);
+			static_cast<MinimapPing::PingType>(net_packet->data[7]));
 		sendMinimapPing(net_packet->data[4], newPing.x, newPing.y, newPing.pingType); // relay self and to other clients.
 	}},
 
@@ -2512,10 +2512,10 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		if ( player >= 0 && barony::net::validPlayer(player) )
 		{
 			auto& gui = GenericGUI[player].assistShrineGUI;
-			gui.savedClass = (Sint8)net_packet->data[4];
-			gui.savedRace = (Sint8)net_packet->data[5];
-			gui.savedSex = (Sint8)net_packet->data[6];
-			gui.savedAppearance = (Sint8)net_packet->data[7];
+			gui.savedClass = static_cast<Sint8>(net_packet->data[4]);
+			gui.savedRace = static_cast<Sint8>(net_packet->data[5]);
+			gui.savedSex = static_cast<Sint8>(net_packet->data[6]);
+			gui.savedAppearance = static_cast<Sint8>(net_packet->data[7]);
 			gui.receivedCharacterChangeOK = true;
 
 			std::string racename = "";
@@ -2544,10 +2544,10 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			{
 				// confirm receipt of class change to sender
 				strcpy((char*)net_packet->data, "ASSC");
-				net_packet->data[4] = (Sint8)gui.savedClass;
-				net_packet->data[5] = (Sint8)gui.savedRace;
-				net_packet->data[6] = (Sint8)gui.savedSex;
-				net_packet->data[7] = (Sint8)gui.savedAppearance;
+				net_packet->data[4] = static_cast<Sint8>(gui.savedClass);
+				net_packet->data[5] = static_cast<Sint8>(gui.savedRace);
+				net_packet->data[6] = static_cast<Sint8>(gui.savedSex);
+				net_packet->data[7] = static_cast<Sint8>(gui.savedAppearance);
 				net_packet->data[8] = player;
 				net_packet->address.host = net_clients[player - 1].host;
 				net_packet->address.port = net_clients[player - 1].port;
@@ -2565,7 +2565,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			Uint32 uid = SDLNet_Read32(&net_packet->data[5]);
 			if ( Entity* shrine = uidToEntity(uid) )
 			{
-				if ( achievementObserver.playerUids[player] == (Uint32)shrine->skill[0] )
+				if ( achievementObserver.playerUids[player] == static_cast<Uint32>(shrine->skill[0]) )
 				{
 					shrine->skill[0] = 0;
 					serverUpdateEntitySkill(shrine, 0);
@@ -2582,7 +2582,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			Uint32 uid = SDLNet_Read32(&net_packet->data[5]);
 			if ( Entity* cauldron = uidToEntity(uid) )
 			{
-				if ( achievementObserver.playerUids[player] == (Uint32)cauldron->skill[6] )
+				if ( achievementObserver.playerUids[player] == static_cast<Uint32>(cauldron->skill[6]) )
 				{
 					cauldron->skill[6] = 0;
 					serverUpdateEntitySkill(cauldron, 6);
@@ -2599,7 +2599,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			Uint32 uid = SDLNet_Read32(&net_packet->data[5]);
 			if ( Entity* workbench = uidToEntity(uid) )
 			{
-				if ( achievementObserver.playerUids[player] == (Uint32)workbench->skill[6] )
+				if ( achievementObserver.playerUids[player] == static_cast<Uint32>(workbench->skill[6]) )
 				{
 					workbench->skill[6] = 0;
 					serverUpdateEntitySkill(workbench, 6);
@@ -2616,7 +2616,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			Uint32 uid = SDLNet_Read32(&net_packet->data[5]);
 			if ( Entity* mailbox = uidToEntity(uid) )
 			{
-				if ( achievementObserver.playerUids[player] == (Uint32)mailbox->skill[6] )
+				if ( achievementObserver.playerUids[player] == static_cast<Uint32>(mailbox->skill[6]) )
 				{
 					mailbox->skill[6] = 0;
 					serverUpdateEntitySkill(mailbox, 6);
@@ -2630,7 +2630,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 	int player = net_packet->data[4];
 	if ( player >= 0 && barony::net::validPlayer(player) )
 	{
-		Sint32 claimedPts = std::max(0, (Sint32)SDLNet_Read32(&net_packet->data[5]));
+		Sint32 claimedPts = std::max(0, static_cast<Sint32>(SDLNet_Read32(&net_packet->data[5])));
 		Sint32 prevPts = stats[player]->MISC_FLAGS[STAT_FLAG_ASSISTANCE_PLAYER_PTS];
 		stats[player]->MISC_FLAGS[STAT_FLAG_ASSISTANCE_PLAYER_PTS] = claimedPts;
 
@@ -2673,11 +2673,11 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		int player = net_packet->data[4];
 		if ( player >= 1 && barony::net::validPlayer(player) && !players[player]->isLocalPlayer() )
 		{
-			Sint32 goldSpent = (Sint32)SDLNet_Read32(&net_packet->data[5]);
+			Sint32 goldSpent = static_cast<Sint32>(SDLNet_Read32(&net_packet->data[5]));
 			stats[player]->GOLD -= goldSpent;
 			stats[player]->GOLD = std::max(0, stats[player]->GOLD);
 
-			Sint32 magiccost = std::max(0, (Sint32)SDLNet_Read32(&net_packet->data[9]));
+			Sint32 magiccost = std::max(0, static_cast<Sint32>(SDLNet_Read32(&net_packet->data[9])));
 			Sint32 prevMP = stats[player]->MP;
 			if ( players[player] && players[player]->entity )
 			{
@@ -2766,7 +2766,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 				if ( players[player]->entity )
 				{
 					int eventType = net_packet->data[5];
-					if ( eventType == (int)Player::PlayerMechanics_t::BreakableEvent::GBREAK_DEGRADE )
+					if ( eventType == static_cast<int>(Player::PlayerMechanics_t::BreakableEvent::GBREAK_DEGRADE) )
 					{
 						players[player]->mechanics.incrementBreakableCounter(Player::PlayerMechanics_t::BreakableEvent::GBREAK_DEGRADE, nullptr);
 					}
@@ -2796,10 +2796,10 @@ void serverHandlePacket()
     if (find == serverPacketHandlers.end()) {
         // error
         printlog("Got a mystery packet: %c%c%c%c",
-            (char)net_packet->data[0],
-            (char)net_packet->data[1],
-            (char)net_packet->data[2],
-            (char)net_packet->data[3]);
+            static_cast<char>(net_packet->data[0]),
+            static_cast<char>(net_packet->data[1]),
+            static_cast<char>(net_packet->data[2]),
+            static_cast<char>(net_packet->data[3]));
     } else {
         (*(find->second))(); // handle packet
     }

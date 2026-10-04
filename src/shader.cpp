@@ -80,7 +80,7 @@ bool Shader::compile(const char* source, size_t len, Shader::Type type) {
     
     const char version[] = "#version 150 core\n";
     const char* sources[2] = {version, source};
-    const int lens[2] = {(int)sizeof(version) - 1, (int)len};
+    const int lens[2] = {static_cast<int>(sizeof(version)) - 1, static_cast<int>(len)};
     
     auto shader = GL_CHECK_ERR_RET(glCreateShader(glType));
     GL_CHECK_ERR(glShaderSource(shader, 2, sources, lens));
@@ -91,7 +91,7 @@ bool Shader::compile(const char* source, size_t len, Shader::Type type) {
     if (status) {
         GL_CHECK_ERR(glAttachShader(program, shader));
         shaders.push_back(shader);
-        printlog("compiled shader %d successfully", (int)shaders.size());
+        printlog("compiled shader %d successfully", static_cast<int>(shaders.size()));
         return true;
     } else {
         char log[1024];

@@ -114,7 +114,7 @@ void actBeartrap(Entity* my)
 	Entity* parent = uidToEntity(my->parent);
 	for ( node = map.creatures->first; node != nullptr; node = node->next )
 	{
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		if ( my->parent == entity->getUID() )
 		{
 			continue;
@@ -442,12 +442,12 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
 		if ( triggered && (triggered == parent || parent->checkFriend(triggered)) )
 		{
 			Compendium_t::Events_t::eventUpdate(parent->skill[2],
-				Compendium_t::CPDM_BOMB_DETONATED_ALLY, (ItemType)BOMB_ITEMTYPE, 1);
+				Compendium_t::CPDM_BOMB_DETONATED_ALLY, static_cast<ItemType>(BOMB_ITEMTYPE), 1);
 		}
 		else
 		{
 			Compendium_t::Events_t::eventUpdate(parent->skill[2],
-				Compendium_t::CPDM_BOMB_DETONATED, (ItemType)BOMB_ITEMTYPE, 1);
+				Compendium_t::CPDM_BOMB_DETONATED, static_cast<ItemType>(BOMB_ITEMTYPE), 1);
 		}
 	}
 
@@ -467,7 +467,7 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
 		bool teleported = false;
 		for ( node_t* node = map.entities->first; node != NULL; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entity && entity != my && entity->behavior == &actBomb )
 			{
 				if ( entity->skill[21] == TOOL_TELEPORT_BOMB && entity->skill[22] == Item::ItemBombTriggerType::BOMB_TELEPORT_RECEIVER )
@@ -599,7 +599,7 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
 		if ( parent && parent->behavior == &actPlayer )
 		{
 			Compendium_t::Events_t::eventUpdate(parent->skill[2],
-				Compendium_t::CPDM_BOMB_DMG, (ItemType)BOMB_ITEMTYPE, oldHP - stat->HP);
+				Compendium_t::CPDM_BOMB_DMG, static_cast<ItemType>(BOMB_ITEMTYPE), oldHP - stat->HP);
 		}
 	}
 
@@ -846,7 +846,7 @@ void actBomb(Entity* my)
 		node_t* node;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			entitiesWithinRadius.push_back((Entity*)node->element);
+			entitiesWithinRadius.push_back(static_cast<Entity*>(node->element));
 		}
 	}
 
@@ -1234,7 +1234,7 @@ bool Entity::entityCheckIfTriggeredWallButton()
 			node_t* node;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				if ( Entity* entity = ((Entity*)node->element) )
+				if ( Entity* entity = static_cast<Entity*>(node->element) )
 				{
 					if ( entity->behavior == &::actWallButton )
 					{
@@ -1283,7 +1283,7 @@ bool Entity::entityCheckIfTriggeredBomb(bool triggerBomb)
 		node_t* node;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entity && entity->behavior == &actBomb && entity->skill[24] == 0 )
 			{
 				if ( entityInsideEntity(this, entity) )
@@ -1353,7 +1353,7 @@ void actDecoyBox(Entity* my)
 			node_t* node;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( entity && entity->behavior == &actDecoyBox && entity != my )
 				{
 					listOfOtherDecoys.push_back(entity);
@@ -1372,12 +1372,12 @@ void actDecoyBox(Entity* my)
 			node_t* node;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( parent && entity && entity->behavior == &actMonster
 					&& parent->checkEnemy(entity) && entity->isMobile() )
 				{
 					if ( (entity->monsterState == MONSTER_STATE_WAIT || entity->monsterTarget == 0) 
-						|| (entityDist(entity,my) < 2 * TOUCHRANGE && (Uint32)(entity->monsterLastDistractedByNoisemaker) != my->getUID()) )
+						|| (entityDist(entity,my) < 2 * TOUCHRANGE && static_cast<Uint32>(entity->monsterLastDistractedByNoisemaker) != my->getUID()) )
 					{
 						Stat* myStats = entity->getStats();
 						if ( !entity->isBossMonster() && !entity->monsterIsTinkeringCreation()
@@ -1404,7 +1404,7 @@ void actDecoyBox(Entity* my)
 									}
 								}
 							}
-							if ( (Uint32)(entity->monsterLastDistractedByNoisemaker) == my->getUID() )
+							if ( static_cast<Uint32>(entity->monsterLastDistractedByNoisemaker) == my->getUID() )
 							{
 								// ignore pathing to this noisemaker as we're already distracted by it.
 								if ( entityDist(entity, my) < TOUCHRANGE 
@@ -1487,7 +1487,7 @@ void actDecoyBox(Entity* my)
 									// see if we have a gyrobot follower to tell us what's goin on
 									for ( node_t* tmpNode = stats[parent->skill[2]]->FOLLOWERS.first; tmpNode != nullptr; tmpNode = tmpNode->next )
 									{
-										Uint32* c = (Uint32*)tmpNode->element;
+										Uint32* c = static_cast<Uint32*>(tmpNode->element);
 										Entity* gyrobot = uidToEntity(*c);
 										if ( gyrobot && gyrobot->getRace() == GYROBOT )
 										{

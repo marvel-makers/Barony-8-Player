@@ -252,7 +252,7 @@ void Item::applySkeletonKey(int player, Entity& entity)
 							strcpy((char*)(net_packet->data), "ARMR");
 							net_packet->data[4] = 5;
 							net_packet->data[5] = stats[player]->weapon->status;
-							SDLNet_Write16((int)stats[player]->weapon->type, &net_packet->data[6]);
+							SDLNet_Write16(static_cast<int>(stats[player]->weapon->type), &net_packet->data[6]);
 							net_packet->address.host = net_clients[player - 1].host;
 							net_packet->address.port = net_clients[player - 1].port;
 							net_packet->len = 8;
@@ -469,7 +469,7 @@ void Item::applyLockpick(int player, Entity& entity)
 							strcpy((char*) (net_packet->data), "ARMR");
 							net_packet->data[4] = 5;
 							net_packet->data[5] = stats[player]->weapon->status;
-							SDLNet_Write16((int)stats[player]->weapon->type, &net_packet->data[6]);
+							SDLNet_Write16(static_cast<int>(stats[player]->weapon->type), &net_packet->data[6]);
 							net_packet->address.host = net_clients[player - 1].host;
 							net_packet->address.port = net_clients[player - 1].port;
 							net_packet->len = 8;
@@ -614,7 +614,7 @@ void Item::applyLockpick(int player, Entity& entity)
 							strcpy((char*) (net_packet->data), "ARMR");
 							net_packet->data[4] = 5;
 							net_packet->data[5] = stats[player]->weapon->status;
-							SDLNet_Write16((int)stats[player]->weapon->type, &net_packet->data[6]);
+							SDLNet_Write16(static_cast<int>(stats[player]->weapon->type), &net_packet->data[6]);
 							net_packet->address.host = net_clients[player - 1].host;
 							net_packet->address.port = net_clients[player - 1].port;
 							net_packet->len = 8;
@@ -783,7 +783,7 @@ void Item::applyLockpick(int player, Entity& entity)
 								strcpy((char*)(net_packet->data), "ARMR");
 								net_packet->data[4] = 5;
 								net_packet->data[5] = stats[player]->weapon->status;
-								SDLNet_Write16((int)stats[player]->weapon->type, &net_packet->data[6]);
+								SDLNet_Write16(static_cast<int>(stats[player]->weapon->type), &net_packet->data[6]);
 								net_packet->address.host = net_clients[player - 1].host;
 								net_packet->address.port = net_clients[player - 1].port;
 								net_packet->len = 8;
@@ -900,7 +900,7 @@ void Item::applyLockpick(int player, Entity& entity)
 					else
 					{
 						messagePlayer(player, MESSAGE_COMBAT, Language::get(2526), getMonsterLocalizedName(myStats->type).c_str());
-						entity.setEffect(EFF_CONFUSED, Uint8(MAXPLAYERS + 1), -1, true, true, true, true);
+						entity.setEffect(EFF_CONFUSED, static_cast<Uint8>(MAXPLAYERS + 1), -1, true, true, true, true);
 						myStats->setEffectActive(EFF_PARALYZED, 1);
 						myStats->EFFECTS_TIMERS[EFF_PARALYZED] = 25;
 						playSoundEntity(&entity, 263, 128);
@@ -937,7 +937,7 @@ void Item::applyLockpick(int player, Entity& entity)
 							strcpy((char*)(net_packet->data), "ARMR");
 							net_packet->data[4] = 5;
 							net_packet->data[5] = stats[player]->weapon->status;
-							SDLNet_Write16((int)stats[player]->weapon->type, &net_packet->data[6]);
+							SDLNet_Write16(static_cast<int>(stats[player]->weapon->type), &net_packet->data[6]);
 							net_packet->address.host = net_clients[player - 1].host;
 							net_packet->address.port = net_clients[player - 1].port;
 							net_packet->len = 8;
@@ -1492,7 +1492,7 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
 				trapProps.parent = entity->parent;
 				for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 				{
-					Entity* creature = (Entity*)node->element;
+					Entity* creature = static_cast<Entity*>(node->element);
 					if ( creature && parent->checkFriend(creature) )
 					{
 						trapProps.ignoreEntities.insert(creature->getUID());
@@ -1643,7 +1643,7 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
 				trapProps.parent = entity->parent;
 				for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 				{
-					Entity* creature = (Entity*)node->element;
+					Entity* creature = static_cast<Entity*>(node->element);
 					if ( creature && parent->checkFriend(creature) )
 					{
 						trapProps.ignoreEntities.insert(creature->getUID());
@@ -1861,7 +1861,7 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
 				trapProps.parent = entity->parent;
 				for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 				{
-					Entity* creature = (Entity*)node->element;
+					Entity* creature = static_cast<Entity*>(node->element);
 					if ( creature && parent->checkFriend(creature) )
 					{
 						trapProps.ignoreEntities.insert(creature->getUID());

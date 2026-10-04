@@ -188,7 +188,7 @@ void Button::draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const 
 			}
 			int fullH = lines * (_font->height(false) + paddingPerTextLine) + _font->getOutline() * 2;
 
-			char* buf = (char*)malloc(text.size() + 1);
+			char* buf = static_cast<char*>(malloc(text.size() + 1));
 			memcpy(buf, text.c_str(), text.size() + 1);
 			int yoff = 0;
 			char* nexttoken;
@@ -297,8 +297,8 @@ next:
 			SDL_Rect section;
 			section.x = 0;
 			section.y = size.y - _actualSize.y < 0 ? -(size.y - _actualSize.y) * (h / (size.h - border * 2)) : 0;
-			section.w = ((float)pos.w / (size.h - border * 2)) * w;
-			section.h = ((float)pos.h / (size.h - border * 2)) * h;
+			section.w = (static_cast<float>(pos.w) / (size.h - border * 2)) * w;
+			section.h = (static_cast<float>(pos.h) / (size.h - border * 2)) * h;
 			if (section.w <= 0 || section.h <= 0) {
 				return;
 			}
@@ -392,10 +392,10 @@ Button::result_t Button::process(SDL_Rect _size, SDL_Rect _actualSize, const boo
 #else
 	const bool clicking = mousestatus[SDL_BUTTON_LEFT];
 	const int mouseowner = intro || gamePaused ? inputs.getPlayerIDAllowedKeyboard() : owner;
-	Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
-	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / (float)yres) * (float)Frame::virtualScreenY;
+	Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 #endif
 
 #ifndef EDITOR

@@ -260,10 +260,10 @@ void UIToastNotification::drawDockedCard()
 #else
 	const bool clicking = mousestatus[SDL_BUTTON_LEFT];
 	const int mouseowner = intro || gamePaused ? inputs.getPlayerIDAllowedKeyboard() : clientnum;
-	Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
-	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / (float)yres) * (float)Frame::virtualScreenY;
+	Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 #endif
 
 	if (!temporaryCardHide && rectContainsPoint(r, omousex, omousey))
@@ -1085,8 +1085,8 @@ static ConsoleCommand ccmd_toastTestLeaderboard("/toast_test_leaderboard", "",
 static ConsoleCommand ccmd_toastTestStatistic("/toast_test_statistic", "",
 	[](int argc, const char** argv) {
 		if (argc > 1) {
-			const int cur = argc > 2 ? (int)strtol(argv[2], nullptr, 10) : 0;
-			const int max = argc > 3 ? (int)strtol(argv[3], nullptr, 10) : 10;
+			const int cur = argc > 2 ? static_cast<int>(strtol(argv[2], nullptr, 10)) : 0;
+			const int max = argc > 3 ? static_cast<int>(strtol(argv[3], nullptr, 10)) : 10;
 			UIToastNotificationManager.createStatisticUpdateNotification(argv[1], cur, max);
 		}
 		else {

@@ -184,7 +184,7 @@ public:
 						node_t* node;
 						for ( node = list->first; node != NULL; node = node->next )
 						{
-							Entity* entity = (Entity*)node->element;
+							Entity* entity = static_cast<Entity*>(node->element);
 							if ( entity )
 							{
 								if ( entity->behavior == &actGate )
@@ -320,8 +320,8 @@ Uint32 heuristic(int x1, int y1, int x2, int y2)
 
 int pathCheckObstacle(int x, int y, Entity* my, Entity* target)
 {
-	const int u = std::min(std::max(0, x >> 4), (int)map.width - 1);
-	const int v = std::min(std::max(0, y >> 4), (int)map.height - 1);
+	const int u = std::min(std::max(0, x >> 4), static_cast<int>(map.width) - 1);
+	const int v = std::min(std::max(0, y >> 4), static_cast<int>(map.height) - 1);
 	const int index = v * MAP_LAYERS + u * MAP_LAYERS * map.height;
 
 	if ( map.tiles[OBSTACLELAYER + index] || !map.tiles[index] || lavatiles[map.tiles[index]] )
@@ -332,14 +332,14 @@ int pathCheckObstacle(int x, int y, Entity* my, Entity* target)
 	// entities not passable during this stage normally, hell generation makes entry gates passable
 	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		if (entity == my || entity == target)
 		{
 			continue;
 		}
 		if ( entity->sprite == 179 ) // collider
 		{
-			if ( (int)floor(entity->x / 16) == u && (int)floor(entity->y / 16) == v )
+			if ( static_cast<int>(floor(entity->x / 16)) == u && static_cast<int>(floor(entity->y / 16)) == v )
 			{
 				if ( entity->colliderHasCollision != 0 || entity->colliderDiggable != 0 )
 				{
@@ -381,7 +381,7 @@ int pathCheckObstacle(int x, int y, Entity* my, Entity* target)
 			|| entity->sprite == 303	// mailbox
 			)
 		{
-			if ( (int)floor(entity->x / 16) == u && (int)floor(entity->y / 16) == v )
+			if ( static_cast<int>(floor(entity->x / 16)) == u && static_cast<int>(floor(entity->y / 16)) == v )
 			{
 				return 1;
 			}
@@ -445,10 +445,10 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 		return NULL;
 	}
 
-	x1 = std::min(std::max(0, x1), (int)map.width - 1);
-	y1 = std::min(std::max(0, y1), (int)map.height - 1);
-	x2 = std::min(std::max(0, x2), (int)map.width - 1);
-	y2 = std::min(std::max(0, y2), (int)map.height - 1);
+	x1 = std::min(std::max(0, x1), static_cast<int>(map.width) - 1);
+	y1 = std::min(std::max(0, y1), static_cast<int>(map.height) - 1);
+	x2 = std::min(std::max(0, x2), static_cast<int>(map.width) - 1);
+	y2 = std::min(std::max(0, y2), static_cast<int>(map.height) - 1);
 
 	// get levitation status
 	bool levitating = false;
@@ -471,7 +471,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 	bool playerCheckAchievement = (my && my->behavior == &actPlayer
 		&& target && (target->behavior == &actBomb || target->behavior == &actPlayerLimb || target->behavior == &actItem || target->behavior == &actSwitch));
 
-	int* pathMap = (int*) calloc(map.width * map.height, sizeof(int));
+	int* pathMap = static_cast<int*>(calloc(map.width * map.height, sizeof(int)));
 	int pathMapType = GateGraph::GATE_GRAPH_GROUNDED;
 	bool waterWalking = my && my->isWaterWalking();
 	bool lavaWalking = my && my->isLavaWalking();
@@ -578,7 +578,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 	Uint32 standingOnTrap = 0; // 0 - not checked.
 	for ( auto entityNode = map.entities->first; entityNode != nullptr; entityNode = entityNode->next )
 	{
-		Entity* entity = (Entity*)entityNode->element;
+		Entity* entity = static_cast<Entity*>(entityNode->element);
 		if ( entity->flags[PASSABLE] )
 		{
 			if ( entity->behavior == &actSpearTrap 
@@ -604,7 +604,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 						{
 							for ( node = currentList->first; node != nullptr && !standingOnTrap; node = node->next )
 							{
-								Entity* entity = (Entity*)node->element;
+								Entity* entity = static_cast<Entity*>(node->element);
 								if ( entity && entity->behavior == &actSpearTrap )
 								{
 									standingOnTrap = 1; // 1 - standing on the trap.
@@ -785,7 +785,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
         
 		if (pathnode.x == x2 && pathnode.y == y2) {
 			// found target, retrace path
-			auto path = (list_t*) malloc(sizeof(list_t));
+			auto path = static_cast<list_t*>(malloc(sizeof(list_t)));
 			path->first = nullptr;
 			path->last = nullptr;
             auto find = closedSet.find(pairtype{pathnode.x, pathnode.y});
@@ -798,7 +798,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
                     // double-back before going to the next one!
                     break;
                 }
-                auto pathnode = (pathnode_t*)malloc(sizeof(pathnode_t));
+                auto pathnode = static_cast<pathnode_t*>(malloc(sizeof(pathnode_t)));
                 *pathnode = find->second;
                 auto node = list_AddNodeFirst(path);
                 node->size = sizeof(pathnode_t);
@@ -812,7 +812,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 				auto now = std::chrono::high_resolution_clock::now();
 				ms = std::chrono::duration_cast<std::chrono::microseconds>(now - pathtime);
 				DebugStats.gui2 = DebugStats.gui2 + ms;
-				messagePlayer(0, MESSAGE_DEBUG, "PASS (%d): path tries: %d", (int)pathingType, tries);
+				messagePlayer(0, MESSAGE_DEBUG, "PASS (%d): path tries: %d", static_cast<int>(pathingType), tries);
 			}
 			lastGeneratePathTries = tries;
 			if ( my->behavior == &actMonster ) {
@@ -834,20 +834,20 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 					int index;
 					index = newy + newx * map.height;
 					index = std::min(std::max(0, index),
-                        (int)map.width * (int)map.height - 1);
+                        static_cast<int>(map.width) * static_cast<int>(map.height) - 1);
 					if (!pathMap[index]) {
 						z++;
 					}
 					if (x && y) {
 						index = pathnode.y + newx * map.height;
 						index = std::min(std::max(0, index),
-                            (int)map.width * (int)map.height - 1);
+                            static_cast<int>(map.width) * static_cast<int>(map.height) - 1);
 						if (!pathMap[index]) {
 							z++;
 						}
 						index = newy + x * map.height;
 						index = std::min(std::max(0, index),
-                            (int)map.width * (int)map.height - 1);
+                            static_cast<int>(map.width) * static_cast<int>(map.height) - 1);
 						if (!pathMap[index]) {
 							z++;
 						}
@@ -917,7 +917,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 		ms = std::chrono::duration_cast<std::chrono::microseconds>(now - pathtime);
 		DebugStats.gui2 = DebugStats.gui2 + ms;
 		messagePlayer(0, MESSAGE_DEBUG, "FAIL (%d) sprite: %d uid: %d : path tries: %d (%d, %d) to (%d, %d) ms: %.2f",
-            (int)pathingType, my->sprite, my->getUID(), tries, x1, y1, x2, y2, ms);
+            static_cast<int>(pathingType), my->sprite, my->getUID(), tries, x1, y1, x2, y2, ms);
 	}
 	lastGeneratePathTries = tries;
 	if (my->behavior == &actMonster) {
@@ -947,12 +947,12 @@ void generatePathMaps()
 	{
 		free(pathMapGrounded);
 	}
-	pathMapGrounded = (int*)calloc(map.width * map.height, sizeof(int));
+	pathMapGrounded = static_cast<int*>(calloc(map.width * map.height, sizeof(int)));
 	if ( pathMapFlying )
 	{
 		free(pathMapFlying);
 	}
-	pathMapFlying = (int*)calloc(map.width * map.height, sizeof(int));
+	pathMapFlying = static_cast<int*>(calloc(map.width * map.height, sizeof(int)));
 
 	pathMapZone = 1;
 	for ( y = 0; y < map.height; y++ )
@@ -1001,7 +1001,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 		{
 			for ( node = list->first; node != NULL; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( entity )
 				{
 					if ( isPathObstacle(entity) )
@@ -1051,7 +1051,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = (Entity*)node->element;
+									Entity* entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( isPathObstacle(entity) )
@@ -1098,7 +1098,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = (Entity*)node->element;
+									Entity* entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( isPathObstacle(entity) )
@@ -1145,7 +1145,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = (Entity*)node->element;
+									Entity* entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( isPathObstacle(entity) )
@@ -1192,7 +1192,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = (Entity*)node->element;
+									Entity* entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( isPathObstacle(entity) )
@@ -1316,7 +1316,7 @@ bool isPathObstacle(Entity* entity)
 
 void GateGraph::buildGraph(const int parentMapType)
 {
-	mapSubzones = (int*)calloc(map.width * map.height, sizeof(int));
+	mapSubzones = static_cast<int*>(calloc(map.width * map.height, sizeof(int)));
 
 	int* parentMap = nullptr;
 	this->parentMapType = parentMapType;
@@ -1356,11 +1356,11 @@ void GateGraph::buildGraph(const int parentMapType)
 
 	for ( node_t* entityNode = map.entities->first; entityNode != nullptr; entityNode = entityNode->next )
 	{
-		Entity* entity = (Entity*)entityNode->element;
+		Entity* entity = static_cast<Entity*>(entityNode->element);
 		if ( entity->behavior == &actGate )
 		{
-			int ix = ((int)entity->x >> 4);
-			int iy = ((int)entity->y >> 4);
+			int ix = (static_cast<int>(entity->x) >> 4);
+			int iy = (static_cast<int>(entity->y) >> 4);
 			real_t angle = normaliseAngle2PI(entity->yaw);
 			if ( limbAngleWithinRange(angle, .05, PI / 2) || limbAngleWithinRange(angle, .05, 3 * PI / 2) )
 			{
@@ -1431,7 +1431,7 @@ void GateGraph::fillPathMap(int x, int y)
 	{
 		for ( node = list->first; node != NULL; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entity )
 			{
 				if ( entity->behavior == &actGate )
@@ -1467,7 +1467,7 @@ void GateGraph::fillPathMap(int x, int y)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = (Entity*)node->element;
+									Entity* entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( entity->behavior == &actGate )
@@ -1499,7 +1499,7 @@ void GateGraph::fillPathMap(int x, int y)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = (Entity*)node->element;
+									Entity* entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( entity->behavior == &actGate )
@@ -1531,7 +1531,7 @@ void GateGraph::fillPathMap(int x, int y)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = (Entity*)node->element;
+									Entity* entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( entity->behavior == &actGate )
@@ -1563,7 +1563,7 @@ void GateGraph::fillPathMap(int x, int y)
 								node_t* node;
 								for ( node = list->first; node != NULL; node = node->next )
 								{
-									Entity* entity = (Entity*)node->element;
+									Entity* entity = static_cast<Entity*>(node->element);
 									if ( entity )
 									{
 										if ( entity->behavior == &actGate )

@@ -1359,7 +1359,7 @@ public:
 		{
 			wantedLevel = _wantedLevel;
 			type = _type;
-			playerRace = (Monster)(_type & 0xFF);
+			playerRace = static_cast<Monster>(_type & 0xFF);
 			sex = ((_type >> 8) & 0x1) ? sex_t::MALE : sex_t::FEMALE;
 			equipment = ((_type >> 9) & 0x7F);
 			player = _player;

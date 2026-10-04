@@ -777,7 +777,7 @@ int loadConfig(char* filename)
 	if ( strstr(filename, ".cfg") == NULL )
 	{
 		char* filename2 = filename;
-		filename = (char*) malloc(sizeof(char) * 256);
+		filename = static_cast<char*>(malloc(sizeof(char) * 256));
 		strcpy(filename, filename2);
 		mallocd = true;
 		strcat(filename, ".cfg");
@@ -1411,7 +1411,7 @@ void Player::openStatusScreen(const int whichGUIMode, const int whichInventoryMo
 	}
 
 	int oldmodule = GUI.activeModule;
-	GUI.activateModule((GUI_t::GUIModules)whichModule);
+	GUI.activateModule(static_cast<GUI_t::GUIModules>(whichModule));
 	inputs.getUIInteraction(playernum)->selectedItem = nullptr;
 	inputs.getUIInteraction(playernum)->selectedItemFromChest = 0;
 	inputs.getUIInteraction(playernum)->toggleclick = false;
@@ -2089,9 +2089,9 @@ std::vector<Entity*> getAllOtherFollowersForSendAllCommand(const int gui_player,
 	for ( node_t* node = stats[gui_player]->FOLLOWERS.first; node != nullptr; node = node->next )
 	{
 		Entity* follower2 = nullptr;
-		if ( (Uint32*)node->element )
+		if ( static_cast<Uint32*>(node->element) )
 		{
-			if ( follower2 = uidToEntity(*((Uint32*)node->element)) )
+			if ( follower2 = uidToEntity(*static_cast<Uint32*>(node->element)) )
 			{
 				if ( follower2 == followerToCommand || !follower2->getStats() )
 				{
@@ -2738,7 +2738,7 @@ void FollowerRadialMenu::drawFollowerMenu()
 
 		radius = FollowerRadialMenu::followerWheelRadius;
 		thickness = FollowerRadialMenu::followerWheelButtonThickness;
-		real_t menuScale = yres / (real_t)Frame::virtualScreenY;
+		real_t menuScale = yres / static_cast<real_t>(Frame::virtualScreenY);
 		radius *= menuScale;
 		thickness *= menuScale;
 		int centerButtonHighlightOffset = tinkeringFollower 
@@ -4069,7 +4069,7 @@ void FollowerRadialMenu::selectNextFollower()
 		node_t* node = stats[gui_player]->FOLLOWERS.first;
 		if ( node )
 		{
-			Entity* follower = uidToEntity(*((Uint32*)node->element));
+			Entity* follower = uidToEntity(*static_cast<Uint32*>(node->element));
 			if ( follower )
 			{
 				recentEntity = follower;
@@ -4092,15 +4092,15 @@ void FollowerRadialMenu::selectNextFollower()
 	for ( node_t* node = stats[gui_player]->FOLLOWERS.first; node != nullptr; node = node->next, ++i)
 	{
 		Entity* follower = nullptr;
-		if ( (Uint32*)node->element )
+		if ( static_cast<Uint32*>(node->element) )
 		{
-			follower = uidToEntity(*((Uint32*)node->element));
+			follower = uidToEntity(*static_cast<Uint32*>(node->element));
 		}
 		if ( follower && follower == recentEntity )
 		{
 			if ( node->next != nullptr )
 			{
-				follower = uidToEntity(*((Uint32*)(node->next)->element));
+				follower = uidToEntity(*static_cast<Uint32*>((node->next)->element));
 				if ( follower )
 				{
 					recentEntity = follower;
@@ -4128,9 +4128,9 @@ void FollowerRadialMenu::selectNextFollower()
 			{
 				node2 = stats[gui_player]->FOLLOWERS.first; // loop around to first index.
 				follower = nullptr;
-				if ( (Uint32*)node2->element )
+				if ( static_cast<Uint32*>(node2->element) )
 				{
-					follower = uidToEntity(*((Uint32*)node2->element));
+					follower = uidToEntity(*static_cast<Uint32*>(node2->element));
 				}
 				if ( follower )
 				{
@@ -4185,9 +4185,9 @@ void FollowerRadialMenu::updateScrollPartySheet()
 	for ( node_t* node = stats[gui_player]->FOLLOWERS.first; node != nullptr; node = node->next, ++i )
 	{
 		Entity* follower = nullptr;
-		if ( (Uint32*)node->element )
+		if ( static_cast<Uint32*>(node->element) )
 		{
-			follower = uidToEntity(*((Uint32*)node->element));
+			follower = uidToEntity(*static_cast<Uint32*>(node->element));
 		}
 		if ( follower && follower == recentEntity )
 		{
@@ -4386,7 +4386,7 @@ bool FollowerRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool upda
 				strcpy(interactText, Language::get(4043)); // "Attack "
 			}
 			int monsterType = selectedEntity.getMonsterTypeFromSprite();
-			strcat(interactText, getMonsterLocalizedName((Monster)monsterType).c_str());
+			strcat(interactText, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str());
 		}
 	}
 	else
@@ -5170,7 +5170,7 @@ void GenericGUIMenu::desecrateItem(Item* item)
 			net_packet->data[4] = gui_player;
 			net_packet->data[5] = armornum;
 			net_packet->data[6] = item->beatitude + 100;
-			SDLNet_Write16((Sint16)item->type, &net_packet->data[7]);
+			SDLNet_Write16(static_cast<Sint16>(item->type), &net_packet->data[7]);
 			net_packet->address.host = net_server.host;
 			net_packet->address.port = net_server.port;
 			net_packet->len = 9;
@@ -5302,7 +5302,7 @@ void GenericGUIMenu::sanctifyItem(Item* item)
 			net_packet->data[4] = gui_player;
 			net_packet->data[5] = armornum;
 			net_packet->data[6] = item->beatitude + 100;
-			SDLNet_Write16((Sint16)item->type, &net_packet->data[7]);
+			SDLNet_Write16(static_cast<Sint16>(item->type), &net_packet->data[7]);
 			net_packet->address.host = net_server.host;
 			net_packet->address.port = net_server.port;
 			net_packet->len = 9;
@@ -5738,7 +5738,7 @@ void GenericGUIMenu::rebuildGUIInventory()
 		//Count the number of items in the GUI "inventory".
 		for ( node = player_inventory->first; node != nullptr; node = node->next )
 		{
-			item = (Item*)node->element;
+			item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				//if ( shouldDisplayItemInGUI(item) )
@@ -5810,7 +5810,7 @@ void GenericGUIMenu::rebuildGUIInventory()
 			{
 				if ( node->element )
 				{
-					item = (Item*)node->element;
+					item = static_cast<Item*>(node->element);
 					if ( isNodeTinkeringCraftableItem(node)
 						&& item->x >= 0 && item->x < TinkerGUI_t::MAX_TINKER_X
 						&& item->y >= 0 && item->y < TinkerGUI_t::MAX_TINKER_Y )
@@ -6283,7 +6283,7 @@ void GenericGUIMenu::updateGUI()
 				{
 					if ( node->element )
 					{
-						Item* item = (Item*)node->element;
+						Item* item = static_cast<Item*>(node->element);
 						itemCounts[item->type] += item->count;
 					}
 				}
@@ -6291,7 +6291,7 @@ void GenericGUIMenu::updateGUI()
 				{
 					if ( node->element )
 					{
-						Item* item = (Item*)node->element;
+						Item* item = static_cast<Item*>(node->element);
 						if ( isNodeTinkeringCraftableItem(item->node) )
 						{
 							// make the displayed items reflect how many you are carrying.
@@ -6620,8 +6620,8 @@ bool GenericGUIMenu::ItemEffectGUI_t::consumeResourcesForTransmute()
 			{
 				strcpy((char*)net_packet->data, "FXGD");
 				net_packet->data[4] = parentGUI.gui_player;
-				SDLNet_Write32((Uint32)costEffectGoldAmount, &net_packet->data[5]);
-				SDLNet_Write32((Uint32)costEffectMPAmount, &net_packet->data[9]);
+				SDLNet_Write32(static_cast<Uint32>(costEffectGoldAmount), &net_packet->data[5]);
+				SDLNet_Write32(static_cast<Uint32>(costEffectMPAmount), &net_packet->data[9]);
 
 				Uint16 spellID = 0;
 				if ( parentGUI.itemEffectScrollItem && parentGUI.itemEffectScrollItem->type == SPELL_ITEM )
@@ -6832,7 +6832,7 @@ void GenericGUIMenu::alterItem(Item* item)
 		int result = getAlterItemResultAtCycle(item);
 		if ( result >= 0 )
 		{
-			item->type = (ItemType)(result);
+			item->type = static_cast<ItemType>(result);
 		}
 		else
 		{
@@ -6903,7 +6903,7 @@ void GenericGUIMenu::alterItem(Item* item)
 		int result = getAlterItemResultAtCycle(item);
 		if ( result >= 0 )
 		{
-			item->type = (ItemType)(result);
+			item->type = static_cast<ItemType>(result);
 		}
 		else
 		{
@@ -6942,7 +6942,7 @@ void GenericGUIMenu::alterItem(Item* item)
 		int result = getAlterItemResultAtCycle(item);
 		if ( result >= 0 )
 		{
-			newType = (ItemType)(result);
+			newType = static_cast<ItemType>(result);
 		}
 		else
 		{
@@ -6982,7 +6982,7 @@ void GenericGUIMenu::alterItem(Item* item)
 			Status result = DECREPIT;
 			if ( item->type == GEM_JEWEL )
 			{
-				result = (Status)std::min((int)EXCELLENT, (int)item->status + 1);
+				result = static_cast<Status>(std::min((int)EXCELLENT, (int)item->status + 1));
 			}
 			else if ( value < 250 )
 			{
@@ -7077,7 +7077,7 @@ void GenericGUIMenu::alterItem(Item* item)
 		int result = getAlterItemResultAtCycle(item);
 		if ( result >= 0 )
 		{
-			item->type = (ItemType)(result);
+			item->type = static_cast<ItemType>(result);
 
 			magicOnSpellCastEvent(players[gui_player]->entity, players[gui_player]->entity,
 				nullptr, SPELL_ALTER_ARROW, spell_t::SPELL_LEVEL_EVENT_DEFAULT, 1);
@@ -7200,7 +7200,7 @@ void GenericGUIMenu::enchantItem(Item* item)
 				net_packet->data[4] = gui_player;
 				net_packet->data[5] = armornum;
 				net_packet->data[6] = item->beatitude + 100;
-				SDLNet_Write16((Sint16)item->type, &net_packet->data[7]);
+				SDLNet_Write16(static_cast<Sint16>(item->type), &net_packet->data[7]);
 				net_packet->address.host = net_server.host;
 				net_packet->address.port = net_server.port;
 				net_packet->len = 9;
@@ -8070,13 +8070,13 @@ void GenericGUIMenu::adorciseItem(Item* item)
 			strcpy((char*)net_packet->data, "ADOR");
 			SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
 			SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
-			SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[12]);
+			SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
 			SDLNet_Write32((Uint32)1, &net_packet->data[16]);
 			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
 			net_packet->data[24] = item->identified;
 			net_packet->data[25] = gui_player;
-			SDLNet_Write16((Sint16)(x / 16), &net_packet->data[26]);
-			SDLNet_Write16((Sint16)(y / 16), &net_packet->data[28]);
+			SDLNet_Write16(static_cast<Sint16>(x / 16), &net_packet->data[26]);
+			SDLNet_Write16(static_cast<Sint16>(y / 16), &net_packet->data[28]);
 			net_packet->address.host = net_server.host;
 			net_packet->address.port = net_server.port;
 			net_packet->len = 30;
@@ -8115,7 +8115,7 @@ void GenericGUIMenu::rechargeScepterUsingItem(Item* item)
 				nextnode = node->next;
 				if ( node->element )
 				{
-					spell_t* spell2 = (spell_t*)node->element;
+					spell_t* spell2 = static_cast<spell_t*>(node->element);
 					if ( spell2 == spell )
 					{
 						if ( spell == players[gui_player]->magic.selectedSpell() )
@@ -8287,7 +8287,7 @@ bool GenericGUIMenu::executeOnItemClick(Item* item)
 				{
 					if ( node->element )
 					{
-						Item* checkItem = (Item*)node->element;
+						Item* checkItem = static_cast<Item*>(node->element);
 						if ( checkItem && isItemMixable(checkItem) )
 						{
 							return true;
@@ -8593,11 +8593,11 @@ ItemType alchemyCookResult(int player, Item* potion1Item, Item* potion2Item, int
 
 		if ( potion1 == TOOL_TOWEL )
 		{
-			outCreateCount = 4 * (int)(potion1Item->status);
+			outCreateCount = 4 * static_cast<int>(potion1Item->status);
 		}
 		else if ( potion2 == TOOL_TOWEL )
 		{
-			outCreateCount = 4 * (int)(potion2Item->status);
+			outCreateCount = 4 * static_cast<int>(potion2Item->status);
 		}
 		if ( potion1 == FOOD_RATION )
 		{
@@ -9234,7 +9234,7 @@ void GenericGUIMenu::alchemyCookCombination()
 			Item* torchesEquipped;
 			for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != NULL; invnode = invnode->next )
 			{
-				Item* item = (Item*)invnode->element;
+				Item* item = static_cast<Item*>(invnode->element);
 				if ( item && item->type == TOOL_TORCH )
 				{
 					if ( itemIsEquipped(item, gui_player) )
@@ -10056,11 +10056,11 @@ void GenericGUIMenu::alchemyCombinePotions()
 			{
 				if ( alembicItem->beatitude <= -1 )
 				{
-					blessing = std::min(-2, (int)alembicItem->beatitude);
+					blessing = std::min(-2, static_cast<int>(alembicItem->beatitude));
 				}
 				else
 				{
-					blessing = std::max(2, (int)alembicItem->beatitude);
+					blessing = std::max(2, static_cast<int>(alembicItem->beatitude));
 				}
 			}
 		}
@@ -12431,7 +12431,7 @@ Item* GenericGUIMenu::tinkeringKitFindInInventory()
 
 		for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != NULL; invnode = invnode->next )
 		{
-			Item* tinkerItem = (Item*)invnode->element;
+			Item* tinkerItem = static_cast<Item*>(invnode->element);
 			if ( tinkerItem && tinkerItem->type == TOOL_TINKERING_KIT && tinkerItem->status > BROKEN )
 			{
 				return tinkerItem;
@@ -13101,7 +13101,7 @@ Item* GenericGUIMenu::scribingToolFindInInventory()
 	{
 		for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != NULL; invnode = invnode->next )
 		{
-			Item* scribeItem = (Item*)invnode->element;
+			Item* scribeItem = static_cast<Item*>(invnode->element);
 			if ( scribeItem && scribeItem->type == ENCHANTED_FEATHER && scribeItem->status > BROKEN )
 			{
 				return scribeItem;
@@ -14634,7 +14634,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerMenu()
 			{
 				if ( titleStr[0] >= 'a' && titleStr[0] <= 'z' )
 				{
-					titleStr[0] = (char)toupper((int)titleStr[0]);
+					titleStr[0] = static_cast<char>(toupper((int)titleStr[0]));
 				}
 				size_t found = titleStr.find(' ');
 				while ( found != std::string::npos )
@@ -14642,7 +14642,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerMenu()
 					auto& c = titleStr[std::min(found + 1, titleStr.size() - 1)];
 					if ( c >= 'a' && c <= 'z' )
 					{
-						c = (char)toupper((int)c);
+						c = static_cast<char>(toupper((int)c));
 					}
 					found = titleStr.find(' ', found + 1);
 				}
@@ -15466,14 +15466,14 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerMenu()
 		}
 		SDL_Color color;
 		getColor(actionPromptUnselectedTxt->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * (pow(1.0 - animPrompt, 2)));
+		color.a = static_cast<Uint8>(255 * (pow(1.0 - animPrompt, 2)));
 		actionPromptUnselectedTxt->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 
 	{
 		SDL_Color color;
 		getColor(actionPromptTxt->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		actionPromptImg->color = makeColor(255, 255, 255, color.a);
 		actionModifierImg->color = actionPromptImg->color;
 		actionPromptTxt->setColor(makeColor(color.r, color.g, color.b, color.a));
@@ -15488,19 +15488,19 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerMenu()
 	{
 		SDL_Color color;
 		getColor(displayItemName->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		displayItemName->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 	{
 		SDL_Color color;
 		getColor(metalText->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		metalText->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 	{
 		SDL_Color color;
 		getColor(magicText->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		magicText->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 	//itemDisplayTooltip->setOpacity(100.0 * animTooltip);
@@ -15658,7 +15658,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerMenu()
 				nextnode = node->next;
 				if ( node->element )
 				{
-					Item* item = (Item*)node->element;
+					Item* item = static_cast<Item*>(node->element);
 					if ( parentGUI.tinkeringFilter == TINKER_FILTER_CRAFTABLE )
 					{
 						if ( isTinkerConstructItemSelected(item) )
@@ -17566,7 +17566,7 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 
 	for ( node_t* node = stats[playernum]->inventory.first; node != NULL && !hasTinOpener; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( !item ) { continue; }
 
 		if ( item->type == TOOL_TINOPENER && item->identified )
@@ -17693,7 +17693,7 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 			{
 				if ( titleStr[0] >= 'a' && titleStr[0] <= 'z' )
 				{
-					titleStr[0] = (char)toupper((int)titleStr[0]);
+					titleStr[0] = static_cast<char>(toupper((int)titleStr[0]));
 				}
 				size_t found = titleStr.find(' ');
 				while ( found != std::string::npos )
@@ -17701,7 +17701,7 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 					auto& c = titleStr[std::min(found + 1, titleStr.size() - 1)];
 					if ( c >= 'a' && c <= 'z' )
 					{
-						c = (char)toupper((int)c);
+						c = static_cast<char>(toupper((int)c));
 					}
 					found = titleStr.find(' ', found + 1);
 				}
@@ -18137,11 +18137,11 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 					{
 						if ( parentGUI.alembicItem->beatitude <= -1 )
 						{
-							blessing = std::min(-2, (int)parentGUI.alembicItem->beatitude);
+							blessing = std::min(-2, static_cast<int>(parentGUI.alembicItem->beatitude));
 						}
 						else
 						{
-							blessing = std::max(2, (int)parentGUI.alembicItem->beatitude);
+							blessing = std::max(2, static_cast<int>(parentGUI.alembicItem->beatitude));
 						}
 					}
 				}
@@ -18576,28 +18576,28 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 	{
 		SDL_Color color;
 		getColor(displayItemTextImg->color, &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(192 * animTooltip);
+		color.a = static_cast<Uint8>(192 * animTooltip);
 		displayItemTextImg->color = (makeColor(color.r, color.g, color.b, color.a));
 	}
 
 	{
 		SDL_Color color;
 		getColor(displayItemName->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		displayItemName->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 
 	{
 		SDL_Color color;
 		getColor(activateSelectionPrompt->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		activateSelectionPrompt->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 
 	{
 		SDL_Color color;
 		getColor(activateSelectionGlyph->color, &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		activateSelectionGlyph->color = (makeColor(color.r, color.g, color.b, color.a));
 	}
 
@@ -18957,7 +18957,7 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 			{
 				for ( node_t* node = stats[playernum]->inventory.first; node != NULL; node = node->next )
 				{
-					Item* item = (Item*)node->element;
+					Item* item = static_cast<Item*>(node->element);
 					if ( !item )
 					{
 						continue;
@@ -20367,7 +20367,7 @@ void buildRecipeList(const int player)
 	alchemy.torchCount.count = 0;
 	for ( node_t* node = stats[player]->inventory.first; node; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( !item ) { continue; }
 		if ( item->type == TOOL_TORCH )
 		{
@@ -20410,7 +20410,7 @@ void buildRecipeList(const int player)
 				node_t* node;
 				for ( node = currentList->first; node != nullptr; node = node->next )
 				{
-					if ( Entity* entity = ((Entity*)node->element) )
+					if ( Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity->behavior == &actCampfire && entity->skill[3] > 0 /*fire health */ && entityDist(entity, players[player]->entity) < 32.0 )
 						{
@@ -20560,7 +20560,7 @@ void buildRecipeList(const int player)
 		{
 			recipes.recipeList.push_back(GenericGUIMenu::AlchemyGUI_t::AlchemyRecipes_t::RecipeEntry_t());
 			auto& recipe = recipes.recipeList.at(recipes.recipeList.size() - 1);
-			recipe.resultItem.type = (ItemType)entry.first;
+			recipe.resultItem.type = static_cast<ItemType>(entry.first);
 			recipe.resultItem.count = 0;
 			if ( inventoryPotions.find(recipe.resultItem.type) != inventoryPotions.end() )
 			{
@@ -20588,7 +20588,7 @@ void buildRecipeList(const int player)
 			}
 			else
 			{
-				recipe.dummyPotion1.type = (ItemType)entry.second.first;
+				recipe.dummyPotion1.type = static_cast<ItemType>(entry.second.first);
 				for ( auto it = potionStandardAppearanceMap.begin(); it != potionStandardAppearanceMap.end(); ++it )
 				{
 					if ( (*it).first == recipe.dummyPotion1.type )
@@ -20614,7 +20614,7 @@ void buildRecipeList(const int player)
 			}
 			else
 			{
-				recipe.dummyPotion2.type = (ItemType)entry.second.second;
+				recipe.dummyPotion2.type = static_cast<ItemType>(entry.second.second);
 				for ( auto it = potionStandardAppearanceMap.begin(); it != potionStandardAppearanceMap.end(); ++it )
 				{
 					if ( (*it).first == recipe.dummyPotion2.type )
@@ -20975,11 +20975,11 @@ void GenericGUIMenu::AlchemyGUI_t::AlchemyRecipes_t::updateRecipePanel()
 			scrollAnimateX += setpointDiff;
 			if ( setpointDiff > 0.0 )
 			{
-				scrollAnimateX = std::min((real_t)scrollSetpoint, scrollAnimateX);
+				scrollAnimateX = std::min(static_cast<real_t>(scrollSetpoint), scrollAnimateX);
 			}
 			else
 			{
-				scrollAnimateX = std::max((real_t)scrollSetpoint, scrollAnimateX);
+				scrollAnimateX = std::max(static_cast<real_t>(scrollSetpoint), scrollAnimateX);
 			}
 		}
 		else
@@ -21352,7 +21352,7 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
 		}
 		if ( parentGUI.isNodeScribingCraftableItem(node) )
 		{
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				std::string label = item->getScrollLabel();
@@ -21394,7 +21394,7 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
 			}
 			if ( node->element )
 			{
-				Item* item = (Item*)node->element;
+				Item* item = static_cast<Item*>(node->element);
 				if ( item && scroll.first == item->getScrollLabel() )
 				{
 					item->x = 0;
@@ -21444,7 +21444,7 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
 						real_t percent = ((ticks - discovery.startTicks) / (TICKS_PER_SECOND / 10)) + 1;
 						percent /= 10.0;
 						percent = std::min(percent, 1.0);
-						size_t numChars = std::min(size_t(scrollShortName.size() * percent), scrollShortName.size());
+						size_t numChars = std::min(static_cast<size_t>(scrollShortName.size() * percent), scrollShortName.size());
 						discovery.name = scrollShortName.substr(0, numChars);
 						for ( auto sz = numChars; sz < scrollShortName.size(); ++sz )
 						{
@@ -21979,7 +21979,7 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherMenu()
 			{
 				if ( titleStr[0] >= 'a' && titleStr[0] <= 'z' )
 				{
-					titleStr[0] = (char)toupper((int)titleStr[0]);
+					titleStr[0] = static_cast<char>(toupper((int)titleStr[0]));
 				}
 				size_t found = titleStr.find(' ');
 				while ( found != std::string::npos )
@@ -21987,7 +21987,7 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherMenu()
 					auto& c = titleStr[std::min(found + 1, titleStr.size() - 1)];
 					if ( c >= 'a' && c <= 'z' )
 					{
-						c = (char)toupper((int)c);
+						c = static_cast<char>(toupper((int)c));
 					}
 					found = titleStr.find(' ', found + 1);
 				}
@@ -22398,11 +22398,11 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherMenu()
 				auto tickDiff = ticks - inscribeSuccessTicks;
 				if ( (tickDiff) < (TICKS_PER_SECOND / 4) )
 				{
-					inscribeSuccessFeedbackPercent = 1.0 - ((TICKS_PER_SECOND / 4) - tickDiff) / (real_t)(TICKS_PER_SECOND / 4);
+					inscribeSuccessFeedbackPercent = 1.0 - ((TICKS_PER_SECOND / 4) - tickDiff) / static_cast<real_t>((TICKS_PER_SECOND / 4));
 				}
 				else if ( tickDiff > (2 * TICKS_PER_SECOND) )
 				{
-					inscribeSuccessFeedbackPercent = 1.0 - (tickDiff - (2 * TICKS_PER_SECOND)) / (real_t)(TICKS_PER_SECOND / 2);
+					inscribeSuccessFeedbackPercent = 1.0 - (tickDiff - (2 * TICKS_PER_SECOND)) / static_cast<real_t>((TICKS_PER_SECOND / 2));
 				}
 				char buf[128] = "";
 				int index = 0;
@@ -22696,14 +22696,14 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherMenu()
 		}
 		SDL_Color color;
 		getColor(actionPromptUnselectedTxt->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * (pow(1.0 - animPrompt, 2)));
+		color.a = static_cast<Uint8>(255 * (pow(1.0 - animPrompt, 2)));
 		actionPromptUnselectedTxt->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 
 	{
 		SDL_Color color;
 		getColor(actionPromptTxt->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		if ( inscribeSuccessFeedbackActive )
 		{
 			color.a *= inscribeSuccessFeedbackPercent;
@@ -22721,19 +22721,19 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherMenu()
 	{
 		SDL_Color color;
 		getColor(displayItemName->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		displayItemName->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 	{
 		SDL_Color color;
 		getColor(minChargeText->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		minChargeText->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 	{
 		SDL_Color color;
 		getColor(maxChargeText->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		maxChargeText->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 
@@ -22886,7 +22886,7 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherMenu()
 				nextnode = node->next;
 				if ( node->element )
 				{
-					Item* item = (Item*)node->element;
+					Item* item = static_cast<Item*>(node->element);
 					if ( isInscriptionDrawerItemSelected(item) )
 					{
 						foundItem = true;
@@ -23167,11 +23167,11 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherMenu()
 			scrollAnimateX += setpointDiff;
 			if ( setpointDiff > 0.0 )
 			{
-				scrollAnimateX = std::min((real_t)scrollSetpoint, scrollAnimateX);
+				scrollAnimateX = std::min(static_cast<real_t>(scrollSetpoint), scrollAnimateX);
 			}
 			else
 			{
-				scrollAnimateX = std::max((real_t)scrollSetpoint, scrollAnimateX);
+				scrollAnimateX = std::max(static_cast<real_t>(scrollSetpoint), scrollAnimateX);
 			}
 		}
 		else
@@ -24230,7 +24230,7 @@ void GenericGUIMenu::ItemEffectGUI_t::getItemEffectCost(Item* itemUsedWith, int&
 		if ( parentGUI.isItemBlessWaterable(itemUsedWith) )
 		{
 			manaCost = 2 * itemUsedWith->count;
-			manaCost += 2 * itemUsedWith->count * std::max(0, (int)itemUsedWith->beatitude);
+			manaCost += 2 * itemUsedWith->count * std::max(0, static_cast<int>(itemUsedWith->beatitude));
 		}
 	}
 	else if ( currentMode == ITEMFX_MODE_SCROLL_ENCHANT_ARMOR )
@@ -24238,7 +24238,7 @@ void GenericGUIMenu::ItemEffectGUI_t::getItemEffectCost(Item* itemUsedWith, int&
 		goldCost = 75;
 		if ( parentGUI.isItemEnchantArmorable(itemUsedWith) )
 		{
-			int bless = std::max((int)itemUsedWith->beatitude, 0);
+			int bless = std::max(static_cast<int>(itemUsedWith->beatitude), 0);
 			for ( int i = 0; i < std::min(10, bless); ++i )
 			{
 				goldCost *= 2;
@@ -24251,7 +24251,7 @@ void GenericGUIMenu::ItemEffectGUI_t::getItemEffectCost(Item* itemUsedWith, int&
 		goldCost = 75;
 		if ( parentGUI.isItemEnchantWeaponable(itemUsedWith) )
 		{
-			int bless = std::max((int)itemUsedWith->beatitude, 0);
+			int bless = std::max(static_cast<int>(itemUsedWith->beatitude), 0);
 			for ( int i = 0; i < std::min(10, bless); ++i )
 			{
 				goldCost *= 2;
@@ -24525,7 +24525,7 @@ void GenericGUIMenu::ItemEffectGUI_t::getItemEffectCost(Item* itemUsedWith, int&
 				if ( result >= 0 )
 				{
 					ItemType prevType = itemUsedWith->type;
-					itemUsedWith->type = (ItemType)(result);
+					itemUsedWith->type = static_cast<ItemType>(result);
 					goldCost = 100 + itemUsedWith->sellValue(-1);
 					itemUsedWith->type = prevType;
 				}
@@ -25069,7 +25069,7 @@ GenericGUIMenu::ItemEffectGUI_t::ItemEffectActions_t GenericGUIMenu::ItemEffectG
 				int result = parentGUI.getAlterItemResultAtCycle(item);
 				if ( result >= 0 )
 				{
-					item->type = (ItemType)(result);
+					item->type = static_cast<ItemType>(result);
 				}
 			}
 
@@ -25757,7 +25757,7 @@ void GenericGUIMenu::ItemEffectGUI_t::updateItemEffectMenu()
 					{
 						if ( node_t* spellImageNode = ItemTooltips.getSpellNodeFromSpellID(spell->ID) )
 						{
-							string_t* string = (string_t*)spellImageNode->element;
+							string_t* string = static_cast<string_t*>(spellImageNode->element);
 							if ( string )
 							{
 								itemIcon->path = "*";
@@ -25788,7 +25788,7 @@ void GenericGUIMenu::ItemEffectGUI_t::updateItemEffectMenu()
 				if ( node_t* spellImageNode = 
 					ItemTooltips.getSpellNodeFromSpellID(getSpellIDFromSpellbook(static_cast<ItemType>(parentGUI.itemEffectItemType))) )
 				{
-					string_t* string = (string_t*)spellImageNode->element;
+					string_t* string = static_cast<string_t*>(spellImageNode->element);
 					if ( string )
 					{
 						itemIcon->path = "*";
@@ -26760,14 +26760,14 @@ void GenericGUIMenu::ItemEffectGUI_t::updateItemEffectMenu()
 		}
 		SDL_Color color;
 		getColor(actionPromptUnselectedTxt->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * (pow(1.0 - animPrompt, 2)));
+		color.a = static_cast<Uint8>(255 * (pow(1.0 - animPrompt, 2)));
 		actionPromptUnselectedTxt->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 
 	{
 		SDL_Color color;
 		getColor(actionPromptTxt->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		actionPromptImg->color = makeColor(255, 255, 255, color.a);
 		//actionModifierImg->color = actionPromptImg->color;
 		actionPromptTxt->setColor(makeColor(color.r, color.g, color.b, color.a));
@@ -26781,19 +26781,19 @@ void GenericGUIMenu::ItemEffectGUI_t::updateItemEffectMenu()
 	{
 		SDL_Color color;
 		getColor(displayItemName->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		displayItemName->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 	{
 		SDL_Color color;
 		getColor(costEffectGoldText->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		costEffectGoldText->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 	{
 		SDL_Color color;
 		getColor(costEffectManaText->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		costEffectManaText->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 
@@ -26882,7 +26882,7 @@ void GenericGUIMenu::ItemEffectGUI_t::updateItemEffectMenu()
 				nextnode = node->next;
 				if ( node->element )
 				{
-					Item* item = (Item*)node->element;
+					Item* item = static_cast<Item*>(node->element);
 					if ( (!transmuteActivate && isItemSelectedToEffect(item)) || (transmuteActivate && item == parentGUI.transmuteItemTarget) )
 					{
 						foundItem = true;
@@ -27202,7 +27202,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
 			actionButtonConfirm->setBackgroundActivated("*images/ui/ScrollSpells/Button_TakeAllPress_00.png");
 			actionButtonConfirm->setTextHighlightColor(makeColor(201, 162, 100, 255));
 			actionButtonConfirm->setCallback([](Button& button) {
-				button.setUserData((void*)(intptr_t)(1));
+				button.setUserData((void*)static_cast<intptr_t>(1));
 				});
 			actionButtonConfirm->setTickCallback(genericgui_deselect_fn);
 			actionButtonConfirm->setInvisible(true);
@@ -28244,7 +28244,7 @@ std::string CalloutRadialMenu::setCalloutText(Field* field, const char* iconName
 			int monsterType = entity->getMonsterTypeFromSprite();
 			if ( monsterType >= NOTHING && monsterType < NUMMONSTERS )
 			{
-				std::string monsterName = getMonsterLocalizedName((Monster)monsterType);
+				std::string monsterName = getMonsterLocalizedName(static_cast<Monster>(monsterType));
 				bool namedNPC = false;
 				if ( multiplayer != CLIENT && monsterType != SHOPKEEPER )
 				{
@@ -29633,20 +29633,20 @@ void CalloutRadialMenu::drawCallouts(const int playernum)
 			int bottomOfWindow = player->camera_virtualy2() - offset;
 
 			mat4x4_t id;
-			vec4_t world{ (float)callout.second.x * 2.f, -(float)callout.second.z * 2.f, (float)callout.second.y * 2.f, 1.f };
+			vec4_t world{ static_cast<float>(callout.second.x) * 2.f, -static_cast<float>(callout.second.z) * 2.f, static_cast<float>(callout.second.y) * 2.f, 1.f };
 			if ( selfCallout )
 			{
 				world.x = 32.0 * camera->x + 32.0 * cos(camera->ang);
 				world.z = 32.0 * camera->y + 32.0 * sin(camera->ang);
 			}
-			vec4_t window2{ (float)0, (float)0,
-				(float)player->camera_virtualWidth(), (float)player->camera_virtualHeight() };
+			vec4_t window2{ static_cast<float>(0), static_cast<float>(0),
+				static_cast<float>(player->camera_virtualWidth()), static_cast<float>(player->camera_virtualHeight()) };
 			SDL_Rect dest{ 0, 0, 0, 0 };
 			if ( callout.second.lockOnScreen[playernum] )
 			{
 				auto screen_position = project_clipped2(&world, &id, &camera->projview, &window2);
-				dest = SDL_Rect{ player->camera_virtualx1() + (int)screen_position.clipped_coords.x,
-					player->camera_virtualy1() + Frame::virtualScreenY - (Frame::virtualScreenY - player->camera_virtualHeight()) - (int)screen_position.clipped_coords.y,
+				dest = SDL_Rect{ player->camera_virtualx1() + static_cast<int>(screen_position.clipped_coords.x),
+					player->camera_virtualy1() + Frame::virtualScreenY - (Frame::virtualScreenY - player->camera_virtualHeight()) - static_cast<int>(screen_position.clipped_coords.y),
 				14, 22 };
 				if ( !screen_position.isBehind
 					&& (screen_position.direction == ClipResult::Direction::Front
@@ -29713,17 +29713,17 @@ void CalloutRadialMenu::drawCallouts(const int playernum)
 				{
 					continue;
 				}
-				dest = SDL_Rect{ player->camera_virtualx1() + (int)screen_position.x,
+				dest = SDL_Rect{ player->camera_virtualx1() + static_cast<int>(screen_position.x),
 					player->camera_virtualy1() + Frame::virtualScreenY - (Frame::virtualScreenY - player->camera_virtualHeight()) -
-					(int)screen_position.y,
+					static_cast<int>(screen_position.y),
 				14, 22 };
 			}
 
-			real_t lifePercent = callout.second.ticks / (real_t)callout.second.lifetime;
+			real_t lifePercent = callout.second.ticks / static_cast<real_t>(callout.second.lifetime);
 			if ( selfCallout )
 			{
 				// fade early for the self callout player, but not others in splitscreen
-				lifePercent = callout.second.ticks / (real_t)((TICKS_PER_SECOND * 4) / 5);
+				lifePercent = callout.second.ticks / static_cast<real_t>((TICKS_PER_SECOND * 4) / 5);
 			}
 			else
 			{
@@ -29741,7 +29741,7 @@ void CalloutRadialMenu::drawCallouts(const int playernum)
 							|| (callout.second.cmd == CALLOUT_CMD_HELP && players[i]->ghost.isActive()) )
 						{
 							// fade early for simple thumbs up/down for players
-							lifePercent = callout.second.ticks / (real_t)((TICKS_PER_SECOND * 4) / 5);
+							lifePercent = callout.second.ticks / static_cast<real_t>((TICKS_PER_SECOND * 4) / 5);
 						}
 						break;
 					}
@@ -29750,7 +29750,7 @@ void CalloutRadialMenu::drawCallouts(const int playernum)
 			Uint32 alpha = 255;
 			if ( lifePercent >= 0.8 )
 			{
-				alpha -= std::min((Uint32)255, (Uint32)(255 * (lifePercent - 0.8) / 0.2));
+				alpha -= std::min(static_cast<Uint32>(255), static_cast<Uint32>(255 * (lifePercent - 0.8) / 0.2));
 			}
 			Uint32 color = makeColor(255, 255, 255, alpha);
 			SDL_Rect iconPos = dest;
@@ -29805,9 +29805,9 @@ void CalloutRadialMenu::drawCallouts(const int playernum)
 					{
 						real_t y = iconPos.y - players[playernum]->camera_virtualy1();
 						iconPos.y = players[playernum]->camera_virtualHeight() / 4;
-						real_t factor = players[playernum]->camera_virtualHeight() / (real_t)Frame::virtualScreenY;
+						real_t factor = players[playernum]->camera_virtualHeight() / static_cast<real_t>(Frame::virtualScreenY);
 						iconPos.y += factor * 16.0 * (y - iconPos.y) 
-							/ (real_t)players[playernum]->camera_virtualHeight();
+							/ static_cast<real_t>(players[playernum]->camera_virtualHeight());
 						iconPos.y += players[playernum]->camera_virtualy1();
 					}
 
@@ -30167,7 +30167,7 @@ bool CalloutRadialMenu::createParticleCallout(Entity* entity, CalloutRadialMenu:
 			strcpy((char*)net_packet->data, "CALL");
 			net_packet->data[4] = getPlayer();
 			SDLNet_Write32(entity->getUID(), &net_packet->data[5]);
-			net_packet->data[9] = (Uint8)_cmd;
+			net_packet->data[9] = static_cast<Uint8>(_cmd);
 			SDLNet_Write32(clientCalloutHelpFlags, &net_packet->data[10]);
 			net_packet->len = 14;
 			net_packet->address.host = net_clients[i - 1].host;
@@ -30281,7 +30281,7 @@ bool CalloutRadialMenu::createParticleCallout(real_t x, real_t y, real_t z, Uint
 			strcpy((char*)net_packet->data, "CALL");
 			net_packet->data[4] = getPlayer();
 			SDLNet_Write32(uid, &net_packet->data[5]);
-			net_packet->data[9] = (Uint8)_cmd;
+			net_packet->data[9] = static_cast<Uint8>(_cmd);
 			SDLNet_Write32(clientCalloutHelpFlags, &net_packet->data[10]);
 			net_packet->len = 14;
 			if ( uid == 0 )
@@ -30321,7 +30321,7 @@ void CalloutRadialMenu::sendCalloutText(CalloutRadialMenu::CalloutCommand cmd)
 		strcpy((char*)net_packet->data, "CALL");
 		net_packet->data[4] = getPlayer();
 		SDLNet_Write32(lockOnEntityUid, &net_packet->data[5]);
-		net_packet->data[9] = (Uint8)cmd;
+		net_packet->data[9] = static_cast<Uint8>(cmd);
 		SDLNet_Write32(clientCalloutHelpFlags, &net_packet->data[10]);
 		net_packet->len = 14;
 		if ( lockOnEntityUid == 0 )
@@ -30561,7 +30561,7 @@ void CalloutRadialMenu::drawCalloutMenu()
 			|| optionSelected == CALLOUT_CMD_SOUTHEAST
 			|| optionSelected == CALLOUT_CMD_SOUTHWEST )
 		{
-			int targetPlayer = getPlayerForDirectPlayerCmd(getPlayer(), (CalloutCommand)optionSelected);
+			int targetPlayer = getPlayerForDirectPlayerCmd(getPlayer(), static_cast<CalloutCommand>(optionSelected));
 			if ( targetPlayer < 0 || client_disconnected[targetPlayer] || (!Player::getPlayerInteractEntity(targetPlayer)) )
 			{
 				disableOption = true;
@@ -30681,22 +30681,22 @@ void CalloutRadialMenu::drawCalloutMenu()
 
 					if ( lockOnEntityUid == 0 )
 					{
-						if ( (CalloutCommand)optionSelected == CALLOUT_CMD_AFFIRMATIVE
-							|| (CalloutCommand)optionSelected == CALLOUT_CMD_NEGATIVE )
+						if ( static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_AFFIRMATIVE
+							|| static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_NEGATIVE )
 						{
 							lockOnEntityUid = getPlayerUid(gui_player);
 						}
-						else if ( (CalloutCommand)optionSelected == CALLOUT_CMD_HELP )
+						else if ( static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_HELP )
 						{
 							lockOnEntityUid = getPlayerUid(gui_player);
 						}
 					}
 
-					if ( (CalloutCommand)optionSelected == CALLOUT_CMD_SOUTH
-						|| (CalloutCommand)optionSelected == CALLOUT_CMD_SOUTHWEST
-						|| (CalloutCommand)optionSelected == CALLOUT_CMD_SOUTHEAST )
+					if ( static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_SOUTH
+						|| static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_SOUTHWEST
+						|| static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_SOUTHEAST )
 					{
-						int toPlayer = getPlayerForDirectPlayerCmd(getPlayer(), (CalloutCommand)optionSelected);
+						int toPlayer = getPlayerForDirectPlayerCmd(getPlayer(), static_cast<CalloutCommand>(optionSelected));
 						if ( toPlayer >= 0 )
 						{
 							lockOnEntityUid = getPlayerUid(toPlayer);
@@ -30711,27 +30711,27 @@ void CalloutRadialMenu::drawCalloutMenu()
 							if ( (target->behavior == &actPlayer || target->behavior == &actDeathGhost)
 								&& target->skill[2] != getPlayer() )
 							{
-								if ( (CalloutCommand)optionSelected == CALLOUT_CMD_HELP )
+								if ( static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_HELP )
 								{
 									lockOnEntityUid = getPlayerUid(getPlayer());
 									target = uidToEntity(lockOnEntityUid);
 								}
-								else if ( (CalloutCommand)optionSelected == CALLOUT_CMD_AFFIRMATIVE )
+								else if ( static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_AFFIRMATIVE )
 								{
 									target = Player::getPlayerInteractEntity(getPlayer());
 									overrideUID = lockOnEntityUid;
 									optionSelected = CALLOUT_CMD_THANKS;
 								}
-								else if ( (CalloutCommand)optionSelected == CALLOUT_CMD_LOOK
-									|| (CalloutCommand)optionSelected == CALLOUT_CMD_NEGATIVE )
+								else if ( static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_LOOK
+									|| static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_NEGATIVE )
 								{
 									target = Player::getPlayerInteractEntity(getPlayer());
 								}
-								else if ( (CalloutCommand)optionSelected == CALLOUT_CMD_SOUTH
-									|| (CalloutCommand)optionSelected == CALLOUT_CMD_SOUTHWEST
-									|| (CalloutCommand)optionSelected == CALLOUT_CMD_SOUTHEAST )
+								else if ( static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_SOUTH
+									|| static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_SOUTHWEST
+									|| static_cast<CalloutCommand>(optionSelected) == CALLOUT_CMD_SOUTHEAST )
 								{
-									int toPlayer = getPlayerForDirectPlayerCmd(getPlayer(), (CalloutCommand)optionSelected);
+									int toPlayer = getPlayerForDirectPlayerCmd(getPlayer(), static_cast<CalloutCommand>(optionSelected));
 									if ( toPlayer >= 0 )
 									{
 										target = Player::getPlayerInteractEntity(getPlayer());
@@ -30739,17 +30739,17 @@ void CalloutRadialMenu::drawCalloutMenu()
 								}
 							}
 
-							if ( createParticleCallout(target, (CalloutCommand)optionSelected, overrideUID) )
+							if ( createParticleCallout(target, static_cast<CalloutCommand>(optionSelected), overrideUID) )
 							{
-								sendCalloutText((CalloutCommand)optionSelected);
+								sendCalloutText(static_cast<CalloutCommand>(optionSelected));
 							}
 						}
 					}
 					else
 					{
-						if ( createParticleCallout((real_t)moveToX, (real_t)moveToY, -4, 0, (CalloutCommand)optionSelected) )
+						if ( createParticleCallout((real_t)moveToX, (real_t)moveToY, -4, 0, static_cast<CalloutCommand>(optionSelected)) )
 						{
-							sendCalloutText((CalloutCommand)optionSelected);
+							sendCalloutText(static_cast<CalloutCommand>(optionSelected));
 						}
 					}
 				}
@@ -30847,7 +30847,7 @@ void CalloutRadialMenu::drawCalloutMenu()
 
 		radius = CalloutRadialMenu::followerWheelRadius;
 		thickness = CalloutRadialMenu::followerWheelButtonThickness;
-		real_t menuScale = yres / (real_t)Frame::virtualScreenY;
+		real_t menuScale = yres / static_cast<real_t>(Frame::virtualScreenY);
 		radius *= menuScale;
 		thickness *= menuScale;
 		int centerButtonHighlightOffset = CalloutRadialMenu::followerWheelInnerCircleRadiusOffset;
@@ -30993,7 +30993,7 @@ void CalloutRadialMenu::drawCalloutMenu()
 						if ( i == highlight )
 						{
 							panelIcons[i]->path = iconEntries["look_at"].path_hover;
-							setCalloutText(bannerTxt, "look_at", textHighlightColor, (CalloutCommand)i, SET_CALLOUT_BANNER_TEXT, -1);
+							setCalloutText(bannerTxt, "look_at", textHighlightColor, static_cast<CalloutCommand>(i), SET_CALLOUT_BANNER_TEXT, -1);
 						}
 						else
 						{
@@ -31005,7 +31005,7 @@ void CalloutRadialMenu::drawCalloutMenu()
 						if ( i == highlight )
 						{
 							panelIcons[i]->path = iconEntries["help"].path_hover;
-							setCalloutText(bannerTxt, "help", textHighlightColor, (CalloutCommand)i, SET_CALLOUT_BANNER_TEXT, -1);
+							setCalloutText(bannerTxt, "help", textHighlightColor, static_cast<CalloutCommand>(i), SET_CALLOUT_BANNER_TEXT, -1);
 						}
 						else
 						{
@@ -31017,7 +31017,7 @@ void CalloutRadialMenu::drawCalloutMenu()
 						if ( i == highlight )
 						{
 							panelIcons[i]->path = iconEntries["affirmative"].path_hover;
-							setCalloutText(bannerTxt, "affirmative", textHighlightColor, (CalloutCommand)i, SET_CALLOUT_BANNER_TEXT, -1);
+							setCalloutText(bannerTxt, "affirmative", textHighlightColor, static_cast<CalloutCommand>(i), SET_CALLOUT_BANNER_TEXT, -1);
 						}
 						else
 						{
@@ -31029,7 +31029,7 @@ void CalloutRadialMenu::drawCalloutMenu()
 						if ( i == highlight )
 						{
 							panelIcons[i]->path = iconEntries["negative"].path_hover;
-							setCalloutText(bannerTxt, "negative", textHighlightColor, (CalloutCommand)i, SET_CALLOUT_BANNER_TEXT, -1);
+							setCalloutText(bannerTxt, "negative", textHighlightColor, static_cast<CalloutCommand>(i), SET_CALLOUT_BANNER_TEXT, -1);
 						}
 						else
 						{
@@ -31041,7 +31041,7 @@ void CalloutRadialMenu::drawCalloutMenu()
 						if ( i == highlight )
 						{
 							panelIcons[i]->path = iconEntries["move"].path_hover;
-							setCalloutText(bannerTxt, "move", textHighlightColor, (CalloutCommand)i, SET_CALLOUT_BANNER_TEXT, -1);
+							setCalloutText(bannerTxt, "move", textHighlightColor, static_cast<CalloutCommand>(i), SET_CALLOUT_BANNER_TEXT, -1);
 						}
 						else
 						{
@@ -31050,14 +31050,14 @@ void CalloutRadialMenu::drawCalloutMenu()
 					}
 					else if ( i == CALLOUT_CMD_SOUTH )
 					{
-						int targetPlayer = getPlayerForDirectPlayerCmd(getPlayer(), (CalloutCommand)i);
+						int targetPlayer = getPlayerForDirectPlayerCmd(getPlayer(), static_cast<CalloutCommand>(i));
 						if ( targetPlayer < 0 || client_disconnected[targetPlayer] || !Player::getPlayerInteractEntity(targetPlayer) )
 						{
 							lockedOption = true;
 						}
 						if ( i == highlight )
 						{
-							setCalloutText(bannerTxt, "player_wave_1", textHighlightColor, (CalloutCommand)i, SET_CALLOUT_BANNER_TEXT, -1);
+							setCalloutText(bannerTxt, "player_wave_1", textHighlightColor, static_cast<CalloutCommand>(i), SET_CALLOUT_BANNER_TEXT, -1);
 						}
 
 						std::string key = (i == highlight) ? "tag_btn_player_wave_hover" : "tag_btn_player_wave";
@@ -31072,14 +31072,14 @@ void CalloutRadialMenu::drawCalloutMenu()
 					}
 					else if ( i == CALLOUT_CMD_SOUTHWEST )
 					{
-						int targetPlayer = getPlayerForDirectPlayerCmd(getPlayer(), (CalloutCommand)i);
+						int targetPlayer = getPlayerForDirectPlayerCmd(getPlayer(), static_cast<CalloutCommand>(i));
 						if ( targetPlayer < 0 || client_disconnected[targetPlayer] || !Player::getPlayerInteractEntity(targetPlayer) )
 						{
 							lockedOption = true;
 						}
 						if ( i == highlight )
 						{
-							setCalloutText(bannerTxt, "player_wave_2", textHighlightColor, (CalloutCommand)i, SET_CALLOUT_BANNER_TEXT, -1);
+							setCalloutText(bannerTxt, "player_wave_2", textHighlightColor, static_cast<CalloutCommand>(i), SET_CALLOUT_BANNER_TEXT, -1);
 						}
 						
 						std::string key = (i == highlight) ? "tag_btn_player_wave_hover" : "tag_btn_player_wave";
@@ -31094,14 +31094,14 @@ void CalloutRadialMenu::drawCalloutMenu()
 					}
 					else if ( i == CALLOUT_CMD_SOUTHEAST )
 					{
-						int targetPlayer = getPlayerForDirectPlayerCmd(getPlayer(), (CalloutCommand)i);
+						int targetPlayer = getPlayerForDirectPlayerCmd(getPlayer(), static_cast<CalloutCommand>(i));
 						if ( targetPlayer < 0 || client_disconnected[targetPlayer] || !Player::getPlayerInteractEntity(targetPlayer) )
 						{
 							lockedOption = true;
 						}
 						if ( i == highlight )
 						{
-							setCalloutText(bannerTxt, "player_wave_3", textHighlightColor, (CalloutCommand)i, SET_CALLOUT_BANNER_TEXT, -1);
+							setCalloutText(bannerTxt, "player_wave_3", textHighlightColor, static_cast<CalloutCommand>(i), SET_CALLOUT_BANNER_TEXT, -1);
 						}
 						
 						std::string key = (i == highlight) ? "tag_btn_player_wave_hover" : "tag_btn_player_wave";
@@ -31170,7 +31170,7 @@ void CalloutRadialMenu::drawCalloutMenu()
 				|| highlight == CALLOUT_CMD_SOUTHEAST
 				|| highlight == CALLOUT_CMD_SOUTHWEST )
 			{
-				int targetPlayer = getPlayerForDirectPlayerCmd(getPlayer(), (CalloutCommand)highlight);
+				int targetPlayer = getPlayerForDirectPlayerCmd(getPlayer(), static_cast<CalloutCommand>(highlight));
 				if ( targetPlayer < 0 || client_disconnected[targetPlayer] || !Player::getPlayerInteractEntity(targetPlayer) )
 				{
 					disableOption = true;
@@ -31838,7 +31838,7 @@ bool CalloutRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool updat
 		if ( updateInteractText )
 		{
 			int monsterType = selectedEntity.getMonsterTypeFromSprite();
-			strcat(interactText, getMonsterLocalizedName((Monster)monsterType).c_str());
+			strcat(interactText, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str());
 		}
 	}
 	else if ( selectedEntity.behavior == &actPlayer || selectedEntity.behavior == &actDeathGhost )
@@ -32803,10 +32803,10 @@ void GenericGUIMenu::AssistShrineGUI_t::onCharacterChange()
 	else if ( multiplayer == CLIENT )
 	{
 		strcpy((char*)net_packet->data, "ASSC");
-		net_packet->data[4] = (Sint8)savedClass;
-		net_packet->data[5] = (Sint8)savedRace;
-		net_packet->data[6] = (Sint8)savedSex;
-		net_packet->data[7] = (Sint8)savedAppearance;
+		net_packet->data[4] = static_cast<Sint8>(savedClass);
+		net_packet->data[5] = static_cast<Sint8>(savedRace);
+		net_packet->data[6] = static_cast<Sint8>(savedSex);
+		net_packet->data[7] = static_cast<Sint8>(savedAppearance);
 		net_packet->data[8] = parentGUI.gui_player;
 		net_packet->address.host = net_server.host;
 		net_packet->address.port = net_server.port;
@@ -32840,10 +32840,10 @@ void GenericGUIMenu::AssistShrineGUI_t::onCharacterChange()
 			if ( !client_disconnected[i] )
 			{
 				strcpy((char*)net_packet->data, "ASSC");
-				net_packet->data[4] = (Sint8)savedClass;
-				net_packet->data[5] = (Sint8)savedRace;
-				net_packet->data[6] = (Sint8)savedSex;
-				net_packet->data[7] = (Sint8)savedAppearance;
+				net_packet->data[4] = static_cast<Sint8>(savedClass);
+				net_packet->data[5] = static_cast<Sint8>(savedRace);
+				net_packet->data[6] = static_cast<Sint8>(savedSex);
+				net_packet->data[7] = static_cast<Sint8>(savedAppearance);
 				net_packet->data[8] = parentGUI.gui_player;
 				net_packet->address.host = net_clients[i - 1].host;
 				net_packet->address.port = net_clients[i - 1].port;
@@ -32977,7 +32977,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
 							auto& calloutMenu = CalloutMenu[player];
 							for ( auto node = map.entities->first; node; node = node->next )
 							{
-								Entity* shrine = (Entity*)node->element;
+								Entity* shrine = static_cast<Entity*>(node->element);
 								if ( shrine && (shrine->behavior == &::actAssistShrine) )
 								{
 									calloutMenu.lockOnEntityUid = shrine->getUID();
@@ -34422,7 +34422,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
 				slotMinus->setBackgroundActivated("*#images/ui/AssistShrine/Button_XPress_00.png");
 				slotMinus->setTextHighlightColor(makeColor(201, 162, 100, 255));
 				slotMinus->setOntop(true);
-				slotMinus->setUserData((void*)(intptr_t)i);
+				slotMinus->setUserData((void*)static_cast<intptr_t>(i));
 				slotMinus->setCallback(minus_callback_fn);
 				slotMinus->setTickCallback(genericgui_deselect_fn);
 
@@ -34443,7 +34443,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
 				slotPlus->setBackgroundActivated("*#images/ui/AssistShrine/Button_XPress_00.png");
 				slotPlus->setTextHighlightColor(makeColor(201, 162, 100, 255));
 				slotPlus->setOntop(true);
-				slotPlus->setUserData((void*)(intptr_t)i);
+				slotPlus->setUserData((void*)static_cast<intptr_t>(i));
 				slotPlus->setCallback(plus_callback_fn);
 				slotPlus->setTickCallback(genericgui_deselect_fn);
 
@@ -34780,7 +34780,7 @@ void GenericGUIMenu::AssistShrineGUI_t::onGameStart()
 	}
 	if ( savedSex >= 0 )
 	{
-		stats[parentGUI.gui_player]->sex = (sex_t)savedSex;
+		stats[parentGUI.gui_player]->sex = static_cast<sex_t>(savedSex);
 	}
 	if ( savedAppearance >= 0 )
 	{
@@ -34791,8 +34791,8 @@ void GenericGUIMenu::AssistShrineGUI_t::onGameStart()
 		}
 		else
 		{
-			stats[parentGUI.gui_player]->stat_appearance = std::max(0, (Sint32)stats[parentGUI.gui_player]->stat_appearance);
-			stats[parentGUI.gui_player]->stat_appearance = std::min(1, (Sint32)stats[parentGUI.gui_player]->stat_appearance);
+			stats[parentGUI.gui_player]->stat_appearance = std::max(0, static_cast<Sint32>(stats[parentGUI.gui_player]->stat_appearance));
+			stats[parentGUI.gui_player]->stat_appearance = std::min(1, static_cast<Sint32>(stats[parentGUI.gui_player]->stat_appearance));
 		}
 	}
 
@@ -35499,11 +35499,11 @@ void GenericGUIMenu::AssistShrineGUI_t::updateAssistShrine()
 				scrollAnimateX1 += setpointDiff;
 				if ( setpointDiff > 0.0 )
 				{
-					scrollAnimateX1 = std::min((real_t)scrollSetpoint1, scrollAnimateX1);
+					scrollAnimateX1 = std::min(static_cast<real_t>(scrollSetpoint1), scrollAnimateX1);
 				}
 				else
 				{
-					scrollAnimateX1 = std::max((real_t)scrollSetpoint1, scrollAnimateX1);
+					scrollAnimateX1 = std::max(static_cast<real_t>(scrollSetpoint1), scrollAnimateX1);
 				}
 			}
 			else
@@ -35610,7 +35610,7 @@ void GenericGUIMenu::AssistShrineGUI_t::updateAssistShrine()
 		}*/
 
 		int lowestItemY = 0;
-		lowestItemY = std::max((int)raceSlots.size() - 1, lowestItemY);
+		lowestItemY = std::max(static_cast<int>(raceSlots.size()) - 1, lowestItemY);
 		lowestItemY += 1;
 
 		// handle height changing..
@@ -35723,11 +35723,11 @@ void GenericGUIMenu::AssistShrineGUI_t::updateAssistShrine()
 				scrollAnimateX2 += setpointDiff;
 				if ( setpointDiff > 0.0 )
 				{
-					scrollAnimateX2 = std::min((real_t)scrollSetpoint2, scrollAnimateX2);
+					scrollAnimateX2 = std::min(static_cast<real_t>(scrollSetpoint2), scrollAnimateX2);
 				}
 				else
 				{
-					scrollAnimateX2 = std::max((real_t)scrollSetpoint2, scrollAnimateX2);
+					scrollAnimateX2 = std::max(static_cast<real_t>(scrollSetpoint2), scrollAnimateX2);
 				}
 			}
 			else
@@ -37562,7 +37562,7 @@ void GenericGUIMenu::AssistShrineGUI_t::updateAssistShrine()
 								// hp/mp
 								{
 									auto hpmp_values = classTooltip->findField("hpmp_values");
-									const int i = std::min((Sint32)itemType, (Sint32)(MainMenu::ClassDescriptions::data.size() - 1));
+									const int i = std::min(static_cast<Sint32>(itemType), static_cast<Sint32>(MainMenu::ClassDescriptions::data.size() - 1));
 									char buf[32];
 									snprintf(buf, sizeof(buf), "%d\n%d",
 										MainMenu::ClassDescriptions::data[i].hp,
@@ -37573,7 +37573,7 @@ void GenericGUIMenu::AssistShrineGUI_t::updateAssistShrine()
 								// difficulty stars
 								auto difficulty_stars = classTooltip->findField("difficulty_stars");
 								{
-									const int i = std::min((Sint32)itemType, (Sint32)(MainMenu::ClassDescriptions::data.size() - 1));
+									const int i = std::min(static_cast<Sint32>(itemType), static_cast<Sint32>(MainMenu::ClassDescriptions::data.size() - 1));
 									for ( int c = 0; c < 2; ++c ) {
 										difficulty_stars->addColorToLine(c, std::get<2>(MainMenu::ClassDescriptions::data[i].survivalComplexity[c]));
 									}
@@ -38297,7 +38297,7 @@ void GenericGUIMenu::AssistShrineGUI_t::updateAssistShrine()
 	{
 		SDL_Color color;
 		getColor(actionPromptTxt->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		actionPromptImg->color = makeColor(255, 255, 255, color.a);
 		actionPromptTxt->setColor(makeColor(color.r, color.g, color.b, color.a));
 
@@ -38778,7 +38778,7 @@ void GenericGUIMenu::AssistShrineGUI_t::scrollToSlot(int x, int y, bool instantl
 		numDisplayVertical = kNumRacesToDisplayVertical;
 		slotSize = kRaceSlotHeight;
 		upperY += numDisplayVertical - 1;
-		lowestItemY = std::max(lowestItemY, (int)raceSlots.size() - 1);
+		lowestItemY = std::max(lowestItemY, static_cast<int>(raceSlots.size()) - 1);
 	}
 
 	if ( y >= lowerY && y <= upperY )
@@ -40185,28 +40185,28 @@ void GenericGUIMenu::MailboxGui_t::updateMailMenu()
 	{
 		SDL_Color color;
 		getColor(displayItemTextImg->color, &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(192 * animTooltip);
+		color.a = static_cast<Uint8>(192 * animTooltip);
 		displayItemTextImg->color = (makeColor(color.r, color.g, color.b, color.a));
 	}
 
 	{
 		SDL_Color color;
 		getColor(displayItemName->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		displayItemName->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 
 	{
 		SDL_Color color;
 		getColor(activateSelectionPrompt->getColor(), &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		activateSelectionPrompt->setColor(makeColor(color.r, color.g, color.b, color.a));
 	}
 
 	{
 		SDL_Color color;
 		getColor(activateSelectionGlyph->color, &color.r, &color.g, &color.b, &color.a);
-		color.a = (Uint8)(255 * animTooltip);
+		color.a = static_cast<Uint8>(255 * animTooltip);
 		activateSelectionGlyph->color = (makeColor(color.r, color.g, color.b, color.a));
 	}
 
@@ -40377,7 +40377,7 @@ void GenericGUIMenu::MailboxGui_t::updateMailMenu()
 			{
 				for ( node_t* node = stats[playernum]->inventory.first; node != NULL; node = node->next )
 				{
-					Item* item = (Item*)node->element;
+					Item* item = static_cast<Item*>(node->element);
 					if ( !item )
 					{
 						continue;

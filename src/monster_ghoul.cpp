@@ -337,7 +337,7 @@ void ghoulMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -362,7 +362,7 @@ void ghoulMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -389,7 +389,7 @@ void ghoulMoveBodyparts(Entity* my, Stat* myStats, double dist)
 		{
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -398,7 +398,7 @@ void ghoulMoveBodyparts(Entity* my, Stat* myStats, double dist)
 		{
 			if ( bodypart == LIMB_HUMANOID_RIGHTLEG )
 			{
-				rightbody = (Entity*)node->next->element;
+				rightbody = static_cast<Entity*>(node->next->element);
 			}
 			if ( bodypart == LIMB_HUMANOID_LEFTARM )
 			{
@@ -516,7 +516,7 @@ void ghoulMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					 //vertical chop
 					 //get leftarm from bodypart 6 element if ready to attack
-					Entity* leftarm = (Entity*)node->next->element;
+					Entity* leftarm = static_cast<Entity*>(node->next->element);
 					if ( my->monsterAttack == 1 || my->monsterAttack == MONSTER_POSE_MELEE_WINDUP1 )
 					{
 						if ( leftarm != nullptr )

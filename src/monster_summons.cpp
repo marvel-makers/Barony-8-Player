@@ -341,7 +341,7 @@ void revenantSkullDie(Entity* my)
 			continue;
 		}
 
-		if ( Entity* entity = (Entity*)node->element )
+		if ( Entity* entity = static_cast<Entity*>(node->element) )
 		{
 			real_t gibx = entity->x;
 			real_t giby = entity->y;
@@ -563,7 +563,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
 			continue;
 		}
 
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -800,9 +800,9 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
 				}
 				else
 				{
-					if ( MONSTER_ATTACKTIME >= (int)limbs[monsterType][15][0] + delay )
+					if ( MONSTER_ATTACKTIME >= static_cast<int>(limbs[monsterType][15][0]) + delay )
 					{
-						if ( MONSTER_ATTACKTIME == (int)limbs[monsterType][15][0] + delay )
+						if ( MONSTER_ATTACKTIME == static_cast<int>(limbs[monsterType][15][0]) + delay )
 						{
 							SKULL_CIRCLES = 0;
 
@@ -971,40 +971,40 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
 						}
 					}
 
-					if ( MONSTER_ATTACKTIME >= (int)limbs[monsterType][18][0] + delay )
+					if ( MONSTER_ATTACKTIME >= static_cast<int>(limbs[monsterType][18][0]) + delay )
 					{
 						if ( MONSTER_ATTACK == MONSTER_POSE_MAGIC_CAST1 || MONSTER_ATTACK == MONSTER_POSE_MAGIC_WINDUP1 )
 						{
 							SKULL_FLOAT_ATK += limbs[monsterType][12][1];
-							SKULL_FLOAT_ATK = std::min(SKULL_FLOAT_ATK, (real_t)limbs[monsterType][12][2]);
+							SKULL_FLOAT_ATK = std::min(SKULL_FLOAT_ATK, static_cast<real_t>(limbs[monsterType][12][2]));
 						}
 						else
 						{
 							SKULL_FLOAT_ATK -= limbs[monsterType][18][1];
-							SKULL_FLOAT_ATK = std::max(SKULL_FLOAT_ATK, (real_t)limbs[monsterType][18][2]);
+							SKULL_FLOAT_ATK = std::max(SKULL_FLOAT_ATK, static_cast<real_t>(limbs[monsterType][18][2]));
 						}
 					}
-					else if ( MONSTER_ATTACKTIME >= (int)limbs[monsterType][17][0] + delay )
+					else if ( MONSTER_ATTACKTIME >= static_cast<int>(limbs[monsterType][17][0]) + delay )
 					{
 						if ( MONSTER_ATTACK == MONSTER_POSE_MAGIC_CAST1 || MONSTER_ATTACK == MONSTER_POSE_MAGIC_WINDUP1 )
 						{
 							SKULL_FLOAT_ATK += limbs[monsterType][19][1];
-							SKULL_FLOAT_ATK = std::min(SKULL_FLOAT_ATK, (real_t)limbs[monsterType][19][2]);
+							SKULL_FLOAT_ATK = std::min(SKULL_FLOAT_ATK, static_cast<real_t>(limbs[monsterType][19][2]));
 						}
 						else
 						{
 							SKULL_FLOAT_ATK += limbs[monsterType][17][1];
-							SKULL_FLOAT_ATK = std::min(SKULL_FLOAT_ATK, (real_t)limbs[monsterType][17][2]);
+							SKULL_FLOAT_ATK = std::min(SKULL_FLOAT_ATK, static_cast<real_t>(limbs[monsterType][17][2]));
 						}
 					}
-					else if ( MONSTER_ATTACKTIME >= (int)limbs[monsterType][16][0] + delay )
+					else if ( MONSTER_ATTACKTIME >= static_cast<int>(limbs[monsterType][16][0]) + delay )
 					{
 						SKULL_FLOAT_ATK -= limbs[monsterType][16][1];
-						SKULL_FLOAT_ATK = std::max(SKULL_FLOAT_ATK, (real_t)limbs[monsterType][16][2]);
+						SKULL_FLOAT_ATK = std::max(SKULL_FLOAT_ATK, static_cast<real_t>(limbs[monsterType][16][2]));
 					}
 				}
 
-				if ( MONSTER_ATTACKTIME >= (int)limbs[monsterType][15][1] + delay )
+				if ( MONSTER_ATTACKTIME >= static_cast<int>(limbs[monsterType][15][1]) + delay )
 				{
 					MONSTER_ATTACK = 0;
 				}
@@ -1388,7 +1388,7 @@ void hologramAnimate(Entity* my, Stat* myStats, double dist)
 			continue;
 		}
 
-		if ( Entity* entity = (Entity*)node->element )
+		if ( Entity* entity = static_cast<Entity*>(node->element) )
 		{
 			entity->flags[INVISIBLE] = true;
 			entity->flags[INVISIBLE_DITHER] = false;
@@ -1412,7 +1412,7 @@ void hologramAnimate(Entity* my, Stat* myStats, double dist)
 		{
 			if ( node_t* nodeCopy = list_Node(&hologramParent->children, i) )
 			{
-				if ( Entity* limb = (Entity*)nodeCopy->element )
+				if ( Entity* limb = static_cast<Entity*>(nodeCopy->element) )
 				{
 					limbsCopy.push_back(limb);
 				}
@@ -1886,7 +1886,7 @@ void earthElementalAnimate(Entity* my, Stat* myStats, double dist)
 			continue;
 		}
 
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 
 		if ( bodypart == EARTH_BODY )
 		{
@@ -2066,12 +2066,12 @@ void earthElementalAnimate(Entity* my, Stat* myStats, double dist)
 						EARTH_LIMB_FSKILL_YAW = std::max(EARTH_LIMB_FSKILL_YAW, -4 * PI);
 
 						EARTH_ATTACK_1 -= limbs[EARTH_ELEMENTAL][16][0];
-						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -(real_t)limbs[EARTH_ELEMENTAL][16][1]);
+						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -static_cast<real_t>(limbs[EARTH_ELEMENTAL][16][1]));
 					}
 					else
 					{
 						EARTH_ATTACK_1 += limbs[EARTH_ELEMENTAL][16][0];
-						EARTH_ATTACK_1 = std::min(EARTH_ATTACK_1, (real_t)limbs[EARTH_ELEMENTAL][16][1]);
+						EARTH_ATTACK_1 = std::min(EARTH_ATTACK_1, static_cast<real_t>(limbs[EARTH_ELEMENTAL][16][1]));
 					}
 
 					if ( MONSTER_ATTACKTIME >= 55 )
@@ -2113,20 +2113,20 @@ void earthElementalAnimate(Entity* my, Stat* myStats, double dist)
 						EARTH_ATTACK_3 = std::min(1.0, EARTH_ATTACK_3 + limbs[EARTH_ELEMENTAL][13][1]);
 						EARTH_ATTACK_2 = std::max(0.0, EARTH_ATTACK_2 - limbs[EARTH_ELEMENTAL][16][0]);
 						EARTH_ATTACK_1 -= limbs[EARTH_ELEMENTAL][16][0] * 4;
-						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -(real_t)limbs[EARTH_ELEMENTAL][16][1]);
+						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -static_cast<real_t>(limbs[EARTH_ELEMENTAL][16][1]));
 					}
 					else if ( MONSTER_ATTACKTIME >= limbs[EARTH_ELEMENTAL][18][0] )
 					{
 						EARTH_ATTACK_2 = std::min(1.0, EARTH_ATTACK_2 + limbs[EARTH_ELEMENTAL][13][1]);
 						EARTH_ATTACK_3 = std::max(-1.0, EARTH_ATTACK_3 - 0.1);
 						EARTH_ATTACK_1 += limbs[EARTH_ELEMENTAL][16][0] * 3;
-						EARTH_ATTACK_1 = std::min(EARTH_ATTACK_1, (real_t)limbs[EARTH_ELEMENTAL][16][1]);
+						EARTH_ATTACK_1 = std::min(EARTH_ATTACK_1, static_cast<real_t>(limbs[EARTH_ELEMENTAL][16][1]));
 					}
 					else
 					{
 						EARTH_ATTACK_2 = std::max(-1.0, EARTH_ATTACK_2 - 0.1);
 						EARTH_ATTACK_1 -= limbs[EARTH_ELEMENTAL][16][0];
-						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -(real_t)limbs[EARTH_ELEMENTAL][16][1]);
+						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -static_cast<real_t>(limbs[EARTH_ELEMENTAL][16][1]));
 					}
 
 					if ( MONSTER_ATTACKTIME >= 55 )
@@ -2166,19 +2166,19 @@ void earthElementalAnimate(Entity* my, Stat* myStats, double dist)
 						//EARTH_ATTACK_3 = std::min(1.0, EARTH_ATTACK_3 + limbs[EARTH_ELEMENTAL][13][1]);
 						EARTH_ATTACK_2 = std::max(0.0, EARTH_ATTACK_2 - limbs[EARTH_ELEMENTAL][16][0]);
 						EARTH_ATTACK_1 -= limbs[EARTH_ELEMENTAL][16][0] * 1;
-						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -(real_t)limbs[EARTH_ELEMENTAL][16][1] / 3);
+						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -static_cast<real_t>(limbs[EARTH_ELEMENTAL][16][1]) / 3);
 					}
 					else if ( MONSTER_ATTACKTIME >= limbs[EARTH_ELEMENTAL][18][0] )
 					{
 						EARTH_ATTACK_2 = std::min(1.0, EARTH_ATTACK_2 + limbs[EARTH_ELEMENTAL][13][1]);
 						EARTH_ATTACK_1 += limbs[EARTH_ELEMENTAL][16][0] * 3;
-						EARTH_ATTACK_1 = std::min(EARTH_ATTACK_1, (real_t)limbs[EARTH_ELEMENTAL][16][1]);
+						EARTH_ATTACK_1 = std::min(EARTH_ATTACK_1, static_cast<real_t>(limbs[EARTH_ELEMENTAL][16][1]));
 					}
 					else
 					{
 						EARTH_ATTACK_2 = std::max(-1.0, EARTH_ATTACK_2 - 0.1);
 						EARTH_ATTACK_1 -= limbs[EARTH_ELEMENTAL][16][0];
-						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -(real_t)limbs[EARTH_ELEMENTAL][16][1]);
+						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -static_cast<real_t>(limbs[EARTH_ELEMENTAL][16][1]));
 					}
 
 					if ( MONSTER_ATTACKTIME >= 40 )
@@ -2218,19 +2218,19 @@ void earthElementalAnimate(Entity* my, Stat* myStats, double dist)
 						//EARTH_ATTACK_3 = std::min(1.0, EARTH_ATTACK_3 + limbs[EARTH_ELEMENTAL][13][1]);
 						EARTH_ATTACK_3 = std::max(0.0, EARTH_ATTACK_3 - limbs[EARTH_ELEMENTAL][16][0]);
 						EARTH_ATTACK_1 += limbs[EARTH_ELEMENTAL][16][0] * 1;
-						EARTH_ATTACK_1 = std::min(EARTH_ATTACK_1, (real_t)limbs[EARTH_ELEMENTAL][16][1] / 3);
+						EARTH_ATTACK_1 = std::min(EARTH_ATTACK_1, static_cast<real_t>(limbs[EARTH_ELEMENTAL][16][1]) / 3);
 					}
 					else if ( MONSTER_ATTACKTIME >= limbs[EARTH_ELEMENTAL][18][0] )
 					{
 						EARTH_ATTACK_3 = std::min(1.0, EARTH_ATTACK_3 + limbs[EARTH_ELEMENTAL][13][1]);
 						EARTH_ATTACK_1 -= limbs[EARTH_ELEMENTAL][16][0] * 3;
-						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -(real_t)limbs[EARTH_ELEMENTAL][16][1]);
+						EARTH_ATTACK_1 = std::max(EARTH_ATTACK_1, -static_cast<real_t>(limbs[EARTH_ELEMENTAL][16][1]));
 					}
 					else
 					{
 						EARTH_ATTACK_3 = std::max(-1.0, EARTH_ATTACK_3 - 0.1);
 						EARTH_ATTACK_1 += limbs[EARTH_ELEMENTAL][16][0];
-						EARTH_ATTACK_1 = std::min(EARTH_ATTACK_1, (real_t)limbs[EARTH_ELEMENTAL][16][1]);
+						EARTH_ATTACK_1 = std::min(EARTH_ATTACK_1, static_cast<real_t>(limbs[EARTH_ELEMENTAL][16][1]));
 					}
 
 					if ( MONSTER_ATTACKTIME >= 40 )

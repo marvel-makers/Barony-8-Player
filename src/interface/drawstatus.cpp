@@ -2317,8 +2317,8 @@ void drawStatusNew(const int player)
 							// open a drop-down menu of options for "using" the item
 							itemMenuOpen = true;
 							itemMenuFromHotbar = true;
-							itemMenuX = (inputs.getMouse(player, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX + 8;
-							itemMenuY = (inputs.getMouse(player, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
+							itemMenuX = (inputs.getMouse(player, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX) + 8;
+							itemMenuY = (inputs.getMouse(player, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 							auto interactFrame = players[player]->inventoryUI.interactFrame;
 							if ( interactFrame )
 							{
@@ -3378,8 +3378,8 @@ void drawStatusNew(const int player)
 								strcpy((char*)net_packet->data, "FODA");
 								SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
 								SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
-								SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[12]);
-								SDLNet_Write32((Uint32)item->count, &net_packet->data[16]);
+								SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
+								SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
 								SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
 								net_packet->data[24] = item->identified;
 								net_packet->data[25] = player;

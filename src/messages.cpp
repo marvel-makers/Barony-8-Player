@@ -22,7 +22,7 @@ void messageDeconstructor(void* data)
 {
 	if (data != NULL)
 	{
-		Message* message = (Message*)data;
+		Message* message = static_cast<Message*>(data);
 		stringDeconstructor((void*)message->text);
 		free(data);
 	}
@@ -83,14 +83,14 @@ void Player::MessageZone_t::addMessage(Uint32 color, const char* content)
 
 	//Allocate the new message.
 	Message* new_message = NULL;
-	if ((new_message = (Message*) malloc(sizeof(Message))) == NULL)
+	if ((new_message = static_cast<Message*>(malloc(sizeof(Message)))) == NULL)
 	{
 		printlog( "failed to allocate memory for new message!\n"); //Yell at the user.
 		exit(1);
 	}
 	//Assign the message's text.
 	{
-		if ((new_message->text = (string_t*) malloc(sizeof(string_t))) == NULL)
+		if ((new_message->text = static_cast<string_t*>(malloc(sizeof(string_t)))) == NULL)
 		{
 			printlog( "[addMessage()] Failed to allocate memory for new string!\n" );
 			exit(1); //Should it do this?
@@ -105,7 +105,7 @@ void Player::MessageZone_t::addMessage(Uint32 color, const char* content)
 		strncpy(str, messageSanitizePercentSign(content, &additionalCharacters).c_str(), sizeof(str) - 1);
 		int i = content_len + additionalCharacters;
 
-		new_message->text->data = (char*) malloc(sizeof(char) * (i + 1));
+		new_message->text->data = static_cast<char*>(malloc(sizeof(char) * (i + 1)));
 		if (new_message->text->data == NULL)
 		{
 			printlog( "Failed to allocate memory for new message's text!\n"); //Yell at user.

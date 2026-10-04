@@ -120,8 +120,8 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 
 	Input& input = Input::inputs[player];
 	const int mapGCD = std::max(map.width, map.height);
-	const real_t unitX = (real_t)rect.w / (real_t)mapGCD;
-	const real_t unitY = (real_t)rect.h / (real_t)mapGCD;
+	const real_t unitX = static_cast<real_t>(rect.w) / static_cast<real_t>(mapGCD);
+	const real_t unitY = static_cast<real_t>(rect.h) / static_cast<real_t>(mapGCD);
     
     // build shader if we haven't
     if (!minimap_shader.isInitialized()) {
@@ -143,7 +143,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 	// get special points of interest (exits, items, revealed monsters, etc)
 	for ( node_t* node = map.entities->first; node != NULL; node = node->next )
 	{
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		if ( entity->flags[SPRITE] )
 		{
 			if ( entity->getEntityShowOnMapDuration() == 0 )
@@ -225,9 +225,9 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 		}
 	}
 
-	const int xmin = ((int)map.width - mapGCD) / 2;
+	const int xmin = (static_cast<int>(map.width) - mapGCD) / 2;
 	const int xmax = map.width - xmin;
-	const int ymin = ((int)map.height - mapGCD) / 2;
+	const int ymin = (static_cast<int>(map.height) - mapGCD) / 2;
 	const int ymax = map.height - ymin;
 	bool checkedDaedalusEvent = false;
 	for ( int x = xmin; x < xmax; ++x ) {
@@ -335,10 +335,10 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 						Uint8 r, g, b, a;
 						int r2, g2, b2, a2;
 						getColor(color, &r, &g, &b, &a);
-						r2 = std::min(255, std::max(0, (int)(r + 255.0 * percent)));
-						g2 = std::min(255, std::max(0, (int)(g - 128.0 * percent)));
-						b2 = std::min(255, std::max(0, (int)(b + 255.0 * percent)));
-						a2 = std::min(255, std::max(64, (int)(a - 64 * percent)));
+						r2 = std::min(255, std::max(0, static_cast<int>(r + 255.0 * percent)));
+						g2 = std::min(255, std::max(0, static_cast<int>(g - 128.0 * percent)));
+						b2 = std::min(255, std::max(0, static_cast<int>(b + 255.0 * percent)));
+						a2 = std::min(255, std::max(64, static_cast<int>(a - 64 * percent)));
 						color = makeColor(r2, g2, b2, a2);
 					}
 				}
@@ -381,7 +381,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
         SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY}, 0xffffffff);
 
 	// build a circle mesh
-	auto& circle_positions = circle_mesh.data[(int)Mesh::BufferType::Position];
+	auto& circle_positions = circle_mesh.data[static_cast<int>(Mesh::BufferType::Position)];
 	if (!circle_positions.size()) {
         circle_positions.insert(circle_positions.end(), {0.f, 0.f, 0.f});
 		static const int num_circle_vertices = 32;
@@ -394,10 +394,10 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 
 	auto drawCircleMesh = [](real_t x, real_t y, real_t size, SDL_Rect rect, Uint32 color) {
 		const int mapGCD = std::max(map.width, map.height);
-		const int xmin = ((int)map.width - mapGCD) / 2;
-		const int ymin = ((int)map.height - mapGCD) / 2;
-		const real_t unitX = (real_t)rect.w / (real_t)mapGCD;
-		const real_t unitY = (real_t)rect.h / (real_t)mapGCD;
+		const int xmin = (static_cast<int>(map.width) - mapGCD) / 2;
+		const int ymin = (static_cast<int>(map.height) - mapGCD) / 2;
+		const real_t unitX = static_cast<real_t>(rect.w) / static_cast<real_t>(mapGCD);
+		const real_t unitY = static_cast<real_t>(rect.h) / static_cast<real_t>(mapGCD);
 		x = (x - xmin) * unitX + rect.x;
 		y = (y - ymin) * unitY + rect.y;
         
@@ -421,10 +421,10 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 
 		// view matrix
 		mat4x4 view(1.f);
-		v = { (float)x, (float)(Frame::virtualScreenY - y), 0.f, 0.f };
+		v = { static_cast<float>(x), static_cast<float>(Frame::virtualScreenY - y), 0.f, 0.f };
 		(void)translate_mat(&m, &view, &v); view = m;
-		v = { (float)(unitX * (getMinimapZoom() / 100.0) * size),
-			 (float)(unitY * (getMinimapZoom() / 100.0) * size), 0.f, 0.f };
+		v = { static_cast<float>(unitX * (getMinimapZoom() / 100.0) * size),
+			 static_cast<float>(unitY * (getMinimapZoom() / 100.0) * size), 0.f, 0.f };
 		(void)scale_mat(&m, &view, &v); view = m;
 		GL_CHECK_ERR(glUniformMatrix4fv(shader.uniform("uView"), 1, GL_FALSE, (float*)&view));
 
@@ -436,10 +436,10 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 
 	auto drawSkull = [](real_t x, real_t y, real_t size, SDL_Rect rect, Uint32 color) {
 		const int mapGCD = std::max(map.width, map.height);
-		const int xmin = ((int)map.width - mapGCD) / 2;
-		const int ymin = ((int)map.height - mapGCD) / 2;
-		const real_t unitX = (real_t)rect.w / (real_t)mapGCD;
-		const real_t unitY = (real_t)rect.h / (real_t)mapGCD;
+		const int xmin = (static_cast<int>(map.width) - mapGCD) / 2;
+		const int ymin = (static_cast<int>(map.height) - mapGCD) / 2;
+		const real_t unitX = static_cast<real_t>(rect.w) / static_cast<real_t>(mapGCD);
+		const real_t unitY = static_cast<real_t>(rect.h) / static_cast<real_t>(mapGCD);
 		x = (x - xmin) * unitX + rect.x;
 		y = (y - ymin) * unitY + rect.y;
 
@@ -455,10 +455,10 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
             imgGet->getSurf()->h,
         };
         const SDL_Rect dest{
-            (int)(x - sx / 2.0),
-            (int)(y - sy / 2.0),
-            (int)(sx),
-            (int)(sy),
+            static_cast<int>(x - sx / 2.0),
+            static_cast<int>(y - sy / 2.0),
+            static_cast<int>(sx),
+            static_cast<int>(sy),
         };
 		const SDL_Rect viewport{ 0, 0, Frame::virtualScreenX, Frame::virtualScreenY };
         imgGet->drawColor(&src, dest, viewport, color);
@@ -466,10 +466,10 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 
 	auto drawBountySkull = [](real_t x, real_t y, real_t size, SDL_Rect rect, Uint32 color) {
 		const int mapGCD = std::max(map.width, map.height);
-		const int xmin = ((int)map.width - mapGCD) / 2;
-		const int ymin = ((int)map.height - mapGCD) / 2;
-		const real_t unitX = (real_t)rect.w / (real_t)mapGCD;
-		const real_t unitY = (real_t)rect.h / (real_t)mapGCD;
+		const int xmin = (static_cast<int>(map.width) - mapGCD) / 2;
+		const int ymin = (static_cast<int>(map.height) - mapGCD) / 2;
+		const real_t unitX = static_cast<real_t>(rect.w) / static_cast<real_t>(mapGCD);
+		const real_t unitY = static_cast<real_t>(rect.h) / static_cast<real_t>(mapGCD);
 		x = (x - xmin) * unitX + rect.x;
 		y = (y - ymin) * unitY + rect.y;
 
@@ -485,10 +485,10 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 			imgGet->getSurf()->h,
 		};
 		const SDL_Rect dest{
-			(int)(x - sx / 2.0),
-			(int)(y - sy / 2.0),
-			(int)(sx),
-			(int)(sy),
+			static_cast<int>(x - sx / 2.0),
+			static_cast<int>(y - sy / 2.0),
+			static_cast<int>(sx),
+			static_cast<int>(sy),
 		};
 		const SDL_Rect viewport{ 0, 0, Frame::virtualScreenX, Frame::virtualScreenY };
 		imgGet->drawColor(&src, dest, viewport, color);
@@ -511,7 +511,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 					if ( ticks % 40 - ticks % 20 )
 					{
 						// exit
-						drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(255, 0, 0, 255));
+						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(255, 0, 0, 255));
 					}
 				}
 			}
@@ -560,7 +560,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 								a = 255 - ((ticks % (glowRate)) - (glowRate / 2)) * intensity;
 							}
 							color = makeColor(r, g, b, a);
-							drawBountySkull((real_t)x + 0.5, (real_t)y + 0.5, *cvar_skullbountyscale, rect, color);
+							drawBountySkull(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, *cvar_skullbountyscale, rect, color);
 							break;
 						}
 					}
@@ -584,7 +584,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 								warningEffect = true;
 								int x = std::min<int>(std::max<int>(0, entity->x / 16), map.width - 1);
 								int y = std::min<int>(std::max<int>(0, entity->y / 16), map.height - 1);
-								drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(191, 191, 191, 255));
+								drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 191, 191, 255));
 								break;
 							}
 						}
@@ -599,7 +599,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 							warningEffect = true;
 							int x = std::min<int>(std::max<int>(0, entity->x / 16), map.width - 1);
 							int y = std::min<int>(std::max<int>(0, entity->y / 16), map.height - 1);
-							drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(191, 191, 191, 255));
+							drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 191, 191, 255));
 						}
 					}
 
@@ -643,18 +643,18 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 										{
 											if ( ticks % 40 - ticks % 20 )
 											{
-												drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(200, 200, 255, 255));
+												drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(200, 200, 255, 255));
 											}
 										}
 										else
 										{
 											if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_PINPOINT )
 											{
-												drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
+												drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
 											}
 											else
 											{
-												drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
+												drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
 											}
 										}
 										warningEffect = true;
@@ -698,18 +698,18 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 									{
 										if ( ticks % 40 - ticks % 20 )
 										{
-											drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(200, 200, 255, 255));
+											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(200, 200, 255, 255));
 										}
 									}
 									else
 									{
 										if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_PINPOINT )
 										{
-											drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
+											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
 										}
 										else
 										{
-											drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
+											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
 										}
 									}
 									warningEffect = true;
@@ -737,7 +737,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 											entity->setEntityShowOnMap(Entity::SHOW_MAP_DEFAULT, std::max(entity->getEntityShowOnMapDuration(), TICKS_PER_SECOND * 5));
 											int x = std::min<int>(std::max<int>(0, entity->x / 16), map.width - 1);
 											int y = std::min<int>(std::max<int>(0, entity->y / 16), map.height - 1);
-											drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
+											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
 											warningEffect = true;
 											break;
 										}
@@ -760,7 +760,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 										entity->setEntityShowOnMap(Entity::SHOW_MAP_DEFAULT, std::max(entity->getEntityShowOnMapDuration(), TICKS_PER_SECOND * 5));
 										int x = std::min<int>(std::max<int>(0, entity->x / 16), map.width - 1);
 										int y = std::min<int>(std::max<int>(0, entity->y / 16), map.height - 1);
-										drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
+										drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
 										warningEffect = true;
 									}
 								}
@@ -776,7 +776,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 				if ( minimap[y][x] == 1 || minimap[y][x] == 2 )
 				{
 					// boulder
-					drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(191, 63, 0, 255));
+					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 63, 0, 255));
 				}
 			}
 			else if ( entity->behavior == &actItem && entity->sprite >= items[TOOL_PLAYER_LOOT_BAG].index &&
@@ -797,7 +797,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 				if ( ticks % 40 - ticks % 20 )
 				{
 					// item
-					drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
+					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
 				}
 			}
 			else if ( entity->getEntityShowOnMapDuration() > 0 )
@@ -806,25 +806,25 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 				int y = std::min<int>(std::max<int>(0, entity->y / 16), map.height - 1);
 				if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_DETECT_MONSTER )
 				{
-					drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
+					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
 				}
 				else if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_PINPOINT )
 				{
-					drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
+					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
 				}
 				else if ( (ticks % 40 - ticks % 20) )
 				{
 					if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_SCRY )
 					{
-						drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(200, 200, 255, 255));
+						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(200, 200, 255, 255));
 					}
 					else if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_DONATION )
 					{
-						drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
+						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
 					}
 					else
 					{
-						drawCircleMesh((real_t)x + 0.5, (real_t)y + 0.5, (real_t)1.0, rect, makeColor(255, 168, 200, 255));
+						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(255, 168, 200, 255));
 					}
 				}
 			}
@@ -878,14 +878,14 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 						{
 							// start fading ping after 9 seconds, lasting 0.5 seconds.
 							real_t alphafade = 1 - (aliveTime - (DEATH_PING_TIME - (TICKS_PER_SECOND * .5))) / static_cast<real_t>(TICKS_PER_SECOND * 0.5);
-							alpha = std::max((int)(alphafade * alpha), 0);
+							alpha = std::max(static_cast<int>(alphafade * alpha), 0);
 						}
 					}
 					else if ( aliveTime >= (DEFAULT_PING_TIME - (TICKS_PER_SECOND * .5)) )
 					{
 						// start fading ping after 2 seconds, lasting 0.5 seconds.
 						real_t alphafade = 1 - (aliveTime - (DEFAULT_PING_TIME - (TICKS_PER_SECOND * .5))) / static_cast<real_t>(TICKS_PER_SECOND * 0.5);
-						alpha = std::max((int)(alphafade * alpha), 0);
+						alpha = std::max(static_cast<int>(alphafade * alpha), 0);
 					}
 
 					// set color
@@ -899,17 +899,17 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 					{
 					    static ConsoleVariable<float> pingSize("/map_radiusping_size", 20.f);
 					    static ConsoleVariable<float> pingRate("/map_radiusping_rate", 0.4f);
-					    int rate = (int)(TICKS_PER_SECOND / *pingRate);
-					    real_t scale = (((ticks - ping.tickStart) % rate) / (real_t)rate) * (*pingSize);
-			            drawCircleMesh((real_t)ping.x + 0.5, (real_t)ping.y + 0.5, scale, rect, color);
+					    int rate = static_cast<int>((TICKS_PER_SECOND / *pingRate));
+					    real_t scale = (((ticks - ping.tickStart) % rate) / static_cast<real_t>(rate)) * (*pingSize);
+			            drawCircleMesh(static_cast<real_t>(ping.x) + 0.5, static_cast<real_t>(ping.y) + 0.5, scale, rect, color);
 			        } 
 					else if ( ping.pingType == MinimapPing::PING_DEATH_MARKER )
 					{
-						drawSkull((real_t)ping.x + 0.5, (real_t)ping.y + 0.5, *cvar_skullscale, rect, color);
+						drawSkull(static_cast<real_t>(ping.x) + 0.5, static_cast<real_t>(ping.y) + 0.5, *cvar_skullscale, rect, color);
 					}
 					else
 					{
-			            drawCircleMesh((real_t)ping.x + 0.5, (real_t)ping.y + 0.5, (real_t)1.0, rect, color);
+			            drawCircleMesh(static_cast<real_t>(ping.x) + 0.5, static_cast<real_t>(ping.y) + 0.5, (real_t)1.0, rect, color);
 			        }
 				}
 			}
@@ -1013,19 +1013,19 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 				uint8_t r, g, b, a;
 				getColor(color, &r, &g, &b, &a);
 
-				real_t lifePercent = ping.ticks / (real_t)ping.lifetime;
+				real_t lifePercent = ping.ticks / static_cast<real_t>(ping.lifetime);
 				if ( ping.selfCallout && !drawingSharedMap )
 				{
 					// fade early for the self callout player, but not others in splitscreen
-					lifePercent = ping.ticks / (real_t)((TICKS_PER_SECOND * 4) / 5);
+					lifePercent = ping.ticks / static_cast<real_t>((TICKS_PER_SECOND * 4) / 5);
 				}
 				Uint32 alpha = 255;
 				if ( lifePercent >= 0.8 )
 				{
-					alpha -= std::min((Uint32)255, (Uint32)(255 * (lifePercent - 0.8) / 0.2));
+					alpha -= std::min(static_cast<Uint32>(255), static_cast<Uint32>(255 * (lifePercent - 0.8) / 0.2));
 				}
 				color = makeColor(r, g, b, alpha);
-				drawCircleMesh((real_t)ping.x + 0.5, (real_t)ping.y + 0.5, (real_t)1.0, rect, color);
+				drawCircleMesh(static_cast<real_t>(ping.x) + 0.5, static_cast<real_t>(ping.y) + 0.5, (real_t)1.0, rect, color);
 			}
 			priorityQueue.pop();
 		}
@@ -1033,10 +1033,10 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 
 	auto drawTriangle = [](real_t x, real_t y, real_t ang, real_t size, SDL_Rect rect, Uint32 color, bool outlineOnly) {
 		const int mapGCD = std::max(map.width, map.height);
-		const int xmin = ((int)map.width - mapGCD) / 2;
-		const int ymin = ((int)map.height - mapGCD) / 2;
-		const real_t unitX = (real_t)rect.w / (real_t)mapGCD;
-		const real_t unitY = (real_t)rect.h / (real_t)mapGCD;
+		const int xmin = (static_cast<int>(map.width) - mapGCD) / 2;
+		const int ymin = (static_cast<int>(map.height) - mapGCD) / 2;
+		const real_t unitX = static_cast<real_t>(rect.w) / static_cast<real_t>(mapGCD);
+		const real_t unitY = static_cast<real_t>(rect.h) / static_cast<real_t>(mapGCD);
 		const real_t zoom = getMinimapZoom() / 100.0 * size;
 		x = (x - xmin) * unitX + rect.x;
 		y = (y - ymin) * unitY + rect.y;
@@ -1061,9 +1061,9 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 
 		// view matrix
 		mat4x4 view(1.f);
-		v = { (float)x, (float)(Frame::virtualScreenY - y), 0.f, 0.f };
+		v = { static_cast<float>(x), static_cast<float>(Frame::virtualScreenY - y), 0.f, 0.f };
 		(void)translate_mat(&m, &view, &v); view = m;
-		v = { (float)(unitX * zoom), (float)(unitY * zoom), 0.f, 0.f };
+		v = { static_cast<float>(unitX * zoom), static_cast<float>(unitY * zoom), 0.f, 0.f };
 		(void)scale_mat(&m, &view, &v); view = m;
 		v = { 0.f, 0.f, -1.f, 0.f };
 		(void)rotate_mat(&m, &view, ang * 180.f / PI, &v); view = m;
@@ -1085,7 +1085,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 	{
 		for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			int drawMonsterAlly = -1;
 			int foundplayer = -1;
 			if ( c == 1 && entity->behavior != &actPlayer )
@@ -1306,7 +1306,7 @@ void shrineDaedalusRevealMap(Entity& my)
 	Entity* exitEntity = nullptr;
 	for ( node_t* node = map.entities->first; node; node = node->next )
 	{
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		if ( !entity ) { continue; }
 
 		if ( (entity->behavior == &actLadder && strcmp(map.name, "Hell"))

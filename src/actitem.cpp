@@ -289,9 +289,9 @@ bool jewelItemRecruit(Entity* parent, Entity* entity, int itemStatus, const char
 	for ( node_t* node = stats[parent->skill[2]]->FOLLOWERS.first; node; node = node->next )
 	{
 		Entity* follower = nullptr;
-		if ( (Uint32*)node->element )
+		if ( static_cast<Uint32*>(node->element) )
 		{
-			follower = uidToEntity(*((Uint32*)node->element));
+			follower = uidToEntity(*static_cast<Uint32*>(node->element));
 		}
 		if ( follower )
 		{
@@ -387,7 +387,7 @@ bool jewelItemRecruit(Entity* parent, Entity* entity, int itemStatus, const char
 			{
 				if ( bodypart >= LIMB_HUMANOID_TORSO )
 				{
-					Entity* tmp = (Entity*)node->element;
+					Entity* tmp = static_cast<Entity*>(node->element);
 					if ( tmp )
 					{
 						tmp->flags[USERFLAG2] = true;
@@ -459,7 +459,7 @@ void actItem(Entity* my)
 					node_t* node;
 					for ( node = map.creatures->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity->behavior == &actPlayer || entity->behavior == &actMonster )
 						{
 							if ( entityInsideEntity(my, entity) )
@@ -476,7 +476,7 @@ void actItem(Entity* my)
 				node_t* node;
 				for ( node = map.creatures->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actPlayer || entity->behavior == &actMonster )
 					{
 						if ( entityInsideEntity(my, entity) )
@@ -585,7 +585,7 @@ void actItem(Entity* my)
 						node_t* node;
 						for ( node = currentList->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = (Entity*)node->element;
+							Entity* entity = static_cast<Entity*>(node->element);
 							if ( entity && entity->behavior == &actMonster )
 							{
 								if ( Stat* entitystats = entity->getStats() )
@@ -677,7 +677,7 @@ void actItem(Entity* my)
 								node_t* inv = monsterInteracting->getStats()->inventory.last;
 								if ( inv )
 								{
-									Item* toDrop = (Item*)inv->element;
+									Item* toDrop = static_cast<Item*>(inv->element);
 									Entity* dropped = dropItemMonster(toDrop, monsterInteracting, monsterInteracting->getStats(), toDrop->count);
 									if ( dropped )
 									{
@@ -767,12 +767,12 @@ void actItem(Entity* my)
 							}
 							strcpy((char*)net_packet->data, "GHOI");
 							SDLNet_Write32(my->getUID(), &net_packet->data[4]);
-							SDLNet_Write16((Sint16)(my->x * 32), &net_packet->data[8]);
-							SDLNet_Write16((Sint16)(my->y * 32), &net_packet->data[10]);
-							SDLNet_Write16((Sint16)(my->z * 32), &net_packet->data[12]);
-							SDLNet_Write16((Sint16)(my->vel_x * 32), &net_packet->data[14]);
-							SDLNet_Write16((Sint16)(my->vel_y * 32), &net_packet->data[16]);
-							SDLNet_Write16((Sint16)(my->vel_z * 32), &net_packet->data[18]);
+							SDLNet_Write16(static_cast<Sint16>(my->x * 32), &net_packet->data[8]);
+							SDLNet_Write16(static_cast<Sint16>(my->y * 32), &net_packet->data[10]);
+							SDLNet_Write16(static_cast<Sint16>(my->z * 32), &net_packet->data[12]);
+							SDLNet_Write16(static_cast<Sint16>(my->vel_x * 32), &net_packet->data[14]);
+							SDLNet_Write16(static_cast<Sint16>(my->vel_y * 32), &net_packet->data[16]);
+							SDLNet_Write16(static_cast<Sint16>(my->vel_z * 32), &net_packet->data[18]);
 							net_packet->address.host = net_clients[c - 1].host;
 							net_packet->address.port = net_clients[c - 1].port;
 							net_packet->len = 20;
@@ -1011,7 +1011,7 @@ void actItem(Entity* my)
 	bool overWater = false;
 	if (my->x >= 0 && my->y >= 0 && my->x < map.width << 4 && my->y < map.height << 4)
 	{
-		const int tile = map.tiles[(int)(my->y / 16) * MAP_LAYERS + (int)(my->x / 16) * MAP_LAYERS * map.height];
+		const int tile = map.tiles[static_cast<int>(my->y / 16) * MAP_LAYERS + static_cast<int>(my->x / 16) * MAP_LAYERS * map.height];
 		overWater = (tile >= 22 && tile < 30) || (tile >= 64 && tile < 72);
 	}
 
@@ -1062,7 +1062,7 @@ void actItem(Entity* my)
 
 		my->yaw += PI / (TICKS_PER_SECOND * 10);
 		my->new_yaw = my->yaw;
-		ITEM_WATERBOB = sin(((ticks % (TICKS_PER_SECOND * 2)) / ((real_t)TICKS_PER_SECOND * 2.0)) * (2.0 * PI)) * 0.5;
+		ITEM_WATERBOB = sin(((ticks % (TICKS_PER_SECOND * 2)) / (static_cast<real_t>(TICKS_PER_SECOND) * 2.0)) * (2.0 * PI)) * 0.5;
 		my->z += ITEM_WATERBOB;
 		my->new_z = my->z;
 	}
@@ -1120,7 +1120,7 @@ void actItem(Entity* my)
 	{
 		if ( my->x >= 0 && my->y >= 0 && my->x < map.width << 4 && my->y < map.height << 4 )
 		{
-			const int tile = map.tiles[(int)(my->y / 16) * MAP_LAYERS + (int)(my->x / 16) * MAP_LAYERS * map.height];
+			const int tile = map.tiles[static_cast<int>(my->y / 16) * MAP_LAYERS + static_cast<int>(my->x / 16) * MAP_LAYERS * map.height];
 			const bool isLootBagSprite =
 				my->sprite >= items[TOOL_PLAYER_LOOT_BAG].index
 				&& my->sprite < (items[TOOL_PLAYER_LOOT_BAG].index + items[TOOL_PLAYER_LOOT_BAG].variations);
@@ -1221,7 +1221,7 @@ void actItem(Entity* my)
 	if (onground) {
 		if (overWater) {
 			my->yaw += PI / (TICKS_PER_SECOND * 10);
-			ITEM_WATERBOB = sin(((ticks % (TICKS_PER_SECOND * 2)) / ((real_t)TICKS_PER_SECOND * 2.0)) * (2.0 * PI)) * 0.5;
+			ITEM_WATERBOB = sin(((ticks % (TICKS_PER_SECOND * 2)) / (static_cast<real_t>(TICKS_PER_SECOND) * 2.0)) * (2.0 * PI)) * 0.5;
 			my->z += ITEM_WATERBOB;
 			my->new_z += ITEM_WATERBOB;
 			if (my->flags[BURNING]) {
@@ -1368,12 +1368,12 @@ void Entity::attractItem(Entity& itemEntity)
 				}
 				strcpy((char*)net_packet->data, "ATTI");
 				SDLNet_Write32(itemEntity.getUID(), &net_packet->data[4]);
-				SDLNet_Write16((Sint16)(itemEntity.x * 32), &net_packet->data[8]);
-				SDLNet_Write16((Sint16)(itemEntity.y * 32), &net_packet->data[10]);
-				SDLNet_Write16((Sint16)(itemEntity.z * 32), &net_packet->data[12]);
-				SDLNet_Write16((Sint16)(itemEntity.vel_x * 32), &net_packet->data[14]);
-				SDLNet_Write16((Sint16)(itemEntity.vel_y * 32), &net_packet->data[16]);
-				SDLNet_Write16((Sint16)(itemEntity.vel_z * 32), &net_packet->data[18]);
+				SDLNet_Write16(static_cast<Sint16>(itemEntity.x * 32), &net_packet->data[8]);
+				SDLNet_Write16(static_cast<Sint16>(itemEntity.y * 32), &net_packet->data[10]);
+				SDLNet_Write16(static_cast<Sint16>(itemEntity.z * 32), &net_packet->data[12]);
+				SDLNet_Write16(static_cast<Sint16>(itemEntity.vel_x * 32), &net_packet->data[14]);
+				SDLNet_Write16(static_cast<Sint16>(itemEntity.vel_y * 32), &net_packet->data[16]);
+				SDLNet_Write16(static_cast<Sint16>(itemEntity.vel_z * 32), &net_packet->data[18]);
 				SDLNet_Write32(getUID(), & net_packet->data[20]);
 				net_packet->address.host = net_clients[c - 1].host;
 				net_packet->address.port = net_clients[c - 1].port;

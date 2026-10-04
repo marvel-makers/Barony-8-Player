@@ -305,8 +305,8 @@ void actArrow(Entity* my)
 	if ( multiplayer != CLIENT )
 	{
 		Sint32 val = (1 << 31);
-		val |= (Uint8)(17);
-		val |= (((Uint16)(my->arrowShotByWeapon) & 0xFFF) << 8);
+		val |= static_cast<Uint8>(17);
+		val |= ((static_cast<Uint16>(my->arrowShotByWeapon) & 0xFFF) << 8);
 		val |= (my->arrowDropOffEquipmentModifier + 8) << 20;
 		my->skill[2] = val;//-(1000 + my->arrowShotByWeapon); // invokes actArrow for clients.
 		my->flags[INVISIBLE] = false;
@@ -374,7 +374,7 @@ void actArrow(Entity* my)
 			{
 				for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( entity && (entity->behavior == &actMonster || entity->behavior == &actPlayer) )
 					{
 						if ( entityInsideEntity(my, entity) )
@@ -410,7 +410,7 @@ void actArrow(Entity* my)
 					}
 					for ( node_t* node = it->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity->behavior == &actGate || entity->behavior == &actDoor || entity->behavior == &actIronDoor )
 						{
 							if ( entityDist(my, entity) <= my->arrowSpeed )
@@ -447,8 +447,8 @@ void actArrow(Entity* my)
 		}
 
 		bool arrowInGround = false;
-		int index = (int)(my->y / 16) * MAP_LAYERS + (int)(my->x / 16) * MAP_LAYERS * map.height;
-		index = std::clamp(index, 0, (int)(MAP_LAYERS * map.width * map.height) - 1);
+		int index = static_cast<int>(my->y / 16) * MAP_LAYERS + static_cast<int>(my->x / 16) * MAP_LAYERS * map.height;
+		index = std::clamp(index, 0, static_cast<int>((MAP_LAYERS * map.width * map.height)) - 1);
 		if ( map.tiles[index] )
 		{
 			if ( my->sprite == PROJECTILE_BOLT_SPRITE || my->sprite == PROJECTILE_ROCK_SPRITE ) // bolt/rock
@@ -1038,32 +1038,32 @@ void actArrow(Entity* my)
 						{
 							if ( oldHP > hitstats->HP )
 							{
-								if ( itemTypeIsQuiver((ItemType)my->arrowQuiverType) )
+								if ( itemTypeIsQuiver(static_cast<ItemType>(my->arrowQuiverType)) )
 								{
-									Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_RANGED_DMG_TOTAL, (ItemType)my->arrowQuiverType, oldHP - hitstats->HP);
+									Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_RANGED_DMG_TOTAL, static_cast<ItemType>(my->arrowQuiverType), oldHP - hitstats->HP);
 								}
-								if ( isRangedWeapon((ItemType)my->arrowShotByWeapon) )
+								if ( isRangedWeapon(static_cast<ItemType>(my->arrowShotByWeapon)) )
 								{
-									Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_RANGED_DMG_TOTAL, (ItemType)my->arrowShotByWeapon, oldHP - hitstats->HP);
+									Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_RANGED_DMG_TOTAL, static_cast<ItemType>(my->arrowShotByWeapon), oldHP - hitstats->HP);
 								}
 								Compendium_t::Events_t::eventUpdateCodex(parent->skill[2], Compendium_t::CPDM_RANGED_DMG_TOTAL, "missiles", oldHP - hitstats->HP);
 								Compendium_t::Events_t::eventUpdateCodex(parent->skill[2], Compendium_t::CPDM_RANGED_HITS, "missiles", 1);
 								Compendium_t::Events_t::eventUpdateCodex(parent->skill[2], Compendium_t::CPDM_CLASS_RANGED_HITS_RUN, "missiles", 1);
 							}
 
-							if ( itemTypeIsQuiver((ItemType)my->arrowQuiverType) )
+							if ( itemTypeIsQuiver(static_cast<ItemType>(my->arrowQuiverType)) )
 							{
-								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_DMG_MAX, (ItemType)my->arrowQuiverType, damage);
-								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_AMMO_HIT, (ItemType)my->arrowQuiverType, 1);
+								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_DMG_MAX, static_cast<ItemType>(my->arrowQuiverType), damage);
+								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_AMMO_HIT, static_cast<ItemType>(my->arrowQuiverType), 1);
 							}
-							if ( isRangedWeapon((ItemType)my->arrowShotByWeapon) )
+							if ( isRangedWeapon(static_cast<ItemType>(my->arrowShotByWeapon)) )
 							{
-								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_DMG_MAX, (ItemType)my->arrowShotByWeapon, damage);
-								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SHOTS_HIT, (ItemType)my->arrowShotByWeapon, 1);
+								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_DMG_MAX, static_cast<ItemType>(my->arrowShotByWeapon), damage);
+								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SHOTS_HIT, static_cast<ItemType>(my->arrowShotByWeapon), 1);
 							}
 							if ( my->arrowShotByWeapon == SLING && damage == 0 )
 							{
-								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_DMG_0, (ItemType)my->arrowShotByWeapon, 1);
+								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_DMG_0, static_cast<ItemType>(my->arrowShotByWeapon), 1);
 							}
 						}
 						else if ( parent->behavior == &actMonster )

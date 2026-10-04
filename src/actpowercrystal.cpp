@@ -259,7 +259,7 @@ void Entity::powerCrystalCreateElectricityNodes()
 				nextnode = node->next;
 				if ( node->element != nullptr )
 				{
-					entity = (Entity*)node->element;
+					entity = static_cast<Entity*>(node->element);
 					if ( entity->light != nullptr )
 					{
 						list_RemoveNode(entity->light->node);

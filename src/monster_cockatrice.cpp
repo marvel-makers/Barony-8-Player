@@ -339,7 +339,7 @@ void cockatriceMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -364,7 +364,7 @@ void cockatriceMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -438,7 +438,7 @@ void cockatriceMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -449,7 +449,7 @@ void cockatriceMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			if ( bodypart == 3 )
 			{
 				// set leftbody to the left leg.
-				leftbody = (Entity*)node->next->element;
+				leftbody = static_cast<Entity*>(node->next->element);
 			}
 			if ( bodypart == 3 || !MONSTER_ATTACK )
 			{
@@ -489,7 +489,7 @@ void cockatriceMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			}
 			else
 			{
-				rightarm = (Entity*)node->prev->element;
+				rightarm = static_cast<Entity*>(node->prev->element);
 				// ATTACK!
 				// move left arm
 
@@ -711,7 +711,7 @@ void cockatriceMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				if ( MONSTER_ATTACK > 0 )
 				{
 					// get leftarm from bodypart 6 element if ready to attack
-					leftarm = (Entity*)node->next->element;
+					leftarm = static_cast<Entity*>(node->next->element);
 					// vertical chop
 					if ( MONSTER_ATTACK == MONSTER_POSE_MELEE_WINDUP1 )
 					{

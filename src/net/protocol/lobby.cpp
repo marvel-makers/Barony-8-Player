@@ -84,8 +84,8 @@ NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bo
 		// on success, client gets legit player number
 		client_disconnected[c] = false;
         stringCopy(stats[c]->name, (const char*)net_packet->data + 4, sizeof(Stat::name), 32);
-		client_classes[c] = (int)SDLNet_Read32(&net_packet->data[36]);
-		stats[c]->sex = static_cast<sex_t>((int)SDLNet_Read32(&net_packet->data[40]));
+		client_classes[c] = static_cast<int>(SDLNet_Read32(&net_packet->data[36]));
+		stats[c]->sex = static_cast<sex_t>(static_cast<int>(SDLNet_Read32(&net_packet->data[40])));
 		Uint32 raceAndAppearance = (Uint32)SDLNet_Read32(&net_packet->data[44]);
 		stats[c]->stat_appearance = (raceAndAppearance & 0xFF00) >> 8;
 		stats[c]->playerRace = (raceAndAppearance & 0xFF);
@@ -106,8 +106,8 @@ NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bo
 			net_packet->data[4] = c; // clientnum
 			net_packet->data[5] = client_classes[c]; // class
 			net_packet->data[6] = stats[c]->sex; // sex
-			net_packet->data[7] = (Uint8)stats[c]->stat_appearance; // appearance
-			net_packet->data[8] = (Uint8)stats[c]->playerRace; // player race
+			net_packet->data[7] = static_cast<Uint8>(stats[c]->stat_appearance); // appearance
+			net_packet->data[8] = static_cast<Uint8>(stats[c]->playerRace); // player race
 			stringCopy((char*)net_packet->data + 9, stats[c]->name, 32, sizeof(Stat::name)); // name
 			net_packet->address.host = net_clients[x - 1].host;
 			net_packet->address.port = net_clients[x - 1].port;
@@ -143,8 +143,8 @@ NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bo
 				net_packet->data[8 + x * chunk_size + 1] = lockedSlots[x]; // locked state
 				net_packet->data[8 + x * chunk_size + 2] = client_classes[x]; // class
 				net_packet->data[8 + x * chunk_size + 3] = stats[x]->sex; // sex
-				net_packet->data[8 + x * chunk_size + 4] = (Uint8)stats[x]->stat_appearance; // appearance
-				net_packet->data[8 + x * chunk_size + 5] = (Uint8)stats[x]->playerRace; // player race
+				net_packet->data[8 + x * chunk_size + 4] = static_cast<Uint8>(stats[x]->stat_appearance); // appearance
+				net_packet->data[8 + x * chunk_size + 5] = static_cast<Uint8>(stats[x]->playerRace); // player race
 
 				char shortname[32];
 				snprintf(shortname, sizeof(shortname), "%s", stats[x]->name);
@@ -167,7 +167,7 @@ NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bo
 				for (int j = 0; j < num_slots; ++j) {
 					auto slot = player_slots[j];
 					if (slot) {
-						SDLNet_Write16((Uint16)slot->type, net_packet->data + 8 + x * chunk_size + 6 + 32 + j * 6);
+						SDLNet_Write16(static_cast<Uint16>(slot->type), net_packet->data + 8 + x * chunk_size + 6 + 32 + j * 6);
 						SDLNet_Write32((Uint32)slot->appearance, net_packet->data + 8 + x * chunk_size + 6 + 32 + j * 6 + 2);
 					} else {
 						SDLNet_Write16(0xffff, net_packet->data + 8 + x * chunk_size + 6 + 32 + j * 6);
@@ -184,8 +184,8 @@ NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bo
 				net_packet->data[8 + x * chunk_size + 1] = lockedSlots[x]; // locked state
 				net_packet->data[8 + x * chunk_size + 2] = client_classes[x]; // class
 				net_packet->data[8 + x * chunk_size + 3] = stats[x]->sex; // sex
-				net_packet->data[8 + x * chunk_size + 4] = (Uint8)stats[x]->stat_appearance; // appearance
-				net_packet->data[8 + x * chunk_size + 5] = (Uint8)stats[x]->playerRace; // player race
+				net_packet->data[8 + x * chunk_size + 4] = static_cast<Uint8>(stats[x]->stat_appearance); // appearance
+				net_packet->data[8 + x * chunk_size + 5] = static_cast<Uint8>(stats[x]->playerRace); // player race
 
 				char shortname[32];
 				snprintf(shortname, sizeof(shortname), "%s", stats[x]->name);

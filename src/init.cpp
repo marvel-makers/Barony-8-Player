@@ -444,10 +444,10 @@ int initApp(char const * const title, int fullscreen)
 	//SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY,SDL_DEFAULT_REPEAT_INTERVAL);
 
 	// initialize buffers
-	texid = (GLuint*) malloc(MAXTEXTURES * sizeof(GLuint));
+	texid = static_cast<GLuint*>(malloc(MAXTEXTURES * sizeof(GLuint)));
 	//vaoid = (GLuint *) malloc(MAXBUFFERS*sizeof(GLuint));
 	//vboid = (GLuint *) malloc(MAXBUFFERS*sizeof(GLuint));
-	allsurfaces = (SDL_Surface**) malloc(sizeof(SDL_Surface*)*MAXTEXTURES);
+	allsurfaces = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*) * MAXTEXTURES));
 	for (int c = 0; c < MAXTEXTURES; ++c)
 	{
 		allsurfaces[c] = nullptr;
@@ -521,7 +521,7 @@ int initApp(char const * const title, int fullscreen)
 		printlog("failed to identify any sprites in sprites.txt\n");
 		return 6;
 	}
-	sprites = (SDL_Surface**) malloc(sizeof(SDL_Surface*)*numsprites);
+	sprites = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*) * numsprites));
 	fp = openDataFile("images/sprites.txt", "rb");
 	for ( int c = 0; !fp->eof(); c++ )
 	{
@@ -565,10 +565,10 @@ int initApp(char const * const title, int fullscreen)
 		printlog("failed to identify any tiles in tiles.txt\n");
 		return 8;
 	}
-	tiles = (SDL_Surface**) malloc(sizeof(SDL_Surface*)*numtiles);
-	animatedtiles = (bool*) malloc(sizeof(bool) * numtiles);
-	lavatiles = (bool*) malloc(sizeof(bool) * numtiles);
-	swimmingtiles = (bool*)malloc(sizeof(bool) * numtiles);
+	tiles = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*) * numtiles));
+	animatedtiles = static_cast<bool*>(malloc(sizeof(bool) * numtiles));
+	lavatiles = static_cast<bool*>(malloc(sizeof(bool) * numtiles));
+	swimmingtiles = static_cast<bool*>(malloc(sizeof(bool) * numtiles));
 	fp = openDataFile(tilesDirectory.c_str(), "rb");
 	for ( int c = 0; !fp->eof(); c++ )
 	{
@@ -632,7 +632,7 @@ int initApp(char const * const title, int fullscreen)
                 char *str = line, *end;
                 int index = 0;
                 do {
-                    animation.indices[index] = (int)strtol(str, &end, 10);
+                    animation.indices[index] = static_cast<int>(strtol(str, &end, 10));
                     str = end + 1;
                     ++index;
                 } while (end && *end == ' ' && index < numIndices);
@@ -674,7 +674,7 @@ int initApp(char const * const title, int fullscreen)
 		modelFileNames.clear();
 #endif
 
-		models = (voxel_t**) malloc(sizeof(voxel_t*)*nummodels);
+		models = static_cast<voxel_t**>(malloc(sizeof(voxel_t*) * nummodels));
 		fp = openDataFile(modelsDirectory.c_str(), "rb");
 		for ( int c = 0; !fp->eof(); c++ )
 		{
@@ -694,12 +694,12 @@ int initApp(char const * const title, int fullscreen)
 				else
 				{
 					printlog("copying model 0 for %d as a fallback\n", c);
-					auto model = (voxel_t*)malloc(sizeof(voxel_t));
+					auto model = static_cast<voxel_t*>(malloc(sizeof(voxel_t)));
 					model->sizex = models[0]->sizex;
 					model->sizey = models[0]->sizey;
 					model->sizez = models[0]->sizez;
 					const auto size = sizeof(Uint8) * model->sizex * model->sizey * model->sizez;
-					model->data = (Uint8*)malloc(size);
+					model->data = static_cast<Uint8*>(malloc(size));
 					memcpy(model->data, models[0]->data, size);
 					memcpy(model->palette, models[0]->palette, sizeof(voxel_t::palette));
 					models[c] = model;
@@ -1053,7 +1053,7 @@ void readTilesJson()
 
 
 	char buf[1024];
-	int count = (int)fp->read(buf, sizeof(buf[0]), sizeof(buf));
+	int count = static_cast<int>(fp->read(buf, sizeof(buf[0]), sizeof(buf)));
 	buf[count] = '\0';
 	rapidjson::StringStream is(buf);
 	FileIO::close(fp);
@@ -1099,7 +1099,7 @@ void generateTileTextures() {
                 tile = tiles[index];
             } else {
                 const auto& animation = find->second;
-                const int animIndex = std::clamp(animation.indices[atlas], 0, (int)numtiles - 1);
+                const int animIndex = std::clamp(animation.indices[atlas], 0, static_cast<int>(numtiles) - 1);
                 tile = tiles[animIndex];
             }
             
@@ -1583,10 +1583,10 @@ bool initVideo()
         // make sure that we actually got the window size we wanted
         SDL_GL_GetDrawableSize(screen, &xres, &yres);
         SDL_DestroyWindow(screen);
-        const float factorx = (float)xres / screen_width;
-        const float factory = (float)yres / screen_height;
+        const float factorx = static_cast<float>(xres) / screen_width;
+        const float factory = static_cast<float>(yres) / screen_height;
         if ((screen = SDL_CreateWindow(window_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-            (int)(screen_width / factorx), (int)(screen_height / factory), flags)) == nullptr)
+            static_cast<int>(screen_width / factorx), static_cast<int>(screen_height / factory), flags)) == nullptr)
         {
             printlog("failed to set video mode.\n");
             return false;
@@ -1637,8 +1637,8 @@ bool initVideo()
         int w1, w2, h1, h2;
         SDL_GL_GetDrawableSize(screen, &w1, &h1);
         SDL_GetWindowSize(screen, &w2, &h2);
-        const float factorX = (float)w1 / w2;
-        const float factorY = (float)h1 / h2;
+        const float factorX = static_cast<float>(w1) / w2;
+        const float factorY = static_cast<float>(h1) / h2;
         SDL_SetWindowSize(screen, screen_width / factorX, screen_height / factorY);
         SDL_GL_GetDrawableSize(screen, &xres, &yres);
         printlog("set window size to %dx%d", xres, yres);
@@ -1686,8 +1686,8 @@ bool changeVideoMode(int new_xres, int new_yres)
         int w1, w2, h1, h2;
         SDL_GL_GetDrawableSize(screen, &w1, &h1);
         SDL_GetWindowSize(screen, &w2, &h2);
-        factorX = (float)w1 / w2;
-        factorY = (float)h1 / h2;
+        factorX = static_cast<float>(w1) / w2;
+        factorY = static_cast<float>(h1) / h2;
     }
     if (new_xres) {
         xres = std::max(1024, new_xres);

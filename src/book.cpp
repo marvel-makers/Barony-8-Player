@@ -637,7 +637,7 @@ void BookParser_t::createBook(std::string filename)
 	tmpField->reflowTextToFit(0, false);
 
 	int len = strlen(tmpField->getText());
-	char* reflowedText = (char*)malloc(len + 1);
+	char* reflowedText = static_cast<char*>(malloc(len + 1));
 	memcpy(reflowedText, tmpField->getText(), sizeof(char) * (len + 1));
 	reflowedText[len] = '\0';
 

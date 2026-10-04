@@ -47,7 +47,7 @@ void actHeadstone(Entity* my)
 			bool artifact = false;
 			for ( node = map.entities->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( entity->sprite == 130 )   // gold bag
 				{
 					++goldbags;

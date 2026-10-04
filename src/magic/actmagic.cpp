@@ -417,9 +417,9 @@ void actMagiclightMoving(Entity* my)
 			{
 				if ( Entity* exitEntity = uidToEntity(parent->skill[13]) )
 				{
-					if ( (int)(my->x / 16) == (int)(exitEntity->x / 16) )
+					if ( static_cast<int>(my->x / 16) == static_cast<int>(exitEntity->x / 16) )
 					{
-						if ( (int)(my->y / 16) == (int)(exitEntity->y / 16) )
+						if ( static_cast<int>(my->y / 16) == static_cast<int>(exitEntity->y / 16) )
 						{
 							my->removeLightField();
 							list_RemoveNode(my->mynode);
@@ -525,7 +525,7 @@ void actMagiclightBall(Entity* my)
 
 	spell_t* spell = NULL;
 	node = my->children.first;
-	spell = (spell_t*)node->element;
+	spell = static_cast<spell_t*>(node->element);
 	if (!spell)
 	{
 		list_RemoveNode(my->mynode);
@@ -649,7 +649,7 @@ void actMagiclightBall(Entity* my)
 			lightball_hoverangle = 0;
 		}
 
-		if (map.tiles[(int)((my->y / 16) * MAP_LAYERS + (my->x / 16) * MAP_LAYERS * map.height)])
+		if (map.tiles[static_cast<int>((my->y / 16) * MAP_LAYERS + (my->x / 16) * MAP_LAYERS * map.height)])
 		{
 			//Ceiling.
 			my->z = lightball_hover_basez + ((lightball_hover_basez + LIGHTBALL_HOVER_HIGHPEAK + lightball_hover_basez + LIGHTBALL_HOVER_LOWPEAK) / 2) * sin(lightball_hoverangle * (12.568f / 360.0f)) * 0.1f;
@@ -886,7 +886,8 @@ void actMagiclightBall(Entity* my)
 							}
 						}
 						
-						if ( map.tiles[(int)(OBSTACLELAYER + static_cast<int>(my->y / 16) * MAP_LAYERS + static_cast<int>(my->x / 16) * MAP_LAYERS * map.height)] )   //If the ball has come to rest in a wall, move its butt.
+						if ( map.tiles[static_cast<int>((OBSTACLELAYER + static_cast<int>(my->y / 16) * MAP_LAYERS + static_cast<int>(my->x / 16) * MAP_LAYERS
+							* map.height))] )   //If the ball has come to rest in a wall, move its butt.
 						{
 							double tangent = atan2(parent->y - my->y, parent->x - my->x);
 							my->vel_x = cos(tangent) * ((distance) / MAGICLIGHTBALL_DIVIDE_CONSTANT);
@@ -900,7 +901,8 @@ void actMagiclightBall(Entity* my)
 			else
 			{
 				lightball_movement_timer = 0;// LIGHTBALL_MOVE_DELAY;
-				if (map.tiles[(int)(OBSTACLELAYER + static_cast<int>(my->y / 16) * MAP_LAYERS + static_cast<int>(my->x / 16) * MAP_LAYERS * map.height)])   //If the ball has come to rest in a wall, move its butt.
+				if (map.tiles[static_cast<int>((OBSTACLELAYER + static_cast<int>(my->y / 16) * MAP_LAYERS + static_cast<int>(my->x / 16) * MAP_LAYERS
+					* map.height))])   //If the ball has come to rest in a wall, move its butt.
 				{
 					double tangent = atan2(parent->y - my->y, parent->x - my->x);
 					my->vel_x = cos(tangent) * ((distance) / MAGICLIGHTBALL_DIVIDE_CONSTANT);
@@ -1035,7 +1037,7 @@ void spawnBloodVialOnMonsterDeath(Entity* entity, Stat* hitstats, Entity* killer
 						}
 						if ( local_rng.rand() % chance == 0 )
 						{
-							Item* meat = newItem(FOOD_MEAT, (Status)(DECREPIT + local_rng.rand() % 4),
+							Item* meat = newItem(FOOD_MEAT, static_cast<Status>(DECREPIT + local_rng.rand() % 4),
 								0, 1, gibtype[hitstats->type], false, &hitstats->inventory);
 							if ( cursedChef )
 							{
@@ -1231,7 +1233,7 @@ bool magicOnSpellCastEvent(Entity* parent, Entity* projectile, Entity* hitentity
 				&& tag != spell_t::SPELL_LEVEL_EVENT_MINOR_CHANCE
 				&& tag != spell_t::SPELL_LEVEL_EVENT_ALWAYS )
 			{
-				bool found = spellDef.spellLevelTags.find((spell_t::SpellOnCastEventTypes)tag) != spellDef.spellLevelTags.end();
+				bool found = spellDef.spellLevelTags.find(static_cast<spell_t::SpellOnCastEventTypes>(tag)) != spellDef.spellLevelTags.end();
 				assert(found);
 			}
 		}
@@ -1244,9 +1246,9 @@ bool magicOnSpellCastEvent(Entity* parent, Entity* projectile, Entity* hitentity
 	{
 		if ( magicstaff )
 		{
-			real_t percentChance = 100.0 / (real_t)((eventType & spell_t::SPELL_LEVEL_EVENT_MINOR_CHANCE) ? 12 : 8);
+			real_t percentChance = 100.0 / static_cast<real_t>((eventType & spell_t::SPELL_LEVEL_EVENT_MINOR_CHANCE) ? 12 : 8);
 			if ( players[player]->mechanics.rollRngProc(Player::PlayerMechanics_t::RngRollTypes::RNG_ROLL_SPELL_LEVELS, 
-				std::max(1, std::min(100, (int)percentChance)), spellID) ) //16.67%
+				std::max(1, std::min(100, static_cast<int>(percentChance))), spellID) ) //16.67%
 			{
 				if ( allowedLevelup )
 				{
@@ -1289,7 +1291,7 @@ bool magicOnSpellCastEvent(Entity* parent, Entity* projectile, Entity* hitentity
 				real_t percentChance = 100.0 / chance;
 				if ( sustainedChance 
 					&& players[player]->mechanics.rollRngProc(Player::PlayerMechanics_t::RngRollTypes::RNG_ROLL_SPELL_LEVELS, 
-						std::max(1, std::min(100, (int)percentChance)), spellID) )
+						std::max(1, std::min(100, static_cast<int>(percentChance))), spellID) )
 				{
 					if ( allowedLevelup )
 					{
@@ -1327,7 +1329,7 @@ bool magicOnSpellCastEvent(Entity* parent, Entity* projectile, Entity* hitentity
 
 				real_t percentChance = 100.0 / chance;
 				if ( players[player]->mechanics.rollRngProc(Player::PlayerMechanics_t::RngRollTypes::RNG_ROLL_SPELL_LEVELS, 
-					std::max(1, std::min(100, (int)percentChance)), spellID) )
+					std::max(1, std::min(100, static_cast<int>(percentChance))), spellID) )
 				{
 					if ( allowedLevelup )
 					{
@@ -1532,7 +1534,7 @@ void magicOnEntityHit(Entity* parent, Entity* particle, Entity* hitentity, Stat*
 						{
 							if ( find->second.magicstaffId >= 0 && find->second.magicstaffId < NUMITEMS && items[find->second.magicstaffId].category == MAGICSTAFF )
 							{
-								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_DMG, (ItemType)find->second.magicstaffId, damageTaken);
+								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_DMG, static_cast<ItemType>(find->second.magicstaffId), damageTaken);
 							}
 							magicOnSpellCastEvent(parent, particle, hitentity, spellID, additionalFlags | spell_t::SPELL_LEVEL_EVENT_DMG | spell_t::SPELL_LEVEL_EVENT_MAGICSTAFF, damageTaken);
 						}
@@ -1541,7 +1543,7 @@ void magicOnEntityHit(Entity* parent, Entity* particle, Entity* hitentity, Stat*
 							if ( find->second.spellTags.find(ItemTooltips_t::SpellTagTypes::SPELL_TAG_TRACK_HITS) != find->second.spellTags.end() )
 							{
 								Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_TARGETS,
-									(ItemType)find->second.magicstaffId, 1);
+									static_cast<ItemType>(find->second.magicstaffId), 1);
 							}
 							magicOnSpellCastEvent(parent, particle, hitentity, spellID, additionalFlags | spell_t::SPELL_LEVEL_EVENT_EFFECT | spell_t::SPELL_LEVEL_EVENT_MAGICSTAFF, 1);
 						}
@@ -1562,7 +1564,7 @@ void magicOnEntityHit(Entity* parent, Entity* particle, Entity* hitentity, Stat*
 								}
 								else*/
 								{
-									Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_DMG, (ItemType)find->second.spellbookId, damageTaken);
+									Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_DMG, static_cast<ItemType>(find->second.spellbookId), damageTaken);
 								}
 								magicOnSpellCastEvent(parent, particle, hitentity, spellID, additionalFlags | spell_t::SPELL_LEVEL_EVENT_DMG | spell_t::SPELL_LEVEL_EVENT_SPELLBOOK, damageTaken);
 							}
@@ -1571,7 +1573,7 @@ void magicOnEntityHit(Entity* parent, Entity* particle, Entity* hitentity, Stat*
 								if ( find->second.spellTags.find(ItemTooltips_t::SpellTagTypes::SPELL_TAG_TRACK_HITS) != find->second.spellTags.end() )
 								{
 									Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_TARGETS,
-										(ItemType)find->second.spellbookId, 1);
+										static_cast<ItemType>(find->second.spellbookId), 1);
 								}
 								magicOnSpellCastEvent(parent, particle, hitentity, spellID, additionalFlags | spell_t::SPELL_LEVEL_EVENT_EFFECT | spell_t::SPELL_LEVEL_EVENT_SPELLBOOK, 1);
 							}
@@ -1620,7 +1622,7 @@ void magicOnEntityHit(Entity* parent, Entity* particle, Entity* hitentity, Stat*
 				{
 					if ( find->second.magicstaffId >= 0 && find->second.magicstaffId < NUMITEMS && items[find->second.magicstaffId].category == MAGICSTAFF )
 					{
-						Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_DMG, (ItemType)find->second.magicstaffId, damageTaken);
+						Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_DMG, static_cast<ItemType>(find->second.magicstaffId), damageTaken);
 					}
 					magicOnSpellCastEvent(parent, particle, hitentity, spellID, additionalFlags | spell_t::SPELL_LEVEL_EVENT_DMG | spell_t::SPELL_LEVEL_EVENT_MAGICSTAFF, damageTaken);
 				}
@@ -1629,7 +1631,7 @@ void magicOnEntityHit(Entity* parent, Entity* particle, Entity* hitentity, Stat*
 					if ( find->second.spellTags.find(ItemTooltips_t::SpellTagTypes::SPELL_TAG_TRACK_HITS) != find->second.spellTags.end() )
 					{
 						Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_TARGETS, 
-							(ItemType)find->second.magicstaffId, 1);
+							static_cast<ItemType>(find->second.magicstaffId), 1);
 					}
 					magicOnSpellCastEvent(parent, particle, hitentity, spellID, additionalFlags | spell_t::SPELL_LEVEL_EVENT_EFFECT | spell_t::SPELL_LEVEL_EVENT_MAGICSTAFF, 1);
 				}
@@ -1639,11 +1641,11 @@ void magicOnEntityHit(Entity* parent, Entity* particle, Entity* hitentity, Stat*
 		{
 			// foci items
 			auto find = ItemTooltips.spellItems.find(spellID);
-			if ( find->second.fociId >= 0 && find->second.fociId < NUMITEMS && itemTypeIsFoci((ItemType)find->second.fociId) )
+			if ( find->second.fociId >= 0 && find->second.fociId < NUMITEMS && itemTypeIsFoci(static_cast<ItemType>(find->second.fociId)) )
 			{
 				if ( damageTaken > 0 )
 				{
-					Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_DMG, (ItemType)find->second.fociId, damageTaken);
+					Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_DMG, static_cast<ItemType>(find->second.fociId), damageTaken);
 					magicOnSpellCastEvent(parent, particle, hitentity, spellID, 
 						additionalFlags 
 						| spell_t::SPELL_LEVEL_EVENT_DMG 
@@ -1667,7 +1669,7 @@ void magicOnEntityHit(Entity* parent, Entity* particle, Entity* hitentity, Stat*
 						}
 						else*/
 						{
-							Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_DMG, (ItemType)find->second.spellbookId, damageTaken);
+							Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_DMG, static_cast<ItemType>(find->second.spellbookId), damageTaken);
 						}
 						magicOnSpellCastEvent(parent, particle, hitentity, spellID, additionalFlags | spell_t::SPELL_LEVEL_EVENT_DMG | spell_t::SPELL_LEVEL_EVENT_SPELLBOOK, damageTaken);
 					}
@@ -1676,7 +1678,7 @@ void magicOnEntityHit(Entity* parent, Entity* particle, Entity* hitentity, Stat*
 						if ( find->second.spellTags.find(ItemTooltips_t::SpellTagTypes::SPELL_TAG_TRACK_HITS) != find->second.spellTags.end() )
 						{
 							Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_TARGETS,
-								(ItemType)find->second.spellbookId, 1);
+								static_cast<ItemType>(find->second.spellbookId), 1);
 						}
 						magicOnSpellCastEvent(parent, particle, hitentity, spellID, additionalFlags | spell_t::SPELL_LEVEL_EVENT_EFFECT | spell_t::SPELL_LEVEL_EVENT_SPELLBOOK, 1);
 					}
@@ -1902,7 +1904,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 	{
 		return;
 	}
-	spell_t* spell = (spell_t*)my->children.first->element;
+	spell_t* spell = static_cast<spell_t*>(my->children.first->element);
 	if (!spell)
 	{
 		return;
@@ -1952,10 +1954,10 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 					{
 						if ( node_t* node = spell->elements.first )
 						{
-							spellElement_t* element = (spellElement_t*)node->element;
+							spellElement_t* element = static_cast<spellElement_t*>(node->element);
 							if ( node_t* node2 = element->elements.first )
 							{
-								if ( element = (spellElement_t*)node2->element )
+								if ( element = static_cast<spellElement_t*>(node2->element) )
 								{
 									if ( !strcmp(element->element_internal_name, "spell_element_flames") )
 									{
@@ -2004,7 +2006,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 
 			node = spell->elements.first;
 			//element = (spellElement_t *) spell->elements->first->element;
-			element = (spellElement_t*)node->element;
+			element = static_cast<spellElement_t*>(node->element);
 			Sint32 entityHealth = 0;
 			double dist = 0.f;
 			bool hitFromAbove = false;
@@ -2152,7 +2154,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 							}
 							for ( node_t* node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = (Entity*)node->element;
+								Entity* entity = static_cast<Entity*>(node->element);
 								if ( entity->behavior == &actGate || entity->behavior == &actDoor || entity->behavior == &actIronDoor )
 								{
 									if ( entityDist(my, entity) <= speed )
@@ -2260,7 +2262,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 							}
 							for ( node_t* node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = (Entity*)node->element;
+								Entity* entity = static_cast<Entity*>(node->element);
 								if ( entity->behavior == &actGate || entity->behavior == &actDoor || entity->behavior == &actIronDoor )
 								{
 									if ( entityDist(my, entity) <= speed )
@@ -2302,7 +2304,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 			{
 				node = element->elements.first;
 				//element = (spellElement_t *) element->elements->first->element;
-				element = (spellElement_t*)node->element;
+				element = static_cast<spellElement_t*>(node->element);
 				//if (hit.entity != NULL) {
 				bool mimic = hit.entity && hit.entity->isInertMimic();
 				Stat* hitstats = nullptr;
@@ -2836,7 +2838,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 							{
 								node_t* node = list_AddNodeFirst(&gib->children);
 								node->element = copySpell(spell);
-								((spell_t*)node->element)->caster = hit.entity->getUID();
+								static_cast<spell_t*>(node->element)->caster = hit.entity->getUID();
 								node->deconstructor = &spellDeconstructor;
 								node->size = sizeof(spell_t);
 							}
@@ -3039,7 +3041,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 						if ( parent && parent->behavior == &actPlayer )
 						{
 							Compendium_t::Events_t::eventUpdateCodex(parent->skill[2], Compendium_t::CPDM_CLASS_PWR_MAX_CASTED, "pwr",
-								100 + (Sint32)(spellbookDamageBonus * 100.0));
+								100 + static_cast<Sint32>(spellbookDamageBonus * 100.0));
 						}
 						absorbMagicEvent(hit.entity, parent, *my, spell->ID, nullptr, damageMultiplier, dmgGib);
 					}
@@ -3913,7 +3915,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 											{
 												if ( find->second.spellbookId >= 0 && find->second.spellbookId < NUMITEMS && items[find->second.spellbookId].category == SPELLBOOK )
 												{
-													Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_HEAL, (ItemType)find->second.spellbookId, heal);
+													Compendium_t::Events_t::eventUpdate(parent->skill[2], Compendium_t::CPDM_SPELL_HEAL, static_cast<ItemType>(find->second.spellbookId), heal);
 												}
 											}
 										}
@@ -5767,7 +5769,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 										}
 									}
 
-									if ( !dizzy && hit.entity->setEffect(EFF_DISORIENTED, (Uint8)2, duration, false) )
+									if ( !dizzy && hit.entity->setEffect(EFF_DISORIENTED, static_cast<Uint8>(2), duration, false) )
 									{
 										if ( hit.entity->monsterReleaseAttackTarget() )
 										{
@@ -6400,9 +6402,9 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 								spellTimer->flags[NOUPDATE] = false; // spawn for client
 								spellTimer->flags[UPDATENEEDED] = true;
 								Sint32 val = (1 << 31);
-								val |= (Uint8)(19);
-								val |= (((Uint16)(spellTimer->particleTimerDuration) & 0xFFF) << 8);
-								val |= (Uint8)(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
+								val |= static_cast<Uint8>(19);
+								val |= ((static_cast<Uint16>(spellTimer->particleTimerDuration) & 0xFFF) << 8);
+								val |= static_cast<Uint8>(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
 								spellTimer->skill[2] = val;
 							}
 
@@ -6929,8 +6931,8 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 					node_t* spellnode = list_AddNodeLast(&entity->children);
 					spellnode->element = copySpell(getSpellFromID(spell->ID == SPELL_SHADE_BOLT ? SPELL_DEEP_SHADE : SPELL_LIGHT)); //We need to save the spell since this is a channeled spell.
 					spellnode->size = sizeof(spell_t);
-					((spell_t*)spellnode->element)->caster = spell->caster;
-					((spell_t*)spellnode->element)->magicstaff = true;
+					static_cast<spell_t*>(spellnode->element)->caster = spell->caster;
+					static_cast<spell_t*>(spellnode->element)->magicstaff = true;
 					spellnode->deconstructor = &spellDeconstructor;
 					playSoundEntity(entity, 165, 128);
 				}
@@ -7056,11 +7058,11 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 
 		//Go down two levels to the next element. This will need to get re-written shortly.
 		node = spell->elements.first;
-		element = (spellElement_t*)node->element;
+		element = static_cast<spellElement_t*>(node->element);
 		//element = (spellElement_t *)spell->elements->first->element;
 		//element = (spellElement_t *)element->elements->first->element; //Go down two levels to the second element.
 		node = element->elements.first;
-		element = (spellElement_t*)node->element;
+		element = static_cast<spellElement_t*>(node->element);
 		//if (!strcmp(element->element_internal_name, spellElement_fire.element_internal_name)
 		//	|| !strcmp(element->element_internal_name, spellElement_lightning.element_internal_name))
         if (1)
@@ -9136,7 +9138,7 @@ void actParticleAestheticOrbit(Entity* my)
 			if ( parent )
 			{
 				Uint32 tickOffset = TICKS_PER_SECOND;
-				real_t anim = my->ticks < tickOffset ? (0.5 - 0.5 * (my->ticks / (real_t)tickOffset)) 
+				real_t anim = my->ticks < tickOffset ? (0.5 - 0.5 * (my->ticks / static_cast<real_t>(tickOffset))) 
 					: std::min(1.0, (my->ticks - tickOffset) / ((real_t)0.15 * TICKS_PER_SECOND));
 				my->yaw = my->fskill[0];// +anim * (my->fskill[1] - my->fskill[0]);
 				my->pitch = my->fskill[1];
@@ -9146,7 +9148,7 @@ void actParticleAestheticOrbit(Entity* my)
 					playSoundEntityLocal(my, 822, 92);
 				}
 
-				my->scalex = std::min(1.0, (my->ticks / (real_t)tickOffset));
+				my->scalex = std::min(1.0, (my->ticks / static_cast<real_t>(tickOffset)));
 				my->scaley = my->scalex;
 				my->scalez = my->scalex;
 				my->flags[INVISIBLE] = my->scalex < 0.99;
@@ -9155,7 +9157,7 @@ void actParticleAestheticOrbit(Entity* my)
 				my->y = parent->y - (sin((1.0 - anim) * PI / 2)) * (20.0 * cos(my->pitch)) * sin(my->yaw);
 				my->z = parent->z - (sin((1.0 - anim) * PI / 2)) * 20.0;
 
-				Uint32 impactTick = (Uint32)(0.25 * TICKS_PER_SECOND + tickOffset);
+				Uint32 impactTick = static_cast<Uint32>(0.25 * TICKS_PER_SECOND + tickOffset);
 				if ( my->ticks == impactTick )
 				{
 					playSoundEntityLocal(my, 821, 92);
@@ -9165,7 +9167,7 @@ void actParticleAestheticOrbit(Entity* my)
 					if ( Stat* parentStats = parent->getStats() )
 					{
 						real_t hpThreshold = getSpellEffectDurationSecondaryFromID(SPELL_PSYCHIC_SPEAR, caster, caster ? caster->getStats() : nullptr, my, my->actmagicSpellbookBonus / 100.0) / 100.0;
-						real_t parentHPRatio = std::min(1.0, parentStats->HP / std::max(1.0, (real_t)parentStats->MAXHP));
+						real_t parentHPRatio = std::min(1.0, parentStats->HP / std::max(1.0, static_cast<real_t>(parentStats->MAXHP)));
 						if ( parentHPRatio >= hpThreshold )
 						{
 							real_t scale = std::min(1.0, std::max(0.0, (parentHPRatio - hpThreshold) / (1.0 - hpThreshold)));
@@ -9922,9 +9924,9 @@ void actParticleAestheticOrbit(Entity* my)
 					}
 					else
 					{
-						my->scalex = 0.75 * std::min(50, (int)my->ticks) / 50.0;
-						my->scaley = 0.75 * std::min(50, (int)my->ticks) / 50.0;
-						my->scalez = 0.75 * std::min(50, (int)my->ticks) / 50.0;
+						my->scalex = 0.75 * std::min(50, static_cast<int>(my->ticks)) / 50.0;
+						my->scaley = 0.75 * std::min(50, static_cast<int>(my->ticks)) / 50.0;
+						my->scalez = 0.75 * std::min(50, static_cast<int>(my->ticks)) / 50.0;
 					}
 
 					if ( Entity* fx = spawnMagicParticle(my) )
@@ -9991,9 +9993,9 @@ void actParticleAestheticOrbit(Entity* my)
 					}
 					else
 					{
-						my->scalex = 0.75 * std::min(50, (int)my->ticks) / 50.0;
-						my->scaley = 0.75 * std::min(50, (int)my->ticks) / 50.0;
-						my->scalez = 0.75 * std::min(50, (int)my->ticks) / 50.0;
+						my->scalex = 0.75 * std::min(50, static_cast<int>(my->ticks)) / 50.0;
+						my->scaley = 0.75 * std::min(50, static_cast<int>(my->ticks)) / 50.0;
+						my->scalez = 0.75 * std::min(50, static_cast<int>(my->ticks)) / 50.0;
 					}
 
 					if ( my->ticks % 8 == 0 )
@@ -10548,17 +10550,17 @@ void floorMagicClientReceive(Entity* my)
 void floorMagicParticleSetUID(Entity& fx, bool noupdate)
 {
 	Sint32 val = (1 << 31);
-	val |= (Uint8)(noupdate ? 21 : 20);
-	val |= (((Uint16)(0) & 0xFFF) << 8);
+	val |= static_cast<Uint8>(noupdate ? 21 : 20);
+	val |= ((static_cast<Uint16>(0) & 0xFFF) << 8);
 	if ( fx.actfloorMagicType == ParticleTimerEffect_t::EFFECT_ROOTS_PATH
 		|| fx.actfloorMagicType == ParticleTimerEffect_t::EFFECT_ROOTS_SELF
 		|| fx.actfloorMagicType == ParticleTimerEffect_t::EFFECT_ROOTS_SELF_SUSTAIN
 		|| fx.actfloorMagicType == ParticleTimerEffect_t::EFFECT_ROOTS_TILE )
 	{
-		val |= (((Uint16)(fx.skill[0]) & 0xFFF) << 8);
+		val |= ((static_cast<Uint16>(fx.skill[0]) & 0xFFF) << 8);
 	}
 
-	val |= (Uint8)(fx.actfloorMagicType & 0xFF) << 20;
+	val |= static_cast<Uint8>(fx.actfloorMagicType & 0xFF) << 20;
 	fx.skill[2] = val;
 }
 
@@ -10597,9 +10599,9 @@ Entity* floorMagicCreateRoots(real_t x, real_t y, Entity* caster, int damage, in
 	spellTimer->x = x;
 	spellTimer->y = y;
 	Sint32 val = (1 << 31);
-	val |= (Uint8)(19);
-	val |= (((Uint16)(spellTimer->particleTimerDuration) & 0xFFF) << 8);
-	val |= (Uint8)(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
+	val |= static_cast<Uint8>(19);
+	val |= ((static_cast<Uint16>(spellTimer->particleTimerDuration) & 0xFFF) << 8);
+	val |= static_cast<Uint8>(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
 	spellTimer->skill[2] = val;
 
 	spellTimer->particleTimerVariable1 = damage;
@@ -10656,7 +10658,7 @@ void floorMagicCreateSpores(Entity* spawnOnEntity, real_t x, real_t y, Entity* c
 			}
 			for ( node_t* node = it->first; node != nullptr; node = node->next )
 			{
-				if ( Entity* entity = (Entity*)node->element )
+				if ( Entity* entity = static_cast<Entity*>(node->element) )
 				{
 					if ( entity->behavior == &actParticleTimer && entity->particleTimerCountdownAction == PARTICLE_TIMER_ACTION_SPORES )
 					{
@@ -11098,7 +11100,7 @@ void actParticleTimer(Entity* my)
 									{
 										case AUTOMATON:
 											strcpy(monsterStats->name, "corrupted automaton");
-											monster->setEffect(EFF_CONFUSED, Uint8(MAXPLAYERS + 1), -1, true, true, true, true);
+											monster->setEffect(EFF_CONFUSED, static_cast<Uint8>(MAXPLAYERS + 1), -1, true, true, true, true);
 											break;
 										default:
 											break;
@@ -11195,7 +11197,7 @@ void actParticleTimer(Entity* my)
 				Entity* target = nullptr;
 				for ( node = map.entities->first; node != nullptr; node = node->next )
 				{
-					target = (Entity*)node->element;
+					target = static_cast<Entity*>(node->element);
 					if ( target->behavior == &actDevilTeleport )
 					{
 						if ( (c == 0 && target->sprite == 72)
@@ -11231,7 +11233,7 @@ void actParticleTimer(Entity* my)
 				{
 					for ( node = map.entities->first; node != nullptr; node = node->next )
 					{
-						target = (Entity*)node->element;
+						target = static_cast<Entity*>(node->element);
 						if ( target->behavior == &actDevilTeleport
 							&& target->sprite == 128 )
 						{
@@ -11262,7 +11264,7 @@ void actParticleTimer(Entity* my)
 				Entity* target = nullptr;
 				for ( node = map.entities->first; node != nullptr; node = node->next )
 				{
-					target = (Entity*)node->element;
+					target = static_cast<Entity*>(node->element);
 					if ( target->behavior == &actDevilTeleport
 						&& target->sprite == 128 )
 					{
@@ -11646,12 +11648,12 @@ void actParticleTimer(Entity* my)
 							entity->actmagicSpellbookBonus = my->actmagicSpellbookBonus;
 							node_t* node = list_AddNodeFirst(&entity->children);
 							node->element = copySpell(spell);
-							((spell_t*)node->element)->caster = parent->getUID();
-							node_t* elementNode = ((spell_t*)node->element)->elements.first;
-							spellElement_t* element = (spellElement_t*)elementNode->element;
+							static_cast<spell_t*>(node->element)->caster = parent->getUID();
+							node_t* elementNode = static_cast<spell_t*>(node->element)->elements.first;
+							spellElement_t* element = static_cast<spellElement_t*>(elementNode->element);
 							{
 								elementNode = element->elements.first;
-								element = (spellElement_t*)elementNode->element;
+								element = static_cast<spellElement_t*>(elementNode->element);
 								if ( spellID == SPELL_GREASE_SPRAY )
 								{
 								}
@@ -11662,7 +11664,7 @@ void actParticleTimer(Entity* my)
 										element->setDamage(element->getDamage() + stats->getProficiency(PRO_SORCERY) / 10);
 									}
 								}
-								((spell_t*)node->element)->mana = 5;
+								static_cast<spell_t*>(node->element)->mana = 5;
 							}
 
 							node->deconstructor = &spellDeconstructor;
@@ -11699,7 +11701,7 @@ void actParticleTimer(Entity* my)
 							{
 								if ( newSpell->elements.first )
 								{
-									if ( spellElement_t* element = (spellElement_t*)(newSpell->elements.first->element) )
+									if ( spellElement_t* element = static_cast<spellElement_t*>(newSpell->elements.first->element) )
 									{
 										// rename the propulsion
 										auto find = spellElementMap.find(SPELL_ELEMENT_PROPULSION_FOCI_SPRAY);
@@ -11837,7 +11839,7 @@ void actParticleTimer(Entity* my)
 									node_t* node;
 									for ( node = it->first; node != nullptr; node = node->next )
 									{
-										Entity* entity = (Entity*)node->element;
+										Entity* entity = static_cast<Entity*>(node->element);
 										if ( !entity->flags[BURNABLE] || entity->flags[BURNING] )
 										{
 											continue;
@@ -12042,7 +12044,7 @@ void actParticleTimer(Entity* my)
 							node_t* node;
 							for ( node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = (Entity*)node->element;
+								Entity* entity = static_cast<Entity*>(node->element);
 								if ( !(entity->behavior == &actPlayer || entity->behavior == &actMonster) )
 								{
 									continue;
@@ -12074,7 +12076,7 @@ void actParticleTimer(Entity* my)
 										{
 											for ( node_t* node = it->first; node != nullptr; node = node->next )
 											{
-												if ( Entity* entity2 = (Entity*)node->element )
+												if ( Entity* entity2 = static_cast<Entity*>(node->element) )
 												{
 													if ( entity2->behavior == &actParticleTimer
 														&& entity2->particleTimerCountdownAction == PARTICLE_TIMER_ACTION_VORTEX )
@@ -12236,7 +12238,7 @@ void actParticleTimer(Entity* my)
 									node_t* node;
 									for ( node = it->first; node != nullptr; node = node->next )
 									{
-										Entity* entity = (Entity*)node->element;
+										Entity* entity = static_cast<Entity*>(node->element);
 										if ( entityDist(caster, entity) > 32.0 + 4.0 )
 										{
 											continue;
@@ -12329,7 +12331,7 @@ void actParticleTimer(Entity* my)
 						node_t* node;
 						for ( node = it->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = (Entity*)node->element;
+							Entity* entity = static_cast<Entity*>(node->element);
 							if ( entity == parent )
 							{
 								continue;
@@ -12423,7 +12425,7 @@ void actParticleTimer(Entity* my)
 						node_t* node;
 						for ( node = it->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = (Entity*)node->element;
+							Entity* entity = static_cast<Entity*>(node->element);
 							if ( entity == parent )
 							{
 								continue;
@@ -12514,7 +12516,7 @@ void actParticleTimer(Entity* my)
 						node_t* node;
 						for ( node = it->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = (Entity*)node->element;
+							Entity* entity = static_cast<Entity*>(node->element);
 							if ( entity == parent )
 							{
 								continue;
@@ -12650,7 +12652,7 @@ void actParticleTimer(Entity* my)
 							node_t* node;
 							for ( node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = (Entity*)node->element;
+								Entity* entity = static_cast<Entity*>(node->element);
 								if ( entityDist(my, entity) > 32.0 + 4.0 )
 								{
 									continue;
@@ -12773,7 +12775,7 @@ void actParticleTimer(Entity* my)
 						{
 							for ( node_t* node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = (Entity*)node->element;
+								Entity* entity = static_cast<Entity*>(node->element);
 								if ( parent && entity == parent )
 								{
 									continue;
@@ -12840,7 +12842,7 @@ void actParticleTimer(Entity* my)
 					{
 						real_t dist = entityDist(my, closestEntity);
 						real_t tangent = atan2(closestEntity->y - my->y, closestEntity->x - my->x);
-						real_t speedMult = 100.0 - 0.5 * std::min((Uint32)100, my->ticks); // build up faster to impact
+						real_t speedMult = 100.0 - 0.5 * std::min(static_cast<Uint32>(100), my->ticks); // build up faster to impact
 						real_t staticEffectSpeedMult = 0.0;
 						if ( Stat* targetStats = closestEntity->getStats() )
 						{
@@ -13037,7 +13039,7 @@ void actParticleTimer(Entity* my)
 						{
 							for ( node_t* node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = (Entity*)node->element;
+								Entity* entity = static_cast<Entity*>(node->element);
 								if ( parent && entity == parent )
 								{
 									continue;
@@ -13105,9 +13107,9 @@ void actParticleTimer(Entity* my)
 						spellTimer->parent = parent ? parent->getUID() : 0;
 						spellTimer->actmagicOrbitHitTargetUID1 = target ? my->actmagicOrbitHitTargetUID1 : 0;
 						Sint32 val = (1 << 31);
-						val |= (Uint8)(19);
-						val |= (((Uint16)(spellTimer->particleTimerDuration) & 0xFFF) << 8);
-						val |= (Uint8)(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
+						val |= static_cast<Uint8>(19);
+						val |= ((static_cast<Uint16>(spellTimer->particleTimerDuration) & 0xFFF) << 8);
+						val |= static_cast<Uint8>(spellTimer->particleTimerCountdownAction & 0xFF) << 20;
 						spellTimer->skill[2] = val;
 
 						my->removeLightField();
@@ -13237,7 +13239,7 @@ void actParticleTimer(Entity* my)
 							node_t* node;
 							for ( node = it->first; node != nullptr; node = node->next )
 							{
-								Entity* entity = (Entity*)node->element;
+								Entity* entity = static_cast<Entity*>(node->element);
 								if ( !(entity->behavior == &actPlayer || entity->behavior == &actMonster) )
 								{
 									continue;
@@ -13381,7 +13383,7 @@ void actParticleTimer(Entity* my)
 						{
 							for ( node_t* node = stats->magic_effects.first; node; node = node->next )
 							{
-								if ( spell_t* spell = (spell_t*)node->element )
+								if ( spell_t* spell = static_cast<spell_t*>(node->element) )
 								{
 									if ( spell->ID == SPELL_BASTION_ROOTS && spell->sustain )
 									{
@@ -13627,7 +13629,7 @@ void actParticleTimer(Entity* my)
 								}
 								for ( node_t* node = it->first; node != nullptr; node = node->next )
 								{
-									if ( Entity* entity = (Entity*)node->element )
+									if ( Entity* entity = static_cast<Entity*>(node->element) )
 									{
 										if ( entity->behavior == &actParticleFloorMagic &&
 											(entity->actfloorMagicType == data.effectType
@@ -13691,7 +13693,7 @@ void actParticleTimer(Entity* my)
 								}
 								for ( node_t* node = it->first; node != nullptr; node = node->next )
 								{
-									if ( Entity* entity = (Entity*)node->element )
+									if ( Entity* entity = static_cast<Entity*>(node->element) )
 									{
 										if ( entity->behavior == &actParticleFloorMagic && 
 											(entity->actfloorMagicType == data.effectType
@@ -14275,9 +14277,9 @@ void actParticleSapCenter(Entity* my)
 					for ( node_t* node = stats[caster->skill[2]]->FOLLOWERS.first; node != nullptr; node = node->next )
 					{
 						Entity* follower = nullptr;
-						if ( (Uint32*)(node)->element )
+						if ( static_cast<Uint32*>((node)->element) )
 						{
-							follower = uidToEntity(*((Uint32*)(node)->element));
+							follower = uidToEntity(*static_cast<Uint32*>((node)->element));
 						}
 						if ( follower && follower->monsterAllySummonRank != 0 )
 						{
@@ -14332,7 +14334,7 @@ void actParticleSapCenter(Entity* my)
 								{
 									if ( bodypart >= LIMB_HUMANOID_TORSO )
 									{
-										Entity* tmp = (Entity*)node->element;
+										Entity* tmp = static_cast<Entity*>(node->element);
 										if ( tmp )
 										{
 											tmp->flags[USERFLAG2] = true;
@@ -14394,7 +14396,7 @@ void actParticleSapCenter(Entity* my)
 											{
 												if ( bodypart >= LIMB_HUMANOID_TORSO )
 												{
-													Entity* tmp = (Entity*)node->element;
+													Entity* tmp = static_cast<Entity*>(node->element);
 													if ( tmp )
 													{
 														tmp->flags[USERFLAG2] = true;
@@ -14652,7 +14654,7 @@ bool Entity::magicFallingCollision()
 			node_t* node;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( entity )
 				{
 					if ( entity == this )
@@ -14725,7 +14727,7 @@ bool Entity::magicOrbitingCollision()
 		node_t* node;
 		for ( node = currentList->first; node != NULL; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entity == this )
 			{
 				continue;
@@ -15705,7 +15707,7 @@ Entity* createParticleSpellPinpointTarget(Entity* parent, Uint32 casterUid, int 
 
 	for ( auto node = map.entities->first; node; node = node->next )
 	{
-		if ( Entity* entity2 = (Entity*)node->element )
+		if ( Entity* entity2 = static_cast<Entity*>(node->element) )
 		{
 			if ( entity2->behavior == &actParticlePinpointTarget
 				&& entity2 != entity
@@ -15880,7 +15882,7 @@ bool magicDig(Entity* parent, Entity* projectile, int numRocks, int randRocks)
 {
 	if ( !hit.entity )
 	{
-		if ( map.tiles[(int)(OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height)] != 0 )
+		if ( map.tiles[static_cast<int>((OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height))] != 0 )
 		{
 			if ( MFLAG_DISABLEDIGGING )
 			{
@@ -15943,13 +15945,13 @@ bool magicDig(Entity* parent, Entity* projectile, int numRocks, int randRocks)
 					rock->skill[15] = 1;		   // identified
 				}
 
-				if ( map.tiles[(int)(OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height)] >= 41
-					&& map.tiles[(int)(OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height)] <= 49 )
+				if ( map.tiles[static_cast<int>((OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height))] >= 41
+					&& map.tiles[static_cast<int>((OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height))] <= 49 )
 				{
 					steamAchievementEntity(parent, "BARONY_ACH_BAD_REVIEW");
 				}
 
-				map.tiles[(int)(OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height)] = 0;
+				map.tiles[static_cast<int>((OBSTACLELAYER + hit.mapy * MAP_LAYERS + hit.mapx * MAP_LAYERS * map.height))] = 0;
 
 				// send wall destroy info to clients
 				if ( multiplayer == SERVER )
@@ -15961,8 +15963,8 @@ bool magicDig(Entity* parent, Entity* projectile, int numRocks, int randRocks)
 							continue;
 						}
 						strcpy((char*)net_packet->data, "WALD");
-						SDLNet_Write16((Uint16)hit.mapx, &net_packet->data[4]);
-						SDLNet_Write16((Uint16)hit.mapy, &net_packet->data[6]);
+						SDLNet_Write16(static_cast<Uint16>(hit.mapx), &net_packet->data[4]);
+						SDLNet_Write16(static_cast<Uint16>(hit.mapy), &net_packet->data[6]);
 						net_packet->address.host = net_clients[c - 1].host;
 						net_packet->address.port = net_clients[c - 1].port;
 						net_packet->len = 8;
@@ -16310,7 +16312,7 @@ void AOEIndicators_t::Indicator_t::updateIndicator()
 		{
 			if ( loopTimer > 0 )
 			{
-				alpha *= (loopTimer - loopTicks) / (real_t)loopTimer;
+				alpha *= (loopTimer - loopTicks) / static_cast<real_t>(loopTimer);
 			}
 		}
 	}
@@ -16365,7 +16367,7 @@ void AOEIndicators_t::Indicator_t::updateIndicator()
 				Uint8 alphaUsed = alpha;
 				if ( rad < ring + 0.5 )
 				{
-					real_t alphaRatio = std::min(1.0, std::max(0.0, 1.0 + (ringSize + rad - (radius + 0.5)) / (real_t)gradientSize));
+					real_t alphaRatio = std::min(1.0, std::max(0.0, 1.0 + (ringSize + rad - (radius + 0.5)) / static_cast<real_t>(gradientSize)));
 					alphaUsed = std::min(255.0, alpha * alphaRatio);
 					color = makeColor(red, green, blue, alphaUsed);
 				}
@@ -17204,7 +17206,7 @@ void actParticleFloorMagic(Entity* my)
 					7.5, rng.rand() % 360 * (PI / 180.0), PARTICLE_LIFE);
 				root->focalz = -0.5;
 				int roll = rng.rand() % 8;
-				real_t angle = (pick / (float)numLocations) * PI + ((roll) / 8.0) * PI;
+				real_t angle = (pick / static_cast<float>(numLocations)) * PI + ((roll) / 8.0) * PI;
 				real_t xoffset = 4.0 * sin(angle);
 				xoffset += -2.0 + 4.0 * (rng.rand() % 16) / 16.0;
 				root->x += xoffset * cos(root->yaw + PI / 2);
@@ -17259,7 +17261,7 @@ void actParticleFloorMagic(Entity* my)
 					7.5, rng.rand() % 360 * (PI / 180.0), PARTICLE_LIFE);
 				root->focalz = -0.5;
 				int roll = rng.rand() % 8;
-				real_t angle = (pick / (float)numLocations) * PI + ((roll) / 8.0) * PI;
+				real_t angle = (pick / static_cast<float>(numLocations)) * PI + ((roll) / 8.0) * PI;
 				real_t xoffset = 4.0 * sin(angle);
 				xoffset += -2.0 + 4.0 * (rng.rand() % 16) / 16.0;
 				root->x += xoffset * cos(root->yaw + PI / 2);
@@ -17340,7 +17342,7 @@ void actParticleFloorMagic(Entity* my)
 						7.5, rng.rand() % 360 * (PI / 180.0), PARTICLE_LIFE);
 					root->focalz = -0.5;
 					int roll = rng.rand() % 8;
-					real_t angle = (pick / (float)numLocations) * PI + ((roll) / 8.0) * PI;
+					real_t angle = (pick / static_cast<float>(numLocations)) * PI + ((roll) / 8.0) * PI;
 					real_t xoffset = 4.0 * sin(angle);
 					xoffset += -2.0 + 4.0 * (rng.rand() % 16) / 16.0;
 					root->x += xoffset * cos(root->yaw + PI / 2);
@@ -17462,7 +17464,7 @@ void actParticleFloorMagic(Entity* my)
 				node_t* node;
 				for ( node = it->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actPlayer || (entity->behavior == &actMonster && !entity->isInertMimic())
 						|| my->actfloorMagicType == ParticleTimerEffect_t::EffectType::EFFECT_DISRUPT_EARTH /*hits furniture*/
 						|| my->actfloorMagicType == ParticleTimerEffect_t::EffectType::EFFECT_LIGHTNING_BOLT /*hits furniture*/ )
@@ -17875,11 +17877,11 @@ void actParticleFloorMagic(Entity* my)
 										{
 											if ( spellID == SPELL_EARTH_SPINES )
 											{
-												entity->setEffect(EFF_DISRUPTED, Uint8(3), prevDuration + durationAdd, false, true, true, false);
+												entity->setEffect(EFF_DISRUPTED, static_cast<Uint8>(3), prevDuration + durationAdd, false, true, true, false);
 											}
 											else
 											{
-												entity->setEffect(EFF_DISRUPTED, Uint8(2), prevDuration + durationAdd, false, true, true, false);
+												entity->setEffect(EFF_DISRUPTED, static_cast<Uint8>(2), prevDuration + durationAdd, false, true, true, false);
 											}
 										}
 										else
@@ -17951,7 +17953,7 @@ void actParticleFloorMagic(Entity* my)
 											node_t* node;
 											for ( node = it->first; node != nullptr; node = node->next )
 											{
-												Entity* entity2 = (Entity*)node->element;
+												Entity* entity2 = static_cast<Entity*>(node->element);
 												if ( entity2->behavior == &actParticleRoot 
 													&& !entity2->flags[INVISIBLE]
 													&& entity2->parent == my->getUID()
@@ -18208,9 +18210,9 @@ void actParticleFloorMagic(Entity* my)
 void waveParticleSetUID(Entity& fx, bool noupdate)
 {
 	Sint32 val = (1 << 31);
-	val |= (Uint8)(22);
-	val |= (((Uint16)(fx.actParticleWaveStartFrame) & 0xFFF) << 8);
-	val |= (Uint8)(fx.actParticleWaveMagicType & 0xFF) << 20;
+	val |= static_cast<Uint8>(22);
+	val |= ((static_cast<Uint16>(fx.actParticleWaveStartFrame) & 0xFFF) << 8);
+	val |= static_cast<Uint8>(fx.actParticleWaveMagicType & 0xFF) << 20;
 	val |= (fx.actParticleWaveLight != 0 ? 1 : 0) << 28;
 	fx.skill[2] = val;
 }
@@ -18392,7 +18394,7 @@ void actParticleDemesneDoor(Entity* my)
 			node_t* node;
 			for ( node = it->first; node != nullptr; node = node->next )
 			{
-				if ( Entity* entity = (Entity*)node->element )
+				if ( Entity* entity = static_cast<Entity*>(node->element) )
 				{
 					if ( static_cast<int>(entity->x / 16) == mapx && static_cast<int>(entity->y / 16) == mapy )
 					{
@@ -18457,7 +18459,7 @@ void actParticleDemesneDoor(Entity* my)
 										int effectStrength = std::min(255, 
 											std::min(getSpellDamageSecondaryFromID(SPELL_DEMESNE_DOOR, caster, nullptr, my), 
 												std::max(1, getSpellDamageFromID(SPELL_DEMESNE_DOOR, caster, nullptr, my))));
-										if ( entity->setEffect(EFF_DEMESNE_DOOR, (Uint8)effectStrength,
+										if ( entity->setEffect(EFF_DEMESNE_DOOR, static_cast<Uint8>(effectStrength),
 											getSpellEffectDurationSecondaryFromID(SPELL_DEMESNE_DOOR, caster, nullptr, my), false) )
 										{
 											magicOnSpellCastEvent(caster, caster, nullptr, SPELL_DEMESNE_DOOR, spell_t::SPELL_LEVEL_EVENT_EFFECT, 1);
@@ -18517,7 +18519,7 @@ void actParticleWave(Entity* my)
 					{
 						break;
 					}
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actArrow || entity->behavior == &actMagicMissile
 						|| entity->behavior == &actThrown )
 					{
@@ -18593,7 +18595,7 @@ void actParticleWave(Entity* my)
 				node_t* node;
 				for ( node = it->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( entity->getStats() )
 					{
 						if ( !entity->monsterIsTargetable() ) { continue; }
@@ -18693,7 +18695,7 @@ void actParticleWave(Entity* my)
 				node_t* node;
 				for ( node = it->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( true/*entity->behavior == &actPlayer || (entity->behavior == &actMonster && !entity->isInertMimic())*/ )
 					{
 						real_t yaw = my->yaw + PI / 2;
@@ -19220,9 +19222,9 @@ void tunnelPortalSetAttributes(Entity* portal, int duration, int dir)
 	{
 		portal->flags[UPDATENEEDED] = true;
 		Uint32 val = (1 << 31);
-		val |= (Uint8)(26);
-		val |= ((Uint8)(duration & 0xFFFF) << 8);
-		val |= ((Uint8)(dir & 0xF) << 24);
+		val |= static_cast<Uint8>(26);
+		val |= (static_cast<Uint8>(duration & 0xFFFF) << 8);
+		val |= (static_cast<Uint8>(dir & 0xF) << 24);
 		portal->skill[2] = val;
 	}
 }
@@ -19628,9 +19630,9 @@ void radiusMagicSetUID(Entity& fx, bool noupdate)
 	{
 		val |= (1 << 30);
 	}
-	val |= (Uint8)(24);
-	val |= (((Uint16)(fx.actRadiusMagicID) & 0xFFF) << 8);
-	val |= (((Uint8)(fx.actRadiusMagicDist) & 0xFF) << 20);
+	val |= static_cast<Uint8>(24);
+	val |= ((static_cast<Uint16>(fx.actRadiusMagicID) & 0xFFF) << 8);
+	val |= ((static_cast<Uint8>(fx.actRadiusMagicDist) & 0xFF) << 20);
 	fx.skill[2] = val;
 }
 
@@ -20264,7 +20266,7 @@ void actRadiusMagic(Entity* my)
 				node_t* node;
 				for ( node = it->first; node != nullptr; node = node->next )
 				{
-					if ( Entity* entity = (Entity*)node->element )
+					if ( Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						if ( my->actRadiusMagicID == SPELL_HEAL_PULSE )
 						{
@@ -20272,7 +20274,7 @@ void actRadiusMagic(Entity* my)
 							{
 								if ( entity->monsterIsTargetable() )
 								{
-									if ( entityDist(my, entity) <= (real_t)my->actRadiusMagicDist + 4.0 )
+									if ( entityDist(my, entity) <= static_cast<real_t>(my->actRadiusMagicDist) + 4.0 )
 									{
 										if ( caster && caster->checkFriend(entity) )
 										{
@@ -20312,7 +20314,7 @@ void actRadiusMagic(Entity* my)
 						{
 							if ( entity->behavior == &actMagicMissile )
 							{
-								if ( entityDist(my, entity) <= (real_t)my->actRadiusMagicDist + 4.0 )
+								if ( entityDist(my, entity) <= static_cast<real_t>(my->actRadiusMagicDist) + 4.0 )
 								{
 									auto props = getParticleEmitterHitProps(my->getUID(), entity);
 									if ( !props )
@@ -20332,7 +20334,7 @@ void actRadiusMagic(Entity* my)
 						{
 							if ( entity->behavior == &actMagicMissile )
 							{
-								if ( entityDist(my, entity) <= (real_t)my->actRadiusMagicDist + 4.0 )
+								if ( entityDist(my, entity) <= static_cast<real_t>(my->actRadiusMagicDist) + 4.0 )
 								{
 									auto props = getParticleEmitterHitProps(my->getUID(), entity);
 									if ( !props )
@@ -20345,7 +20347,7 @@ void actRadiusMagic(Entity* my)
 									}
 									props->hits++;
 									Entity* parent = uidToEntity(entity->parent);
-									if ( parent && entityDist(my, parent) < (real_t)my->actRadiusMagicDist + 4.0 )
+									if ( parent && entityDist(my, parent) < static_cast<real_t>(my->actRadiusMagicDist) + 4.0 )
 									{
 										applyEffects.push_back(entity);
 									}
@@ -20358,7 +20360,7 @@ void actRadiusMagic(Entity* my)
 							{
 								if ( entity->monsterIsTargetable() )
 								{
-									if ( entityDist(my, entity) <= (real_t)my->actRadiusMagicDist + 4.0 )
+									if ( entityDist(my, entity) <= static_cast<real_t>(my->actRadiusMagicDist) + 4.0 )
 									{
 										if ( (caster && caster->checkFriend(entity)) )
 										{
@@ -20391,7 +20393,7 @@ void actRadiusMagic(Entity* my)
 							{
 								if ( entity->monsterIsTargetable() )
 								{
-									if ( entityDist(my, entity) <= (real_t)my->actRadiusMagicDist + 4.0 )
+									if ( entityDist(my, entity) <= static_cast<real_t>(my->actRadiusMagicDist) + 4.0 )
 									{
 										/*if ( caster && caster != entity && caster->checkEnemy(entity) )
 										{
@@ -20446,7 +20448,7 @@ void actRadiusMagic(Entity* my)
 							{
 								if ( entity->monsterIsTargetable() && entity->isSmiteWeakMonster() )
 								{
-									if ( entityDist(my, entity) <= (real_t)my->actRadiusMagicDist + 4.0 )
+									if ( entityDist(my, entity) <= static_cast<real_t>(my->actRadiusMagicDist) + 4.0 )
 									{
 										if ( caster && caster != entity && caster->checkEnemy(entity) )
 										{
@@ -20478,7 +20480,7 @@ void actRadiusMagic(Entity* my)
 							{
 								if ( entity->monsterIsTargetable() )
 								{
-									if ( entityDist(my, entity) <= (real_t)my->actRadiusMagicDist + 4.0 )
+									if ( entityDist(my, entity) <= static_cast<real_t>(my->actRadiusMagicDist) + 4.0 )
 									{
 										if ( caster && caster != entity && caster->checkEnemy(entity) )
 										{
@@ -20613,7 +20615,7 @@ void actRadiusMagic(Entity* my)
 							{
 								if ( ent->children.first )
 								{
-									if ( spell_t* spell = (spell_t*)ent->children.first->element )
+									if ( spell_t* spell = static_cast<spell_t*>(ent->children.first->element) )
 									{
 										if ( Entity* spellCaster = uidToEntity(spell->caster) )
 										{
@@ -20870,7 +20872,7 @@ void actRadiusMagic(Entity* my)
 						{
 							if ( find->second.spellbookId >= 0 && find->second.spellbookId < NUMITEMS && items[find->second.spellbookId].category == SPELLBOOK )
 							{
-								Compendium_t::Events_t::eventUpdate(player, Compendium_t::CPDM_SPELL_HEAL, (ItemType)find->second.spellbookId, totalHeal);
+								Compendium_t::Events_t::eventUpdate(player, Compendium_t::CPDM_SPELL_HEAL, static_cast<ItemType>(find->second.spellbookId), totalHeal);
 							}
 						}
 					}
@@ -21100,7 +21102,7 @@ void doSpellExplosionArea(int spellID, Entity* my, Entity* caster, real_t x, rea
 		node_t* node;
 		for ( node = it->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entityDist(my, entity) > radius )
 			{
 				continue;

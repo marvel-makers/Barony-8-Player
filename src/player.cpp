@@ -769,13 +769,13 @@ float GameController::getLeftYPercentForPlayerMovement(int player)
 	return y_force;
 }
 
-float GameController::getLeftXPercent(int player) { return (float)getRawLeftXMove(player) / (float)maxLeftXMove(player); }
-float GameController::getLeftYPercent(int player) { return (float)getRawLeftYMove(player) / (float)maxLeftYMove(player); }
-float GameController::getRightXPercent(int player) { return (float)getRawRightXMove(player) / (float)maxRightXMove(player); }
-float GameController::getRightYPercent(int player) { return (float)getRawRightYMove(player) / (float)maxRightYMove(player); }
+float GameController::getLeftXPercent(int player) { return static_cast<float>(getRawLeftXMove(player)) / static_cast<float>(maxLeftXMove(player)); }
+float GameController::getLeftYPercent(int player) { return static_cast<float>(getRawLeftYMove(player)) / static_cast<float>(maxLeftYMove(player)); }
+float GameController::getRightXPercent(int player) { return static_cast<float>(getRawRightXMove(player)) / static_cast<float>(maxRightXMove(player)); }
+float GameController::getRightYPercent(int player) { return static_cast<float>(getRawRightYMove(player)) / static_cast<float>(maxRightYMove(player)); }
 
-float GameController::getLeftTriggerPercent() { return (float)getRawLeftTrigger() / (float)maxLeftTrigger(); }
-float GameController::getRightTriggerPercent() { return (float)getRawRightTrigger() / (float)maxRightTrigger(); }
+float GameController::getLeftTriggerPercent() { return static_cast<float>(getRawLeftTrigger()) / static_cast<float>(maxLeftTrigger()); }
+float GameController::getRightTriggerPercent() { return static_cast<float>(getRawRightTrigger()) / static_cast<float>(maxRightTrigger()); }
 
 //Ya, it's pretty constant in SDL2.
 int GameController::maxLeftXMove(int player) { return 32767 - (leftStickDeadzoneType == DEADZONE_PER_AXIS ? playerSettings[multiplayer ? 0 : player].leftStickDeadzone : 0); }
@@ -1030,7 +1030,7 @@ bool Player::GUI_t::handleCharacterSheetMovement()
 				}
 			}
 		}
-		characterSheet_t.selectElement((Player::CharacterSheet_t::SheetElements)currentElement, false, false);
+		characterSheet_t.selectElement(static_cast<Player::CharacterSheet_t::SheetElements>(currentElement), false, false);
 		dpad_moved = true;
 	}
 	else if ( Input::inputs[player].binaryToggle("InventoryMoveRight")
@@ -1097,7 +1097,7 @@ bool Player::GUI_t::handleCharacterSheetMovement()
 				}
 			}
 		}
-		characterSheet_t.selectElement((Player::CharacterSheet_t::SheetElements)currentElement, false, false);
+		characterSheet_t.selectElement(static_cast<Player::CharacterSheet_t::SheetElements>(currentElement), false, false);
 		dpad_moved = true;
 	}
 	else
@@ -1126,7 +1126,7 @@ bool Player::GUI_t::handleCharacterSheetMovement()
 			{
 				currentElement = Player::CharacterSheet_t::SHEET_ENUM_END - 1;
 			}*/
-			characterSheet_t.selectElement((Player::CharacterSheet_t::SheetElements)currentElement, false, false);
+			characterSheet_t.selectElement(static_cast<Player::CharacterSheet_t::SheetElements>(currentElement), false, false);
 			dpad_moved = true;
 		}
 		if ( Input::inputs[player].binaryToggle("InventoryMoveDown")
@@ -1157,7 +1157,7 @@ bool Player::GUI_t::handleCharacterSheetMovement()
 			{
 				currentElement = Player::CharacterSheet_t::SHEET_UNSELECTED + 1;
 			}*/
-			characterSheet_t.selectElement((Player::CharacterSheet_t::SheetElements)currentElement, false, false);
+			characterSheet_t.selectElement(static_cast<Player::CharacterSheet_t::SheetElements>(currentElement), false, false);
 			dpad_moved = true;
 		}
 	}
@@ -4162,7 +4162,7 @@ void Player::WorldUI_t::setTooltipActive(Entity& tooltip)
 				}
 				else
 				{
-					name = getMonsterLocalizedName((Monster)monsterType).c_str();
+					name = getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str();
 				}
 
 				if ( parent->monsterAllyGetPlayerLeader() 
@@ -4808,7 +4808,7 @@ void Player::WorldUI_t::handleTooltips()
 			players[player]->worldUI.reset();
 			for ( node_t* node = map.worldUI->first; node; node = node->next )
 			{
-				Entity* tooltip = (Entity*)node->element;
+				Entity* tooltip = static_cast<Entity*>(node->element);
 				if ( !tooltip || tooltip->behavior != &actSpriteWorldTooltip )
 				{
 					continue;
@@ -4845,7 +4845,7 @@ void Player::WorldUI_t::handleTooltips()
 			real_t dist = 10000.0;
 			for ( node_t* node = map.worldUI->first; node; node = node->next )
 			{
-				Entity* tooltip = (Entity*)node->element;
+				Entity* tooltip = static_cast<Entity*>(node->element);
 				if ( !tooltip || tooltip->behavior != &actSpriteWorldTooltip )
 				{
 					continue;
@@ -5834,7 +5834,7 @@ const bool Player::Inventory_t::bItemInventoryHasFreeSlot() const
 	}
 	for ( node_t* node = stats[player.playernum]->inventory.first; node; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( !item )
 		{
 			continue;
@@ -7766,7 +7766,7 @@ bool Player::PlayerMechanics_t::updateSustainedSpellEvent(int spellID, real_t va
 
 		for ( node_t* node = stats[player.playernum]->magic_effects.first; node; node = node->next )
 		{
-			if ( spell_t* sustainedSpell = (spell_t*)node->element )
+			if ( spell_t* sustainedSpell = static_cast<spell_t*>(node->element) )
 			{
 				if ( sustainedSpell->ID == spellID )
 				{
@@ -8699,7 +8699,7 @@ bool Player::PlayerMechanics_t::rollRngProc(Player::PlayerMechanics_t::RngRollTy
 			pityCap = std::max(pityCap, oneInRoll);
 		}
 
-		auto& rng_counter = rngType == RngRollTypes::RNG_ROLL_SPELL_LEVELS ? escalatingSpellRngRolls[spellID] : escalatingRngRolls[(int)rngType];
+		auto& rng_counter = rngType == RngRollTypes::RNG_ROLL_SPELL_LEVELS ? escalatingSpellRngRolls[spellID] : escalatingRngRolls[static_cast<int>(rngType)];
 
 		if ( c * rng_counter >= 1.0
 			|| (rng_counter >= pityCap) )

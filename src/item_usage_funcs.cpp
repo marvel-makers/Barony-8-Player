@@ -309,7 +309,7 @@ bool item_PotionWater(Item*& item, Entity* entity, Entity* usedBy)
 						{
 							if ( stats->getEffectActive(EFF_GROWTH) < 4 )
 							{
-								players[player]->entity->setEffect(EFF_GROWTH, (Uint8)(std::min(4, effectStrength + 1)), 15 * TICKS_PER_SECOND, false);
+								players[player]->entity->setEffect(EFF_GROWTH, static_cast<Uint8>(std::min(4, effectStrength + 1)), 15 * TICKS_PER_SECOND, false);
 								messagePlayerColor(player, MESSAGE_STATUS, makeColorRGB(0, 255, 0), Language::get(6924));
 							}
 						}
@@ -497,7 +497,7 @@ bool item_PotionWater(Item*& item, Entity* entity, Entity* usedBy)
 				net_packet->data[4] = player;
 				net_packet->data[5] = armornum;
 				net_packet->data[6] = toCurse->beatitude + 100;
-				SDLNet_Write16((Sint16)toCurse->type, &net_packet->data[7]);
+				SDLNet_Write16(static_cast<Sint16>(toCurse->type), &net_packet->data[7]);
 				net_packet->address.host = net_server.host;
 				net_packet->address.port = net_server.port;
 				net_packet->len = 9;
@@ -513,7 +513,7 @@ bool item_PotionWater(Item*& item, Entity* entity, Entity* usedBy)
 		int items = 0;
 		for ( node = stats->inventory.first; node != NULL; node = node->next )
 		{
-			Item* target = (Item*)node->element;
+			Item* target = static_cast<Item*>(node->element);
 			if ( target && !itemIsEquipped(target, player) && itemCategory(target) != SPELL_CAT && target->beatitude >= 0 )
 			{
 				items++;
@@ -529,7 +529,7 @@ bool item_PotionWater(Item*& item, Entity* entity, Entity* usedBy)
 		items = 0;
 		for ( node = stats->inventory.first; node != NULL; node = node->next )
 		{
-			Item* target = (Item*)node->element;
+			Item* target = static_cast<Item*>(node->element);
 			if ( target && !itemIsEquipped(target, player) && itemCategory(target) != SPELL_CAT && target->beatitude >= 0 )
 			{
 				if ( items == itemToCurse )
@@ -1506,7 +1506,7 @@ bool item_PotionInvisibility(Item*& item, Entity* entity, Entity* usedBy)
 	{
 		for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 		{
-			Entity* creature = (Entity*)node->element;
+			Entity* creature = static_cast<Entity*>(node->element);
 			if ( creature && creature->behavior == &actMonster && creature->monsterTarget == entity->getUID() )
 			{
 				if ( !creature->isBossMonster() )
@@ -3060,7 +3060,7 @@ void item_ScrollEnchantWeapon(Item* item, int player)
 				{
 					strcpy((char*)net_packet->data, "FXGD");
 					net_packet->data[4] = player;
-					SDLNet_Write32((Uint32)goldSubtract, &net_packet->data[5]);
+					SDLNet_Write32(static_cast<Uint32>(goldSubtract), &net_packet->data[5]);
 					SDLNet_Write32((Uint32)0, &net_packet->data[9]);
 
 					Uint16 spellID = SPELL_NONE;
@@ -3137,7 +3137,7 @@ void item_ScrollEnchantWeapon(Item* item, int player)
 					net_packet->data[5] = 0; // weapon index
 				}
 				net_packet->data[6] = (*toEnchant)->beatitude + 100;
-				SDLNet_Write16((Sint16)(*toEnchant)->type, &net_packet->data[7]);
+				SDLNet_Write16(static_cast<Sint16>((*toEnchant)->type), &net_packet->data[7]);
 				net_packet->address.host = net_server.host;
 				net_packet->address.port = net_server.port;
 				net_packet->len = 9;
@@ -3307,7 +3307,7 @@ void item_ScrollEnchantArmor(Item* item, int player)
 				{
 					strcpy((char*)net_packet->data, "FXGD");
 					net_packet->data[4] = player;
-					SDLNet_Write32((Uint32)goldSubtract, &net_packet->data[5]);
+					SDLNet_Write32(static_cast<Uint32>(goldSubtract), &net_packet->data[5]);
 					SDLNet_Write32((Uint32)0, &net_packet->data[9]);
 
 					Uint16 spellID = SPELL_NONE;
@@ -3366,7 +3366,7 @@ void item_ScrollEnchantArmor(Item* item, int player)
 				net_packet->data[4] = player;
 				net_packet->data[5] = armornum;
 				net_packet->data[6] = armor->beatitude + 100;
-				SDLNet_Write16((Sint16)armor->type, &net_packet->data[7]);
+				SDLNet_Write16(static_cast<Sint16>(armor->type), &net_packet->data[7]);
 				net_packet->address.host = net_server.host;
 				net_packet->address.port = net_server.port;
 				net_packet->len = 9;
@@ -3539,7 +3539,7 @@ void item_ScrollRemoveCurse(Item* item, int player)
 				net_packet->data[4] = player;
 				net_packet->data[5] = armornum;
 				net_packet->data[6] = toCurse->beatitude + 100;
-				SDLNet_Write16((Sint16)toCurse->type, &net_packet->data[7]);
+				SDLNet_Write16(static_cast<Sint16>(toCurse->type), &net_packet->data[7]);
 				net_packet->address.host = net_server.host;
 				net_packet->address.port = net_server.port;
 				net_packet->len = 9;
@@ -3630,7 +3630,7 @@ bool item_ScrollFire(Item* item, int player)
 
 		if ( item->beatitude > 0 )
 		{
-			if ( players[player]->entity->setEffect(EFF_FLAME_CLOAK, (Uint8)75, 30 * TICKS_PER_SECOND, true) )
+			if ( players[player]->entity->setEffect(EFF_FLAME_CLOAK, static_cast<Uint8>(75), 30 * TICKS_PER_SECOND, true) )
 			{
 				spawnMagicEffectParticles(players[player]->entity->x, players[player]->entity->y, players[player]->entity->z, 2207);
 			}
@@ -3694,7 +3694,7 @@ void item_ScrollFood(Item* item, int player)
 		for ( node = stats[player]->inventory.first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			target = (Item*)node->element;
+			target = static_cast<Item*>(node->element);
 			if ( itemCategory(target) == FOOD )
 			{
 				if ( local_rng.rand() % 2 == 0 )   // 50% chance of destroying that food item
@@ -4392,7 +4392,7 @@ void item_ScrollSummon(Item* item, int player)
 						{
 							if ( bodypart >= LIMB_HUMANOID_TORSO )
 							{
-								Entity* tmp = (Entity*)node->element;
+								Entity* tmp = static_cast<Entity*>(node->element);
 								if ( tmp )
 								{
 									tmp->flags[USERFLAG2] = true;
@@ -4652,7 +4652,7 @@ void item_ToolMirror(Item*& item, int player)
 			{
 				if ( item->status > DECREPIT )
 				{
-					item->status = static_cast<Status>((int)item->status - 1);
+					item->status = static_cast<Status>(static_cast<int>(item->status) - 1);
 					messagePlayer(player, MESSAGE_HINT, Language::get(681), item->getName());
 				}
 				else if ( item->status == DECREPIT )
@@ -4746,7 +4746,7 @@ Entity* item_ToolBeartrap(Item*& item, Entity* usedBy)
 		trapProps.parent = entity->parent;
 		for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 		{
-			Entity* creature = (Entity*)node->element;
+			Entity* creature = static_cast<Entity*>(node->element);
 			if ( creature && usedBy->checkFriend(creature) )
 			{
 				trapProps.ignoreEntities.insert(creature->getUID());
@@ -5119,7 +5119,7 @@ void item_Food(Item*& item, int player)
 					{
 						if ( stats[player]->getEffectActive(EFF_GROWTH) < 4 )
 						{
-							players[player]->entity->setEffect(EFF_GROWTH, (Uint8)(std::min(4, effectStrength + 1)), 15 * TICKS_PER_SECOND, false);
+							players[player]->entity->setEffect(EFF_GROWTH, static_cast<Uint8>(std::min(4, effectStrength + 1)), 15 * TICKS_PER_SECOND, false);
 							messagePlayerColor(player, MESSAGE_STATUS, makeColorRGB(0, 255, 0), Language::get(6924));
 						}
 					}
@@ -5225,7 +5225,7 @@ void item_Food(Item*& item, int player)
 				players[player]->entity->setEffect(EFF_HP_MP_REGEN, true, 
 					stats[player]->EFFECTS_TIMERS[EFF_HP_MP_REGEN] + TICKS_PER_SECOND * 30, false);
 
-				int caster = (int)stats[player]->getEffectActive(EFF_BLESS_FOOD) - 1;
+				int caster = static_cast<int>(stats[player]->getEffectActive(EFF_BLESS_FOOD)) - 1;
 				if ( caster >= 0 && caster < MAXPLAYERS )
 				{
 					if ( players[caster]->entity )
@@ -5259,7 +5259,7 @@ void item_Food(Item*& item, int player)
 				foodMod += 3;
 			}
 
-			players[player]->entity->modHP(std::max(1, (int)(foodMod * foodMult)));
+			players[player]->entity->modHP(std::max(1, static_cast<int>(foodMod * foodMult)));
 			messagePlayer(player, MESSAGE_WORLD, Language::get(911));
 
 
@@ -5586,7 +5586,7 @@ void item_FoodTin(Item*& item, int player)
 					{
 						if ( stats[player]->getEffectActive(EFF_GROWTH) < 4 )
 						{
-							players[player]->entity->setEffect(EFF_GROWTH, (Uint8)(std::min(4, effectStrength + 1)), 15 * TICKS_PER_SECOND, false);
+							players[player]->entity->setEffect(EFF_GROWTH, static_cast<Uint8>(std::min(4, effectStrength + 1)), 15 * TICKS_PER_SECOND, false);
 							messagePlayerColor(player, MESSAGE_STATUS, makeColorRGB(0, 255, 0), Language::get(6924));
 						}
 					}
@@ -5655,7 +5655,7 @@ void item_FoodTin(Item*& item, int player)
 			{
 				players[player]->entity->setEffect(EFF_HP_MP_REGEN, true, stats[player]->EFFECTS_TIMERS[EFF_HP_MP_REGEN] + TICKS_PER_SECOND * 30, false);
 
-				int caster = (int)stats[player]->getEffectActive(EFF_BLESS_FOOD) - 1;
+				int caster = static_cast<int>(stats[player]->getEffectActive(EFF_BLESS_FOOD)) - 1;
 				if ( caster >= 0 && caster < MAXPLAYERS )
 				{
 					if ( players[caster]->entity )
@@ -5701,7 +5701,7 @@ void item_FoodTin(Item*& item, int player)
 				foodMod += 3;
 			}
 
-			players[player]->entity->modHP(std::max(1, (int)(foodMod * foodMult)));
+			players[player]->entity->modHP(std::max(1, static_cast<int>(foodMod * foodMult)));
 			messagePlayer(player, MESSAGE_WORLD, Language::get(911));
 			if ( stats[player]->playerRace == RACE_INSECTOID && stats[player]->stat_appearance == 0 )
 			{
@@ -5909,7 +5909,7 @@ void item_Spellbook(Item*& item, int player)
 			// randomly delete a spell
 			int spellToDelete = local_rng.rand() % list_Size(&players[player]->magic.spellList);
 			node = list_Node(&players[player]->magic.spellList, spellToDelete);
-			spell_t* spell = (spell_t*)node->element;
+			spell_t* spell = static_cast<spell_t*>(node->element);
 			int spellID = spell->ID;
 			bool deleted = false;
 			bool rerollSpell = false;
@@ -5930,14 +5930,14 @@ void item_Spellbook(Item*& item, int player)
 				spellToDelete = local_rng.rand() % (list_Size(&players[player]->magic.spellList) - CLASS_SHAMAN_NUM_STARTING_SPELLS);
 				spellToDelete += CLASS_SHAMAN_NUM_STARTING_SPELLS; // e.g 16 spells is 0 + 15, 15th index.
 				node = list_Node(&players[player]->magic.spellList, spellToDelete);
-				spell = (spell_t*)node->element;
+				spell = static_cast<spell_t*>(node->element);
 				spellID = spell->ID;
 			}
 
 			for ( node_t* node2 = stats[player]->inventory.first; node2 != NULL; node2 = nextnode )
 			{
 				nextnode = node2->next;
-				Item* itemInventory = (Item*)node2->element;
+				Item* itemInventory = static_cast<Item*>(node2->element);
 				if ( itemInventory && itemInventory->type == SPELL_ITEM )
 				{
 					if ( rerollSpell )

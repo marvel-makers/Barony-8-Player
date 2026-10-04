@@ -106,7 +106,7 @@ void actSprite(Entity* my)
 	}
 	if ( SPRITE_ALPHA_VAR > 0.0001 )
 	{
-		SPRITE_CURRENT_ALPHA = SPRITE_ALPHA_VAR + SPRITE_ALPHA_ANIM_SIZE * sin(2 * PI * (my->ticks % TICKS_PER_SECOND) / (real_t)(TICKS_PER_SECOND));
+		SPRITE_CURRENT_ALPHA = SPRITE_ALPHA_VAR + SPRITE_ALPHA_ANIM_SIZE * sin(2 * PI * (my->ticks % TICKS_PER_SECOND) / static_cast<real_t>((TICKS_PER_SECOND)));
 	}
 	if ( abs(my->vel_z) > 0.001 )
 	{

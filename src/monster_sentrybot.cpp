@@ -562,7 +562,7 @@ void sentryBotAnimate(Entity* my, Stat* myStats, double dist)
 			continue;
 		}
 
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -1022,7 +1022,7 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
 			for ( node_t* invNode = myStats->inventory.first; invNode; invNode = invNodeNext )
 			{
 				invNodeNext = invNode->next;
-				Item* item = (Item*)invNode->element;
+				Item* item = static_cast<Item*>(invNode->element);
 				if ( item && (item->type == TOOL_DUMMYBOT || item->type == TOOL_SENTRYBOT || item->type == TOOL_SPELLBOT) )
 				{
 					for ( int c = item->count; c > 0; c-- )
@@ -1057,7 +1057,7 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
 		int foundBadSound = 0;
 		for ( node_t* searchNode = map.entities->first; searchNode != nullptr; searchNode = searchNode->next )
 		{
-			Entity* ent = (Entity*)searchNode->element;
+			Entity* ent = static_cast<Entity*>(searchNode->element);
 			if ( !ent || ent == my )
 			{
 				continue;
@@ -1252,7 +1252,7 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
 			{
 				if ( bodypart == GYRO_BOMB )
 				{
-					entity = (Entity*)node->element;
+					entity = static_cast<Entity*>(node->element);
 					if ( entity )
 					{
 						if ( entity->sprite == items[TOOL_SENTRYBOT].index )
@@ -1356,7 +1356,7 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
 			continue;
 		}
 
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -1469,7 +1469,7 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
 					entity->sprite = -1;
 					for ( node_t* inv = myStats->inventory.first; inv; inv = inv->next )
 					{
-						Item* holding = (Item*)inv->element;
+						Item* holding = static_cast<Item*>(inv->element);
 						if ( holding && itemIsThrowableTinkerTool(holding) )
 						{
 							entity->sprite = items[holding->type].index;
@@ -1901,7 +1901,7 @@ void dummyBotAnimate(Entity* my, Stat* myStats, double dist)
 			continue;
 		}
 
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		if ( bodypart == DUMMY_HEAD )

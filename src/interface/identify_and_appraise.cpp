@@ -691,13 +691,13 @@ int Player::Inventory_t::Appraisal_t::getAppraisalTime(Item* item)
 		if ( cat == FOOD || cat == SCROLL || cat == POTION )
 		{
 			real_t ratio = std::max(0.2, 1.0 + (-skillLVL) / 100.0);
-			appraisal_time = std::max((real_t)Player::Inventory_t::Appraisal_t::fastTimeAppraisal * ratio, appraisal_time * ratio);
+			appraisal_time = std::max(static_cast<real_t>(Player::Inventory_t::Appraisal_t::fastTimeAppraisal) * ratio, appraisal_time * ratio);
 			appraisal_time = std::max(2 * TICKS_PER_SECOND, appraisal_time);
 		}
 		else if ( skillLVL >= 50 )
 		{
 			real_t ratio = std::max(0.2, 0.5 + (100 - skillLVL) / 100.0);
-			appraisal_time = std::max((real_t)Player::Inventory_t::Appraisal_t::fastTimeAppraisal * ratio, appraisal_time * ratio);
+			appraisal_time = std::max(static_cast<real_t>(Player::Inventory_t::Appraisal_t::fastTimeAppraisal) * ratio, appraisal_time * ratio);
 			appraisal_time = std::max(2 * TICKS_PER_SECOND, appraisal_time);
 		}
 		/*if ( fast_time )

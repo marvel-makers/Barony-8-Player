@@ -189,7 +189,7 @@ void actArrowTrap(Entity* my)
 			// misfire from a lockpick, try to find a nearby target.
 			for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( entity && entity->behavior == &actPlayer && entityDist(my, entity) < TOUCHRANGE )
 				{
 					targetToAutoHit = entity;
@@ -309,8 +309,8 @@ void actArrowTrap(Entity* my)
 					if ( multiplayer == SERVER )
 					{
 						Sint32 val = (1 << 31);
-						val |= (Uint8)(17);
-						val |= (((Uint16)(TOOL_SENTRYBOT) & 0xFFF) << 8);
+						val |= static_cast<Uint8>(17);
+						val |= ((static_cast<Uint16>(TOOL_SENTRYBOT) & 0xFFF) << 8);
 						val |= (8) << 20;
 						entity->skill[2] = val;//-(1000 + TOOL_SENTRYBOT); // invokes actArrow for clients.
 						entity->arrowShotByWeapon = TOOL_SENTRYBOT;

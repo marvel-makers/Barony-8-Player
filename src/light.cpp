@@ -220,7 +220,7 @@ bool loadLights(bool forceLoadBaseDirectory) {
     }
     
     char buf[65536];
-    int count = (int)fp->read(buf, sizeof(buf[0]), sizeof(buf));
+    int count = static_cast<int>(fp->read(buf, sizeof(buf[0]), sizeof(buf)));
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);

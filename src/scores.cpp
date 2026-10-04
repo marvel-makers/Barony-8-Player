@@ -84,7 +84,7 @@ score_t* scoreConstructor(int player)
 {
 	node_t* node;
 
-	score_t* score = (score_t*) malloc(sizeof(score_t));
+	score_t* score = static_cast<score_t*>(malloc(sizeof(score_t)));
 	if ( !score )
 	{
 		printlog( "failed to allocate memory for new score!\n" );
@@ -161,77 +161,77 @@ score_t* scoreConstructor(int player)
 	list_Copy(&score->stats->inventory, &stats[player]->inventory);
 	for ( node = score->stats->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		item->node = node;
 	}
 	list_Copy(&score->stats->void_chest_inventory, &stats[player]->void_chest_inventory);
 	for ( node = score->stats->void_chest_inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		item->node = node;
 	}
 	int c;
 	for ( c = 0, node = stats[player]->inventory.first; node != NULL; node = node->next, c++ )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( stats[player]->helmet == item )
 		{
 			node_t* node2 = list_Node(&score->stats->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			score->stats->helmet = item2;
 		}
 		else if ( stats[player]->breastplate == item )
 		{
 			node_t* node2 = list_Node(&score->stats->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			score->stats->breastplate = item2;
 		}
 		else if ( stats[player]->gloves == item )
 		{
 			node_t* node2 = list_Node(&score->stats->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			score->stats->gloves = item2;
 		}
 		else if ( stats[player]->shoes == item )
 		{
 			node_t* node2 = list_Node(&score->stats->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			score->stats->shoes = item2;
 		}
 		else if ( stats[player]->shield == item )
 		{
 			node_t* node2 = list_Node(&score->stats->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			score->stats->shield = item2;
 		}
 		else if ( stats[player]->weapon == item )
 		{
 			node_t* node2 = list_Node(&score->stats->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			score->stats->weapon = item2;
 		}
 		else if ( stats[player]->cloak == item )
 		{
 			node_t* node2 = list_Node(&score->stats->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			score->stats->cloak = item2;
 		}
 		else if ( stats[player]->amulet == item )
 		{
 			node_t* node2 = list_Node(&score->stats->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			score->stats->amulet = item2;
 		}
 		else if ( stats[player]->ring == item )
 		{
 			node_t* node2 = list_Node(&score->stats->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			score->stats->ring = item2;
 		}
 		else if ( stats[player]->mask == item )
 		{
 			node_t* node2 = list_Node(&score->stats->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			score->stats->mask = item2;
 		}
 	}
@@ -263,9 +263,9 @@ score_t* scoreConstructor(int player, SaveGameInfo& info)
 		if ( score_t* score = scoreConstructor(MAXPLAYERS - 1) )
 		{
 			score->victory = info.hiscore_victory;
-			score->stats->killer = (KilledBy)info.hiscore_killed_by;
-			score->stats->killer_monster = (Monster)info.hiscore_killed_monster;
-			score->stats->killer_item = (ItemType)info.hiscore_killed_item;
+			score->stats->killer = static_cast<KilledBy>(info.hiscore_killed_by);
+			score->stats->killer_monster = static_cast<Monster>(info.hiscore_killed_monster);
+			score->stats->killer_item = static_cast<ItemType>(info.hiscore_killed_item);
 			score->totalscore = info.hiscore_totalscore;
 			return score;
 		}
@@ -285,7 +285,7 @@ void scoreDeconstructor(void* data)
 {
 	if ( data )
 	{
-		score_t* score = (score_t*)data;
+		score_t* score = static_cast<score_t*>(data);
 		if ( score->stats )
 		{
 			delete score->stats;
@@ -322,7 +322,7 @@ int saveScore(int player)
     Uint32 total = totalScore(currentscore);
 	for ( c = 0, node = scoresPtr->first; node != NULL; node = node->next, c++ )
 	{
-		score_t* score = (score_t*)node->element;
+		score_t* score = static_cast<score_t*>(node->element);
 		if ( total > totalScore(score) )
 		{
 			node_t* newNode = list_AddNode(scoresPtr, c);
@@ -363,7 +363,7 @@ int totalScore(score_t* score)
 
 	for ( node_t* node = score->stats->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		amount += items[item->type].gold_value;
 	}
 	amount += score->stats->GOLD;
@@ -524,14 +524,14 @@ void loadScore(score_t* score)
 	list_Copy(&stats[0]->inventory, &score->stats->inventory);
 	for ( node_t* node = stats[0]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		item->node = node;
 	}
 	list_FreeAll(&stats[0]->void_chest_inventory);
 	list_Copy(&stats[0]->void_chest_inventory, &score->stats->void_chest_inventory);
 	for ( node_t* node = stats[0]->void_chest_inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		item->node = node;
 	}
 
@@ -539,65 +539,65 @@ void loadScore(score_t* score)
 	node_t* node;
 	for ( c = 0, node = score->stats->inventory.first; node != NULL; node = node->next, c++ )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( score->stats->helmet == item )
 		{
 			node_t* node2 = list_Node(&stats[0]->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			stats[0]->helmet = item2;
 		}
 		else if ( score->stats->breastplate == item )
 		{
 			node_t* node2 = list_Node(&stats[0]->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			stats[0]->breastplate = item2;
 		}
 		else if ( score->stats->gloves == item )
 		{
 			node_t* node2 = list_Node(&stats[0]->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			stats[0]->gloves = item2;
 		}
 		else if ( score->stats->shoes == item )
 		{
 			node_t* node2 = list_Node(&stats[0]->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			stats[0]->shoes = item2;
 		}
 		else if ( score->stats->shield == item )
 		{
 			node_t* node2 = list_Node(&stats[0]->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			stats[0]->shield = item2;
 		}
 		else if ( score->stats->weapon == item )
 		{
 			node_t* node2 = list_Node(&stats[0]->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			stats[0]->weapon = item2;
 		}
 		else if ( score->stats->cloak == item )
 		{
 			node_t* node2 = list_Node(&stats[0]->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			stats[0]->cloak = item2;
 		}
 		else if ( score->stats->amulet == item )
 		{
 			node_t* node2 = list_Node(&stats[0]->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			stats[0]->amulet = item2;
 		}
 		else if ( score->stats->ring == item )
 		{
 			node_t* node2 = list_Node(&stats[0]->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			stats[0]->ring = item2;
 		}
 		else if ( score->stats->mask == item )
 		{
 			node_t* node2 = list_Node(&stats[0]->inventory, c);
-			Item* item2 = (Item*)node2->element;
+			Item* item2 = static_cast<Item*>(node2->element);
 			stats[0]->mask = item2;
 		}
 	}
@@ -628,7 +628,7 @@ void loadScore(int scorenum)
 	{
 		return;
 	}
-	score_t* score = (score_t*)node->element;
+	score_t* score = static_cast<score_t*>(node->element);
 	loadScore(score);
 }
 
@@ -692,7 +692,7 @@ void saveAllScoresJSON(const std::string& scoresfilename)
 	rapidjson::Value scores_list(rapidjson::kArrayType);
 	for ( ; node != NULL; node = node->next )
 	{
-		score_t* score = (score_t*)node->element;
+		score_t* score = static_cast<score_t*>(node->element);
 		rapidjson::Value entry(rapidjson::kObjectType);
 
 		entry.AddMember("name", rapidjson::Value(score->stats->name, d.GetAllocator()), d.GetAllocator());
@@ -797,7 +797,7 @@ void saveAllScoresJSON(const std::string& scoresfilename)
 			rapidjson::Value inventory(rapidjson::kArrayType);
 			for ( node_t* node2 = score->stats->inventory.first; node2 != NULL; node2 = node2->next )
 			{
-				Item* item = (Item*)node2->element;
+				Item* item = static_cast<Item*>(node2->element);
 
 				rapidjson::Value inv_item(rapidjson::kObjectType);
 				inv_item.AddMember("type", item->type, d.GetAllocator());
@@ -917,7 +917,7 @@ void saveAllScoresJSON(const std::string& scoresfilename)
 		rapidjson::Value books_read(rapidjson::kArrayType);
 		for ( node_t* node = booksRead.first; node != NULL; node = node->next )
 		{
-			char* book = (char*)node->element;
+			char* book = static_cast<char*>(node->element);
 			books_read.PushBack(rapidjson::Value(book, d.GetAllocator()), d.GetAllocator());
 		}
 		d.AddMember("books_read", books_read, d.GetAllocator());
@@ -1014,7 +1014,7 @@ void saveAllScores(const std::string& scoresfilename)
 	fp->write(&booksReadNum, sizeof(Uint32), 1);
 	for ( node_t* node = booksRead.first; node != NULL; node = node->next )
 	{
-		char* book = (char*)node->element;
+		char* book = static_cast<char*>(node->element);
 		int c = strlen(book);
 		fp->write(&c, sizeof(Uint32), 1);
 		fp->puts(book);
@@ -1045,7 +1045,7 @@ void saveAllScores(const std::string& scoresfilename)
 
 	for (; node != NULL; node = node->next )
 	{
-		score_t* score = (score_t*)node->element;
+		score_t* score = static_cast<score_t*>(node->element);
 		for ( int c = 0; c < NUMMONSTERS; c++ )
 		{
 			fp->write(&score->kills[c], sizeof(Sint32), 1);
@@ -1123,7 +1123,7 @@ void saveAllScores(const std::string& scoresfilename)
 		fp->write(&inventorySize, sizeof(ItemType), 1);
 		for ( node2 = score->stats->inventory.first; node2 != NULL; node2 = node2->next )
 		{
-			Item* item = (Item*)node2->element;
+			Item* item = static_cast<Item*>(node2->element);
 			fp->write(&item->type, sizeof(ItemType), 1);
 			fp->write(&item->status, sizeof(Status), 1);
 			fp->write(&item->beatitude, sizeof(Sint16), 1);
@@ -1359,8 +1359,8 @@ bool verifyScoreStruct(score_t* score, score_t* score2)
 
 		if ( node1 && node2 )
 		{
-			Item* item1 = (Item*)node1->element;
-			Item* item2 = (Item*)node2->element;
+			Item* item1 = static_cast<Item*>(node1->element);
+			Item* item2 = static_cast<Item*>(node2->element);
 
 			assert(item1->type == item2->type);
 			assert(item1->status == item2->status);
@@ -1393,8 +1393,8 @@ bool verifyScoreStruct(score_t* score, score_t* score2)
 
 		if ( node1 && node2 )
 		{
-			Item* item1 = (Item*)node1->element;
-			Item* item2 = (Item*)node2->element;
+			Item* item1 = static_cast<Item*>(node1->element);
+			Item* item2 = static_cast<Item*>(node2->element);
 
 			assert(item1->type == item2->type);
 			assert(item1->status == item2->status);
@@ -1420,7 +1420,7 @@ bool verifyScoreLoader()
 		assert(score1 && score2);
 		if ( score1 && score2 )
 		{
-			verifyScoreStruct((score_t*)score1->element, (score_t*)score2->element);
+			verifyScoreStruct(static_cast<score_t*>(score1->element), static_cast<score_t*>(score2->element));
 		}
 	}
 
@@ -1434,7 +1434,7 @@ bool verifyScoreLoader()
 		assert(score1 && score2);
 		if ( score1 && score2 )
 		{
-			verifyScoreStruct((score_t*)score1->element, (score_t*)score2->element);
+			verifyScoreStruct(static_cast<score_t*>(score1->element), static_cast<score_t*>(score2->element));
 		}
 	}
 
@@ -1576,7 +1576,7 @@ void loadAllScoresJSON(const std::string& scoresfilename)
 		for ( auto itr = d["books_read"].Begin(); itr != d["books_read"].End(); ++itr )
 		{
 			std::string bookname = itr->GetString();
-			if ( char* book = (char*)malloc(sizeof(char) * (bookname.size() + 1)) )
+			if ( char* book = static_cast<char*>(malloc(sizeof(char) * (bookname.size() + 1))) )
 			{
 				memset(book, 0, sizeof(char) * (bookname.size() + 1));
 				strcpy(book, bookname.c_str());
@@ -1635,7 +1635,7 @@ void loadAllScoresJSON(const std::string& scoresfilename)
 			break;
 		}
 
-		score_t* score = (score_t*)malloc(sizeof(score_t));
+		score_t* score = static_cast<score_t*>(malloc(sizeof(score_t)));
 		if ( !score )
 		{
 			printlog("failed to allocate memory for new score!\n");
@@ -1670,16 +1670,16 @@ void loadAllScoresJSON(const std::string& scoresfilename)
 		score->conductFoodless = jsonGetBool(*itr, "conductFoodless");
 		score->conductVegetarian = jsonGetBool(*itr, "conductVegetarian");
 		score->conductIlliterate = jsonGetBool(*itr, "conductIlliterate");
-		score->stats->type = (Monster)jsonGetInt(*itr, "type");
-		score->stats->sex = (sex_t)jsonGetInt(*itr, "sex");
+		score->stats->type = static_cast<Monster>(jsonGetInt(*itr, "type"));
+		score->stats->sex = static_cast<sex_t>(jsonGetInt(*itr, "sex"));
 		score->stats->playerRace = jsonGetInt(*itr, "race");
-		score->stats->stat_appearance = (Uint32)jsonGetInt(*itr, "appearance");
+		score->stats->stat_appearance = static_cast<Uint32>(jsonGetInt(*itr, "appearance"));
 		const char* name = jsonGetStr(*itr, "name");
 		stringCopy(score->stats->name, name, 32, strlen(name));
 
-		score->stats->killer_monster = (Monster)jsonGetInt(*itr, "killer_monster");
-		score->stats->killer_item = (ItemType)jsonGetInt(*itr, "killer_item");
-		score->stats->killer = (KilledBy)jsonGetInt(*itr, "killer");
+		score->stats->killer_monster = static_cast<Monster>(jsonGetInt(*itr, "killer_monster"));
+		score->stats->killer_item = static_cast<ItemType>(jsonGetInt(*itr, "killer_item"));
+		score->stats->killer = static_cast<KilledBy>(jsonGetInt(*itr, "killer"));
 		score->stats->killer_name = jsonGetStr(*itr, "killer_name");
 
 		score->classnum = jsonGetInt(*itr, "classnum");
@@ -1852,7 +1852,7 @@ void loadAllScoresJSON(const std::string& scoresfilename)
 					{
 						if ( c >= 0 && c < player_slots.size() )
 						{
-							*(player_slots[c].second) = (Item*)node->element;
+							*(player_slots[c].second) = static_cast<Item*>(node->element);
 						}
 					}
 				}
@@ -1967,7 +1967,7 @@ void loadAllScores(const std::string& scoresfilename)
 		//
 		//char* book = (char*) malloc(sizeof(char) * (strlen(tempstr) + 1));
 		//strcpy(book, tempstr);
-		char *book = (char *)malloc(sizeof(char) * (booknamelen + 1));
+		char *book = static_cast<char*>(malloc(sizeof(char) * (booknamelen + 1)));
 		fp->gets(book, booknamelen + 1);
 
 		node_t* node = list_AddNodeLast(&booksRead);
@@ -2077,7 +2077,7 @@ void loadAllScores(const std::string& scoresfilename)
 				node = list_AddNodeLast(&topscoresMultiplayer_legacy);
 			}
 		}
-		score_t* score = (score_t*) malloc(sizeof(score_t));
+		score_t* score = static_cast<score_t*>(malloc(sizeof(score_t)));
 		if ( !score )
 		{
 			printlog( "failed to allocate memory for new score!\n" );
@@ -2389,7 +2389,7 @@ void loadAllScores(const std::string& scoresfilename)
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
-			score->stats->helmet = (Item*)node->element;
+			score->stats->helmet = static_cast<Item*>(node->element);
 		}
 		else
 		{
@@ -2399,7 +2399,7 @@ void loadAllScores(const std::string& scoresfilename)
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
-			score->stats->breastplate = (Item*)node->element;
+			score->stats->breastplate = static_cast<Item*>(node->element);
 		}
 		else
 		{
@@ -2409,7 +2409,7 @@ void loadAllScores(const std::string& scoresfilename)
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
-			score->stats->gloves = (Item*)node->element;
+			score->stats->gloves = static_cast<Item*>(node->element);
 		}
 		else
 		{
@@ -2419,7 +2419,7 @@ void loadAllScores(const std::string& scoresfilename)
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
-			score->stats->shoes = (Item*)node->element;
+			score->stats->shoes = static_cast<Item*>(node->element);
 		}
 		else
 		{
@@ -2429,7 +2429,7 @@ void loadAllScores(const std::string& scoresfilename)
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
-			score->stats->shield = (Item*)node->element;
+			score->stats->shield = static_cast<Item*>(node->element);
 		}
 		else
 		{
@@ -2439,7 +2439,7 @@ void loadAllScores(const std::string& scoresfilename)
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
-			score->stats->weapon = (Item*)node->element;
+			score->stats->weapon = static_cast<Item*>(node->element);
 		}
 		else
 		{
@@ -2449,7 +2449,7 @@ void loadAllScores(const std::string& scoresfilename)
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
-			score->stats->cloak = (Item*)node->element;
+			score->stats->cloak = static_cast<Item*>(node->element);
 		}
 		else
 		{
@@ -2459,7 +2459,7 @@ void loadAllScores(const std::string& scoresfilename)
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
-			score->stats->amulet = (Item*)node->element;
+			score->stats->amulet = static_cast<Item*>(node->element);
 		}
 		else
 		{
@@ -2469,7 +2469,7 @@ void loadAllScores(const std::string& scoresfilename)
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
-			score->stats->ring = (Item*)node->element;
+			score->stats->ring = static_cast<Item*>(node->element);
 		}
 		else
 		{
@@ -2479,7 +2479,7 @@ void loadAllScores(const std::string& scoresfilename)
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
-			score->stats->mask = (Item*)node->element;
+			score->stats->mask = static_cast<Item*>(node->element);
 		}
 		else
 		{
@@ -2726,7 +2726,7 @@ Uint32 getSaveGameMapSeed(const SaveGameInfo& info)
 
 int getSavegameVersion(const char* checkstr)
 {
-	const int maxlen = (int)strlen(VERSION);
+	const int maxlen = static_cast<int>(strlen(VERSION));
 	int versionNumber = 300;
 	char versionStr[4] = "000";
 	int i = 0;
@@ -3163,7 +3163,7 @@ void updateGameplayStatisticsInMainLoop()
 		int dummy2 = 0;
 		for ( node_t* node = stats[clientnum]->inventory.first; node != nullptr; node = node->next )
 		{
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				if ( itemCategory(item) == POTION )
@@ -4176,9 +4176,9 @@ void AchievementObserver::updateClientBounties(bool firstSend)
 		{
 			for ( node_t* node = stats[c]->FOLLOWERS.first; node != nullptr; node = node->next )
 			{
-				if ( (Uint32*)node->element )
+				if ( static_cast<Uint32*>(node->element) )
 				{
-					Uint32 uid = *((Uint32*)node->element);
+					Uint32 uid = *static_cast<Uint32*>(node->element);
 					for ( int d = 0; d < MAXPLAYERS; ++d )
 					{
 						if ( playerAchievements[d].bountyTargets.find(uid)
@@ -4263,7 +4263,7 @@ void AchievementObserver::updateClientBounties(bool firstSend)
 				auto& bounties = playerAchievements[c].bountyTargets;
 				strcpy((char*)net_packet->data, "BNTY");
 				net_packet->data[4] = c;
-				net_packet->data[5] = (Uint8)bounties.size();
+				net_packet->data[5] = static_cast<Uint8>(bounties.size());
 				int index = 6;
 				for ( auto uid : bounties )
 				{
@@ -4294,7 +4294,7 @@ void AchievementObserver::updateData()
 	std::vector<Entity*> monstersGeneratedOnLevel;
 	for ( node_t* node = map.creatures->first; node; node = node->next )
 	{
-		Entity* mapCreature = (Entity*)node->element;
+		Entity* mapCreature = static_cast<Entity*>(node->element);
 		if ( mapCreature && mapCreature->behavior == &actMonster )
 		{
 			if ( auto stats = mapCreature->getStats() )
@@ -4317,7 +4317,7 @@ void AchievementObserver::updateData()
 		std::vector<Uint32> chestsOnLevel;
 		for ( node_t* node = map.entities->first; node; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entity && (entity->behavior == &actChest || (entity->behavior == &actMonster && entity->getStats() && entity->getStats()->type == MIMIC) ) )
 			{
 				chestsOnLevel.push_back(entity->getUID());
@@ -4590,18 +4590,18 @@ int AchievementObserver::PlayerAchievements::getItemIndexForDapperAchievement(It
 		int index = 0;
 		for ( int i = 0; i < NUMITEMS; ++i )
 		{
-			if ( startingClassItems.find((ItemType)i) != startingClassItems.end() )
+			if ( startingClassItems.find(static_cast<ItemType>(i)) != startingClassItems.end() )
 			{
 				continue;
 			}
 			if ( items[i].item_slot == EQUIPPABLE_IN_SLOT_HELM )
 			{
-				dapperItems[(ItemType)i] = index;
+				dapperItems[static_cast<ItemType>(i)] = index;
 				++index;
 			}
 			else if ( items[i].item_slot == EQUIPPABLE_IN_SLOT_MASK )
 			{
-				dapperItems[(ItemType)i] = index;
+				dapperItems[static_cast<ItemType>(i)] = index;
 				++index;
 			}
 		}
@@ -5212,8 +5212,8 @@ bool AchievementObserver::PlayerAchievements::checkPathBetweenObjects(Entity* pl
 		return false;
 	}
 
-	list_t* playerPath = generatePath((int)floor(player->x / 16), (int)floor(player->y / 16),
-		(int)floor(target->x / 16), (int)floor(target->y / 16), player, target, GeneratePathTypes::GENERATE_PATH_ACHIEVEMENT, true);
+	list_t* playerPath = generatePath(static_cast<int>(floor(player->x / 16)), static_cast<int>(floor(player->y / 16)),
+		static_cast<int>(floor(target->x / 16)), static_cast<int>(floor(target->y / 16)), player, target, GeneratePathTypes::GENERATE_PATH_ACHIEVEMENT, true);
 	if ( playerPath == nullptr )
 	{
 		// no path.
@@ -5264,7 +5264,7 @@ bool AchievementObserver::PlayerAchievements::checkTraditionKill(Entity* player,
 		node_t* node;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entity && entity->behavior == &actFountain )
 			{
 				if ( entityDist(target, entity) < 16 * 3 )
@@ -5408,9 +5408,9 @@ void SaveGameInfo::computeHash(const int playernum, Uint32& hash)
 	hash += (Uint32)((Uint32)mapseed << (shift % 32)); ++shift;
 	hash += (Uint32)((Uint32)gametimer << (shift % 32)); ++shift;
 	hash += (Uint32)((Uint32)svflags << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)multiplayer_type << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)dungeon_lvl << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)level_track << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(multiplayer_type) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(dungeon_lvl) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(level_track) << (shift % 32)); ++shift;
 	hash += (Uint32)((Uint32)customseed << (shift % 32)); ++shift;
 
 	auto& player = players[playernum];
@@ -5419,20 +5419,20 @@ void SaveGameInfo::computeHash(const int playernum, Uint32& hash)
 
 	for ( auto k : player.kills )
 	{
-		hash += (Uint32)((Uint32)k << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(k) << (shift % 32)); ++shift;
 	}
 
-	hash += (Uint32)((Uint32)player.conductPenniless << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)player.conductFoodless << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)player.conductVegetarian << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)player.conductIlliterate << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(player.conductPenniless) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(player.conductFoodless) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(player.conductVegetarian) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(player.conductIlliterate) << (shift % 32)); ++shift;
 	for ( int i = 0; i < NUM_CONDUCT_CHALLENGES; ++i )
 	{
-		hash += (Uint32)((Uint32)player.additionalConducts[i] << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(player.additionalConducts[i]) << (shift % 32)); ++shift;
 	}
 	for ( int i = 0; i < NUM_GAMEPLAY_STATISTICS; ++i )
 	{
-		hash += (Uint32)((Uint32)player.gameStatistics[i] << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(player.gameStatistics[i]) << (shift % 32)); ++shift;
 	}
 	for ( int i = 0; i < NUM_HOTBAR_SLOTS; ++i )
 	{
@@ -5460,36 +5460,36 @@ void SaveGameInfo::computeHash(const int playernum, Uint32& hash)
 		hash += (Uint32)((Uint32)stats->sex << (shift % 32)); ++shift;
 		hash += (Uint32)((Uint32)stats->statscore_appearance << (shift % 32)); ++shift;
 
-		hash += (Uint32)((Uint32)stats->HP << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->maxHP << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->MP << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->maxMP << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->STR << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->DEX << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->CON << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->INT << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->PER << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->CHR << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->EXP << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->LVL << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->GOLD << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->HUNGER << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->HP) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->maxHP) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->MP) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->maxMP) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->STR) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->DEX) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->CON) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->INT) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->PER) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->CHR) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->EXP) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->LVL) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->GOLD) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(stats->HUNGER) << (shift % 32)); ++shift;
 
 		for ( auto k : stats->PROFICIENCIES )
 		{
-			hash += (Uint32)((Uint32)k << (shift % 32)); ++shift;
+			hash += (Uint32)(static_cast<Uint32>(k) << (shift % 32)); ++shift;
 		}
 		for ( auto k : stats->EFFECTS )
 		{
-			hash += (Uint32)((Uint32)k << (shift % 32)); ++shift;
+			hash += (Uint32)(static_cast<Uint32>(k) << (shift % 32)); ++shift;
 		}
 		for ( auto k : stats->EFFECTS_TIMERS )
 		{
-			hash += (Uint32)((Uint32)k << (shift % 32)); ++shift;
+			hash += (Uint32)(static_cast<Uint32>(k) << (shift % 32)); ++shift;
 		}
 		for ( auto k : stats->MISC_FLAGS )
 		{
-			hash += (Uint32)((Uint32)k << (shift % 32)); ++shift;
+			hash += (Uint32)(static_cast<Uint32>(k) << (shift % 32)); ++shift;
 		}
 		for ( auto& pair : stats->player_equipment )
 		{
@@ -5510,10 +5510,10 @@ void SaveGameInfo::computeHash(const int playernum, Uint32& hash)
 		for ( auto& bag : stats->player_lootbags )
 		{
 			hash += (Uint32)((Uint32)bag.first << (shift % 32)); ++shift;
-			hash += (Uint32)((Uint32)bag.second.spawn_x << (shift % 32)); ++shift;
-			hash += (Uint32)((Uint32)bag.second.spawn_y << (shift % 32)); ++shift;
-			hash += (Uint32)((Uint32)bag.second.looted << (shift % 32)); ++shift;
-			hash += (Uint32)((Uint32)bag.second.spawnedOnGround << (shift % 32)); ++shift;
+			hash += (Uint32)(static_cast<Uint32>(bag.second.spawn_x) << (shift % 32)); ++shift;
+			hash += (Uint32)(static_cast<Uint32>(bag.second.spawn_y) << (shift % 32)); ++shift;
+			hash += (Uint32)(static_cast<Uint32>(bag.second.looted) << (shift % 32)); ++shift;
+			hash += (Uint32)(static_cast<Uint32>(bag.second.spawnedOnGround) << (shift % 32)); ++shift;
 			for ( auto& item : bag.second.items )
 			{
 				item.computeHash(hash, shift);
@@ -5529,49 +5529,49 @@ void SaveGameInfo::computeHash(const int playernum, Uint32& hash)
 
 	for ( auto& val : players[playernum].itemDegradeRNG )
 	{
-		hash += (Uint32)((Uint32)val.first << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)val.second << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
 	}
 	for ( auto& val : players[playernum].escalatingRngRolls )
 	{
-		hash += (Uint32)((Uint32)val.first << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)val.second << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
 	}
 	for ( auto& val : players[playernum].escalatingSpellRngRolls )
 	{
-		hash += (Uint32)((Uint32)val.first << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)val.second << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
 	}
 	for ( auto& val : players[playernum].appraisal_item_progress )
 	{
-		hash += (Uint32)((Uint32)val.first << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)val.second << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
 	}
 	for ( auto& val : players[playernum].learnedSpells )
 	{
-		hash += (Uint32)((Uint32)val << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val) << (shift % 32)); ++shift;
 	}
 	for ( auto& val : players[playernum].sustainedSpellIDCounter )
 	{
-		hash += (Uint32)((Uint32)val.first << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)val.second << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
 	}
 	for ( auto& val : players[playernum].ducksInARow )
 	{
-		hash += (Uint32)((Uint32)val.first << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)val.second << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
 	}
 	for ( auto& val : players[playernum].favoriteBooksAchievement )
 	{
-		hash += (Uint32)((Uint32)val.first << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)val.second << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
 	}
-	hash += (Uint32)((Uint32)players[playernum].sustainedSpellMPUsedSorcery << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)players[playernum].sustainedSpellMPUsedMysticism << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)players[playernum].sustainedSpellMPUsedThaumaturgy << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)players[playernum].baseSpellMPUsedSorcery << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)players[playernum].baseSpellMPUsedMysticism << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)players[playernum].baseSpellMPUsedThaumaturgy << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(players[playernum].sustainedSpellMPUsedSorcery) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(players[playernum].sustainedSpellMPUsedMysticism) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(players[playernum].sustainedSpellMPUsedThaumaturgy) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(players[playernum].baseSpellMPUsedSorcery) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(players[playernum].baseSpellMPUsedMysticism) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(players[playernum].baseSpellMPUsedThaumaturgy) << (shift % 32)); ++shift;
 }
 
 void SaveGameInfo::Player::stat_t::item_t::computeHash(Uint32& hash, Uint32& shift)
@@ -5579,11 +5579,11 @@ void SaveGameInfo::Player::stat_t::item_t::computeHash(Uint32& hash, Uint32& shi
 	hash += (Uint32)((Uint32)type << (shift % 32)); ++shift;
 	hash += (Uint32)((Uint32)status << (shift % 32)); ++shift;
 	hash += (Uint32)((Uint32)appearance << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)beatitude << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)count << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)identified << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)x << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)y << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(beatitude) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(count) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(identified) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(x) << (shift % 32)); ++shift;
+	hash += (Uint32)(static_cast<Uint32>(y) << (shift % 32)); ++shift;
 }
 
 int SaveGameInfo::populateFromSession(const int playernum)
@@ -5717,7 +5717,7 @@ int SaveGameInfo::populateFromSession(const int playernum)
 
 				for ( node_t* node = ::players[c]->magic.spellList.first;
 					node != nullptr; node = node->next ) {
-					auto spell = (spell_t*)node->element;
+					auto spell = static_cast<spell_t*>(node->element);
 					player.spells.push_back(spell->ID);
 
 					if ( ::players[c]->magic.selectedSpell() == spell )
@@ -5916,8 +5916,8 @@ int SaveGameInfo::populateFromSession(const int playernum)
 					if ( slot.second ) {
 						player.stats.npc_equipment.push_back(std::make_pair(
 							slot.first, SaveGameInfo::Player::stat_t::item_t{
-								(Uint32)slot.second->type,
-								(Uint32)slot.second->status,
+								static_cast<Uint32>(slot.second->type),
+								static_cast<Uint32>(slot.second->status),
 								slot.second->appearance,
 								slot.second->beatitude,
 								slot.second->count,
@@ -5932,7 +5932,7 @@ int SaveGameInfo::populateFromSession(const int playernum)
 			// inventory
 			for ( node_t* node = stats[c]->inventory.first;
 				node != nullptr; node = node->next ) {
-				auto item = (Item*)node->element;
+				auto item = static_cast<Item*>(node->element);
 				if ( ::players[c]->inventoryUI.appraisal.appraisalProgressionItems.find(item->uid)
 					!= ::players[c]->inventoryUI.appraisal.appraisalProgressionItems.end() )
 				{
@@ -5941,8 +5941,8 @@ int SaveGameInfo::populateFromSession(const int playernum)
 				}
 				player.stats.inventory.push_back(
 					SaveGameInfo::Player::stat_t::item_t{
-					(Uint32)item->type,
-					(Uint32)item->status,
+					static_cast<Uint32>(item->type),
+					static_cast<Uint32>(item->status),
 					item->appearance,
 					item->beatitude,
 					item->count,
@@ -5955,11 +5955,11 @@ int SaveGameInfo::populateFromSession(const int playernum)
 			// void chest inventory
 			for ( node_t* node = stats[c]->void_chest_inventory.first;
 				node != nullptr; node = node->next ) {
-				auto item = (Item*)node->element;
+				auto item = static_cast<Item*>(node->element);
 				player.stats.void_chest_inventory.push_back(
 					SaveGameInfo::Player::stat_t::item_t{
-					(Uint32)item->type,
-					(Uint32)item->status,
+					static_cast<Uint32>(item->type),
+					static_cast<Uint32>(item->status),
 					item->appearance,
 					item->beatitude,
 					item->count,
@@ -5972,7 +5972,7 @@ int SaveGameInfo::populateFromSession(const int playernum)
 			// followers
 			for ( node_t* node = stats[c]->FOLLOWERS.first;
 				node != nullptr; node = node->next ) {
-				auto entity = uidToEntity(*((Uint32*)node->element));
+				auto entity = uidToEntity(*static_cast<Uint32*>(node->element));
 				Stat* follower = entity ? entity->getStats() : nullptr;
 				if ( follower ) {
 					SaveGameInfo::Player::stat_t stats;
@@ -6031,8 +6031,8 @@ int SaveGameInfo::populateFromSession(const int playernum)
 						if ( slot.second ) {
 							stats.npc_equipment.push_back(std::make_pair(
 								slot.first, SaveGameInfo::Player::stat_t::item_t{
-									(Uint32)slot.second->type,
-									(Uint32)slot.second->status,
+									static_cast<Uint32>(slot.second->type),
+									static_cast<Uint32>(slot.second->status),
 									slot.second->appearance,
 									slot.second->beatitude,
 									slot.second->count,
@@ -6046,11 +6046,11 @@ int SaveGameInfo::populateFromSession(const int playernum)
 					// inventory
 					for ( node_t* node = follower->inventory.first;
 						node != nullptr; node = node->next ) {
-						auto item = (Item*)node->element;
+						auto item = static_cast<Item*>(node->element);
 						stats.inventory.push_back(
 							SaveGameInfo::Player::stat_t::item_t{
-							(Uint32)item->type,
-							(Uint32)item->status,
+							static_cast<Uint32>(item->type),
+							static_cast<Uint32>(item->status),
 							item->appearance,
 							item->beatitude,
 							item->count,
@@ -6173,7 +6173,7 @@ int SaveGameInfo::getTotalScore(const int playernum, const int victory)
 		amount += victory * 10000;
 	}
 
-	Uint32 gametimer = std::min(this->gametimer, (Uint32)0xFFFFFF);
+	Uint32 gametimer = std::min(this->gametimer, static_cast<Uint32>(0xFFFFFF));
 
 	amount -= gametimer / TICKS_PER_SECOND;
 	if ( victory )
@@ -6226,7 +6226,7 @@ std::string SaveGameInfo::serializeToOnlineHiscore(const int playernum, const in
 	auto& player = players[playernum];
 	auto& myStats = players[playernum].stats;
 
-	Uint32 gametimer = std::min(this->gametimer, (Uint32)0xFFFFFF);
+	Uint32 gametimer = std::min(this->gametimer, static_cast<Uint32>(0xFFFFFF));
 
 	std::string lid = "lid";
 	int lid_version = 0;
@@ -6312,10 +6312,10 @@ std::string SaveGameInfo::serializeToOnlineHiscore(const int playernum, const in
 		attrObj.AddMember("proficiencies", profArr, d.GetAllocator());
 
 		rapidjson::Value conductsArr(rapidjson::kArrayType);
-		conductsArr.PushBack((int)player.conductPenniless, d.GetAllocator());
-		conductsArr.PushBack((int)player.conductFoodless, d.GetAllocator());
-		conductsArr.PushBack((int)player.conductVegetarian, d.GetAllocator());
-		conductsArr.PushBack((int)player.conductIlliterate, d.GetAllocator());
+		conductsArr.PushBack(static_cast<int>(player.conductPenniless), d.GetAllocator());
+		conductsArr.PushBack(static_cast<int>(player.conductFoodless), d.GetAllocator());
+		conductsArr.PushBack(static_cast<int>(player.conductVegetarian), d.GetAllocator());
+		conductsArr.PushBack(static_cast<int>(player.conductIlliterate), d.GetAllocator());
 		for ( int i = 0; i < NUM_CONDUCT_CHALLENGES; ++i )
 		{
 			conductsArr.PushBack(player.additionalConducts[i], d.GetAllocator());
@@ -6346,12 +6346,12 @@ std::string SaveGameInfo::serializeToOnlineHiscore(const int playernum, const in
 	for ( const auto& item : myStats.inventory )
 	{
 		rapidjson::Value itemArray(rapidjson::kArrayType);
-		itemArray.PushBack((int)item.type, d.GetAllocator());
-		itemArray.PushBack((int)item.status, d.GetAllocator());
+		itemArray.PushBack(static_cast<int>(item.type), d.GetAllocator());
+		itemArray.PushBack(static_cast<int>(item.status), d.GetAllocator());
 		itemArray.PushBack((int)item.beatitude, d.GetAllocator());
 		itemArray.PushBack((int)item.count, d.GetAllocator());
-		itemArray.PushBack((int)item.appearance, d.GetAllocator());
-		itemArray.PushBack((int)item.identified, d.GetAllocator());
+		itemArray.PushBack(static_cast<int>(item.appearance), d.GetAllocator());
+		itemArray.PushBack(static_cast<int>(item.identified), d.GetAllocator());
 		itemArray.PushBack((int)0 /* blank uid */, d.GetAllocator());
 		itemArray.PushBack((int)item.x, d.GetAllocator());
 		itemArray.PushBack((int)item.y, d.GetAllocator());
@@ -6367,12 +6367,12 @@ std::string SaveGameInfo::serializeToOnlineHiscore(const int playernum, const in
 			if ( equipment.second != UINT32_MAX && equipment.second < player.stats.inventory.size() )
 			{
 				auto& item = player.stats.inventory[equipment.second];
-				itemArray.PushBack((int)item.type, d.GetAllocator());
-				itemArray.PushBack((int)item.status, d.GetAllocator());
+				itemArray.PushBack(static_cast<int>(item.type), d.GetAllocator());
+				itemArray.PushBack(static_cast<int>(item.status), d.GetAllocator());
 				itemArray.PushBack((int)item.beatitude, d.GetAllocator());
 				itemArray.PushBack((int)item.count, d.GetAllocator());
-				itemArray.PushBack((int)item.appearance, d.GetAllocator());
-				itemArray.PushBack((int)item.identified, d.GetAllocator());
+				itemArray.PushBack(static_cast<int>(item.appearance), d.GetAllocator());
+				itemArray.PushBack(static_cast<int>(item.identified), d.GetAllocator());
 				itemArray.PushBack((int)0 /* blank uid */, d.GetAllocator());
 				itemArray.PushBack((int)item.x, d.GetAllocator());
 				itemArray.PushBack((int)item.y, d.GetAllocator());
@@ -6572,7 +6572,7 @@ int loadGame(int player, const SaveGameInfo& info) {
 	for (int c = 0; c < NUMEFFECTS; ++c) {
 		if ( c < p.EFFECTS.size() )
 		{
-			stats[statsPlayer]->setEffectValueUnsafe(c, (Uint8)p.EFFECTS[c]);
+			stats[statsPlayer]->setEffectValueUnsafe(c, static_cast<Uint8>(p.EFFECTS[c]));
 			if ( c < p.EFFECTS_TIMERS.size() )
 			{
 				stats[statsPlayer]->EFFECTS_TIMERS[c] = p.EFFECTS_TIMERS[c];
@@ -6692,7 +6692,7 @@ int loadGame(int player, const SaveGameInfo& info) {
 				auto& slot = find->second;
 				auto node = list_Node(&stats[statsPlayer]->inventory, item.second);
 				if (node) {
-					slot = (Item*)node->element;
+					slot = static_cast<Item*>(node->element);
 				} else {
 					slot = nullptr;
 				}
@@ -6705,8 +6705,8 @@ int loadGame(int player, const SaveGameInfo& info) {
 			auto find = slots.find(item.first);
 			if (find != slots.end()) {
 				auto& slot = find->second;
-				ItemType type = (ItemType)item.second.type;
-				Status status = (Status)item.second.status;
+				ItemType type = static_cast<ItemType>(item.second.type);
+				Status status = static_cast<Status>(item.second.status);
 				Sint16 beatitude = item.second.beatitude;
 				Sint16 count = item.second.count;
 				Uint32 appearance = item.second.appearance;
@@ -6727,7 +6727,7 @@ int loadGame(int player, const SaveGameInfo& info) {
 		node_t* node = list_Node(&stats[statsPlayer]->inventory,
 			info.players[player].hotbar[c]);
 		if (node) {
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			hotbar[c].item = item->uid;
 			hotbar[c].storeLastItem(item);
 		} else {
@@ -6740,7 +6740,7 @@ int loadGame(int player, const SaveGameInfo& info) {
 			node_t* node = list_Node(&stats[statsPlayer]->inventory,
 				info.players[player].hotbar_alternate[d][c]);
 			if ( node ) {
-				Item* item = (Item*)node->element;
+				Item* item = static_cast<Item*>(node->element);
 				hotbar_alternate[d][c].item = item->uid;
 				hotbar_alternate[d][c].storeLastItem(item);
 			}
@@ -6784,32 +6784,32 @@ int loadGame(int player, const SaveGameInfo& info) {
 		h.clear();
 		for ( auto& hostility : info.players[player].shopkeeperHostility )
 		{
-			h[(Uint32)hostility.first] = ShopkeeperPlayerHostility_t::PlayerRaceHostility_t();
-			h[(Uint32)hostility.first].wantedLevel = (ShopkeeperPlayerHostility_t::WantedLevel)hostility.second.wantedLevel;
+			h[static_cast<Uint32>(hostility.first)] = ShopkeeperPlayerHostility_t::PlayerRaceHostility_t();
+			h[static_cast<Uint32>(hostility.first)].wantedLevel = static_cast<ShopkeeperPlayerHostility_t::WantedLevel>(hostility.second.wantedLevel);
 			if ( info.game_version < 412 )
 			{
-				if ( h[(Uint32)hostility.first].wantedLevel > ShopkeeperPlayerHostility_t::NO_WANTED_LEVEL )
+				if ( h[static_cast<Uint32>(hostility.first)].wantedLevel > ShopkeeperPlayerHostility_t::NO_WANTED_LEVEL )
 				{
 					// we increased the wanted levels in 412
-					h[(Uint32)hostility.first].wantedLevel = 
-						(ShopkeeperPlayerHostility_t::WantedLevel)(h[(Uint32)hostility.first].wantedLevel + 1);
+					h[static_cast<Uint32>(hostility.first)].wantedLevel = 
+						static_cast<ShopkeeperPlayerHostility_t::WantedLevel>(h[(Uint32)hostility.first].wantedLevel + 1);
 				}
 			}
-			h[(Uint32)hostility.first].playerRace = (Monster)hostility.second.playerRace;
+			h[static_cast<Uint32>(hostility.first)].playerRace = static_cast<Monster>(hostility.second.playerRace);
 			if ( info.game_version < 412 )
 			{
-				h[(Uint32)hostility.first].type = h[(Uint32)hostility.first].playerRace;
+				h[static_cast<Uint32>(hostility.first)].type = h[static_cast<Uint32>(hostility.first)].playerRace;
 			}
 			else
 			{
-				h[(Uint32)hostility.first].sex = (sex_t)hostility.second.sex;
-				h[(Uint32)hostility.first].equipment = (Uint8)hostility.second.equipment;
-				h[(Uint32)hostility.first].type = (Uint32)hostility.second.type;
+				h[static_cast<Uint32>(hostility.first)].sex = static_cast<sex_t>(hostility.second.sex);
+				h[static_cast<Uint32>(hostility.first)].equipment = static_cast<Uint8>(hostility.second.equipment);
+				h[static_cast<Uint32>(hostility.first)].type = static_cast<Uint32>(hostility.second.type);
 			}
-			h[(Uint32)hostility.first].player = hostility.second.player;
-			h[(Uint32)hostility.first].numAggressions = hostility.second.numAggressions;
-			h[(Uint32)hostility.first].numKills = hostility.second.numKills;
-			h[(Uint32)hostility.first].numAccessories = hostility.second.numAccessories;
+			h[static_cast<Uint32>(hostility.first)].player = hostility.second.player;
+			h[static_cast<Uint32>(hostility.first)].numAggressions = hostility.second.numAggressions;
+			h[static_cast<Uint32>(hostility.first)].numKills = hostility.second.numKills;
+			h[static_cast<Uint32>(hostility.first)].numAccessories = hostility.second.numAccessories;
 		}
 	}
 
@@ -6916,13 +6916,13 @@ list_t* loadGameFollowers(const SaveGameInfo& info) {
 	}
 
 	// create followers list
-	list_t* followers = (list_t*) malloc(sizeof(list_t));
+	list_t* followers = static_cast<list_t*>(malloc(sizeof(list_t)));
 	followers->first = NULL;
 	followers->last = NULL;
 
 	// read the follower data
 	for (auto& player : info.players) {
-		list_t* followerList = (list_t*) malloc(sizeof(list_t));
+		list_t* followerList = static_cast<list_t*>(malloc(sizeof(list_t)));
 		followerList->first = nullptr;
 		followerList->last = nullptr;
 		node_t* node = list_AddNodeLast(followers);
@@ -6944,8 +6944,8 @@ list_t* loadGameFollowers(const SaveGameInfo& info) {
 			// read follower stats
 			stringCopy(stats->name, follower.name.c_str(),
 				sizeof(Stat::name), follower.name.size());
-			stats->type = (Monster)follower.type;
-			stats->sex = (sex_t)follower.sex;
+			stats->type = static_cast<Monster>(follower.type);
+			stats->sex = static_cast<sex_t>(follower.sex);
 			stats->stat_appearance = follower.statscore_appearance;
 			stats->HP = follower.HP;
 			stats->MAXHP = follower.maxHP;
@@ -6967,7 +6967,7 @@ list_t* loadGameFollowers(const SaveGameInfo& info) {
 			for (int c = 0; c < NUMEFFECTS; ++c) {
 				if ( c < follower.EFFECTS.size() )
 				{
-					stats->setEffectValueUnsafe(c, (Uint8)follower.EFFECTS[c]);
+					stats->setEffectValueUnsafe(c, static_cast<Uint8>(follower.EFFECTS[c]));
 					stats->EFFECTS_TIMERS[c] = follower.EFFECTS_TIMERS[c];
 				}
 				else
@@ -7000,8 +7000,8 @@ list_t* loadGameFollowers(const SaveGameInfo& info) {
 
 			// read follower inventory
 			for (auto& item : follower.inventory) {
-				ItemType type = (ItemType)item.type;
-				Status status = (Status)item.status;
+				ItemType type = static_cast<ItemType>(item.type);
+				Status status = static_cast<Status>(item.status);
 				Sint16 beatitude = item.beatitude;
 				Sint16 count = item.count;
 				Uint32 appearance = item.appearance;
@@ -7029,8 +7029,8 @@ list_t* loadGameFollowers(const SaveGameInfo& info) {
 				auto find = slots.find(item.first);
 				if (find != slots.end()) {
 					auto& slot = find->second;
-					ItemType type = (ItemType)item.second.type;
-					Status status = (Status)item.second.status;
+					ItemType type = static_cast<ItemType>(item.second.type);
+					Status status = static_cast<Status>(item.second.status);
 					Sint16 beatitude = item.second.beatitude;
 					Sint16 count = item.second.count;
 					Uint32 appearance = item.second.appearance;

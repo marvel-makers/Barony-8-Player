@@ -875,7 +875,7 @@ void lowercaseString(std::string& str)
 
 void hashSpellProp(Uint32& hash, Uint32& hashShift, int& toSet)
 {
-	hash += (Uint32)((Uint32)abs(toSet) << (hashShift % 32)); ++hashShift;
+	hash += (Uint32)(static_cast<Uint32>(abs(toSet)) << (hashShift % 32)); ++hashShift;
 }
 
 void hashSpellProp(Uint32& hash, Uint32& hashShift, real_t& toSet)
@@ -1008,9 +1008,9 @@ void ItemTooltips_t::readItemsFromFile()
 			//auto s = static_cast<string_t*>(list_Node(&items[i].images, j)->element);
 			//assert(!strcmp(s->data, tmpItems[i].imagePaths[j].c_str()));
 
-			string_t* string = (string_t*)malloc(sizeof(string_t));
+			string_t* string = static_cast<string_t*>(malloc(sizeof(string_t)));
 			const size_t len = 64;
-			string->data = (char*)malloc(sizeof(char) * len);
+			string->data = static_cast<char*>(malloc(sizeof(char) * len));
 			memset(string->data, 0, sizeof(char) * len);
 			string->lines = 1;
 
@@ -1125,9 +1125,9 @@ void ItemTooltips_t::readItemsFromFile()
 			items[i].item_slot = ItemEquippableSlot::EQUIPPABLE_IN_SLOT_HELM;
 		}
 
-		hash += (Uint32)((Uint32)items[i].weight << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)items[i].gold_value << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)items[i].level << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(items[i].weight) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(items[i].gold_value) << (shift % 32)); ++shift;
+		hash += (Uint32)(static_cast<Uint32>(items[i].level) << (shift % 32)); ++shift;
 		/*{
 			auto pair = std::make_pair(items[i].value, i);
 			auto lower = std::lower_bound(itemValueTable.begin(), itemValueTable.end(), pair,
@@ -1312,7 +1312,7 @@ void ItemTooltips_t::readItemsFromFile()
 		}
 		for ( int i = 0; i < NUMITEMS; ++i )
 		{
-			if ( items[i].category != SPELLBOOK && items[i].category != MAGICSTAFF && !itemTypeIsFoci((ItemType)i) )
+			if ( items[i].category != SPELLBOOK && items[i].category != MAGICSTAFF && !itemTypeIsFoci(static_cast<ItemType>(i)) )
 			{
 				continue;
 			}
@@ -1408,7 +1408,7 @@ void ItemTooltips_t::readItemsFromFile()
 		{
 			spellItem_t& t = find->second;
 			hash += djb2Hash(const_cast<char*>(t.internalName.c_str()));
-			hash += (Uint32)((Uint32)t.id << (shift % 32)); ++shift;
+			hash += (Uint32)(static_cast<Uint32>(t.id) << (shift % 32)); ++shift;
 			hash += djb2Hash(const_cast<char*>(t.spellTypeStr.c_str()));
 			for ( auto& tag : t.spellTagsStr )
 			{
@@ -1445,11 +1445,11 @@ void ItemTooltips_t::readItemsFromFile()
 
 			if ( t.skillID >= 0 )
 			{
-				hash += (Uint32)((Uint32)t.skillID << (shift % 32)); ++shift;
+				hash += (Uint32)(static_cast<Uint32>(t.skillID) << (shift % 32)); ++shift;
 			}
 			else
 			{
-				hash += (Uint32)((Uint32)1 << (shift % 32)); ++shift;
+				hash += (Uint32)(static_cast<Uint32>(1) << (shift % 32)); ++shift;
 			}
 		}
 	}
@@ -2370,7 +2370,7 @@ int ItemTooltips_t::getSpellDamageOrHealAmount(const int player, spell_t* spell,
 	spellElement_t* elementRoot = nullptr;
 	if ( rootNode )
 	{
-		elementRoot = (spellElement_t*)(rootNode->element);
+		elementRoot = static_cast<spellElement_t*>(rootNode->element);
 	}
 	int damage = 0;
 	int mana = 0;
@@ -2382,7 +2382,7 @@ int ItemTooltips_t::getSpellDamageOrHealAmount(const int player, spell_t* spell,
 		node_t* primaryNode = elementRoot->elements.first;
 		if ( primaryNode )
 		{
-			primaryElement = (spellElement_t*)(primaryNode->element);
+			primaryElement = static_cast<spellElement_t*>(primaryNode->element);
 			if ( primaryElement )
 			{
 				damage = primaryElement->getDamage();
@@ -2628,7 +2628,7 @@ std::string ItemTooltips_t::getSpellIconFormatText(const int player, Item& item,
 				char buf[128];
 				memset(buf, 0, sizeof(buf));
 				real_t healTicks = vals[0] * (vals[1] / 100.0) * vals[2];
-				snprintf(buf, sizeof(buf), format.c_str(), (int)(healTicks / vals[3]));
+				snprintf(buf, sizeof(buf), format.c_str(), static_cast<int>(healTicks / vals[3]));
 				str = buf;
 			}
 			else if ( (comparator == COMP_INCOHERENCE || comparator == COMP_WEAKNESS) && vals.size() >= 2 )
@@ -2712,11 +2712,11 @@ std::string ItemTooltips_t::getSpellIconFormatText(const int player, Item& item,
 				spellElement_t* element = nullptr;
 				if ( spell->elements.first )
 				{
-					if ( element = (spellElement_t*)spell->elements.first->element )
+					if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 					{
 						if ( element->elements.first && element->elements.first->element )
 						{
-							element = (spellElement_t*)element->elements.first->element;
+							element = static_cast<spellElement_t*>(element->elements.first->element);
 						}
 					}
 				}
@@ -2875,11 +2875,11 @@ real_t ItemTooltips_t::getSpellSustainCostPerSecond(int spellID)
 		{
 			if ( spell->elements.first )
 			{
-				if ( spellElement_t* element = (spellElement_t*)spell->elements.first->element )
+				if ( spellElement_t* element = static_cast<spellElement_t*>(spell->elements.first->element) )
 				{
 					if ( element->channeledMana > 0 )
 					{
-						return element->duration / (real_t)TICKS_PER_SECOND;
+						return element->duration / static_cast<real_t>(TICKS_PER_SECOND);
 					}
 				}
 			}
@@ -3159,7 +3159,7 @@ std::string ItemTooltips_t::getSpellIconPath(const int player, Item& item, int s
 	}
 	if ( spellImageNode )
 	{
-		string_t* string = (string_t*)spellImageNode->element;
+		string_t* string = static_cast<string_t*>(spellImageNode->element);
 		if ( string )
 		{
 			return string->data;
@@ -3725,7 +3725,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 						restore += 0.5 * std::min(2, abs(item.beatitude));
 					}
 					restore *= 100.0;
-					snprintf(buf, sizeof(buf), str.c_str(), (int)restore);
+					snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(restore));
 				}
 			}
 			else if ( conditionalAttribute == "EFF_BLEEDING" )
@@ -3763,7 +3763,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 				{
 					res = std::max(0.25, 0.75 - 0.25 * (abs(item.beatitude)));
 				}
-				snprintf(buf, sizeof(buf), str.c_str(), (int)((100 - (int)(res * 100))),
+				snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>((100 - (int)(res * 100))),
 					getItemEquipmentEffectsForIconText(conditionalAttribute).c_str());
 			}
 			else if ( conditionalAttribute == "EFF_CLOAK_GUARDIAN2" )
@@ -3773,7 +3773,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 				{
 					res = std::max(0.25, 0.5 - 0.25 * (abs(item.beatitude)));
 				}
-				snprintf(buf, sizeof(buf), str.c_str(), (int)((100 - (int)(res * 100))),
+				snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>((100 - (int)(res * 100))),
 					getItemEquipmentEffectsForIconText(conditionalAttribute).c_str());
 			}
 			else if ( conditionalAttribute == "EFF_MARIGOLD1"
@@ -3813,7 +3813,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 							coldMultiplier = 0.50;
 						}
 					}
-					snprintf(buf, sizeof(buf), str.c_str(), (int)((100 - (int)(coldMultiplier * 100))),
+					snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>((100 - (int)(coldMultiplier * 100))),
 						getItemEquipmentEffectsForIconText(conditionalAttribute).c_str());
 				}
 			}
@@ -3832,7 +3832,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 						speedFactor = speedFactor + 0.5;
 					}
 				}
-				snprintf(buf, sizeof(buf), str.c_str(), (int)((speedFactor - 1.0) * 100));
+				snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>((speedFactor - 1.0) * 100));
 			}
 			else if ( conditionalAttribute == "EFF_EYEPATCH" )
 			{
@@ -4012,7 +4012,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 					}
 					foodMult = std::max(0.2, foodMult);
 				}
-				snprintf(buf, sizeof(buf), str.c_str(), (int)(foodMult * 100) - 100);
+				snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(foodMult * 100) - 100);
 			}
 			else if ( conditionalAttribute == "EFF_CHEF2" )
 			{
@@ -4271,7 +4271,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 						mult = 0.5;
 					}
 				}
-				snprintf(buf, sizeof(buf), str.c_str(), 100 - (int)(mult * 100));
+				snprintf(buf, sizeof(buf), str.c_str(), 100 - static_cast<int>(mult * 100));
 			}
 			else if ( conditionalAttribute.find("EFF_CAST_TOUCHSPEED_") != std::string::npos
 				|| conditionalAttribute.find("EFF_CAST_TOUCH_") != std::string::npos )
@@ -4318,12 +4318,12 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 				}
 				if ( skillName != "" )
 				{
-					snprintf(buf, sizeof(buf), str.c_str(), (int)(bonus * 100),
+					snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(bonus * 100),
 						skillName.c_str());
 				}
 				else
 				{
-					snprintf(buf, sizeof(buf), str.c_str(), (int)(bonus * 100));
+					snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(bonus * 100));
 				}
 			}
 			else if ( conditionalAttribute.find("EFF_PWR") != std::string::npos )
@@ -4356,7 +4356,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 							bonus = 0.1;
 						}
 					}
-					snprintf(buf, sizeof(buf), str.c_str(), (int)(bonus * 100),
+					snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(bonus * 100),
 						getItemEquipmentEffectsForIconText(conditionalAttribute).c_str());
 				}
 				else if ( conditionalAttribute == "EFF_PWR_DMG"
@@ -4375,7 +4375,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 							bonus = 0.1;
 						}
 					}
-					snprintf(buf, sizeof(buf), str.c_str(), (int)(bonus * 100),
+					snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(bonus * 100),
 						getItemEquipmentEffectsForIconText(conditionalAttribute).c_str());
 				}
 				else if ( conditionalAttribute == "EFF_PWR_HEAL" )
@@ -4391,7 +4391,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 							bonus = 0.1;
 						}
 					}
-					snprintf(buf, sizeof(buf), str.c_str(), (int)(bonus * 100),
+					snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(bonus * 100),
 						getItemEquipmentEffectsForIconText(conditionalAttribute).c_str());
 				}
 			}
@@ -4416,7 +4416,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 					{
 						mod = base;
 					}
-					snprintf(buf, sizeof(buf), str.c_str(), (int)(mod * 100));
+					snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(mod * 100));
 				}
 				else
 				{
@@ -4454,7 +4454,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 						snprintf(tmp, sizeof(tmp), ItemTooltips.templates["template_armor_resist_icon"][0].c_str(),
 							skillnames.c_str());
 					}
-					snprintf(buf, sizeof(buf), str.c_str(), (int)(mod * 100),
+					snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(mod * 100),
 						tmp);
 				}
 			}
@@ -4775,7 +4775,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 				if ( iconIndex == 1 )
 				{
 					auto oldBeatitude = item.beatitude;
-					item.beatitude = std::max((Sint16)0, item.beatitude);
+					item.beatitude = std::max(static_cast<Sint16>(0), item.beatitude);
 					snprintf(buf, sizeof(buf), str.c_str(), item.potionGetEffectDurationMinimum(players[player]->entity, stats[player]) / TICKS_PER_SECOND, 
 						item.potionGetEffectDurationMaximum(players[player]->entity, stats[player]) / TICKS_PER_SECOND);
 					item.beatitude = oldBeatitude;
@@ -4797,7 +4797,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 		else if ( items[item.type].hasAttribute("POTION_TYPE_GOOD_EFFECT") )
 		{
 			auto oldBeatitude = item.beatitude;
-			item.beatitude = std::max((Sint16)0, item.beatitude);
+			item.beatitude = std::max(static_cast<Sint16>(0), item.beatitude);
 			snprintf(buf, sizeof(buf), str.c_str(), item.potionGetEffectDurationMinimum(players[player]->entity, stats[player]) / TICKS_PER_SECOND, 
 				item.potionGetEffectDurationMaximum(players[player]->entity, stats[player]) / TICKS_PER_SECOND);
 			item.beatitude = oldBeatitude;
@@ -4805,7 +4805,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 		else if ( items[item.type].hasAttribute("POTION_TYPE_BAD_EFFECT") )
 		{
 			auto oldBeatitude = item.beatitude;
-			item.beatitude = std::max((Sint16)0, item.beatitude);
+			item.beatitude = std::max(static_cast<Sint16>(0), item.beatitude);
 			snprintf(buf, sizeof(buf), str.c_str(), item.potionGetEffectDurationMinimum(players[player]->entity, stats[player]) / TICKS_PER_SECOND,
 				item.potionGetEffectDurationMaximum(players[player]->entity, stats[player]) / TICKS_PER_SECOND);
 			item.beatitude = oldBeatitude;
@@ -4963,7 +4963,8 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 		else if ( detailTag.compare("weapon_atk_from_player_stat") == 0 )
 		{
 			snprintf(buf, sizeof(buf), str.c_str(), 
-				(int)(((!compendiumTooltipIntro && stats[player]) ? statGetSTR(stats[player], players[player]->entity) : 0) * 100 * Entity::PlayerAttackMeleeStatFactor));
+				static_cast<int>(((!compendiumTooltipIntro && stats[player]) ? statGetSTR(stats[player], players[player]->entity) : 0) *
+					100 * Entity::PlayerAttackMeleeStatFactor));
 		}
 		else if ( detailTag.compare("ring_unarmed_atk") == 0 )
 		{
@@ -5121,7 +5122,9 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 		else if ( detailTag.compare("thrown_atk_from_player_stat") == 0 )
 		{
 			snprintf(buf, sizeof(buf), str.c_str(), 
-				(int)(((!compendiumTooltipIntro && stats[player]) ? (statGetDEX(stats[player], players[player]->entity) / 4) : 0) * 100 * Entity::PlayerAttackThrownStatFactor));
+				static_cast<int>(((!compendiumTooltipIntro && stats[player])
+					                  ? (statGetDEX(stats[player], players[player]->entity) / 4)
+					                  : 0) * 100 * Entity::PlayerAttackThrownStatFactor));
 		}
 		else if ( detailTag.compare("thrown_skill_modifier") == 0 )
 		{
@@ -5216,7 +5219,9 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 		else if ( detailTag.compare("thrown_atk_from_player_stat") == 0 )
 		{
 			snprintf(buf, sizeof(buf), str.c_str(), 
-				(int)(((!compendiumTooltipIntro && stats[player]) ? (statGetDEX(stats[player], players[player]->entity) / 4) : 0) * 100 * Entity::PlayerAttackThrownStatFactor));
+				static_cast<int>(((!compendiumTooltipIntro && stats[player])
+					                  ? (statGetDEX(stats[player], players[player]->entity) / 4)
+					                  : 0) * 100 * Entity::PlayerAttackThrownStatFactor));
 		}
 		else if ( detailTag.compare("thrown_skill_modifier") == 0 )
 		{
@@ -5258,10 +5263,10 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 			int chargeTime = std::max(TICKS_PER_SECOND / 2,
 				chargeTimeBase - (TICKS_PER_SECOND / 20) * CHR);
 
-			real_t chargeRatio = (100.0 * chargeTimeBase / (real_t)chargeTime) - 100.0;
+			real_t chargeRatio = (100.0 * chargeTimeBase / static_cast<real_t>(chargeTime)) - 100.0;
 
 			snprintf(buf, sizeof(buf), str.c_str(), 
-				chargeTime / (real_t)TICKS_PER_SECOND, duration / (real_t)TICKS_PER_SECOND);
+				chargeTime / static_cast<real_t>(TICKS_PER_SECOND), duration / static_cast<real_t>(TICKS_PER_SECOND));
 		}
 		else if ( detailTag == "instrument_casting" )
 		{
@@ -5393,11 +5398,11 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 						spellElement_t* element = nullptr;
 						if ( spell->elements.first )
 						{
-							if ( element = (spellElement_t*)spell->elements.first->element )
+							if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 							{
 								if ( element->elements.first && element->elements.first->element )
 								{
-									element = (spellElement_t*)element->elements.first->element;
+									element = static_cast<spellElement_t*>(element->elements.first->element);
 								}
 							}
 						}
@@ -5406,7 +5411,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 							baseDamage = element->getDamageSecondary();
 						}
 						mult = getSpellPropertyFromID(spell_t::SPELLPROP_DAMAGE_SECONDARY_MULT, spell->ID, compendiumTooltipIntro ? nullptr : players[player]->entity, nullptr, nullptr);
-						snprintf(buf, sizeof(buf), str.c_str(), (int)(baseDamage * (1.0 + bonusINTPercent * mult / 100.0)));
+						snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(baseDamage * (1.0 + bonusINTPercent * mult / 100.0)));
 					}
 					else
 					{
@@ -5434,7 +5439,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 		{
 			int bless = shouldInvertEquipmentBeatitude(myStats) ?
 				abs(item.beatitude) :
-				std::max((Sint16)0, item.beatitude);
+				std::max(static_cast<Sint16>(0), item.beatitude);
 
 			int bonus = bless * 5;
 			snprintf(buf, sizeof(buf), str.c_str(), bonus, getItemBeatitudeAdjective(item.beatitude).c_str());
@@ -5451,11 +5456,11 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 					spellElement_t* element = nullptr;
 					if ( spell->elements.first )
 					{
-						if ( element = (spellElement_t*)spell->elements.first->element )
+						if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 						{
 							if ( element->elements.first && element->elements.first->element )
 							{
-								element = (spellElement_t*)element->elements.first->element;
+								element = static_cast<spellElement_t*>(element->elements.first->element);
 							}
 						}
 					}
@@ -5466,7 +5471,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 					}
 				}
 			}
-			snprintf(buf, sizeof(buf), str.c_str(), baseChargeTime / (real_t)TICKS_PER_SECOND, effectDuration / (real_t)TICKS_PER_SECOND);
+			snprintf(buf, sizeof(buf), str.c_str(), baseChargeTime / static_cast<real_t>(TICKS_PER_SECOND), effectDuration / static_cast<real_t>(TICKS_PER_SECOND));
 		}
 		else if ( detailTag == "foci_charge_text" )
 		{
@@ -5509,11 +5514,11 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 					spellElement_t* element = nullptr;
 					if ( spell->elements.first )
 					{
-						if ( element = (spellElement_t*)spell->elements.first->element )
+						if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 						{
 							if ( element->elements.first && element->elements.first->element )
 							{
-								element = (spellElement_t*)element->elements.first->element;
+								element = static_cast<spellElement_t*>(element->elements.first->element);
 							}
 						}
 					}
@@ -5525,7 +5530,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 				}
 			}
 
-			snprintf(buf, sizeof(buf), str.c_str(), baseChargeTime / (real_t)TICKS_PER_SECOND, effectDuration / (real_t)TICKS_PER_SECOND, nextChrStr);
+			snprintf(buf, sizeof(buf), str.c_str(), baseChargeTime / static_cast<real_t>(TICKS_PER_SECOND), effectDuration / static_cast<real_t>(TICKS_PER_SECOND), nextChrStr);
 		}
 		else if ( detailTag == "foci_mp_cost" )
 		{
@@ -5544,7 +5549,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 					mpCost = getCostOfSpell(spell, caster);
 					int bless = shouldInvertEquipmentBeatitude(myStats) ?
 						abs(item.beatitude) :
-						std::max((Sint16)0, item.beatitude);
+						std::max(static_cast<Sint16>(0), item.beatitude);
 
 					mpCost = getSpellPropertyFromID(spell_t::SPELLPROP_FOCI_SECONDARY_MANA_COST, spellID,
 						caster, myStats, caster);
@@ -5594,11 +5599,11 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 					spellElement_t* element = nullptr;
 					if ( spell->elements.first )
 					{
-						if ( element = (spellElement_t*)spell->elements.first->element )
+						if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 						{
 							if ( element->elements.first && element->elements.first->element )
 							{
-								element = (spellElement_t*)element->elements.first->element;
+								element = static_cast<spellElement_t*>(element->elements.first->element);
 							}
 						}
 					}
@@ -5610,7 +5615,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 						int modifiedResult = getSpellPropertyFromID(spell_t::SPELLPROP_FOCI_REFIRE_TICKS, spellID,
 							caster, myStats, caster);
 
-						chargeRefire = (100.0 - (100.0 * modifiedResult / (real_t)result));
+						chargeRefire = (100.0 - (100.0 * modifiedResult / static_cast<real_t>(result)));
 					}
 				}
 			}
@@ -5729,7 +5734,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 			lowest = std::min(100.0, std::max(0.0, lowest));
 			real_t highest = std::min(100.0, lowest + variance);
 
-			snprintf(buf, sizeof(buf), str.c_str(), (int)lowest, (int)highest, getItemProficiencyName(proficiency).c_str());
+			snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(lowest), static_cast<int>(highest), getItemProficiencyName(proficiency).c_str());
 		}
 		else if ( detailTag.compare("weapon_atk_from_player_stat") == 0 )
 		{
@@ -5742,28 +5747,30 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 				{
 					atk = 0;
 				}
-				snprintf(buf, sizeof(buf), str.c_str(), (int)(atk * 100 * Entity::PlayerAttackMeleeStatFactor));
+				snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(atk * 100 * Entity::PlayerAttackMeleeStatFactor));
 			}
 			else if ( item.type == MAGICSTAFF_SCEPTER )
 			{
 				int atk = (stats[player] ? statGetSTR(stats[player], players[player]->entity) : 0);
 				atk = std::min(atk / 2, atk);
-				snprintf(buf, sizeof(buf), str.c_str(), (int)(atk * 100 * Entity::PlayerAttackMeleeStatFactor));
+				snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(atk * 100 * Entity::PlayerAttackMeleeStatFactor));
 			}
 			else if ( item.type == RAPIER )
 			{
 				int atk = (stats[player] ? statGetDEX(stats[player], players[player]->entity) : 0);
-				snprintf(buf, sizeof(buf), str.c_str(), (int)(atk * 100 * Entity::PlayerAttackMeleeStatFactor));
+				snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(atk * 100 * Entity::PlayerAttackMeleeStatFactor));
 			}
 			else if ( proficiency == PRO_RANGED )
 			{
 				snprintf(buf, sizeof(buf), str.c_str(), 
-					(int)(((!compendiumTooltipIntro && stats[player]) ? statGetDEX(stats[player], players[player]->entity) : 0) * 100 * Entity::PlayerAttackRangedStatFactor));
+					static_cast<int>(((!compendiumTooltipIntro && stats[player]) ? statGetDEX(stats[player], players[player]->entity) : 0) *
+						100 * Entity::PlayerAttackRangedStatFactor));
 			}
 			else
 			{
 				snprintf(buf, sizeof(buf), str.c_str(), 
-					(int)(((!compendiumTooltipIntro && stats[player]) ? statGetSTR(stats[player], players[player]->entity) : 0) * 100 * Entity::PlayerAttackMeleeStatFactor));
+					static_cast<int>(((!compendiumTooltipIntro && stats[player]) ? statGetSTR(stats[player], players[player]->entity) : 0) *
+						100 * Entity::PlayerAttackMeleeStatFactor));
 			}
 		}
 		else if ( detailTag.compare("weapon_durability") == 0 )
@@ -6243,7 +6250,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 			{
 				diff = 0.0;
 			}
-			snprintf(buf, sizeof(buf), str.c_str(), baseCastTime / (real_t)TICKS_PER_SECOND, (diff) / (real_t)TICKS_PER_SECOND);
+			snprintf(buf, sizeof(buf), str.c_str(), baseCastTime / static_cast<real_t>(TICKS_PER_SECOND), (diff) / static_cast<real_t>(TICKS_PER_SECOND));
 		}
 		else if ( detailTag == "spell_distance" )
 		{
@@ -6504,7 +6511,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 				}
 			}
 			real_t rof = fabs((1.0 - (2 / bow)) * 100);
-			snprintf(buf, sizeof(buf), str.c_str(), (int)rof);
+			snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(rof));
 		}
 		else if ( detailTag.compare("tinkerbot_turn_rate") == 0 )
 		{
@@ -6526,7 +6533,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 				ratio = 64.0;
 			}
 			real_t turnRate = (64.0 / ratio) - 1.0;
-			snprintf(buf, sizeof(buf), str.c_str(), (int)turnRate);
+			snprintf(buf, sizeof(buf), str.c_str(), static_cast<int>(turnRate));
 		}
 		else if ( detailTag.compare("gyrobot_info_interact") == 0 )
 		{
@@ -6643,7 +6650,7 @@ void ItemTooltips_t::getWordIndexesItemDetails(void* field, std::string& str, st
 	positiveIndexes.clear();
 	negativeIndexes.clear();
 	highlightIndexes.clear();
-	((Field*)field)->clearWordsToHighlight();
+	static_cast<Field*>(field)->clearWordsToHighlight();
 	int wordIndex = 0;
 	bool prevCharWasWordSeparator = false;
 	int numLines = 0;
@@ -6701,19 +6708,19 @@ void ItemTooltips_t::getWordIndexesItemDetails(void* field, std::string& str, st
 	for ( auto& p : positiveIndexes )
 	{
 		Uint32 color = tooltip.positiveTextColor;
-		((Field*)field)->addWordToHighlight(p.first, color);
+		static_cast<Field*>(field)->addWordToHighlight(p.first, color);
 		//messagePlayer(0, "Positives: %d", p.first);
 	}
 	for ( auto& n : negativeIndexes )
 	{
 		Uint32 color = tooltip.negativeTextColor;
-		((Field*)field)->addWordToHighlight(n.first, color);
+		static_cast<Field*>(field)->addWordToHighlight(n.first, color);
 		//messagePlayer(0, "Negatives: %d", n.first);
 	}
 	for ( auto& h : highlightIndexes )
 	{
 		Uint32 color = tooltip.statusEffectTextColor;
-		((Field*)field)->addWordToHighlight(h.first, color);
+		static_cast<Field*>(field)->addWordToHighlight(h.first, color);
 		//messagePlayer(0, "Highlights: %d", h.first);
 	}
 }
@@ -7014,7 +7021,7 @@ void StatueManager_t::refreshAllStatues()
 	for ( node_t* node = map.entities->first; node; node = nextnode )
 	{
 		nextnode = node->next;
-		auto entity = (Entity*)node->element;
+		auto entity = static_cast<Entity*>(node->element);
 		if ( entity->behavior == &actStatue )
 		{
 			entity->statueInit = 0;
@@ -7022,7 +7029,7 @@ void StatueManager_t::refreshAllStatues()
 			for ( node_t* node2 = entity->children.first; node2; node2 = nextnode2 )
 			{
 				nextnode2 = node2->next;
-				auto entity2 = (Entity*)node2->element;
+				auto entity2 = static_cast<Entity*>(node2->element);
 				list_RemoveNode(entity2->mynode);
 				list_RemoveNode(node2);
 			}
@@ -7386,7 +7393,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 		{
 			// successfully loaded, do unpressed glyph
 			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(base->getSurf());
-			SDL_Rect pos{ 0, 0, (int)base->getWidth(), (int)base->getHeight() };
+			SDL_Rect pos{ 0, 0, static_cast<int>(base->getWidth()), static_cast<int>(base->getHeight()) };
 			SDL_Surface* sprite = SDL_CreateRGBSurface(0, pos.w, pos.h, 32,
 				0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 			SDL_SetSurfaceAlphaMod(srcSurf, 255);
@@ -7403,7 +7410,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 			{
 				// successfully loaded
 				SDL_Surface* keySurf = const_cast<SDL_Surface*>(key->getSurf());
-				SDL_Rect keyPos{ 0, 0, (int)key->getWidth(), (int)key->getHeight() };
+				SDL_Rect keyPos{ 0, 0, static_cast<int>(key->getWidth()), static_cast<int>(key->getHeight()) };
 				keyPos.x = pos.w / 2 - keyPos.w / 2;
 				keyPos.y = keyValue.second.render_offsety;
 
@@ -7446,7 +7453,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 		{
 			// successfully loaded, do pressed glyph
 			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(base->getSurf());
-			SDL_Rect pos{ 0, 0, (int)base->getWidth(), (int)base->getHeight() };
+			SDL_Rect pos{ 0, 0, static_cast<int>(base->getWidth()), static_cast<int>(base->getHeight()) };
 			SDL_Surface* sprite = SDL_CreateRGBSurface(0, pos.w, pos.h, 32,
 				0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 			SDL_SetSurfaceAlphaMod(srcSurf, 255);
@@ -7463,7 +7470,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 			{
 				// successfully loaded
 				SDL_Surface* keySurf = const_cast<SDL_Surface*>(key->getSurf());
-				SDL_Rect keyPos{ 0, 0, (int)key->getWidth(), (int)key->getHeight() };
+				SDL_Rect keyPos{ 0, 0, static_cast<int>(key->getWidth()), static_cast<int>(key->getHeight()) };
 				keyPos.x = pos.w / 2 - keyPos.w / 2;
 				keyPos.y = keyValue.second.render_offsety;
 
@@ -8006,7 +8013,7 @@ void ScriptTextParser_t::writeWorldSignsToFile()
 
 	for ( auto node = map.entities->first; node != NULL; node = node->next )
 	{
-		auto entity = (Entity*)node->element;
+		auto entity = static_cast<Entity*>(node->element);
 		if ( entity->behavior == &actFloorDecoration && entity->sprite == 991 /* sign */ )
 		{
 			std::string key = map.filename;
@@ -10308,7 +10315,7 @@ void GameplayPreferences_t::requestUpdateFromClient()
 
 	}
 	strcpy((char*)net_packet->data, "GPPU");
-	net_packet->data[4] = (Uint8)player;
+	net_packet->data[4] = static_cast<Uint8>(player);
 	net_packet->address.host = net_clients[player - 1].host;
 	net_packet->address.port = net_clients[player - 1].port;
 	net_packet->len = 5;
@@ -10325,8 +10332,8 @@ void GameplayPreferences_t::sendToClients(const int targetPlayer)
 	}
 
 	strcpy((char*)net_packet->data, "GPPR");
-	net_packet->data[4] = (Uint8)player;
-	net_packet->data[5] = (Uint8)GPREF_ENUM_END;
+	net_packet->data[4] = static_cast<Uint8>(player);
+	net_packet->data[5] = static_cast<Uint8>(GPREF_ENUM_END);
 	int index = 0;
 	for ( auto& pref : preferences )
 	{
@@ -10371,8 +10378,8 @@ void GameplayPreferences_t::sendToServer()
 	}
 
 	strcpy((char*)net_packet->data, "GPPR");
-	net_packet->data[4] = (Uint8)player;
-	net_packet->data[5] = (Uint8)GPREF_ENUM_END;
+	net_packet->data[4] = static_cast<Uint8>(player);
+	net_packet->data[5] = static_cast<Uint8>(GPREF_ENUM_END);
 	int index = 0;
 	for ( auto& pref : preferences )
 	{
@@ -10596,7 +10603,7 @@ void GameplayPreferences_t::serverUpdateGameConfig()
 		if ( !players[i]->isLocalPlayer() && !client_disconnected[i] )
 		{
 			strcpy((char*)net_packet->data, "GOPT");
-			net_packet->data[4] = (Uint8)GOPT_ENUM_END;
+			net_packet->data[4] = static_cast<Uint8>(GOPT_ENUM_END);
 			int index = 0;
 			for ( auto& conf : gameConfig )
 			{
@@ -10637,7 +10644,7 @@ void GameplayPreferences_t::serverProcessGameConfig()
 		{
 			case GOPT_ARACHNOPHOBIA:
 			{
-				int oldValue = getGameConfigValue(GameConfigIndexes(pref));
+				int oldValue = getGameConfigValue(static_cast<GameConfigIndexes>(pref));
 				for ( int i = 0; i < MAXPLAYERS; ++i )
 				{
 					if ( !client_disconnected[i] && gameplayPreferences[i].isInit )
@@ -10672,7 +10679,7 @@ void GameplayPreferences_t::serverProcessGameConfig()
 			}
 			case GOPT_COLORBLIND:
 			{
-				int oldValue = getGameConfigValue(GameConfigIndexes(pref));
+				int oldValue = getGameConfigValue(static_cast<GameConfigIndexes>(pref));
 				for ( int i = 0; i < MAXPLAYERS; ++i )
 				{
 					if ( !client_disconnected[i] && gameplayPreferences[i].isInit )
@@ -10707,7 +10714,7 @@ void GameplayPreferences_t::serverProcessGameConfig()
 			}
 			case GOPT_VOICE_NO_RECV:
 			{
-				int oldValue = getGameConfigValue(GameConfigIndexes(pref));
+				int oldValue = getGameConfigValue(static_cast<GameConfigIndexes>(pref));
 
 				for ( int i = 0; i < MAXPLAYERS; ++i )
 				{
@@ -10740,7 +10747,7 @@ void GameplayPreferences_t::serverProcessGameConfig()
 			}
 			case GOPT_VOICE_NO_SEND:
 			{
-				int oldValue = getGameConfigValue(GameConfigIndexes(pref));
+				int oldValue = getGameConfigValue(static_cast<GameConfigIndexes>(pref));
 
 				for ( int i = 0; i < MAXPLAYERS; ++i )
 				{
@@ -10773,7 +10780,7 @@ void GameplayPreferences_t::serverProcessGameConfig()
 			}
 			case GOPT_VOICE_PTT:
 			{
-				int oldValue = getGameConfigValue(GameConfigIndexes(pref));
+				int oldValue = getGameConfigValue(static_cast<GameConfigIndexes>(pref));
 
 				for ( int i = 0; i < MAXPLAYERS; ++i )
 				{
@@ -11346,7 +11353,7 @@ bool Mods::verifyMapFiles(const char* folder, bool ignoreBaseFolder)
 
 		map_t m;
 		m.tiles.clear();
-		m.entities = (list_t*)malloc(sizeof(list_t));
+		m.entities = static_cast<list_t*>(malloc(sizeof(list_t)));
 		m.entities->first = nullptr;
 		m.entities->last = nullptr;
 		m.creatures = new list_t;
@@ -11512,8 +11519,8 @@ bool Mods::mountAllExistingPaths()
 }
 
 void Mods::loadModels(int start, int end) {
-	start = std::clamp(start, 0, (int)nummodels - 1);
-	end = std::clamp(end, 0, (int)nummodels);
+	start = std::clamp(start, 0, static_cast<int>(nummodels) - 1);
+	end = std::clamp(end, 0, static_cast<int>(nummodels));
 
 	if ( start >= end ) {
 		return;
@@ -12305,7 +12312,7 @@ void EquipmentModelOffsets_t::readBaseItemsFromFile()
 			{
 				continue;
 			}
-			ItemType itemType = (ItemType)ItemTooltips.itemNameStringToItemID[itemName];
+			ItemType itemType = static_cast<ItemType>(ItemTooltips.itemNameStringToItemID[itemName]);
 			std::vector<int> models;
 			if ( it2->value.HasMember("models") )
 			{
@@ -12468,7 +12475,7 @@ void EquipmentModelOffsets_t::readFromFile(std::string monsterName, int monsterT
 			{
 				continue;
 			}
-			ItemType itemType = (ItemType)ItemTooltips.itemNameStringToItemID[itemName];
+			ItemType itemType = static_cast<ItemType>(ItemTooltips.itemNameStringToItemID[itemName]);
 			std::vector<int> models;
 			if ( it2->value.HasMember("models") )
 			{
@@ -12763,8 +12770,8 @@ void GameModeManager_t::CurrentSession_t::ChallengeRun_t::updateKillEvent(Entity
 					if ( !client_disconnected[i] && !players[i]->isLocalPlayer() )
 					{
 						strcpy((char*)net_packet->data, "CHCT");
-						SDLNet_Write16((Sint16)killTotal, &net_packet->data[4]);
-						SDLNet_Write16((Sint16)gameModeManager.currentSession.challengeRun.numKills, &net_packet->data[6]);
+						SDLNet_Write16(static_cast<Sint16>(killTotal), &net_packet->data[4]);
+						SDLNet_Write16(static_cast<Sint16>(gameModeManager.currentSession.challengeRun.numKills), &net_packet->data[6]);
 						net_packet->data[8] = eventType;
 						net_packet->address.host = net_clients[i - 1].host;
 						net_packet->address.port = net_clients[i - 1].port;
@@ -13552,8 +13559,8 @@ void Compendium_t::readItemsFromFile(bool forceLoadBaseDirectory)
 						const int itemType = ItemTooltips.itemNameStringToItemID[item.name];
 						if ( itemType >= WOODEN_SHIELD && itemType < NUMITEMS )
 						{
-							Compendium_t::Events_t::itemEventLookup[(ItemType)itemType].insert((Compendium_t::EventTags)find2->second.id);
-							Compendium_t::Events_t::eventItemLookup[(Compendium_t::EventTags)find2->second.id].insert((ItemType)itemType);
+							Compendium_t::Events_t::itemEventLookup[static_cast<ItemType>(itemType)].insert(static_cast<Compendium_t::EventTags>(find2->second.id));
+							Compendium_t::Events_t::eventItemLookup[static_cast<Compendium_t::EventTags>(find2->second.id)].insert(static_cast<ItemType>(itemType));
 						}
 					}
 				}
@@ -13576,8 +13583,8 @@ void Compendium_t::readItemsFromFile(bool forceLoadBaseDirectory)
 							const int itemType = ItemTooltips.itemNameStringToItemID[item.name];
 							if ( itemType >= WOODEN_SHIELD && itemType < NUMITEMS )
 							{
-								Compendium_t::Events_t::itemEventLookup[(ItemType)itemType].insert((Compendium_t::EventTags)find2->second.id);
-								Compendium_t::Events_t::eventItemLookup[(Compendium_t::EventTags)find2->second.id].insert((ItemType)itemType);
+								Compendium_t::Events_t::itemEventLookup[static_cast<ItemType>(itemType)].insert(static_cast<Compendium_t::EventTags>(find2->second.id));
+								Compendium_t::Events_t::eventItemLookup[static_cast<Compendium_t::EventTags>(find2->second.id)].insert(static_cast<ItemType>(itemType));
 							}
 						}
 					}
@@ -13603,10 +13610,10 @@ void Compendium_t::readItemsFromFile(bool forceLoadBaseDirectory)
 							if ( itemType >= WOODEN_SHIELD && itemType < NUMITEMS )
 							{
 								auto& vec = Compendium_t::Events_t::itemDisplayedEventsList[itemType];
-								if ( std::find(vec.begin(), vec.end(), (Compendium_t::EventTags)find2->second.id)
+								if ( std::find(vec.begin(), vec.end(), static_cast<Compendium_t::EventTags>(find2->second.id))
 									== vec.end() || find2->second.id == EventTags::CPDM_CUSTOM_TAG )
 								{
-									vec.push_back((Compendium_t::EventTags)find2->second.id);
+									vec.push_back(static_cast<Compendium_t::EventTags>(find2->second.id));
 								}
 								itemsInList.insert(itemType);
 							}
@@ -14040,13 +14047,13 @@ void Compendium_t::readMagicFromFile(bool forceLoadBaseDirectory)
 						const int itemType = isSpell ? SPELL_ITEM : ItemTooltips.itemNameStringToItemID[item.name];
 						if ( itemType == SPELL_ITEM )
 						{
-							Compendium_t::Events_t::itemEventLookup[Compendium_t::Events_t::kEventSpellOffset + item.spellID].insert((Compendium_t::EventTags)find2->second.id);
-							Compendium_t::Events_t::eventItemLookup[(Compendium_t::EventTags)find2->second.id].insert(Compendium_t::Events_t::kEventSpellOffset + item.spellID);
+							Compendium_t::Events_t::itemEventLookup[Compendium_t::Events_t::kEventSpellOffset + item.spellID].insert(static_cast<Compendium_t::EventTags>(find2->second.id));
+							Compendium_t::Events_t::eventItemLookup[static_cast<Compendium_t::EventTags>(find2->second.id)].insert(Compendium_t::Events_t::kEventSpellOffset + item.spellID);
 						}
 						else if ( itemType >= WOODEN_SHIELD && itemType < NUMITEMS )
 						{
-							Compendium_t::Events_t::itemEventLookup[(ItemType)itemType].insert((Compendium_t::EventTags)find2->second.id);
-							Compendium_t::Events_t::eventItemLookup[(Compendium_t::EventTags)find2->second.id].insert((ItemType)itemType);
+							Compendium_t::Events_t::itemEventLookup[static_cast<ItemType>(itemType)].insert(static_cast<Compendium_t::EventTags>(find2->second.id));
+							Compendium_t::Events_t::eventItemLookup[static_cast<Compendium_t::EventTags>(find2->second.id)].insert(static_cast<ItemType>(itemType));
 						}
 					}
 				}
@@ -14070,13 +14077,13 @@ void Compendium_t::readMagicFromFile(bool forceLoadBaseDirectory)
 							const int itemType = isSpell ? SPELL_ITEM : ItemTooltips.itemNameStringToItemID[item.name];
 							if ( itemType == SPELL_ITEM )
 							{
-								Compendium_t::Events_t::itemEventLookup[Compendium_t::Events_t::kEventSpellOffset + item.spellID].insert((Compendium_t::EventTags)find2->second.id);
-								Compendium_t::Events_t::eventItemLookup[(Compendium_t::EventTags)find2->second.id].insert(Compendium_t::Events_t::kEventSpellOffset + item.spellID);
+								Compendium_t::Events_t::itemEventLookup[Compendium_t::Events_t::kEventSpellOffset + item.spellID].insert(static_cast<Compendium_t::EventTags>(find2->second.id));
+								Compendium_t::Events_t::eventItemLookup[static_cast<Compendium_t::EventTags>(find2->second.id)].insert(Compendium_t::Events_t::kEventSpellOffset + item.spellID);
 							}
 							else if ( itemType >= WOODEN_SHIELD && itemType < NUMITEMS )
 							{
-								Compendium_t::Events_t::itemEventLookup[(ItemType)itemType].insert((Compendium_t::EventTags)find2->second.id);
-								Compendium_t::Events_t::eventItemLookup[(Compendium_t::EventTags)find2->second.id].insert((ItemType)itemType);
+								Compendium_t::Events_t::itemEventLookup[static_cast<ItemType>(itemType)].insert(static_cast<Compendium_t::EventTags>(find2->second.id));
+								Compendium_t::Events_t::eventItemLookup[static_cast<Compendium_t::EventTags>(find2->second.id)].insert(static_cast<ItemType>(itemType));
 							}
 						}
 					}
@@ -14103,20 +14110,20 @@ void Compendium_t::readMagicFromFile(bool forceLoadBaseDirectory)
 							if ( itemType == SPELL_ITEM )
 							{
 								auto& vec = Compendium_t::Events_t::itemDisplayedEventsList[Compendium_t::Events_t::kEventSpellOffset + item.spellID];
-								if ( std::find(vec.begin(), vec.end(), (Compendium_t::EventTags)find2->second.id)
+								if ( std::find(vec.begin(), vec.end(), static_cast<Compendium_t::EventTags>(find2->second.id))
 									== vec.end() || find2->second.id == EventTags::CPDM_CUSTOM_TAG )
 								{
-									vec.push_back((Compendium_t::EventTags)find2->second.id);
+									vec.push_back(static_cast<Compendium_t::EventTags>(find2->second.id));
 								}
 								itemsInList.insert(Compendium_t::Events_t::kEventSpellOffset + item.spellID);
 							}
 							else if ( itemType >= WOODEN_SHIELD && itemType < NUMITEMS )
 							{
 								auto& vec = Compendium_t::Events_t::itemDisplayedEventsList[itemType];
-								if ( std::find(vec.begin(), vec.end(), (Compendium_t::EventTags)find2->second.id)
+								if ( std::find(vec.begin(), vec.end(), static_cast<Compendium_t::EventTags>(find2->second.id))
 									== vec.end() || find2->second.id == EventTags::CPDM_CUSTOM_TAG )
 								{
-									vec.push_back((Compendium_t::EventTags)find2->second.id);
+									vec.push_back(static_cast<Compendium_t::EventTags>(find2->second.id));
 								}
 								itemsInList.insert(itemType);
 							}
@@ -14487,7 +14494,7 @@ void Compendium_t::readCodexFromFile(bool forceLoadBaseDirectory)
 					auto find2 = Compendium_t::Events_t::events.find(find->second);
 					if ( find2 != Compendium_t::Events_t::events.end() )
 					{
-						Compendium_t::Events_t::eventCodexLookup[(Compendium_t::EventTags)find2->second.id].insert(name);
+						Compendium_t::Events_t::eventCodexLookup[static_cast<Compendium_t::EventTags>(find2->second.id)].insert(name);
 					}
 				}
 			}
@@ -14507,10 +14514,10 @@ void Compendium_t::readCodexFromFile(bool forceLoadBaseDirectory)
 					if ( find2 != Compendium_t::Events_t::events.end() )
 					{
 						auto& vec = Compendium_t::Events_t::itemDisplayedEventsList[Compendium_t::Events_t::kEventCodexOffset + obj.id];
-						if ( std::find(vec.begin(), vec.end(), (Compendium_t::EventTags)find2->second.id)
+						if ( std::find(vec.begin(), vec.end(), static_cast<Compendium_t::EventTags>(find2->second.id))
 							== vec.end() || find2->second.id == EventTags::CPDM_CUSTOM_TAG )
 						{
-							vec.push_back((Compendium_t::EventTags)find2->second.id);
+							vec.push_back(static_cast<Compendium_t::EventTags>(find2->second.id));
 						}
 					}
 				}
@@ -14828,7 +14835,7 @@ void Compendium_t::readWorldFromFile(bool forceLoadBaseDirectory)
 					auto find2 = Compendium_t::Events_t::events.find(find->second);
 					if ( find2 != Compendium_t::Events_t::events.end() )
 					{
-						Compendium_t::Events_t::eventWorldLookup[(Compendium_t::EventTags)find2->second.id].insert(name);
+						Compendium_t::Events_t::eventWorldLookup[static_cast<Compendium_t::EventTags>(find2->second.id)].insert(name);
 					}
 				}
 			}
@@ -14847,10 +14854,10 @@ void Compendium_t::readWorldFromFile(bool forceLoadBaseDirectory)
 					if ( find2 != Compendium_t::Events_t::events.end() )
 					{
 						auto& vec = Compendium_t::Events_t::itemDisplayedEventsList[Compendium_t::Events_t::kEventWorldOffset + obj.id];
-						if ( std::find(vec.begin(), vec.end(), (Compendium_t::EventTags)find2->second.id)
+						if ( std::find(vec.begin(), vec.end(), static_cast<Compendium_t::EventTags>(find2->second.id))
 							== vec.end() || find2->second.id == EventTags::CPDM_CUSTOM_TAG )
 						{
-							vec.push_back((Compendium_t::EventTags)find2->second.id);
+							vec.push_back(static_cast<Compendium_t::EventTags>(find2->second.id));
 						}
 					}
 				}
@@ -15501,7 +15508,7 @@ std::string Compendium_t::Events_t::formatEventRecordText(Sint32 value, const ch
 					if ( numSymbols == 2 )
 					{
 						// mins/secs
-						min = std::min(min, (Uint32)9999);
+						min = std::min(min, static_cast<Uint32>(9999));
 						snprintf(buf, sizeof(buf), fmt.c_str(), min, sec);
 						output += buf;
 					}
@@ -15509,7 +15516,7 @@ std::string Compendium_t::Events_t::formatEventRecordText(Sint32 value, const ch
 					{
 						// hours/mins/secs
 						min = min % 60;
-						hour = std::min(hour, (Uint32)9999);
+						hour = std::min(hour, static_cast<Uint32>(9999));
 						snprintf(buf, sizeof(buf), fmt.c_str(), hour, min, sec);
 						output += buf;
 					}
@@ -15518,7 +15525,7 @@ std::string Compendium_t::Events_t::formatEventRecordText(Sint32 value, const ch
 						// days also
 						min = min % 60;
 						hour = hour % 24;
-						day = std::min(day, (Uint32)9999);
+						day = std::min(day, static_cast<Uint32>(9999));
 						snprintf(buf, sizeof(buf), fmt.c_str(), day, hour, min, sec);
 						output += buf;
 					}
@@ -16322,7 +16329,7 @@ void Compendium_t::Events_t::readEventsFromFile()
 		++index;
 		for ( auto itr2 = itr->MemberBegin(); itr2 != itr->MemberEnd(); ++itr2 )
 		{
-			const EventTags id = (EventTags)std::min(index, (int)CPDM_EVENT_TAGS_MAX);
+			const EventTags id = static_cast<EventTags>(std::min(index, (int)CPDM_EVENT_TAGS_MAX));
 			auto& entry = events[id];
 			entry.id = id;
 			entry.name = itr2->name.GetString();
@@ -16354,8 +16361,8 @@ void Compendium_t::Events_t::readEventsFromFile()
 			{
 				int tmp = itr2->value["client"].GetInt();
 				tmp = std::max(0, tmp);
-				tmp = std::min((int)Compendium_t::Events_t::CLIENT_UPDATETYPE_MAX - 1, tmp);
-				entry.clienttype = (Compendium_t::Events_t::ClientUpdateType)tmp;
+				tmp = std::min(static_cast<int>(Compendium_t::Events_t::CLIENT_UPDATETYPE_MAX) - 1, tmp);
+				entry.clienttype = static_cast<Compendium_t::Events_t::ClientUpdateType>(tmp);
 			}
 			if ( itr2->value.HasMember("once_per_run") )
 			{
@@ -16477,7 +16484,7 @@ void Compendium_t::Events_t::loadItemsSaveData()
 		{
 			continue;
 		}
-		const EventTags id = (EventTags)std::min((int)find->second, (int)CPDM_EVENT_TAGS_MAX);
+		const EventTags id = static_cast<EventTags>(std::min((int)find->second, (int)CPDM_EVENT_TAGS_MAX));
 		for ( auto itr2 = itr->value.MemberBegin(); itr2 != itr->value.MemberEnd(); ++itr2 )
 		{
 			int itemType = std::stoi(itr2->name.GetString());
@@ -16507,7 +16514,7 @@ void Compendium_t::Events_t::loadItemsSaveData()
 			}
 			else
 			{
-				eventUpdate(0, id, (ItemType)itemType, value, true);
+				eventUpdate(0, id, static_cast<ItemType>(itemType), value, true);
 			}
 		}
 	}
@@ -16560,7 +16567,7 @@ void Compendium_t::Events_t::createDummyClientData(const int playernum)
 	{
 		for ( auto& tag : itemEventLookup[i] )
 		{
-			eventUpdate(playernum, tag, (ItemType)i, 1);
+			eventUpdate(playernum, tag, static_cast<ItemType>(i), 1);
 		}
 	}
 	for ( int i = 0; i < NUM_SPELLS; ++i )
@@ -16964,7 +16971,7 @@ bool Compendium_t::Events_t::EventVal_t::applyValue(const Sint32 val)
 		value += val;
 		if ( id != CPDM_SINKS_HEALTH_RESTORED )
 		{
-			if ( (Uint32)value >= 0x7FFFFFFF )
+			if ( static_cast<Uint32>(value) >= 0x7FFFFFFF )
 			{
 				value = 0x7FFFFFFF;
 			}
@@ -17058,8 +17065,8 @@ void Compendium_t::Events_t::updateEventsInMainLoop(const int playernum)
 		{
 			real_t resistance = 100.0 * Entity::getDamageTableMultiplier(entity, *myStats, DAMAGE_TABLE_MAGIC);
 			resistance = -(resistance - 100.0);
-			eventUpdateCodex(playernum, CPDM_RES_MAX, "res", (int)resistance);
-			eventUpdateCodex(playernum, CPDM_CLASS_RES_MAX, "res", (int)resistance);
+			eventUpdateCodex(playernum, CPDM_RES_MAX, "res", static_cast<int>(resistance));
+			eventUpdateCodex(playernum, CPDM_CLASS_RES_MAX, "res", static_cast<int>(resistance));
 		}
 
 		{
@@ -17155,7 +17162,7 @@ void Compendium_t::Events_t::updateEventsInMainLoop(const int playernum)
 				// base PWR INT Bonus
 				real_t bonus = getSpellBonusFromCasterINT(entity, myStats, skillID) * 100.0;
 				real_t val = bonus;
-				eventUpdateCodex(playernum, CPDM_CLASS_PWR_MAX, "pwr", (int)val);
+				eventUpdateCodex(playernum, CPDM_CLASS_PWR_MAX, "pwr", static_cast<int>(val));
 			}
 
 			// equip/effect bonus (minus INT)
@@ -17172,7 +17179,7 @@ void Compendium_t::Events_t::updateEventsInMainLoop(const int playernum)
 				}
 				real_t bonus = getSpellBonusFromCasterINT(entity, myStats, skillID);
 				val -= bonus * 100.0;
-				eventUpdateCodex(playernum, CPDM_PWR_MAX_EQUIP, "pwr", (int)val);
+				eventUpdateCodex(playernum, CPDM_PWR_MAX_EQUIP, "pwr", static_cast<int>(val));
 			}
 		}
 	}
@@ -17183,7 +17190,7 @@ void Compendium_t::Events_t::updateEventsInMainLoop(const int playernum)
 		int numDeathBoxes = 0;
 		for ( node_t* node = stats[playernum]->inventory.first; node != NULL; node = node->next )
 		{
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			if ( !item )
 			{
 				continue;
@@ -17396,7 +17403,7 @@ void Player::CompendiumProgress_t::updateFloorEvents()
 	{
 		if ( p1.first >= 0 && p1.first < Compendium_t::EventTags::CPDM_EVENT_TAGS_MAX )
 		{
-			Compendium_t::EventTags tag = (Compendium_t::EventTags)p1.first;
+			Compendium_t::EventTags tag = static_cast<Compendium_t::EventTags>(p1.first);
 			for ( auto& p2 : p1.second )
 			{
 				const char* category = p2.first.c_str();
@@ -17460,7 +17467,7 @@ void Compendium_t::Events_t::onLevelChangeEvent(const int playernum, const int p
 				int numDeathBoxes = 0;
 				for ( node_t* node = stats[playernum]->inventory.first; node; node = node->next )
 				{
-					Item* item = (Item*)node->element;
+					Item* item = static_cast<Item*>(node->element);
 					if ( !item )
 					{
 						continue;
@@ -19058,7 +19065,7 @@ void Compendium_t::updateLorePointCounts()
 		lorePointsAchievementsTotal += achData.second.lorePoints;
 	}
 	total = std::max(1, total);
-	AchievementData_t::completionPercent = 100.0 * (completed / (real_t)total);
+	AchievementData_t::completionPercent = 100.0 * (completed / static_cast<real_t>(total));
 
 	completed = 0;
 	total = 0;
@@ -19106,7 +19113,7 @@ void Compendium_t::updateLorePointCounts()
 		}
 	}
 	total = std::max(1, total);
-	CompendiumItems_t::completionPercent = 100.0 * (completed / (real_t)total);
+	CompendiumItems_t::completionPercent = 100.0 * (completed / static_cast<real_t>(total));
 
 	completed = 0;
 	total = 0;
@@ -19155,7 +19162,7 @@ void Compendium_t::updateLorePointCounts()
 		}
 	}
 	total = std::max(1, total);
-	CompendiumMagic_t::completionPercent = 100.0 * (completed / (real_t)total);
+	CompendiumMagic_t::completionPercent = 100.0 * (completed / static_cast<real_t>(total));
 
 	completed = 0;
 	total = 0;
@@ -19186,7 +19193,7 @@ void Compendium_t::updateLorePointCounts()
 		}
 	}
 	total = std::max(1, total);
-	CompendiumWorld_t::completionPercent = 100.0 * (completed / (real_t)total);
+	CompendiumWorld_t::completionPercent = 100.0 * (completed / static_cast<real_t>(total));
 	if ( seenEntries >= (total / 2) )
 	{
 		steamAchievement("BARONY_ACH_ISEENTIT");
@@ -19219,7 +19226,7 @@ void Compendium_t::updateLorePointCounts()
 		}
 	}
 	total = std::max(1, total);
-	CompendiumCodex_t::completionPercent = std::min(100.0, 100.0 * (completed / (real_t)total));
+	CompendiumCodex_t::completionPercent = std::min(100.0, 100.0 * (completed / static_cast<real_t>(total)));
 
 	completed = 0;
 	total = 0;
@@ -19252,7 +19259,7 @@ void Compendium_t::updateLorePointCounts()
 		}
 	}
 	total = std::max(1, total);
-	CompendiumMonsters_t::completionPercent = 100.0 * (completed / (real_t)total);
+	CompendiumMonsters_t::completionPercent = 100.0 * (completed / static_cast<real_t>(total));
 
 	Compendium_t::PointsAnim_t::countUnreadLastTicks = 0;
 	Compendium_t::PointsAnim_t::countUnreadNotifs();

@@ -134,7 +134,7 @@ void Entity::actMagicTrapCeiling()
 	++spellTrapCounter;
 
 	node_t* node = children.first;
-	Entity* ceilingModel = (Entity*)(node->element);
+	Entity* ceilingModel = static_cast<Entity*>(node->element);
 	int triggerSprite = 0;
 	switch ( spellTrapType )
 	{
@@ -391,11 +391,11 @@ void Entity::actTeleportShrine()
 				std::vector<std::pair<Entity*, std::pair<int, int>>> allShrines;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( !entity ) { continue; }
 					if ( entity->behavior == &::actTeleportShrine )
 					{
-						allShrines.push_back(std::make_pair(entity, std::make_pair((int)(entity->x / 16), (int)(entity->y / 16))));
+						allShrines.push_back(std::make_pair(entity, std::make_pair(static_cast<int>(entity->x / 16), static_cast<int>(entity->y / 16))));
 					}
 				}
 
@@ -464,11 +464,11 @@ void Entity::actTeleportShrine()
 				std::vector<std::pair<Entity*, std::pair<int, int>>> allShrines;
 				for ( node_t* node = map.entities->first; node; node = node->next )
 				{
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( !entity ) { continue; }
 					if ( entity->behavior == &::actTeleportShrine )
 					{
-						allShrines.push_back(std::make_pair(entity, std::make_pair((int)(entity->x / 16), (int)(entity->y / 16))));
+						allShrines.push_back(std::make_pair(entity, std::make_pair(static_cast<int>(entity->x / 16), static_cast<int>(entity->y / 16))));
 					}
 				}
 
@@ -566,7 +566,7 @@ void daedalusShrineInteract(Entity* my, Entity* touched)
 		Entity* exitEntity = nullptr;
 		for ( node_t* node = map.entities->first; node; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( !entity ) { continue; }
 			if ( (entity->behavior == &actLadder && strcmp(map.name, "Hell")) || (entity->behavior == &actPortal && !strcmp(map.name, "Hell")) )
 			{
@@ -737,7 +737,7 @@ void Entity::actDaedalusShrine()
 			{
 				diff -= 360;
 			}
-			scale = std::max(0.05, (abs(diff) / 180.0)) / (real_t)TICKS_PER_SECOND;
+			scale = std::max(0.05, (abs(diff) / 180.0)) / static_cast<real_t>(TICKS_PER_SECOND);
 			speed *= scale;
 		}
 

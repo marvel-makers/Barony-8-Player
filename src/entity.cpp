@@ -535,8 +535,8 @@ int Entity::entityLight()
 	{
 		return 255;
 	}
-	int light_x = (int)this->x / 16;
-	int light_y = (int)this->y / 16;
+	int light_x = static_cast<int>(this->x) / 16;
+	int light_y = static_cast<int>(this->y) / 16;
     const auto& light = lightmaps[0][light_y + light_x * map.height];
     //return (light.x + light.y + light.z) / 3.f;
 	float level = (light.x + light.y + light.z) / 3.f;
@@ -551,9 +551,9 @@ int Entity::entityLight()
 	{
 		float shade = std::min(std::max(0.f, light.w), 255.f) / 255.f;
 		level -= (level * shade * 0.8);
-		return std::min(std::max(0, (int)(level)), 255);
+		return std::min(std::max(0, static_cast<int>(level)), 255);
 	}
-	return std::min(std::max(0, (int)(level)), 255);
+	return std::min(std::max(0, static_cast<int>(level)), 255);
 	//return std::min(std::max(0, (int)((light.x + light.y + light.z) / 3.f * 255.f)), 255);
 }
 
@@ -569,7 +569,7 @@ after reductions depending on the entity stats and another entity observing
 int Entity::entityLightAfterReductions(Stat& myStats, Entity* observer)
 {
 	int player = -1;
-	const int minLight = (int)(TOUCHRANGE * 1.5);
+	const int minLight = static_cast<int>((TOUCHRANGE * 1.5));
 	int light = std::max(minLight, entityLight()); // max 255 light to start with.
 	bool invis = isInvisible();
 	if ( !invis )
@@ -790,7 +790,7 @@ void Entity::effectTimes()
 	{
 		//printlog( "%s\n", "Potato.");
 		//Handle magic effects.
-		spell = (spell_t*)node->element;
+		spell = static_cast<spell_t*>(node->element);
 		if ( !spell->sustain )
 		{
 			node_t* temp = NULL;
@@ -1575,13 +1575,13 @@ void Entity::effectTimes()
 						if ( effectStrength == 2 )
 						{
 							setEffect(EFF_SALAMANDER_HEART, 
-								(Uint8)1, -1, true, true, true);
+								static_cast<Uint8>(1), -1, true, true, true);
 							messagePlayer(isEntityPlayer(), MESSAGE_STATUS, Language::get(6921));
 						}
 						else if ( effectStrength == 4 )
 						{
 							setEffect(EFF_SALAMANDER_HEART,
-								(Uint8)3, -1, true, true, true);
+								static_cast<Uint8>(3), -1, true, true, true);
 							messagePlayer(isEntityPlayer(), MESSAGE_STATUS, Language::get(6917));
 						}
 					}
@@ -1835,7 +1835,7 @@ void Entity::effectTimes()
 							{
 								for ( node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next )
 								{
-									Entity* mapCreature = (Entity*)mapNode->element;
+									Entity* mapCreature = static_cast<Entity*>(mapNode->element);
 									if ( mapCreature )
 									{
 										// undo telepath rendering.
@@ -2311,7 +2311,7 @@ void Entity::effectTimes()
 						if ( effectStrength > 1 )
 						{
 							messagePlayer(player, MESSAGE_STATUS, Language::get(6629));
-							modHP(-((Sint32)effectStrength - 1));
+							modHP(-(static_cast<Sint32>(effectStrength) - 1));
 							setObituary(Language::get(6626));
 
 							// Give the Player feedback on being hurt
@@ -2744,18 +2744,18 @@ bool Entity::increaseSkill(int skill, bool notify)
 		// update EXP
 		strcpy((char*)net_packet->data, "ATTR");
 		net_packet->data[4] = clientnum;
-		net_packet->data[5] = (Sint8)myStats->STR;
-		net_packet->data[6] = (Sint8)myStats->DEX;
-		net_packet->data[7] = (Sint8)myStats->CON;
-		net_packet->data[8] = (Sint8)myStats->INT;
-		net_packet->data[9] = (Sint8)myStats->PER;
-		net_packet->data[10] = (Sint8)myStats->CHR;
-		net_packet->data[11] = (Uint8)myStats->EXP;
-		net_packet->data[12] = (Uint8)myStats->LVL;
-		SDLNet_Write16((Sint16)myStats->HP, &net_packet->data[13]);
-		SDLNet_Write16((Sint16)myStats->MAXHP, &net_packet->data[15]);
-		SDLNet_Write16((Sint16)myStats->MP, &net_packet->data[17]);
-		SDLNet_Write16((Sint16)myStats->MAXMP, &net_packet->data[19]);
+		net_packet->data[5] = static_cast<Sint8>(myStats->STR);
+		net_packet->data[6] = static_cast<Sint8>(myStats->DEX);
+		net_packet->data[7] = static_cast<Sint8>(myStats->CON);
+		net_packet->data[8] = static_cast<Sint8>(myStats->INT);
+		net_packet->data[9] = static_cast<Sint8>(myStats->PER);
+		net_packet->data[10] = static_cast<Sint8>(myStats->CHR);
+		net_packet->data[11] = static_cast<Uint8>(myStats->EXP);
+		net_packet->data[12] = static_cast<Uint8>(myStats->LVL);
+		SDLNet_Write16(static_cast<Sint16>(myStats->HP), &net_packet->data[13]);
+		SDLNet_Write16(static_cast<Sint16>(myStats->MAXHP), &net_packet->data[15]);
+		SDLNet_Write16(static_cast<Sint16>(myStats->MP), &net_packet->data[17]);
+		SDLNet_Write16(static_cast<Sint16>(myStats->MAXMP), &net_packet->data[19]);
 		net_packet->address.host = net_clients[player - 1].host;
 		net_packet->address.port = net_clients[player - 1].port;
 		net_packet->len = 21;
@@ -2787,7 +2787,7 @@ Stat* Entity::getStats() const
 		{
 			if ( this->children.first->next != nullptr )
 			{
-				return (Stat*)this->children.first->next->element;
+				return static_cast<Stat*>(this->children.first->next->element);
 			}
 		}
 	}
@@ -2855,7 +2855,7 @@ void Entity::checkBetterEquipment(Stat* myStats)
 			//Turn the entity into an item.
 			if ( node->element )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				Item* item = nullptr;
 				if ( entity != nullptr )
 				{
@@ -3158,7 +3158,7 @@ Entity* uidToEntity(Sint32 uidnum)
 
 	auto it = map.entities_map.find(uidnum);
 	if ( it != map.entities_map.end() )
-		return (Entity*)it->second->element;
+		return static_cast<Entity*>(it->second->element);
 
 	return NULL;
 }
@@ -3211,7 +3211,7 @@ void Entity::setHP(int amount)
 			{
 				// tell the client its HP changed
 				strcpy((char*)net_packet->data, "UPHP");
-				SDLNet_Write32((Uint32)entitystats->HP, &net_packet->data[4]);
+				SDLNet_Write32(static_cast<Uint32>(entitystats->HP), &net_packet->data[4]);
 				SDLNet_Write32((Uint32)NOTHING, &net_packet->data[8]);
 				net_packet->address.host = net_clients[i - 1].host;
 				net_packet->address.port = net_clients[i - 1].port;
@@ -3311,7 +3311,7 @@ void Entity::modHP(int amount)
 				}
 				if ( effectStrength != entitystats->getEffectActive(EFF_DELAY_PAIN) )
 				{
-					setEffect(EFF_DELAY_PAIN, (Uint8)effectStrength, entitystats->EFFECTS_TIMERS[EFF_DELAY_PAIN], false);
+					setEffect(EFF_DELAY_PAIN, static_cast<Uint8>(effectStrength), entitystats->EFFECTS_TIMERS[EFF_DELAY_PAIN], false);
 				}
 			}
 		}
@@ -3368,7 +3368,7 @@ void Entity::setMP(int amount, bool updateClients)
 			{
 				// tell the client its MP just changed
 				strcpy((char*)net_packet->data, "UPMP");
-				SDLNet_Write32((Uint32)entitystats->MP, &net_packet->data[4]);
+				SDLNet_Write32(static_cast<Uint32>(entitystats->MP), &net_packet->data[4]);
 				net_packet->address.host = net_clients[i - 1].host;
 				net_packet->address.port = net_clients[i - 1].port;
 				net_packet->len = 8;
@@ -3498,8 +3498,8 @@ void Entity::drainMP(int amount, bool notifyOverexpend)
 			{
 				//It is. Tell the client its MP just changed.
 				strcpy((char*)net_packet->data, "UPMP");
-				SDLNet_Write32((Uint32)entitystats->MP, &net_packet->data[4]);
-				SDLNet_Write32((Uint32)stats[i]->type, &net_packet->data[8]);
+				SDLNet_Write32(static_cast<Uint32>(entitystats->MP), &net_packet->data[4]);
+				SDLNet_Write32(static_cast<Uint32>(stats[i]->type), &net_packet->data[8]);
 				net_packet->address.host = net_clients[i - 1].host;
 				net_packet->address.port = net_clients[i - 1].port;
 				net_packet->len = 12;
@@ -3514,8 +3514,8 @@ void Entity::drainMP(int amount, bool notifyOverexpend)
 			//It's the player entity. Tell the server its MP changed.
 			strcpy((char*)net_packet->data, "UPMP");
 			net_packet->data[4] = clientnum;
-			SDLNet_Write32((Uint32)entitystats->MP, &net_packet->data[5]);
-			SDLNet_Write32((Uint32)stats[clientnum]->type, &net_packet->data[9]);
+			SDLNet_Write32(static_cast<Uint32>(entitystats->MP), &net_packet->data[5]);
+			SDLNet_Write32(static_cast<Uint32>(stats[clientnum]->type), &net_packet->data[9]);
 			net_packet->address.host = net_server.host;
 			net_packet->address.port = net_server.port;
 			net_packet->len = 13;
@@ -3556,7 +3556,7 @@ void Entity::drainMP(int amount, bool notifyOverexpend)
 	{
 		if ( entitystats->getEffectActive(EFF_MAGIC_WELL) )
 		{
-			entitystats->setEffectActive(EFF_MAGIC_WELL, std::min((Uint8)101, (Uint8)(entitystats->getEffectActive(EFF_MAGIC_WELL) + 1)));
+			entitystats->setEffectActive(EFF_MAGIC_WELL, std::min(static_cast<Uint8>(101), static_cast<Uint8>(entitystats->getEffectActive(EFF_MAGIC_WELL) + 1)));
 		}
 	}
 }
@@ -3915,7 +3915,7 @@ void Entity::handleEffects(Stat* myStats)
 			{
 				if ( !stats[player]->getEffectActive(EFF_GROWTH) || stats[player]->EFFECTS_TIMERS[EFF_GROWTH] == -1 )
 				{
-					setEffect(EFF_GROWTH, (Uint8)1, 15 * TICKS_PER_SECOND, false);
+					setEffect(EFF_GROWTH, static_cast<Uint8>(1), 15 * TICKS_PER_SECOND, false);
 				}
 			}
 		}
@@ -3960,10 +3960,10 @@ void Entity::handleEffects(Stat* myStats)
 
 		if ( maxHPMod != myStats->MISC_FLAGS[STAT_FLAG_HP_BONUS] )
 		{
-			real_t oldRatio = myStats->HP / (real_t)myStats->MAXHP;
+			real_t oldRatio = myStats->HP / static_cast<real_t>(myStats->MAXHP);
 			myStats->MAXHP += (maxHPMod - myStats->MISC_FLAGS[STAT_FLAG_HP_BONUS]);
 			myStats->MAXHP = std::max(1, myStats->MAXHP);
-			myStats->OLDHP = std::max(1, (int)(myStats->MAXHP * oldRatio));
+			myStats->OLDHP = std::max(1, static_cast<int>(myStats->MAXHP * oldRatio));
 
 			if ( behavior != &actPlayer )
 			{
@@ -3978,10 +3978,10 @@ void Entity::handleEffects(Stat* myStats)
 		myStats->MISC_FLAGS[STAT_FLAG_HP_BONUS] = maxHPMod;
 		if ( maxMPMod != myStats->MISC_FLAGS[STAT_FLAG_MP_BONUS] )
 		{
-			real_t oldRatio = myStats->MP / (real_t)myStats->MAXMP;
+			real_t oldRatio = myStats->MP / static_cast<real_t>(myStats->MAXMP);
 			myStats->MAXMP += (maxMPMod - myStats->MISC_FLAGS[STAT_FLAG_MP_BONUS]);
 			myStats->MAXMP = std::max(1, myStats->MAXMP);
-			setMP(std::max(1, (int)(myStats->MAXMP * oldRatio)), false);
+			setMP(std::max(1, static_cast<int>(myStats->MAXMP * oldRatio)), false);
 			updateHPMPForClients = true;
 		}
 		myStats->MISC_FLAGS[STAT_FLAG_MP_BONUS] = maxMPMod;
@@ -4554,18 +4554,18 @@ void Entity::handleEffects(Stat* myStats)
 			{
 				strcpy((char*)net_packet->data, "ATTR");
 				net_packet->data[4] = clientnum;
-				net_packet->data[5] = (Sint8)myStats->STR;
-				net_packet->data[6] = (Sint8)myStats->DEX;
-				net_packet->data[7] = (Sint8)myStats->CON;
-				net_packet->data[8] = (Sint8)myStats->INT;
-				net_packet->data[9] = (Sint8)myStats->PER;
-				net_packet->data[10] = (Sint8)myStats->CHR;
-				net_packet->data[11] = (Uint8)myStats->EXP;
-				net_packet->data[12] = (Uint8)myStats->LVL;
-				SDLNet_Write16((Sint16)myStats->HP, &net_packet->data[13]);
-				SDLNet_Write16((Sint16)myStats->MAXHP, &net_packet->data[15]);
-				SDLNet_Write16((Sint16)myStats->MP, &net_packet->data[17]);
-				SDLNet_Write16((Sint16)myStats->MAXMP, &net_packet->data[19]);
+				net_packet->data[5] = static_cast<Sint8>(myStats->STR);
+				net_packet->data[6] = static_cast<Sint8>(myStats->DEX);
+				net_packet->data[7] = static_cast<Sint8>(myStats->CON);
+				net_packet->data[8] = static_cast<Sint8>(myStats->INT);
+				net_packet->data[9] = static_cast<Sint8>(myStats->PER);
+				net_packet->data[10] = static_cast<Sint8>(myStats->CHR);
+				net_packet->data[11] = static_cast<Uint8>(myStats->EXP);
+				net_packet->data[12] = static_cast<Uint8>(myStats->LVL);
+				SDLNet_Write16(static_cast<Sint16>(myStats->HP), &net_packet->data[13]);
+				SDLNet_Write16(static_cast<Sint16>(myStats->MAXHP), &net_packet->data[15]);
+				SDLNet_Write16(static_cast<Sint16>(myStats->MP), &net_packet->data[17]);
+				SDLNet_Write16(static_cast<Sint16>(myStats->MAXMP), &net_packet->data[19]);
 				net_packet->address.host = net_clients[player - 1].host;
 				net_packet->address.port = net_clients[player - 1].port;
 				net_packet->len = 21;
@@ -4573,18 +4573,18 @@ void Entity::handleEffects(Stat* myStats)
 
 				strcpy((char*)net_packet->data, "LVLI");
 				net_packet->data[4] = clientnum;
-				net_packet->data[5] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_STR];
-				net_packet->data[6] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_DEX];
-				net_packet->data[7] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_CON];
-				net_packet->data[8] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_INT];
-				net_packet->data[9] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_PER];
-				net_packet->data[10] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_CHR];
-				net_packet->data[11] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_STR + NUMSTATS];
-				net_packet->data[12] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_DEX + NUMSTATS];
-				net_packet->data[13] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_CON + NUMSTATS];
-				net_packet->data[14] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_INT + NUMSTATS];
-				net_packet->data[15] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_PER + NUMSTATS];
-				net_packet->data[16] = (Uint8)myStats->PLAYER_LVL_STAT_TIMER[STAT_CHR + NUMSTATS];
+				net_packet->data[5] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_STR]);
+				net_packet->data[6] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_DEX]);
+				net_packet->data[7] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_CON]);
+				net_packet->data[8] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_INT]);
+				net_packet->data[9] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_PER]);
+				net_packet->data[10] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_CHR]);
+				net_packet->data[11] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_STR + NUMSTATS]);
+				net_packet->data[12] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_DEX + NUMSTATS]);
+				net_packet->data[13] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_CON + NUMSTATS]);
+				net_packet->data[14] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_INT + NUMSTATS]);
+				net_packet->data[15] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_PER + NUMSTATS]);
+				net_packet->data[16] = static_cast<Uint8>(myStats->PLAYER_LVL_STAT_TIMER[STAT_CHR + NUMSTATS]);
 				net_packet->address.host = net_clients[player - 1].host;
 				net_packet->address.port = net_clients[player - 1].port;
 				net_packet->len = 17;
@@ -4599,7 +4599,7 @@ void Entity::handleEffects(Stat* myStats)
 			if ( effectStrength >= 1 )
 			{
 				int stages = 1;
-				setEffect(EFF_GROWTH, (Uint8)(std::min(4, effectStrength + stages)), 15 * TICKS_PER_SECOND, false);
+				setEffect(EFF_GROWTH, static_cast<Uint8>(std::min(4, effectStrength + stages)), 15 * TICKS_PER_SECOND, false);
 				if ( myStats->getEffectActive(EFF_GROWTH) - effectStrength == 2 )
 				{
 					messagePlayerColor(skill[2], MESSAGE_STATUS, makeColorRGB(0, 255, 0), Language::get(6924));
@@ -5215,7 +5215,7 @@ void Entity::handleEffects(Stat* myStats)
 
 	if ( myStats->getEffectActive(EFF_FOCI_LIGHT_PEACE) )
 	{
-		int effectStrength = std::min(4, (int)myStats->getEffectActive(EFF_FOCI_LIGHT_PEACE));
+		int effectStrength = std::min(4, static_cast<int>(myStats->getEffectActive(EFF_FOCI_LIGHT_PEACE)));
   		int interval = getSpellEffectDurationSecondaryFromID(SPELL_FOCI_LIGHT_PEACE, nullptr, nullptr, nullptr);
 		interval -= (effectStrength - 1) * getSpellDamageSecondaryFromID(SPELL_FOCI_LIGHT_PEACE, nullptr, nullptr, nullptr);
 		interval = std::max(1, interval);
@@ -5238,7 +5238,7 @@ void Entity::handleEffects(Stat* myStats)
 
 	if ( myStats->getEffectActive(EFF_FOCI_LIGHT_PURITY) )
 	{
-		int effectStrength = std::min(4, (int)myStats->getEffectActive(EFF_FOCI_LIGHT_PURITY));
+		int effectStrength = std::min(4, static_cast<int>(myStats->getEffectActive(EFF_FOCI_LIGHT_PURITY)));
 		int interval = getSpellEffectDurationSecondaryFromID(SPELL_FOCI_LIGHT_PURITY, nullptr, nullptr, nullptr);
 		interval -= (effectStrength - 1) * getSpellDamageSecondaryFromID(SPELL_FOCI_LIGHT_PURITY, nullptr, nullptr, nullptr);
 		interval = std::max(1, interval);
@@ -5711,7 +5711,7 @@ void Entity::handleEffects(Stat* myStats)
 						players[player]->mechanics.lastFociHeldType = myStats->shield->type;
 
 						static ConsoleVariable<float> cvar_foci_charge_init("/foci_charge_init", 1.f);
-						int chargeTimeInit = (float)(TICKS_PER_SECOND / 4);
+						int chargeTimeInit = static_cast<float>((TICKS_PER_SECOND / 4));
 						if ( svFlags & SV_FLAG_CHEATS )
 						{
 							chargeTimeInit *= *cvar_foci_charge_init;
@@ -5941,7 +5941,7 @@ void Entity::handleEffects(Stat* myStats)
 				}
 				else if ( itemTypeIsInstrument(myStats->shield->type) )
 				{
-					int chargeTimeInit = (float)(TICKS_PER_SECOND / 4);
+					int chargeTimeInit = static_cast<float>((TICKS_PER_SECOND / 4));
 					Uint32 defendTime = ::ticks - players[player]->mechanics.defendTicks;
 					if ( defendTime >= chargeTimeInit )
 					{
@@ -6123,7 +6123,7 @@ void Entity::handleEffects(Stat* myStats)
 
 							for ( node_t* node = map.creatures->first; node && effect >= 0; node = node->next )
 							{
-								if ( Entity* entity = (Entity*)(node->element) )
+								if ( Entity* entity = static_cast<Entity*>(node->element) )
 								{
 									if ( entity->behavior != &actPlayer && entity->behavior != &actMonster )
 									{
@@ -6161,7 +6161,7 @@ void Entity::handleEffects(Stat* myStats)
 															Uint32 sec = (durationTotal / TICKS_PER_SECOND) % 60;
 															Uint32 min = ((durationTotal / TICKS_PER_SECOND) / 60) % 60;
 															Uint32 hour = ((durationTotal / TICKS_PER_SECOND) / 60) / 60;
-															float sec2 = fmod((duration / (float)TICKS_PER_SECOND), 60);
+															float sec2 = fmod((duration / static_cast<float>(TICKS_PER_SECOND)), 60);
 															messagePlayer(skill[2], MESSAGE_INTERACTION, "Song Duration: %02dm:%02ds (+ by %.2fs)", min, sec, sec2);
 														}
 													}
@@ -6261,7 +6261,7 @@ void Entity::handleEffects(Stat* myStats)
 					if ( multiplayer == SERVER && player > 0 && !players[player]->isLocalPlayer() )
 					{
 						strcpy((char*)net_packet->data, "TORC");
-						SDLNet_Write16((Sint16)itemType, &net_packet->data[4]);
+						SDLNet_Write16(static_cast<Sint16>(itemType), &net_packet->data[4]);
 						net_packet->data[6] = itemStatus;
 						net_packet->data[7] = qty;
 						net_packet->address.host = net_clients[player - 1].host;
@@ -6294,7 +6294,7 @@ void Entity::handleEffects(Stat* myStats)
 						strcpy((char*)net_packet->data, "ARMR");
 						net_packet->data[4] = 4;
 						net_packet->data[5] = myStats->shield->status;
-						SDLNet_Write16((int)myStats->shield->type, &net_packet->data[6]);
+						SDLNet_Write16(static_cast<int>(myStats->shield->type), &net_packet->data[6]);
 						net_packet->address.host = net_clients[player - 1].host;
 						net_packet->address.port = net_clients[player - 1].port;
 						net_packet->len = 8;
@@ -6373,7 +6373,7 @@ void Entity::handleEffects(Stat* myStats)
 		if ( myStats->MP <= myStats->MAXMP * 0.25 && effectStrength <= 2 )
 		{
 			// radiant stone
-			this->setEffect(EFF_SALAMANDER_HEART, (Uint8)4, 5 * TICKS_PER_SECOND, true, true, true);
+			this->setEffect(EFF_SALAMANDER_HEART, static_cast<Uint8>(4), 5 * TICKS_PER_SECOND, true, true, true);
 			messagePlayerColor(skill[2], MESSAGE_STATUS, makeColorRGB(0, 255, 0), Language::get(6919));
 			playSoundEntity(this, 826, 128);
 			//createParticleDropRising(this, 593, 1.f);
@@ -6888,7 +6888,7 @@ void Entity::handleEffects(Stat* myStats)
 				continue;
 			}
 		}
-		if ( Entity* entity = (Entity*)node->element )
+		if ( Entity* entity = static_cast<Entity*>(node->element) )
 		{
 			entity->flags[STASIS_DITHER] = flags[STASIS_DITHER];
 		}
@@ -7159,7 +7159,7 @@ void Entity::handleEffects(Stat* myStats)
 				list_t* currentList = *it;
 				for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( entity == this )
 					{
 						continue;
@@ -7543,7 +7543,7 @@ void Entity::handleEffects(Stat* myStats)
 							strcpy((char*)net_packet->data, "ARMR");
 							net_packet->data[4] = 6;
 							net_packet->data[5] = myStats->cloak->status;
-							SDLNet_Write16((int)myStats->cloak->type, &net_packet->data[6]);
+							SDLNet_Write16(static_cast<int>(myStats->cloak->type), &net_packet->data[6]);
 							net_packet->address.host = net_clients[player - 1].host;
 							net_packet->address.port = net_clients[player - 1].port;
 							net_packet->len = 8;
@@ -7579,7 +7579,7 @@ void Entity::handleEffects(Stat* myStats)
 			int secondManaToRefund = 0;
 			for ( node_t* node = myStats->FOLLOWERS.first; node != nullptr; node = node->next )
 			{
-				Uint32* c = (Uint32*)node->element;
+				Uint32* c = static_cast<Uint32*>(node->element);
 				Entity* mySummon = nullptr;
 				if ( c )
 				{
@@ -7649,18 +7649,18 @@ void Entity::handleEffects(Stat* myStats)
 					{
 						strcpy((char*)net_packet->data, "ATTR");
 						net_packet->data[4] = clientnum;
-						net_packet->data[5] = (Sint8)myStats->STR;
-						net_packet->data[6] = (Sint8)myStats->DEX;
-						net_packet->data[7] = (Sint8)myStats->CON;
-						net_packet->data[8] = (Sint8)myStats->INT;
-						net_packet->data[9] = (Sint8)myStats->PER;
-						net_packet->data[10] = (Sint8)myStats->CHR;
-						net_packet->data[11] = (Uint8)myStats->EXP;
-						net_packet->data[12] = (Uint8)myStats->LVL;
-						SDLNet_Write16((Sint16)myStats->HP, &net_packet->data[13]);
-						SDLNet_Write16((Sint16)myStats->MAXHP, &net_packet->data[15]);
-						SDLNet_Write16((Sint16)myStats->MP, &net_packet->data[17]);
-						SDLNet_Write16((Sint16)myStats->MAXMP, &net_packet->data[19]);
+						net_packet->data[5] = static_cast<Sint8>(myStats->STR);
+						net_packet->data[6] = static_cast<Sint8>(myStats->DEX);
+						net_packet->data[7] = static_cast<Sint8>(myStats->CON);
+						net_packet->data[8] = static_cast<Sint8>(myStats->INT);
+						net_packet->data[9] = static_cast<Sint8>(myStats->PER);
+						net_packet->data[10] = static_cast<Sint8>(myStats->CHR);
+						net_packet->data[11] = static_cast<Uint8>(myStats->EXP);
+						net_packet->data[12] = static_cast<Uint8>(myStats->LVL);
+						SDLNet_Write16(static_cast<Sint16>(myStats->HP), &net_packet->data[13]);
+						SDLNet_Write16(static_cast<Sint16>(myStats->MAXHP), &net_packet->data[15]);
+						SDLNet_Write16(static_cast<Sint16>(myStats->MP), &net_packet->data[17]);
+						SDLNet_Write16(static_cast<Sint16>(myStats->MAXMP), &net_packet->data[19]);
 						net_packet->address.host = net_clients[player - 1].host;
 						net_packet->address.port = net_clients[player - 1].port;
 						net_packet->len = 21;
@@ -7752,7 +7752,7 @@ void Entity::handleEffects(Stat* myStats)
 							strcpy((char*)net_packet->data, "ARMR");
 							net_packet->data[4] = 7;
 							net_packet->data[5] = myStats->amulet->status;
-							SDLNet_Write16((int)myStats->amulet->type, &net_packet->data[6]);
+							SDLNet_Write16(static_cast<int>(myStats->amulet->type), &net_packet->data[6]);
 							net_packet->address.host = net_clients[player - 1].host;
 							net_packet->address.port = net_clients[player - 1].port;
 							net_packet->len = 8;
@@ -7795,7 +7795,7 @@ void Entity::handleEffects(Stat* myStats)
 						strcpy((char*)net_packet->data, "ARMR");
 						net_packet->data[4] = 7;
 						net_packet->data[5] = myStats->amulet->status;
-						SDLNet_Write16((int)myStats->amulet->type, &net_packet->data[6]);
+						SDLNet_Write16(static_cast<int>(myStats->amulet->type), &net_packet->data[6]);
 						net_packet->address.host = net_clients[player - 1].host;
 						net_packet->address.port = net_clients[player - 1].port;
 						net_packet->len = 8;
@@ -7839,18 +7839,18 @@ void Entity::handleEffects(Stat* myStats)
 						{
 							strcpy((char*)net_packet->data, "ATTR");
 							net_packet->data[4] = clientnum;
-							net_packet->data[5] = (Sint8)myStats->STR;
-							net_packet->data[6] = (Sint8)myStats->DEX;
-							net_packet->data[7] = (Sint8)myStats->CON;
-							net_packet->data[8] = (Sint8)myStats->INT;
-							net_packet->data[9] = (Sint8)myStats->PER;
-							net_packet->data[10] = (Sint8)myStats->CHR;
-							net_packet->data[11] = (Uint8)myStats->EXP;
-							net_packet->data[12] = (Uint8)myStats->LVL;
-							SDLNet_Write16((Sint16)myStats->HP, &net_packet->data[13]);
-							SDLNet_Write16((Sint16)myStats->MAXHP, &net_packet->data[15]);
-							SDLNet_Write16((Sint16)myStats->MP, &net_packet->data[17]);
-							SDLNet_Write16((Sint16)myStats->MAXMP, &net_packet->data[19]);
+							net_packet->data[5] = static_cast<Sint8>(myStats->STR);
+							net_packet->data[6] = static_cast<Sint8>(myStats->DEX);
+							net_packet->data[7] = static_cast<Sint8>(myStats->CON);
+							net_packet->data[8] = static_cast<Sint8>(myStats->INT);
+							net_packet->data[9] = static_cast<Sint8>(myStats->PER);
+							net_packet->data[10] = static_cast<Sint8>(myStats->CHR);
+							net_packet->data[11] = static_cast<Uint8>(myStats->EXP);
+							net_packet->data[12] = static_cast<Uint8>(myStats->LVL);
+							SDLNet_Write16(static_cast<Sint16>(myStats->HP), &net_packet->data[13]);
+							SDLNet_Write16(static_cast<Sint16>(myStats->MAXHP), &net_packet->data[15]);
+							SDLNet_Write16(static_cast<Sint16>(myStats->MP), &net_packet->data[17]);
+							SDLNet_Write16(static_cast<Sint16>(myStats->MAXMP), &net_packet->data[19]);
 							net_packet->address.host = net_clients[player - 1].host;
 							net_packet->address.port = net_clients[player - 1].port;
 							net_packet->len = 21;
@@ -7859,7 +7859,7 @@ void Entity::handleEffects(Stat* myStats)
 					}
 
 					real_t hpRestore = 100 * (0.5 + std::min(2, abs(myStats->amulet->beatitude)) * 0.5);
-					this->setHP(std::max((int)hpRestore, 5));
+					this->setHP(std::max(static_cast<int>(hpRestore), 5));
 					for ( int c = 0; c < NUMEFFECTS; c++ )
 					{
 						if ( !(c == EFF_VAMPIRICAURA && myStats->EFFECTS_TIMERS[c] == -2) 
@@ -7911,7 +7911,7 @@ void Entity::handleEffects(Stat* myStats)
 						strcpy((char*)net_packet->data, "ARMR");
 						net_packet->data[4] = 7;
 						net_packet->data[5] = myStats->amulet->status;
-						SDLNet_Write16((int)myStats->amulet->type, &net_packet->data[6]);
+						SDLNet_Write16(static_cast<int>(myStats->amulet->type), &net_packet->data[6]);
 						net_packet->address.host = net_clients[player - 1].host;
 						net_packet->address.port = net_clients[player - 1].port;
 						net_packet->len = 8;
@@ -8031,7 +8031,7 @@ void Entity::handleEffects(Stat* myStats)
 			node_t* node;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( !entity ) { continue; }
 				if ( entity && !entity->flags[INVISIBLE] && entity->behavior == &actItem && entityDist(entity, this) < dist )
 				{
@@ -8111,7 +8111,7 @@ void Entity::handleEffects(Stat* myStats)
 		{
 			myStats->setAttribute("dummy_ticks", std::to_string(this->ticks));
 			myStats->setAttribute("dummy_target", "0");
-			int dps = damage / ((this->ticks - dummyTick) / (real_t)(5 * TICKS_PER_SECOND));
+			int dps = damage / ((this->ticks - dummyTick) / static_cast<real_t>(5 * TICKS_PER_SECOND));
 			for ( int i = 0; i < MAXPLAYERS; ++i )
 			{
 				messagePlayer(i, MESSAGE_HINT, "DPS: %d", dps);
@@ -8655,11 +8655,11 @@ Sint32 statGetSTR(Stat* entitystats, Entity* my)
 		Uint8 effectStrength = entitystats->getEffectActive(EFF_MAXIMISE) & 0xF;
 		if ( my && my->behavior == &actPlayer )
 		{
-			STR += std::max((real_t)effectStrength, STR * 0.1 * effectStrength);
+			STR += std::max(static_cast<real_t>(effectStrength), STR * 0.1 * effectStrength);
 		}
 		else
 		{
-			STR += std::max((real_t)effectStrength, STR * 0.1 * effectStrength);
+			STR += std::max(static_cast<real_t>(effectStrength), STR * 0.1 * effectStrength);
 		}
 	}
 	if ( entitystats->getEffectActive(EFF_MINIMISE) )
@@ -8667,11 +8667,11 @@ Sint32 statGetSTR(Stat* entitystats, Entity* my)
 		Uint8 effectStrength = entitystats->getEffectActive(EFF_MINIMISE) & 0xF;
 		if ( my && my->behavior == &actPlayer )
 		{
-			STR -= std::max((real_t)effectStrength, STR * 0.1 * effectStrength);
+			STR -= std::max(static_cast<real_t>(effectStrength), STR * 0.1 * effectStrength);
 		}
 		else
 		{
-			STR -= std::max((real_t)effectStrength, STR * 0.1 * effectStrength);
+			STR -= std::max(static_cast<real_t>(effectStrength), STR * 0.1 * effectStrength);
 		}
 	}
 
@@ -8715,7 +8715,7 @@ Sint32 statGetSTR(Stat* entitystats, Entity* my)
 		}
 	}
 
-	STR += (Sint32)entitystats->getEnsembleEffectBonus(Stat::ENSEMBLE_DRUM_EFF_1);
+	STR += static_cast<Sint32>(entitystats->getEnsembleEffectBonus(Stat::ENSEMBLE_DRUM_EFF_1));
 
 	if ( entitystats->type == MIMIC )
 	{
@@ -8882,7 +8882,7 @@ Sint32 statGetDEX(Stat* entitystats, Entity* my)
 		}
 	}
 
-	DEX += (Sint32)entitystats->getEnsembleEffectBonus(Stat::ENSEMBLE_FLUTE_EFF_1);
+	DEX += static_cast<Sint32>(entitystats->getEnsembleEffectBonus(Stat::ENSEMBLE_FLUTE_EFF_1));
 
 	if ( entitystats->getEffectActive(EFF_WEBBED) && !entitystats->getEffectActive(EFF_SLOW) )
 	{
@@ -9030,11 +9030,11 @@ Sint32 statGetDEX(Stat* entitystats, Entity* my)
 		Uint8 effectStrength = entitystats->getEffectActive(EFF_MINIMISE) & 0xF;
 		if ( my && my->behavior == &actPlayer )
 		{
-			DEX += std::max((real_t)effectStrength, DEX * 0.1 * effectStrength);
+			DEX += std::max(static_cast<real_t>(effectStrength), DEX * 0.1 * effectStrength);
 		}
 		else
 		{
-			DEX += std::max((real_t)effectStrength, DEX * 0.1 * effectStrength);
+			DEX += std::max(static_cast<real_t>(effectStrength), DEX * 0.1 * effectStrength);
 		}
 	}
 
@@ -9165,7 +9165,7 @@ Sint32 statGetCON(Stat* entitystats, Entity* my)
 	{
 		CON += std::max(4, static_cast<int>(CON * 0.25));
 	}
-	CON += (Sint32)entitystats->getEnsembleEffectBonus(Stat::ENSEMBLE_HORN_EFF_1);
+	CON += static_cast<Sint32>(entitystats->getEnsembleEffectBonus(Stat::ENSEMBLE_HORN_EFF_1));
 	if ( entitystats->getEffectActive(EFF_STURDINESS) )
 	{
 		CON += entitystats->getThaumProficiencySpellStatBonus(STAT_CON, CON);
@@ -9174,7 +9174,7 @@ Sint32 statGetCON(Stat* entitystats, Entity* my)
 	if ( entitystats->getEffectActive(EFF_CON_BONUS) )
 	{
 		CON += 3;
-		int percentHP = static_cast<int>(100.0 * (real_t)entitystats->HP / std::max(1, entitystats->MAXHP));
+		int percentHP = static_cast<int>(100.0 * static_cast<real_t>(entitystats->HP) / std::max(1, entitystats->MAXHP));
 		percentHP = std::min(100, std::max(0, percentHP));
 		percentHP = 100 - percentHP;
 		CON += percentHP / 10;
@@ -9185,11 +9185,11 @@ Sint32 statGetCON(Stat* entitystats, Entity* my)
 		Uint8 effectStrength = entitystats->getEffectActive(EFF_MAXIMISE) & 0xF;
 		if ( my && my->behavior == &actPlayer )
 		{
-			CON += std::max((real_t)effectStrength, CON * 0.1 * effectStrength);
+			CON += std::max(static_cast<real_t>(effectStrength), CON * 0.1 * effectStrength);
 		}
 		else
 		{
-			CON += std::max((real_t)effectStrength, CON * 0.1 * effectStrength);
+			CON += std::max(static_cast<real_t>(effectStrength), CON * 0.1 * effectStrength);
 		}
 	}
 	if ( entitystats->getEffectActive(EFF_MINIMISE) )
@@ -9197,11 +9197,11 @@ Sint32 statGetCON(Stat* entitystats, Entity* my)
 		Uint8 effectStrength = entitystats->getEffectActive(EFF_MINIMISE) & 0xF;
 		if ( my && my->behavior == &actPlayer )
 		{
-			CON -= std::max((real_t)effectStrength, CON * 0.1 * effectStrength);
+			CON -= std::max(static_cast<real_t>(effectStrength), CON * 0.1 * effectStrength);
 		}
 		else
 		{
-			CON -= std::max((real_t)effectStrength, CON * 0.1 * effectStrength);
+			CON -= std::max(static_cast<real_t>(effectStrength), CON * 0.1 * effectStrength);
 		}
 	}
 
@@ -9491,7 +9491,7 @@ Sint32 statGetPER(Stat* entitystats, Entity* my)
 		PER += 4;
 	}
 
-	PER += (Sint32)entitystats->getEnsembleEffectBonus(Stat::ENSEMBLE_LYRE_EFF_1);
+	PER += static_cast<Sint32>(entitystats->getEnsembleEffectBonus(Stat::ENSEMBLE_LYRE_EFF_1));
 
 	if ( !(svFlags & SV_FLAG_HUNGER) )
 	{
@@ -10031,14 +10031,14 @@ void getItemsOnTile(int x, int y, list_t** list)
 	{
 		if ( node->element )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			//Check if the entity is an item.
 			if ( entity && entity->behavior == &actItem )
 			{
 				//If this is the first item found, the list needs to be created.
 				if ( !(*list) )
 				{
-					*list = (list_t*)malloc(sizeof(list_t));
+					*list = static_cast<list_t*>(malloc(sizeof(list_t)));
 					(*list)->first = NULL;
 					(*list)->last = NULL;
 				}
@@ -10306,7 +10306,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 			{
 				for ( node = aoeTargets->first; node != NULL; node = node->next )
 				{
-					Entity* tmpEntity = (Entity*)node->element;
+					Entity* tmpEntity = static_cast<Entity*>(node->element);
 					if ( tmpEntity != nullptr )
 					{
 						spawnExplosion(tmpEntity->x, tmpEntity->y, tmpEntity->z);
@@ -10630,7 +10630,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 									bool foundCharmSpell = false;
 									for ( node_t* spellnode = stats[player]->inventory.first; spellnode != nullptr; spellnode = spellnode->next )
 									{
-										Item* item = (Item*)spellnode->element;
+										Item* item = static_cast<Item*>(spellnode->element);
 										if ( item && itemCategory(item) == SPELL_CAT )
 										{
 											spell_t* spell = getSpellFromItem(player, item, false);
@@ -10653,7 +10653,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 							strcpy((char*)net_packet->data, "ARMR");
 							net_packet->data[4] = 5;
 							net_packet->data[5] = myStats->weapon->status;
-							SDLNet_Write16((int)myStats->weapon->type, &net_packet->data[6]);
+							SDLNet_Write16(static_cast<int>(myStats->weapon->type), &net_packet->data[6]);
 							net_packet->address.host = net_clients[player - 1].host;
 							net_packet->address.port = net_clients[player - 1].port;
 							net_packet->len = 8;
@@ -10887,7 +10887,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 							strcpy((char*)net_packet->data, "ARMR");
 							net_packet->data[4] = 5;
 							net_packet->data[5] = myStats->weapon->status;
-							SDLNet_Write16((int)myStats->weapon->type, &net_packet->data[6]);
+							SDLNet_Write16(static_cast<int>(myStats->weapon->type), &net_packet->data[6]);
 							net_packet->address.host = net_clients[player - 1].host;
 							net_packet->address.port = net_clients[player - 1].port;
 							net_packet->len = 8;
@@ -11779,7 +11779,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 								strcpy((char*)net_packet->data, "ARMR");
 								net_packet->data[4] = 5;
 								net_packet->data[5] = myStats->weapon->status;
-								SDLNet_Write16((int)myStats->weapon->type, &net_packet->data[6]);
+								SDLNet_Write16(static_cast<int>(myStats->weapon->type), &net_packet->data[6]);
 								net_packet->address.host = net_clients[player - 1].host;
 								net_packet->address.port = net_clients[player - 1].port;
 								net_packet->len = 8;
@@ -11869,7 +11869,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 				//Maybe should send a signal to each follower, with some kind of attached priority, which determines if they change their target to bumrush the player's assailant.
 				for ( node = hitstats->FOLLOWERS.first; node != nullptr && alertAllies; node = node->next )
 				{
-					Uint32* c = (Uint32*)node->element;
+					Uint32* c = static_cast<Uint32*>(node->element);
 					Entity* entity = nullptr;
 					if ( c )
 					{
@@ -11951,7 +11951,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 						strcpy((char*)net_packet->data, "ARMR");
 						net_packet->data[4] = 5;
 						net_packet->data[5] = myStats->weapon->status;
-						SDLNet_Write16((int)myStats->weapon->type, &net_packet->data[6]);
+						SDLNet_Write16(static_cast<int>(myStats->weapon->type), &net_packet->data[6]);
 						net_packet->address.host = net_clients[player - 1].host;
 						net_packet->address.port = net_clients[player - 1].port;
 						net_packet->len = 8;
@@ -13007,14 +13007,14 @@ void Entity::attack(int pose, int charge, Entity* target)
 					{
 						if ( weaponskill >= 0 )
 						{
-							messagePlayer(0, MESSAGE_DEBUG, "Old damage max: %d", (int)((std::max(0, (myAttack - enemyAC)) * weaponMultipliers)));
+							messagePlayer(0, MESSAGE_DEBUG, "Old damage max: %d", static_cast<int>((std::max(0, (myAttack - enemyAC)) * weaponMultipliers)));
 						}
 					}
 
 					int olddamage = damage;
 					real_t chargeMult = (real_t)std::min(2, 
 						static_cast<int>(std::max(charge, static_cast<int>(Stat::getMaxAttackCharge(myStats) / 2)) 
-														/ ((double)(Stat::getMaxAttackCharge(myStats) / 2))));
+														/ static_cast<double>(Stat::getMaxAttackCharge(myStats) / 2)));
 					if ( myStats->weapon && myStats->weapon->type == RAPIER && !shapeshifted )
 					{
 						if ( charge >= Stat::getMaxAttackCharge(myStats) )
@@ -13515,7 +13515,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 										net_packet->data[4] = 2;
 									}
 									net_packet->data[5] = (*weaponToBreak)->status;
-									SDLNet_Write16((int)(*weaponToBreak)->type, &net_packet->data[6]);
+									SDLNet_Write16(static_cast<int>((*weaponToBreak)->type), &net_packet->data[6]);
 									net_packet->address.host = net_clients[player - 1].host;
 									net_packet->address.port = net_clients[player - 1].port;
 									net_packet->len = 8;
@@ -14220,7 +14220,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 							{
 								spawnMagicEffectParticles(hit.entity->x, hit.entity->y, hit.entity->z, 643);
 								playSoundEntity(hit.entity, 173, 128);
-								if ( gibtype[hitstats->type] > 0 && gibtype[(int)hitstats->type] != 5 )
+								if ( gibtype[hitstats->type] > 0 && gibtype[static_cast<int>(hitstats->type)] != 5 )
 								{
 									bleedStatusInflicted = true;
 									for ( int gibs = 0; gibs < 10; ++gibs )
@@ -14493,7 +14493,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 						case SCARAB:
 							if ( myStats->getAttribute("SCARAB_GREATER_CURSE") != "" )
 							{
-								if ( hit.entity->setEffect(EFF_WEAKNESS, (Uint8)5, hitstats->EFFECTS_TIMERS[EFF_WEAKNESS] + 30 * TICKS_PER_SECOND,
+								if ( hit.entity->setEffect(EFF_WEAKNESS, static_cast<Uint8>(5), hitstats->EFFECTS_TIMERS[EFF_WEAKNESS] + 30 * TICKS_PER_SECOND,
 									false, true, false) )
 								{
 									messagePlayer(playerhit, MESSAGE_COMBAT, Language::get(6964));
@@ -14502,7 +14502,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 							}
 							else
 							{
-								if ( hit.entity->setEffect(EFF_WEAKNESS, (Uint8)2, hitstats->EFFECTS_TIMERS[EFF_WEAKNESS] + 15 * TICKS_PER_SECOND,
+								if ( hit.entity->setEffect(EFF_WEAKNESS, static_cast<Uint8>(2), hitstats->EFFECTS_TIMERS[EFF_WEAKNESS] + 15 * TICKS_PER_SECOND,
 									false, true, false) )
 								{
 									messagePlayer(playerhit, MESSAGE_COMBAT, Language::get(6963));
@@ -14681,7 +14681,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 								case SCARAB:
 									if ( myStats->getAttribute("SCARAB_GREATER_CURSE") != "" )
 									{
-										if ( hit.entity->setEffect(EFF_WEAKNESS, (Uint8)5, hitstats->EFFECTS_TIMERS[EFF_WEAKNESS] + 30 * TICKS_PER_SECOND,
+										if ( hit.entity->setEffect(EFF_WEAKNESS, static_cast<Uint8>(5), hitstats->EFFECTS_TIMERS[EFF_WEAKNESS] + 30 * TICKS_PER_SECOND,
 											false, true, false) )
 										{
 											messagePlayer(playerhit, MESSAGE_COMBAT, Language::get(6964));
@@ -14690,7 +14690,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 									}
 									else
 									{
-										if ( hit.entity->setEffect(EFF_WEAKNESS, (Uint8)2, hitstats->EFFECTS_TIMERS[EFF_WEAKNESS] + 15 * TICKS_PER_SECOND,
+										if ( hit.entity->setEffect(EFF_WEAKNESS, static_cast<Uint8>(2), hitstats->EFFECTS_TIMERS[EFF_WEAKNESS] + 15 * TICKS_PER_SECOND,
 											false, true, false) )
 										{
 											messagePlayer(playerhit, MESSAGE_COMBAT, Language::get(6963));
@@ -15376,8 +15376,8 @@ void Entity::attack(int pose, int charge, Entity* target)
 							}
 
 							strcpy((char*)net_packet->data, "UPHP");
-							SDLNet_Write32((Uint32)hitstats->HP, &net_packet->data[4]);
-							SDLNet_Write32((Uint32)myStats->type, &net_packet->data[8]);
+							SDLNet_Write32(static_cast<Uint32>(hitstats->HP), &net_packet->data[4]);
+							SDLNet_Write32(static_cast<Uint32>(myStats->type), &net_packet->data[8]);
 							net_packet->address.host = net_clients[playerhit - 1].host;
 							net_packet->address.port = net_clients[playerhit - 1].port;
 							net_packet->len = 12;
@@ -15587,7 +15587,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 					}
 
 					DamageGib dmgGib = DMG_DEFAULT;
-					bool charged = static_cast<int>(std::max(charge, Stat::getMaxAttackCharge(myStats) / 2) / ((double)(Stat::getMaxAttackCharge(myStats) / 2))) > 1;
+					bool charged = static_cast<int>(std::max(charge, Stat::getMaxAttackCharge(myStats) / 2) / static_cast<double>(Stat::getMaxAttackCharge(myStats) / 2)) > 1;
 					if ( weaponMultipliers >= 1.15 || (weaponskill == PRO_AXE && hitstats->type == MIMIC) || shillelaghDamage > 0 )
 					{
 						dmgGib = DMG_STRONGER;
@@ -16054,7 +16054,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 
 					// chance of bleeding
 					bool wasBleeding = hitstats->getEffectActive(EFF_BLEEDING) > 0; // check if currently bleeding when this roll occurred.
-					if ( gibtype[(int)hitstats->type] > 0 && gibtype[(int)hitstats->type] != 5 )
+					if ( gibtype[static_cast<int>(hitstats->type)] > 0 && gibtype[static_cast<int>(hitstats->type)] != 5 )
 					{
 						if ( bleedStatusInflicted || (hitstats->HP > 5 && damage > 0) )
 						{
@@ -16215,7 +16215,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 						{
 							for ( node = aoeTargets->first; node != NULL; node = node->next )
 							{
-								tmpEntity = (Entity*)node->element;
+								tmpEntity = static_cast<Entity*>(node->element);
 								if ( tmpEntity != nullptr )
 								{
 									this->attack(MONSTER_POSE_GOLEM_SMASH, charge, tmpEntity);
@@ -16231,7 +16231,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 							// shake nearby players that were not the primary target.
 							for ( node = shakeTargets->first; node != NULL; node = node->next )
 							{
-								tmpEntity = (Entity*)node->element;
+								tmpEntity = static_cast<Entity*>(node->element);
 								playerhit = tmpEntity->skill[2];
 								if ( playerhit > 0 && multiplayer == SERVER && !players[playerhit]->isLocalPlayer() )
 								{
@@ -16261,7 +16261,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 						{
 							for ( node = aoeTargets->first; node != NULL; node = node->next )
 							{
-								tmpEntity = (Entity*)node->element;
+								tmpEntity = static_cast<Entity*>(node->element);
 								if ( tmpEntity != nullptr )
 								{
 									spawnExplosion(tmpEntity->x, tmpEntity->y, tmpEntity->z);
@@ -16446,7 +16446,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 							}
 							if ( local_rng.rand() % chance == 0 )
 							{
-								Item* meat = newItem(FOOD_MEAT, (Status)(DECREPIT + local_rng.rand() % 4), 
+								Item* meat = newItem(FOOD_MEAT, static_cast<Status>(DECREPIT + local_rng.rand() % 4), 
 									0, 1, gibtype[hitstats->type], false, &hitstats->inventory);
 								if ( cursedChef )
 								{
@@ -16724,8 +16724,8 @@ void Entity::attack(int pose, int charge, Entity* target)
 											continue;
 										}
 										strcpy((char*)net_packet->data, "WALD");
-										SDLNet_Write16((Uint16)hit.mapx, &net_packet->data[4]);
-										SDLNet_Write16((Uint16)hit.mapy, &net_packet->data[6]);
+										SDLNet_Write16(static_cast<Uint16>(hit.mapx), &net_packet->data[4]);
+										SDLNet_Write16(static_cast<Uint16>(hit.mapy), &net_packet->data[6]);
 										net_packet->address.host = net_clients[c - 1].host;
 										net_packet->address.port = net_clients[c - 1].port;
 										net_packet->len = 8;
@@ -16769,7 +16769,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 									strcpy((char*)net_packet->data, "ARMR");
 									net_packet->data[4] = 5;
 									net_packet->data[5] = myStats->weapon->status;
-									SDLNet_Write16((int)myStats->weapon->type, &net_packet->data[6]);
+									SDLNet_Write16(static_cast<int>(myStats->weapon->type), &net_packet->data[6]);
 									net_packet->address.host = net_clients[player - 1].host;
 									net_packet->address.port = net_clients[player - 1].port;
 									net_packet->len = 8;
@@ -16867,7 +16867,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 					// shake nearby players that were not the primary target.
 					for ( node = shakeTargets->first; node != NULL; node = node->next )
 					{
-						tmpEntity = (Entity*)node->element;
+						tmpEntity = static_cast<Entity*>(node->element);
 						playerhit = tmpEntity->skill[2];
 						if ( playerhit > 0 && multiplayer == SERVER && !players[playerhit]->isLocalPlayer() )
 						{
@@ -16902,7 +16902,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 		net_packet->data[4] = player;
 		net_packet->data[5] = pose;
 		net_packet->data[6] = charge;
-		SDLNet_Write32((Sint32)(myStats->weapon ? myStats->weapon->type : 0), &net_packet->data[7]);
+		SDLNet_Write32(static_cast<Sint32>(myStats->weapon ? myStats->weapon->type : 0), &net_packet->data[7]);
 		SDLNet_Write32((Uint32)(myStats->weapon ? myStats->weapon->appearance : 0), &net_packet->data[11]);
 		net_packet->address.host = net_server.host;
 		net_packet->address.port = net_server.port;
@@ -16957,7 +16957,7 @@ int AC(Stat* stat)
 	}
 	if ( stat->getEffectActive(EFF_DISRUPTED) )
 	{
-		armor -= std::min((Uint8)3, stat->getEffectActive(EFF_DISRUPTED)) * 5;
+		armor -= std::min(static_cast<Uint8>(3), stat->getEffectActive(EFF_DISRUPTED)) * 5;
 	}
 
 	if ( stat->helmet )
@@ -17182,7 +17182,7 @@ bool Entity::teleport(int tele_x, int tele_y)
         part->bNeedsRenderPositionInit = true;
     }
     for (auto node = map.entities->first; node != nullptr; node = node->next) {
-        auto entity = (Entity*)node->element;
+        auto entity = static_cast<Entity*>(node->element);
         if (entity && entity->behavior == &actSpriteNametag) {
             if (entity->parent == uid) {
                 entity->bNeedsRenderPositionInit = true;
@@ -17297,7 +17297,7 @@ bool teleportCoordHasTrap(const int x, const int y)
 		node_t* node;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( !entity ) { continue; }
 			if ( entity->behavior == &actSpearTrap )
 			{
@@ -17913,12 +17913,12 @@ void Entity::awardXP(Entity* src, bool share, bool root)
 	if ( srcStats->getEffectActive(EFF_MINIMISE) )
 	{
 		int effectStrength = srcStats->getEffectActive(EFF_MINIMISE) & 0xF;
-		xpGain = std::max(1, std::min((int)(xpGain * (1.0 - 0.1 * effectStrength)), xpGain - 2 * effectStrength));
+		xpGain = std::max(1, std::min(static_cast<int>(xpGain * (1.0 - 0.1 * effectStrength)), xpGain - 2 * effectStrength));
 	}
 	else if ( srcStats->getEffectActive(EFF_MAXIMISE) )
 	{
 		int effectStrength = srcStats->getEffectActive(EFF_MAXIMISE) & 0xF;
-		xpGain = std::max(1, std::min((int)(xpGain * (1.0 + 0.1 * effectStrength)), xpGain + 2 * effectStrength));
+		xpGain = std::max(1, std::min(static_cast<int>(xpGain * (1.0 + 0.1 * effectStrength)), xpGain + 2 * effectStrength));
 	}
 	if ( gameplayCustomManager.inUse() )
 	{
@@ -18031,9 +18031,9 @@ void Entity::awardXP(Entity* src, bool share, bool root)
 					for ( node_t* node = stats[this->skill[2]]->FOLLOWERS.first; node != nullptr; node = node->next )
 					{
 						Entity* follower = nullptr;
-						if ( (Uint32*)node->element )
+						if ( static_cast<Uint32*>(node->element) )
 						{
-							follower = uidToEntity(*((Uint32*)node->element));
+							follower = uidToEntity(*static_cast<Uint32*>(node->element));
 						}
 						if ( follower && entityDist(this, follower) < shareRange && follower != src )
 						{
@@ -18438,18 +18438,18 @@ void Entity::awardXP(Entity* src, bool share, bool root)
 			// update client attributes
 			strcpy((char*)net_packet->data, "ATTR");
 			net_packet->data[4] = clientnum;
-			net_packet->data[5] = (Sint8)destStats->STR;
-			net_packet->data[6] = (Sint8)destStats->DEX;
-			net_packet->data[7] = (Sint8)destStats->CON;
-			net_packet->data[8] = (Sint8)destStats->INT;
-			net_packet->data[9] = (Sint8)destStats->PER;
-			net_packet->data[10] = (Sint8)destStats->CHR;
-			net_packet->data[11] = (Uint8)destStats->EXP;
-			net_packet->data[12] = (Uint8)destStats->LVL;
-			SDLNet_Write16((Sint16)destStats->HP, &net_packet->data[13]);
-			SDLNet_Write16((Sint16)destStats->MAXHP, &net_packet->data[15]);
-			SDLNet_Write16((Sint16)destStats->MP, &net_packet->data[17]);
-			SDLNet_Write16((Sint16)destStats->MAXMP, &net_packet->data[19]);
+			net_packet->data[5] = static_cast<Sint8>(destStats->STR);
+			net_packet->data[6] = static_cast<Sint8>(destStats->DEX);
+			net_packet->data[7] = static_cast<Sint8>(destStats->CON);
+			net_packet->data[8] = static_cast<Sint8>(destStats->INT);
+			net_packet->data[9] = static_cast<Sint8>(destStats->PER);
+			net_packet->data[10] = static_cast<Sint8>(destStats->CHR);
+			net_packet->data[11] = static_cast<Uint8>(destStats->EXP);
+			net_packet->data[12] = static_cast<Uint8>(destStats->LVL);
+			SDLNet_Write16(static_cast<Sint16>(destStats->HP), &net_packet->data[13]);
+			SDLNet_Write16(static_cast<Sint16>(destStats->MAXHP), &net_packet->data[15]);
+			SDLNet_Write16(static_cast<Sint16>(destStats->MP), &net_packet->data[17]);
+			SDLNet_Write16(static_cast<Sint16>(destStats->MAXMP), &net_packet->data[19]);
 			net_packet->address.host = net_clients[player - 1].host;
 			net_packet->address.port = net_clients[player - 1].port;
 			net_packet->len = 21;
@@ -19037,7 +19037,7 @@ bool Entity::checkEnemy(Entity* your)
 		bool foundFollower = false;
 		for ( t_node = myStats->FOLLOWERS.first; t_node != NULL; t_node = t_node->next )
 		{
-			Uint32* uid = (Uint32*)t_node->element;
+			Uint32* uid = static_cast<Uint32*>(t_node->element);
 			if ( *uid == your->uid )
 			{
 				foundFollower = true;
@@ -19658,7 +19658,7 @@ bool Entity::checkFriend(Entity* your)
 		bool foundFollower = false;
 		for ( t_node = myStats->FOLLOWERS.first; t_node != NULL; t_node = t_node->next )
 		{
-			Uint32* uid = (Uint32*)t_node->element;
+			Uint32* uid = static_cast<Uint32*>(t_node->element);
 			if ( *uid == your->uid )
 			{
 				foundFollower = true;
@@ -21654,7 +21654,7 @@ void Entity::handleWeaponArmAttack(Entity* weaponarm)
 	node_t* rightbodyNode = list_Node(&this->children, LIMB_HUMANOID_LEFTLEG);
 	if ( rightbodyNode )
 	{
-		rightbody = (Entity*)rightbodyNode->element;
+		rightbody = static_cast<Entity*>(rightbodyNode->element);
 	}
 	else
 	{
@@ -22188,7 +22188,7 @@ void Entity::humanoidAnimateWalk(Entity* limb, node_t* bodypartNode, int bodypar
 		node_t* rightbodyNode = list_Node(&this->children, LIMB_HUMANOID_LEFTLEG);
 		if ( rightbodyNode )
 		{
-			rightbody = (Entity*)rightbodyNode->element;
+			rightbody = static_cast<Entity*>(rightbodyNode->element);
 		}
 		else
 		{
@@ -22198,7 +22198,7 @@ void Entity::humanoidAnimateWalk(Entity* limb, node_t* bodypartNode, int bodypar
 		node_t* shieldNode = list_Node(&this->children, 8);
 		if ( shieldNode )
 		{
-			Entity* shield = (Entity*)shieldNode->element;
+			Entity* shield = static_cast<Entity*>(shieldNode->element);
 			if ( dist > 0.1 && (bodypart != LIMB_HUMANOID_LEFTARM || shield->sprite <= 0) )
 			{
 				// walking to destination
@@ -22219,7 +22219,7 @@ void Entity::humanoidAnimateWalk(Entity* limb, node_t* bodypartNode, int bodypar
 										node_t* tempNode = list_Node(&this->children, 3);
 										if ( tempNode )
 										{
-											Entity* foot = (Entity*)tempNode->element;
+											Entity* foot = static_cast<Entity*>(tempNode->element);
 											playSoundEntityLocal(this, getMonsterFootstepSound(this->monsterFootstepType, foot->sprite), 32);
 										}
 									}
@@ -22250,7 +22250,7 @@ void Entity::humanoidAnimateWalk(Entity* limb, node_t* bodypartNode, int bodypar
 										node_t* tempNode = list_Node(&this->children, 3);
 										if ( tempNode )
 										{
-											Entity* foot = (Entity*)tempNode->element;
+											Entity* foot = static_cast<Entity*>(tempNode->element);
 											playSoundEntityLocal(this, getMonsterFootstepSound(this->monsterFootstepType, foot->sprite), 32);
 										}
 									}
@@ -23225,7 +23225,7 @@ void Entity::handleHumanoidWeaponLimb(Entity* weaponLimb, Entity* weaponArmLimb)
 	}
 	else if ( isPlayer && myAttack == MONSTER_POSE_MAGIC_WINDUP2 )
 	{
-		doParticleEffectForTouchSpell(*this, weaponArmLimb, (Monster)monsterType);
+		doParticleEffectForTouchSpell(*this, weaponArmLimb, static_cast<Monster>(monsterType));
 	}
 
 	return;
@@ -23523,7 +23523,7 @@ void Entity::handleEffectsClient()
 				continue;
 			}
 		}
-		if ( Entity* entity = (Entity*)node->element )
+		if ( Entity* entity = static_cast<Entity*>(node->element) )
 		{
 			entity->flags[STASIS_DITHER] = flags[STASIS_DITHER];
 		}
@@ -23984,7 +23984,7 @@ void Entity::serverUpdateEffectsForEntity(bool guarantee)
 				}
 			}
 		}
-		net_packet->data[8 + numBytes] = (Uint8)effectStrengths.size();
+		net_packet->data[8 + numBytes] = static_cast<Uint8>(effectStrengths.size());
 		net_packet->len = 8 + numBytes + 1;
 		for ( auto& pair : effectStrengths )
 		{
@@ -24166,7 +24166,7 @@ bool Entity::setEffect(int effect, std::variant<bool, Uint8> value, int duration
 				//}
 				break;
 			case EFF_BLEEDING:
-				if ( gibtype[(int)myStats->type] == 0 || gibtype[(int)myStats->type] == 5 )
+				if ( gibtype[static_cast<int>(myStats->type)] == 0 || gibtype[static_cast<int>(myStats->type)] == 5 )
 				{
 					return false;
 				}
@@ -24707,7 +24707,7 @@ bool Entity::monsterAddNearbyItemToInventory(Stat* myStats, int rangeToFind, int
 		//If this is the first item found, the list needs to be created.
 		if ( !(itemsList) )
 		{
-			itemsList = (list_t*)malloc(sizeof(list_t));
+			itemsList = static_cast<list_t*>(malloc(sizeof(list_t)));
 			(itemsList)->first = NULL;
 			(itemsList)->last = NULL;
 		}
@@ -24752,7 +24752,7 @@ bool Entity::monsterAddNearbyItemToInventory(Stat* myStats, int rangeToFind, int
 					break;
 				}
 
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					continue; // ignore invisible items like Sokoban gloves or other scripted events.
@@ -25055,7 +25055,7 @@ bool Entity::monsterAddNearbyItemToInventory(Stat* myStats, int rangeToFind, int
 					if ( myStats->type == GYROBOT && list_Size(&myStats->inventory) >= 1 )
 					{
 						node_t* inv = myStats->inventory.first;
-						Item* toStack = (Item*)inv->element;
+						Item* toStack = static_cast<Item*>(inv->element);
 						if ( toStack )
 						{
 							if ( toStack->type >= TOOL_BOMB && toStack->type <= TOOL_TELEPORT_BOMB )
@@ -25124,7 +25124,7 @@ node_t* Entity::addItemToMonsterInventory(Item* item)
 		std::vector<std::pair<int, Item*>> priceAndItems;
 		for ( node_t* node = myStats->inventory.first; node != nullptr; node = node->next )
 		{
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			if ( !item ) { continue; }
 
 			if ( !item->itemSpecialShopConsumable )
@@ -25809,7 +25809,7 @@ bool Entity::degradeArmor(Stat& hitstats, Item& armor, int armornum)
 		if ( multiplayer == SERVER && playerhit > 0 && !players[playerhit]->isLocalPlayer() )
 		{
 			strcpy((char*)net_packet->data, "TORC");
-			SDLNet_Write16((Sint16)itemType, &net_packet->data[4]);
+			SDLNet_Write16(static_cast<Sint16>(itemType), &net_packet->data[4]);
 			net_packet->data[6] = itemStatus;
 			net_packet->data[7] = qty;
 			net_packet->address.host = net_clients[playerhit - 1].host;
@@ -25881,7 +25881,7 @@ bool Entity::degradeArmor(Stat& hitstats, Item& armor, int armornum)
 		strcpy((char*)net_packet->data, "ARMR");
 		net_packet->data[4] = armornum;
 		net_packet->data[5] = armor.status;
-		SDLNet_Write16((int)armor.type, &net_packet->data[6]);
+		SDLNet_Write16(static_cast<int>(armor.type), &net_packet->data[6]);
 		net_packet->address.host = net_clients[playerhit - 1].host;
 		net_packet->address.port = net_clients[playerhit - 1].port;
 		net_packet->len = 8;
@@ -26749,7 +26749,7 @@ int Entity::getManaRegenInterval(Entity* my, Stat& myStats, bool isPlayer, bool 
 		}
 		if ( player >= 0 )
 		{
-			real_t regenPerMinute = 60 * TICKS_PER_SECOND / (real_t)(regenTime);
+			real_t regenPerMinute = 60 * TICKS_PER_SECOND / static_cast<real_t>(regenTime);
 
 			if ( !excludeItemsEffectsBonus )
 			{
@@ -26814,7 +26814,7 @@ int Entity::getHealringFromEffects(Entity* my, Stat& myStats)
 			}
 		}
 	}
-	return (int)healring;
+	return static_cast<int>(healring);
 }
 
 int Entity::getHealringFromEquipment(Entity* my, Stat& myStats, bool isPlayer)
@@ -26999,7 +26999,7 @@ int Entity::getHealthRegenInterval(Entity* my, Stat& myStats, bool isPlayer, boo
 		}
 		if ( player >= 0 )
 		{
-			real_t regenPerMinute = 60 * TICKS_PER_SECOND / (real_t)(HEAL_TIME);
+			real_t regenPerMinute = 60 * TICKS_PER_SECOND / static_cast<real_t>((HEAL_TIME));
 			auto& baseGrowths = ClassBaseGrowths::getClassBaseGrowths(client_classes[player]);
 			real_t factor = ClassBaseGrowths::hpRegenFactor;
 			static ConsoleVariable<float> cvar_class_hp_regen_factor("/class_hp_regen_factor", 1.0);
@@ -27110,7 +27110,7 @@ int getBaseManaRegen(Entity* my, Stat& myStats, bool excludeItemsEffectsBonus)
 
 	if ( player >= 0 )
 	{
-		real_t regenPerMinute = 60 * TICKS_PER_SECOND / (real_t)(MAGIC_REGEN_TIME);
+		real_t regenPerMinute = 60 * TICKS_PER_SECOND / static_cast<real_t>((MAGIC_REGEN_TIME));
 		auto& baseGrowths = ClassBaseGrowths::getClassBaseGrowths(client_classes[player]);
 		real_t factor = ClassBaseGrowths::mpRegenFactor;
 		static ConsoleVariable<float> cvar_class_mp_regen_factor("/class_mp_regen_factor", 1.0);
@@ -27242,8 +27242,8 @@ void Entity::setRangedProjectileAttack(Entity& marksman, Stat& myStats, int opti
 		if ( multiplayer == SERVER )
 		{
 			Sint32 val = (1 << 31);
-			val |= (Uint8)(17);
-			val |= (((Uint16)(arrowShotByWeapon) & 0xFFF) << 8);
+			val |= static_cast<Uint8>(17);
+			val |= ((static_cast<Uint16>(arrowShotByWeapon) & 0xFFF) << 8);
 			val |= (arrowDropOffEquipmentModifier + 8) << 20;
 			skill[2] = val;// -(1000 + arrowShotByWeapon); // invokes actArrow for clients.
 		}
@@ -27565,13 +27565,13 @@ void messagePlayerMonsterEvent(int player, Uint32 color, Stat& monsterStats, con
 		switch (detailType)
 		{
 		case MSG_DESCRIPTION:
-			messagePlayerColor(player, MESSAGE_INSPECTION, color, msgGeneric, getMonsterLocalizedName((Monster)monsterType).c_str());
+			messagePlayerColor(player, MESSAGE_INSPECTION, color, msgGeneric, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str());
 			break;
 		case MSG_COMBAT:
-			messagePlayerColor(player, MESSAGE_COMBAT, color, msgGeneric, getMonsterLocalizedName((Monster)monsterType).c_str());
+			messagePlayerColor(player, MESSAGE_COMBAT, color, msgGeneric, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str());
 			break;
 		case MSG_COMBAT_BASIC:
-			messagePlayerColor(player, MESSAGE_COMBAT_BASIC, color, msgGeneric, getMonsterLocalizedName((Monster)monsterType).c_str());
+			messagePlayerColor(player, MESSAGE_COMBAT_BASIC, color, msgGeneric, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str());
 			break;
 		case MSG_OBITUARY:
 			for ( int c = 0; c < MAXPLAYERS; ++c )
@@ -27582,34 +27582,34 @@ void messagePlayerMonsterEvent(int player, Uint32 color, Stat& monsterStats, con
 				}
 				if ( c == player )
 				{
-					messagePlayerColor(c, MESSAGE_OBITUARY, color, msgNamed, getMonsterLocalizedName((Monster)monsterType).c_str(), monsterStats.obituary);
+					messagePlayerColor(c, MESSAGE_OBITUARY, color, msgNamed, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str(), monsterStats.obituary);
 				}
 				else if ( multiplayer != SINGLE )
 				{
-					messagePlayerColor(c, MESSAGE_OBITUARY, color, msgGeneric, stats[player]->name, getMonsterLocalizedName((Monster)monsterType).c_str(), monsterStats.obituary);
+					messagePlayerColor(c, MESSAGE_OBITUARY, color, msgGeneric, stats[player]->name, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str(), monsterStats.obituary);
 				}
 			}
 			break;
 		default:
 		case MSG_GENERIC:
-			messagePlayerColor(player, MESSAGE_HINT, color, msgGeneric, getMonsterLocalizedName((Monster)monsterType).c_str());
+			messagePlayerColor(player, MESSAGE_HINT, color, msgGeneric, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str());
 			break;
 		case MSG_ATTACKS:
 			messagePlayerColor(player, MESSAGE_COMBAT_BASIC, color, msgGeneric,
-				getMonsterLocalizedName((Monster)monsterType).c_str(),
-				getMonsterLocalizedInjury((Monster)monsterType).c_str());
+				getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str(),
+				getMonsterLocalizedInjury(static_cast<Monster>(monsterType)).c_str());
 			break;
 		case MSG_STEAL_WEAPON:
 			if ( monsterStats.weapon )
 			{
-				messagePlayerColor(player, MESSAGE_COMBAT, color, msgGeneric, getMonsterLocalizedName((Monster)monsterType).c_str(), monsterStats.weapon->getName());
+				messagePlayerColor(player, MESSAGE_COMBAT, color, msgGeneric, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str(), monsterStats.weapon->getName());
 			}
 			break;
 		case MSG_TOOL_BOMB:
 			if ( optionalEntity && optionalEntity->behavior == &actBomb )
 			{
 				const int itemType = optionalEntity->skill[21];
-				messagePlayerColor(player, MESSAGE_COMBAT, color, msgGeneric, getMonsterLocalizedName((Monster)monsterType).c_str(), items[itemType].getIdentifiedName());
+				messagePlayerColor(player, MESSAGE_COMBAT, color, msgGeneric, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str(), items[itemType].getIdentifiedName());
 			}
 			break;
 		}
@@ -27626,7 +27626,7 @@ void messagePlayerMonsterEvent(int player, Uint32 color, Stat& monsterStats, con
 			}
 			else
 			{
-				messagePlayerColor(player, MESSAGE_INSPECTION, color, msgNamed, getMonsterLocalizedName((Monster)monsterType).c_str(), monsterStats.name);
+				messagePlayerColor(player, MESSAGE_INSPECTION, color, msgNamed, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str(), monsterStats.name);
 			}
 			break;
 		case MSG_COMBAT:
@@ -27684,17 +27684,17 @@ void messagePlayerMonsterEvent(int player, Uint32 color, Stat& monsterStats, con
 			}
 			else
 			{
-				messagePlayerColor(player, MESSAGE_HINT, color, msgGeneric, getMonsterLocalizedName((Monster)monsterType).c_str());
+				messagePlayerColor(player, MESSAGE_HINT, color, msgGeneric, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str());
 			}
 			break;
 		case MSG_ATTACKS:
 			if ( namedMonsterAsGeneric )
 			{
-				messagePlayerColor(player, MESSAGE_COMBAT_BASIC, color, msgGeneric, monsterStats.name, getMonsterLocalizedInjury((Monster)monsterType).c_str());
+				messagePlayerColor(player, MESSAGE_COMBAT_BASIC, color, msgGeneric, monsterStats.name, getMonsterLocalizedInjury(static_cast<Monster>(monsterType)).c_str());
 			}
 			else
 			{
-				messagePlayerColor(player, MESSAGE_COMBAT_BASIC, color, msgNamed, monsterStats.name, getMonsterLocalizedInjury((Monster)monsterType).c_str());
+				messagePlayerColor(player, MESSAGE_COMBAT_BASIC, color, msgNamed, monsterStats.name, getMonsterLocalizedInjury(static_cast<Monster>(monsterType)).c_str());
 			}
 			break;
 		case MSG_STEAL_WEAPON:
@@ -27721,7 +27721,7 @@ void messagePlayerMonsterEvent(int player, Uint32 color, Stat& monsterStats, con
 				}
 				else
 				{
-					messagePlayerColor(player, MESSAGE_COMBAT, color, msgGeneric, getMonsterLocalizedName((Monster)monsterType).c_str(), items[itemType].getIdentifiedName());
+					messagePlayerColor(player, MESSAGE_COMBAT, color, msgGeneric, getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str(), items[itemType].getIdentifiedName());
 				}
 			}
 			break;
@@ -28643,14 +28643,14 @@ void Entity::setHumanoidLimbOffset(Entity* limb, Monster race, int limbType)
 					{
 						if ( auto node = list_Node(&children, 2) )
 						{
-							torso = (Entity*)node->element;
+							torso = static_cast<Entity*>(node->element);
 						}
 					}
 					else if ( behavior == &actPlayer )
 					{
 						if ( auto node = list_Node(&children, 1) )
 						{
-							torso = (Entity*)node->element;
+							torso = static_cast<Entity*>(node->element);
 						}
 					}
 					if ( !torso || (torso // non-default torsos
@@ -28685,14 +28685,14 @@ void Entity::setHumanoidLimbOffset(Entity* limb, Monster race, int limbType)
 					{
 						if ( auto node = list_Node(&children, 2) )
 						{
-							torso = (Entity*)node->element;
+							torso = static_cast<Entity*>(node->element);
 						}
 					}
 					else if ( behavior == &actPlayer )
 					{
 						if ( auto node = list_Node(&children, 1) )
 						{
-							torso = (Entity*)node->element;
+							torso = static_cast<Entity*>(node->element);
 						}
 					}
 					if ( !torso || (torso // non-default torsos
@@ -31459,7 +31459,7 @@ void Entity::alertAlliesOnBeingHit(Entity* attacker, std::unordered_set<Entity*>
 	Entity* ohitentity = hit.entity;
 	for ( node_t* node = map.creatures->first; node != nullptr; node = node->next ) //Only searching for monsters, so don't iterate full map.entities.
 	{
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		if ( !entity ) { continue; }
 		if ( skipEntitiesToAlert && (skipEntitiesToAlert->find(entity) != skipEntitiesToAlert->end()) )
 		{
@@ -31925,9 +31925,9 @@ int Entity::getEntityInspirationFromAllies()
 				for ( node_t* node = stats[this->skill[2]]->FOLLOWERS.first; node != nullptr; node = node->next )
 				{
 					Entity* follower = nullptr;
-					if ( (Uint32*)node->element )
+					if ( static_cast<Uint32*>(node->element) )
 					{
-						if ( follower = uidToEntity(*((Uint32*)node->element)) )
+						if ( follower = uidToEntity(*static_cast<Uint32*>(node->element)) )
 						{
 							if ( Stat* stat = follower->getStats() )
 							{
@@ -32254,7 +32254,7 @@ real_t Entity::monsterGetWeightRatio()
 	}
 	weight += myStats->getGoldWeight();
 	weight /= 2; // on monsters weight shouldn't matter so much
-	double weightratio = (1000 + std::max((Sint32)0, getSTR()) * 100 - weight) / (double)(1000 + std::max((Sint32)0, getSTR()) * 100);
+	double weightratio = (1000 + std::max((Sint32)0, getSTR()) * 100 - weight) / static_cast<double>(1000 + std::max((Sint32)0, getSTR()) * 100);
 	weightratio = fmin(fmax(0, weightratio), 1);
 	return weightratio;
 }
@@ -32438,7 +32438,7 @@ bool Entity::degradeAmuletProc(Stat* myStats, ItemType type)
 					strcpy((char*)net_packet->data, "ARMR");
 					net_packet->data[4] = 7; // amulet
 					net_packet->data[5] = myStats->amulet->status;
-					SDLNet_Write16((int)myStats->amulet->type, &net_packet->data[6]);
+					SDLNet_Write16(static_cast<int>(myStats->amulet->type), &net_packet->data[6]);
 					net_packet->address.host = net_clients[player - 1].host;
 					net_packet->address.port = net_clients[player - 1].port;
 					net_packet->len = 8;

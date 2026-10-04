@@ -56,7 +56,7 @@ HolidayTheme getCurrentHoliday(bool force) {
         return HolidayTheme::THEME_NONE;
     }
     if (*cvar_forceHoliday) {
-        const int holiday = std::clamp(*cvar_forceHoliday, 0, (int)HolidayTheme::THEME_MAX - 1);
+        const int holiday = std::clamp(*cvar_forceHoliday, 0, static_cast<int>(HolidayTheme::THEME_MAX) - 1);
         return static_cast<HolidayTheme>(holiday);
     }
     static bool gotTime = false;
@@ -2228,7 +2228,7 @@ SDL_Surface* loadImage(char const * const filename)
 
 	// load the new surface as a GL texture
 	allsurfaces[imgref] = newSurface;
-	allsurfaces[imgref]->userdata = (void *)((long int)imgref);
+	allsurfaces[imgref]->userdata = (void *)static_cast<long int>(imgref);
 	GL_CHECK_ERR(glLoadTexture(allsurfaces[imgref], imgref));
 
 	// free the translated surface
@@ -2277,13 +2277,13 @@ voxel_t* loadVoxel(char* filename)
 			printlog("error: loadVoxel file: %s is using magicavoxel .vox file format, export as slab .vox instead!", filename);
 			return nullptr;
 		}
-		model = (voxel_t*)malloc(sizeof(voxel_t));
+		model = static_cast<voxel_t*>(malloc(sizeof(voxel_t)));
 		model->sizex = header;
 		model->sizey = 0;
 		file->read(&model->sizey, sizeof(Sint32), 1);
 		model->sizez = 0;
 		file->read(&model->sizez, sizeof(Sint32), 1);
-		model->data = (Uint8*)malloc(sizeof(Uint8) * model->sizex * model->sizey * model->sizez);
+		model->data = static_cast<Uint8*>(malloc(sizeof(Uint8) * model->sizex * model->sizey * model->sizez));
 		memset(model->data, 0, sizeof(Uint8)*model->sizex * model->sizey * model->sizez);
 		file->read(model->data, sizeof(Uint8), model->sizex * model->sizey * model->sizez);
 		file->read(&model->palette, sizeof(Uint8), 256 * 3);
@@ -2578,11 +2578,11 @@ int loadMap(const char* filename2, map_t* destmap, list_t* entlist, list_t* crea
 		camera.vismap = (bool*)malloc(sizeof(bool) * destmap->width * destmap->height);
         memset(camera.vismap, 0, sizeof(bool) * destmap->height * destmap->width);
 #endif
-		menucam.vismap = (bool*)malloc(sizeof(bool) * destmap->width * destmap->height);
+		menucam.vismap = static_cast<bool*>(malloc(sizeof(bool) * destmap->width * destmap->height));
         memset(menucam.vismap, 0, sizeof(bool) * destmap->height * destmap->width);
 		for ( int i = 0; i < MAXPLAYERS; ++i )
 		{
-			cameras[i].vismap = (bool*)malloc(sizeof(bool) * destmap->width * destmap->height);
+			cameras[i].vismap = static_cast<bool*>(malloc(sizeof(bool) * destmap->width * destmap->height));
             memset(cameras[i].vismap, 0, sizeof(bool) * destmap->height * destmap->width);
 		}
 	}
@@ -3248,7 +3248,7 @@ int loadMap(const char* filename2, map_t* destmap, list_t* entlist, list_t* crea
 		{
 			free(shoparea);
 		}
-		shoparea = (bool*) malloc(sizeof(bool) * destmap->width * destmap->height);
+		shoparea = static_cast<bool*>(malloc(sizeof(bool) * destmap->width * destmap->height));
 		for ( x = 0; x < destmap->width; x++ )
 		{
 			for ( y = 0; y < destmap->height; y++ )
@@ -3335,7 +3335,7 @@ int saveMap(const char* filename2)
 		fp->write(&numentities, sizeof(Uint32), 1); // number of entities on the map
 		for (node = map.entities->first; node != nullptr; node = node->next)
 		{
-			entity = (Entity*) node->element;
+			entity = static_cast<Entity*>(node->element);
 			fp->write(&entity->sprite, sizeof(Sint32), 1);
 
 			switch ( checkSpriteType(entity->sprite) )
@@ -4113,7 +4113,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 			free(polymodels);
 			polymodels = nullptr;
 		}
-		polymodels = (polymodel_t*)malloc(sizeof(polymodel_t) * nummodels);
+		polymodels = static_cast<polymodel_t*>(malloc(sizeof(polymodel_t) * nummodels));
         memset(polymodels, 0, sizeof(polymodel_t) * nummodels);
 		if ( useModelCache && !forceCacheRebuild )
 		{
@@ -4164,7 +4164,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 				}
                 
                 for ( size_t model_index = 0; model_index < nummodels; model_index++ ) {
-                    updateLoadingScreen(30 + ((real_t)model_index / nummodels) * 30.0);
+                    updateLoadingScreen(30 + (static_cast<real_t>(model_index) / nummodels) * 30.0);
                     polymodel_t* cur = &polymodels[model_index];
   
                     size_t readsize;
@@ -4172,7 +4172,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
                     if (readsize == 1) {
                         readsize = 0;
                         if (cur->numfaces && cur->numfaces <= LARGEST_POLYMODEL_FACES_ALLOWED) {
-                            cur->faces = (polytriangle_t*)calloc(sizeof(polytriangle_t), cur->numfaces);
+                            cur->faces = static_cast<polytriangle_t*>(calloc(sizeof(polytriangle_t), cur->numfaces));
                             if (cur->faces) {
                                 readsize = model_cache->read(polymodels[model_index].faces, sizeof(polytriangle_t), cur->numfaces);
                             }
@@ -4213,13 +4213,13 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 
 	if ( !polymodels )
 	{
-		polymodels = (polymodel_t*)malloc(sizeof(polymodel_t) * nummodels);
+		polymodels = static_cast<polymodel_t*>(malloc(sizeof(polymodel_t) * nummodels));
 		memset(polymodels, 0, sizeof(polymodel_t) * nummodels);
 	}
 
 	for ( c = start; c < end; ++c )
 	{
-		updateLoadingScreen(30 + ((real_t)(c - start) / (end - start)) * 30.0);
+		updateLoadingScreen(30 + (static_cast<real_t>(c - start) / (end - start)) * 30.0);
 		numquads = 0;
 		polymodels[c].numfaces = 0;
 		voxel_t* model = models[c];
@@ -4260,7 +4260,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							buildingquad = false;
 
 							node_t* currentNode = quads.last;
-							quad1 = (polyquad_t*)currentNode->element;
+							quad1 = static_cast<polyquad_t*>(currentNode->element);
 							quad1->vertex[1].x = x - model->sizex / 2.f + 1;
 							quad1->vertex[1].y = y - model->sizey / 2.f;
 							quad1->vertex[1].z = z - model->sizez / 2.f - 1;
@@ -4272,7 +4272,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							node_t* node;
 							for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 							{
-								quad2 = (polyquad_t*)node->element;
+								quad2 = static_cast<polyquad_t*>(node->element);
 								if ( quad1->side == quad2->side )
 								{
 									if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -4314,7 +4314,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 								numquads++;
 								polymodels[c].numfaces += 2;
 
-								quad1 = (polyquad_t*)calloc(1, sizeof(polyquad_t));
+								quad1 = static_cast<polyquad_t*>(calloc(1, sizeof(polyquad_t)));
 								quad1->side = 0;
 								quad1->vertex[0].x = x - model->sizex / 2.f + 1;
 								quad1->vertex[0].y = y - model->sizey / 2.f;
@@ -4341,7 +4341,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					buildingquad = false;
 
 					node_t* currentNode = quads.last;
-					quad1 = (polyquad_t*)currentNode->element;
+					quad1 = static_cast<polyquad_t*>(currentNode->element);
 					quad1->vertex[1].x = x - model->sizex / 2.f + 1;
 					quad1->vertex[1].y = y - model->sizey / 2.f;
 					quad1->vertex[1].z = z - model->sizez / 2.f - 1;
@@ -4353,7 +4353,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					node_t* node;
 					for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 					{
-						quad2 = (polyquad_t*)node->element;
+						quad2 = static_cast<polyquad_t*>(node->element);
 						if ( quad1->side == quad2->side )
 						{
 							if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -4406,7 +4406,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							buildingquad = false;
 
 							node_t* currentNode = quads.last;
-							quad1 = (polyquad_t*)currentNode->element;
+							quad1 = static_cast<polyquad_t*>(currentNode->element);
 							quad1->vertex[1].x = x - model->sizex / 2.f;
 							quad1->vertex[1].y = y - model->sizey / 2.f;
 							quad1->vertex[1].z = z - model->sizez / 2.f;
@@ -4418,7 +4418,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							node_t* node;
 							for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 							{
-								quad2 = (polyquad_t*)node->element;
+								quad2 = static_cast<polyquad_t*>(node->element);
 								if ( quad1->side == quad2->side )
 								{
 									if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -4460,7 +4460,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 								numquads++;
 								polymodels[c].numfaces += 2;
 
-								quad1 = (polyquad_t*)calloc(1, sizeof(polyquad_t));
+								quad1 = static_cast<polyquad_t*>(calloc(1, sizeof(polyquad_t)));
 								quad1->side = 1;
 								quad1->vertex[0].x = x - model->sizex / 2.f;
 								quad1->vertex[0].y = y - model->sizey / 2.f;
@@ -4487,7 +4487,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					buildingquad = false;
 
 					node_t* currentNode = quads.last;
-					quad1 = (polyquad_t*)currentNode->element;
+					quad1 = static_cast<polyquad_t*>(currentNode->element);
 					quad1->vertex[1].x = x - model->sizex / 2.f;
 					quad1->vertex[1].y = y - model->sizey / 2.f;
 					quad1->vertex[1].z = z - model->sizez / 2.f;
@@ -4499,7 +4499,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					node_t* node;
 					for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 					{
-						quad2 = (polyquad_t*)node->element;
+						quad2 = static_cast<polyquad_t*>(node->element);
 						if ( quad1->side == quad2->side )
 						{
 							if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -4552,7 +4552,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							buildingquad = false;
 
 							node_t* currentNode = quads.last;
-							quad1 = (polyquad_t*)currentNode->element;
+							quad1 = static_cast<polyquad_t*>(currentNode->element);
 							quad1->vertex[1].x = x - model->sizex / 2.f;
 							quad1->vertex[1].y = y - model->sizey / 2.f + 1;
 							quad1->vertex[1].z = z - model->sizez / 2.f;
@@ -4564,7 +4564,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							node_t* node;
 							for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 							{
-								quad2 = (polyquad_t*)node->element;
+								quad2 = static_cast<polyquad_t*>(node->element);
 								if ( quad1->side == quad2->side )
 								{
 									if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -4606,7 +4606,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 								numquads++;
 								polymodels[c].numfaces += 2;
 
-								quad1 = (polyquad_t*)calloc(1, sizeof(polyquad_t));
+								quad1 = static_cast<polyquad_t*>(calloc(1, sizeof(polyquad_t)));
 								quad1->side = 2;
 								quad1->vertex[0].x = x - model->sizex / 2.f;
 								quad1->vertex[0].y = y - model->sizey / 2.f + 1;
@@ -4632,7 +4632,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					// add the last two vertices to the previous quad
 					buildingquad = false;
 					node_t* currentNode = quads.last;
-					quad1 = (polyquad_t*)currentNode->element;
+					quad1 = static_cast<polyquad_t*>(currentNode->element);
 					quad1->vertex[1].x = x - model->sizex / 2.f;
 					quad1->vertex[1].y = y - model->sizey / 2.f + 1;
 					quad1->vertex[1].z = z - model->sizez / 2.f;
@@ -4644,7 +4644,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					node_t* node;
 					for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 					{
-						quad2 = (polyquad_t*)node->element;
+						quad2 = static_cast<polyquad_t*>(node->element);
 						if ( quad1->side == quad2->side )
 						{
 							if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -4697,7 +4697,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							buildingquad = false;
 
 							node_t* currentNode = quads.last;
-							quad1 = (polyquad_t*)currentNode->element;
+							quad1 = static_cast<polyquad_t*>(currentNode->element);
 							quad1->vertex[1].x = x - model->sizex / 2.f;
 							quad1->vertex[1].y = y - model->sizey / 2.f;
 							quad1->vertex[1].z = z - model->sizez / 2.f - 1;
@@ -4709,7 +4709,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							node_t* node;
 							for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 							{
-								quad2 = (polyquad_t*)node->element;
+								quad2 = static_cast<polyquad_t*>(node->element);
 								if ( quad1->side == quad2->side )
 								{
 									if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -4751,7 +4751,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 								numquads++;
 								polymodels[c].numfaces += 2;
 
-								quad1 = (polyquad_t*)calloc(1, sizeof(polyquad_t));
+								quad1 = static_cast<polyquad_t*>(calloc(1, sizeof(polyquad_t)));
 								quad1->side = 3;
 								quad1->vertex[0].x = x - model->sizex / 2.f;
 								quad1->vertex[0].y = y - model->sizey / 2.f;
@@ -4777,7 +4777,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					// add the last two vertices to the previous quad
 					buildingquad = false;
 					node_t* currentNode = quads.last;
-					quad1 = (polyquad_t*)currentNode->element;
+					quad1 = static_cast<polyquad_t*>(currentNode->element);
 					quad1->vertex[1].x = x - model->sizex / 2.f;
 					quad1->vertex[1].y = y - model->sizey / 2.f;
 					quad1->vertex[1].z = z - model->sizez / 2.f - 1;
@@ -4789,7 +4789,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					node_t* node;
 					for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 					{
-						quad2 = (polyquad_t*)node->element;
+						quad2 = static_cast<polyquad_t*>(node->element);
 						if ( quad1->side == quad2->side )
 						{
 							if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -4842,7 +4842,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							buildingquad = false;
 
 							node_t* currentNode = quads.last;
-							quad1 = (polyquad_t*)currentNode->element;
+							quad1 = static_cast<polyquad_t*>(currentNode->element);
 							quad1->vertex[1].x = x - model->sizex / 2.f;
 							quad1->vertex[1].y = y - model->sizey / 2.f;
 							quad1->vertex[1].z = z - model->sizez / 2.f;
@@ -4854,7 +4854,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							node_t* node;
 							for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 							{
-								quad2 = (polyquad_t*)node->element;
+								quad2 = static_cast<polyquad_t*>(node->element);
 								if ( quad1->side == quad2->side )
 								{
 									if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -4896,7 +4896,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 								numquads++;
 								polymodels[c].numfaces += 2;
 
-								quad1 = (polyquad_t*)calloc(1, sizeof(polyquad_t));
+								quad1 = static_cast<polyquad_t*>(calloc(1, sizeof(polyquad_t)));
 								quad1->side = 4;
 								quad1->vertex[0].x = x - model->sizex / 2.f;
 								quad1->vertex[0].y = y - model->sizey / 2.f;
@@ -4923,7 +4923,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					buildingquad = false;
 
 					node_t* currentNode = quads.last;
-					quad1 = (polyquad_t*)currentNode->element;
+					quad1 = static_cast<polyquad_t*>(currentNode->element);
 					quad1->vertex[1].x = x - model->sizex / 2.f;
 					quad1->vertex[1].y = y - model->sizey / 2.f;
 					quad1->vertex[1].z = z - model->sizez / 2.f;
@@ -4935,7 +4935,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					node_t* node;
 					for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 					{
-						quad2 = (polyquad_t*)node->element;
+						quad2 = static_cast<polyquad_t*>(node->element);
 						if ( quad1->side == quad2->side )
 						{
 							if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -4988,7 +4988,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							buildingquad = false;
 
 							node_t* currentNode = quads.last;
-							quad1 = (polyquad_t*)currentNode->element;
+							quad1 = static_cast<polyquad_t*>(currentNode->element);
 							quad1->vertex[1].x = x - model->sizex / 2.f;
 							quad1->vertex[1].y = y - model->sizey / 2.f + 1;
 							quad1->vertex[1].z = z - model->sizez / 2.f - 1;
@@ -5000,7 +5000,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 							node_t* node;
 							for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 							{
-								quad2 = (polyquad_t*)node->element;
+								quad2 = static_cast<polyquad_t*>(node->element);
 								if ( quad1->side == quad2->side )
 								{
 									if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -5042,7 +5042,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 								numquads++;
 								polymodels[c].numfaces += 2;
 
-								quad1 = (polyquad_t*)calloc(1, sizeof(polyquad_t));
+								quad1 = static_cast<polyquad_t*>(calloc(1, sizeof(polyquad_t)));
 								quad1->side = 5;
 								quad1->vertex[0].x = x - model->sizex / 2.f;
 								quad1->vertex[0].y = y - model->sizey / 2.f + 1;
@@ -5069,7 +5069,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					buildingquad = false;
 
 					node_t* currentNode = quads.last;
-					quad1 = (polyquad_t*)currentNode->element;
+					quad1 = static_cast<polyquad_t*>(currentNode->element);
 					quad1->vertex[1].x = x - model->sizex / 2.f;
 					quad1->vertex[1].y = y - model->sizey / 2.f + 1;
 					quad1->vertex[1].z = z - model->sizez / 2.f - 1;
@@ -5081,7 +5081,7 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 					node_t* node;
 					for ( i = 0, node = quads.first; i < numquads - 1; i++, node = node->next )
 					{
-						quad2 = (polyquad_t*)node->element;
+						quad2 = static_cast<polyquad_t*>(node->element);
 						if ( quad1->side == quad2->side )
 						{
 							if ( quad1->r == quad2->r && quad1->g == quad2->g && quad1->b == quad2->b )
@@ -5110,11 +5110,11 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
             free(polymodels[c].faces);
 			polymodels[c].faces = nullptr;
         }
-		polymodels[c].faces = (polytriangle_t*)malloc(sizeof(polytriangle_t) * polymodels[c].numfaces);
+		polymodels[c].faces = static_cast<polytriangle_t*>(malloc(sizeof(polytriangle_t) * polymodels[c].numfaces));
 		for ( uint64_t i = 0; i < polymodels[c].numfaces; i++ )
 		{
-			node_t* node = list_Node(&quads, (int)i / 2);
-			polyquad_t* quad = (polyquad_t*)node->element;
+			node_t* node = list_Node(&quads, static_cast<int>(i) / 2);
+			polyquad_t* quad = static_cast<polyquad_t*>(node->element);
             auto& face = polymodels[c].faces[i];
             switch (quad->side) {
             case 0: face.normal = { 1.f,  0.f,  0.f}; break; // front
@@ -5159,8 +5159,8 @@ void generatePolyModels(int start, int end, bool forceCacheRebuild)
 }
 
 void reloadModels(int start, int end) {
-	start = std::clamp(start, 0, (int)nummodels - 1);
-	end = std::clamp(end, 0, (int)nummodels);
+	start = std::clamp(start, 0, static_cast<int>(nummodels) - 1);
+	end = std::clamp(end, 0, static_cast<int>(nummodels));
 
 	if ( start >= end ) {
 		return;
@@ -5261,7 +5261,7 @@ void generateVBOs(int start, int end)
 	std::unique_ptr<GLuint[]> normal_vbos(new GLuint[count]);
 	GL_CHECK_ERR(glGenBuffers(count, normal_vbos.get()));
 
-	for ( uint64_t c = (uint64_t)start; c < (uint64_t)end; ++c )
+	for ( uint64_t c = static_cast<uint64_t>(start); c < static_cast<uint64_t>(end); ++c )
 	{
 		polymodel_t* model = &polymodels[c];
 		std::unique_ptr<GLfloat[]> positions(new GLfloat[9 * model->numfaces]);
@@ -5326,7 +5326,7 @@ void generateVBOs(int start, int end)
 		GL_CHECK_ERR(glBindBuffer(GL_ARRAY_BUFFER, 0));
 #endif
 
-		const int current = (int)c - start;
+		const int current = static_cast<int>(c) - start;
 		updateLoadingScreen(80 + (10 * current) / count);
 		doLoadingScreen();
 	}
@@ -5471,7 +5471,7 @@ void physfsReloadSounds(bool reloadAll)
 				OPENAL_CreateSound(soundFile.c_str(), true, &sounds[c]);
 #endif
 				if (Mods::isLoading) {
-					updateLoadingScreen(20.f + (c / (float)numsounds) * 10.f);
+					updateLoadingScreen(20.f + (c / static_cast<float>(numsounds)) * 10.f);
 				}
 			}
 		}
@@ -5698,7 +5698,7 @@ void physfsReloadTiles(bool reloadAll)
                 char *str = line, *end;
                 int index = 0;
                 do {
-                    animation.indices[index] = (int)strtol(str, &end, 10);
+                    animation.indices[index] = static_cast<int>(strtol(str, &end, 10));
                     str = end + 1;
                     ++index;
                 } while (end && *end == ' ' && index < numIndices);
@@ -5835,7 +5835,7 @@ bool physfsSearchItemSpritesToUpdate()
 		for ( int x = 0; x < list_Size(&items[c].images); x++ )
 		{
 			node_t* node = list_Node(&items[c].images, x);
-			string_t* string = (string_t*)node->element;
+			string_t* string = static_cast<string_t*>(node->element);
 			std::string itemImgDir;
 			if ( PHYSFS_getRealDir(string->data) != NULL )
 			{
@@ -5861,7 +5861,7 @@ void physfsReloadItemSprites(bool reloadAll)
 			for ( int x = 0; x < list_Size(&items[c].images); x++ )
 			{
 				node_t* node = list_Node(&items[c].images, x);
-				string_t* string = (string_t*)node->element;
+				string_t* string = static_cast<string_t*>(node->element);
 				std::string itemImgDir;
 				if ( PHYSFS_getRealDir(string->data) != NULL )
 				{
@@ -5881,7 +5881,7 @@ void physfsReloadItemSprites(bool reloadAll)
 			for ( node = items[c].surfaces.first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				SDL_Surface** surface = (SDL_Surface**)node->element;
+				SDL_Surface** surface = static_cast<SDL_Surface**>(node->element);
 				if ( surface )
 				{
 					if ( *surface )
@@ -5895,14 +5895,14 @@ void physfsReloadItemSprites(bool reloadAll)
 			// now reload the image data.
 			for ( int x = 0; x < list_Size(&items[c].images); x++ )
 			{
-				SDL_Surface** surface = (SDL_Surface**)malloc(sizeof(SDL_Surface*));
+				SDL_Surface** surface = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*)));
 				node_t* node = list_AddNodeLast(&items[c].surfaces);
 				node->element = surface;
 				node->deconstructor = &defaultDeconstructor;
 				node->size = sizeof(SDL_Surface*);
 
 				node_t* node2 = list_Node(&items[c].images, x);
-				string_t* string = (string_t*)node2->element;
+				string_t* string = static_cast<string_t*>(node2->element);
 				std::string itemImgDir;
 				if ( PHYSFS_getRealDir(string->data) != NULL )
 				{

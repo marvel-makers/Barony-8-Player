@@ -154,7 +154,7 @@ void actSink(Entity* my)
 							//Randomly choose a ring.
 							//88-99 are rings.
 							//So 12 rings total.
-							int ring = rng.rand() % 12 + (int)(RING_ADORNMENT); //Generate random number between 0 & 11, then add 88 to it so that it's at the location of the rings.
+							int ring = rng.rand() % 12 + static_cast<int>(RING_ADORNMENT); //Generate random number between 0 & 11, then add 88 to it so that it's at the location of the rings.
 
 							//Generate a random status.
 							Status status = SERVICABLE;
@@ -254,7 +254,7 @@ void actSink(Entity* my)
 										{
 											if ( stats[i]->getEffectActive(EFF_GROWTH) < 4 )
 											{
-												players[i]->entity->setEffect(EFF_GROWTH, (Uint8)(std::min(4, effectStrength + 1)), 15 * TICKS_PER_SECOND, false);
+												players[i]->entity->setEffect(EFF_GROWTH, static_cast<Uint8>(std::min(4, effectStrength + 1)), 15 * TICKS_PER_SECOND, false);
 												messagePlayerColor(i, MESSAGE_STATUS, makeColorRGB(0, 255, 0), Language::get(6924));
 											}
 										}

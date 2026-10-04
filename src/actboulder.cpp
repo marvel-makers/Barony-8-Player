@@ -74,7 +74,7 @@ bool boulderCheckIfBlockedExit(Entity* my)
 	// check if this blocked the exit.
 	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
-		Entity* ladder = (Entity*)node->element;
+		Entity* ladder = static_cast<Entity*>(node->element);
 		if ( ladder && (ladder->behavior == &actLadder || ladder->behavior == &actPortal) )
 		{
 			//if ( ladder->behavior == &actPortal && (ladder->portalNotSecret == 0) )
@@ -358,7 +358,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
 							{
 								if ( stats->helmet->status > BROKEN )
 								{
-									stats->helmet->status = (Status)((int)stats->helmet->status - 1);
+									stats->helmet->status = static_cast<Status>((int)stats->helmet->status - 1);
 								}
 							}
 						}
@@ -382,7 +382,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
 								strcpy((char*)net_packet->data, "ARMR");
 								net_packet->data[4] = 0;
 								net_packet->data[5] = stats->helmet->status;
-								SDLNet_Write16((int)stats->helmet->type, &net_packet->data[6]);
+								SDLNet_Write16(static_cast<int>(stats->helmet->type), &net_packet->data[6]);
 								net_packet->address.host = net_clients[player - 1].host;
 								net_packet->address.port = net_clients[player - 1].port;
 								net_packet->len = 8;
@@ -507,7 +507,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
 							int secondManaToRefund = 0;
 							for ( node_t* node = stats->FOLLOWERS.first; node != nullptr; node = node->next )
 							{
-								Uint32* c = (Uint32*)node->element;
+								Uint32* c = static_cast<Uint32*>(node->element);
 								Entity* mySummon = nullptr;
 								if ( c )
 								{
@@ -789,8 +789,8 @@ void actBoulder(Entity* my)
 	my->flags[UPDATENEEDED] = true;
 
 	bool noground = false;
-	int x = std::min<int>(std::max(0, (int)(my->x / 16)), map.width);
-	int y = std::min<int>(std::max(0, (int)(my->y / 16)), map.height);
+	int x = std::min<int>(std::max(0, static_cast<int>(my->x / 16)), map.width);
+	int y = std::min<int>(std::max(0, static_cast<int>(my->y / 16)), map.height);
 	Uint32 index = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
 	if ( !map.tiles[index] || swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]] )
 	{
@@ -830,7 +830,7 @@ void actBoulder(Entity* my)
 			boulderLavaOrArcaneOnDestroy(my, my->sprite, nullptr);
 			for ( int c = 0; c < 8; ++c )
 			{
-				my->yaw = ((double)c + ((local_rng.rand() % 100) / 100.f)) * (PI * 2) / 8.f;
+				my->yaw = (static_cast<double>(c) + ((local_rng.rand() % 100) / 100.f)) * (PI * 2) / 8.f;
 				castSpell(my->getUID(), &spell_fireball, true, true);
 			}
 			list_RemoveNode(my->mynode);
@@ -905,7 +905,7 @@ void actBoulder(Entity* my)
 					node_t* node;
 					for ( node = currentList->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity == my )
 						{
 							continue;
@@ -1112,7 +1112,7 @@ void actBoulder(Entity* my)
 					node_t* node;
 					for ( node = currentList->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity == my )
 						{
 							continue;
@@ -1259,8 +1259,8 @@ void actBoulder(Entity* my)
 								/*my->x = floor(my->x / 16) * 16 + 8;
 								my->y = floor(my->y / 16) * 16 + 8;*/
 
-								BOULDER_DESTX = (int)(my->x / 16) * 16 + 8;
-								BOULDER_DESTY = (int)(my->y / 16) * 16 + 8;
+								BOULDER_DESTX = static_cast<int>(my->x / 16) * 16 + 8;
+								BOULDER_DESTY = static_cast<int>(my->y / 16) * 16 + 8;
 
 								real_t tangent = atan2(players[i]->entity->y - my->y, players[i]->entity->x - my->x);
 								if ( BOULDER_TELEKINESIS_PULL > 0 && (BOULDER_TELEKINESIS_PULL - 1 == i) )
@@ -1660,8 +1660,8 @@ void actBoulderTrapHole(Entity* my)
 	if ( my->z > -11.0 && my->z < -10 )
 	{
 		// in ceiling, delete self if ceiling no longer exists
-		int x = ((int)(my->x)) >> 4;
-		int y = ((int)(my->y)) >> 4;
+		int x = static_cast<int>(my->x) >> 4;
+		int y = static_cast<int>(my->y) >> 4;
 		if ( !map.tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 		{
 			list_RemoveNode(my->mynode);
@@ -1754,8 +1754,8 @@ void actBoulderTrap(Entity* my)
 							y = -16;
 							break;
 					}
-					x = ((int)(x + my->x)) >> 4;
-					y = ((int)(y + my->y)) >> 4;
+					x = static_cast<int>(x + my->x) >> 4;
+					y = static_cast<int>(y + my->y) >> 4;
 					if ( x >= 0 && y >= 0 && x < map.width && y < map.height )
 					{
 						if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
@@ -1763,7 +1763,7 @@ void actBoulderTrap(Entity* my)
 							list_t* trapdoors = TileEntityList.getTileList(x, y);
 							for ( node_t* trapNode = trapdoors->first; trapNode != nullptr; trapNode = trapNode->next )
 							{
-								Entity* trapEntity = (Entity*)trapNode->element;
+								Entity* trapEntity = static_cast<Entity*>(trapNode->element);
 								if ( trapEntity && trapEntity->sprite == 252 && trapEntity->z <= -10 )
 								{
 									foundTrapdoor = c;
@@ -1898,8 +1898,8 @@ void actBoulderTrapEast(Entity* my)
 			my->boulderTrapFired = 1;
 
 			c = 0; // direction
-			x = ((int)(my->x)) >> 4;
-			y = ((int)(my->y)) >> 4;
+			x = static_cast<int>(my->x) >> 4;
+			y = static_cast<int>(my->y) >> 4;
 			if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder
@@ -2018,8 +2018,8 @@ void actBoulderTrapSouth(Entity* my)
 			my->boulderTrapFired = 1;
 
 			c = 1; // direction
-			x = ((int)(my->x)) >> 4;
-			y = ((int)(my->y)) >> 4;
+			x = static_cast<int>(my->x) >> 4;
+			y = static_cast<int>(my->y) >> 4;
 			if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder
@@ -2138,8 +2138,8 @@ void actBoulderTrapWest(Entity* my)
 			my->boulderTrapFired = 1;
 
 			c = 2; // direction
-			x = ((int)(my->x)) >> 4;
-			y = ((int)(my->y)) >> 4;
+			x = static_cast<int>(my->x) >> 4;
+			y = static_cast<int>(my->y) >> 4;
 			if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder
@@ -2258,8 +2258,8 @@ void actBoulderTrapNorth(Entity* my)
 			my->boulderTrapFired = 1;
 
 			c = 3; // direction
-			x = ((int)(my->x)) >> 4;
-			y = ((int)(my->y)) >> 4;
+			x = static_cast<int>(my->x) >> 4;
+			y = static_cast<int>(my->y) >> 4;
 			if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
 			{
 				Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder
@@ -2316,7 +2316,7 @@ void boulderSokobanOnDestroy(bool pushedOffLedge)
 	{
 		for ( node_t* node = map.entities->first; node != nullptr; )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			node = node->next;
 			if ( entity )
 			{
@@ -2334,7 +2334,7 @@ void boulderSokobanOnDestroy(bool pushedOffLedge)
 
 	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		if ( entity )
 		{
 			if ( !bouldersAround && entity->behavior == &actBoulder )
@@ -2351,7 +2351,7 @@ void boulderSokobanOnDestroy(bool pushedOffLedge)
 		Entity* sokobanItemReward = nullptr;
 		for ( node = map.entities->first; node != nullptr; node = node->next )
 		{
-			Entity* entity = (Entity*)node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			if ( entity )
 			{
 				if ( entity->behavior == &actGoldBag && entity->goldSokoban == 1 )
@@ -2370,7 +2370,7 @@ void boulderSokobanOnDestroy(bool pushedOffLedge)
 		{
 			if ( players[c] && players[c]->entity )
 			{
-				playerAliveTicks = std::min((Uint32)0x7FFFFFFF, players[c]->entity->ticks);
+				playerAliveTicks = std::min(static_cast<Uint32>(0x7FFFFFFF), players[c]->entity->ticks);
 				break;
 			}
 		}

@@ -351,7 +351,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
 			continue;
 		}
 
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -460,9 +460,9 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
 				}
 				else
 				{
-					if ( MONSTER_ATTACKTIME >= (int)limbs[BAT_SMALL][15][0] )
+					if ( MONSTER_ATTACKTIME >= static_cast<int>(limbs[BAT_SMALL][15][0]) )
 					{
-						if ( MONSTER_ATTACKTIME == (int)limbs[BAT_SMALL][15][0] )
+						if ( MONSTER_ATTACKTIME == static_cast<int>(limbs[BAT_SMALL][15][0]) )
 						{
 							if ( multiplayer != CLIENT )
 							{
@@ -500,24 +500,24 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
 						entity->fskill[0] = std::max(entity->fskill[0], -((PI / 2) + PI / 32));
 					}
 
-					if ( MONSTER_ATTACKTIME >= (int)limbs[BAT_SMALL][18][0] )
+					if ( MONSTER_ATTACKTIME >= static_cast<int>(limbs[BAT_SMALL][18][0]) )
 					{
 						BAT_FLOAT_ATK -= limbs[BAT_SMALL][18][1];
-						BAT_FLOAT_ATK = std::max(BAT_FLOAT_ATK, (real_t)limbs[BAT_SMALL][18][2]);
+						BAT_FLOAT_ATK = std::max(BAT_FLOAT_ATK, static_cast<real_t>(limbs[BAT_SMALL][18][2]));
 					}
-					else if ( MONSTER_ATTACKTIME >= (int)limbs[BAT_SMALL][17][0] )
+					else if ( MONSTER_ATTACKTIME >= static_cast<int>(limbs[BAT_SMALL][17][0]) )
 					{
 						BAT_FLOAT_ATK += limbs[BAT_SMALL][17][1];
-						BAT_FLOAT_ATK = std::min(BAT_FLOAT_ATK, (real_t)limbs[BAT_SMALL][17][2]);
+						BAT_FLOAT_ATK = std::min(BAT_FLOAT_ATK, static_cast<real_t>(limbs[BAT_SMALL][17][2]));
 					}
-					else if ( MONSTER_ATTACKTIME >= (int)limbs[BAT_SMALL][16][0] )
+					else if ( MONSTER_ATTACKTIME >= static_cast<int>(limbs[BAT_SMALL][16][0]) )
 					{
 						BAT_FLOAT_ATK -= limbs[BAT_SMALL][16][1];
-						BAT_FLOAT_ATK = std::max(BAT_FLOAT_ATK, (real_t)limbs[BAT_SMALL][16][2]);
+						BAT_FLOAT_ATK = std::max(BAT_FLOAT_ATK, static_cast<real_t>(limbs[BAT_SMALL][16][2]));
 					}
 				}
 
-				if ( MONSTER_ATTACKTIME >= (int)limbs[BAT_SMALL][15][1] )
+				if ( MONSTER_ATTACKTIME >= static_cast<int>(limbs[BAT_SMALL][15][1]) )
 				{
 					MONSTER_ATTACK = 0;
 				}

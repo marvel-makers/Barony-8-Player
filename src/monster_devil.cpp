@@ -211,7 +211,7 @@ void devilDie(Entity* my)
 	}
 	for ( node = map.entities->first; node != NULL; node = node->next )
 	{
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		if ( entity->skill[28] )
 		{
 			entity->skill[28] = 2;
@@ -285,7 +285,7 @@ void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -310,7 +310,7 @@ void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -330,7 +330,7 @@ void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	//Move bodyparts
 	for (bodypart = 0, node = my->children.first; node != NULL; node = node->next, bodypart++)
 	{
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		if ( bodypart < 2 )
 		{
 			continue;
@@ -460,7 +460,7 @@ void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				Entity* playertotrack = nullptr;
 				for ( tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Searching for players only? Don't search full map.entities then.
 				{
-					Entity* tempEntity = (Entity*)tempNode->element;
+					Entity* tempEntity = static_cast<Entity*>(tempNode->element);
 					double lowestdist = 5000;
 					if ( tempEntity->behavior == &actPlayer )
 					{
@@ -635,7 +635,7 @@ bool Entity::devilSummonMonster(Entity* summonOnEntity, Monster creature, int ra
 	{
 		for ( node_t* searchNode = map.entities->first; searchNode != nullptr; searchNode = searchNode->next )
 		{
-			target = (Entity*)searchNode->element;
+			target = static_cast<Entity*>(searchNode->element);
 			if ( target->behavior == &actDevilTeleport
 				&& target->sprite == 72 )
 			{
@@ -710,7 +710,7 @@ int Entity::devilGetNumMonstersInArena(Monster creature)
 	node_t* tempNode;
 	for ( tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next )
 	{
-		Entity* monster = (Entity*)tempNode->element;
+		Entity* monster = static_cast<Entity*>(tempNode->element);
 		if ( monster && monster->getMonsterTypeFromSprite() == creature )
 		{
 			if ( static_cast<int>(monster->x / 16) >= hellArena_x0 && static_cast<int>(monster->x / 16) <= hellArena_x1 )

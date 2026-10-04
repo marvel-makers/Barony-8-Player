@@ -280,7 +280,7 @@ void crystalgolemMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -305,7 +305,7 @@ void crystalgolemMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -343,7 +343,7 @@ void crystalgolemMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			}
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -354,7 +354,7 @@ void crystalgolemMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			if ( bodypart == 3 )
 			{
 				// set leftbody to the left leg.
-				leftbody = (Entity*)node->next->element;
+				leftbody = static_cast<Entity*>(node->next->element);
 			}
 			if ( bodypart == 3 || MONSTER_ATTACK == 0 )
 			{
@@ -564,7 +564,7 @@ void crystalgolemMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				if ( MONSTER_ATTACK > 0 )
 				{
 					// get leftarm from bodypart 6 element if ready to attack
-					leftarm = (Entity*)node->next->element;
+					leftarm = static_cast<Entity*>(node->next->element);
 
 					if ( MONSTER_ATTACK == MONSTER_POSE_GOLEM_SMASH || MONSTER_ATTACK == MONSTER_POSE_MELEE_WINDUP3
 						|| MONSTER_ATTACK == 1 || MONSTER_ATTACK == MONSTER_POSE_MELEE_WINDUP1 )

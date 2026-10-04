@@ -230,7 +230,7 @@ Sint32 Stat::getThaumProficiencySpellStatBonus(int whichStat, Sint32 currentBonu
 		if ( getEffectActive(EFF_COUNSEL) )
 		{
 			real_t ratio = std::max(0.0, 0.1 * ((int)(getEffectActive(EFF_COUNSEL) & 0xF) - 1));
-			bonus = (std::max(2 + (getEffectActive(EFF_COUNSEL) & 0xF), (int)(currentBonus * ratio)));
+			bonus = (std::max(2 + (getEffectActive(EFF_COUNSEL) & 0xF), static_cast<int>(currentBonus * ratio)));
 		}
 	}
 	else if ( whichStat == STAT_DEX )
@@ -238,7 +238,7 @@ Sint32 Stat::getThaumProficiencySpellStatBonus(int whichStat, Sint32 currentBonu
 		if ( getEffectActive(EFF_NIMBLENESS) )
 		{
 			real_t ratio = std::max(0.0, 0.1 * ((int)(getEffectActive(EFF_NIMBLENESS) & 0xF) - 1));
-			bonus = (std::max(2 + (getEffectActive(EFF_NIMBLENESS) & 0xF), (int)(currentBonus * ratio)));
+			bonus = (std::max(2 + (getEffectActive(EFF_NIMBLENESS) & 0xF), static_cast<int>(currentBonus * ratio)));
 		}
 	}
 	else if ( whichStat == STAT_STR )
@@ -246,7 +246,7 @@ Sint32 Stat::getThaumProficiencySpellStatBonus(int whichStat, Sint32 currentBonu
 		if ( getEffectActive(EFF_GREATER_MIGHT) )
 		{
 			real_t ratio = std::max(0.0, 0.1 * ((int)(getEffectActive(EFF_GREATER_MIGHT) & 0xF) - 1));
-			bonus = (std::max(2 + (getEffectActive(EFF_GREATER_MIGHT) & 0xF), (int)(currentBonus * ratio)));
+			bonus = (std::max(2 + (getEffectActive(EFF_GREATER_MIGHT) & 0xF), static_cast<int>(currentBonus * ratio)));
 		}
 	}
 	else if ( whichStat == STAT_CON )
@@ -254,7 +254,7 @@ Sint32 Stat::getThaumProficiencySpellStatBonus(int whichStat, Sint32 currentBonu
 		if ( getEffectActive(EFF_STURDINESS) )
 		{
 			real_t ratio = std::max(0.0, 0.1 * ((int)(getEffectActive(EFF_STURDINESS) & 0xF) - 1));
-			bonus = (std::max(2 + (getEffectActive(EFF_STURDINESS) & 0xF), (int)(currentBonus * ratio)));
+			bonus = (std::max(2 + (getEffectActive(EFF_STURDINESS) & 0xF), static_cast<int>(currentBonus * ratio)));
 		}
 	}
 	return bonus;
@@ -390,7 +390,7 @@ Stat::~Stat()
 	{
 		node_t* oldnode = spellnode;
 		spellnode = spellnode->next;
-		spell_t* spell = (spell_t*)oldnode->element;
+		spell_t* spell = static_cast<spell_t*>(oldnode->element);
 		spell->magic_effects_node = NULL;
 	}
 	list_FreeAll(&this->magic_effects);
@@ -700,7 +700,7 @@ Stat* Stat::copyStats()
 	list_Copy(&newStat->inventory, &this->inventory);
 	for (node = newStat->inventory.first; node != NULL; node = node->next)
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		item->node = node;
 	}
 	newStat->void_chest_inventory.first = nullptr;
@@ -708,7 +708,7 @@ Stat* Stat::copyStats()
 	list_Copy(&newStat->void_chest_inventory, &this->void_chest_inventory);
 	for ( node = newStat->void_chest_inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		item->node = node;
 	}
 
@@ -717,11 +717,11 @@ Stat* Stat::copyStats()
 		if (this->helmet->node)
 		{
 			node_t* node = list_Node(&newStat->inventory, list_Index(this->helmet->node));
-			newStat->helmet = (Item*)node->element;
+			newStat->helmet = static_cast<Item*>(node->element);
 		}
 		else
 		{
-			newStat->helmet = (Item*)malloc(sizeof(Item));
+			newStat->helmet = static_cast<Item*>(malloc(sizeof(Item)));
 			memcpy(newStat->helmet, this->helmet, sizeof(Item));
 		}
 	}
@@ -734,11 +734,11 @@ Stat* Stat::copyStats()
 		if (this->breastplate->node)
 		{
 			node_t* node = list_Node(&newStat->inventory, list_Index(this->breastplate->node));
-			newStat->breastplate = (Item*)node->element;
+			newStat->breastplate = static_cast<Item*>(node->element);
 		}
 		else
 		{
-			newStat->breastplate = (Item*)malloc(sizeof(Item));
+			newStat->breastplate = static_cast<Item*>(malloc(sizeof(Item)));
 			memcpy(newStat->breastplate, this->breastplate, sizeof(Item));
 		}
 	}
@@ -751,11 +751,11 @@ Stat* Stat::copyStats()
 		if (this->gloves->node)
 		{
 			node_t* node = list_Node(&newStat->inventory, list_Index(this->gloves->node));
-			newStat->gloves = (Item*)node->element;
+			newStat->gloves = static_cast<Item*>(node->element);
 		}
 		else
 		{
-			newStat->gloves = (Item*)malloc(sizeof(Item));
+			newStat->gloves = static_cast<Item*>(malloc(sizeof(Item)));
 			memcpy(newStat->gloves, this->gloves, sizeof(Item));
 		}
 	}
@@ -768,11 +768,11 @@ Stat* Stat::copyStats()
 		if (this->shoes->node)
 		{
 			node_t* node = list_Node(&newStat->inventory, list_Index(this->shoes->node));
-			newStat->shoes = (Item*)node->element;
+			newStat->shoes = static_cast<Item*>(node->element);
 		}
 		else
 		{
-			newStat->shoes = (Item*)malloc(sizeof(Item));
+			newStat->shoes = static_cast<Item*>(malloc(sizeof(Item)));
 			memcpy(newStat->shoes, this->shoes, sizeof(Item));
 		}
 	}
@@ -785,11 +785,11 @@ Stat* Stat::copyStats()
 		if (this->shield->node)
 		{
 			node_t* node = list_Node(&newStat->inventory, list_Index(this->shield->node));
-			newStat->shield = (Item*)node->element;
+			newStat->shield = static_cast<Item*>(node->element);
 		}
 		else
 		{
-			newStat->shield = (Item*)malloc(sizeof(Item));
+			newStat->shield = static_cast<Item*>(malloc(sizeof(Item)));
 			memcpy(newStat->shield, this->shield, sizeof(Item));
 		}
 	}
@@ -802,11 +802,11 @@ Stat* Stat::copyStats()
 		if (this->weapon->node)
 		{
 			node_t* node = list_Node(&newStat->inventory, list_Index(this->weapon->node));
-			newStat->weapon = (Item*)node->element;
+			newStat->weapon = static_cast<Item*>(node->element);
 		}
 		else
 		{
-			newStat->weapon = (Item*)malloc(sizeof(Item));
+			newStat->weapon = static_cast<Item*>(malloc(sizeof(Item)));
 			memcpy(newStat->weapon, this->weapon, sizeof(Item));
 		}
 	}
@@ -819,11 +819,11 @@ Stat* Stat::copyStats()
 		if (this->cloak->node)
 		{
 			node_t* node = list_Node(&newStat->inventory, list_Index(this->cloak->node));
-			newStat->cloak = (Item*)node->element;
+			newStat->cloak = static_cast<Item*>(node->element);
 		}
 		else
 		{
-			newStat->cloak = (Item*)malloc(sizeof(Item));
+			newStat->cloak = static_cast<Item*>(malloc(sizeof(Item)));
 			memcpy(newStat->cloak, this->cloak, sizeof(Item));
 		}
 	}
@@ -836,11 +836,11 @@ Stat* Stat::copyStats()
 		if (this->amulet->node)
 		{
 			node_t* node = list_Node(&newStat->inventory, list_Index(this->amulet->node));
-			newStat->amulet = (Item*)node->element;
+			newStat->amulet = static_cast<Item*>(node->element);
 		}
 		else
 		{
-			newStat->amulet = (Item*)malloc(sizeof(Item));
+			newStat->amulet = static_cast<Item*>(malloc(sizeof(Item)));
 			memcpy(newStat->amulet, this->amulet, sizeof(Item));
 		}
 	}
@@ -853,11 +853,11 @@ Stat* Stat::copyStats()
 		if (this->ring->node)
 		{
 			node_t* node = list_Node(&newStat->inventory, list_Index(this->ring->node));
-			newStat->ring = (Item*)node->element;
+			newStat->ring = static_cast<Item*>(node->element);
 		}
 		else
 		{
-			newStat->ring = (Item*)malloc(sizeof(Item));
+			newStat->ring = static_cast<Item*>(malloc(sizeof(Item)));
 			memcpy(newStat->ring, this->ring, sizeof(Item));
 		}
 	}
@@ -870,11 +870,11 @@ Stat* Stat::copyStats()
 		if (this->mask->node)
 		{
 			node_t* node = list_Node(&newStat->inventory, list_Index(this->mask->node));
-			newStat->mask = (Item*)node->element;
+			newStat->mask = static_cast<Item*>(node->element);
 		}
 		else
 		{
-			newStat->mask = (Item*)malloc(sizeof(Item));
+			newStat->mask = static_cast<Item*>(malloc(sizeof(Item)));
 			memcpy(newStat->mask, this->mask, sizeof(Item));
 		}
 	}
@@ -1456,7 +1456,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 
 	for ( node_t* node = src.inventory.first; node; node = node->next )
 	{
-		Item* invItem = (Item*)node->element;
+		Item* invItem = static_cast<Item*>(node->element);
 		if ( invItem )
 		{
 			if ( player >= 0 )

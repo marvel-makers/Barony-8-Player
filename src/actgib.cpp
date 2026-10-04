@@ -210,7 +210,7 @@ void actGib(Entity* my)
 	{
 		if ( my->x >= 0 && my->y >= 0 && my->x < map.width << 4 && my->y < map.height << 4 )
 		{
-			if ( !map.tiles[(int)(floor(my->y / 16)*MAP_LAYERS + floor(my->x / 16)*MAP_LAYERS * map.height)] )
+			if ( !map.tiles[static_cast<int>(floor(my->y / 16) * MAP_LAYERS + floor(my->x / 16) * MAP_LAYERS * map.height)] )
 			{
 				GIB_VELZ += GIB_GRAVITY;
 				my->z += GIB_VELZ;
@@ -324,7 +324,7 @@ void actFociGib(Entity* my)
 				if ( my->ticks >= vortexStart )
 				{
 					real_t vortexTime = 0.5 * TICKS_PER_SECOND;
-					real_t ratio = 2.0 + 2.0 * sin((-PI / 2) + (PI)*std::min((Uint32)vortexTime, my->ticks - vortexStart) / vortexTime);
+					real_t ratio = 2.0 + 2.0 * sin((-PI / 2) + (PI)*std::min(static_cast<Uint32>(vortexTime), my->ticks - vortexStart) / vortexTime);
 					my->focalx += ratio * cos(my->yaw);
 					my->focaly += ratio * sin(my->yaw);
 				}
@@ -448,7 +448,7 @@ void actFociGib(Entity* my)
 				spell_t* spell = nullptr;
 				if ( my->children.first && my->children.first->element )
 				{
-					spell = (spell_t*)(my->children.first->element);
+					spell = static_cast<spell_t*>(my->children.first->element);
 				}
 
 				/*Entity* particle = spawnMagicParticle(my);
@@ -498,7 +498,7 @@ void actFociGib(Entity* my)
 						}
 						else
 						{
-							entity = (Entity*)node->element;
+							entity = static_cast<Entity*>(node->element);
 							node = node->next;
 						}
 						if ( entity == parent || entity == my )
@@ -630,7 +630,7 @@ void actFociGib(Entity* my)
 
 							node_t* node = list_AddNodeFirst(&entity->children);
 							node->element = copySpell(spell);
-							((spell_t*)node->element)->caster = parent ? parent->getUID() : 0;
+							static_cast<spell_t*>(node->element)->caster = parent ? parent->getUID() : 0;
 							node->deconstructor = &spellDeconstructor;
 							node->size = sizeof(spell_t);
 
@@ -866,7 +866,7 @@ void actDamageGib(Entity* my)
 		real_t scale = 0.2;
 		if ( my->ticks > 10 )
 		{
-			scale *= 1.0 - 0.5 * (std::min((int)my->ticks - 10, 20)) / 20.0;
+			scale *= 1.0 - 0.5 * (std::min(static_cast<int>(my->ticks) - 10, 20)) / 20.0;
 		}
 		my->scalex = scale;
 		my->scaley = scale;
@@ -928,7 +928,7 @@ void actDamageGib(Entity* my)
 	{
 		if ( my->x >= 0 && my->y >= 0 && my->x < map.width << 4 && my->y < map.height << 4 )
 		{
-			if ( !map.tiles[(int)(floor(my->y / 16)*MAP_LAYERS + floor(my->x / 16)*MAP_LAYERS * map.height)] )
+			if ( !map.tiles[static_cast<int>(floor(my->y / 16) * MAP_LAYERS + floor(my->x / 16) * MAP_LAYERS * map.height)] )
 			{
 				GIB_VELZ += GIB_GRAVITY;
 				my->z += GIB_VELZ;
@@ -984,7 +984,7 @@ Entity* spawnGib(Entity* parentent, int customGibSprite)
 		}
 		else
 		{
-			switch ( gibtype[(int)parentstats->type] )
+			switch ( gibtype[static_cast<int>(parentstats->type)] )
 			{
 				case 0:
 					return nullptr;
@@ -1359,13 +1359,13 @@ Entity* spawnFociGib(real_t x, real_t y, real_t z, real_t dir, real_t velocityBo
 			}
 			strcpy((char*)net_packet->data, "FOCI");
 			SDLNet_Write32(my->getUID(), &net_packet->data[4]);
-			SDLNet_Write16((Sint16)(x * 32), &net_packet->data[8]);
-			SDLNet_Write16((Sint16)(y * 32), &net_packet->data[10]);
-			SDLNet_Write16((Sint16)(z * 32), &net_packet->data[12]);
-			SDLNet_Write16((Sint16)(dir * 256), &net_packet->data[14]);
-			SDLNet_Write16((Sint16)(sprite), &net_packet->data[16]);
+			SDLNet_Write16(static_cast<Sint16>(x * 32), &net_packet->data[8]);
+			SDLNet_Write16(static_cast<Sint16>(y * 32), &net_packet->data[10]);
+			SDLNet_Write16(static_cast<Sint16>(z * 32), &net_packet->data[12]);
+			SDLNet_Write16(static_cast<Sint16>(dir * 256), &net_packet->data[14]);
+			SDLNet_Write16(static_cast<Sint16>(sprite), &net_packet->data[16]);
 			SDLNet_Write32(seed, &net_packet->data[18]);
-			SDLNet_Write16((Sint16)(velocityBonus * 256), &net_packet->data[22]);
+			SDLNet_Write16(static_cast<Sint16>(velocityBonus * 256), &net_packet->data[22]);
 			net_packet->address.host = net_clients[c - 1].host;
 			net_packet->address.port = net_clients[c - 1].port;
 			net_packet->len = 24;
@@ -1416,13 +1416,13 @@ Entity* spawnDamageGib(Entity* parentent, Sint32 dmgAmount, int gibDmgType, int 
 		{
 			if ( node_t* node = list_Node(&parentent->children, 2) )
 			{
-				if ( Entity* entity2 = (Entity*)node->element )
+				if ( Entity* entity2 = static_cast<Entity*>(node->element) )
 				{
 					if ( Entity::getMonsterTypeFromSprite(entity2->sprite) == DUCK_SMALL )
 					{
 						if ( node_t* node = list_Node(&entity2->children, 2) )
 						{
-							if ( Entity* entity3 = (Entity*)node->element )
+							if ( Entity* entity3 = static_cast<Entity*>(node->element) )
 							{
 								entity->z = entity3->z - 4;
 							}
@@ -1435,7 +1435,7 @@ Entity* spawnDamageGib(Entity* parentent, Sint32 dmgAmount, int gibDmgType, int 
 		{
 			if ( node_t* node = list_Node(&parentent->children, 2) )
 			{
-				if ( Entity* entity2 = (Entity*)node->element )
+				if ( Entity* entity2 = static_cast<Entity*>(node->element) )
 				{
 					entity->z = entity2->z - 4;
 				}
@@ -1479,7 +1479,7 @@ Entity* spawnDamageGib(Entity* parentent, Sint32 dmgAmount, int gibDmgType, int 
 	entity->setUID(-3);
 
 	Uint32 color = makeColor(255, 255, 255, 255);
-	switch ( (DamageGib)entity->skill[3] )
+	switch ( static_cast<DamageGib>(entity->skill[3]) )
 	{
 		case DMG_DEFAULT:
 		case DMG_WEAKER:
@@ -1522,7 +1522,7 @@ Entity* spawnDamageGib(Entity* parentent, Sint32 dmgAmount, int gibDmgType, int 
 				}
 				strcpy((char*)net_packet->data, "DMGG");
 				SDLNet_Write32(parentent->getUID(), &net_packet->data[4]);
-				SDLNet_Write16((Sint16)dmgAmount, &net_packet->data[8]);
+				SDLNet_Write16(static_cast<Sint16>(dmgAmount), &net_packet->data[8]);
 				net_packet->data[10] = gibDmgType;
 				net_packet->data[11] = displayType;
 				net_packet->address.host = net_clients[c - 1].host;
@@ -1584,10 +1584,10 @@ void serverSpawnGibForClient(Entity* gib)
 				continue;
 			}
 			strcpy((char*)net_packet->data, "SPGB");
-			SDLNet_Write16((Sint16)gib->x, &net_packet->data[4]);
-			SDLNet_Write16((Sint16)gib->y, &net_packet->data[6]);
-			SDLNet_Write16((Sint16)gib->z, &net_packet->data[8]);
-			SDLNet_Write16((Sint16)gib->sprite, &net_packet->data[10]);
+			SDLNet_Write16(static_cast<Sint16>(gib->x), &net_packet->data[4]);
+			SDLNet_Write16(static_cast<Sint16>(gib->y), &net_packet->data[6]);
+			SDLNet_Write16(static_cast<Sint16>(gib->z), &net_packet->data[8]);
+			SDLNet_Write16(static_cast<Sint16>(gib->sprite), &net_packet->data[10]);
 			net_packet->data[12] = gib->flags[SPRITE] ? 1 << 0 : 0;
 			net_packet->data[12] |= (gib->skill[5] == 1) ? 1 << 1 : 0; // poof
 			net_packet->address.host = net_clients[c - 1].host;
@@ -1617,7 +1617,7 @@ void spawnGreasePuddleSpawner(Entity* caster, real_t x, real_t y, int duration)
 			list_t* currentList = *it;
 			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( entity->behavior == &actGreasePuddleSpawner && entity->skill[0] > 0 )
 				{
 					entity->skill[0] = std::max(entity->skill[0], duration);
@@ -1741,7 +1741,7 @@ void actGreasePuddleSpawner(Entity* my)
 					list_t* currentList = *it;
 					for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity && entity->behavior == &actGreasePuddleSpawner && entity != my )
 						{
 							int x2 = entity->x / 16;
@@ -1792,7 +1792,7 @@ void actGreasePuddleSpawner(Entity* my)
 				list_t* currentList = *it;
 				for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 				{
-					if ( Entity* entity = (Entity*)node->element )
+					if ( Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						if ( Stat* stats = entity->getStats() )
 						{
@@ -1881,7 +1881,7 @@ void actGreasePuddleSpawner(Entity* my)
 						list_t* currentList = *it;
 						for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = (Entity*)node->element;
+							Entity* entity = static_cast<Entity*>(node->element);
 							if ( entity && entity->behavior == &actGreasePuddleSpawner && entity != my )
 							{
 								int x2 = entity->x / 16;
@@ -2349,7 +2349,7 @@ void actLeafPile(Entity* my)
 				}
 				for ( node_t* node = it->first; node != nullptr; node = node->next )
 				{
-					Entity* entity = (Entity*)node->element;
+					Entity* entity = static_cast<Entity*>(node->element);
 					if ( entity->behavior == &actMonster || entity->behavior == &actPlayer )
 					{
 						if ( !entity->monsterIsTargetable() ) { continue; }
@@ -2360,7 +2360,7 @@ void actLeafPile(Entity* my)
 								my->skill[3] = LEAF_IDLE_BOUNCE_TIME;
 								my->skill[4] = 100;
 								playSoundEntityLocal(my, 754 + local_rng.rand() % 2, 64);
-								entity->setEffect(EFF_NOISE_VISIBILITY, (Uint8)2, 2 * TICKS_PER_SECOND, false);
+								entity->setEffect(EFF_NOISE_VISIBILITY, static_cast<Uint8>(2), 2 * TICKS_PER_SECOND, false);
 								if ( multiplayer == SERVER )
 								{
 									for ( int c = 1; c < MAXPLAYERS; ++c ) // send to other players
@@ -2372,8 +2372,8 @@ void actLeafPile(Entity* my)
 										strcpy((char*)net_packet->data, "LEAF");
 										SDLNet_Write32(my->getUID(), &net_packet->data[4]);
 										net_packet->data[8] = 1;
-										net_packet->data[9] = (Uint8)my->skill[3];
-										net_packet->data[10] = (Uint8)my->skill[4];
+										net_packet->data[9] = static_cast<Uint8>(my->skill[3]);
+										net_packet->data[10] = static_cast<Uint8>(my->skill[4]);
 										net_packet->address.host = net_clients[c - 1].host;
 										net_packet->address.port = net_clients[c - 1].port;
 										net_packet->len = 11;
@@ -2461,7 +2461,7 @@ void actLeafPile(Entity* my)
 				{
 					for ( node_t* node = it->first; node != nullptr; node = node->next )
 					{
-						Entity* entity = (Entity*)node->element;
+						Entity* entity = static_cast<Entity*>(node->element);
 						if ( entity->behavior == &actMonster || entity->behavior == &actPlayer )
 						{
 							if ( !entity->monsterIsTargetable() ) { continue; }
@@ -2615,8 +2615,8 @@ void actLeafPile(Entity* my)
 					strcpy((char*)net_packet->data, "LEAF");
 					SDLNet_Write32(my->getUID(), &net_packet->data[4]);
 					net_packet->data[8] = 2;
-					net_packet->data[9] = (Uint8)spinStrength;
-					net_packet->data[10] = (Uint8)spinTimer;
+					net_packet->data[9] = static_cast<Uint8>(spinStrength);
+					net_packet->data[10] = static_cast<Uint8>(spinTimer);
 					net_packet->address.host = net_clients[c - 1].host;
 					net_packet->address.port = net_clients[c - 1].port;
 					net_packet->len = 11;
@@ -2662,8 +2662,8 @@ void actLeafPile(Entity* my)
 					strcpy((char*)net_packet->data, "LEAF");
 					SDLNet_Write32(my->getUID(), &net_packet->data[4]);
 					net_packet->data[8] = 2;
-					net_packet->data[9] = (Uint8)spinStrength;
-					net_packet->data[10] = (Uint8)spinTimer;
+					net_packet->data[9] = static_cast<Uint8>(spinStrength);
+					net_packet->data[10] = static_cast<Uint8>(spinTimer);
 					net_packet->address.host = net_clients[c - 1].host;
 					net_packet->address.port = net_clients[c - 1].port;
 					net_packet->len = 11;

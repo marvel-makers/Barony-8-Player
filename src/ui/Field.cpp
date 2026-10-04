@@ -89,7 +89,7 @@ void Field::activate() {
         cursorflash = ticks;
 	    activated = true;
 	    inputstr = text;
-	    inputlen = (int)textlen;
+	    inputlen = static_cast<int>(textlen);
 	    SDL_StartTextInput();
 	}
 #endif
@@ -197,7 +197,7 @@ void Field::buildCache() {
 		}
 		cache.pop_back();
 	}
-	char* buf = (char*)malloc(textlen + 1);
+	char* buf = static_cast<char*>(malloc(textlen + 1));
 	if ( buf ) {
 		dirty = false;
 		memcpy(buf, text ? text : "\0", textlen + 1);
@@ -554,8 +554,8 @@ Field::result_t Field::process(SDL_Rect _size, SDL_Rect _actualSize, const bool 
 	Sint32 omousey = (::omousey / (float)yres) * (float)Frame::virtualScreenY;
 #else
 	const int mouseowner = intro || gamePaused ? inputs.getPlayerIDAllowedKeyboard() : owner;
-	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / (float)xres) * (float)Frame::virtualScreenX;
-	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / (float)yres) * (float)Frame::virtualScreenY;
+	Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+	Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 #endif
 
 #ifndef EDITOR
@@ -597,7 +597,7 @@ void Field::setText(const char* _text) {
 	if ( _text == nullptr ) {
 		return;
 	}
-	size_t len = std::min(strlen(_text), (size_t)textlen);
+	size_t len = std::min(strlen(_text), static_cast<size_t>(textlen));
 	if ( stringCmp(text, _text, textlen, len) ) {
 		stringCopy(text, _text, textlen, len);
 		dirty = true;
@@ -868,7 +868,7 @@ void Field::reflowTextToFit(const int characterOffset, bool check) {
 			{
 				size_t lastWordEnd = reflowText.size();
 				reflowText.at(findSpace) = '\n';
-				currentCharacters = (int)(lastWordEnd - findSpace);
+				currentCharacters = static_cast<int>(lastWordEnd - findSpace);
 			}
 			else
 			{

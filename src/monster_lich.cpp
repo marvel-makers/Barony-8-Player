@@ -225,7 +225,7 @@ void lichDie(Entity* my)
 	for ( node = map.creatures->first; node != nullptr; node = nextnode ) //Only searching for monsters, so don't search full map.entities.
 	{
 		nextnode = node->next;
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		if ( entity == my )
 		{
 			continue;
@@ -306,7 +306,7 @@ void lichAnimate(Entity* my, double dist)
 					bodypart++;
 					continue;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -327,7 +327,7 @@ void lichAnimate(Entity* my, double dist)
 					bodypart++;
 					continue;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -363,7 +363,7 @@ void lichAnimate(Entity* my, double dist)
 		{
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -428,7 +428,7 @@ void lichAnimate(Entity* my, double dist)
 				Entity* playertotrack = nullptr;
 				for ( tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Only searching for players, so don't search full map.entities.
 				{
-					Entity* tempEntity = (Entity*)tempNode->element;
+					Entity* tempEntity = static_cast<Entity*>(tempNode->element);
 					double lowestdist = 5000;
 					if ( tempEntity->behavior == &actPlayer )
 					{

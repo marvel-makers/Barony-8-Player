@@ -114,7 +114,7 @@ void Font::dumpCache() {
 #include "../interface/consolecommand.hpp"
 static ConsoleCommand size("/fonts_cache_size", "measure font cache",
     [](int argc, const char** argv){
-    messagePlayer(clientnum, MESSAGE_MISC, "cache size is: %d fonts", (int)hashed_fonts.size());
+    messagePlayer(clientnum, MESSAGE_MISC, "cache size is: %d fonts", static_cast<int>(hashed_fonts.size()));
     });
 static ConsoleCommand dump("/fonts_cache_dump", "dump font cache",
     [](int argc, const char** argv){

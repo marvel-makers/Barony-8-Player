@@ -1236,7 +1236,7 @@ void steamStatisticUpdate(int statisticNum, ESteamStatTypes type, int value)
 				case STEAM_STAT_DAPPER_2:
 				case STEAM_STAT_DAPPER_3:
 					g_SteamStats[statisticNum].m_iValue =
-						std::min((Uint32)g_SteamStats[statisticNum].m_iValue, (Uint32)steamStatAchStringsAndMaxVals[statisticNum].second);
+						std::min(static_cast<Uint32>(g_SteamStats[statisticNum].m_iValue), static_cast<Uint32>(steamStatAchStringsAndMaxVals[statisticNum].second));
 					indicateProgress = false;
 					break;
 				case STEAM_STAT_DAPPER:

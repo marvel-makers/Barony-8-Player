@@ -529,8 +529,8 @@ void Player::GUI_t::imageSetWidthHeight9x9(Frame* container, const std::vector<s
         {
             if (auto imgGet = Image::get(i->path.c_str()))
             {
-                i->pos.w = (int)imgGet->getWidth();
-                i->pos.h = (int)imgGet->getHeight();
+                i->pos.w = static_cast<int>(imgGet->getWidth());
+                i->pos.h = static_cast<int>(imgGet->getHeight());
             }
         }
     }
@@ -1169,7 +1169,7 @@ void updateCalloutPromptFrame(const int player)
         if (auto imgGet = Image::get(glyph->path.c_str()))
         {
             glyph->disabled = false;
-            SDL_Rect glyphPos{0, 8, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+            SDL_Rect glyphPos{0, 8, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
             glyph->pos = glyphPos;
             if (auto imgGetUnpressed = Image::get(glyphPathUnpressed.c_str()))
             {
@@ -1194,7 +1194,7 @@ void updateCalloutPromptFrame(const int player)
         if (auto imgGet = Image::get(glyph->path.c_str()))
         {
             glyph->disabled = false;
-            SDL_Rect glyphPos{0, 8, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+            SDL_Rect glyphPos{0, 8, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
             glyph->pos = glyphPos;
             unpressedHeight = glyph->pos.h;
             unpressedY = glyph->pos.y;
@@ -1710,8 +1710,8 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
                     {
                         text->drawColor(SDL_Rect{0, 0, 0, 0},
                                         SDL_Rect{
-                                            pos.x + pos.w / 2 - (int)text->getWidth() / 2 + *cvar_assist_icon_txt_x,
-                                            pos.y + pos.h / 2 - (int)text->getHeight() / 2 - 3 + *
+                                            pos.x + pos.w / 2 - static_cast<int>(text->getWidth()) / 2 + *cvar_assist_icon_txt_x,
+                                            pos.y + pos.h / 2 - static_cast<int>(text->getHeight()) / 2 - 3 + *
                                             cvar_assist_icon_txt_y,
                                             0, 0
                                         },
@@ -2160,9 +2160,9 @@ void updateAllyBarFrame(const int player, Frame* baseFrame, int activeBars, int 
     std::set<Uint32> followerUids;
     for (node_t* node = stats[player]->FOLLOWERS.first; node != nullptr; node = node->next)
     {
-        if ((Uint32*)node->element)
+        if (static_cast<Uint32*>(node->element))
         {
-            followerUids.emplace(*((Uint32*)node->element));
+            followerUids.emplace(*static_cast<Uint32*>(node->element));
         }
     }
 
@@ -2324,7 +2324,7 @@ void updateAllyBarFrame(const int player, Frame* baseFrame, int activeBars, int 
 
         if (bPlayerBars)
         {
-            entryFrame->setUserData(followerBar.expired ? nullptr : (void*)(intptr_t)(uid + 1)); // 0 is nullptr, so +1
+            entryFrame->setUserData(followerBar.expired ? nullptr : (void*)static_cast<intptr_t>(uid + 1)); // 0 is nullptr, so +1
         }
 
         if (!bPlayerBars)
@@ -3172,7 +3172,7 @@ void updateAllyBarFrame(const int player, Frame* baseFrame, int activeBars, int 
                             int decrement = 20;
                             real_t fpsScale = getFPSScale(60.0);
                             decrement *= fpsScale;
-                            a = std::max(0, (int)a - decrement);
+                            a = std::max(0, static_cast<int>(a) - decrement);
                             hpProgressEndCapFlash->color = makeColor(r, g, b, a);
                         }
                     }
@@ -3409,7 +3409,7 @@ void updateAllyBarFrame(const int player, Frame* baseFrame, int activeBars, int 
                             int increment = 10;
                             real_t fpsScale = getFPSScale(60.0);
                             increment *= fpsScale;
-                            a = std::min(255, (int)a + increment);
+                            a = std::min(255, static_cast<int>(a) + increment);
                             mpProgressEndCapFlash->color = makeColor(r, g, b, a);
 
                             mpProgress->path = "*#images/ui/HUD/allies/HUD_MPBar_Fill_Mid_00.png";
@@ -3461,7 +3461,7 @@ void updateAllyBarFrame(const int player, Frame* baseFrame, int activeBars, int 
                             int decrement = 20;
                             real_t fpsScale = getFPSScale(60.0);
                             decrement *= fpsScale;
-                            a = std::max(0, (int)a - decrement);
+                            a = std::max(0, static_cast<int>(a) - decrement);
                             mpProgressEndCapFlash->color = makeColor(r, g, b, a);
                         }
                     }
@@ -3948,10 +3948,10 @@ void updateAllyFollowerFrame(const int player)
     for (node_t* node = stats[player]->FOLLOWERS.first; node != nullptr; node = node->next)
     {
         Entity* follower = nullptr;
-        if ((Uint32*)node->element)
+        if (static_cast<Uint32*>(node->element))
         {
-            follower = uidToEntity(*((Uint32*)node->element));
-            sortedUids.push_back(*((Uint32*)node->element));
+            follower = uidToEntity(*static_cast<Uint32*>(node->element));
+            sortedUids.push_back(*static_cast<Uint32*>(node->element));
         }
         if (follower)
         {
@@ -4317,7 +4317,7 @@ void updateAllyFollowerFrame(const int player)
                 real_t mult = 8.0;
                 if (ticks - followerDisplay.scrollTicks < TICKS_PER_SECOND)
                 {
-                    mult *= (ticks - followerDisplay.scrollTicks) / (real_t)(TICKS_PER_SECOND);
+                    mult *= (ticks - followerDisplay.scrollTicks) / static_cast<real_t>((TICKS_PER_SECOND));
                 }
                 mult = fmin(mult, 1.0);
 
@@ -4329,7 +4329,7 @@ void updateAllyFollowerFrame(const int player)
                 real_t mult = 8.0;
                 if (ticks - followerDisplay.scrollTicks < TICKS_PER_SECOND)
                 {
-                    mult *= (ticks - followerDisplay.scrollTicks) / (real_t)(TICKS_PER_SECOND);
+                    mult *= (ticks - followerDisplay.scrollTicks) / static_cast<real_t>((TICKS_PER_SECOND));
                 }
                 mult = fmin(mult, 1.0);
 
@@ -4339,12 +4339,12 @@ void updateAllyFollowerFrame(const int player)
             followerDisplay.scrollAnimateX += setpointDiff;
             if (setpointDiff >= 0.0)
             {
-                followerDisplay.scrollAnimateX = std::min((real_t)followerDisplay.scrollSetpoint,
+                followerDisplay.scrollAnimateX = std::min(static_cast<real_t>(followerDisplay.scrollSetpoint),
                                                           followerDisplay.scrollAnimateX);
             }
             else
             {
-                followerDisplay.scrollAnimateX = std::max((real_t)followerDisplay.scrollSetpoint,
+                followerDisplay.scrollAnimateX = std::max(static_cast<real_t>(followerDisplay.scrollSetpoint),
                                                           followerDisplay.scrollAnimateX);
             }
         }
@@ -5909,8 +5909,8 @@ void Player::HUD_t::updateUINavigation()
             }
             if (auto imgGet = Image::get(glyph->path.c_str()))
             {
-                glyph->pos.w = (int)imgGet->getWidth();
-                glyph->pos.h = (int)imgGet->getHeight();
+                glyph->pos.w = static_cast<int>(imgGet->getWidth());
+                glyph->pos.h = static_cast<int>(imgGet->getHeight());
             }
 
             glyph->pos.x = button->getSize().x + button->getSize().w / 2 - glyph->pos.w / 2;
@@ -6014,14 +6014,14 @@ std::string StatusEffectQueue_t::StatusEffectDefinitions_t::getEffectImgPath(
     {
         if (entry.imgPathVariations.size() > 0 && variation >= 0)
         {
-            return entry.imgPathVariations[std::min(variation, (int)entry.imgPathVariations.size() - 1)];
+            return entry.imgPathVariations[std::min(variation, static_cast<int>(entry.imgPathVariations.size()) - 1)];
         }
         node_t* spellImageNode = nullptr;
         int spellID = entry.useSpellIDForImg;
         if (variation >= 0)
         {
             spellID = entry.useSpellIDForImgVariations[std::min(
-                variation, (int)entry.useSpellIDForImgVariations.size() - 1)];
+                variation, static_cast<int>(entry.useSpellIDForImgVariations.size()) - 1)];
         }
         if (spellID >= 0 && spellID < NUM_SPELLS)
         {
@@ -6029,7 +6029,7 @@ std::string StatusEffectQueue_t::StatusEffectDefinitions_t::getEffectImgPath(
         }
         if (spellImageNode)
         {
-            string_t* string = (string_t*)spellImageNode->element;
+            string_t* string = static_cast<string_t*>(spellImageNode->element);
             if (string)
             {
                 return string->data;
@@ -6666,9 +6666,9 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                             {
                                 text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                 SDL_Rect{
-                                                    pos.x + img->pos.x + img->pos.w / 2 - (int)text->getWidth() / 2 + *
+                                                    pos.x + img->pos.x + img->pos.w / 2 - static_cast<int>(text->getWidth()) / 2 + *
                                                     cvar_assist_icon_txt_x,
-                                                    pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2 - 3
+                                                    pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2 - 3
                                                     + *cvar_assist_icon_txt_y,
                                                     0, 0
                                                 },
@@ -6702,10 +6702,10 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                 text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                 SDL_Rect{
                                                     pos.x + img->pos.x + (alignRight
-                                                                              ? (img->pos.w - (int)text->getWidth())
-                                                                              : (img->pos.w / 2 - (int)text->getWidth()
+                                                                              ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                              : (img->pos.w / 2 - static_cast<int>(text->getWidth())
                                                                                   / 2 + *cvar_assist_icon_txt_x)),
-                                                    pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2 - 3
+                                                    pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2 - 3
                                                     + *cvar_assist_icon_txt_y,
                                                     0, 0
                                                 },
@@ -6739,10 +6739,10 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                 text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                 SDL_Rect{
                                                     pos.x + img->pos.x + (alignRight
-                                                                              ? (img->pos.w - (int)text->getWidth())
-                                                                              : (img->pos.w / 2 - (int)text->getWidth()
+                                                                              ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                              : (img->pos.w / 2 - static_cast<int>(text->getWidth())
                                                                                   / 2 + *cvar_assist_icon_txt_x)),
-                                                    pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2 - 3
+                                                    pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2 - 3
                                                     + *cvar_assist_icon_txt_y,
                                                     0, 0
                                                 },
@@ -6776,10 +6776,10 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                 text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                 SDL_Rect{
                                                     pos.x + img->pos.x + (alignRight
-                                                                              ? (img->pos.w - (int)text->getWidth())
-                                                                              : (img->pos.w / 2 - (int)text->getWidth()
+                                                                              ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                              : (img->pos.w / 2 - static_cast<int>(text->getWidth())
                                                                                   / 2 + *cvar_assist_icon_txt_x)),
-                                                    pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2 - 3
+                                                    pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2 - 3
                                                     + *cvar_assist_icon_txt_y,
                                                     0, 0
                                                 },
@@ -6813,10 +6813,10 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                 text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                 SDL_Rect{
                                                     pos.x + img->pos.x + (alignRight
-                                                                              ? (img->pos.w - (int)text->getWidth())
-                                                                              : (img->pos.w / 2 - (int)text->getWidth()
+                                                                              ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                              : (img->pos.w / 2 - static_cast<int>(text->getWidth())
                                                                                   / 2 + *cvar_assist_icon_txt_x)),
-                                                    pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2 - 3
+                                                    pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2 - 3
                                                     + *cvar_assist_icon_txt_y,
                                                     0, 0
                                                 },
@@ -6850,10 +6850,10 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                 text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                 SDL_Rect{
                                                     pos.x + img->pos.x + (alignRight
-                                                                              ? (img->pos.w - (int)text->getWidth())
-                                                                              : (img->pos.w / 2 - (int)text->getWidth()
+                                                                              ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                              : (img->pos.w / 2 - static_cast<int>(text->getWidth())
                                                                                   / 2 + *cvar_assist_icon_txt_x)),
-                                                    pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2 - 3
+                                                    pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2 - 3
                                                     + *cvar_assist_icon_txt_y,
                                                     0, 0
                                                 },
@@ -6870,10 +6870,10 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                 text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                 SDL_Rect{
                                                     pos.x + img->pos.x + (alignRight
-                                                                              ? (img->pos.w - (int)text->getWidth())
-                                                                              : (img->pos.w / 2 - (int)text->getWidth()
+                                                                              ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                              : (img->pos.w / 2 - static_cast<int>(text->getWidth())
                                                                                   / 2 + *cvar_assist_icon_txt_x)),
-                                                    pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2 - 3
+                                                    pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2 - 3
                                                     + *cvar_assist_icon_txt_y,
                                                     0, 0
                                                 },
@@ -6890,10 +6890,10 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                 text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                 SDL_Rect{
                                                     pos.x + img->pos.x + (alignRight
-                                                                              ? (img->pos.w - (int)text->getWidth())
-                                                                              : (img->pos.w / 2 - (int)text->getWidth()
+                                                                              ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                              : (img->pos.w / 2 - static_cast<int>(text->getWidth())
                                                                                   / 2 + *cvar_assist_icon_txt_x)),
-                                                    pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2 - 3
+                                                    pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2 - 3
                                                     + *cvar_assist_icon_txt_y,
                                                     0, 0
                                                 },
@@ -6910,10 +6910,10 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                 text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                 SDL_Rect{
                                                     pos.x + img->pos.x + (alignRight
-                                                                              ? (img->pos.w - (int)text->getWidth())
-                                                                              : (img->pos.w / 2 - (int)text->getWidth()
+                                                                              ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                              : (img->pos.w / 2 - static_cast<int>(text->getWidth())
                                                                                   / 2 + *cvar_assist_icon_txt_x)),
-                                                    pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2 - 3
+                                                    pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2 - 3
                                                     + *cvar_assist_icon_txt_y,
                                                     0, 0
                                                 },
@@ -6930,10 +6930,10 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                 text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                 SDL_Rect{
                                                     pos.x + img->pos.x + (alignRight
-                                                                              ? (img->pos.w - (int)text->getWidth())
-                                                                              : (img->pos.w / 2 - (int)text->getWidth()
+                                                                              ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                              : (img->pos.w / 2 - static_cast<int>(text->getWidth())
                                                                                   / 2 + *cvar_assist_icon_txt_x)),
-                                                    pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2 - 3
+                                                    pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2 - 3
                                                     + *cvar_assist_icon_txt_y,
                                                     0, 0
                                                 },
@@ -6952,11 +6952,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -6976,11 +6976,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7000,11 +7000,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7024,11 +7024,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7048,11 +7048,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7086,11 +7086,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7124,11 +7124,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7162,11 +7162,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7200,11 +7200,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7238,11 +7238,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7276,11 +7276,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7314,11 +7314,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7352,11 +7352,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7390,11 +7390,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7428,11 +7428,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7466,11 +7466,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7501,11 +7501,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7543,11 +7543,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7581,11 +7581,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7606,11 +7606,11 @@ void draw_status_effect_numbers_fn(const Widget& widget, SDL_Rect pos)
                                     text->drawColor(SDL_Rect{0, 0, 0, 0},
                                                     SDL_Rect{
                                                         pos.x + img->pos.x + (alignRight
-                                                                                  ? (img->pos.w - (int)text->getWidth())
-                                                                                  : (img->pos.w / 2 - (int)text->
-                                                                                      getWidth() / 2 + *
+                                                                                  ? (img->pos.w - static_cast<int>(text->getWidth()))
+                                                                                  : (img->pos.w / 2 - static_cast<int>(text->
+                                                                                          getWidth()) / 2 + *
                                                                                       cvar_assist_icon_txt_x)),
-                                                        pos.y + img->pos.y + img->pos.h / 2 - (int)text->getHeight() / 2
+                                                        pos.y + img->pos.y + img->pos.h / 2 - static_cast<int>(text->getHeight()) / 2
                                                         - 3 + *cvar_assist_icon_txt_y,
                                                         0, 0
                                                     },
@@ -7679,7 +7679,7 @@ std::string& StatusEffectQueue_t::EffectDefinitionEntry_t::getName(int variation
 {
     if (variation >= 0)
     {
-        return nameVariations[std::min(variation, (int)nameVariations.size() - 1)];
+        return nameVariations[std::min(variation, static_cast<int>(nameVariations.size()) - 1)];
     }
     return name;
 }
@@ -7688,7 +7688,7 @@ std::string& StatusEffectQueue_t::EffectDefinitionEntry_t::getDesc(int variation
 {
     if (variation >= 0)
     {
-        return descVariations[std::min(variation, (int)descVariations.size() - 1)];
+        return descVariations[std::min(variation, static_cast<int>(descVariations.size()) - 1)];
     }
     return desc;
 }
@@ -8301,7 +8301,7 @@ bool StatusEffectQueue_t::doStatusEffectTooltip(StatusEffectQueueEntry_t& entry,
                                 if (type != NOTHING)
                                 {
                                     snprintf(buf, sizeof(buf), formatString.c_str(),
-                                             getMonsterLocalizedName((Monster)type).c_str());
+                                             getMonsterLocalizedName(static_cast<Monster>(type)).c_str());
                                 }
                                 else
                                 {
@@ -8369,11 +8369,11 @@ bool StatusEffectQueue_t::doStatusEffectTooltip(StatusEffectQueueEntry_t& entry,
                 }
                 else if (effectID == EFF_SALAMANDER_HEART)
                 {
-                    variation = std::min(3, std::max(0, (int)entry.customVariable - 1));
+                    variation = std::min(3, std::max(0, static_cast<int>(entry.customVariable) - 1));
                 }
                 else if (effectID == EFF_GROWTH)
                 {
-                    variation = std::min(2, std::max(0, (int)entry.customVariable - 2));
+                    variation = std::min(2, std::max(0, static_cast<int>(entry.customVariable) - 2));
 
                     int tier = variation + 1;
 
@@ -8469,51 +8469,51 @@ bool StatusEffectQueue_t::doStatusEffectTooltip(StatusEffectQueueEntry_t& entry,
                     if (effectID == EFF_ENSEMBLE_DRUM)
                     {
                         snprintf(buf, sizeof(buf), definition.getDesc(0).c_str(),
-                                 (int)stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_DRUM_EFF_1));
+                                 static_cast<int>(stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_DRUM_EFF_1)));
                         newDesc = buf;
                         newDesc += '\n';
                         snprintf(buf, sizeof(buf), definition.getDesc(1).c_str(),
-                                 (int)stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_DRUM_TIER));
+                                 static_cast<int>(stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_DRUM_TIER)));
                         newDesc += buf;
                     }
                     else if (effectID == EFF_ENSEMBLE_FLUTE)
                     {
                         snprintf(buf, sizeof(buf), definition.getDesc(0).c_str(),
-                                 (int)stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_FLUTE_EFF_1));
+                                 static_cast<int>(stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_FLUTE_EFF_1)));
                         newDesc = buf;
                         newDesc += '\n';
                         snprintf(buf, sizeof(buf), definition.getDesc(1).c_str(),
-                                 (int)stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_FLUTE_TIER));
+                                 static_cast<int>(stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_FLUTE_TIER)));
                         newDesc += buf;
                     }
                     else if (effectID == EFF_ENSEMBLE_LUTE)
                     {
                         snprintf(buf, sizeof(buf), definition.getDesc(0).c_str(),
-                                 (int)stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_LUTE_EFF_1));
+                                 static_cast<int>(stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_LUTE_EFF_1)));
                         newDesc = buf;
                         newDesc += '\n';
                         snprintf(buf, sizeof(buf), definition.getDesc(1).c_str(),
-                                 (int)stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_LUTE_TIER));
+                                 static_cast<int>(stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_LUTE_TIER)));
                         newDesc += buf;
                     }
                     else if (effectID == EFF_ENSEMBLE_HORN)
                     {
                         snprintf(buf, sizeof(buf), definition.getDesc(0).c_str(),
-                                 (int)stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_HORN_EFF_1));
+                                 static_cast<int>(stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_HORN_EFF_1)));
                         newDesc = buf;
                         newDesc += '\n';
                         snprintf(buf, sizeof(buf), definition.getDesc(1).c_str(),
-                                 (int)stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_HORN_TIER));
+                                 static_cast<int>(stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_HORN_TIER)));
                         newDesc += buf;
                     }
                     else if (effectID == EFF_ENSEMBLE_LYRE)
                     {
                         snprintf(buf, sizeof(buf), definition.getDesc(0).c_str(),
-                                 (int)stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_LYRE_EFF_1));
+                                 static_cast<int>(stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_LYRE_EFF_1)));
                         newDesc = buf;
                         newDesc += '\n';
                         snprintf(buf, sizeof(buf), definition.getDesc(1).c_str(),
-                                 (int)stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_LYRE_TIER));
+                                 static_cast<int>(stats[player]->getEnsembleEffectBonus(Stat::ENSEMBLE_LYRE_TIER)));
                         newDesc += buf;
                     }
                     tooltipDesc->setText(newDesc.c_str());
@@ -8524,7 +8524,7 @@ bool StatusEffectQueue_t::doStatusEffectTooltip(StatusEffectQueueEntry_t& entry,
                     bool sustained = false;
                     for (node_t* node = channeledSpells[player].first; node != nullptr; node = node->next)
                     {
-                        spell_t* spell = (spell_t*)node->element;
+                        spell_t* spell = static_cast<spell_t*>(node->element);
                         if (spell && spell->ID == SPELL_VAMPIRIC_AURA)
                         {
                             sustained = true;
@@ -8801,7 +8801,7 @@ bool StatusEffectQueue_t::doStatusEffectTooltip(StatusEffectQueueEntry_t& entry,
     }
 
     tooltipInnerWidth = std::max(tooltipInnerWidth,
-                                 (int)tooltipHeader->getTextObject()->getWidth() + (tooltipHeader->getSize().x * 2));
+                                 static_cast<int>(tooltipHeader->getTextObject()->getWidth()) + (tooltipHeader->getSize().x * 2));
 
     const int padx = 16;
     const int pady1 = 4;
@@ -8934,7 +8934,7 @@ void StatusEffectQueue_t::handleNavigation(std::map<int, StatusEffectQueueEntry_
     }
 
     selectedElement = std::max(0, selectedElement);
-    selectedElement = std::min(selectedElement, (int)(effectQueue.size() - 1));
+    selectedElement = std::min(selectedElement, static_cast<int>(effectQueue.size() - 1));
 
     StatusEffectQueueEntry_t* selectedEntry = nullptr;
 
@@ -8969,7 +8969,7 @@ void StatusEffectQueue_t::handleNavigation(std::map<int, StatusEffectQueueEntry_
         int x = slot.first % 10000;
         int y = slot.first / 10000;
 
-        if (slot.second->index == (size_t)selectedElement)
+        if (slot.second->index == static_cast<size_t>(selectedElement))
         {
             selectedEntry = slot.second;
         }
@@ -9132,7 +9132,7 @@ void StatusEffectQueue_t::updateAllQueuedEffects()
     int count = 0; //This is just for debugging purposes.
     for (node_t* node = channeledSpells[player].first; node && effectsEnabled; node = node->next, count++)
     {
-        spell_t* spell = (spell_t*)node->element;
+        spell_t* spell = static_cast<spell_t*>(node->element);
         if (!spell)
         {
             break;
@@ -9778,7 +9778,7 @@ void StatusEffectQueue_t::updateAllQueuedEffects()
                                         if (type != NOTHING)
                                         {
                                             snprintf(buf, sizeof(buf), formatString.c_str(),
-                                                     getMonsterLocalizedName((Monster)type).c_str());
+                                                     getMonsterLocalizedName(static_cast<Monster>(type)).c_str());
                                         }
                                         else
                                         {
@@ -9885,7 +9885,7 @@ void StatusEffectQueue_t::updateAllQueuedEffects()
                         }
                         else if (effectID == EFF_GROWTH)
                         {
-                            variation = std::min(2, std::max(0, (int)notif.customVariable - 2));
+                            variation = std::min(2, std::max(0, static_cast<int>(notif.customVariable) - 2));
                         }
                         else if (effectID == StatusEffectQueue_t::kEffectWealth)
                         {
@@ -9893,14 +9893,14 @@ void StatusEffectQueue_t::updateAllQueuedEffects()
                         }
                         else if (effectID == EFF_SALAMANDER_HEART)
                         {
-                            variation = std::min(3, std::max(0, (int)notif.customVariable - 1));
+                            variation = std::min(3, std::max(0, static_cast<int>(notif.customVariable) - 1));
                         }
                         else if (effectID == EFF_VAMPIRICAURA)
                         {
                             bool sustained = false;
                             for (node_t* node = channeledSpells[player].first; node != nullptr; node = node->next)
                             {
-                                spell_t* spell = (spell_t*)node->element;
+                                spell_t* spell = static_cast<spell_t*>(node->element);
                                 if (spell && spell->ID == SPELL_VAMPIRIC_AURA)
                                 {
                                     sustained = true;
@@ -10002,8 +10002,8 @@ void StatusEffectQueue_t::updateAllQueuedEffects()
         }
     }
     bool tooltipShowing = false;
-    Sint32 mousex = (inputs.getMouse(player, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX;
-    Sint32 mousey = (inputs.getMouse(player, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
+    Sint32 mousex = (inputs.getMouse(player, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+    Sint32 mousey = (inputs.getMouse(player, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
     bool lowDurationFlash = !((ticks % 50) - (ticks % 25));
 
     if (bCompactWidth != players[player]->bUseCompactGUIWidth())
@@ -10371,7 +10371,7 @@ void StatusEffectQueue_t::updateEntryImage(StatusEffectQueueEntry_t& entry, Fram
         }
         else if (entry.effect == kEffectWealth)
         {
-            int variation = std::max(0, std::min(3, (int)entry.customVariable - 1));
+            int variation = std::max(0, std::min(3, static_cast<int>(entry.customVariable) - 1));
             img->path = StatusEffectDefinitions_t::getEffectImgPath(StatusEffectDefinitions_t::getEffect(entry.effect),
                                                                     variation);
         }
@@ -10426,7 +10426,7 @@ void StatusEffectQueue_t::updateEntryImage(StatusEffectQueueEntry_t& entry, Fram
                     }
                     else if (effectID == EFF_SALAMANDER_HEART)
                     {
-                        variation = std::min(3, std::max(0, (int)entry.customVariable - 1));
+                        variation = std::min(3, std::max(0, static_cast<int>(entry.customVariable) - 1));
                         img->path = StatusEffectDefinitions_t::getEffectImgPath(
                             StatusEffectDefinitions_t::getEffect(effectID), variation);
                     }
@@ -11173,9 +11173,9 @@ void Player::HUD_t::updateWorldTooltipPrompts()
             if (auto imgGet = Image::get(cursor->path.c_str()))
             {
                 cursor->disabled = false;
-                promptPos.x -= (int)imgGet->getWidth() / 2;
-                promptPos.y -= (int)imgGet->getHeight() / 2;
-                SDL_Rect cursorPos{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                promptPos.x -= static_cast<int>(imgGet->getWidth()) / 2;
+                promptPos.y -= static_cast<int>(imgGet->getHeight()) / 2;
+                SDL_Rect cursorPos{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                 cursor->pos = cursorPos;
                 cursor->color = makeColor(255, 255, 255, 191);
             }
@@ -11190,9 +11190,9 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                 if (auto imgGet = Image::get(cursor->path.c_str()))
                 {
                     cursor->disabled = false;
-                    promptPos.x -= (int)imgGet->getWidth() / 2;
-                    promptPos.y -= (int)imgGet->getHeight() / 2;
-                    SDL_Rect cursorPos{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                    promptPos.x -= static_cast<int>(imgGet->getWidth()) / 2;
+                    promptPos.y -= static_cast<int>(imgGet->getHeight()) / 2;
+                    SDL_Rect cursorPos{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                     cursor->pos = cursorPos;
                     cursor->color = makeColor(255, 255, 255, 191);
                 }
@@ -11201,8 +11201,8 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                 textPos.y = cursor->pos.y + cursor->pos.h / 2;
                 if (auto imgGet = Image::get("images/system/selectedcursor.png"))
                 {
-                    textPos.x -= (int)imgGet->getWidth() / 2;
-                    textPos.y -= (int)imgGet->getHeight() / 2;
+                    textPos.x -= static_cast<int>(imgGet->getWidth()) / 2;
+                    textPos.y -= static_cast<int>(imgGet->getHeight()) / 2;
                 }
 
                 if (textPos.x < 0)
@@ -11228,9 +11228,9 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                     if (auto imgGet = Image::get(cursor->path.c_str()))
                     {
                         cursor->disabled = false;
-                        promptPos.x -= (int)imgGet->getWidth() / 2;
-                        promptPos.y -= (int)imgGet->getHeight() / 2;
-                        SDL_Rect cursorPos{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                        promptPos.x -= static_cast<int>(imgGet->getWidth()) / 2;
+                        promptPos.y -= static_cast<int>(imgGet->getHeight()) / 2;
+                        SDL_Rect cursorPos{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                         cursor->pos = cursorPos;
                         cursor->color = makeColor(255, 255, 255,
                                                   255 * playerSettings[multiplayer ? 0 : player.playernum].
@@ -11241,8 +11241,8 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                     textPos.y = cursor->pos.y + cursor->pos.h / 2;
                     if (auto imgGet = Image::get("images/system/selectedcursor.png"))
                     {
-                        textPos.x -= (int)imgGet->getWidth() / 2;
-                        textPos.y -= (int)imgGet->getHeight() / 2;
+                        textPos.x -= static_cast<int>(imgGet->getWidth()) / 2;
+                        textPos.y -= static_cast<int>(imgGet->getHeight()) / 2;
                     }
 
                     if (textPos.x < 0)
@@ -11264,9 +11264,9 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                     if (auto imgGet = Image::get(cursor->path.c_str()))
                     {
                         cursor->disabled = false;
-                        promptPos.x -= (int)imgGet->getWidth() / 2;
-                        promptPos.y -= (int)imgGet->getHeight() / 2;
-                        SDL_Rect cursorPos{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                        promptPos.x -= static_cast<int>(imgGet->getWidth()) / 2;
+                        promptPos.y -= static_cast<int>(imgGet->getHeight()) / 2;
+                        SDL_Rect cursorPos{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                         cursor->pos = cursorPos;
                         cursor->color = makeColor(255, 255, 255,
                                                   255 * playerSettings[multiplayer ? 0 : player.playernum].
@@ -11289,7 +11289,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
             if (auto imgGet = Image::get(glyph->path.c_str()))
             {
                 glyph->disabled = false;
-                SDL_Rect glyphPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                SDL_Rect glyphPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                 glyph->pos = glyphPos;
                 if (auto imgGetUnpressed = Image::get(glyphPathUnpressed.c_str()))
                 {
@@ -11313,7 +11313,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
             if (auto imgGet = Image::get(glyph->path.c_str()))
             {
                 glyph->disabled = false;
-                SDL_Rect glyphPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                SDL_Rect glyphPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                 glyph->pos = glyphPos;
                 textPos.x += glyph->pos.w;
 
@@ -11332,7 +11332,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
             if (auto imgGet = Image::get(glyphAdditional->path.c_str()))
             {
                 glyphAdditional->disabled = false;
-                SDL_Rect glyphPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                SDL_Rect glyphPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                 glyphAdditional->pos = glyphPos;
                 if (auto imgGetUnpressed = Image::get(glyphAdditionalPathUnpressed.c_str()))
                 {
@@ -11378,7 +11378,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
         if (auto imgGet = Image::get(icon->path.c_str()))
         {
             icon->disabled = false;
-            SDL_Rect iconPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+            SDL_Rect iconPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
             icon->pos = iconPos;
             textPos.x += icon->pos.w + skillIconToGlyphPadding;
         }
@@ -11495,9 +11495,9 @@ void Player::HUD_t::updateWorldTooltipPrompts()
         if (auto imgGet = Image::get(cursor->path.c_str()))
         {
             cursor->disabled = false;
-            promptPos.x -= (int)imgGet->getWidth() / 2;
-            promptPos.y -= (int)imgGet->getHeight() / 2;
-            SDL_Rect cursorPos{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+            promptPos.x -= static_cast<int>(imgGet->getWidth()) / 2;
+            promptPos.y -= static_cast<int>(imgGet->getHeight()) / 2;
+            SDL_Rect cursorPos{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
             cursor->pos = cursorPos;
             cursor->color = makeColor(255, 255, 255,
                                       255 * playerSettings[multiplayer ? 0 : player.playernum].shootmodeCrosshairOpacity
@@ -11508,8 +11508,8 @@ void Player::HUD_t::updateWorldTooltipPrompts()
         textPos.y = cursor->pos.y + cursor->pos.h / 2;
         if (auto imgGet = Image::get("images/system/selectedcursor.png"))
         {
-            textPos.x -= (int)imgGet->getWidth() / 2;
-            textPos.y -= (int)imgGet->getHeight() / 2;
+            textPos.x -= static_cast<int>(imgGet->getWidth()) / 2;
+            textPos.y -= static_cast<int>(imgGet->getHeight()) / 2;
         }
 
         textPos.x += 40;
@@ -11527,7 +11527,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
             if (auto imgGet = Image::get(glyphSpellTarget->path.c_str()))
             {
                 glyphSpellTarget->disabled = false;
-                SDL_Rect glyphPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                SDL_Rect glyphPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                 glyphSpellTarget->pos = glyphPos;
                 if (auto imgGetUnpressed = Image::get(glyphPathUnpressed.c_str()))
                 {
@@ -11551,7 +11551,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
             if (auto imgGet = Image::get(glyphSpellTarget->path.c_str()))
             {
                 glyphSpellTarget->disabled = false;
-                SDL_Rect glyphPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                SDL_Rect glyphPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                 glyphSpellTarget->pos = glyphPos;
                 textPos.x += glyphSpellTarget->pos.w;
 
@@ -11572,7 +11572,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
             if (auto imgGet = Image::get(iconSpellTarget->path.c_str()))
             {
                 iconSpellTarget->disabled = false;
-                SDL_Rect iconPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                SDL_Rect iconPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                 iconSpellTarget->pos = iconPos;
                 textPos.x += iconSpellTarget->pos.w + skillIconToGlyphPadding;
             }
@@ -11595,7 +11595,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                 else
                 {
                     int monsterType = target->getMonsterTypeFromSprite();
-                    interactText += getMonsterLocalizedName((Monster)monsterType).c_str();
+                    interactText += getMonsterLocalizedName(static_cast<Monster>(monsterType)).c_str();
                 }
             }
             else if (target->isDamageableCollider())
@@ -11706,7 +11706,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                 if (auto imgGet = Image::get(glyphSpellCancel->path.c_str()))
                 {
                     glyphSpellCancel->disabled = false;
-                    glyphSpellCancel->pos = SDL_Rect{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                    glyphSpellCancel->pos = SDL_Rect{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                     glyphSpellCancel->pos.y = prevGlyphPos.y + prevGlyphPos.h + 4;
                     glyphSpellCancel->pos.x = prevGlyphPos.x + prevGlyphPos.w / 2 - glyphSpellCancel->pos.w / 2;
                     if (glyphSpellCancel->pos.x % 2 == 1)
@@ -11730,7 +11730,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                 if (auto imgGet = Image::get(glyphSpellCancel->path.c_str()))
                 {
                     glyphSpellCancel->disabled = false;
-                    glyphSpellCancel->pos = SDL_Rect{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                    glyphSpellCancel->pos = SDL_Rect{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                     glyphSpellCancel->pos.y = prevGlyphPos.y + prevGlyphPos.h + 4;
                     glyphSpellCancel->pos.x = prevGlyphPos.x + prevGlyphPos.w / 2 - glyphSpellCancel->pos.w / 2;
                     if (glyphSpellCancel->pos.x % 2 == 1)
@@ -11784,9 +11784,9 @@ void Player::HUD_t::updateWorldTooltipPrompts()
             if (auto imgGet = Image::get(cursor->path.c_str()))
             {
                 cursor->disabled = false;
-                promptPos.x -= (int)imgGet->getWidth() / 2;
-                promptPos.y -= (int)imgGet->getHeight() / 2;
-                SDL_Rect cursorPos{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                promptPos.x -= static_cast<int>(imgGet->getWidth()) / 2;
+                promptPos.y -= static_cast<int>(imgGet->getHeight()) / 2;
+                SDL_Rect cursorPos{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                 cursor->pos = cursorPos;
                 cursor->color = makeColor(255, 255, 255,
                                           255 * playerSettings[multiplayer ? 0 : player.playernum].
@@ -11804,7 +11804,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                 if (auto imgGet = Image::get(glyph->path.c_str()))
                 {
                     glyph->disabled = false;
-                    SDL_Rect glyphPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                    SDL_Rect glyphPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                     glyph->pos = glyphPos;
                     if (auto imgGetUnpressed = Image::get(glyphPathUnpressed.c_str()))
                     {
@@ -11828,7 +11828,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                 if (auto imgGet = Image::get(glyph->path.c_str()))
                 {
                     glyph->disabled = false;
-                    SDL_Rect glyphPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                    SDL_Rect glyphPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                     glyph->pos = glyphPos;
                     textPos.x += glyph->pos.w;
 
@@ -11861,7 +11861,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                 if (auto imgGet = Image::get(icon->path.c_str()))
                 {
                     icon->disabled = false;
-                    SDL_Rect iconPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                    SDL_Rect iconPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                     icon->pos = iconPos;
                     textPos.x += icon->pos.w + skillIconToGlyphPadding;
                 }
@@ -11887,9 +11887,9 @@ void Player::HUD_t::updateWorldTooltipPrompts()
             if (auto imgGet = Image::get(cursor->path.c_str()))
             {
                 cursor->disabled = false;
-                promptPos.x -= (int)imgGet->getWidth() / 2;
-                promptPos.y -= (int)imgGet->getHeight() / 2;
-                SDL_Rect cursorPos{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                promptPos.x -= static_cast<int>(imgGet->getWidth()) / 2;
+                promptPos.y -= static_cast<int>(imgGet->getHeight()) / 2;
+                SDL_Rect cursorPos{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                 cursor->pos = cursorPos;
                 cursor->color = makeColor(255, 255, 255,
                                           255 * playerSettings[multiplayer ? 0 : player.playernum].
@@ -11904,8 +11904,8 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                     textPos.y = cursor->pos.y + cursor->pos.h / 2;
                     if (auto imgGet = Image::get("images/system/selectedcursor.png"))
                     {
-                        textPos.x -= (int)imgGet->getWidth() / 2;
-                        textPos.y -= (int)imgGet->getHeight() / 2;
+                        textPos.x -= static_cast<int>(imgGet->getWidth()) / 2;
+                        textPos.y -= static_cast<int>(imgGet->getHeight()) / 2;
                     }
 
                     if (textPos.x < 0)
@@ -11933,7 +11933,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                         if (auto imgGet = Image::get(glyph->path.c_str()))
                         {
                             glyph->disabled = false;
-                            SDL_Rect glyphPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                            SDL_Rect glyphPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                             glyph->pos = glyphPos;
                             if (auto imgGetUnpressed = Image::get(glyphPathUnpressed.c_str()))
                             {
@@ -11957,7 +11957,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                         if (auto imgGet = Image::get(glyph->path.c_str()))
                         {
                             glyph->disabled = false;
-                            SDL_Rect glyphPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                            SDL_Rect glyphPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                             glyph->pos = glyphPos;
                             textPos.x += glyph->pos.w;
 
@@ -11988,7 +11988,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                     if (auto imgGet = Image::get(icon->path.c_str()))
                     {
                         icon->disabled = false;
-                        SDL_Rect iconPos{textPos.x, textPos.y, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                        SDL_Rect iconPos{textPos.x, textPos.y, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                         icon->pos = iconPos;
                         textPos.x += icon->pos.w + skillIconToGlyphPadding;
                     }
@@ -12069,7 +12069,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                 if (auto imgGet = Image::get(glyphCallout->path.c_str()))
                 {
                     glyphCallout->disabled = false;
-                    glyphCallout->pos = SDL_Rect{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                    glyphCallout->pos = SDL_Rect{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                     glyphCallout->pos.y = std::max(icon->pos.y + icon->pos.h - 4, prevGlyphPos.y + prevGlyphPos.h) + 4;
                     glyphCallout->pos.x = prevGlyphPos.x + prevGlyphPos.w / 2 - glyphCallout->pos.w / 2;
                     if (glyphCallout->pos.x % 2 == 1)
@@ -12098,7 +12098,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                 if (auto imgGet = Image::get(glyphCallout->path.c_str()))
                 {
                     glyphCallout->disabled = false;
-                    glyphCallout->pos = SDL_Rect{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                    glyphCallout->pos = SDL_Rect{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                     glyphCallout->pos.y = std::max(icon->pos.y + icon->pos.h - 4, prevGlyphPos.y + prevGlyphPos.h) + 4;
                     glyphCallout->pos.x = prevGlyphPos.x + prevGlyphPos.w / 2 - glyphCallout->pos.w / 2;
                     if (glyphCallout->pos.x % 2 == 1)
@@ -12160,7 +12160,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                     if (auto imgGet = Image::get(glyphCycle->path.c_str()))
                     {
                         glyphCycle->disabled = false;
-                        glyphCycle->pos = SDL_Rect{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                        glyphCycle->pos = SDL_Rect{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                         glyphCycle->pos.y = prevGlyphPos.y + prevGlyphPos.h + 4;
                         glyphCycle->pos.x = prevGlyphPos.x + prevGlyphPos.w / 2 - glyphCycle->pos.w / 2;
                         if (glyphCycle->pos.x % 2 == 1)
@@ -12189,7 +12189,7 @@ void Player::HUD_t::updateWorldTooltipPrompts()
                     if (auto imgGet = Image::get(glyphCycle->path.c_str()))
                     {
                         glyphCycle->disabled = false;
-                        glyphCycle->pos = SDL_Rect{0, 0, (int)imgGet->getWidth(), (int)imgGet->getHeight()};
+                        glyphCycle->pos = SDL_Rect{0, 0, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
                         glyphCycle->pos.y = prevGlyphPos.y + prevGlyphPos.h + 4;
                         glyphCycle->pos.x = prevGlyphPos.x + prevGlyphPos.w / 2 - glyphCycle->pos.w / 2;
                         if (glyphCycle->pos.x % 2 == 1)
@@ -12386,7 +12386,7 @@ void drawActionPromptCooldownCallback(const Widget& widget, SDL_Rect rect)
         switch (static_cast<Player::HUD_t::ActionPrompts>(prompt))
         {
         case Player::HUD_t::ACTION_PROMPT_MAGIC:
-            cooldownProgress = (ghost.cooldownTeleport / (real_t)ghost.cooldownTeleportDelay);
+            cooldownProgress = (ghost.cooldownTeleport / static_cast<real_t>(ghost.cooldownTeleportDelay));
             if (ghost.errorFlashTeleportTicks > 0 && (Player::Ghost_t::errorFlashTicks - ghost.errorFlashTeleportTicks)
                 % 20 < 10)
             {
@@ -12400,7 +12400,7 @@ void drawActionPromptCooldownCallback(const Widget& widget, SDL_Rect rect)
             }
             else
             {
-                cooldownProgress = (ghost.cooldownPush / (real_t)ghost.cooldownPushDelay);
+                cooldownProgress = (ghost.cooldownPush / static_cast<real_t>(ghost.cooldownPushDelay));
             }
             actionPoints = ghost.pushPoints;
             if (ghost.errorFlashPushTicks > 0 && (Player::Ghost_t::errorFlashTicks - ghost.errorFlashPushTicks) % 20 <
@@ -12410,7 +12410,7 @@ void drawActionPromptCooldownCallback(const Widget& widget, SDL_Rect rect)
             }
             break;
         case Player::HUD_t::ACTION_PROMPT_MAINHAND:
-            cooldownProgress = (ghost.cooldownChill / (real_t)ghost.cooldownChillDelay);
+            cooldownProgress = (ghost.cooldownChill / static_cast<real_t>(ghost.cooldownChillDelay));
             if (ghost.errorFlashChillTicks > 0 && (Player::Ghost_t::errorFlashTicks - ghost.errorFlashChillTicks) % 20 <
                 10)
             {
@@ -12638,7 +12638,7 @@ void Player::HUD_t::updateActionPrompts()
             if (ghostPrompts)
             {
                 actionPromptOffsetXTotal = actionPromptOffsetXGhostPrompts;
-                prompt->setUserData((void*)(intptr_t)(promptInfo.promptType + 1));
+                prompt->setUserData((void*)static_cast<intptr_t>(promptInfo.promptType + 1));
                 prompt->setDrawCallback([](const Widget& widget, SDL_Rect rect)
                 {
                     drawActionPromptCooldownCallback(widget, rect);
@@ -12920,8 +12920,8 @@ void Player::HUD_t::updateActionPrompts()
             }
             if (auto imgGet = Image::get(glyph->path.c_str()))
             {
-                glyph->pos.w = (int)imgGet->getWidth();
-                glyph->pos.h = (int)imgGet->getHeight();
+                glyph->pos.w = static_cast<int>(imgGet->getWidth());
+                glyph->pos.h = static_cast<int>(imgGet->getHeight());
             }
             glyph->pos.x = prompt->getSize().x + prompt->getSize().w / 2 - glyph->pos.w / 2;
             // center the x for the glyph
@@ -13671,7 +13671,7 @@ void Player::MessageZone_t::processChatbox()
             break;
         }
 
-        Uint32 color = (current->text->color & 0x00ffffff) | ((Uint32)current->alpha << 24);
+        Uint32 color = (current->text->color & 0x00ffffff) | (static_cast<Uint32>(current->alpha) << 24);
 
         char msgName[32];
         snprintf(msgName, sizeof(msgName), "message %d", index);
@@ -13696,7 +13696,7 @@ void Player::MessageZone_t::processChatbox()
             if (!useBigFont)
             {
                 int h2 = (int)(std::max(*cvar_log_lineheight_min + 2,
-                                        ((int)textGet->getHeight() + textLinePadding) * textGet->getNumTextLines() +
+                                        (static_cast<int>(textGet->getHeight()) + textLinePadding) * textGet->getNumTextLines() +
                                         textLinePadding));
                 textHeight = h2;
                 h = textHeight + *cvar_log_lineheight_offset;
@@ -13935,8 +13935,8 @@ static Frame* createMinimap(int player)
 
         {
             real_t scale = factor0 * scale_small;
-            players[player]->minimap.minimapPos.w = (int)((scale / 100.0) * maxSize);
-            players[player]->minimap.minimapPos.h = (int)((scale / 100.0) * maxSize);
+            players[player]->minimap.minimapPos.w = static_cast<int>((scale / 100.0) * maxSize);
+            players[player]->minimap.minimapPos.h = static_cast<int>((scale / 100.0) * maxSize);
         }
 
         scale = factor0 * scale_small + factor1 * scale_big;
@@ -13957,14 +13957,14 @@ static Frame* createMinimap(int player)
         }
         mapHeightOffset += players[player]->hud.offsetHUDAboveHotbarHeight;
 
-        const int scaledSize = (int)((scale / 100.0) * maxSize);
+        const int scaledSize = static_cast<int>((scale / 100.0) * maxSize);
         int x = factor0 * (parent->getSize().w - scaledSize) +
             factor1 * (parent->getSize().w - scaledSize) / 2;
         int y = factor0 * (parent->getSize().h - scaledSize - mapHeightOffset) +
             factor1 * (parent->getSize().h - scaledSize - mapBigOffsetY) / 2;
 
         auto frame = static_cast<Frame*>(&widget);
-        frame->setSize(SDL_Rect{x, y, (int)(scaledSize), (int)(scaledSize)});
+        frame->setSize(SDL_Rect{x, y, static_cast<int>(scaledSize), static_cast<int>(scaledSize)});
         players[player]->minimap.minimapPos.x = x;
         players[player]->minimap.minimapPos.y = y;
         if (frame->isInvisible())
@@ -14310,7 +14310,7 @@ void openMapWindow(int player)
         auto& input = Input::inputs[player];
         auto minimap = static_cast<Frame*>(&widget);
 
-        auto frame = ((Frame*)(widget.getParent()))->getParent();
+        auto frame = static_cast<Frame*>(widget.getParent())->getParent();
         if (Frame::image_t* closeGlyph = frame->findImage("close glyph"))
         {
             closeGlyph->disabled = true;
@@ -14345,8 +14345,8 @@ void openMapWindow(int player)
         float updown = (input.analog("MinimapDown") - input.analog("MinimapUp"));
         cursor.x += (leftright) * (*speed * fpsScale);
         cursor.y += (updown) * (*speed * fpsScale);
-        cursor.x = std::min(std::max((real_t)0, cursor.x), (real_t)minimap->getSize().w);
-        cursor.y = std::min(std::max((real_t)0, cursor.y), (real_t)minimap->getSize().h);
+        cursor.x = std::min(std::max(static_cast<real_t>(0), cursor.x), static_cast<real_t>(minimap->getSize().w));
+        cursor.y = std::min(std::max(static_cast<real_t>(0), cursor.y), static_cast<real_t>(minimap->getSize().h));
         input.consumeBindingsSharedWithBinding("MinimapRight");
         input.consumeBindingsSharedWithBinding("MinimapLeft");
         input.consumeBindingsSharedWithBinding("MinimapDown");
@@ -14380,15 +14380,15 @@ void openMapWindow(int player)
                 auto mouse_position = inputs.getVirtualMouse(player)->draw_cursor
                                           ? minimap->getRelativeMousePosition(false)
                                           : SDL_Rect{
-                                              (int)cursor.x, (int)cursor.y, minimap->getSize().w, minimap->getSize().h
+                                              static_cast<int>(cursor.x), static_cast<int>(cursor.y), minimap->getSize().w, minimap->getSize().h
                                           };
                 messagePlayer(clientnum, MESSAGE_DEBUG, "[Minimap] Clicked %d %d %d %d",
                               mouse_position.x, mouse_position.y, mouse_position.w, mouse_position.h);
                 if (mouse_position.w > 0 && mouse_position.h > 0)
                 {
-                    const int size = std::max((int)map.width, (int)map.height);
-                    const int xdiff = std::max(0, (int)map.height - (int)map.width) / 2;
-                    const int ydiff = std::max(0, (int)map.width - (int)map.height) / 2;
+                    const int size = std::max(static_cast<int>(map.width), static_cast<int>(map.height));
+                    const int xdiff = std::max(0, static_cast<int>(map.height) - static_cast<int>(map.width)) / 2;
+                    const int ydiff = std::max(0, static_cast<int>(map.width) - static_cast<int>(map.height)) / 2;
                     const int x = (mouse_position.x * size) / mouse_position.w - xdiff;
                     const int y = (mouse_position.y * size) / mouse_position.h - ydiff;
                     if (x >= 0 && y >= 0 && x < map.width && y < map.height)
@@ -14500,7 +14500,7 @@ void addMessageToLogWindow(int player, string_t* string)
                            ? snprintf(buf, sizeof(buf), "[%.2u:%.2u:%.2u] %s",
                                       hour, min, sec, string->data)
                            : snprintf(buf, sizeof(buf), "%s", string->data);
-    const int size = std::min(std::max(0, (int)sizeof(buf)), result);
+    const int size = std::min(std::max(0, static_cast<int>(sizeof(buf))), result);
 
     static ConsoleVariable<std::string> font("/log_font",
                                              "fonts/PixelMaz_monospace.ttf#32#2");
@@ -14521,9 +14521,9 @@ void addMessageToLogWindow(int player, string_t* string)
         field->setPaddingPerLine(*cvar_log_multiline_pady);
         if (auto text = field->getTextObject())
         {
-            textHeight = (int)(std::max(*cvar_log_lineheight_min, (int)text->getHeight()) * (int)string->lines + 2);
+            textHeight = (int)(std::max(*cvar_log_lineheight_min, static_cast<int>(text->getHeight())) * static_cast<int>(string->lines) + 2);
             text_h = textHeight + *cvar_log_lineheight_offset;
-            text_w = (int)text->getWidth();
+            text_w = static_cast<int>(text->getWidth());
             field->setSize(SDL_Rect{8, y, text_w, textHeight});
         }
     }
@@ -14539,9 +14539,9 @@ void addMessageToLogWindow(int player, string_t* string)
         field->setPaddingPerLine(*cvar_log_multiline_pady);
         if (auto text = field->getTextObject())
         {
-            textHeight = (int)(std::max(*cvar_log_lineheight_min, (int)text->getHeight()) * (int)string->lines + 2);
+            textHeight = (int)(std::max(*cvar_log_lineheight_min, static_cast<int>(text->getHeight())) * static_cast<int>(string->lines) + 2);
             text_h = textHeight + *cvar_log_lineheight_offset;
-            text_w = (int)text->getWidth();
+            text_w = static_cast<int>(text->getWidth());
             field->setSize(SDL_Rect{8, y, text_w, textHeight});
         }
     }
@@ -14747,8 +14747,8 @@ void openLogWindow(int player)
                 {
                     entry.img1->color = 0xffffffff;
                     entry.img1->path = path;
-                    entry.img1->pos.w = (int)glyph->getWidth();
-                    entry.img1->pos.h = (int)glyph->getHeight();
+                    entry.img1->pos.w = static_cast<int>(glyph->getWidth());
+                    entry.img1->pos.h = static_cast<int>(glyph->getHeight());
                     entry.img1->pos.y = (int)(h - 16 - entry.img1->pos.h / 2);
                 }
             }
@@ -14761,8 +14761,8 @@ void openLogWindow(int player)
                 {
                     entry.img2->color = 0xffffffff;
                     entry.img2->path = path;
-                    entry.img2->pos.w = (int)glyph->getWidth();
-                    entry.img2->pos.h = (int)glyph->getHeight();
+                    entry.img2->pos.w = static_cast<int>(glyph->getWidth());
+                    entry.img2->pos.h = static_cast<int>(glyph->getHeight());
                     entry.img2->pos.y = (int)(h - 16 - entry.img2->pos.h / 2);
                 }
             }
@@ -14995,7 +14995,7 @@ void openLogWindow(int player)
 
     for (auto node = messages.first; node != nullptr; node = node->next)
     {
-        auto string = (string_t*)node->element;
+        auto string = static_cast<string_t*>(node->element);
         if (string->player == player)
         {
             addMessageToLogWindow(player, string);
@@ -17018,7 +17018,7 @@ void Player::GUIDropdown_t::process()
         {
             for (node_t* node = chest_inventory->first; node != NULL; node = node->next)
             {
-                Item* chestItem = (Item*)node->element;
+                Item* chestItem = static_cast<Item*>(node->element);
                 if (!chestItem)
                 {
                     continue;
@@ -17132,9 +17132,9 @@ void Player::GUIDropdown_t::process()
     for (auto& option : dropDown.options)
     {
         char glyphname[32] = "";
-        snprintf(glyphname, sizeof(glyphname), "glyph %d", (int)index);
+        snprintf(glyphname, sizeof(glyphname), "glyph %d", static_cast<int>(index));
         char optionname[32] = "";
-        snprintf(optionname, sizeof(optionname), "interact option %d", (int)index);
+        snprintf(optionname, sizeof(optionname), "interact option %d", static_cast<int>(index));
 
         auto img = dropdownFrame->findImage(glyphname);
         auto txt = dropdownFrame->findField(optionname);
@@ -17197,8 +17197,8 @@ void Player::GUIDropdown_t::process()
     }
 
     const int rightClickProtectBuffer = (right_click_protect ? 0 : 10);
-    const Sint32 mousex = (inputs.getMouse(player.playernum, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX;
-    const Sint32 mousey = (inputs.getMouse(player.playernum, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
+    const Sint32 mousex = (inputs.getMouse(player.playernum, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+    const Sint32 mousey = (inputs.getMouse(player.playernum, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 
     index = 0;
     bool alignRight = getDropDownAlignRight(currentName);
@@ -17494,9 +17494,9 @@ void Player::GUIDropdown_t::open(const std::string name)
 
     if (inputs.getVirtualMouse(player.playernum)->draw_cursor)
     {
-        dropDownX = (inputs.getMouse(player.playernum, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX + (
+        dropDownX = (inputs.getMouse(player.playernum, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX) + (
             getDropDownAlignRight(name) ? 8 : -8);
-        dropDownY = (inputs.getMouse(player.playernum, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
+        dropDownY = (inputs.getMouse(player.playernum, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
         if (auto interactMenuTop = dropdownFrame->findImage("interact top background"))
         {
             // 10px is slot half height, minus the top interact text height
@@ -18013,7 +18013,7 @@ bool getAttackTooltipLines(int playernum, AttackHoverText_t& attackHoverTextInfo
             snprintf(titleBuf, 127, "%s", Player::CharacterSheet_t::getHoverTextString("attributes_atk_avg").c_str());
             snprintf(valueBuf, 127,
                      Player::CharacterSheet_t::getHoverTextString("attributes_atk_average_format").c_str(),
-                     (real_t)attackHoverTextInfo.attackMinRange + ((attackHoverTextInfo.attackMaxRange -
+                     static_cast<real_t>(attackHoverTextInfo.attackMinRange) + ((attackHoverTextInfo.attackMaxRange -
                          attackHoverTextInfo.attackMinRange) / 2.0));
             return true;
         case 2:
@@ -18067,7 +18067,7 @@ bool getAttackTooltipLines(int playernum, AttackHoverText_t& attackHoverTextInfo
             snprintf(titleBuf, 127, "%s", Player::CharacterSheet_t::getHoverTextString("attributes_atk_avg").c_str());
             snprintf(valueBuf, 127,
                      Player::CharacterSheet_t::getHoverTextString("attributes_atk_average_format").c_str(),
-                     (real_t)attackHoverTextInfo.attackMinRange + ((attackHoverTextInfo.attackMaxRange -
+                     static_cast<real_t>(attackHoverTextInfo.attackMinRange) + ((attackHoverTextInfo.attackMaxRange -
                          attackHoverTextInfo.attackMinRange) / 2.0));
             return true;
         case 2:
@@ -18117,7 +18117,7 @@ bool getAttackTooltipLines(int playernum, AttackHoverText_t& attackHoverTextInfo
             snprintf(titleBuf, 127, "%s", Player::CharacterSheet_t::getHoverTextString("attributes_atk_avg").c_str());
             snprintf(valueBuf, 127,
                      Player::CharacterSheet_t::getHoverTextString("attributes_atk_average_format").c_str(),
-                     (real_t)attackHoverTextInfo.attackMinRange + ((attackHoverTextInfo.attackMaxRange -
+                     static_cast<real_t>(attackHoverTextInfo.attackMinRange) + ((attackHoverTextInfo.attackMaxRange -
                          attackHoverTextInfo.attackMinRange) / 2.0));
             return true;
         case 2:
@@ -18160,7 +18160,7 @@ bool getAttackTooltipLines(int playernum, AttackHoverText_t& attackHoverTextInfo
             snprintf(titleBuf, 127, "%s", Player::CharacterSheet_t::getHoverTextString("attributes_atk_avg").c_str());
             snprintf(valueBuf, 127,
                      Player::CharacterSheet_t::getHoverTextString("attributes_atk_average_format").c_str(),
-                     (real_t)attackHoverTextInfo.attackMinRange + ((attackHoverTextInfo.attackMaxRange -
+                     static_cast<real_t>(attackHoverTextInfo.attackMinRange) + ((attackHoverTextInfo.attackMaxRange -
                          attackHoverTextInfo.attackMinRange) / 2.0));
             return true;
         case 2:
@@ -18288,7 +18288,7 @@ bool getAttackTooltipLines(int playernum, AttackHoverText_t& attackHoverTextInfo
             snprintf(titleBuf, 127, "%s", Player::CharacterSheet_t::getHoverTextString("attributes_atk_avg").c_str());
             snprintf(valueBuf, 127,
                      Player::CharacterSheet_t::getHoverTextString("attributes_atk_average_format").c_str(),
-                     (real_t)attackHoverTextInfo.attackMinRange + ((attackHoverTextInfo.attackMaxRange -
+                     static_cast<real_t>(attackHoverTextInfo.attackMinRange) + ((attackHoverTextInfo.attackMaxRange -
                          attackHoverTextInfo.attackMinRange) / 2.0));
             return true;
         case 2:
@@ -18536,9 +18536,9 @@ real_t getDisplayedMPRegen(Entity* my, Stat& myStats, Uint32* outColor, char buf
         else
         {
             int baseRegen = static_cast<real_t>(getBaseManaRegen(my, myStats));
-            real_t regenPerMinute = 60 * TICKS_PER_SECOND / (real_t)(baseRegen);
+            real_t regenPerMinute = 60 * TICKS_PER_SECOND / static_cast<real_t>(baseRegen);
             const int regenTicks = TICKS_PER_SECOND * 60 / regenPerMinute;
-            real_t compareRegen = regenTicks / (real_t)TICKS_PER_SECOND;
+            real_t compareRegen = regenTicks / static_cast<real_t>(TICKS_PER_SECOND);
             if (regen < (compareRegen - 0.001))
             {
                 if (outColor)
@@ -19804,12 +19804,12 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
             Field* entryValue = valueSizes[index].first;
             SDL_Rect entryValuePos = entryValue->getSize();
             entryValuePos.x = entryValuePos.x + entryValuePos.w;
-            entryValuePos.w = (int)longestValue;
+            entryValuePos.w = static_cast<int>(longestValue);
             entryValuePos.x -= entryValuePos.w;
             entryValuePos.x -= 8;
             entryValue->setSize(entryValuePos);
 
-            valuePos.w = (int)longestValue + 16;
+            valuePos.w = static_cast<int>(longestValue) + 16;
             valuePos.x -= (valuePos.w);
             valuePos.y -= 3;
             valuePos.h += 4;
@@ -20204,7 +20204,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
                         player.entity, *stats[player.playernum], DAMAGE_TABLE_MAGIC);
                     resistance = 100.0 - resistance;
                     snprintf(valueBuf, sizeof(valueBuf), getHoverTextString("attributes_res_nobonus_format").c_str(),
-                             (int)resistance);
+                             static_cast<int>(resistance));
                 }
                 break;
             case SHEET_RGN:
@@ -20869,7 +20869,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
                     if (isAutomatonHTRegen)
                     {
                         snprintf(buf, sizeof(buf), "%s", getHoverTextString("attributes_rgn_ht_base_bonus").c_str());
-                        real_t baseHTModifier = 100.0 / (MAGIC_REGEN_AUTOMATON_TIME / (real_t)MAGIC_REGEN_TIME);
+                        real_t baseHTModifier = 100.0 / (MAGIC_REGEN_AUTOMATON_TIME / static_cast<real_t>(MAGIC_REGEN_TIME));
                         if (stats[player.playernum]->HUNGER <= 300)
                         {
                             int baseTime = getBaseManaRegen(player.entity, *stats[player.playernum]);
@@ -21150,7 +21150,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
                     }
 
                     snprintf(valueBuf, sizeof(valueBuf), getHoverTextString("attributes_res_bonus_format").c_str(),
-                             (int)resistanceFromINT);
+                             static_cast<int>(resistanceFromINT));
                 }
                 break;
             case SHEET_RGN:
@@ -21196,7 +21196,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
                     {
                         snprintf(buf, sizeof(buf), "%s",
                                  getHoverTextString("attributes_rgn_entry_items_bonus").c_str());
-                        real_t baseHTModifier = 100.0 / (MAGIC_REGEN_AUTOMATON_TIME / (real_t)MAGIC_REGEN_TIME);
+                        real_t baseHTModifier = 100.0 / (MAGIC_REGEN_AUTOMATON_TIME / static_cast<real_t>(MAGIC_REGEN_TIME));
                         if (stats[player.playernum]->HUNGER <= 300)
                         {
                             int baseTime = getBaseManaRegen(player.entity, *stats[player.playernum]);
@@ -21468,7 +21468,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
                     resistance = (100.0 - resistance) - resistanceFromINT - baseResist;
 
                     snprintf(valueBuf, sizeof(valueBuf), getHoverTextString("attributes_res_bonus_format").c_str(),
-                             (int)resistance);
+                             static_cast<int>(resistance));
                     break;
                 }
             case SHEET_RGN:
@@ -21685,7 +21685,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
                 //valueSizes[currentTextBackingFrameIndex] = std::make_pair(entryValue, backingFramePos);
                 txtValueBackingFrame->setDisabled(true);
 
-                backingFramePos.w = (int)txtValueGet->getWidth();
+                backingFramePos.w = static_cast<int>(txtValueGet->getWidth());
                 backingFramePos.x -= backingFramePos.w;
                 backingFramePos.x -= 8;
                 entryValue->setSize(backingFramePos);
@@ -21903,7 +21903,7 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
                 //valueSizes[currentTextBackingFrameIndex] = std::make_pair(entryValue, backingFramePos);
                 txtValueBackingFrame->setDisabled(true);
 
-                backingFramePos.w = (int)txtValueGet->getWidth();
+                backingFramePos.w = static_cast<int>(txtValueGet->getWidth());
                 backingFramePos.x -= backingFramePos.w;
                 backingFramePos.x -= 8;
                 entryValue->setSize(backingFramePos);
@@ -22036,12 +22036,12 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
             Field* entryValue = valueSizes[index].first;
             SDL_Rect entryValuePos = entryValue->getSize();
             entryValuePos.x = entryValuePos.x + entryValuePos.w;
-            entryValuePos.w = (int)longestValue;
+            entryValuePos.w = static_cast<int>(longestValue);
             entryValuePos.x -= entryValuePos.w;
             entryValuePos.x -= 8;
             entryValue->setSize(entryValuePos);
 
-            valuePos.w = (int)longestValue + 16;
+            valuePos.w = static_cast<int>(longestValue) + 16;
             valuePos.x -= (valuePos.w);
             valuePos.y -= 3;
             valuePos.h += 4;
@@ -22882,8 +22882,8 @@ void Player::CharacterSheet_t::updateCharacterInfo()
             }
             if (auto imgGet = Image::get(sexImg->path.c_str()))
             {
-                sexImg->pos.w = (int)imgGet->getWidth();
-                sexImg->pos.h = (int)imgGet->getHeight();
+                sexImg->pos.w = static_cast<int>(imgGet->getWidth());
+                sexImg->pos.h = static_cast<int>(imgGet->getHeight());
             }
 
             SDL_Rect raceTextPos = raceText->getSize();
@@ -23492,18 +23492,18 @@ void Player::CharacterSheet_t::updateAttributes()
         resistance = -(resistance - 100.0);
         resistanceNoINT = -(resistanceNoINT - 100.0);
 
-        snprintf(buf, sizeof(buf), "%d%%", (int)resistance);
+        snprintf(buf, sizeof(buf), "%d%%", static_cast<int>(resistance));
         if (strcmp(buf, field->getText()))
         {
             field->setText(buf);
             charsheetTooltipCache[player.playernum].manualUpdate = true;
         }
         field->setColor(hudColors.characterSheetNeutral);
-        if ((int)resistance > 0 && (int)resistanceNoINT > 0)
+        if (static_cast<int>(resistance) > 0 && static_cast<int>(resistanceNoINT) > 0)
         {
             field->setColor(hudColors.characterSheetGreen);
         }
-        else if ((int)resistance < 0)
+        else if (static_cast<int>(resistance) < 0)
         {
             field->setColor(hudColors.characterSheetRed);
         }
@@ -23680,7 +23680,7 @@ void Player::Inventory_t::Appraisal_t::updateAppraisalAnim()
     int interval = 2 * TICKS_PER_SECOND;
     if (ticks % (2 * interval) <= interval)
     {
-        spellLearnAnim = 1.0 - 0.25 * std::max(0.0, sin((ticks % interval) * PI / (real_t)interval));
+        spellLearnAnim = 1.0 - 0.25 * std::max(0.0, sin((ticks % interval) * PI / static_cast<real_t>(interval)));
     }
 }
 
@@ -23719,13 +23719,13 @@ void drawUnidentifiedItemEffectHotbarCallback(const Widget& widget, SDL_Rect rec
         if (appraisal.current_item == appraisal.manual_appraised_item)
         {
             drawClockwiseSquareMesh("images/ui/HUD/hotbar/Appraisal_Icon_OutlineHotbar_Manual.png",
-                                    (appraisal.timermax - appraisal.timer) / (float)appraisal.timermax,
+                                    (appraisal.timermax - appraisal.timer) / static_cast<float>(appraisal.timermax),
                                     drawRect, makeColor(255, 255, 255, opacity));
         }
         else
         {
             drawClockwiseSquareMesh("images/ui/HUD/hotbar/Appraisal_Icon_OutlineHotbar.png",
-                                    (appraisal.timermax - appraisal.timer) / (float)appraisal.timermax,
+                                    (appraisal.timermax - appraisal.timer) / static_cast<float>(appraisal.timermax),
                                     drawRect, makeColor(255, 255, 255, opacity));
         }
     }
@@ -23735,7 +23735,7 @@ void drawUnidentifiedItemEffectHotbarCallback(const Widget& widget, SDL_Rect rec
         auto image = Image::get("images/ui/Inventory/Appraisal_Icon.png");
         const real_t sx = rect.w * size;
         const real_t sy = rect.h * size;
-        image->drawColor(nullptr, SDL_Rect{(int)x, (int)y, (int)sx, (int)sy},
+        image->drawColor(nullptr, SDL_Rect{static_cast<int>(x), static_cast<int>(y), static_cast<int>(sx), static_cast<int>(sy)},
                          SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY}, color);
     };
     {
@@ -23787,13 +23787,13 @@ void drawUnidentifiedItemEffectCallback(const Widget& widget, SDL_Rect rect)
         if (appraisal.current_item == appraisal.manual_appraised_item)
         {
             drawClockwiseSquareMesh("images/ui/Inventory/Appraisal_Icon_Outline_Manual.png",
-                                    (appraisal.timermax - appraisal.timer) / (float)appraisal.timermax,
+                                    (appraisal.timermax - appraisal.timer) / static_cast<float>(appraisal.timermax),
                                     drawRect, makeColor(255, 255, 255, opacity));
         }
         else
         {
             drawClockwiseSquareMesh("images/ui/Inventory/Appraisal_Icon_Outline.png",
-                                    (appraisal.timermax - appraisal.timer) / (float)appraisal.timermax,
+                                    (appraisal.timermax - appraisal.timer) / static_cast<float>(appraisal.timermax),
                                     drawRect, makeColor(255, 255, 255, opacity));
         }
     }
@@ -23803,7 +23803,7 @@ void drawUnidentifiedItemEffectCallback(const Widget& widget, SDL_Rect rect)
         auto image = Image::get("images/ui/Inventory/Appraisal_Icon.png");
         const real_t sx = rect.w * size;
         const real_t sy = rect.h * size;
-        image->drawColor(nullptr, SDL_Rect{(int)x, (int)y, (int)sx, (int)sy},
+        image->drawColor(nullptr, SDL_Rect{static_cast<int>(x), static_cast<int>(y), static_cast<int>(sx), static_cast<int>(sy)},
                          SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY}, color);
     };
     {
@@ -24111,15 +24111,14 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         return;
     }
 
-    Item* item = (Item*)itemPtr;
+    Item* item = static_cast<Item*>(itemPtr);
 
     int player = slotFrame->getOwner();
 
     bool hiddenItemInGUI = false;
     if (item->itemSpecialShopConsumable)
     {
-        if (stats[player]->getModifiedProficiency(PRO_TRADING) + statGetCHR(stats[player], players[player]->entity) < ((
-            (int)item->itemRequireTradingSkillInShop) * SHOP_CONSUMABLE_SKILL_REQ_PER_POINT))
+        if (stats[player]->getModifiedProficiency(PRO_TRADING) + statGetCHR(stats[player], players[player]->entity) < (static_cast<int>(item->itemRequireTradingSkillInShop) * SHOP_CONSUMABLE_SKILL_REQ_PER_POINT))
         {
             hiddenItemInGUI = true;
         }
@@ -24150,7 +24149,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
     int* slotType = nullptr;
     if (slotFrame->getUserData())
     {
-        slotType = (int*)slotFrame->getUserData();
+        slotType = static_cast<int*>(slotFrame->getUserData());
         if (*slotType == GAMEUI_FRAMEDATA_ANIMATING_ITEM
             || *slotType == GAMEUI_FRAMEDATA_ALCHEMY_RECIPE_SLOT)
         {
@@ -25860,7 +25859,7 @@ void glDrawWorldTile(view_t* camera, int mode, map_t& map)
     {
         const GLfloat light[4] = {(float)getLightAtModifier, (float)getLightAtModifier, (float)getLightAtModifier, 1.f};
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightFactor"), 1, light));
-        const float cameraPos[4] = {(float)camera->x * 32.f, -(float)camera->z, (float)camera->y * 32.f, 1.f};
+        const float cameraPos[4] = {static_cast<float>(camera->x) * 32.f, -static_cast<float>(camera->z), static_cast<float>(camera->y) * 32.f, 1.f};
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uCameraPos"), 1, cameraPos));
     }
 
@@ -26035,8 +26034,8 @@ void actObjectPreviewArrow(Entity* my)
 void actObjectPreviewBoulder(Entity* my)
 {
     bool noground = false;
-    int x = std::min<int>(std::max(0, (int)(my->x / 16)), CompendiumEntries.compendiumMap.width);
-    int y = std::min<int>(std::max(0, (int)(my->y / 16)), CompendiumEntries.compendiumMap.height);
+    int x = std::min<int>(std::max(0, static_cast<int>(my->x / 16)), CompendiumEntries.compendiumMap.width);
+    int y = std::min<int>(std::max(0, static_cast<int>(my->y / 16)), CompendiumEntries.compendiumMap.height);
     if (x >= CompendiumEntries.compendiumMap.width || y >= CompendiumEntries.compendiumMap.height)
     {
         noground = true;
@@ -26121,8 +26120,8 @@ void actObjectPreviewBoulder(Entity* my)
         real_t oy = my->y;
         my->x += my->vel_x;
         my->y += my->vel_y;
-        my->x = std::min(my->x, (real_t)CompendiumEntries.compendiumMap.width * 16.0 + 8.0);
-        my->y = std::min(my->y, (real_t)CompendiumEntries.compendiumMap.height * 16.0 + 8.0);
+        my->x = std::min(my->x, static_cast<real_t>(CompendiumEntries.compendiumMap.width) * 16.0 + 8.0);
+        my->y = std::min(my->y, static_cast<real_t>(CompendiumEntries.compendiumMap.height) * 16.0 + 8.0);
 
         double dist = sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2));
         if (my->x != (ox + my->vel_x) || my->y != (oy + my->vel_y))
@@ -26499,11 +26498,11 @@ void drawObjectPreview(std::string modelsPath, Entity* object, SDL_Rect pos, rea
 
                 for (auto node = limb.children.first; node;)
                 {
-                    Entity* entity = (Entity*)node->element;
+                    Entity* entity = static_cast<Entity*>(node->element);
                     node = node->next;
                     for (auto node2 = entity->children.first; node2;)
                     {
-                        Entity* entity2 = (Entity*)node2->element;
+                        Entity* entity2 = static_cast<Entity*>(node2->element);
                         node2 = node2->next;
                         if (entity2->behavior)
                         {
@@ -26534,7 +26533,7 @@ void drawObjectPreview(std::string modelsPath, Entity* object, SDL_Rect pos, rea
 
                 for (auto node = entity->children.first; node; node = node->next)
                 {
-                    Entity* entity = (Entity*)node->element;
+                    Entity* entity = static_cast<Entity*>(node->element);
                     bool b = entity->flags[BRIGHT];
                     if (!dark) { entity->flags[BRIGHT] = true; }
                     if (entity->flags[SPRITE])
@@ -26549,7 +26548,7 @@ void drawObjectPreview(std::string modelsPath, Entity* object, SDL_Rect pos, rea
 
                     for (auto node2 = entity->children.first; node2; node2 = node2->next)
                     {
-                        Entity* entity = (Entity*)node2->element;
+                        Entity* entity = static_cast<Entity*>(node2->element);
                         bool b = entity->flags[BRIGHT];
                         if (!dark) { entity->flags[BRIGHT] = true; }
                         if (entity->flags[SPRITE])
@@ -26576,7 +26575,7 @@ void drawObjectPreview(std::string modelsPath, Entity* object, SDL_Rect pos, rea
                 c++;
                 continue;
             }
-            Entity* entity = (Entity*)node->element;
+            Entity* entity = static_cast<Entity*>(node->element);
             if (!entity->flags[INVISIBLE])
             {
                 bool b = entity->flags[BRIGHT];
@@ -26652,7 +26651,7 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
         {
             if (auto node = list_Node(&playerEntity->children, 2))
             {
-                if (Entity* entity = (Entity*)node->element)
+                if (Entity* entity = static_cast<Entity*>(node->element))
                 {
                     view.z = entity->z * 2;
                 }
@@ -26715,7 +26714,7 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
                         continue;
                     }
                 }
-                Entity* entity = (Entity*)node->element;
+                Entity* entity = static_cast<Entity*>(node->element);
                 if (!entity->flags[INVISIBLE] || (entity->flags[INVISIBLE] && entity->flags[INVISIBLE_DITHER]))
                 {
                     bool b = entity->flags[BRIGHT];
@@ -26741,8 +26740,8 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
             {
                 for (node_t* node = map.entities->first; node != NULL; node = node->next)
                 {
-                    Entity* entity = (Entity*)node->element;
-                    if ((Sint32)entity->getUID() == -4) // torch sprites
+                    Entity* entity = static_cast<Entity*>(node->element);
+                    if (static_cast<Sint32>(entity->getUID()) == -4) // torch sprites
                     {
                         if ((entity->skill[1] - 1) != player)
                         {
@@ -26768,15 +26767,15 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
         {
             for (node_t* node = map.entities->first; node != NULL; node = node->next)
             {
-                Entity* entity = (Entity*)node->element;
+                Entity* entity = static_cast<Entity*>(node->element);
                 if (playerEntity->behavior == &actPlayer)
                 {
                     if ((entity->behavior == &actPlayerLimb && entity->skill[2] == player
                             && (!entity->flags[INVISIBLE] || (entity->flags[INVISIBLE] && entity->flags[
                                 INVISIBLE_DITHER])))
-                        || (Sint32)entity->getUID() == -4)
+                        || static_cast<Sint32>(entity->getUID()) == -4)
                     {
-                        if ((Sint32)entity->getUID() == -4 && playerEntity->behavior == &actPlayer) // torch sprites
+                        if (static_cast<Sint32>(entity->getUID()) == -4 && playerEntity->behavior == &actPlayer) // torch sprites
                         {
                             if ((entity->skill[1] - 1) != player)
                             {
@@ -27199,7 +27198,7 @@ void Player::SkillSheet_t::loadSkillSheetJSON()
                                 }
                                 if (allyType >= 0)
                                 {
-                                    allyTable[(Monster)monsterType].push_back((Monster)allyType);
+                                    allyTable[static_cast<Monster>(monsterType)].push_back(static_cast<Monster>(allyType));
                                 }
                             }
                         }
@@ -27240,7 +27239,7 @@ void Player::SkillSheet_t::loadSkillSheetJSON()
                                 }
                                 if (allyType >= 0)
                                 {
-                                    allyTable[(Monster)monsterType].push_back((Monster)allyType);
+                                    allyTable[static_cast<Monster>(monsterType)].push_back(static_cast<Monster>(allyType));
                                 }
                             }
                         }
@@ -27285,8 +27284,8 @@ void Player::SkillSheet_t::loadSkillSheetJSON()
                                     }
                                     if (allyType >= 0)
                                     {
-                                        allyTable[(Monster)monsterType].push_back(
-                                            std::make_pair((Monster)allyType, entry_itr->value.GetString()));
+                                        allyTable[static_cast<Monster>(monsterType)].push_back(
+                                            std::make_pair(static_cast<Monster>(allyType), entry_itr->value.GetString()));
                                     }
                                 }
                             }
@@ -28891,7 +28890,7 @@ bool takeAllChestGUIAction(const int player)
             chestSlotOrder.push_back(std::make_pair(key, item2));
         }
     }
-    int numItems = (int)chestSlotOrder.size();
+    int numItems = static_cast<int>(chestSlotOrder.size());
     std::sort(chestSlotOrder.begin(), chestSlotOrder.end()); // sort ascending by position, left to right, then down
     int pickedUpItems = 0;
     for (auto& keyValue : chestSlotOrder)
@@ -30151,7 +30150,7 @@ void Player::Inventory_t::updateItemContextMenu()
                 for (node_t* node = chest_inventory->first; node != NULL; node = nextnode)
                 {
                     nextnode = node->next;
-                    Item* chestItem = (Item*)node->element;
+                    Item* chestItem = static_cast<Item*>(node->element);
                     if (!chestItem) { continue; }
                     if (chestItem->uid == itemMenuItem)
                     {
@@ -30184,8 +30183,8 @@ void Player::Inventory_t::updateItemContextMenu()
     int& itemMenuY = inputs.getUIInteraction(player.playernum)->itemMenuY;
     int& itemMenuOffsetDetectionY = inputs.getUIInteraction(player.playernum)->itemMenuOffsetDetectionY;
     itemMenuOffsetDetectionY = 0;
-    const Sint32 mousex = (inputs.getMouse(player.playernum, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX;
-    const Sint32 mousey = (inputs.getMouse(player.playernum, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
+    const Sint32 mousex = (inputs.getMouse(player.playernum, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+    const Sint32 mousey = (inputs.getMouse(player.playernum, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 
     auto highlightImageMid = interactFrame->findImage("interact selected highlight mid");
     highlightImageMid->disabled = true;
@@ -31040,8 +31039,8 @@ void Player::Inventory_t::activateItemContextMenuOption(Item* item, ItemContextM
             strcpy((char*)net_packet->data, "FODA");
             SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
             SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
-            SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[12]);
-            SDLNet_Write32((Uint32)item->count, &net_packet->data[16]);
+            SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
+            SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
             SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
             net_packet->data[24] = item->identified;
             net_packet->data[25] = player;
@@ -34218,14 +34217,14 @@ void Player::HUD_t::updateEnemyBar2(Frame* whichFrame, void* enemyHPDetails)
         {
             int healthThreshold = (*it).second;
             real_t widthEntry = (*it).first;
-            if ((int)enemyDetails->animator.maxValue <= healthThreshold)
+            if (static_cast<int>(enemyDetails->animator.maxValue) <= healthThreshold)
             {
                 real_t width = 0.0;
                 if (prevIt != widthHealthBreakpoints.end())
                 {
                     width = (*prevIt).first;
                     // get linear scaled value between the breakponts
-                    width += (widthEntry - (*prevIt).first) * ((int)enemyDetails->animator.maxValue - (*prevIt).second)
+                    width += (widthEntry - (*prevIt).first) * (static_cast<int>(enemyDetails->animator.maxValue) - (*prevIt).second)
                         / ((*it).second - (*prevIt).second);
                 }
                 else
@@ -34359,15 +34358,15 @@ void Player::HUD_t::updateEnemyBar2(Frame* whichFrame, void* enemyHPDetails)
 
         if (doAnimation)
         {
-            if ((int)healthPercentage < skull.second)
+            if (static_cast<int>(healthPercentage) < skull.second)
             {
                 real_t opacityChange = 4 * getFPSScale(60.0); // change independent of fps
-                skullOpacity = std::max(0, (int)(skullOpacity - opacityChange));
+                skullOpacity = std::max(0, static_cast<int>(skullOpacity - opacityChange));
             }
-            else if ((int)healthPercentage >= skull.second)
+            else if (static_cast<int>(healthPercentage) >= skull.second)
             {
                 real_t opacityChange = 255; // *getFPSScale(144.0); // change independent of fps
-                skullOpacity = std::min(255, (int)(skullOpacity + opacityChange));
+                skullOpacity = std::min(255, static_cast<int>(skullOpacity + opacityChange));
             }
         }
         a = skullOpacity;
@@ -34461,7 +34460,7 @@ void Player::HUD_t::updateEnemyBar2(Frame* whichFrame, void* enemyHPDetails)
             {
                 Uint8 r, g, b, a;
                 getColor(dmgText->getColor(), &r, &g, &b, &a);
-                a = (std::max(0, (int)a - 16));
+                a = (std::max(0, static_cast<int>(a) - 16));
                 dmgText->setColor(makeColor(r, g, b, a));
                 if (a == 0)
                 {
@@ -34676,14 +34675,14 @@ void Player::HUD_t::updateEnemyBar(Frame* whichFrame)
         {
             int healthThreshold = (*it).second;
             real_t widthEntry = (*it).first;
-            if ((int)enemyBar->maxValue <= healthThreshold)
+            if (static_cast<int>(enemyBar->maxValue) <= healthThreshold)
             {
                 real_t width = 0.0;
                 if (prevIt != widthHealthBreakpoints.end())
                 {
                     width = (*prevIt).first;
                     // get linear scaled value between the breakponts
-                    width += (widthEntry - (*prevIt).first) * ((int)enemyBar->maxValue - (*prevIt).second) / ((*it).
+                    width += (widthEntry - (*prevIt).first) * (static_cast<int>(enemyBar->maxValue) - (*prevIt).second) / ((*it).
                         second - (*prevIt).second);
                 }
                 else
@@ -34814,15 +34813,15 @@ void Player::HUD_t::updateEnemyBar(Frame* whichFrame)
         Uint8 r, g, b, a;
         getColor(skull.first->color, &r, &g, &b, &a);
 
-        if ((int)healthPercentage < skull.second)
+        if (static_cast<int>(healthPercentage) < skull.second)
         {
             real_t opacityChange = 4 * getFPSScale(60.0); // change independent of fps
-            a = std::max(0, a - (int)opacityChange);
+            a = std::max(0, a - static_cast<int>(opacityChange));
         }
-        else if ((int)healthPercentage >= skull.second)
+        else if (static_cast<int>(healthPercentage) >= skull.second)
         {
             real_t opacityChange = 255; // *getFPSScale(144.0); // change independent of fps
-            a = std::min(255, a + (int)opacityChange);
+            a = std::min(255, a + static_cast<int>(opacityChange));
         }
         a *= whichFrame->getOpacity() / 100.0;
         skull.first->color = makeColor(r, g, b, a);
@@ -34915,7 +34914,7 @@ void Player::HUD_t::updateEnemyBar(Frame* whichFrame)
             {
                 Uint8 r, g, b, a;
                 getColor(dmgText->getColor(), &r, &g, &b, &a);
-                a = (std::max(0, (int)a - 16));
+                a = (std::max(0, static_cast<int>(a) - 16));
                 dmgText->setColor(makeColor(r, g, b, a));
                 if (a == 0)
                 {
@@ -35273,7 +35272,7 @@ void Player::HUD_t::updateHPBar()
                     int decrement = 20;
                     real_t fpsScale = getFPSScale(60.0);
                     decrement *= fpsScale;
-                    a = std::max(0, (int)a - decrement);
+                    a = std::max(0, static_cast<int>(a) - decrement);
                     hpProgressEndCapFlash->color = makeColor(r, g, b, a);
                 }
             }
@@ -35648,7 +35647,7 @@ void Player::HUD_t::updateMPBar()
                     int increment = 10;
                     real_t fpsScale = getFPSScale(60.0);
                     increment *= fpsScale;
-                    a = std::min(255, (int)a + increment);
+                    a = std::min(255, static_cast<int>(a) + increment);
                     mpProgressEndCapFlash->color = makeColor(r, g, b, a);
 
                     mpProgress->path = MPBarPaths_t::get(player.playernum, "mp img progress");
@@ -35721,7 +35720,7 @@ void Player::HUD_t::updateMPBar()
                     int decrement = 20;
                     real_t fpsScale = getFPSScale(60.0);
                     decrement *= fpsScale;
-                    a = std::max(0, (int)a - decrement);
+                    a = std::max(0, static_cast<int>(a) - decrement);
                     mpProgressEndCapFlash->color = makeColor(r, g, b, a);
                 }
             }
@@ -36372,7 +36371,7 @@ void Player::Hotbar_t::updateHotbar()
             auto glyphImage = Image::get(glyph->path.c_str());
             if (glyphImage)
             {
-                glyph->pos.w = std::min((int)glyphImage->getWidth(), slot->getSize().w);
+                glyph->pos.w = std::min(static_cast<int>(glyphImage->getWidth()), slot->getSize().w);
                 glyph->pos.h = glyphImage->getHeight();
                 glyph->pos.x = pos.x + pos.w / 2 - glyph->pos.w / 2;
                 glyph->pos.y = pos.y - glyph->pos.h;
@@ -36420,7 +36419,7 @@ void Player::Hotbar_t::updateHotbar()
             auto glyphImage = Image::get(glyph->path.c_str());
             if (glyphImage)
             {
-                glyph->pos.w = std::min((int)glyphImage->getWidth(), slot->getSize().w);
+                glyph->pos.w = std::min(static_cast<int>(glyphImage->getWidth()), slot->getSize().w);
                 glyph->pos.h = glyphImage->getHeight();
                 glyph->pos.x = pos.x + pos.w / 2 - glyph->pos.w / 2;
                 glyph->pos.y = pos.y - glyph->pos.h;
@@ -37400,12 +37399,12 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             //val = stats[playernum]->getModifiedProficiency(proficiency) * 2 * 100 / 512.f; // % visibility reduction
             val = 100.f * (255 - TOUCHRANGE) * (1.0 * (stats[playernum]->getModifiedProficiency(PRO_STEALTH) / 100.f)) /
                 255.f;
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "STEALTH_SNEAK_VIS")
         {
             val = (2 + (stats[playernum]->getModifiedProficiency(proficiency) / 40)); // night vision when sneaking
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "STEALTH_BACKSTAB")
         {
@@ -37425,7 +37424,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                     val /= 2;
                 }
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "STEALTH_CURRENT_VIS")
         {
@@ -37433,7 +37432,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = player->entityLightAfterReductions(*stats[playernum], nullptr);
                 val = std::max(1, (static_cast<int>(val / 16.0))); // general visibility
-                snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+                snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
             }
             else
             {
@@ -37454,7 +37453,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = 100 - (100 - stats[playernum]->getModifiedProficiency(proficiency)) / 2.f; // lowest damage roll
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "WEAPON_DMG_EFFECTIVENESS")
         {
@@ -37466,7 +37465,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 / 2.0);
             lowest = std::min(100.0, std::max(0.0, lowest));
             real_t highest = std::min(100.0, lowest + variance);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)lowest, (int)highest);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(lowest), static_cast<int>(highest));
         }
         else if (tag == "RANGED_DMG_EFFECTIVENESS")
         {
@@ -37478,7 +37477,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = -25 + (stats[playernum]->getModifiedProficiency(proficiency) / 2); // -25% to +25%
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "RANGED_DEGRADE_CHANCE")
         {
@@ -37506,12 +37505,12 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             int skillLVL = stats[playernum]->getModifiedProficiency(proficiency) / 20; // thrown dmg bonus
             // +0% baseline
             val = 100 * (thrownDamageSkillMultipliers[std::min(skillLVL, 5)] - thrownDamageSkillMultipliers[0]);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "RANGED_PIERCE_CHANCE")
         {
             val = std::min(std::max(statGetPER(stats[playernum], player), 0), 50);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         return buf;
     }
@@ -37520,17 +37519,17 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         if (tag == "BLOCK_AC_INCREASE")
         {
             val = stats[playernum]->getActiveShieldBonus(false, false);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "BLOCK_AC_INCREASE_OFFHAND")
         {
             val = stats[playernum]->getActiveShieldBonus(false, false, nullptr, true);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "PASSIVE_AC_INCREASE")
         {
             val = stats[playernum]->getPassiveShieldBonus(false, false);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "BLOCK_DEGRADE_NORMAL_CHANCE")
         {
@@ -37578,7 +37577,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = 100 - (100 - stats[playernum]->getModifiedProficiency(proficiency)) / 2.f; // lowest damage roll
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "WEAPON_DMG_EFFECTIVENESS")
         {
@@ -37590,7 +37589,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 / 2.0);
             lowest = std::min(100.0, std::max(0.0, lowest));
             real_t highest = std::min(100.0, lowest + variance);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)lowest, (int)highest);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(lowest), static_cast<int>(highest));
         }
         else if (tag == "UNARMED_DMG_EFFECTIVENESS")
         {
@@ -37602,12 +37601,12 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = -25 + (stats[playernum]->getModifiedProficiency(proficiency) / 2); // -25% to +25%
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "UNARMED_BONUS_DMG")
         {
             val = static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "GLOVE_DEGRADE_CHANCE")
         {
@@ -37648,7 +37647,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "UNARMED_KNOCKBACK_DIST")
         {
             val = static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20) * 20;
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         return buf;
     }
@@ -37664,7 +37663,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = 100 - (100 - stats[playernum]->getModifiedProficiency(proficiency)) / 2.f; // lowest damage roll
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "WEAPON_DMG_EFFECTIVENESS")
         {
@@ -37676,7 +37675,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 / 2.0);
             lowest = std::min(100.0, std::max(0.0, lowest));
             real_t highest = std::min(100.0, lowest + variance);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)lowest, (int)highest);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(lowest), static_cast<int>(highest));
         }
         else if (tag == "SWORD_DMG_EFFECTIVENESS")
         {
@@ -37688,7 +37687,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = -25 + (stats[playernum]->getModifiedProficiency(proficiency) / 2); // -25% to +25%
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "SWORD_DEGRADE_CHANCE")
         {
@@ -37740,7 +37739,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = 100 - (100 - stats[playernum]->getModifiedProficiency(proficiency)) / 2.f; // lowest damage roll
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "WEAPON_DMG_EFFECTIVENESS")
         {
@@ -37752,7 +37751,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 / 2.0);
             lowest = std::min(100.0, std::max(0.0, lowest));
             real_t highest = std::min(100.0, lowest + variance);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)lowest, (int)highest);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(lowest), static_cast<int>(highest));
         }
         else if (tag == "POLEARM_DMG_EFFECTIVENESS")
         {
@@ -37764,7 +37763,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = -25 + (stats[playernum]->getModifiedProficiency(proficiency) / 2); // -25% to +25%
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "POLEARM_DEGRADE_CHANCE")
         {
@@ -37816,7 +37815,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = 100 - (100 - stats[playernum]->getModifiedProficiency(proficiency)) / 2.f; // lowest damage roll
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "WEAPON_DMG_EFFECTIVENESS")
         {
@@ -37828,7 +37827,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 / 2.0);
             lowest = std::min(100.0, std::max(0.0, lowest));
             real_t highest = std::min(100.0, lowest + variance);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)lowest, (int)highest);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(lowest), static_cast<int>(highest));
         }
         else if (tag == "AXE_DMG_EFFECTIVENESS")
         {
@@ -37840,7 +37839,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = -25 + (stats[playernum]->getModifiedProficiency(proficiency) / 2); // -25% to +25%
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "AXE_DEGRADE_CHANCE")
         {
@@ -37892,7 +37891,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = 100 - (100 - stats[playernum]->getModifiedProficiency(proficiency)) / 2.f; // lowest damage roll
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "WEAPON_DMG_EFFECTIVENESS")
         {
@@ -37904,7 +37903,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 / 2.0);
             lowest = std::min(100.0, std::max(0.0, lowest));
             real_t highest = std::min(100.0, lowest + variance);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)lowest, (int)highest);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(lowest), static_cast<int>(highest));
         }
         else if (tag == "MACE_DMG_EFFECTIVENESS")
         {
@@ -37916,7 +37915,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = -25 + (stats[playernum]->getModifiedProficiency(proficiency) / 2); // -25% to +25%
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "MACE_DEGRADE_CHANCE")
         {
@@ -37993,18 +37992,18 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         {
             val = std::min(8, std::max(4, 2 * (stats[playernum]->getModifiedProficiency(proficiency) / 20)));
             // max followers
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "LEADER_FOLLOWER_SPEED")
         {
             val = 1 + (stats[playernum]->getModifiedProficiency(proficiency) / 20);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "LEADER_CHARM_MONSTER")
         {
             val = 80 + ((statGetCHR(stats[playernum], player) + stats[playernum]->getModifiedProficiency(proficiency)) /
                 20) * 10;
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "LIST_LEADER_AVAILABLE_FOLLOWERS")
         {
@@ -38149,7 +38148,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                     }
                     else
                     {
-                        snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+                        snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
                     }
                 }
             }
@@ -38179,7 +38178,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                             break;
                         }
                     }
-                    snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+                    snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
                 }
             }
         }
@@ -38273,12 +38272,12 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = 100.f;
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "TINKERING_SCRAP_CHESTS")
         {
             val = std::min(100.f, stats[playernum]->getModifiedProficiency(proficiency) + 50.f);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "TINKERING_SCRAP_AUTOMATONS")
         {
@@ -38291,7 +38290,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 val = (100 - 100 / (static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20 + 1)));
                 // lockpick automatons
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "TINKERING_DISARM_ARROWS")
         {
@@ -38302,7 +38301,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = 0.f;
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "TINKERING_KIT_SCRAP_BONUS")
         {
@@ -38331,7 +38330,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 val = 0.f;
                 break;
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "TINKERING_KIT_REPAIR_ITEM")
         {
@@ -38373,7 +38372,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "TINKERING_MAX_ALLIES")
         {
             val = maximumTinkeringBotsCanBeDeployed(stats[playernum]);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         return buf;
     }
@@ -38384,30 +38383,30 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             int skillLVL = stats[playernum]->getModifiedProficiency(proficiency) / 20;
             // +0% baseline
             val = 100 * (potionDamageSkillMultipliers[std::min(skillLVL, 5)] - potionDamageSkillMultipliers[0]);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "ALCHEMY_THROWN_IMPACT_DMG")
         {
             int skillLVL = stats[playernum]->getModifiedProficiency(proficiency) / 20;
             // +0% baseline
             val = 100 * (potionDamageSkillMultipliers[std::min(skillLVL, 5)] - potionDamageSkillMultipliers[0]);
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "ALCHEMY_DUPLICATION_CHANCE")
         {
             val = 50.f + static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20) * 10;
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "ALCHEMY_EMPTY_BOTTLE_CONSUME")
         {
             val = std::min(
                 80, (60 + static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20) * 10));
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "ALCHEMY_EMPTY_BOTTLE_BREW")
         {
             val = 50.f + static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20) * 5;
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "ALCHEMY_LEARNT_INGREDIENTS_BASE")
         {
@@ -38531,14 +38530,14 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 val = (getBonusFromCasterOfSpellElement(player, stats[playernum], nullptr, SPELL_NONE, proficiency) *
                     100.0);
             }
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "MAGIC_SPELLPOWER_INT")
         {
             //val = (getBonusFromCasterOfSpellElement(player, stats[playernum], nullptr, SPELL_NONE) * 100.0);
             real_t bonus = getSpellBonusFromCasterINT(players[playernum]->entity, stats[playernum], proficiency);
             val = bonus * 100.0;
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "MAGIC_SPELLPOWER_EQUIPMENT")
         {
@@ -38554,7 +38553,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             }
             real_t bonus = getSpellBonusFromCasterINT(players[playernum]->entity, stats[playernum], proficiency);
             val -= bonus * 100.0;
-            snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+            snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "MAGIC_MEMORIZED_LEVEL_SPELLS")
         {
@@ -38569,7 +38568,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 }
                 if (node && node->element)
                 {
-                    if (spell_t* spell = (spell_t*)node->element)
+                    if (spell_t* spell = static_cast<spell_t*>(node->element))
                     {
                         if (spell->skillID != proficiency)
                         {
@@ -38751,7 +38750,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
                 //stats[playernum]->getModifiedProficiency(proficiency) = skill;
                 //
                 //val = (100 * zeroValue / normalValue) - 100;
-                snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+                snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
             }
         }
         else if (tag == "CASTING_MP_REGEN_SKILL_BONUS")
@@ -39360,13 +39359,13 @@ void Player::SkillSheet_t::processSkillSheet()
     {
         // dynamic width/height adjustments of outer containers
         sheetSize.h = std::max(0, std::min(skillFrame->getSize().h - 8,
-                                           (int)(404 + (bUseCompactSkillsView
-                                                            ? windowCompactHeightScaleY
-                                                            : windowHeightScaleY) * 80)));
+                                           static_cast<int>(404 + (bUseCompactSkillsView
+                                                                       ? windowCompactHeightScaleY
+                                                                       : windowHeightScaleY) * 80)));
         sheetSize.w = std::max(0, std::min(skillFrame->getSize().w - 8,
-                                           (int)(684 + (bUseCompactSkillsView
-                                                            ? windowCompactHeightScaleX
-                                                            : windowHeightScaleX) * 80)));
+                                           static_cast<int>(684 + (bUseCompactSkillsView
+                                                                       ? windowCompactHeightScaleX
+                                                                       : windowHeightScaleX) * 80)));
         if (player.bUseCompactGUIHeight() && !player.bUseCompactGUIWidth())
         {
             sheetSize.w += 12; // some adjustment to match 4 player as it's bigger
@@ -41194,7 +41193,7 @@ void Player::Inventory_t::SpellPanel_t::updateSpellPanel()
     int lowestItemY = getNumSpellsToDisplayVertical() - 1;
     for (node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next)
     {
-        Item* item = (Item*)node->element;
+        Item* item = static_cast<Item*>(node->element);
         if (!item) { continue; }
         if (itemCategory(item) != SPELL_CAT) { continue; }
 
@@ -41433,11 +41432,11 @@ void Player::Inventory_t::SpellPanel_t::updateSpellPanel()
             scrollAnimateX += setpointDiff;
             if (setpointDiff > 0.0)
             {
-                scrollAnimateX = std::min((real_t)scrollSetpoint, scrollAnimateX);
+                scrollAnimateX = std::min(static_cast<real_t>(scrollSetpoint), scrollAnimateX);
             }
             else
             {
-                scrollAnimateX = std::max((real_t)scrollSetpoint, scrollAnimateX);
+                scrollAnimateX = std::max(static_cast<real_t>(scrollSetpoint), scrollAnimateX);
             }
         }
         else
@@ -41538,7 +41537,7 @@ void Player::Inventory_t::SpellPanel_t::scrollToSlot(int x, int y, bool instantl
     int lowestItemY = getNumSpellsToDisplayVertical() - 1;
     for (node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next)
     {
-        Item* item = (Item*)node->element;
+        Item* item = static_cast<Item*>(node->element);
         if (!item) { continue; }
         if (itemCategory(item) != SPELL_CAT) { continue; }
 
@@ -42152,7 +42151,7 @@ void Player::Inventory_t::ChestGUI_t::scrollToSlot(int x, int y, bool instantly)
     int lowestItemY = getNumItemsToDisplayVertical() - 1;
     for (node_t* node = stats[player.playernum]->inventory.first; node != NULL; node = node->next)
     {
-        Item* item = (Item*)node->element;
+        Item* item = static_cast<Item*>(node->element);
         if (!item) { continue; }
         if (itemCategory(item) != SPELL_CAT) { continue; }
 
@@ -42710,7 +42709,7 @@ void Player::HUD_t::updateMinotaurWarning()
             {
                 for (node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next)
                 {
-                    Entity* monster = (Entity*)mapNode->element;
+                    Entity* monster = static_cast<Entity*>(mapNode->element);
                     if (monster && monster->getMonsterTypeFromSprite() == MINOTAUR)
                     {
                         m.minotaurSpawned = true;
@@ -42745,7 +42744,7 @@ void Player::HUD_t::updateMinotaurWarning()
             {
                 m.animFlashIncrease = false;
             }
-            m.animFlash = std::min(*cvar_minoflashmax, (float)m.animFlash);
+            m.animFlash = std::min(*cvar_minoflashmax, static_cast<float>(m.animFlash));
         }
         else
         {
@@ -42756,7 +42755,7 @@ void Player::HUD_t::updateMinotaurWarning()
             {
                 m.animFlashIncrease = true;
             }
-            m.animFlash = std::max(*cvar_minoflashmin, (float)m.animFlash);
+            m.animFlash = std::max(*cvar_minoflashmin, static_cast<float>(m.animFlash));
         }
 
         if (m.minotaurDied)
@@ -43024,13 +43023,13 @@ SDL_Surface* Player::WorldUI_t::WorldTooltipItem_t::blitItemWorldTooltip(Item* i
                 textGet = Text::get(buf, font->getName(), 0xFFFFFFFF, 0);
                 numHeaderLines++;
             }
-            longestLine = std::max(longestLine, (size_t)textGet->getWidth());
+            longestLine = std::max(longestLine, static_cast<size_t>(textGet->getWidth()));
         }
         if (numHeaderLines > 1)
         {
             if (auto textGet = Text::get(buf2, font->getName(), 0xFFFFFFFF, 0))
             {
-                longestLine = std::max(longestLine, (size_t)textGet->getWidth());
+                longestLine = std::max(longestLine, static_cast<size_t>(textGet->getWidth()));
             }
         }
         tooltip.w = 16 + 16 + 8 + longestLine;
@@ -43507,7 +43506,7 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::update()
         dialogueStrCurrent = dialogueStrFull;
         dialogueStringLength = dialogueStrFull.size();
     }
-    else if (ticks - updatedThisTick > (Uint32)(setting.textDelay - 1))
+    else if (ticks - updatedThisTick > static_cast<Uint32>(setting.textDelay - 1))
     {
         size_t fullLen = dialogueStrFull.size();
         if (dialogueStringLength < fullLen)
@@ -43560,7 +43559,7 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::createDialogueTooltip(Uint32 uid
 
             strcpy((char*)net_packet->data, "BUBL");
             SDLNet_Write32(uid, &net_packet->data[4]);
-            net_packet->data[8] = Uint8(type);
+            net_packet->data[8] = static_cast<Uint8>(type);
             strcpy((char*)(&net_packet->data[9]), buf);
             net_packet->address.host = net_clients[player.playernum - 1].host;
             net_packet->address.port = net_clients[player.playernum - 1].port;
@@ -43649,7 +43648,7 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::createDialogueTooltip(Uint32 uid
                                      d->dialogueField->getFont(), d->dialogueField->getTextColor(),
                                      d->dialogueField->getOutlineColor()))
         {
-            d->dialogueField->setSize(SDL_Rect{0, 0, (int)textGet->getWidth() + 16, textHeight});
+            d->dialogueField->setSize(SDL_Rect{0, 0, static_cast<int>(textGet->getWidth()) + 16, textHeight});
         }
         else
         {
@@ -44205,7 +44204,7 @@ void DamageIndicatorHandler_t::DamageIndicator_t::process()
                 int decrement = 20;
                 real_t fpsScale = (getFPSScale(60.0)) / damageIndicatorSettings.fadeSpeed;
                 decrement *= fpsScale;
-                alpha = std::max(0, (int)alpha - decrement);
+                alpha = std::max(0, static_cast<int>(alpha) - decrement);
             }
         }
     }
@@ -44229,8 +44228,8 @@ void DamageIndicatorHandler_t::DamageIndicator_t::process()
         SDL_Rect pos;
         pos.x = players[player]->camera_midx();
         pos.y = players[player]->camera_midy();
-        const float factorX = (float)xres / Frame::virtualScreenX;
-        const float factorY = (float)yres / Frame::virtualScreenY;
+        const float factorX = static_cast<float>(xres) / Frame::virtualScreenX;
+        const float factorY = static_cast<float>(yres) / Frame::virtualScreenY;
         pos.x += damageIndicatorSettings.settings[layout].radius_x * cos(angle) * factorX;
         pos.y += damageIndicatorSettings.settings[layout].radius_y * sin(angle) * factorY;
         pos.w = imgGet->getWidth() * factorX;
@@ -44238,7 +44237,7 @@ void DamageIndicatorHandler_t::DamageIndicator_t::process()
         if (stats[player]->HP > 0)
         {
             const SDL_Rect viewport{0, 0, xres, yres};
-            imgGet->drawRotated(nullptr, pos, viewport, makeColor(255, 255, 255, (Uint8)alpha), angle);
+            imgGet->drawRotated(nullptr, pos, viewport, makeColor(255, 255, 255, static_cast<Uint8>(alpha)), angle);
         }
     }
 
@@ -44600,7 +44599,7 @@ void LevelUpAnimation_t::LevelUp_t::animateTitle(SDL_Rect basePos)
 
     static ConsoleVariable<int> cvar_lvlup_title_ticks("/lvlup_title_ticks", 15);
     static ConsoleVariable<int> cvar_lvlup_title_fade_ticks("/lvlup_title_fade_ticks", TICKS_PER_SECOND);
-    real_t anim = std::min(1.0, ticksActive / (real_t)*cvar_lvlup_title_ticks);
+    real_t anim = std::min(1.0, ticksActive / static_cast<real_t>(*cvar_lvlup_title_ticks));
     real_t grow = 1.0;
 
     real_t curvePosition = (LevelUpAnimBreakpoints[anim * (LevelUpAnimBreakpoints.size() - 1)]) / 100.0;
@@ -44865,8 +44864,8 @@ void updateLevelUpFrame(const int player)
             SDL_Rect pos;
             pos.x = statImg->pos.x + statImg->pos.w + 8;
             pos.y = baseImgY - 8;
-            pos.w = std::max(40, (int)textGet->getWidth());
-            pos.h = std::max(24, (int)textGet->getHeight());
+            pos.w = std::max(40, static_cast<int>(textGet->getWidth()));
+            pos.h = std::max(24, static_cast<int>(textGet->getHeight()));
 
             statIncreaseTxt->setColor(makeColor(255, 255, 255,
                                                 (1.0 - statUp.animCurrentStat) * statUp.animAngle * 255));
@@ -44944,11 +44943,11 @@ void updateLevelUpFrame(const int player)
     {
         if (statPosX.size() % 2 == 1)
         {
-            midpoint = statPosX[size_t(statPosX.size() / 2)];
+            midpoint = statPosX[static_cast<size_t>(statPosX.size() / 2)];
         }
         else
         {
-            size_t midIndex1 = std::max((size_t)0, (statPosX.size() / 2) - 1);
+            size_t midIndex1 = std::max(static_cast<size_t>(0), (statPosX.size() / 2) - 1);
             size_t midIndex2 = (statPosX.size() / 2);
             midpoint = statPosX[midIndex1] + (statPosX[midIndex2] - statPosX[midIndex1]) / 2;
         }
@@ -45538,7 +45537,7 @@ void updateSkillUpFrame(const int player)
             node_t* spellImageNode = ItemTooltips.getSpellNodeFromSpellID(skillUp.spellID);
             if (spellImageNode)
             {
-                if (string_t* string = (string_t*)spellImageNode->element)
+                if (string_t* string = static_cast<string_t*>(spellImageNode->element))
                 {
                     skillImg->path = string->data;
                 }
@@ -45632,8 +45631,8 @@ void updateSkillUpFrame(const int player)
                 SDL_Rect pos;
                 pos.x = skillImg->pos.x + skillImg->pos.w + 8;
                 pos.y = 32;
-                pos.w = std::max(40, (int)textGet->getWidth());
-                pos.h = std::max(24, (int)textGet->getHeight());
+                pos.w = std::max(40, static_cast<int>(textGet->getWidth()));
+                pos.h = std::max(24, static_cast<int>(textGet->getHeight()));
 
                 skillIncreaseTxt->setColor(makeColor(255, 255, 255,
                                                      (1.0 - skillUp.animCurrentStat) * skillUp.animAngle * 255));
@@ -45711,7 +45710,7 @@ void updateSkillUpFrame(const int player)
             {
                 SDL_Rect pos;
                 pos.w = textGet->getWidth();
-                pos.h = std::max(24, (int)textGet->getHeight());
+                pos.h = std::max(24, static_cast<int>(textGet->getHeight()));
                 if (skillUp.isSpell)
                 {
                     pos.w = std::min(pos.w, skillBgImg->pos.w);
@@ -45791,7 +45790,7 @@ void updateSkillUpFrame(const int player)
                 skillNameTxt->setDisabled(false);
                 SDL_Rect pos = skillNameTxt->getSize();
                 pos.w = textGet->getWidth();
-                pos.h = std::max(24, (int)textGet->getHeight());
+                pos.h = std::max(24, static_cast<int>(textGet->getHeight()));
                 pos.y = 0;
                 pos.x = skillPosX[skillPosX.size() - 1] - pos.w / 2;
                 skillNameTxt->setSize(pos);
@@ -45849,8 +45848,8 @@ void updateSkillUpFrame(const int player)
         }
         skillImg->pos = skillUp.pos;
         {
-            int newWidth = skillBorderImg->pos.w * (skillImg->pos.w / (float)skillUp.getIconNominalSize());
-            int newHeight = skillBorderImg->pos.h * (skillImg->pos.h / (float)skillUp.getIconNominalSize());
+            int newWidth = skillBorderImg->pos.w * (skillImg->pos.w / static_cast<float>(skillUp.getIconNominalSize()));
+            int newHeight = skillBorderImg->pos.h * (skillImg->pos.h / static_cast<float>(skillUp.getIconNominalSize()));
             skillBorderImg->pos.x -= (newWidth - skillBorderImg->pos.w) / 2;
             skillBorderImg->pos.y -= (newHeight - skillBorderImg->pos.h) / 2;
             skillBorderImg->pos.w = newWidth;
@@ -45900,11 +45899,11 @@ void updateSkillUpFrame(const int player)
     {
         if (skillPosX.size() % 2 == 1)
         {
-            midpoint = skillPosX[size_t(skillPosX.size() / 2)];
+            midpoint = skillPosX[static_cast<size_t>(skillPosX.size() / 2)];
         }
         else
         {
-            size_t midIndex1 = std::max((size_t)0, (skillPosX.size() / 2) - 1);
+            size_t midIndex1 = std::max(static_cast<size_t>(0), (skillPosX.size() / 2) - 1);
             size_t midIndex2 = (skillPosX.size() / 2);
             midpoint = skillPosX[midIndex1] + (skillPosX[midIndex2] - skillPosX[midIndex1]) / 2;
         }

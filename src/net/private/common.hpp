@@ -48,22 +48,22 @@
 #include <unordered_map>
 #include <vector>
 
-extern char last_ip[64];
-extern char last_port[64];
+
+
 
 namespace barony::net
 {
 inline int playerCapacity() noexcept
 {
-    return static_cast<int>(std::size(players));
+    return std::size(players);
 }
 
-inline bool validPlayer(int player) noexcept
+inline bool validPlayer(const int player) noexcept
 {
     return player >= 0 && player < playerCapacity();
 }
 
-inline bool validRemotePlayer(int player) noexcept
+inline bool validRemotePlayer(const int player) noexcept
 {
     return player > 0
         && validPlayer(player)
@@ -72,7 +72,7 @@ inline bool validRemotePlayer(int player) noexcept
         && !players[player]->isLocalPlayer();
 }
 
-inline int hostIndexForPlayer(int player) noexcept
+inline int hostIndexForPlayer(const int player) noexcept
 {
     return player - 1;
 }

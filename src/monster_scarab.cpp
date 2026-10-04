@@ -259,7 +259,7 @@ void scarabAnimate(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -279,7 +279,7 @@ void scarabAnimate(Entity* my, Stat* myStats, double dist)
 				{
 					continue;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -306,7 +306,7 @@ void scarabAnimate(Entity* my, Stat* myStats, double dist)
 			//if ( bodypart == 2 || bodypart == 3 )
 			//{
 			//messagePlayer(0, "bodypart - %d", bodypart);
-			entity = (Entity*)node->element;
+			entity = static_cast<Entity*>(node->element);
 			entity->x = my->x - 1.1 * cos(my->yaw);
 			entity->y = my->y - 1.1 * sin(my->yaw);
 			entity->z = my->z - 3.4;

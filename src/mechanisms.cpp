@@ -73,7 +73,7 @@ void Entity::updateCircuitNeighbors()
 		{
 			if (node->element)
 			{
-				Entity* powerable = (Entity*)(node->element);
+				Entity* powerable = static_cast<Entity*>(node->element);
 
 				if (powerable)
 				{
@@ -421,7 +421,7 @@ void actTrap(Entity* my)
 		list_t* currentList = *it;
 		for ( node = currentList->first; node != nullptr; node = node->next )
 		{
-			entity = (Entity*)node->element;
+			entity = static_cast<Entity*>(node->element);
 			if ( entity->behavior == &actItem && entity->flags[INVISIBLE] )
 			{
 				continue;
@@ -534,7 +534,7 @@ void actTrapPermanent(Entity* my)
 	{
 		for ( node = map.creatures->first; node != nullptr; node = node->next ) //Only looking at players? Don't search full map.entities.
 		{
-			entity = (Entity*)node->element;
+			entity = static_cast<Entity*>(node->element);
 			if ( entity->behavior == &actPlayer )
 			{
 				if ( entity->x < 26 * 16 || entity->y < 6 * 16 || entity->y >= 26 * 16 )   // hardcoded, I know...
@@ -552,7 +552,7 @@ void actTrapPermanent(Entity* my)
 			bool monsterAlive = false;
 			for ( node = map.creatures->first; node != nullptr; node = node->next )
 			{
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->behavior == &actMonster && (entity->getRace() == LICH_FIRE || entity->getRace() == LICH_ICE) )
 				{
 					monsterAlive = true;
@@ -573,7 +573,7 @@ void actTrapPermanent(Entity* my)
 			// fight trigger plates, wait for players to assemble.
 			for ( node = map.creatures->first; node != nullptr; node = node->next ) //Only looking at players? Don't search full map.entities.
 			{
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->behavior == &actPlayer )
 				{
 					if ( entity->x < 29 * 16 )   // hardcoded, I know...
@@ -602,7 +602,7 @@ void actTrapPermanent(Entity* my)
 			list_t* currentList = *it;
 			for ( node = currentList->first; node != nullptr; node = node->next )
 			{
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->behavior == &actItem && entity->flags[INVISIBLE] )
 				{
 					continue;
@@ -704,7 +704,7 @@ void Entity::toggleSwitch(int skillIndexForPower)
 		{
 			if (node->element)
 			{
-				Entity* powerable = (Entity*)(node->element);
+				Entity* powerable = static_cast<Entity*>(node->element);
 
 				if (powerable)
 				{
@@ -780,7 +780,7 @@ void Entity::switchUpdateNeighbors()
 		{
 			if (node->element)
 			{
-				Entity* powerable = (Entity*)(node->element);
+				Entity* powerable = static_cast<Entity*>(node->element);
 
 				if (powerable)
 				{
@@ -871,14 +871,14 @@ void getPowerablesOnTile(int x, int y, list_t** list)
 	{
 		if (node->element)
 		{
-			Entity* entity = (Entity*) node->element;
+			Entity* entity = static_cast<Entity*>(node->element);
 			//Check if the entity is powerable.
 			if (entity && entity->skill[28])   //If skill 28 = 0, the entity is not a powerable.
 			{
 				//If this is the first powerable found, the list needs to be created.
 				if (!(*list))
 				{
-					*list = (list_t*) malloc(sizeof(list_t));
+					*list = static_cast<list_t*>(malloc(sizeof(list_t)));
 					(*list)->first = NULL;
 					(*list)->last = NULL;
 				}
@@ -1130,7 +1130,7 @@ void Entity::actSignalTimer()
 			{
 				if ( node->element )
 				{
-					Entity* powerable = (Entity*)(node->element);
+					Entity* powerable = static_cast<Entity*>(node->element);
 
 					if ( powerable )
 					{
@@ -1427,7 +1427,7 @@ void Entity::actSignalGateAND()
 			{
 				if ( node->element )
 				{
-					Entity* powerable = (Entity*)(node->element);
+					Entity* powerable = static_cast<Entity*>(node->element);
 
 					if ( powerable )
 					{
@@ -1513,7 +1513,7 @@ void Entity::actWallButton()
 		nextnode = node->next;
 		if ( node->element != nullptr )
 		{
-			key = (Entity*)node->element;
+			key = static_cast<Entity*>(node->element);
 		}
 	}
 
@@ -1716,7 +1716,7 @@ void Entity::actWallButton()
 				{
 					if ( node->element )
 					{
-						Entity* powerable = (Entity*)(node->element);
+						Entity* powerable = static_cast<Entity*>(node->element);
 
 						if ( powerable )
 						{
@@ -1803,7 +1803,7 @@ void Entity::actWallLock()
 		nextnode = node->next;
 		if ( node->element != nullptr )
 		{
-			key = (Entity*)node->element;
+			key = static_cast<Entity*>(node->element);
 		}
 	}
 
@@ -2122,7 +2122,7 @@ void Entity::actWallLock()
 				{
 					if ( node->element )
 					{
-						Entity* powerable = (Entity*)(node->element);
+						Entity* powerable = static_cast<Entity*>(node->element);
 
 						if ( powerable )
 						{
@@ -2274,7 +2274,7 @@ void Entity::actWind()
 			list_t* currentList = *it;
 			for ( node_t* node = currentList->first; node != nullptr; node = node->next )
 			{
-				Entity* entity = (Entity*)node->element;
+				Entity* entity = static_cast<Entity*>(node->element);
 				if ( windEffectsEntity(entity) && entityInsideWind(entity, this) )
 				{
 					auto hitProps = getParticleEmitterHitProps(getUID(), entity);

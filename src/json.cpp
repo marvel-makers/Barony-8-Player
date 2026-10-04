@@ -246,7 +246,7 @@ protected:
 		long size = fp->size();
 
 		// reserve an extra byte for the null terminator
-		char * data = (char *)calloc(sizeof(char), size + 1);
+		char * data = static_cast<char*>(calloc(sizeof(char), size + 1));
 		assert(data);
 
 		size_t bytesRead = fp->read(data, sizeof(char), size);
@@ -351,7 +351,7 @@ private:
 	}
 
 	bool writeStringInternal(const std::string& v) {
-		Uint32 len = (Uint32)v.size();
+		Uint32 len = static_cast<Uint32>(v.size());
 		bool result = true;
 		result = fp->write(&len, sizeof(len), 1) == 1 ? result : false;
 		if (len) {

@@ -410,7 +410,7 @@ void mimicAnimate(Entity* my, Stat* myStats, double dist)
 			continue;
 		}
 
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;

@@ -249,7 +249,7 @@ void lichFireDie(Entity* my)
 	for ( node = map.creatures->first; my->monsterLichAllyStatus == LICH_ALLY_DEAD && node != NULL; node = nextnode )
 	{
 		nextnode = node->next;
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		if ( entity )
 		{
 			if ( entity == my || entity->sprite == 650 )
@@ -299,7 +299,7 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
 	node = list_Node(&my->children, LICH_HEAD);
 	if ( node )
 	{
-		head = (Entity*)node->element;
+		head = static_cast<Entity*>(node->element);
 	}
 
 	// set invisibility //TODO: isInvisible()?
@@ -331,7 +331,7 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -356,7 +356,7 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -538,7 +538,7 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
 			}
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -1284,7 +1284,7 @@ void Entity::lichFireSummonMonster(Monster creature)
 	Entity* target = nullptr;
 	for ( node_t* searchNode = map.entities->first; searchNode != nullptr; searchNode = searchNode->next )
 	{
-		target = (Entity*)searchNode->element;
+		target = static_cast<Entity*>(searchNode->element);
 		if ( target->behavior == &actDevilTeleport
 			&& target->sprite == 128 )
 		{

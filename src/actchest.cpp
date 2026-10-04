@@ -72,7 +72,7 @@ void createChestInventory(Entity* my, int chestType)
 		node = list_AddNodeFirst(&my->children);
 		node->element = malloc(sizeof(list_t)); //Allocate memory for the inventory list.
 		node->deconstructor = &listDeconstructor;
-		inventory = (list_t*)node->element;
+		inventory = static_cast<list_t*>(node->element);
 		inventory->first = NULL;
 		inventory->last = NULL;
 	}
@@ -764,7 +764,7 @@ void createChestInventory(Entity* my, int chestType)
 		for ( node_t* node = inventory->first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			if ( !item ) { continue; }
 
 			item->x = slotx;
@@ -915,7 +915,7 @@ void Entity::actChest()
 			for ( node = inventory->first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				item = (Item*)node->element;
+				item = static_cast<Item*>(node->element);
 				if ( rng.rand() % 2 == 0 || (item && item->type >= WOODEN_SHIELD && item->type < NUMITEMS 
 					&& (items[item->type].hasAttribute("UNVOIDABLE") 
 						|| item->type == KEY_IRON 
@@ -972,7 +972,7 @@ void Entity::actChest()
 			node = inventory->first;
 			if ( node )
 			{
-				item = (Item*)node->element;
+				item = static_cast<Item*>(node->element);
 				if ( item )
 				{
 					if ( item->type == SPELLBOOK_VAMPIRIC_AURA )
@@ -1083,17 +1083,17 @@ void Entity::actChest()
 						sendPacketSafe(net_sock, -1, net_packet, chestclicked - 1);
 						for (node = inventory->first; node != NULL; node = node->next)
 						{
-							item = (Item*) node->element;
+							item = static_cast<Item*>(node->element);
 							strcpy((char*)net_packet->data, "CITM");  //Chest item.
 							SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
 							SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
-							SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[12]);
-							SDLNet_Write32((Uint32)item->count, &net_packet->data[16]);
+							SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
+							SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
 							SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
 							net_packet->data[24] = item->identified;
 							net_packet->data[25] = 1; //forceNewStack ? 1 : 0;
-							net_packet->data[26] = (Sint8)item->x;
-							net_packet->data[27] = (Sint8)item->y;
+							net_packet->data[26] = static_cast<Sint8>(item->x);
+							net_packet->data[27] = static_cast<Sint8>(item->y);
 							net_packet->address.host = net_clients[chestclicked - 1].host;
 							net_packet->address.port = net_clients[chestclicked - 1].port;
 							net_packet->len = 28;
@@ -1328,8 +1328,8 @@ Item* Entity::addItemToVoidChest(int player, Item* item, bool forceNewStack, Ite
 			net_packet->address.port = net_server.port;
 			SDLNet_Write32((Uint32)item->type, &net_packet->data[5]);
 			SDLNet_Write32((Uint32)item->status, &net_packet->data[9]);
-			SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[13]);
-			SDLNet_Write32((Uint32)item->count, &net_packet->data[17]);
+			SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[13]);
+			SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[17]);
 			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[21]);
 			net_packet->data[25] = item->identified;
 			net_packet->data[26] = forceNewStack ? 1 : 0;
@@ -1365,8 +1365,8 @@ Item* Entity::addItemToChest(Item* item, bool forceNewStack, Item* specificDesti
 		net_packet->address.port = net_server.port;
 		SDLNet_Write32((Uint32)item->type, &net_packet->data[5]);
 		SDLNet_Write32((Uint32)item->status, &net_packet->data[9]);
-		SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[13]);
-		SDLNet_Write32((Uint32)item->count, &net_packet->data[17]);
+		SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[13]);
+		SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[17]);
 		SDLNet_Write32((Uint32)item->appearance, &net_packet->data[21]);
 		net_packet->data[25] = item->identified;
 		net_packet->data[26] = forceNewStack ? 1 : 0;
@@ -1388,7 +1388,7 @@ Item* Entity::addItemToChest(Item* item, bool forceNewStack, Item* specificDesti
 		//If item's already in the chest, add it to a pre-existing stack.
 		for (t_node = inventory->first; t_node != NULL; t_node = t_node->next)
 		{
-			item2 = (Item*) t_node->element;
+			item2 = static_cast<Item*>(t_node->element);
 			if ( !specificDestinationStack )
 			{
 				if (!itemCompare(item, item2, false) )
@@ -1417,13 +1417,13 @@ Item* Entity::addItemToChest(Item* item, bool forceNewStack, Item* specificDesti
 		strcpy((char*)net_packet->data, "CITM");
 		SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
 		SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
-		SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[12]);
-		SDLNet_Write32((Uint32)item->count, &net_packet->data[16]);
+		SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
+		SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
 		SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
 		net_packet->data[24] = item->identified;
 		net_packet->data[25] = forceNewStack ? 1 : 0;
-		net_packet->data[26] = (Sint8)item->x;
-		net_packet->data[27] = (Sint8)item->y;
+		net_packet->data[26] = static_cast<Sint8>(item->x);
+		net_packet->data[27] = static_cast<Sint8>(item->y);
 		net_packet->address.host = net_clients[chestOpener - 1].host;
 		net_packet->address.port = net_clients[chestOpener - 1].port;
 		net_packet->len = 28;
@@ -1450,7 +1450,7 @@ Item* Entity::addItemToChestFromInventory(int player, Item* item, int amount, bo
 	}
 	else
 	{
-		amount = std::min((Sint16)amount, item->count);
+		amount = std::min(static_cast<Sint16>(amount), item->count);
 	}
 
 	bool isEquipped = itemIsEquipped(item, player);
@@ -1540,7 +1540,7 @@ Item* Entity::addItemToChestFromInventory(int player, Item* item, int amount, bo
 	}
 
 	// unequip the item
-	if ( item->count - (Sint16)amount <= 0 )
+	if ( item->count - static_cast<Sint16>(amount) <= 0 )
 	{
 		if ( slot != NULL )
 		{
@@ -1551,9 +1551,9 @@ Item* Entity::addItemToChestFromInventory(int player, Item* item, int amount, bo
 	{
 		if ( item->node->list == &stats[player]->inventory )
 		{
-			if ( (Sint16)amount != item->count )
+			if ( static_cast<Sint16>(amount) != item->count )
 			{
-				item->count = item->count - (Sint16)amount;
+				item->count = item->count - static_cast<Sint16>(amount);
 				if ( item->count <= 0 )
 				{
 					list_RemoveNode(item->node);
@@ -1567,7 +1567,7 @@ Item* Entity::addItemToChestFromInventory(int player, Item* item, int amount, bo
 	}
 	else
 	{
-		item->count = item->count - (Sint16)amount;
+		item->count = item->count - static_cast<Sint16>(amount);
 		if ( item->count <= 0 )
 		{
 			free(item);
@@ -1606,7 +1606,7 @@ Item* Entity::getItemFromChest(Item* item, int amount, bool getInfoOnly)
 	}
 	else
 	{
-		amount = std::min((Sint16)amount, item->count);
+		amount = std::min(static_cast<Sint16>(amount), item->count);
 	}
 
 	int player = getChestOpenerFromEntity(*this);
@@ -1629,9 +1629,9 @@ Item* Entity::getItemFromChest(Item* item, int amount, bool getInfoOnly)
 			net_packet->address.port = net_server.port;
 			SDLNet_Write32((Uint32)item->type, &net_packet->data[5]);
 			SDLNet_Write32((Uint32)item->status, &net_packet->data[9]);
-			SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[13]);
-			Sint16 count = (Sint16)amount;
-			SDLNet_Write32((Uint32)count, &net_packet->data[17]);
+			SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[13]);
+			Sint16 count = static_cast<Sint16>(amount);
+			SDLNet_Write32(static_cast<Uint32>(count), &net_packet->data[17]);
 			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[21]);
 			net_packet->data[25] = item->identified;
 			net_packet->data[26] = 0;
@@ -1715,7 +1715,7 @@ list_t* Entity::getChestInventoryList()
 		{
 			if ( children.first && children.first->element )
 			{
-				return (list_t*)children.first->element;
+				return static_cast<list_t*>(children.first->element);
 			}
 		}
 	}
@@ -1738,7 +1738,7 @@ Item* addItemToChestClientside(const int player, Item* item, bool forceNewStack,
 		{
 			for (node = chestInv[player].first; node != NULL; node = node->next)
 			{
-				item2 = (Item*) node->element;
+				item2 = static_cast<Item*>(node->element);
 				if ( !specificDestinationStack )
 				{
 					if ( !itemCompare(item, item2, false) )
@@ -1852,7 +1852,7 @@ Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStac
 			//If item's already in the chest, add it to a pre-existing stack.
 			for ( t_node = inventory->first; t_node != NULL; t_node = t_node->next )
 			{
-				item2 = (Item*)t_node->element;
+				item2 = static_cast<Item*>(t_node->element);
 				if ( !specificDestinationStack )
 				{
 					if ( !itemCompare(item, item2, false) )
@@ -1860,7 +1860,7 @@ Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStac
 						if ( item2->shouldItemStack(player) )
 						{
 							int stackAmount = std::max(0, item2->getMaxStackLimit(player) - item2->count);
-							int qty = std::max(0, std::min((int)item->count, stackAmount));
+							int qty = std::max(0, std::min(static_cast<int>(item->count), stackAmount));
 							anyItemsInserted = qty > 0;
 							item2->count += qty;
 							item->count -= qty;
@@ -1876,7 +1876,7 @@ Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStac
 					if ( specificDestinationStack == item2 && item2->shouldItemStack(player) )
 					{
 						int stackAmount = std::max(0, item2->getMaxStackLimit(player) - item2->count);
-						int qty = std::max(0, std::min((int)item->count, stackAmount));
+						int qty = std::max(0, std::min(static_cast<int>(item->count), stackAmount));
 						anyItemsInserted = qty > 0;
 						item2->count += qty;
 						item->count -= qty;
@@ -1972,7 +1972,7 @@ Item* Entity::addItemToChestServer(Item* item, bool forceNewStack, Item* specifi
 		//If item's already in the chest, add it to a pre-existing stack.
 		for (t_node = inventory->first; t_node != NULL; t_node = t_node->next)
 		{
-			item2 = (Item*) t_node->element;
+			item2 = static_cast<Item*>(t_node->element);
 			if ( !specificDestinationStack )
 			{
 				if ( !itemCompare(item, item2, false) )
@@ -2019,7 +2019,7 @@ bool Entity::removeItemFromVoidChestServer(int player, Item* item, int count)
 	for ( t_node = inventory->first; t_node != NULL; t_node = nextnode )
 	{
 		nextnode = t_node->next;
-		item2 = (Item*)t_node->element;
+		item2 = static_cast<Item*>(t_node->element);
 		if ( !item2 || !item2->node || item2->node->list != inventory )
 		{
 			return false;
@@ -2079,7 +2079,7 @@ bool Entity::removeItemFromChestServer(Item* item, int count)
 	for ( t_node = inventory->first; t_node != NULL; t_node = nextnode )
 	{
 		nextnode = t_node->next;
-		item2 = (Item*) t_node->element;
+		item2 = static_cast<Item*>(t_node->element);
 		if (!item2  || !item2->node || item2->node->list != inventory )
 		{
 			return false;

@@ -31,7 +31,7 @@ ParticleEmitterHit_t* getParticleEmitterHitProps(Uint32 emitterUid, Entity* hite
 {
 	if ( emitterUid == 0 || !hitentity ) { return nullptr; }
 
-	if ( (Sint32)(hitentity->getUID()) >= 0 )
+	if ( static_cast<Sint32>(hitentity->getUID()) >= 0 )
 	{
 		auto& emitterHit = particleTimerEmitterHitEntities[emitterUid];
 		auto find = emitterHit.find(hitentity->getUID());
@@ -152,9 +152,9 @@ bool spellEffectDominate(Entity& my, spellElement_t& element, Entity& caster, En
 		for ( node_t* node = stats[caster.skill[2]]->FOLLOWERS.first; node != nullptr; node = node->next )
 		{
 			Entity* follower = nullptr;
-			if ( (Uint32*)(node)->element )
+			if ( static_cast<Uint32*>((node)->element) )
 			{
-				follower = uidToEntity(*((Uint32*)(node)->element));
+				follower = uidToEntity(*static_cast<Uint32*>((node)->element));
 			}
 			if ( follower )
 			{
@@ -219,7 +219,7 @@ bool spellEffectDominate(Entity& my, spellElement_t& element, Entity& caster, En
 			{
 				if ( bodypart >= LIMB_HUMANOID_TORSO )
 				{
-					Entity* tmp = (Entity*)node->element;
+					Entity* tmp = static_cast<Entity*>(node->element);
 					if ( tmp )
 					{
 						tmp->flags[USERFLAG2] = true;
@@ -1199,10 +1199,10 @@ spell_t* spellEffectVampiricAura(Entity* caster, spell_t* spell)
 
 	node_t* spellnode = list_AddNodeLast(&myStats->magic_effects);
 	spellnode->element = copySpell(spell); //We need to save the spell since this is a channeled spell.
-	spell_t* channeled_spell = (spell_t*)(spellnode->element);
+	spell_t* channeled_spell = static_cast<spell_t*>(spellnode->element);
 	channeled_spell->magic_effects_node = spellnode;
 	spellnode->size = sizeof(spell_t);
-	((spell_t*)spellnode->element)->caster = caster->getUID();
+	static_cast<spell_t*>(spellnode->element)->caster = caster->getUID();
 	spellnode->deconstructor = &spellDeconstructor;
 	
 	int duration = element->duration; // duration in ticks.
@@ -1387,7 +1387,7 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
 						// search followers for charmed.
 						for ( node_t* node = casterStats->FOLLOWERS.first; node != NULL; node = node->next )
 						{
-							Uint32* c = (Uint32*)node->element;
+							Uint32* c = static_cast<Uint32*>(node->element);
 							Entity* follower = nullptr;
 							if ( c )
 							{
@@ -1554,7 +1554,7 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
 						{
 							if ( bodypart >= LIMB_HUMANOID_TORSO )
 							{
-								Entity* tmp = (Entity*)node->element;
+								Entity* tmp = static_cast<Entity*>(node->element);
 								if ( tmp )
 								{
 									tmp->flags[USERFLAG2] = true;
@@ -1633,11 +1633,11 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
 						hit.entity->monsterReleaseAttackTarget();
 						for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 						{
-							Entity* entity = (Entity*)node->element;
+							Entity* entity = static_cast<Entity*>(node->element);
 							if ( !entity ) { continue; }
 							if ( entity->behavior == &actMonster && entity != hit.entity )
 							{
-								if ( entity->monsterAllyGetPlayerLeader() && ((Uint32)entity->monsterTarget == hit.entity->getUID()) )
+								if ( entity->monsterAllyGetPlayerLeader() && (static_cast<Uint32>(entity->monsterTarget) == hit.entity->getUID()) )
 								{
 									entity->monsterReleaseAttackTarget(); // player allies stop attacking this target
 								}
@@ -1996,7 +1996,7 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
 								{
 									for ( node_t* allyNode = stats[c]->FOLLOWERS.first; allyNode != nullptr; allyNode = allyNode->next )
 									{
-										if ( *((Uint32*)allyNode->element) == target->getUID() )
+										if ( *static_cast<Uint32*>(allyNode->element) == target->getUID() )
 										{
 											list_RemoveNode(allyNode);
 											if ( !players[c]->isLocalPlayer() )
@@ -2061,7 +2061,7 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
 				{
 					if ( bodypart >= LIMB_HUMANOID_TORSO )
 					{
-						Entity* tmp = (Entity*)node->element;
+						Entity* tmp = static_cast<Entity*>(node->element);
 						if ( tmp )
 						{
 							tmp->flags[USERFLAG2] = true;
@@ -2286,7 +2286,7 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
 		for ( node_t* node = targetStats->inventory.first; node; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			if ( item && item->appearance != MONSTER_ITEM_UNDROPPABLE_APPEARANCE 
 				&& item->isDroppable
 				&& itemSlot(targetStats, item) == nullptr )
@@ -2349,7 +2349,7 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
 		{
 			for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 			{
-				Entity* creature = (Entity*)node->element;
+				Entity* creature = static_cast<Entity*>(node->element);
 				if ( creature && creature->behavior == &actMonster && creature != target && creature != summonedEntity )
 				{
 					if ( creature->monsterTarget == target->getUID() )
@@ -2437,7 +2437,7 @@ Entity* spellEffectPolymorph(Entity* target, Entity* parent, bool fromMagicSpell
 
 			for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 			{
-				Entity* creature = (Entity*)node->element;
+				Entity* creature = static_cast<Entity*>(node->element);
 				if ( creature && creature->behavior == &actMonster && creature != target )
 				{
 					if ( creature->monsterTarget == target->getUID() )
@@ -2905,7 +2905,7 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
 							{
 								if ( bodypart >= LIMB_HUMANOID_TORSO )
 								{
-									Entity* tmp = (Entity*)node->element;
+									Entity* tmp = static_cast<Entity*>(node->element);
 									if ( tmp )
 									{
 										tmp->flags[USERFLAG2] = true;
@@ -3128,7 +3128,7 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
 						Entity* newTarget = nullptr;
 						for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
 						{
-							Entity* target = (Entity*)node->element;
+							Entity* target = static_cast<Entity*>(node->element);
 							if ( target->behavior == &actMonster && monster->checkEnemy(target) )
 							{
 								real_t oldDist = dist;
@@ -3225,7 +3225,7 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
 							{
 								if ( bodypart >= LIMB_HUMANOID_TORSO )
 								{
-									Entity* tmp = (Entity*)node->element;
+									Entity* tmp = static_cast<Entity*>(node->element);
 									if ( tmp )
 									{
 										tmp->flags[USERFLAG2] = true;
@@ -3378,7 +3378,7 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
 							{
 								if ( bodypart >= LIMB_HUMANOID_TORSO )
 								{
-									Entity* tmp = (Entity*)node->element;
+									Entity* tmp = static_cast<Entity*>(node->element);
 									if ( tmp )
 									{
 										tmp->flags[USERFLAG2] = true;
@@ -3503,7 +3503,7 @@ int thaumSpellArmorProc(Entity* my, Stat& myStats, bool checkEffectActiveOnly, E
 					int baseMinValue = (effectID == EFF_GUARD_SPIRIT) ? 1 : 3;
 					//int minValue = std::max(baseMinValue, getSpellDamageFromID(spellID, my, nullptr, my));
 					//minValue = std::min(minValue, getSpellEffectDurationSecondaryFromID(spellID, my, nullptr, my));
-					my->setEffect(effectID, (Uint8)std::max(baseMinValue, myStats.getEffectActive(effectID) - 1),
+					my->setEffect(effectID, static_cast<Uint8>(std::max(baseMinValue, myStats.getEffectActive(effectID) - 1)),
 						myStats.EFFECTS_TIMERS[effectID], false, true, true);
 					if ( my->getActiveMagicEffect(spellID) )
 					{
@@ -3559,7 +3559,7 @@ bool Entity::pinpointDamageProc(Entity* attacker, int damage)
 					node_t* node;
 					for ( node = it->first; node != nullptr && !found; node = node->next )
 					{
-						if ( Entity* entity = (Entity*)node->element )
+						if ( Entity* entity = static_cast<Entity*>(node->element) )
 						{
 							if ( entity->behavior == &actParticleAestheticOrbit
 								&& entity->parent == this->getUID()
@@ -3644,7 +3644,7 @@ bool Entity::defyFleshProc(Entity* attacker)
 				node_t* node;
 				for ( node = it->first; node != nullptr; node = node->next )
 				{
-					if ( Entity* entity = (Entity*)node->element )
+					if ( Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity->behavior == &actParticleAestheticOrbit 
 							&& entity->parent == this->getUID()
@@ -4024,7 +4024,7 @@ Entity* spellEffectDemesneDoor(Entity& caster, Entity& target)
 		node_t* node;
 		for ( node = it->first; node != nullptr; node = node->next )
 		{
-			if ( Entity* entity = (Entity*)node->element )
+			if ( Entity* entity = static_cast<Entity*>(node->element) )
 			{
 				if ( static_cast<int>(entity->x / 16) == mapx && static_cast<int>(entity->y / 16) == mapy )
 				{
@@ -4088,11 +4088,11 @@ int getSpellDamageFromID(int spellID, Entity* parent, Stat* parentStats, Entity*
 		skillID = spell->skillID;
 		if ( spell->elements.first )
 		{
-			if ( element = (spellElement_t*)spell->elements.first->element )
+			if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 			{
 				if ( element->elements.first && element->elements.first->element )
 				{
-					element = (spellElement_t*)element->elements.first->element;
+					element = static_cast<spellElement_t*>(element->elements.first->element);
 				}
 			}
 		}
@@ -4114,7 +4114,7 @@ int getSpellDamageFromID(int spellID, Entity* parent, Stat* parentStats, Entity*
 				if ( parent && parent->behavior == &actPlayer )
 				{
 					Compendium_t::Events_t::eventUpdateCodex(parent->skill[2], Compendium_t::CPDM_CLASS_PWR_MAX_CASTED, "pwr",
-						(Sint32)(bonus * 100.0));
+						static_cast<Sint32>(bonus * 100.0));
 				}
 			}
 
@@ -4139,11 +4139,11 @@ int getSpellDamageSecondaryFromID(int spellID, Entity* parent, Stat* parentStats
 		skillID = spell->skillID;
 		if ( spell->elements.first )
 		{
-			if ( element = (spellElement_t*)spell->elements.first->element )
+			if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 			{
 				if ( element->elements.first && element->elements.first->element )
 				{
-					element = (spellElement_t*)element->elements.first->element;
+					element = static_cast<spellElement_t*>(element->elements.first->element);
 				}
 			}
 		}
@@ -4165,7 +4165,7 @@ int getSpellDamageSecondaryFromID(int spellID, Entity* parent, Stat* parentStats
 				if ( parent && parent->behavior == &actPlayer )
 				{
 					Compendium_t::Events_t::eventUpdateCodex(parent->skill[2], Compendium_t::CPDM_CLASS_PWR_MAX_CASTED, "pwr",
-						(Sint32)(bonus * 100.0));
+						static_cast<Sint32>(bonus * 100.0));
 				}
 			}
 			damage += damage * bonus * element->getDamageSecondaryMult();
@@ -4186,11 +4186,11 @@ int getSpellEffectDurationFromID(int spellID, Entity* parent, Stat* parentStats,
 	{
 		if ( spell->elements.first )
 		{
-			if ( element = (spellElement_t*)spell->elements.first->element )
+			if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 			{
 				if ( element->elements.first && element->elements.first->element )
 				{
-					element = (spellElement_t*)element->elements.first->element;
+					element = static_cast<spellElement_t*>(element->elements.first->element);
 				}
 			}
 		}
@@ -4213,11 +4213,11 @@ int getSpellEffectDurationSecondaryFromID(int spellID, Entity* parent, Stat* par
 	{
 		if ( spell->elements.first )
 		{
-			if ( element = (spellElement_t*)spell->elements.first->element )
+			if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 			{
 				if ( element->elements.first && element->elements.first->element )
 				{
-					element = (spellElement_t*)element->elements.first->element;
+					element = static_cast<spellElement_t*>(element->elements.first->element);
 				}
 			}
 		}
@@ -4241,11 +4241,11 @@ real_t getSpellPropertyFromID(spell_t::SpellBasePropertiesFloat prop, int spellI
 	{
 		if ( spell->elements.first )
 		{
-			if ( element = (spellElement_t*)spell->elements.first->element )
+			if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 			{
 				if ( element->elements.first && element->elements.first->element )
 				{
-					element = (spellElement_t*)element->elements.first->element;
+					element = static_cast<spellElement_t*>(element->elements.first->element);
 				}
 			}
 		}
@@ -4406,12 +4406,12 @@ int getSpellPropertyFromID(spell_t::SpellBasePropertiesInt prop, int spellID, En
 		int propulsion = 0;
 		if ( spell->elements.first )
 		{
-			if ( element = (spellElement_t*)spell->elements.first->element )
+			if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 			{
 				if ( element->elements.first && element->elements.first->element )
 				{
 					propulsion = element->elementID;
-					element = (spellElement_t*)element->elements.first->element;
+					element = static_cast<spellElement_t*>(element->elements.first->element);
 				}
 			}
 		}

@@ -279,17 +279,17 @@ void Image::draw(GLuint texid, int textureWidth, int textureHeight,
     
     // view matrix
     mat4x4 view(1.f);
-    v = {(float)dest.x, (float)(viewport.h - dest.y), 0.f, 0.f};
+    v = {static_cast<float>(dest.x), static_cast<float>(viewport.h - dest.y), 0.f, 0.f};
     (void)translate_mat(&m, &view, &v); view = m;
-    v = {(float)dest.w, (float)dest.h, 0.f, 0.f};
+    v = {static_cast<float>(dest.w), static_cast<float>(dest.h), 0.f, 0.f};
     (void)scale_mat(&m, &view, &v); view = m;
     GL_CHECK_ERR(glUniformMatrix4fv(shader.uniform("uView"), 1, GL_FALSE, (float*)&view));
     
     // section matrix
     mat4x4 sect(1.f);
-    v = {(float)src->x / textureWidth, (float)src->y / textureHeight, 0.f, 0.f};
+    v = {static_cast<float>(src->x) / textureWidth, static_cast<float>(src->y) / textureHeight, 0.f, 0.f};
     (void)translate_mat(&m, &sect, &v); sect = m;
-    v = {(float)src->w / textureWidth, (float)src->h / textureHeight, 0.f, 0.f};
+    v = {static_cast<float>(src->w) / textureWidth, static_cast<float>(src->h) / textureHeight, 0.f, 0.f};
     (void)scale_mat(&m, &sect, &v); sect = m;
     GL_CHECK_ERR(glUniformMatrix4fv(shader.uniform("uSection"), 1, GL_FALSE, (float*)&sect));
 
@@ -332,21 +332,21 @@ void Image::draw(GLuint texid, int textureWidth, int textureHeight,
     
     // view matrix
     mat4x4 view(1.f);
-    v = {(float)dest.x, (float)(viewport.h - dest.y), 0.f, 0.f};
+    v = {static_cast<float>(dest.x), static_cast<float>(viewport.h - dest.y), 0.f, 0.f};
     (void)translate_mat(&m, &view, &v); view = m;
     v = {0.f, 0.f, -1.f, 0.f};
     (void)rotate_mat(&m, &view, angle / PI * 180.f, &v); view = m;
-    v = {(float)dest.w / 2.f, (float)dest.h / 2.f, 0.f, 0.f};
+    v = {static_cast<float>(dest.w) / 2.f, static_cast<float>(dest.h) / 2.f, 0.f, 0.f};
     (void)translate_mat(&m, &view, &v); view = m;
-    v = {(float)dest.w, (float)dest.h, 0.f, 0.f};
+    v = {static_cast<float>(dest.w), static_cast<float>(dest.h), 0.f, 0.f};
     (void)scale_mat(&m, &view, &v); view = m;
     GL_CHECK_ERR(glUniformMatrix4fv(shader.uniform("uView"), 1, GL_FALSE, (float*)&view));
     
     // section matrix
     mat4x4 sect(1.f);
-    v = {(float)src->x / textureWidth, (float)src->y / textureHeight, 0.f, 0.f};
+    v = {static_cast<float>(src->x) / textureWidth, static_cast<float>(src->y) / textureHeight, 0.f, 0.f};
     (void)translate_mat(&m, &sect, &v); sect = m;
-    v = {(float)src->w / textureWidth, (float)src->h / textureHeight, 0.f, 0.f};
+    v = {static_cast<float>(src->w) / textureWidth, static_cast<float>(src->h) / textureHeight, 0.f, 0.f};
     (void)scale_mat(&m, &sect, &v); sect = m;
     GL_CHECK_ERR(glUniformMatrix4fv(shader.uniform("uSection"), 1, GL_FALSE, (float*)&sect));
 
@@ -400,25 +400,25 @@ void Image::drawClockwise(
     
     // view matrix
     mat4x4 view(1.f);
-    v = {(float)dest.x, (float)(viewport.h - dest.y), 0.f, 0.f};
+    v = {static_cast<float>(dest.x), static_cast<float>(viewport.h - dest.y), 0.f, 0.f};
     (void)translate_mat(&m, &view, &v); view = m;
-    v = {(float)dest.w, (float)dest.h, 0.f, 0.f};
+    v = {static_cast<float>(dest.w), static_cast<float>(dest.h), 0.f, 0.f};
     (void)scale_mat(&m, &view, &v); view = m;
     GL_CHECK_ERR(glUniformMatrix4fv(shader.uniform("uView"), 1, GL_FALSE, (float*)&view));
     
     // section matrix
     mat4x4 sect(1.f);
-    v = {(float)src->x / textureWidth, (float)src->y / textureHeight, 0.f, 0.f};
+    v = {static_cast<float>(src->x) / textureWidth, static_cast<float>(src->y) / textureHeight, 0.f, 0.f};
     (void)translate_mat(&m, &sect, &v); sect = m;
-    v = {(float)src->w / textureWidth, (float)src->h / textureHeight, 0.f, 0.f};
+    v = {static_cast<float>(src->w) / textureWidth, static_cast<float>(src->h) / textureHeight, 0.f, 0.f};
     (void)scale_mat(&m, &sect, &v); sect = m;
     GL_CHECK_ERR(glUniformMatrix4fv(shader.uniform("uSection"), 1, GL_FALSE, (float*)&sect));
 
     // draw image
     GL_CHECK_ERR(glFrontFace(GL_CW)); // we draw clockwise so need to set this.
     const int numVertices = std::min(
-        (int)(lerp * clockwiseMesh.data[1].size() / 2 + 1),
-        (int)(clockwiseMesh.data[1].size() / 2));
+        static_cast<int>(lerp * clockwiseMesh.data[1].size() / 2 + 1),
+        static_cast<int>(clockwiseMesh.data[1].size() / 2));
     clockwiseMesh.draw(GL_TRIANGLE_FAN, numVertices);
     GL_CHECK_ERR(glFrontFace(GL_CCW));
     

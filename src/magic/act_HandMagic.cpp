@@ -402,7 +402,7 @@ void spellcasting_animation_manager_t::setRangeFinderLocation()
 			{
 				for ( node_t* node = map.worldUI->first; node; node = node->next )
 				{
-					Entity* tooltip = (Entity*)node->element;
+					Entity* tooltip = static_cast<Entity*>(node->element);
 					if ( !tooltip || tooltip->behavior != &actSpriteWorldTooltip )
 					{
 						continue;
@@ -645,7 +645,7 @@ void spellcasting_animation_manager_t::setRangeFinderLocation()
 		std::priority_queue<EntitySpellTargetLocation, std::vector<EntitySpellTargetLocation>, decltype(compFunc)> entitiesInRange(compFunc);
 		for ( auto node = entityList->first; node; node = node->next ) // TODO - grab a shortened list from somewhere else iterating entities
 		{
-			if ( Entity* entity = (Entity*)node->element )
+			if ( Entity* entity = static_cast<Entity*>(node->element) )
 			{
 				if ( rangefinderTargetEnemyType(*spell, *entity) )
 				{
@@ -2596,7 +2596,7 @@ void actMagicRangefinder(Entity* my)
 	HANDMAGIC_RANGEFINDER_COLOR_G = *cvar_player_cast_indicator_g;
 	HANDMAGIC_RANGEFINDER_COLOR_B = *cvar_player_cast_indicator_b;
 	HANDMAGIC_RANGEFINDER_ALPHA = *cvar_player_cast_indicator_alpha + 
-		*cvar_player_cast_indicator_alpha_glow * sin(2 * PI * (my->ticks % TICKS_PER_SECOND) / (real_t)(TICKS_PER_SECOND));
+		*cvar_player_cast_indicator_alpha_glow * sin(2 * PI * (my->ticks % TICKS_PER_SECOND) / static_cast<real_t>((TICKS_PER_SECOND)));
 	my->yaw += *cvar_player_cast_indicator_rotate;
 
 	if ( !AOEIndicators_t::getIndicator(my->actSpriteUseCustomSurface) )

@@ -520,7 +520,7 @@ bool duckAreaQuck(Entity* my)
 	std::priority_queue<std::pair<real_t, Entity*>> possibleTargets;
 	for ( auto node = map.creatures->first; node; node = node->next )
 	{
-		if ( Entity* target = (Entity*)node->element )
+		if ( Entity* target = static_cast<Entity*>(node->element) )
 		{
 			if ( target->monsterIsTargetable() && entityDist(target, my) < 2 * TOUCHRANGE )
 			{
@@ -785,7 +785,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 		{
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		if ( bodypart == DUCK_HEAD )
 		{
 			head = entity;
@@ -930,7 +930,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 			{
 				for ( auto node = map.creatures->first; node; node = node->next )
 				{
-					if ( Entity* entity = (Entity*)node->element )
+					if ( Entity* entity = static_cast<Entity*>(node->element) )
 					{
 						if ( entity != my )
 						{
@@ -1015,7 +1015,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 			continue;
 		}
 
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -1171,7 +1171,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 
 				DUCK_FLOAT_Z_MULT = std::min(1.0, DUCK_FLOAT_Z_MULT + 0.025);
 
-				real_t ratio = 1.0 - cos((PI / 2) * std::min(DUCK_SPECIAL_TIMER, 35) / (real_t)35);
+				real_t ratio = 1.0 - cos((PI / 2) * std::min(DUCK_SPECIAL_TIMER, 35) / static_cast<real_t>(35));
 				DUCK_INERT_ANIM = ratio;
 				real_t floatHeight = inertHeight - 2.0 * abs(DUCK_FLOAT_ATK);
 
@@ -1259,12 +1259,12 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 					DUCK_DIVE_ANIM *= 0.8; // decay if previous dive
 					if ( DUCK_FLOAT_ATK_DIVE >= 5.0 )
 					{
-						DUCK_FLOAT_ATK_DIVE -= (DUCK_FLOAT_ATK_DIVE - 5.0) * (DUCK_SPECIAL_TIMER / (real_t)interval);
+						DUCK_FLOAT_ATK_DIVE -= (DUCK_FLOAT_ATK_DIVE - 5.0) * (DUCK_SPECIAL_TIMER / static_cast<real_t>(interval));
 						DUCK_FLOAT_ATK_DIVE = std::max(5.0, DUCK_FLOAT_ATK_DIVE);
 					}
 					else
 					{
-						DUCK_FLOAT_ATK_DIVE = 5 * sin((DUCK_SPECIAL_TIMER / (real_t)(4 * interval)) * 2 * PI);
+						DUCK_FLOAT_ATK_DIVE = 5 * sin((DUCK_SPECIAL_TIMER / static_cast<real_t>(4 * interval)) * 2 * PI);
 					}
 				}
 				else if ( DUCK_SPECIAL_TIMER >= interval && (DUCK_SPECIAL_TIMER - interval) <= interval2 )
@@ -1277,7 +1277,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 
 					entity->fskill[1] += 0.1;
 
-					DUCK_FLOAT_ATK_DIVE = 5 * (1 - 2 * sin((PI / 2) * std::min(interval2, currentTick) / (real_t)interval2));
+					DUCK_FLOAT_ATK_DIVE = 5 * (1 - 2 * sin((PI / 2) * std::min(interval2, currentTick) / static_cast<real_t>(interval2)));
 				}
 				else if ( (DUCK_SPECIAL_TIMER - interval - interval2) >= 0 )
 				{
@@ -1285,7 +1285,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 					entity->fskill[1] += 0.1;
 					DUCK_FLOAT_Z_MULT = std::min(1.0, DUCK_FLOAT_Z_MULT + 0.025);
 
-					real_t ratio = 1.0 - cos((PI / 2) * std::min(currentTick, 35) / (real_t)35);
+					real_t ratio = 1.0 - cos((PI / 2) * std::min(currentTick, 35) / static_cast<real_t>(35));
 					DUCK_DIVE_ANIM = ratio;
 					entity->fskill[0] = std::min(6 * PI / 8, - PI / 8 + ratio * 6 * PI / 4);
 
@@ -1293,7 +1293,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 					real_t end = 15.5;
 					real_t midpoint = start + (end - start) / 2;
 
-					real_t ratio2 = 1.0 - cos((PI / 2) * std::min(std::max(0, currentTick - 5), 25) / (real_t)25);
+					real_t ratio2 = 1.0 - cos((PI / 2) * std::min(std::max(0, currentTick - 5), 25) / static_cast<real_t>(25));
 					DUCK_FLOAT_ATK_DIVE = midpoint - ((end - start) / 2) * sin(PI / 2 - PI * ratio2);
 					if ( currentTick >= 22 )
 					{
@@ -1333,7 +1333,7 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 						const real_t bobDepth = 0.25;
 						if ( (currentTick - huntInterval) % interval4 < raiseLowerInterval )
 						{
-							DUCK_FLOAT_ATK_DIVE -= diveDepth * sin(PI / 2 * ((currentTick - huntInterval) % interval4) / (real_t)(raiseLowerInterval));
+							DUCK_FLOAT_ATK_DIVE -= diveDepth * sin(PI / 2 * ((currentTick - huntInterval) % interval4) / static_cast<real_t>(raiseLowerInterval));
 						}
 						else if ( (currentTick - huntInterval) % interval4 < interval4 / 2 )
 						{
@@ -1349,10 +1349,10 @@ void duckAnimate(Entity* my, Stat* myStats, double dist)
 						}
 						else if ( (currentTick - huntInterval) % interval4 < (interval4 / 2 + raiseLowerInterval) )
 						{
-							DUCK_FLOAT_ATK_DIVE += -diveDepth + diveDepth * sin(PI / 2 * ((currentTick - huntInterval - interval4 / 2) % interval4) / (real_t)(raiseLowerInterval));
+							DUCK_FLOAT_ATK_DIVE += -diveDepth + diveDepth * sin(PI / 2 * ((currentTick - huntInterval - interval4 / 2) % interval4) / static_cast<real_t>(raiseLowerInterval));
 						}
 
-						DUCK_FLOAT_ATK_DIVE += bobDepth * sin((currentTick % TICKS_PER_SECOND / (real_t)TICKS_PER_SECOND) * 2 * PI);
+						DUCK_FLOAT_ATK_DIVE += bobDepth * sin((currentTick % TICKS_PER_SECOND / static_cast<real_t>(TICKS_PER_SECOND)) * 2 * PI);
 
 						if ( currentTick > huntInterval && (currentTick % (2 * huntInterval) == huntInterval / 2) )
 						{

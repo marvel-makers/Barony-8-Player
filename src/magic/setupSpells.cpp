@@ -509,7 +509,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -518,7 +518,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_force);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_magicmissile, SPELL_MAGICMISSILE);
@@ -528,7 +528,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -537,7 +537,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_magicmissile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_cold, SPELL_COLD);
@@ -547,7 +547,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -556,7 +556,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_cold);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_fireball, SPELL_FIREBALL);
@@ -568,7 +568,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -577,7 +577,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_fire);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_lightning, SPELL_LIGHTNING);
@@ -589,7 +589,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -598,7 +598,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_lightning);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_removecurse, SPELL_REMOVECURSE);
@@ -610,7 +610,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_removecurse);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 
 	spellConstructor(&spell_light, SPELL_LIGHT);
@@ -622,7 +622,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_light);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	element->channeledMana = 1;
 
@@ -635,7 +635,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_identify);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 
 	spellConstructor(&spell_magicmapping, SPELL_MAGICMAPPING);
@@ -647,7 +647,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_magicmapping);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_sleep, SPELL_SLEEP);
@@ -657,7 +657,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -666,7 +666,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_sleep);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_confuse, SPELL_CONFUSE);
@@ -676,7 +676,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -685,7 +685,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_confuse);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 	//element->mana = 15; //Set the spell's mana to 15 so that it lasts ~30 seconds.
 
@@ -696,7 +696,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -705,7 +705,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_slow);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_opening, SPELL_OPENING);
@@ -715,7 +715,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -724,7 +724,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_opening);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_locking, SPELL_LOCKING);
@@ -734,7 +734,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -743,7 +743,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_locking);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_levitation, SPELL_LEVITATION);
@@ -755,7 +755,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_levitation);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	element->channeledMana = 1;
 
@@ -768,7 +768,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_invisible);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	element->channeledMana = 1;
 
@@ -781,7 +781,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_teleportation);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 
 	spellConstructor(&spell_polymorph, SPELL_SELF_POLYMORPH);
@@ -793,7 +793,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_selfPolymorph);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 
 	spellConstructor(&spell_healing, SPELL_HEALING);
@@ -805,7 +805,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_heal);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	/*spellConstructor(&spell_extrahealing, SPELL_EXTRAHEALING);
@@ -846,7 +846,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_cure_ailment);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_dig, SPELL_DIG);
@@ -858,7 +858,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -867,7 +867,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_dig);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_stoneblood, SPELL_STONEBLOOD);
@@ -877,7 +877,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile_trio);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -886,7 +886,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_stoneblood);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_bleed, SPELL_BLEED);
@@ -896,7 +896,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -905,7 +905,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_bleed);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_summon, SPELL_SUMMON);
@@ -917,7 +917,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_summon);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_dominate, SPELL_DOMINATE);
@@ -927,7 +927,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -936,7 +936,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_dominate);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_reflectMagic, SPELL_REFLECT_MAGIC);
@@ -948,7 +948,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_reflectMagic);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*) node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	element->channeledMana = 1;
 
@@ -959,7 +959,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile_trio);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
 	element->elements.first = NULL;
@@ -968,7 +968,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_acidSpray);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_stealWeapon, SPELL_STEAL_WEAPON);
@@ -978,7 +978,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
 	element->elements.first = NULL;
@@ -987,7 +987,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_stealWeapon);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_drainSoul, SPELL_DRAIN_SOUL);
@@ -997,7 +997,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -1006,7 +1006,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_drainSoul);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_vampiricAura, SPELL_VAMPIRIC_AURA);
@@ -1018,7 +1018,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_vampiricAura);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	element->channeledMana = 1;
 
@@ -1031,7 +1031,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_amplifyMagic);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	element->channeledMana = 1;
 
@@ -1042,7 +1042,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
 	element->elements.first = NULL;
@@ -1051,7 +1051,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_charmMonster);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_revertForm, SPELL_REVERT_FORM);
@@ -1063,7 +1063,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_shapeshift);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 	//element->mana = 5;
 
@@ -1076,7 +1076,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_shapeshift);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 	//element->mana = 8;
 
@@ -1089,7 +1089,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_shapeshift);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 	//element->mana = 16;
 
@@ -1102,7 +1102,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_shapeshift);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 	//element->mana = 24;
 
@@ -1115,7 +1115,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_shapeshift);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 	//element->mana = 32;
 
@@ -1126,7 +1126,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile_trio);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
 	element->elements.first = NULL;
@@ -1135,7 +1135,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_sprayWeb);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_poison, SPELL_POISON);
@@ -1145,7 +1145,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
 	element->elements.first = NULL;
@@ -1154,7 +1154,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_poison);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_speed, SPELL_SPEED);
@@ -1166,7 +1166,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_speed);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_fear, SPELL_FEAR);
@@ -1178,7 +1178,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_fear);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_weakness, SPELL_WEAKNESS);
@@ -1188,7 +1188,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
 	element->elements.first = NULL;
@@ -1197,7 +1197,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_weakness);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_strike, SPELL_STRIKE);
@@ -1209,7 +1209,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_strike);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_detectFood, SPELL_DETECT_FOOD);
@@ -1221,7 +1221,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_detectFood);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_trollsBlood, SPELL_TROLLS_BLOOD);
@@ -1233,7 +1233,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_trollsBlood);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_flutter, SPELL_FLUTTER);
@@ -1245,7 +1245,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_flutter);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_dash, SPELL_DASH);
@@ -1257,7 +1257,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_dash);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_shadowTag, SPELL_SHADOW_TAG);
@@ -1267,7 +1267,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
 	element->elements.first = NULL;
@@ -1276,7 +1276,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_shadowTag);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_telePull, SPELL_TELEPULL);
@@ -1286,7 +1286,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
 	element->elements.first = NULL;
@@ -1295,7 +1295,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_telePull);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_demonIllusion, SPELL_DEMON_ILLUSION);
@@ -1305,7 +1305,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 						  //Now for the second element.
 	element->elements.first = NULL;
@@ -1314,7 +1314,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_demonIllusion);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_salvageItem, SPELL_SALVAGE);
@@ -1326,7 +1326,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_salvageItem);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_ghost_bolt, SPELL_GHOST_BOLT);
@@ -1338,7 +1338,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_missile);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -1347,7 +1347,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_ghostBolt);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_slime_acid, SPELL_SLIME_ACID);
@@ -1359,7 +1359,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_slime_spray);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -1368,7 +1368,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_slimeAcid);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_slime_water, SPELL_SLIME_WATER);
@@ -1380,7 +1380,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_slime_spray);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -1389,7 +1389,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_slimeWater);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_slime_fire, SPELL_SLIME_FIRE);
@@ -1401,7 +1401,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_slime_spray);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -1410,7 +1410,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_slimeFire);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_slime_tar, SPELL_SLIME_TAR);
@@ -1422,7 +1422,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_slime_spray);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -1431,7 +1431,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_slimeTar);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spellConstructor(&spell_slime_metal, SPELL_SLIME_METAL);
@@ -1443,7 +1443,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_slime_spray);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node; //Tell the element what list it resides in.
 	//Now for the second element.
 	element->elements.first = NULL;
@@ -1452,7 +1452,7 @@ void setupSpells()   ///TODO: Verify this function.
 	node->element = copySpellElement(&spellElement_slimeMetal);
 	node->size = sizeof(spellElement_t);
 	node->deconstructor = &spellElementDeconstructor;
-	element = (spellElement_t*)node->element;
+	element = static_cast<spellElement_t*>(node->element);
 	element->node = node;
 
 	spell_t* spell = nullptr;
@@ -3469,17 +3469,17 @@ void setupSpells()   ///TODO: Verify this function.
 				std::vector<spellElement_t*> elementList;
 				if ( spell->elements.first )
 				{
-					if ( element = (spellElement_t*)spell->elements.first->element )
+					if ( element = static_cast<spellElement_t*>(spell->elements.first->element) )
 					{
 						if ( element->elements.first && element->elements.first->element )
 						{
 							node_t* node = element->elements.first;
-							element = (spellElement_t*)element->elements.first->element;
+							element = static_cast<spellElement_t*>(element->elements.first->element);
 
 							node = node->next;
 							while ( node )
 							{
-								elementList.push_back((spellElement_t*)node->element);
+								elementList.push_back(static_cast<spellElement_t*>(node->element));
 								node = node->next;
 							}
 						}

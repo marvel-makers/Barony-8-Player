@@ -61,7 +61,7 @@ void deleteMultiplayerSaveGames()
 
 void handleScanPacket() {
     if (directConnect) {
-        Uint32 hostname_len = (Uint32)strlen(MainMenu::getHostname());
+        Uint32 hostname_len = static_cast<Uint32>(strlen(MainMenu::getHostname()));
         SDLNet_Write32(hostname_len, &net_packet->data[4]);
         for (int c = 0; c < hostname_len; ++c) {
             net_packet->data[8 + c] = MainMenu::getHostname()[c];

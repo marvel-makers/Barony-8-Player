@@ -515,7 +515,7 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -540,7 +540,7 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -593,7 +593,7 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
 			}
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -617,14 +617,14 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* shieldNode = list_Node(&my->children, 8);
 				if ( shieldNode )
 				{
-					Entity* shield = (Entity*)shieldNode->element;
+					Entity* shield = static_cast<Entity*>(shieldNode->element);
 					if ( shield->flags[INVISIBLE] )
 					{
 						Entity* weaponarm = nullptr;
 						node_t* weaponarmNode = list_Node(&my->children, LIMB_HUMANOID_RIGHTARM);
 						if ( weaponarmNode )
 						{
-							weaponarm = (Entity*)weaponarmNode->element;
+							weaponarm = static_cast<Entity*>(weaponarmNode->element);
 						}
 						else
 						{
@@ -658,7 +658,7 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
 					node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
 					if ( rightbodyNode )
 					{
-						rightbody = (Entity*)rightbodyNode->element;
+						rightbody = static_cast<Entity*>(rightbodyNode->element);
 					}
 					else
 					{
@@ -669,7 +669,7 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
 					node_t* leftarmNode = list_Node(&my->children, LIMB_HUMANOID_LEFTARM);
 					if ( leftarmNode )
 					{
-						leftarm = (Entity*)leftarmNode->element;
+						leftarm = static_cast<Entity*>(leftarmNode->element);
 					}
 					else
 					{
@@ -952,7 +952,7 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* tempNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
 				if ( tempNode )
 				{
-					Entity* weapon = (Entity*)tempNode->element;
+					Entity* weapon = static_cast<Entity*>(tempNode->element);
 					if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState != MONSTER_STATE_ATTACK) )
 					{
 						// if weapon invisible and I'm not attacking, relax arm.
@@ -1025,7 +1025,7 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				node_t* tempNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
 				if ( tempNode )
 				{
-					Entity* shield = (Entity*)tempNode->element;
+					Entity* shield = static_cast<Entity*>(tempNode->element);
 					if ( shield->flags[INVISIBLE] && (my->monsterState != MONSTER_STATE_ATTACK) )
 					{
 						// if shield invisible and I'm not attacking, relax arm.
@@ -1381,7 +1381,7 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
 	node_t* shieldNode = list_Node(&my->children, 8);
 	if ( shieldNode )
 	{
-		Entity* shieldEntity = (Entity*)shieldNode->element;
+		Entity* shieldEntity = static_cast<Entity*>(shieldNode->element);
 		if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
 		{
 			shieldEntity->yaw -= PI / 6;

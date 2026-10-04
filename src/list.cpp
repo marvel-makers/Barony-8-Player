@@ -56,7 +56,7 @@ void list_RemoveNode(node_t* node)
 	}
 	if (node->list && node->list == map.entities)
 	{
-		Entity* entity = ((Entity*)node->element);
+		Entity* entity = static_cast<Entity*>(node->element);
 		map.entities_map.erase(entity->getUID());
 #ifndef EDITOR
 		for ( int i = 0; i < MAXPLAYERS; ++i )
@@ -98,7 +98,7 @@ void list_RemoveNode(node_t* node)
 
 			if ( chest_inventory )
 			{
-				Item* tmp = ((Item*)node->element);
+				Item* tmp = static_cast<Item*>(node->element);
 				if ( tmp == inputs.getUIInteraction(i)->selectedItem )
 				{
 					// important! crashes occur when deleting items you've selected...
@@ -109,7 +109,7 @@ void list_RemoveNode(node_t* node)
 		}
 		if ( stats[i] && node->list && node->list == &stats[i]->inventory )
 		{
-			Item* tmp = ((Item*)node->element);
+			Item* tmp = static_cast<Item*>(node->element);
 			if ( tmp )
 			{
 				if ( tmp == inputs.getUIInteraction(i)->selectedItem )
@@ -204,7 +204,7 @@ node_t* list_AddNodeFirst(list_t* list)
 	node_t* node;
 
 	// allocate memory for node
-	if ( (node = (node_t*) malloc(sizeof(node_t))) == NULL )
+	if ( (node = static_cast<node_t*>(malloc(sizeof(node_t)))) == NULL )
 	{
 		printlog( "failed to allocate memory for new node!\n" );
 		exit(1);
@@ -255,7 +255,7 @@ node_t* list_AddNodeLast(list_t* list)
 	node_t* node;
 
 	// allocate memory for node
-	if ( (node = (node_t*) malloc(sizeof(node_t))) == NULL )
+	if ( (node = static_cast<node_t*>(malloc(sizeof(node_t)))) == NULL )
 	{
 		printlog( "failed to allocate memory for new node!\n" );
 		exit(1);
@@ -306,7 +306,7 @@ node_t* list_AddNode(list_t* list, int index)
 	}
 
 	// allocate memory for node
-	if ( (node = (node_t*) malloc(sizeof(node_t))) == NULL )
+	if ( (node = static_cast<node_t*>(malloc(sizeof(node_t)))) == NULL )
 	{
 		printlog( "failed to allocate memory for new node!\n" );
 		exit(1);
@@ -428,7 +428,7 @@ list_t* list_CopyNew(list_t* srclist)
 	{
 		return NULL;
 	}
-	list_t* destlist = (list_t*) malloc(sizeof(list_t));
+	list_t* destlist = static_cast<list_t*>(malloc(sizeof(list_t)));
 	if ( !destlist )
 	{
 		printlog("critical error: list_CopyNew() failed to allocate memory for new list!\n");

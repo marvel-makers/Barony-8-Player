@@ -25,21 +25,21 @@ void sendEntityUDP(Entity* entity, int c, bool guarantee)
 	// send entity data to the client
 	strcpy((char*)net_packet->data, "ENTU");
 	SDLNet_Write32((Uint32)entity->getUID(), &net_packet->data[4]);
-	SDLNet_Write16((Uint16)entity->sprite, &net_packet->data[8]);
-	SDLNet_Write16((Sint16)(entity->x * 32), &net_packet->data[10]);
-	SDLNet_Write16((Sint16)(entity->y * 32), &net_packet->data[12]);
-	SDLNet_Write16((Sint16)(entity->z * 32), &net_packet->data[14]);
-	net_packet->data[16] = (Sint8)entity->sizex;
-	net_packet->data[17] = (Sint8)entity->sizey;
-	net_packet->data[18] = (Uint8)(entity->scalex * 128);
-	net_packet->data[19] = (Uint8)(entity->scaley * 128);
-	net_packet->data[20] = (Uint8)(entity->scalez * 128);
-	SDLNet_Write16((Sint16)(entity->yaw * 256), &net_packet->data[21]);
-	SDLNet_Write16((Sint16)(entity->pitch * 256), &net_packet->data[23]);
-	SDLNet_Write16((Sint16)(entity->roll * 256), &net_packet->data[25]);
-	net_packet->data[27] = (Sint8)(entity->focalx * 8);
-	net_packet->data[28] = (Sint8)(entity->focaly * 8);
-	net_packet->data[29] = (Sint8)(entity->focalz * 8);
+	SDLNet_Write16(static_cast<Uint16>(entity->sprite), &net_packet->data[8]);
+	SDLNet_Write16(static_cast<Sint16>(entity->x * 32), &net_packet->data[10]);
+	SDLNet_Write16(static_cast<Sint16>(entity->y * 32), &net_packet->data[12]);
+	SDLNet_Write16(static_cast<Sint16>(entity->z * 32), &net_packet->data[14]);
+	net_packet->data[16] = static_cast<Sint8>(entity->sizex);
+	net_packet->data[17] = static_cast<Sint8>(entity->sizey);
+	net_packet->data[18] = static_cast<Uint8>(entity->scalex * 128);
+	net_packet->data[19] = static_cast<Uint8>(entity->scaley * 128);
+	net_packet->data[20] = static_cast<Uint8>(entity->scalez * 128);
+	SDLNet_Write16(static_cast<Sint16>(entity->yaw * 256), &net_packet->data[21]);
+	SDLNet_Write16(static_cast<Sint16>(entity->pitch * 256), &net_packet->data[23]);
+	SDLNet_Write16(static_cast<Sint16>(entity->roll * 256), &net_packet->data[25]);
+	net_packet->data[27] = static_cast<Sint8>(entity->focalx * 8);
+	net_packet->data[28] = static_cast<Sint8>(entity->focaly * 8);
+	net_packet->data[29] = static_cast<Sint8>(entity->focalz * 8);
 	if ( entity->behavior == &actDeathGhost )
 	{
 		Uint32 flags = entity->skill[2];
@@ -61,9 +61,9 @@ void sendEntityUDP(Entity* entity, int c, bool guarantee)
 		}
 	}
 	SDLNet_Write32((Uint32)ticks, &net_packet->data[36]);
-	SDLNet_Write16((Sint16)(entity->vel_x * 32), &net_packet->data[40]);
-	SDLNet_Write16((Sint16)(entity->vel_y * 32), &net_packet->data[42]);
-	SDLNet_Write16((Sint16)(entity->vel_z * 32), &net_packet->data[44]);
+	SDLNet_Write16(static_cast<Sint16>(entity->vel_x * 32), &net_packet->data[40]);
+	SDLNet_Write16(static_cast<Sint16>(entity->vel_y * 32), &net_packet->data[42]);
+	SDLNet_Write16(static_cast<Sint16>(entity->vel_z * 32), &net_packet->data[44]);
 	net_packet->data[46] = 0;
 	for ( j = 0; j < 8; j++ )
 	{
@@ -148,7 +148,7 @@ void serverUpdateBodypartIDs(Entity* entity)
 			{
 				continue;
 			}
-			Entity* tempEntity = (Entity*)node->element;
+			Entity* tempEntity = static_cast<Entity*>(node->element);
 			if ( entity->behavior == &actMonster )
 			{
 				SDLNet_Write32(tempEntity->getUID(), &net_packet->data[8 + 4 * (i - 2)]);
@@ -198,7 +198,7 @@ void serverUpdateEntityBodypart(Entity* entity, int bodypart)
 		{
 			continue;
 		}
-		Entity* tempEntity = (Entity*)node->element;
+		Entity* tempEntity = static_cast<Entity*>(node->element);
 		SDLNet_Write32(tempEntity->sprite, &net_packet->data[9]);
 		net_packet->data[13] = (tempEntity->flags[INVISIBLE] ? 1 : 0);
 		net_packet->data[13] |= (tempEntity->flags[INVISIBLE_DITHER] ? (1 << 1) : 0);
@@ -522,7 +522,7 @@ Entity* receiveEntity(Entity* entity)
 	else
 	{
 	    oldSprite = entity->sprite;
-		entity->sprite = (int)SDLNet_Read16(&net_packet->data[8]);
+		entity->sprite = static_cast<int>(SDLNet_Read16(&net_packet->data[8]));
 	}
 
     // for certain monsters, we don't want to use certain bytes,
@@ -595,14 +595,14 @@ Entity* receiveEntity(Entity* entity)
 
 	entity->lastupdate = ticks;
 	entity->lastupdateserver = (Uint32)SDLNet_Read32(&net_packet->data[36]);
-	entity->setUID((int)SDLNet_Read32(&net_packet->data[4])); // remember who I am
-	entity->new_x = ((Sint16)SDLNet_Read16(&net_packet->data[10])) / 32.0;
-	entity->new_y = ((Sint16)SDLNet_Read16(&net_packet->data[12])) / 32.0;
+	entity->setUID(static_cast<int>(SDLNet_Read32(&net_packet->data[4]))); // remember who I am
+	entity->new_x = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[10])) / 32.0;
+	entity->new_y = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[12])) / 32.0;
 	if (!excludeForAnimation && (newentity || monsterType != SCARAB)) {
-	    entity->new_z = ((Sint16)SDLNet_Read16(&net_packet->data[14])) / 32.0;
+	    entity->new_z = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[14])) / 32.0;
 	}
-	entity->sizex = (Sint8)net_packet->data[16];
-	entity->sizey = (Sint8)net_packet->data[17];
+	entity->sizex = static_cast<Sint8>(net_packet->data[16]);
+	entity->sizey = static_cast<Sint8>(net_packet->data[17]);
 	if (newentity || monsterType != SLIME) {
 	    entity->scalex = ((Uint8)net_packet->data[18]) / 128.f;
 	    entity->scaley = ((Uint8)net_packet->data[19]) / 128.f;
@@ -610,10 +610,10 @@ Entity* receiveEntity(Entity* entity)
 	}
 	if ( newentity || !excludeYaw )
 	{
-		entity->new_yaw = ((Sint16)SDLNet_Read16(&net_packet->data[21])) / 256.0;
+		entity->new_yaw = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[21])) / 256.0;
 	}
-	entity->new_pitch = ((Sint16)SDLNet_Read16(&net_packet->data[23])) / 256.0;
-	entity->new_roll = ((Sint16)SDLNet_Read16(&net_packet->data[25])) / 256.0;
+	entity->new_pitch = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[23])) / 256.0;
+	entity->new_roll = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[25])) / 256.0;
 	if ( newentity )
 	{
 		entity->x = entity->new_x;
@@ -623,10 +623,10 @@ Entity* receiveEntity(Entity* entity)
 		entity->pitch = entity->new_pitch;
 		entity->roll = entity->new_roll;
 	}
-	entity->focalx = ((Sint8)net_packet->data[27]) / 8.0;
-	entity->focaly = ((Sint8)net_packet->data[28]) / 8.0;
+	entity->focalx = static_cast<Sint8>(net_packet->data[27]) / 8.0;
+	entity->focaly = static_cast<Sint8>(net_packet->data[28]) / 8.0;
 	if (!excludeForAnimation) {
-	    entity->focalz = ((Sint8)net_packet->data[29]) / 8.0;
+	    entity->focalz = static_cast<Sint8>(net_packet->data[29]) / 8.0;
 	}
 	for (c = 0; c < 16; ++c)
 	{
@@ -642,9 +642,9 @@ Entity* receiveEntity(Entity* entity)
 			entity->flags[c + 16] = true;
 		}
 	}
-	entity->vel_x = ((Sint16)SDLNet_Read16(&net_packet->data[40])) / 32.0;
-	entity->vel_y = ((Sint16)SDLNet_Read16(&net_packet->data[42])) / 32.0;
-	entity->vel_z = ((Sint16)SDLNet_Read16(&net_packet->data[44])) / 32.0;
+	entity->vel_x = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[40])) / 32.0;
+	entity->vel_y = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[42])) / 32.0;
+	entity->vel_z = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[44])) / 32.0;
 
 	return entity;
 }
@@ -702,7 +702,7 @@ void clientActions(Entity* entity)
 			entity->flags[NOUPDATE] = true;
 			break;
 		case 163:
-			entity->skill[2] = (int)SDLNet_Read32(&net_packet->data[30]);
+			entity->skill[2] = static_cast<int>(SDLNet_Read32(&net_packet->data[30]));
 			entity->behavior = &actFountain;
 			break;
 		case 174:
@@ -884,7 +884,7 @@ void clientActions(Entity* entity)
 	// if the above method failed, we check the value of skill[2] (stored in net_packet->data[30]) and assign an action based on that
 	if ( entity->behavior == NULL )
 	{
-		Sint32 c = (Sint32)SDLNet_Read32(&net_packet->data[30]);
+		Sint32 c = static_cast<Sint32>(SDLNet_Read32(&net_packet->data[30]));
 		if ( c < 0 )
 		{
 			switch ( c )

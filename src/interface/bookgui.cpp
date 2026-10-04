@@ -543,7 +543,7 @@ void Player::BookGUI_t::openBook(int index, Item* item)
 	node_t* node;
 	for ( node = booksRead.first; node != NULL; node = node->next )
 	{
-		if ( !strcmp(openBookName.c_str(), (char*)node->element) )
+		if ( !strcmp(openBookName.c_str(), static_cast<char*>(node->element)) )
 		{
 			hasreadbook = true;
 			break;
@@ -551,7 +551,7 @@ void Player::BookGUI_t::openBook(int index, Item* item)
 	}
 	if ( !hasreadbook )
 	{
-		char* bookName = (char*) malloc(sizeof(char) * (strlen(openBookName.c_str()) + 1));
+		char* bookName = static_cast<char*>(malloc(sizeof(char) * (strlen(openBookName.c_str()) + 1)));
 		strcpy(bookName, openBookName.c_str());
 
 		node = list_AddNodeFirst(&booksRead);

@@ -503,7 +503,7 @@ Stat* Entity::getStats() const
 	{
 		if ( this->children.first->next != nullptr )
 		{
-			return (Stat*)this->children.first->next->element;
+			return static_cast<Stat*>(this->children.first->next->element);
 		}
 	}
 

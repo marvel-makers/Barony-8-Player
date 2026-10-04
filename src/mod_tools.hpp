@@ -179,7 +179,7 @@ public:
 			{
 				return invalidEntry;
 			}
-			return (arr[rapidjson::SizeType(monster_stat_rng.rand() % arr.Size())].GetString());
+			return (arr[static_cast<rapidjson::SizeType>(monster_stat_rng.rand() % arr.Size())].GetString());
 		}
 		int getRandomArrayInt(const rapidjson::GenericArray<true, rapidjson::GenericValue<rapidjson::UTF8<>>>& arr, int invalidEntry)
 		{
@@ -187,7 +187,7 @@ public:
 			{
 				return invalidEntry;
 			}
-			return (arr[rapidjson::SizeType(monster_stat_rng.rand() % arr.Size())].GetInt());
+			return (arr[static_cast<rapidjson::SizeType>(monster_stat_rng.rand() % arr.Size())].GetInt());
 		}
 
 		bool readKeyToItemEntry(rapidjson::Value::ConstMemberIterator& itr)
@@ -806,7 +806,7 @@ public:
 		CustomHelpers::addMemberToRoot(d, "inventory_items", invItemsArray);
 		for ( node_t* node = myStats->inventory.first; node; node = node->next )
 		{
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			if ( item )
 			{
 				addArrayMemberFromItem(d, "inventory_items", item);
@@ -1704,107 +1704,107 @@ public:
 
 		auto& fm = levelObj["The Mines"]["fixed_monsters"];
 		fm.PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		fm[rapidjson::SizeType(0)].AddMember("name", "rat", d.GetAllocator());
-		fm[rapidjson::SizeType(0)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		fm[rapidjson::SizeType(0)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(0)].AddMember("name", "rat", d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(0)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(0)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		fm.PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		fm[rapidjson::SizeType(1)].AddMember("name", "skeleton", d.GetAllocator());
-		fm[rapidjson::SizeType(1)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		fm[rapidjson::SizeType(1)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(1)].AddMember("name", "skeleton", d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(1)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(1)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 		
 		fm.PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		fm[rapidjson::SizeType(2)].AddMember("name", "spider", d.GetAllocator());
-		fm[rapidjson::SizeType(2)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		fm[rapidjson::SizeType(2)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(2)].AddMember("name", "spider", d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(2)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(2)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		fm.PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		fm[rapidjson::SizeType(3)].AddMember("name", "troll", d.GetAllocator());
-		fm[rapidjson::SizeType(3)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		fm[rapidjson::SizeType(3)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(3)].AddMember("name", "troll", d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(3)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		fm[static_cast<rapidjson::SizeType>(3)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		levelObj["The Mines"].AddMember("random_generation_monsters", rapidjson::Value(rapidjson::kArrayType), d.GetAllocator());
 
 		auto& mines = levelObj["The Mines"]["random_generation_monsters"];
 		mines.PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		mines[rapidjson::SizeType(0)].AddMember("name", "rat", d.GetAllocator());
-		mines[rapidjson::SizeType(0)].AddMember("weighted_chance", rapidjson::Value(4), d.GetAllocator());
-		mines[rapidjson::SizeType(0)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
-		mines[rapidjson::SizeType(0)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
-		mines[rapidjson::SizeType(0)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		mines[rapidjson::SizeType(0)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(0)].AddMember("name", "rat", d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(0)].AddMember("weighted_chance", rapidjson::Value(4), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(0)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(0)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(0)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(0)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		mines.PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		mines[rapidjson::SizeType(1)].AddMember("name", "skeleton", d.GetAllocator());
-		mines[rapidjson::SizeType(1)].AddMember("weighted_chance", rapidjson::Value(4), d.GetAllocator());
-		mines[rapidjson::SizeType(1)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
-		mines[rapidjson::SizeType(1)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
-		mines[rapidjson::SizeType(1)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		mines[rapidjson::SizeType(1)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(1)].AddMember("name", "skeleton", d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(1)].AddMember("weighted_chance", rapidjson::Value(4), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(1)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(1)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(1)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(1)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		mines.PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		mines[rapidjson::SizeType(2)].AddMember("name", "spider", d.GetAllocator());
-		mines[rapidjson::SizeType(2)].AddMember("weighted_chance", rapidjson::Value(1), d.GetAllocator());
-		mines[rapidjson::SizeType(2)].AddMember("dungeon_depth_minimum", rapidjson::Value(2), d.GetAllocator());
-		mines[rapidjson::SizeType(2)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
-		mines[rapidjson::SizeType(2)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		mines[rapidjson::SizeType(2)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(2)].AddMember("name", "spider", d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(2)].AddMember("weighted_chance", rapidjson::Value(1), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(2)].AddMember("dungeon_depth_minimum", rapidjson::Value(2), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(2)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(2)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(2)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		mines.PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		mines[rapidjson::SizeType(3)].AddMember("name", "troll", d.GetAllocator());
-		mines[rapidjson::SizeType(3)].AddMember("weighted_chance", rapidjson::Value(1), d.GetAllocator());
-		mines[rapidjson::SizeType(3)].AddMember("dungeon_depth_minimum", rapidjson::Value(2), d.GetAllocator());
-		mines[rapidjson::SizeType(3)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
-		mines[rapidjson::SizeType(3)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		mines[rapidjson::SizeType(3)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(3)].AddMember("name", "troll", d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(3)].AddMember("weighted_chance", rapidjson::Value(1), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(3)].AddMember("dungeon_depth_minimum", rapidjson::Value(2), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(3)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(3)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		mines[static_cast<rapidjson::SizeType>(3)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		levelObj.AddMember("The Swamp", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
 		levelObj["The Swamp"].AddMember("random_generation_monsters", rapidjson::Value(rapidjson::kArrayType), d.GetAllocator());
 		levelObj["The Swamp"]["random_generation_monsters"].PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
 
 		auto& swamp = levelObj["The Swamp"]["random_generation_monsters"];
-		swamp[rapidjson::SizeType(0)].AddMember("name", "spider", d.GetAllocator());
-		swamp[rapidjson::SizeType(0)].AddMember("weighted_chance", rapidjson::Value(2), d.GetAllocator());
-		swamp[rapidjson::SizeType(0)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
-		swamp[rapidjson::SizeType(0)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
-		swamp[rapidjson::SizeType(0)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		swamp[rapidjson::SizeType(0)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(0)].AddMember("name", "spider", d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(0)].AddMember("weighted_chance", rapidjson::Value(2), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(0)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(0)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(0)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(0)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		swamp.PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		swamp[rapidjson::SizeType(1)].AddMember("name", "goblin", d.GetAllocator());
-		swamp[rapidjson::SizeType(1)].AddMember("weighted_chance", rapidjson::Value(3), d.GetAllocator());
-		swamp[rapidjson::SizeType(1)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
-		swamp[rapidjson::SizeType(1)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
-		swamp[rapidjson::SizeType(1)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		swamp[rapidjson::SizeType(1)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(1)].AddMember("name", "goblin", d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(1)].AddMember("weighted_chance", rapidjson::Value(3), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(1)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(1)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(1)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(1)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		swamp.PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		swamp[rapidjson::SizeType(2)].AddMember("name", "slime", d.GetAllocator());
-		swamp[rapidjson::SizeType(2)].AddMember("weighted_chance", rapidjson::Value(3), d.GetAllocator());
-		swamp[rapidjson::SizeType(2)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
-		swamp[rapidjson::SizeType(2)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
-		swamp[rapidjson::SizeType(2)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		swamp[rapidjson::SizeType(2)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(2)].AddMember("name", "slime", d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(2)].AddMember("weighted_chance", rapidjson::Value(3), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(2)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(2)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(2)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(2)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		swamp.PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		swamp[rapidjson::SizeType(3)].AddMember("name", "ghoul", d.GetAllocator());
-		swamp[rapidjson::SizeType(3)].AddMember("weighted_chance", rapidjson::Value(2), d.GetAllocator());
-		swamp[rapidjson::SizeType(3)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
-		swamp[rapidjson::SizeType(3)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
-		swamp[rapidjson::SizeType(3)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		swamp[rapidjson::SizeType(3)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(3)].AddMember("name", "ghoul", d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(3)].AddMember("weighted_chance", rapidjson::Value(2), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(3)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(3)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(3)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		swamp[static_cast<rapidjson::SizeType>(3)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		levelObj.AddMember("My level", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
 
 		levelObj["My level"].AddMember("random_generation_monsters", rapidjson::Value(rapidjson::kArrayType), d.GetAllocator());
 		levelObj["My level"]["random_generation_monsters"].PushBack(rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
 		auto& customLevel = levelObj["My level"]["random_generation_monsters"];
-		customLevel[rapidjson::SizeType(0)].AddMember("name", "demon", d.GetAllocator());
-		customLevel[rapidjson::SizeType(0)].AddMember("weighted_chance", rapidjson::Value(1), d.GetAllocator());
-		customLevel[rapidjson::SizeType(0)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
-		customLevel[rapidjson::SizeType(0)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
-		customLevel[rapidjson::SizeType(0)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
-		customLevel[rapidjson::SizeType(0)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
+		customLevel[static_cast<rapidjson::SizeType>(0)].AddMember("name", "demon", d.GetAllocator());
+		customLevel[static_cast<rapidjson::SizeType>(0)].AddMember("weighted_chance", rapidjson::Value(1), d.GetAllocator());
+		customLevel[static_cast<rapidjson::SizeType>(0)].AddMember("dungeon_depth_minimum", rapidjson::Value(0), d.GetAllocator());
+		customLevel[static_cast<rapidjson::SizeType>(0)].AddMember("dungeon_depth_maximum", rapidjson::Value(99), d.GetAllocator());
+		customLevel[static_cast<rapidjson::SizeType>(0)].AddMember("variants", rapidjson::Value(rapidjson::kObjectType), d.GetAllocator());
+		customLevel[static_cast<rapidjson::SizeType>(0)]["variants"].AddMember("default", rapidjson::Value(1), d.GetAllocator());
 
 		CustomHelpers::addMemberToRoot(d, "levels", levelObj);
 

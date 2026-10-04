@@ -652,7 +652,7 @@ void slimeAnimate(Entity* my, Stat* myStats, double dist)
 			if ( swimmingtiles[map.tiles[index]]
 				|| lavatiles[map.tiles[index]] )
 			{
-				slimeWaterBob = sin(((ticks % (TICKS_PER_SECOND * 2)) / ((real_t)TICKS_PER_SECOND * 2.0)) * (2.0 * PI)) * 0.5;
+				slimeWaterBob = sin(((ticks % (TICKS_PER_SECOND * 2)) / (static_cast<real_t>(TICKS_PER_SECOND) * 2.0)) * (2.0 * PI)) * 0.5;
 				swimming = true;
 			}
 		}

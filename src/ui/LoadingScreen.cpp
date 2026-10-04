@@ -163,7 +163,7 @@ void doLoadingScreen() {
 			// build new image path
 			const char path[] = "images/ui/LoadingScreen/boulder";
 			auto image_num = spinning_widget->path.substr(sizeof(path) - 1);
-			int i = (int)strtol(image_num.c_str(), nullptr, 10);
+			int i = static_cast<int>(strtol(image_num.c_str(), nullptr, 10));
 			i = (i + 1) % 30;
 
 			// assign image path
@@ -182,7 +182,7 @@ void doLoadingScreen() {
 					// build new image path
 					const char path[] = "images/ui/LoadingScreen/LoadingBar/Gas/";
 					auto image_num = gas->path.substr(sizeof(path) - 1);
-					int i = (int)strtol(image_num.c_str(), nullptr, 10);
+					int i = static_cast<int>(strtol(image_num.c_str(), nullptr, 10));
 					i = (i + 1) % num_frames;
 
 					// assign image path
@@ -201,7 +201,7 @@ void doLoadingScreen() {
 					// build new image path
 					const char path[] = "images/ui/LoadingScreen/LoadingBar/Bubbles/";
 					auto image_num = bubbles->path.substr(sizeof(path) - 1);
-					int i = (int)strtol(image_num.c_str(), nullptr, 10);
+					int i = static_cast<int>(strtol(image_num.c_str(), nullptr, 10));
 					i = (i + 1) % num_frames;
 
 					// assign image path
@@ -260,7 +260,7 @@ void updateLoadingScreen(real_t progress) {
 	// update loading bar
 	auto loading_bar = loading_frame->findFrame("loading_bar");
 	if (loading_bar) {
-		const int size = ((int)progress * 1062) / 100;
+		const int size = (static_cast<int>(progress) * 1062) / 100;
 
 		// gas
 		auto gas = loading_bar->findImage("gas");

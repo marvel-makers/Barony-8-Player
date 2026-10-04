@@ -294,7 +294,7 @@ void demonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( !entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = true;
@@ -319,7 +319,7 @@ void demonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					break;
 				}
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				if ( entity->flags[INVISIBLE] )
 				{
 					entity->flags[INVISIBLE] = false;
@@ -341,7 +341,7 @@ void demonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 		{
 			continue;
 		}
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		entity->x = my->x;
 		entity->y = my->y;
 		entity->z = my->z;
@@ -350,7 +350,7 @@ void demonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 		{
 			if ( bodypart == LIMB_HUMANOID_RIGHTLEG )
 			{
-				rightbody = (Entity*)node->next->element;
+				rightbody = static_cast<Entity*>(node->next->element);
 			}
 			if ( bodypart == LIMB_HUMANOID_RIGHTLEG || my->monsterAttack == 0 )
 			{
@@ -488,7 +488,7 @@ void demonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 				{
 					// vertical chop
 					// get leftarm from bodypart 6 element if ready to attack
-					Entity* leftarm = (Entity*)node->next->element;
+					Entity* leftarm = static_cast<Entity*>(node->next->element);
 
 					if ( my->monsterAttack == 1 || my->monsterAttack == MONSTER_POSE_MELEE_WINDUP1
 						|| my->monsterAttack == MONSTER_POSE_MELEE_WINDUP2 )
@@ -631,7 +631,7 @@ void actDemonCeilingBuster(Entity* my)
 		{
 			if ( x >= 0 && y >= 0 && x < map.width << 4 && y < map.height << 4 )
 			{
-				int index = (MAP_LAYERS - 1) + ((int)floor(y / 16)) * MAP_LAYERS + ((int)floor(x / 16)) * MAP_LAYERS * map.height;
+				int index = (MAP_LAYERS - 1) + static_cast<int>(floor(y / 16)) * MAP_LAYERS + static_cast<int>(floor(x / 16)) * MAP_LAYERS * map.height;
 				if ( map.tiles[index] )
 				{
 					if ( my->monsterAttack == 0 )
@@ -676,8 +676,8 @@ void actDemonCeilingBuster(Entity* my)
 						}
 						if ( entity )
 						{
-							entity->x = ((int)(my->x / 16)) * 16 + local_rng.rand() % 16;
-							entity->y = ((int)(my->y / 16)) * 16 + local_rng.rand() % 16;
+							entity->x = static_cast<int>(my->x / 16) * 16 + local_rng.rand() % 16;
+							entity->y = static_cast<int>(my->y / 16) * 16 + local_rng.rand() % 16;
 							entity->z = -8;
 							entity->flags[PASSABLE] = true;
 							entity->flags[INVISIBLE] = false;

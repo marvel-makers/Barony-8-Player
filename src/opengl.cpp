@@ -230,13 +230,13 @@ mat4x4_t* frustum(mat4x4_t* result, float left, float right, float bot, float to
 }
 
 mat4x4_t* slow_perspective(mat4x4_t* result, float fov, float aspect, float near, float far) {
-    const float h = tanf((fov / 180.f * (float)PI) / 2.f);
+    const float h = tanf((fov / 180.f * static_cast<float>(PI)) / 2.f);
     const float w = h * aspect;
     return frustum(result, -w, w, -h, h, near, far);
 }
 
 mat4x4_t* fast_perspective(mat4x4_t* result, float fov, float aspect, float near, float far) {
-    const float h = tanf((fov / 180.f * (float)PI) / 2.f);
+    const float h = tanf((fov / 180.f * static_cast<float>(PI)) / 2.f);
     const float w = h * aspect;
     
     *result = mat4x4(0.f);
@@ -793,7 +793,7 @@ static ConsoleVariable<Vector4> cvar_color_reflector_shield("/color_reflector_sh
 #endif
 
 static void uploadLightUniforms(view_t* camera, Shader& shader, Entity* entity, int mode, bool remap) {
-    const float cameraPos[4] = {(float)camera->x * 32.f, -(float)camera->z, (float)camera->y * 32.f, 1.f};
+    const float cameraPos[4] = {static_cast<float>(camera->x) * 32.f, -static_cast<float>(camera->z), static_cast<float>(camera->y) * 32.f, 1.f};
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uCameraPos"), 1, cameraPos));
     if (mode == REALCOLORS) {
         if (remap) {
@@ -861,7 +861,7 @@ static void uploadLightUniforms(view_t* camera, Shader& shader, Entity* entity, 
             if ( cvar_colortest->w > 0.001f )
             {
                 const auto period = TICKS_PER_SECOND * 3; // 3 seconds
-                const auto time = (ticks % period) / (real_t)period; // [0-1]
+                const auto time = (ticks % period) / static_cast<real_t>(period); // [0-1]
 
                 remap.x.x *= (1.0 - 0.5 + 0.5 * sin(2 * PI * time) * cvar_colortest->x);
                 remap.y.y *= (1.0 - 0.5 + 0.5 * sin(2 * PI * time) * cvar_colortest->y);
@@ -872,7 +872,7 @@ static void uploadLightUniforms(view_t* camera, Shader& shader, Entity* entity, 
                 remap = mat4x4_t(0.f);
                 
                 const auto period = TICKS_PER_SECOND * 3; // 3 seconds
-                const auto time = (ticks % period) / (real_t)period; // [0-1]
+                const auto time = (ticks % period) / static_cast<real_t>(period); // [0-1]
                 const auto amp = 360.0;
                 
                 vec4_t hsv;
@@ -931,9 +931,9 @@ static void uploadLightUniforms(view_t* camera, Shader& shader, Entity* entity, 
             GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightColor"), 1, (float*)&light));
         } else {
             const GLfloat light[4] = {
-                (float)getLightAtModifier,
-                (float)getLightAtModifier,
-                (float)getLightAtModifier,
+                static_cast<float>(getLightAtModifier),
+                static_cast<float>(getLightAtModifier),
+                static_cast<float>(getLightAtModifier),
                 1.f,
             };
             GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightFactor"), 1, light));
@@ -991,10 +991,10 @@ static void uploadLightUniforms(view_t* camera, Shader& shader, Entity* entity, 
         
         GLfloat uidcolors[4];
         Uint32 uid = entity->getUID();
-        uidcolors[0] = ((Uint8)(uid)) / 255.f;
-        uidcolors[1] = ((Uint8)(uid >> 8)) / 255.f;
-        uidcolors[2] = ((Uint8)(uid >> 16)) / 255.f;
-        uidcolors[3] = ((Uint8)(uid >> 24)) / 255.f;
+        uidcolors[0] = static_cast<Uint8>(uid) / 255.f;
+        uidcolors[1] = static_cast<Uint8>(uid >> 8) / 255.f;
+        uidcolors[2] = static_cast<Uint8>(uid >> 16) / 255.f;
+        uidcolors[3] = static_cast<Uint8>(uid >> 24) / 255.f;
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uColorAdd"), 1, uidcolors));
     }
 }
@@ -1084,7 +1084,7 @@ void glBeginCamera(view_t* camera, bool useHDR, map_t& map)
     GL_CHECK_ERR(glEnable(GL_SCISSOR_TEST));
     GL_CHECK_ERR(glEnable(GL_DEPTH_TEST));
     
-    const float aspect = (real_t)camera->winw / (real_t)camera->winh;
+    const float aspect = static_cast<real_t>(camera->winw) / static_cast<real_t>(camera->winh);
 	const float rotx = camera->vang * 180.f / PI; // get x rotation
 	const float roty = (camera->ang - 3.f * PI / 2.f) * 180.f / PI; // get y rotation
 	const float rotz = 0.f; // get z rotation
@@ -1385,7 +1385,7 @@ void glDrawVoxel(view_t* camera, Entity* entity, int mode) {
     // upload dither amount, if necessary
     if (&shader == &voxelDitheredShader || &shader == &voxelBrightDitheredShader) {
         GL_CHECK_ERR(glUniform1f(shader.uniform("uDitherAmount"),
-            (float)((uint32_t)1 << (dither.value - 1)) / (1 << (Entity::Dither::MAX / 2 - 1))));
+            static_cast<float>((uint32_t)1 << (dither.value - 1))/ (1 << (Entity::Dither::MAX / 2 - 1))));
     }
     
     mat4x4_t m, t, i;
@@ -1467,7 +1467,7 @@ void glDrawVoxel(view_t* camera, Entity* entity, int mode) {
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightColor"), 1, light));
         const GLfloat empty[4] = { 0.f, 0.f, 0.f, 0.f };
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uColorAdd"), 1, empty));
-        const float cameraPos[4] = {(float)camera->x * 32.f, -(float)camera->z, (float)camera->y * 32.f, 1.f};
+        const float cameraPos[4] = {static_cast<float>(camera->x) * 32.f, -static_cast<float>(camera->z), static_cast<float>(camera->y) * 32.f, 1.f};
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uCameraPos"), 1, cameraPos));
     } else {
         uploadLightUniforms(camera, shader, entity, mode, true);
@@ -1490,7 +1490,7 @@ void glDrawVoxel(view_t* camera, Entity* entity, int mode) {
     GL_CHECK_ERR(glEnableVertexAttribArray(2));
 #endif
     
-    GL_CHECK_ERR(glDrawArrays(GL_TRIANGLES, 0, (int)(3 * polymodels[modelindex].numfaces)));
+    GL_CHECK_ERR(glDrawArrays(GL_TRIANGLES, 0, static_cast<int>(3 * polymodels[modelindex].numfaces)));
     
 #ifdef VERTEX_ARRAYS_ENABLED
     GL_CHECK_ERR(glBindVertexArray(polymodels[modelindex].vao));
@@ -1562,7 +1562,7 @@ void glDrawEnemyBarSprite(view_t* camera, int mode, int playerViewport, void* en
     if (!camera || mode != REALCOLORS || !enemyHPBarDetails) {
 		return;
 	}
-	auto enemybar = (EnemyHPDamageBarHandler::EnemyHPDetails*)enemyHPBarDetails;
+	auto enemybar = static_cast<EnemyHPDamageBarHandler::EnemyHPDetails*>(enemyHPBarDetails);
 	SDL_Surface* sprite = enemybar->worldSurfaceSprite;
 	if (!sprite || !enemybar->worldTexture) {
 		return;
@@ -1581,10 +1581,10 @@ void glDrawEnemyBarSprite(view_t* camera, int mode, int playerViewport, void* en
     mat4x4_t m, t;
     
     // model matrix
-    const float height = (float)enemybar->worldZ - 6.f;
+    const float height = static_cast<float>(enemybar->worldZ) - 6.f;
     const float drawOffsetY = enemybar->worldSurfaceSpriteStatusEffects ?
         enemybar->worldSurfaceSpriteStatusEffects->h / -2.f : 0.f;
-    v = vec4((float)enemybar->worldX * 2.f, -height * 2.f, (float)enemybar->worldY * 2.f, 0.f);
+    v = vec4(static_cast<float>(enemybar->worldX) * 2.f, -height * 2.f, static_cast<float>(enemybar->worldY) * 2.f, 0.f);
     (void)translate_mat(&t, &m, &v); m = t;
     mat4x4_t i;
     (void)rotate_mat(&t, &m, -90.f - camera->ang * (180.f / PI), &i.y); m = t;
@@ -1606,7 +1606,7 @@ void glDrawEnemyBarSprite(view_t* camera, int mode, int playerViewport, void* en
         
         const vec4_t window(camera->winx, camera->winy, camera->winw, camera->winh);
         float topOfWindow = window.w + window.y;
-        const float factorY = (float)yres / Frame::virtualScreenY;
+        const float factorY = static_cast<float>(yres) / Frame::virtualScreenY;
         if ( playerViewport >= 0 )
         {
             // sprite height >50 means status effects active, let the effect do the padding
@@ -1646,13 +1646,13 @@ void glDrawEnemyBarSprite(view_t* camera, int mode, int playerViewport, void* en
         :
         // standard levels
         std::max(*MainMenu::cvar_hdrEnabled ? *cvar_ulight_factor_min : 1.f, camera->luminance * *cvar_ulight_factor_mult);
-    const GLfloat factor[4] = { 1.f, 1.f, 1.f, (float)enemybar->animator.fadeOut / 100.f };
+    const GLfloat factor[4] = { 1.f, 1.f, 1.f, static_cast<float>(enemybar->animator.fadeOut) / 100.f };
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightFactor"), 1, factor));
     const GLfloat light[4] = { b, b, b, 1.f };
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightColor"), 1, light));
     const GLfloat empty[4] = { 0.f, 0.f, 0.f, 0.f };
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uColorAdd"), 1, empty));
-    const float cameraPos[4] = {(float)camera->x * 32.f, -(float)camera->z, (float)camera->y * 32.f, 1.f};
+    const float cameraPos[4] = {static_cast<float>(camera->x) * 32.f, -static_cast<float>(camera->z), static_cast<float>(camera->y) * 32.f, 1.f};
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uCameraPos"), 1, cameraPos));
 
 
@@ -1671,7 +1671,7 @@ void glDrawWorldDialogueSprite(view_t* camera, void* worldDialogue, int mode)
 	if (!camera || !worldDialogue || mode != REALCOLORS) {
 		return;
 	}
-	auto dialogue = (Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t*)worldDialogue;
+	auto dialogue = static_cast<Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t*>(worldDialogue);
 	if (dialogue->alpha <= 0.0) {
 		return;
 	}
@@ -1755,13 +1755,13 @@ void glDrawWorldDialogueSprite(view_t* camera, void* worldDialogue, int mode)
         :
         // standard levels
         std::max(*MainMenu::cvar_hdrEnabled ? *cvar_ulight_factor_min : 1.f, camera->luminance * *cvar_ulight_factor_mult);
-    const GLfloat factor[4] = { 1.f, 1.f, 1.f, (float)dialogue->alpha };
+    const GLfloat factor[4] = { 1.f, 1.f, 1.f, static_cast<float>(dialogue->alpha) };
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightFactor"), 1, factor));
     const GLfloat light[4] = { b, b, b, 1.f };
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightColor"), 1, light));
     const GLfloat empty[4] = { 0.f, 0.f, 0.f, 0.f };
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uColorAdd"), 1, empty));
-    const float cameraPos[4] = {(float)camera->x * 32.f, -(float)camera->z, (float)camera->y * 32.f, 1.f};
+    const float cameraPos[4] = {static_cast<float>(camera->x) * 32.f, -static_cast<float>(camera->z), static_cast<float>(camera->y) * 32.f, 1.f};
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uCameraPos"), 1, cameraPos));
 
     // draw
@@ -1904,13 +1904,13 @@ void glDrawWorldUISprite(view_t* camera, Entity* entity, int mode)
         // standard levels
         std::max(*MainMenu::cvar_hdrEnabled ? *cvar_ulight_factor_min : 1.f, camera->luminance * *cvar_ulight_factor_mult);
 
-    const GLfloat factor[4] = { 1.f, 1.f, 1.f, (float)entity->worldTooltipAlpha };
+    const GLfloat factor[4] = { 1.f, 1.f, 1.f, static_cast<float>(entity->worldTooltipAlpha) };
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightFactor"), 1, factor));
     const GLfloat light[4] = { b, b, b, 1.f };
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightColor"), 1, light));
     const GLfloat empty[4] = { 0.f, 0.f, 0.f, 0.f };
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uColorAdd"), 1, empty));
-    const float cameraPos[4] = {(float)camera->x * 32.f, -(float)camera->z, (float)camera->y * 32.f, 1.f};
+    const float cameraPos[4] = {static_cast<float>(camera->x) * 32.f, -static_cast<float>(camera->z), static_cast<float>(camera->y) * 32.f, 1.f};
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uCameraPos"), 1, cameraPos));
     
 
@@ -1999,7 +1999,7 @@ void glDrawSprite(view_t* camera, Entity* entity, int mode)
     // upload dither amount, if necessary
     if (&shader == &spriteDitheredShader) {
         GL_CHECK_ERR(glUniform1f(shader.uniform("uDitherAmount"),
-            (float)((uint32_t)1 << (dither.value - 1)) / (1 << (Entity::Dither::MAX / 2 - 1))));
+            static_cast<float>((uint32_t)1 << (dither.value - 1))/ (1 << (Entity::Dither::MAX / 2 - 1))));
     }
     
     vec4_t v;
@@ -2061,13 +2061,13 @@ void glDrawSprite(view_t* camera, Entity* entity, int mode)
         if ( entity->actSpriteUseAlpha != 0 && entity->behavior == &actSprite )
         {
             // use alpha
-            const GLfloat light[4] = { b, b, b, (float)entity->fskill[1]};
+            const GLfloat light[4] = { b, b, b, static_cast<float>(entity->fskill[1])};
             GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightColor"), 1, light));
         }
         else if ( entity->behavior == &actMagicRangefinder )
         {
             // use alpha
-            const GLfloat light[4] = { b * (float)entity->fskill[1], b * (float)entity->fskill[2], b * (float)entity->fskill[3], (float)entity->fskill[0]};
+            const GLfloat light[4] = { b * static_cast<float>(entity->fskill[1]), b * static_cast<float>(entity->fskill[2]), b * static_cast<float>(entity->fskill[3]), static_cast<float>(entity->fskill[0])};
             GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightColor"), 1, light));
         }
         else
@@ -2077,7 +2077,7 @@ void glDrawSprite(view_t* camera, Entity* entity, int mode)
         }
         const GLfloat empty[4] = { 0.f, 0.f, 0.f, 0.f };
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uColorAdd"), 1, empty));
-        const float cameraPos[4] = {(float)camera->x * 32.f, -(float)camera->z, (float)camera->y * 32.f, 1.f};
+        const float cameraPos[4] = {static_cast<float>(camera->x) * 32.f, -static_cast<float>(camera->z), static_cast<float>(camera->y) * 32.f, 1.f};
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uCameraPos"), 1, cameraPos));
     } else {
         uploadLightUniforms(camera, shader, entity, mode, false);
@@ -2244,7 +2244,7 @@ void glDrawSpriteFromImage(view_t* camera, Entity* entity, std::string text, int
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightColor"), 1, light));
     const GLfloat empty[4] = { 0.f, 0.f, 0.f, 0.f };
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uColorAdd"), 1, empty));
-    const float cameraPos[4] = {(float)camera->x * 32.f, -(float)camera->z, (float)camera->y * 32.f, 1.f};
+    const float cameraPos[4] = {static_cast<float>(camera->x) * 32.f, -static_cast<float>(camera->z), static_cast<float>(camera->y) * 32.f, 1.f};
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uCameraPos"), 1, cameraPos));
 
     // draw
@@ -2364,7 +2364,7 @@ void glDrawWorld(view_t* camera, int mode)
     // upload uniforms for dither shader
     if (mode == REALCOLORS) {
         worldDitheredShader.bind();
-        const GLfloat light[4] = { (float)getLightAtModifier, (float)getLightAtModifier, (float)getLightAtModifier, 1.f };
+        const GLfloat light[4] = { static_cast<float>(getLightAtModifier), static_cast<float>(getLightAtModifier), static_cast<float>(getLightAtModifier), 1.f };
         GL_CHECK_ERR(glUniform4fv(worldDitheredShader.uniform("uLightFactor"), 1, light));
     }
     
@@ -2375,9 +2375,9 @@ void glDrawWorld(view_t* camera, int mode)
     
     // upload uniforms for core shader
     if (&shader != &worldDarkShader) {
-        const GLfloat light[4] = { (float)getLightAtModifier, (float)getLightAtModifier, (float)getLightAtModifier, 1.f };
+        const GLfloat light[4] = { static_cast<float>(getLightAtModifier), static_cast<float>(getLightAtModifier), static_cast<float>(getLightAtModifier), 1.f };
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightFactor"), 1, light));
-        const float cameraPos[4] = {(float)camera->x * 32.f, -(float)camera->z, (float)camera->y * 32.f, 1.f};
+        const float cameraPos[4] = {static_cast<float>(camera->x) * 32.f, -static_cast<float>(camera->z), static_cast<float>(camera->y) * 32.f, 1.f};
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uCameraPos"), 1, cameraPos));
     }
     
@@ -2482,7 +2482,7 @@ void glDrawWorld(view_t* camera, int mode)
                 } else {
                     worldDitheredShader.bind();
                     GL_CHECK_ERR(glUniform1f(worldDitheredShader.uniform("uDitherAmount"),
-                        (float)((uint32_t)1 << (dither.value - 1)) / (1 << (Chunk::Dither::MAX / 2 - 1))));
+                        static_cast<float>((uint32_t)1 << (dither.value - 1))/ (1 << (Chunk::Dither::MAX / 2 - 1))));
                     chunk.draw();
                 }
             } else {
@@ -2502,16 +2502,16 @@ void glDrawWorld(view_t* camera, int mode)
         
         // upload texture scroll value
         const float scroll[2] = {
-            ((float)(ticks % 60) / 60.f),
-            ((float)(ticks % 120) / 120.f),
+            (static_cast<float>(ticks % 60) / 60.f),
+            (static_cast<float>(ticks % 120) / 120.f),
         };
         GL_CHECK_ERR(glUniform2fv(shader.uniform("uScroll"), 1, scroll));
         
         // upload light value
         const float light[4] = {
-            (float)getLightAtModifier,
-            (float)getLightAtModifier,
-            (float)getLightAtModifier,
+            static_cast<float>(getLightAtModifier),
+            static_cast<float>(getLightAtModifier),
+            static_cast<float>(getLightAtModifier),
             1.f,
         };
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightFactor"), 1, light));
@@ -2560,7 +2560,7 @@ unsigned int GO_GetPixelU32(int x, int y, view_t& camera)
 
 	GLubyte pixel[4];
     GL_CHECK_ERR(glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, (void*)pixel));
-	oldpix = pixel[0] + (((Uint32)pixel[1]) << 8) + (((Uint32)pixel[2]) << 16) + (((Uint32)pixel[3]) << 24);
+	oldpix = pixel[0] + (static_cast<Uint32>(pixel[1]) << 8) + (static_cast<Uint32>(pixel[2]) << 16) + (static_cast<Uint32>(pixel[3]) << 24);
     if (!hdrEnabled) {
         main_framebuffer.bindForWriting();
     }
@@ -2650,8 +2650,8 @@ void Chunk::build(const map_t& map, bool ceiling, int startX, int startY, int w,
     }
     
     int index2 = 0;
-    const int endX = std::min((int)map.width, startX + w);
-    const int endY = std::min((int)map.height, startY + h);
+    const int endX = std::min(static_cast<int>(map.width), startX + w);
+    const int endY = std::min(static_cast<int>(map.height), startY + h);
     
     // copy tiles
     this->x = startX;
@@ -3093,7 +3093,7 @@ void Chunk::build(const map_t& map, bool ceiling, int startX, int startY, int w,
             }
         }
     }
-    indices = (int)texcoords.size() / 2;
+    indices = static_cast<int>(texcoords.size()) / 2;
     buildBuffers(positions, texcoords, colors);
     //printlog("built chunk with %d tris", indices);
 }

@@ -288,10 +288,10 @@ Item* newItem(const ItemType type, const Status status, const Sint16 beatitude, 
 	// now set all of my data elements
 	// try to sanitize these a bit so that corrupt data doesn't crash the whole game
 	item->type = (type >= 0 && type < NUMITEMS) ? type : ItemType::GEM_ROCK;
-	item->status = (int)status < Status::BROKEN ?
-		Status::BROKEN : ((int)status > EXCELLENT ? EXCELLENT : status);
-	item->beatitude = std::min(std::max((Sint16)-100, beatitude), (Sint16)100);
-	item->count = std::max(count, (Sint16)1);
+	item->status = static_cast<int>(status) < Status::BROKEN ?
+		Status::BROKEN : (static_cast<int>(status) > EXCELLENT ? EXCELLENT : status);
+	item->beatitude = std::min(std::max(static_cast<Sint16>(-100), beatitude), static_cast<Sint16>(100));
+	item->count = std::max(count, static_cast<Sint16>(1));
 	item->appearance = appearance;
 	item->identified = identified;
 	item->uid = itemuids;
@@ -1607,7 +1607,7 @@ bool playerThrowDuck(const int player, Item* const item, int charge)
 		entity->skill[14] = item->appearance;
 		entity->skill[15] = item->identified;
 
-		real_t speed = 1.f + 4.f * (-30 + std::min(50, std::max(30, charge))) / (real_t)(20);
+		real_t speed = 1.f + 4.f * (-30 + std::min(50, std::max(30, charge))) / static_cast<real_t>(20);
 		entity->vel_x = speed * cos(players[player]->entity->yaw);
 		entity->vel_y = speed * sin(players[player]->entity->yaw);
 		entity->vel_z = -.5;
@@ -4955,7 +4955,7 @@ Sint32 Item::potionGetEffectHealth(Entity* my, Stat* myStats) const
 			heal += (5 * (1 + beatitude));
 			break;
 		case POTION_JUICE:
-			heal += (5 * (1 + std::max((Sint16)0, beatitude))); // always 5 at cursed.
+			heal += (5 * (1 + std::max(static_cast<Sint16>(0), beatitude))); // always 5 at cursed.
 			break;
 		case POTION_HEALING:
 		{
@@ -6173,7 +6173,7 @@ void Item::applyLockpickToWall(const int player, const int x, const int y) const
 							strcpy((char*)net_packet->data, "ARMR");
 							net_packet->data[4] = 5;
 							net_packet->data[5] = stats[player]->weapon->status;
-							SDLNet_Write16((int)stats[player]->weapon->type, &net_packet->data[6]);
+							SDLNet_Write16(static_cast<int>(stats[player]->weapon->type), &net_packet->data[6]);
 							net_packet->address.host = net_clients[player - 1].host;
 							net_packet->address.port = net_clients[player - 1].port;
 							net_packet->len = 8;
@@ -7059,7 +7059,7 @@ bool itemSpriteIsFociThirdPersonModel(const int sprite)
 	{
 		for ( int i = 0; i < NUMITEMS; ++i )
 		{
-			if ( itemTypeIsFoci((ItemType)i) )
+			if ( itemTypeIsFoci(static_cast<ItemType>(i)) )
 			{
 				fociModels.insert(items[i].index);
 				if ( items[i].indexShort >= 0 )
@@ -7631,12 +7631,12 @@ void clientUnequipSlotAndUpdateServer(const int player, const EquipItemSendToSer
 
 int Item::getDuckPlayer() const
 {
-	return (int)(appearance % items[type].variations) % MAXPLAYERS;
+	return static_cast<int>(appearance % items[type].variations) % MAXPLAYERS;
 }
 
 int Item::getLootBagPlayer() const
 {
-	return (int)(appearance & 0xF) % MAXPLAYERS;
+	return static_cast<int>(appearance & 0xF) % MAXPLAYERS;
 }
 int Item::getLootBagNumItems() const
 {

@@ -435,7 +435,7 @@ void TreasureRoomGenerator::init()
 
 					int numStations = 1;
 
-					if ( abs((int)res1) - abs((int)res2) >= 1 ) // x level distance
+					if ( abs(static_cast<int>(res1)) - abs(static_cast<int>(res2)) >= 1 ) // x level distance
 					{
 						if ( treasure_rng.rand() % 3 == 0 )
 						{
@@ -1412,7 +1412,7 @@ bool loadSubRoomData(const std::string& fullMapPath, list_t* mapList)
 	}
 
 	// level is successfully loaded, add it to the pool
-	list_t* subRoomList = (list_t*)malloc(sizeof(list_t));
+	list_t* subRoomList = static_cast<list_t*>(malloc(sizeof(list_t)));
 	subRoomList->first = nullptr;
 	subRoomList->last = nullptr;
 
@@ -1433,7 +1433,7 @@ bool loadSubRoomData(const std::string& fullMapPath, list_t* mapList)
 			{
 				if ( !subRoomMap->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * subRoomMap->height] )
 				{
-					door_t* door = (door_t*)malloc(sizeof(door_t));
+					door_t* door = static_cast<door_t*>(malloc(sizeof(door_t)));
 					door->x = x;
 					door->y = y;
 					if ( x == subRoomMap->width - 1 )
@@ -1823,7 +1823,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			std::string fullMapPath = physfsFormatMapName(sublevelname);
 
 			shopmap.tiles.clear();
-			shopmap.entities = (list_t*) malloc(sizeof(list_t));
+			shopmap.entities = static_cast<list_t*>(malloc(sizeof(list_t)));
 			shopmap.entities->first = nullptr;
 			shopmap.entities->last = nullptr;
 			shopmap.creatures = new list_t;
@@ -2152,18 +2152,18 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 	int roomcount = 0;
 	if ( numlevels > 1 )
 	{
-		possiblelocations = (bool*) malloc(sizeof(bool) * map.width * map.height);
-		map.trapexcludelocations = (bool*)malloc(sizeof(bool) * map.width * map.height);
-		map.monsterexcludelocations = (bool*)malloc(sizeof(bool) * map.width * map.height);
-		map.lootexcludelocations = (bool*)malloc(sizeof(bool) * map.width * map.height);
+		possiblelocations = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
+		map.trapexcludelocations = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
+		map.monsterexcludelocations = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
+		map.lootexcludelocations = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
 		for ( int y = 0; y < map.height; y++ )
 		{
 			for ( int x = 0; x < map.width; x++ )
 			{
 				if ( x < (std::max(2, getMapPossibleLocationX1()))
 					|| y < (std::max(2, getMapPossibleLocationY1()))
-					|| x > (std::min(getMapPossibleLocationX2(), (int)map.width - 3))
-					|| y > (std::min(getMapPossibleLocationY2(), (int)map.height - 3)) )
+					|| x > (std::min(getMapPossibleLocationX2(), static_cast<int>(map.width) - 3))
+					|| y > (std::min(getMapPossibleLocationY2(), static_cast<int>(map.height) - 3)) )
 				{
 					possiblelocations[x + y * map.width] = false;
 				}
@@ -2212,10 +2212,10 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				currentlevel, mapseed, monsterOpenTiles, lootOpenTiles);
 		}
 #endif
-		possiblelocations2 = (bool*) malloc(sizeof(bool) * map.width * map.height);
-		firstroomtile = (bool*) malloc(sizeof(bool) * map.width * map.height);
-		secretlevelexittile = (bool*)malloc(sizeof(bool) * map.width * map.height);
-		bool* possiblerooms = (bool*) malloc(sizeof(bool) * numlevels);
+		possiblelocations2 = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
+		firstroomtile = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
+		secretlevelexittile = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
+		bool* possiblerooms = static_cast<bool*>(malloc(sizeof(bool) * numlevels));
 		for ( c = 0; c < numlevels; c++ )
 		{
 			possiblerooms[c] = true;
@@ -2246,14 +2246,14 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				numlevels--;
 				possiblerooms[0] = false;
 				node = mapList.first;
-				node = ((list_t*)node->element)->first;
+				node = static_cast<list_t*>(node->element)->first;
 				doorNode = node->next;
-				tempMap = (map_t*)node->element;
+				tempMap = static_cast<map_t*>(node->element);
 			}
 			else if ( c == 1 && secretlevelexit )
 			{
 				secretlevelmap.tiles.clear();
-				secretlevelmap.entities = (list_t*) malloc(sizeof(list_t));
+				secretlevelmap.entities = static_cast<list_t*>(malloc(sizeof(list_t)));
 				secretlevelmap.entities->first = nullptr;
 				secretlevelmap.entities->last = nullptr;
 				secretlevelmap.creatures = new list_t;
@@ -2336,9 +2336,9 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					++i;
 				}
 				levelnum2 = i;
-				node = ((list_t*)node->element)->first;
+				node = static_cast<list_t*>(node->element)->first;
 				doorNode = node->next;
-				tempMap = (map_t*)node->element;
+				tempMap = static_cast<map_t*>(node->element);
 			}
 			else if ( c == 2 && shoplevel )
 			{
@@ -2373,9 +2373,9 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					++i;
 				}
 				levelnum2 = i;
-				node = ((list_t*)node->element)->first;
+				node = static_cast<list_t*>(node->element)->first;
 				doorNode = node->next;
-				tempMap = (map_t*)node->element;
+				tempMap = static_cast<map_t*>(node->element);
 			}
 				else
 				{
@@ -2406,7 +2406,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						{
 							return false;
 						}
-						node_t* roomNode = ((list_t*)mapNode->element)->first;
+						node_t* roomNode = static_cast<list_t*>(mapNode->element)->first;
 						map_t* candidateMap = static_cast<map_t*>(roomNode->element);
 						outLevelnum2 = mapIndex;
 						outNode = mapNode;
@@ -2449,7 +2449,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 
 					levelnum = chosenLevelnum;
 					levelnum2 = chosenLevelnum2;
-					node = ((list_t*)chosenNode->element)->first;
+					node = static_cast<list_t*>(chosenNode->element)->first;
 					doorNode = node->next;
 					tempMap = chosenMap;
 				}
@@ -2765,8 +2765,8 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					subRoomNode = subRoomNode->next;
 					k++;
 				}
-				subRoomNode = ((list_t*)subRoomNode->element)->first;
-				subRoomMap = (map_t*)subRoomNode->element;
+				subRoomNode = static_cast<list_t*>(subRoomNode->element)->first;
+				subRoomMap = static_cast<map_t*>(subRoomNode->element);
 				subRoomDoorNode = subRoomNode->next;
 
 				subroomLogCount = innerSubRooms.count;
@@ -2791,8 +2791,8 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					subRoomNode = subRoomNode->next;
 					k++;
 				}
-				subRoomNode = ((list_t*)subRoomNode->element)->first;
-				subRoomMap = (map_t*)subRoomNode->element;
+				subRoomNode = static_cast<list_t*>(subRoomNode->element)->first;
+				subRoomMap = static_cast<map_t*>(subRoomNode->element);
 				subRoomDoorNode = subRoomNode->next;
 
 				subroomLogCount = innerSubRooms.count;
@@ -2814,8 +2814,8 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					subRoomNode = subRoomNode->next;
 					k++;
 				}
-				subRoomNode = ((list_t*)subRoomNode->element)->first;
-				subRoomMap = (map_t*)subRoomNode->element;
+				subRoomNode = static_cast<list_t*>(subRoomNode->element)->first;
+				subRoomMap = static_cast<map_t*>(subRoomNode->element);
 				subRoomDoorNode = subRoomNode->next;
 
 				subroomLogCount = shopSubRooms.count;
@@ -2862,8 +2862,8 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						k++;
 					}
 					//messagePlayer(0, "%d + %d jumps!", jumps, k + 1);
-					subRoomNode = ((list_t*)subRoomNode->element)->first;
-					subRoomMap = (map_t*)subRoomNode->element;
+					subRoomNode = static_cast<list_t*>(subRoomNode->element)->first;
+					subRoomMap = static_cast<map_t*>(subRoomNode->element);
 					subRoomDoorNode = subRoomNode->next;
 				}
 
@@ -2981,8 +2981,8 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						for ( node = map.entities->first; node != nullptr; node = nextnode )
 						{
 							nextnode = node->next;
-							Entity* entity = (Entity*)node->element;
-							if ( (int)entity->x == x0 << 4 && (int)entity->y == y0 << 4 )
+							Entity* entity = static_cast<Entity*>(node->element);
+							if ( static_cast<int>(entity->x) == x0 << 4 && static_cast<int>(entity->y) == y0 << 4 )
 							{
 								list_RemoveNode(entity->mynode);
 							}
@@ -2994,7 +2994,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			// copy the entities as well from the tempMap.
 			for ( node = tempMap->entities->first; node != nullptr; node = node->next )
 			{
-				entity = (Entity*)node->element;
+				entity = static_cast<Entity*>(node->element);
 				childEntity = newEntity(entity->sprite, 1, map.entities, nullptr);
 
 				// entity will return nullptr on getStats called in setSpriteAttributes as behaviour &actmonster is not set.
@@ -3022,7 +3022,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				// copy the entities from subroom
 				for ( subRoomNode = subRoomMap->entities->first; subRoomNode != nullptr; subRoomNode = subRoomNode->next )
 				{
-					entity = (Entity*)subRoomNode->element;
+					entity = static_cast<Entity*>(subRoomNode->element);
 					childEntity = newEntity(entity->sprite, 1, map.entities, nullptr);
 
 					// entity will return nullptr on getStats called in setSpriteAttributes as behaviour &actmonster is not set.
@@ -3049,8 +3049,8 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			// finally, copy the doors into a single doors list
 			while ( doorNode != nullptr )
 			{
-				door = (door_t*)doorNode->element;
-				newDoor = (door_t*) malloc(sizeof(door_t));
+				door = static_cast<door_t*>(doorNode->element);
+				newDoor = static_cast<door_t*>(malloc(sizeof(door_t)));
 				newDoor->x = door->x + x;
 				newDoor->y = door->y + y;
 				newDoor->dir = door->dir;
@@ -3066,8 +3066,8 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				// copy subroom doors
 				while ( subRoomDoorNode != nullptr )
 				{
-					door = (door_t*)subRoomDoorNode->element;
-					newDoor = (door_t*)malloc(sizeof(door_t));
+					door = static_cast<door_t*>(subRoomDoorNode->element);
+					newDoor = static_cast<door_t*>(malloc(sizeof(door_t)));
 					newDoor->x = door->x + subRoom_tileStartx;
 					newDoor->y = door->y + subRoom_tileStarty;
 					newDoor->dir = door->dir;
@@ -3143,10 +3143,10 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 	// gates
 	for ( node = doorList.first; node != nullptr; node = node->next )  // loop through gates first to delete conflicting gates/doors
 	{
-		door = (door_t*)node->element;
+		door = static_cast<door_t*>(node->element);
 		for (node2 = map.entities->first; node2 != nullptr; node2 = node2->next)
 		{
-			entity = (Entity*)node2->element;
+			entity = static_cast<Entity*>(node2->element);
 			if ( entity->x / 16 == door->x && entity->y / 16 == door->y
 				&& (/*entity->sprite == 2 || entity->sprite == 3 ||*/ entity->sprite == 19 || entity->sprite == 20
 					|| entity->sprite == 113 || entity->sprite == 114
@@ -3212,24 +3212,24 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							map.tiles[OBSTACLELAYER + door->y * MAP_LAYERS + (door->x + 1)*MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
-								entity = (Entity*)node3->element;
+								entity = static_cast<Entity*>(node3->element);
 								nextnode = node3->next;
 								if ( mapSpriteIsDoorway(entity->sprite) )
 								{
-									if ( (int)(entity->x / 16) == door->x + 2 && (int)(entity->y / 16) == door->y
+									if ( static_cast<int>(entity->x / 16) == door->x + 2 && static_cast<int>(entity->y / 16) == door->y
 										&& (entity->sprite == 3 || entity->sprite == 19 || entity->sprite == 113 || entity->sprite == 217) ) // north/south doors 2 tiles away
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x + 1 && (int)(entity->y / 16) == door->y )
+									else if ( static_cast<int>(entity->x / 16) == door->x + 1 && static_cast<int>(entity->y / 16) == door->y )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x + 1 && (int)(entity->y / 16) == door->y + 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x + 1 && static_cast<int>(entity->y / 16) == door->y + 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x + 1 && (int)(entity->y / 16) == door->y - 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x + 1 && static_cast<int>(entity->y / 16) == door->y - 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
@@ -3247,24 +3247,24 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							map.tiles[OBSTACLELAYER + (door->y + 1)*MAP_LAYERS + door->x * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
-								entity = (Entity*)node3->element;
+								entity = static_cast<Entity*>(node3->element);
 								nextnode = node3->next;
 								if ( mapSpriteIsDoorway(entity->sprite) )
 								{
-									if ( (int)(entity->x / 16) == door->x && (int)(entity->y / 16) == door->y + 2
+									if ( static_cast<int>(entity->x / 16) == door->x && static_cast<int>(entity->y / 16) == door->y + 2
 										&& (entity->sprite == 2 || entity->sprite == 20 || entity->sprite == 114 || entity->sprite == 218) ) // east/west doors 2 tiles away
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x && (int)(entity->y / 16) == door->y + 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x && static_cast<int>(entity->y / 16) == door->y + 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x + 1 && (int)(entity->y / 16) == door->y + 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x + 1 && static_cast<int>(entity->y / 16) == door->y + 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x - 1 && (int)(entity->y / 16) == door->y + 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x - 1 && static_cast<int>(entity->y / 16) == door->y + 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
@@ -3282,24 +3282,24 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							map.tiles[OBSTACLELAYER + door->y * MAP_LAYERS + (door->x - 1) * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
-								entity = (Entity*)node3->element;
+								entity = static_cast<Entity*>(node3->element);
 								nextnode = node3->next;
 								if ( mapSpriteIsDoorway(entity->sprite) )
 								{
-									if ( (int)(entity->x / 16) == door->x - 2 && (int)(entity->y / 16) == door->y
+									if ( static_cast<int>(entity->x / 16) == door->x - 2 && static_cast<int>(entity->y / 16) == door->y
 										&& (entity->sprite == 3 || entity->sprite == 19 || entity->sprite == 113 || entity->sprite == 217) ) // north/south doors 2 tiles away
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x - 1 && (int)(entity->y / 16) == door->y )
+									else if ( static_cast<int>(entity->x / 16) == door->x - 1 && static_cast<int>(entity->y / 16) == door->y )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x - 1 && (int)(entity->y / 16) == door->y + 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x - 1 && static_cast<int>(entity->y / 16) == door->y + 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x - 1 && (int)(entity->y / 16) == door->y - 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x - 1 && static_cast<int>(entity->y / 16) == door->y - 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
@@ -3317,24 +3317,24 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							map.tiles[OBSTACLELAYER + (door->y - 1)*MAP_LAYERS + door->x * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
-								entity = (Entity*)node3->element;
+								entity = static_cast<Entity*>(node3->element);
 								nextnode = node3->next;
 								if ( mapSpriteIsDoorway(entity->sprite) )
 								{
-									if ( (int)(entity->x / 16) == door->x && (int)(entity->y / 16) == door->y - 2
+									if ( static_cast<int>(entity->x / 16) == door->x && static_cast<int>(entity->y / 16) == door->y - 2
 										&& (entity->sprite == 2 || entity->sprite == 20 || entity->sprite == 114 || entity->sprite == 218) ) // east/west doors 2 tiles away
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x && (int)(entity->y / 16) == door->y - 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x && static_cast<int>(entity->y / 16) == door->y - 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x + 1 && (int)(entity->y / 16) == door->y - 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x + 1 && static_cast<int>(entity->y / 16) == door->y - 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x - 1 && (int)(entity->y / 16) == door->y - 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x - 1 && static_cast<int>(entity->y / 16) == door->y - 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
@@ -3350,10 +3350,10 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 	// doors
 	for ( node = doorList.first; node != nullptr; node = node->next ) // now loop through doors to delete conflicting gates/doors
 	{
-		door = (door_t*)node->element;
+		door = static_cast<door_t*>(node->element);
 		for ( node2 = map.entities->first; node2 != nullptr; node2 = node2->next )
 		{
-			entity = (Entity*)node2->element;
+			entity = static_cast<Entity*>(node2->element);
 			if ( entity->x / 16 == door->x && entity->y / 16 == door->y
 				&& (entity->sprite == 2 || entity->sprite == 3/* || entity->sprite == 19 || entity->sprite == 20
 															  || entity->sprite == 113 || entity->sprite == 114*/) )
@@ -3421,24 +3421,24 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							map.tiles[OBSTACLELAYER + door->y * MAP_LAYERS + (door->x + 1) * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
-								entity = (Entity*)node3->element;
+								entity = static_cast<Entity*>(node3->element);
 								nextnode = node3->next;
 								if ( mapSpriteIsDoorway(entity->sprite) )
 								{
-									if ( (int)(entity->x / 16) == door->x + 2 && (int)(entity->y / 16) == door->y
+									if ( static_cast<int>(entity->x / 16) == door->x + 2 && static_cast<int>(entity->y / 16) == door->y
 										&& (entity->sprite == 3 || entity->sprite == 19 || entity->sprite == 113 || entity->sprite == 217) ) // north/south doors 2 tiles away
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x + 1 && (int)(entity->y / 16) == door->y )
+									else if ( static_cast<int>(entity->x / 16) == door->x + 1 && static_cast<int>(entity->y / 16) == door->y )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x + 1 && (int)(entity->y / 16) == door->y + 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x + 1 && static_cast<int>(entity->y / 16) == door->y + 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x + 1 && (int)(entity->y / 16) == door->y - 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x + 1 && static_cast<int>(entity->y / 16) == door->y - 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
@@ -3456,24 +3456,24 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							map.tiles[OBSTACLELAYER + (door->y + 1) * MAP_LAYERS + door->x * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
-								entity = (Entity*)node3->element;
+								entity = static_cast<Entity*>(node3->element);
 								nextnode = node3->next;
 								if ( mapSpriteIsDoorway(entity->sprite) )
 								{
-									if ( (int)(entity->x / 16) == door->x && (int)(entity->y / 16) == door->y + 2
+									if ( static_cast<int>(entity->x / 16) == door->x && static_cast<int>(entity->y / 16) == door->y + 2
 										&& (entity->sprite == 2 || entity->sprite == 20 || entity->sprite == 114 || entity->sprite == 218) ) // east/west doors 2 tiles away
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x && (int)(entity->y / 16) == door->y + 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x && static_cast<int>(entity->y / 16) == door->y + 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x + 1 && (int)(entity->y / 16) == door->y + 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x + 1 && static_cast<int>(entity->y / 16) == door->y + 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x - 1 && (int)(entity->y / 16) == door->y + 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x - 1 && static_cast<int>(entity->y / 16) == door->y + 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
@@ -3491,24 +3491,24 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							map.tiles[OBSTACLELAYER + door->y * MAP_LAYERS + (door->x - 1) * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
-								entity = (Entity*)node3->element;
+								entity = static_cast<Entity*>(node3->element);
 								nextnode = node3->next;
 								if ( mapSpriteIsDoorway(entity->sprite) )
 								{
-									if ( (int)(entity->x / 16) == door->x - 2 && (int)(entity->y / 16) == door->y
+									if ( static_cast<int>(entity->x / 16) == door->x - 2 && static_cast<int>(entity->y / 16) == door->y
 										&& (entity->sprite == 3 || entity->sprite == 19 || entity->sprite == 113 || entity->sprite == 217) ) // north/south doors 2 tiles away
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x - 1 && (int)(entity->y / 16) == door->y )
+									else if ( static_cast<int>(entity->x / 16) == door->x - 1 && static_cast<int>(entity->y / 16) == door->y )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x - 1 && (int)(entity->y / 16) == door->y + 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x - 1 && static_cast<int>(entity->y / 16) == door->y + 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x - 1 && (int)(entity->y / 16) == door->y - 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x - 1 && static_cast<int>(entity->y / 16) == door->y - 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
@@ -3526,24 +3526,24 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							map.tiles[OBSTACLELAYER + (door->y - 1) * MAP_LAYERS + door->x * MAP_LAYERS * map.height] = 0;
 							for ( node3 = map.entities->first; node3 != nullptr; node3 = nextnode )
 							{
-								entity = (Entity*)node3->element;
+								entity = static_cast<Entity*>(node3->element);
 								nextnode = node3->next;
 								if ( mapSpriteIsDoorway(entity->sprite) )
 								{
-									if ( (int)(entity->x / 16) == door->x && (int)(entity->y / 16) == door->y - 2
+									if ( static_cast<int>(entity->x / 16) == door->x && static_cast<int>(entity->y / 16) == door->y - 2
 										&& (entity->sprite == 2 || entity->sprite == 20 || entity->sprite == 114 || entity->sprite == 218) ) // east/west doors 2 tiles away
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x && (int)(entity->y / 16) == door->y - 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x && static_cast<int>(entity->y / 16) == door->y - 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x + 1 && (int)(entity->y / 16) == door->y - 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x + 1 && static_cast<int>(entity->y / 16) == door->y - 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
-									else if ( (int)(entity->x / 16) == door->x - 1 && (int)(entity->y / 16) == door->y - 1 )
+									else if ( static_cast<int>(entity->x / 16) == door->x - 1 && static_cast<int>(entity->y / 16) == door->y - 1 )
 									{
 										list_RemoveNode(entity->mynode);
 									}
@@ -3581,7 +3581,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 	{
 		for ( node = map.entities->first; node != nullptr; node = node->next )
 		{
-			Entity* gateEntity = (Entity*)node->element;
+			Entity* gateEntity = static_cast<Entity*>(node->element);
 			if ( gateEntity->sprite == 19 || gateEntity->sprite == 20 ) // N/S E/W gates take these sprite numbers in the editor.
 			{
 				int gatex = static_cast<int>(gateEntity->x) / 16;
@@ -3730,7 +3730,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		// don't spawn traps in doors
 		for ( node_t* doorNode = doorList.first; doorNode != nullptr; doorNode = doorNode->next )
 		{
-			door_t* door = (door_t*)doorNode->element;
+			door_t* door = static_cast<door_t*>(doorNode->element);
 			int x = std::min<unsigned int>(std::max(0, door->x), map.width - 1); //TODO: Why are const int and unsigned int being compared?
 			int y = std::min<unsigned int>(std::max(0, door->y), map.height - 1); //TODO: Why are const int and unsigned int being compared?
 			if ( possiblelocations[y + x * map.height] == true )
@@ -3756,7 +3756,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		// do a second pass to look for internal doorways
 		for ( node = map.entities->first; node != nullptr; node = node->next )
 		{
-			entity = (Entity*)node->element;
+			entity = static_cast<Entity*>(node->element);
 			int x = entity->x / 16;
 			int y = entity->y / 16;
 			if ( (x >= 1 && x < map.width - 1)
@@ -4059,10 +4059,10 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					for ( tempNode = map.entities->first; tempNode != nullptr; tempNode = nextTempNode )
 					{
 						nextTempNode = tempNode->next;
-						Entity* tempEntity = (Entity*)tempNode->element;
+						Entity* tempEntity = static_cast<Entity*>(tempNode->element);
 						if ( tempEntity->sprite >= 4 && tempEntity->sprite <= 7 )
 						{
-							if ( ((int)floor(tempEntity->x + 8)) / 16 == x && ((int)floor(tempEntity->y + 8)) / 16 == y )
+							if ( static_cast<int>(floor(tempEntity->x + 8)) / 16 == x && static_cast<int>(floor(tempEntity->y + 8)) / 16 == y )
 							{
 								list_RemoveNode(tempNode);
 							}
@@ -4195,7 +4195,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 	bool ceilingTilesAllowed = !strncmp(map.filename, "fortress", 8);
 	for ( node = map.entities->first; node != nullptr; node = node->next )
 	{
-		entity = (Entity*)node->element;
+		entity = static_cast<Entity*>(node->element);
 		int x = entity->x / 16;
 		int y = entity->y / 16;
 
@@ -4203,7 +4203,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		{
 			if ( entity->wallLockAutoGenKey != 0 )
 			{
-				generateKeyItems.push_back(std::make_pair(static_cast<ItemType>((int)KEY_STONE + entity->wallLockMaterial), x + y * 10000));
+				generateKeyItems.push_back(std::make_pair(static_cast<ItemType>(static_cast<int>(KEY_STONE) + entity->wallLockMaterial), x + y * 10000));
 			}
 		}
 		if ( entity->sprite == 119 && ceilingTilesAllowed ) // ceiling tile no block stuff
@@ -4559,7 +4559,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							{
 								for ( node = map.entities->first; node != NULL; node = node->next )
 								{
-									if ( (entity2 = (Entity*)node->element) )
+									if ( (entity2 = static_cast<Entity*>(node->element)) )
 									{
 										if ( entity2->sprite == 19 || entity2->sprite == 20
 											|| entity2->sprite == 113 || entity2->sprite == 114
@@ -4582,7 +4582,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							}
 							for ( node = map.entities->first; node != NULL; node = node->next )
 							{
-								entity2 = (Entity*)node->element;
+								entity2 = static_cast<Entity*>(node->element);
 								if ( entity2->sprite == 1 ) // note entity->behavior == nullptr at this point
 								{
 									list_t* path = generatePath(x, y, entity2->x / 16, entity2->y / 16,
@@ -4729,7 +4729,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					{
 						for ( node = map.entities->first; node != NULL; node = node->next )
 						{
-							if ( (entity2 = (Entity*)node->element) )
+							if ( (entity2 = static_cast<Entity*>(node->element)) )
 							{
 								if ( entity2->sprite == 19 || entity2->sprite == 20
 									|| entity2->sprite == 113 || entity2->sprite == 114
@@ -4752,7 +4752,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 					}
 					for ( node = map.entities->first; node != NULL; node = node->next )
 					{
-						entity2 = (Entity*)node->element;
+						entity2 = static_cast<Entity*>(node->element);
 						if ( entity2->sprite == 1 ) // note entity->behavior == nullptr at this point
 						{
 							foundStart = true;
@@ -5649,7 +5649,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 				}
 			}
 
-			for ( int c = 0; c < std::min(numBells, (int)goodSpots.size()); ++c )
+			for ( int c = 0; c < std::min(numBells, static_cast<int>(goodSpots.size())); ++c )
 			{
 				// choose a random location from those available
 				int pick = map_rng.rand() % goodSpots.size();
@@ -5725,7 +5725,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 	static ConsoleVariable<bool> cvar_debug_station_spawn("/debug_station_spawn", false);
 	if ( treasure_room_generator.bForceStationSpawnForCurrentFloor(secretlevelexit) )
 	{
-		bool* possibleLocationsStations = (bool*)malloc(sizeof(bool) * map.width * map.height);
+		bool* possibleLocationsStations = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
 		memcpy(possibleLocationsStations, possiblelocations, map.width * map.height * sizeof(bool));
 		int numpossibleStationLocations = numpossiblelocations;
 
@@ -6122,22 +6122,22 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		std::set<int> allMushrooms;
 		for ( auto node = map.entities->first; node; node = node->next )
 		{
-			if ( Entity* entity = (Entity*)node->element )
+			if ( Entity* entity = static_cast<Entity*>(node->element) )
 			{
 				if ( entity->sprite == 179 && (entity->colliderDecorationModel == 1607 || entity->colliderDecorationModel == 1610) )
 				{
-					int coord = ((int)(entity->x / 16)) + ((int)(entity->y / 16)) * 10000;
+					int coord = static_cast<int>(entity->x / 16) + static_cast<int>(entity->y / 16) * 10000;
 					allTrees.insert(coord);
 				}
 				else if ( entity->sprite == 179 && (entity->colliderDecorationModel == 1611 || entity->colliderDecorationModel == 1612) )
 				{
-					int coord = ((int)(entity->x / 16)) + ((int)(entity->y / 16)) * 10000;
+					int coord = static_cast<int>(entity->x / 16) + static_cast<int>(entity->y / 16) * 10000;
 					allMushrooms.insert(coord);
 				}
 			}
 		}
 
-		for ( int c = 0; c < (int)goodSpots.size()
+		for ( int c = 0; c < static_cast<int>(goodSpots.size())
 			&& (numOpenAreaBreakables > 0 || numLeaves > 0 || numShrubs > 0 || numMushrooms > 0 || numClosedAreaBreakables > 0); ++c )
 		{
 			// choose a random location from those available
@@ -6350,7 +6350,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		}
 	}
 
-	bool* possibleLocationsBreakables = (bool*)malloc(sizeof(bool) * map.width * map.height);
+	bool* possibleLocationsBreakables = static_cast<bool*>(malloc(sizeof(bool) * map.width * map.height));
 	memcpy(possibleLocationsBreakables, possiblelocations, map.width * map.height * sizeof(bool));
 	int numpossibleBreakableLocations = numpossiblelocations;
 	for ( c = 0; c < std::min(numBreakables, numpossibleBreakableLocations); ++c )
@@ -6808,7 +6808,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 							int picked = findMap->second[pickIndex];
 							if ( picked > NOTHING && picked < NUMMONSTERS )
 							{
-								monsterEvent = (Monster)picked;
+								monsterEvent = static_cast<Monster>(picked);
 								lastMonsterEvent = monsterEvent;
 							}
 						}
@@ -7096,7 +7096,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 	{
 		for ( int i = 0; i < *cvar_treasure_key_force; ++i )
 		{
-			generateKeyItems.push_back(std::make_pair(static_cast<ItemType>((int)KEY_STONE + map_rng.rand() % 7), 0));
+			generateKeyItems.push_back(std::make_pair(static_cast<ItemType>(static_cast<int>(KEY_STONE) + map_rng.rand() % 7), 0));
 		}
 	}
 	if ( generateKeyItems.size() > 0 )
@@ -7127,7 +7127,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 		Entity* playerStart = nullptr;
 		for ( node = map.entities->first; node != NULL; node = node->next )
 		{
-			entity2 = (Entity*)node->element;
+			entity2 = static_cast<Entity*>(node->element);
 
 			if ( !playerStart )
 			{
@@ -7222,7 +7222,7 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 			{
 				for ( node = map.entities->first; node != NULL; node = node->next )
 				{
-					if ( (entity2 = (Entity*)node->element) )
+					if ( (entity2 = static_cast<Entity*>(node->element)) )
 					{
 						if ( entity2->sprite == 19 || entity2->sprite == 20
 							|| entity2->sprite == 113 || entity2->sprite == 114
@@ -7567,14 +7567,14 @@ void debugMap(map_t* map)
 	std::set<Uint32> takenSlots;
 	for ( auto node = map->entities->first; node != nullptr; )
 	{
-		Entity* postProcessEntity = (Entity*)node->element;
+		Entity* postProcessEntity = static_cast<Entity*>(node->element);
 		node = node->next;
 		if ( postProcessEntity )
 		{
 			if ( postProcessEntity->behavior == &actItem && postProcessEntity->z > 4 )
 			{
-				int x = (int)postProcessEntity->x >> 4;
-				int y = (int)postProcessEntity->y >> 4;
+				int x = static_cast<int>(postProcessEntity->x) >> 4;
+				int y = static_cast<int>(postProcessEntity->y) >> 4;
 				takenSlots.insert(x + y * 10000);
 			}
 		}
@@ -7731,7 +7731,7 @@ void assignActions(map_t* map)
 	node_t* nextnode;
 	for ( auto node = map->entities->first; node != nullptr; node = nextnode )
 	{
-		auto entity = (Entity*)node->element;
+		auto entity = static_cast<Entity*>(node->element);
 		nextnode = node->next;
 		if ( !entity )
 		{
@@ -7793,7 +7793,7 @@ void assignActions(map_t* map)
                             for ( node = stats[numplayers]->inventory.first; node != nullptr; node = nextnode )
                             {
                                 nextnode = node->next;
-                                Item* item = (Item*)node->element;
+                                Item* item = static_cast<Item*>(node->element);
                                 if ( itemCategory(item) == SPELL_CAT )
                                 {
                                     continue;    // don't drop spells on death, stupid!
@@ -9203,8 +9203,8 @@ void assignActions(map_t* map)
 							y = -16;
 							break;
 					}
-					x = ((int)(x + entity->x)) >> 4;
-					y = ((int)(y + entity->y)) >> 4;
+					x = static_cast<int>(x + entity->x) >> 4;
+					y = static_cast<int>(y + entity->y) >> 4;
 					if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 					{
 						if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
@@ -9674,8 +9674,8 @@ void assignActions(map_t* map)
 				entity->skill[28] = 1; // is a mechanism
 				entity->boulderTrapPreDelay = entity->boulderTrapPreDelay * TICKS_PER_SECOND; // convert seconds to ticks from editor
 
-				const int x = ((int)(entity->x)) >> 4;
-				const int y = ((int)(entity->y)) >> 4;
+				const int x = static_cast<int>(entity->x) >> 4;
+				const int y = static_cast<int>(entity->y) >> 4;
 				if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 				{
 					if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
@@ -9716,8 +9716,8 @@ void assignActions(map_t* map)
 				entity->skill[28] = 1; // is a mechanism
 				entity->boulderTrapPreDelay = entity->boulderTrapPreDelay * TICKS_PER_SECOND; // convert seconds to ticks from editor
 
-				const int x = ((int)(entity->x)) >> 4;
-				const int y = ((int)(entity->y)) >> 4;
+				const int x = static_cast<int>(entity->x) >> 4;
+				const int y = static_cast<int>(entity->y) >> 4;
 				if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 				{
 					if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
@@ -9758,8 +9758,8 @@ void assignActions(map_t* map)
 				entity->skill[28] = 1; // is a mechanism
 				entity->boulderTrapPreDelay = entity->boulderTrapPreDelay * TICKS_PER_SECOND; // convert seconds to ticks from editor
 
-				const int x = ((int)(entity->x)) >> 4;
-				const int y = ((int)(entity->y)) >> 4;
+				const int x = static_cast<int>(entity->x) >> 4;
+				const int y = static_cast<int>(entity->y) >> 4;
 				if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 				{
 					if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
@@ -9800,8 +9800,8 @@ void assignActions(map_t* map)
 				entity->skill[28] = 1; // is a mechanism
 				entity->boulderTrapPreDelay = entity->boulderTrapPreDelay * TICKS_PER_SECOND; // convert seconds to ticks from editor
 
-				const int x = ((int)(entity->x)) >> 4;
-				const int y = ((int)(entity->y)) >> 4;
+				const int x = static_cast<int>(entity->x) >> 4;
+				const int y = static_cast<int>(entity->y) >> 4;
 				if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
 				{
 					if ( !map->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map->height] )
@@ -10262,8 +10262,8 @@ void assignActions(map_t* map)
 				entity->spellTrapRefireRate = entity->spellTrapRefireRate * TICKS_PER_SECOND; // convert seconds to ticks from editor
 				entity->seedEntityRNG(map_server_rng.getU32());
 
-				const int x = ((int)(entity->x)) >> 4;
-				const int y = ((int)(entity->y)) >> 4;
+				const int x = static_cast<int>(entity->x) >> 4;
+				const int y = static_cast<int>(entity->y) >> 4;
 				//map->tiles[y * MAP_LAYERS + x * MAP_LAYERS * map->height] = 208; //entity->spellTrapCeilingModel
 				Entity* childEntity = nullptr;
 				if ( x >= 0 && y >= 0 && x < map->width && y < map->height )
@@ -11386,7 +11386,7 @@ void assignActions(map_t* map)
 
 	for ( auto node = map->entities->first; node != nullptr; )
 	{
-		Entity* postProcessEntity = (Entity*)node->element;
+		Entity* postProcessEntity = static_cast<Entity*>(node->element);
 		node = node->next;
 		if ( postProcessEntity )
 		{
@@ -11415,7 +11415,7 @@ void assignActions(map_t* map)
 				// see if there's any platforms to set items upon.
 				for ( node_t* tmpnode = map->entities->first; tmpnode != nullptr; tmpnode = tmpnode->next )
 				{
-					Entity* tmpentity = (Entity*)tmpnode->element;
+					Entity* tmpentity = static_cast<Entity*>(tmpnode->element);
 					if ( (tmpentity->behavior == &actFurniture
 							&& (tmpentity->x == postProcessEntity->x) && (tmpentity->y == postProcessEntity->y)
 						) )
@@ -11447,7 +11447,7 @@ void assignActions(map_t* map)
 				list_t* entitiesOnTile = TileEntityList.getTileList(findx, findy);
 				for ( node_t* tmpnode = entitiesOnTile->first; tmpnode != nullptr; tmpnode = tmpnode->next )
 				{
-					Entity* tmpentity = (Entity*)tmpnode->element;
+					Entity* tmpentity = static_cast<Entity*>(tmpnode->element);
 					if ( tmpentity && tmpentity != postProcessEntity )
 					{
 						if ( tmpentity->behavior != &actMonster
@@ -11496,7 +11496,7 @@ void assignActions(map_t* map)
 	}
 	for ( auto node = map->entities->first; node != nullptr; )
 	{
-		Entity* postProcessEntity = (Entity*)node->element;
+		Entity* postProcessEntity = static_cast<Entity*>(node->element);
 		node = node->next;
 		if ( postProcessEntity )
 		{
@@ -11670,7 +11670,7 @@ void assignActions(map_t* map)
 	{
 		for ( auto node = map->entities->first; node != nullptr; )
 		{
-			Entity* postProcessEntity = (Entity*)node->element;
+			Entity* postProcessEntity = static_cast<Entity*>(node->element);
 			node = node->next;
 
 			list_t* inventory = nullptr;
@@ -11685,7 +11685,7 @@ void assignActions(map_t* map)
 			{
 				if ( postProcessEntity->children.first )
 				{
-					inventory = (list_t*)postProcessEntity->children.first->element;
+					inventory = static_cast<list_t*>(postProcessEntity->children.first->element);
 				}
 			}
 
@@ -11831,7 +11831,7 @@ void mapFoodOnLevel(int player)
 	bool previouslyIdentifiedFood = false;
 	for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
 	{
-		Entity* entity = (Entity*)node->element;
+		Entity* entity = static_cast<Entity*>(node->element);
 		if ( entity && entity->behavior == &actItem )
 		{
 			Item* item = newItemFromEntity(entity);
@@ -11888,7 +11888,7 @@ int loadMainMenuMap(bool blessedAdditionMaps, bool forceVictoryMap, int forcemap
 	bool foundVictory = false;
 	for ( node_t* node = topscores_json.first; node != nullptr && !foundVictory; node = node->next )
 	{
-		score_t* score = (score_t*)node->element;
+		score_t* score = static_cast<score_t*>(node->element);
 		if ( score && (score->victory == 3 || score->victory == 4 || score->victory == 5) )
 		{
 			foundVictory = true;
@@ -11896,7 +11896,7 @@ int loadMainMenuMap(bool blessedAdditionMaps, bool forceVictoryMap, int forcemap
 	}
 	for ( node_t* node = topscoresMultiplayer_json.first; node != nullptr && !foundVictory; node = node->next )
 	{
-		score_t* score = (score_t*)node->element;
+		score_t* score = static_cast<score_t*>(node->element);
 		if ( score && (score->victory == 3 || score->victory == 4 || score->victory == 5) )
 		{
 			foundVictory = true;

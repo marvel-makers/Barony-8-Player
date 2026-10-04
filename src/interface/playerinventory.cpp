@@ -751,23 +751,23 @@ Player::PaperDoll_t::PaperDollSlotType Player::PaperDoll_t::paperDollSlotFromCoo
 			slot = SLOT_HELM;
 			if ( y == 0 )
 			{
-				slot = PaperDollSlotType((int)slot + 0);
+				slot = static_cast<PaperDollSlotType>((int)slot + 0);
 			}
 			else if ( y == 1 )
 			{
-				slot = PaperDollSlotType((int)slot + 1);
+				slot = static_cast<PaperDollSlotType>((int)slot + 1);
 			}
 			else if ( y == 2 )
 			{
-				slot = PaperDollSlotType((int)slot + 2);
+				slot = static_cast<PaperDollSlotType>((int)slot + 2);
 			}
 			else if ( y == 3 )
 			{
-				slot = PaperDollSlotType((int)slot + 3);
+				slot = static_cast<PaperDollSlotType>((int)slot + 3);
 			}
 			else
 			{
-				slot = PaperDollSlotType((int)slot + 4);
+				slot = static_cast<PaperDollSlotType>((int)slot + 4);
 			}
 			return slot;
 		}
@@ -777,23 +777,23 @@ Player::PaperDoll_t::PaperDollSlotType Player::PaperDoll_t::paperDollSlotFromCoo
 			slot = SLOT_GLASSES;
 			if ( y == 0 )
 			{
-				slot = PaperDollSlotType((int)slot + 0);
+				slot = static_cast<PaperDollSlotType>((int)slot + 0);
 			}
 			else if ( y == 1 )
 			{
-				slot = PaperDollSlotType((int)slot + 1);
+				slot = static_cast<PaperDollSlotType>((int)slot + 1);
 			}
 			else if ( y == 2 )
 			{
-				slot = PaperDollSlotType((int)slot + 2);
+				slot = static_cast<PaperDollSlotType>((int)slot + 2);
 			}
 			else if ( y == 3 )
 			{
-				slot = PaperDollSlotType((int)slot + 3);
+				slot = static_cast<PaperDollSlotType>((int)slot + 3);
 			}
 			else
 			{
-				slot = PaperDollSlotType((int)slot + 4);
+				slot = static_cast<PaperDollSlotType>((int)slot + 4);
 			}
 			return slot;
 		}
@@ -1281,7 +1281,7 @@ void select_assistshrine_slot(int player, int currentx, int currenty, int diffx,
 	}
 	else if ( assistShrineGUI.currentView == GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_RACE )
 	{
-		lowestItemY = std::max(lowestItemY, (int)assistShrineGUI.raceSlots.size() - 1);
+		lowestItemY = std::max(lowestItemY, static_cast<int>(assistShrineGUI.raceSlots.size()) - 1);
 	}
 
 	if ( currentx < 0 )
@@ -1347,7 +1347,7 @@ void select_assistshrine_slot(int player, int currentx, int currenty, int diffx,
 			if ( diffx != 0 )
 			{
 				x = assistShrineGUI.ASSIST_RACE_COLUMN;
-				y = std::min((int)assistShrineGUI.raceSlots.size(), std::max(0, y));
+				y = std::min(static_cast<int>(assistShrineGUI.raceSlots.size()), std::max(0, y));
 			}
 			else if ( diffy != 0 )
 			{
@@ -1729,7 +1729,7 @@ void select_spell_slot(int player, int currentx, int currenty, int diffx, int di
 	int lowestItemY = players[player]->inventoryUI.spellPanel.getNumSpellsToDisplayVertical() - 1;
 	for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( !item ) { continue; }
 		if ( itemCategory(item) != SPELL_CAT ) { continue; }
 
@@ -2251,7 +2251,7 @@ void select_inventory_slot(int player, int currentx, int currenty, int diffx, in
 			}
 			else
 			{
-				y = (int)oldSlot;
+				y = static_cast<int>(oldSlot);
 			}
 		}
 		else
@@ -2673,7 +2673,7 @@ void releaseChestItem(const int player)
 		{
 			toggleclick = false;
 			nextnode = node->next;
-			Item* tempItem = (Item*)(node->element);
+			Item* tempItem = static_cast<Item*>(node->element);
 			if ( tempItem == selectedItem )
 			{
 				continue;
@@ -2926,7 +2926,7 @@ void releaseChestItem(const int player)
 			{
 				toggleclick = false;
 				nextnode = node->next;
-				Item* tempItem = (Item*)(node->element);
+				Item* tempItem = static_cast<Item*>(node->element);
 				if ( tempItem == selectedItem )
 				{
 					continue;
@@ -3015,7 +3015,7 @@ void releaseChestItem(const int player)
 			for ( node_t* node = stats[player]->inventory.first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* tempItem = (Item*)(node->element);
+				Item* tempItem = static_cast<Item*>(node->element);
 				if ( !tempItem ) { continue; }
 
 				if ( players[player]->paperDoll.getSlotForItem(*tempItem) == dollSlot )
@@ -3457,7 +3457,7 @@ void releaseItem(const int player)
 				{
 					toggleclick = false;
 					nextnode = node->next;
-					Item* tempItem = (Item*) (node->element);
+					Item* tempItem = static_cast<Item*>(node->element);
 					if (tempItem == selectedItem)
 					{
 						continue;
@@ -3724,7 +3724,7 @@ void releaseItem(const int player)
 					{
 						toggleclick = false;
 						nextnode = node->next;
-						Item* tempItem = (Item*)(node->element);
+						Item* tempItem = static_cast<Item*>(node->element);
 						if ( tempItem == selectedItem )
 						{
 							continue;
@@ -4017,7 +4017,7 @@ void releaseItem(const int player)
 						node = nextnode )
 					{
 						nextnode = node->next;
-						Item* tempItem = (Item*)(node->element); 
+						Item* tempItem = static_cast<Item*>(node->element); 
 						if ( !tempItem ) { continue; }
 						if ( tempItem == selectedItem )	{ continue;	}
 
@@ -6959,7 +6959,7 @@ void Player::HUD_t::updateFrameTooltip(Item* item, const int x, const int y, int
 			}
 			else if ( *cvar_appraisal_display == 1 )
 			{
-				real_t percent = (((double)(appraisal.timermax - appraisal.timer)) / ((double)appraisal.timermax)) * 100;
+				real_t percent = (static_cast<double>(appraisal.timermax - appraisal.timer) / static_cast<double>(appraisal.timermax)) * 100;
 				char buf[64];
 				snprintf(buf, sizeof(buf), Language::get(4198), percent);
 	            txtPrompt->setText(buf);
@@ -6968,7 +6968,7 @@ void Player::HUD_t::updateFrameTooltip(Item* item, const int x, const int y, int
 			{
 				Uint32 sec = (appraisal.timer / TICKS_PER_SECOND) % 60;
 				Uint32 min = ((appraisal.timer / TICKS_PER_SECOND) / 60) % 60;
-				real_t percent = (((double)(appraisal.timermax - appraisal.timer)) / ((double)appraisal.timermax)) * 100;
+				real_t percent = (static_cast<double>(appraisal.timermax - appraisal.timer) / static_cast<double>(appraisal.timermax)) * 100;
 				char buf[64];
 				snprintf(buf, sizeof(buf), Language::get(6957), min, sec, percent);
 				txtPrompt->setText(buf);
@@ -7475,7 +7475,7 @@ void Player::HUD_t::finalizeFrameTooltip(Item* item, const int x, const int y, i
 							{
 								// find the furthest left text
 								const unsigned int textWidth = textGet->getWidth();
-								alignx1 = std::min(txt->getSize().x + txt->getSize().w - (int)textWidth, alignx1);
+								alignx1 = std::min(txt->getSize().x + txt->getSize().w - static_cast<int>(textWidth), alignx1);
 							}
 						}
 					}
@@ -7517,7 +7517,7 @@ void Player::HUD_t::finalizeFrameTooltip(Item* item, const int x, const int y, i
 						if ( txt->getHJustify() == Field::justify_t::LEFT )
 						{
 							const unsigned int textWidth = textGet->getWidth();
-							alignx2 = std::max(txt->getSize().x + (int)textWidth, alignx2);
+							alignx2 = std::max(txt->getSize().x + static_cast<int>(textWidth), alignx2);
 							SDL_Rect txtSize = txt->getSize();
 							txtSize.w = textWidth;
 							txt->setSize(txtSize);
@@ -7992,7 +7992,7 @@ int Player::Inventory_t::getKeyAmountForWallLock(Entity& entity) const
 
 	for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* tempItem = (Item*)(node->element);
+		Item* tempItem = static_cast<Item*>(node->element);
 		if ( !tempItem ) { continue; }
 		if ( tempItem->type == key )
 		{
@@ -8039,7 +8039,7 @@ Item* Player::Inventory_t::hasKeyForWallLock(Entity& entity) const
 
 	for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
 	{
-		Item* tempItem = (Item*)(node->element);
+		Item* tempItem = static_cast<Item*>(node->element);
 		if ( !tempItem ) { continue; }
 		if ( tempItem->type == key )
 		{
@@ -9019,7 +9019,7 @@ void Player::Inventory_t::updateInventory()
 						for ( node_t* node = stats[player]->inventory.first; node != NULL; node = nextnode )
 						{
 							nextnode = node->next;
-							Item* tempItem = (Item*)(node->element);
+							Item* tempItem = static_cast<Item*>(node->element);
 							if ( !tempItem ) { continue; }
 							if ( players[player]->paperDoll.getSlotForItem(*tempItem) == dollSlot )
 							{
@@ -9192,7 +9192,7 @@ void Player::Inventory_t::updateInventory()
 		for ( node = shopInv[player]->first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			if ( !item ) { continue; }
 
 			if ( shopGUI.buybackView && !item->playerSoldItemToShop )
@@ -9249,7 +9249,7 @@ void Player::Inventory_t::updateInventory()
 			for ( node = chest_inventory->first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = (Item*)node->element;
+				Item* item = static_cast<Item*>(node->element);
 				if ( !item ) { continue; }
 
 				if ( item == selectedItem )
@@ -9300,7 +9300,7 @@ void Player::Inventory_t::updateInventory()
 	for ( node = stats[player]->inventory.first; node != NULL; node = nextnode )
 	{
 		nextnode = node->next;
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( !item ) { continue; }
 
 		if ( item == selectedItem )
@@ -9612,7 +9612,7 @@ void Player::Inventory_t::updateInventory()
 			for ( node = player_inventory->first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = (Item*)node->element;
+				Item* item = static_cast<Item*>(node->element);
 				if ( !item ) { continue; }
 
 				if ( !GenericGUI[player].isNodeScribingCraftableItem(item->node) )
@@ -9666,7 +9666,7 @@ void Player::Inventory_t::updateInventory()
 			for ( node = player_inventory->first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = (Item*)node->element;
+				Item* item = static_cast<Item*>(node->element);
 				if ( !item ) { continue; }
 
 				if ( !GenericGUI[player].isNodeTinkeringCraftableItem(item->node) )
@@ -9722,7 +9722,7 @@ void Player::Inventory_t::updateInventory()
 		for ( node = shopInv[player]->first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			if ( !item ) { continue; }
 
 			bool mouseOverSlot = false;
@@ -9800,7 +9800,7 @@ void Player::Inventory_t::updateInventory()
 			for ( node = chest_inventory->first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = (Item*)node->element;
+				Item* item = static_cast<Item*>(node->element);
 				if ( !item )
 				{
 					continue;
@@ -10028,8 +10028,8 @@ void Player::Inventory_t::updateInventory()
 						// open a drop-down menu of options for "using" the item
 						itemMenuOpen = true;
 						itemMenuFromHotbar = false;
-						itemMenuX = (inputs.getMouse(player, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX + 8;
-						itemMenuY = (inputs.getMouse(player, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
+						itemMenuX = (inputs.getMouse(player, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX) + 8;
+						itemMenuY = (inputs.getMouse(player, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 						if ( auto interactMenuTop = interactFrame->findImage("interact top background") )
 						{
 							// 10px is slot half height, minus the top interact text height
@@ -10089,7 +10089,7 @@ void Player::Inventory_t::updateInventory()
 		for ( node = stats[player]->inventory.first; node != NULL; node = nextnode )
 		{
 			nextnode = node->next;
-			Item* item = (Item*)node->element;
+			Item* item = static_cast<Item*>(node->element);
 			if ( !item )
 			{
 				continue;
@@ -10621,8 +10621,8 @@ void Player::Inventory_t::updateInventory()
 						// open a drop-down menu of options for "using" the item
 						itemMenuOpen = true;
 						itemMenuFromHotbar = false;
-						itemMenuX = (inputs.getMouse(player, Inputs::X) / (float)xres) * (float)Frame::virtualScreenX + 8;
-						itemMenuY = (inputs.getMouse(player, Inputs::Y) / (float)yres) * (float)Frame::virtualScreenY;
+						itemMenuX = (inputs.getMouse(player, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX) + 8;
+						itemMenuY = (inputs.getMouse(player, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 						if ( auto interactMenuTop = interactFrame->findImage("interact top background") )
 						{
 							// 10px is slot half height, minus the top interact text height
@@ -10904,7 +10904,7 @@ void Player::Inventory_t::updateInventory()
 			for ( node = stats[player]->inventory.first; node != NULL; node = nextnode )
 			{
 				nextnode = node->next;
-				Item* item = (Item*)node->element;
+				Item* item = static_cast<Item*>(node->element);
 				if ( !item ) { continue; }
 
 				int itemx = item->x;
@@ -11088,7 +11088,7 @@ void Player::Inventory_t::updateInventory()
 					for ( node = chest_inventory->first; node != NULL; node = nextnode )
 					{
 						nextnode = node->next;
-						Item* item = (Item*)node->element;
+						Item* item = static_cast<Item*>(node->element);
 						if ( !item ) { continue; }
 
 						int itemx = item->x;
@@ -11880,12 +11880,12 @@ void quickStackItems(int player)
 {
 	for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* itemToStack = (Item*)node->element;
+		Item* itemToStack = static_cast<Item*>(node->element);
 		if ( itemToStack && itemToStack->shouldItemStack(player) )
 		{
 			for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
 			{
-				Item* item2 = (Item*)node->element;
+				Item* item2 = static_cast<Item*>(node->element);
 				// if items are the same, check to see if they should stack
 				if ( item2 && item2 != itemToStack && !itemCompare(itemToStack, item2, false) )
 				{
@@ -11921,7 +11921,7 @@ void autosortInventory(int player, bool sortPaperDoll)
 
 	for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* item = (Item*)node->element;
+		Item* item = static_cast<Item*>(node->element);
 		if ( item )
 		{
 			if ( sortPaperDoll )
@@ -12266,7 +12266,7 @@ void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
 	std::vector<int> itemTypeSortOrder;
 	for ( node_t* node = stats[player]->inventory.first; node != NULL; node = node->next )
 	{
-		Item* itemBeingSorted = (Item*)node->element;
+		Item* itemBeingSorted = static_cast<Item*>(node->element);
 		if ( itemBeingSorted && (itemBeingSorted->x == -1 || itemBeingSorted->x == Player::PaperDoll_t::ITEM_RETURN_TO_INVENTORY_COORDINATE) )
 		{
 			if ( itemCategory(itemBeingSorted) == SPELL_CAT )
@@ -12342,7 +12342,7 @@ void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
 						node_t* node2 = nullptr;
 						for ( node2 = stats[player]->inventory.first; node2 != nullptr; node2 = node2->next )
 						{
-							Item* tempItem = (Item*)node2->element;
+							Item* tempItem = static_cast<Item*>(node2->element);
 							if ( tempItem == itemBeingSorted )
 							{
 								continue;
@@ -12406,7 +12406,7 @@ void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
 							node_t* node2 = nullptr;
 							for ( node2 = stats[player]->inventory.first; node2 != nullptr; node2 = node2->next )
 							{
-								Item* tempItem = (Item*)node2->element;
+								Item* tempItem = static_cast<Item*>(node2->element);
 								if ( tempItem == itemBeingSorted )
 								{
 									continue;
