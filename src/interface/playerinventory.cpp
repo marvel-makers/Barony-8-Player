@@ -845,7 +845,7 @@ void Player::PaperDoll_t::getCoordinatesFromSlotType(Player::PaperDoll_t::PaperD
 	if ( slot >= SLOT_HELM )
 	{
 		x = Player::Inventory_t::DOLL_COLUMN_RIGHT;
-		y += (static_cast<int>(slot - SLOT_HELM));
+		y += slot - SLOT_HELM;
 		outx = x;
 		outy = y;
 	}
@@ -868,7 +868,7 @@ void Player::PaperDoll_t::selectPaperDollCoordinatesFromSlotType(Player::PaperDo
 	if ( slot >= SLOT_HELM )
 	{
 		x = Player::Inventory_t::DOLL_COLUMN_RIGHT;
-		y += (static_cast<int>(slot - SLOT_HELM));
+		y += slot - SLOT_HELM;
 		player.inventoryUI.selectSlot(x, y);
 	}
 	else if ( slot >= SLOT_GLASSES )
@@ -2247,7 +2247,7 @@ void select_inventory_slot(int player, int currentx, int currenty, int diffx, in
 		{
 			if ( oldSlot >= Player::PaperDoll_t::PaperDollSlotType::SLOT_HELM )
 			{
-				y = (int)(oldSlot - Player::PaperDoll_t::PaperDollSlotType::SLOT_HELM);
+				y = oldSlot - Player::PaperDoll_t::PaperDollSlotType::SLOT_HELM;
 			}
 			else
 			{
@@ -6298,15 +6298,15 @@ void Player::HUD_t::updateFrameTooltip(Item* item, const int x, const int y, int
             // original - int iconHeight1 = imgPrimaryIcon->disabled ? 0 : (imgPrimaryIcon->pos.y + std::max(txtPrimaryValue->getSize().h, imgPrimaryIcon->pos.h));
             int iconHeight1 = imgPrimaryIcon->disabled ? 0 :
             (std::max(txtPrimaryValue->getSize().y + txtPrimaryValue->getSize().h
-                      + (numPrimaryLines > 1 ? (numPrimaryLines - 1) * (int)(txtPrimaryValue->getPaddingPerLine()) : 0),
+                      + (numPrimaryLines > 1 ? (numPrimaryLines - 1) * txtPrimaryValue->getPaddingPerLine() : 0),
                       imgPrimaryIcon->pos.y + imgPrimaryIcon->pos.h));
             int iconHeight2 = imgSecondaryIcon->disabled ? 0 :
             (std::max(txtSecondaryValue->getSize().y + txtSecondaryValue->getSize().h
-                      + (numSecondaryLines > 1 ? (numSecondaryLines - 1) * (int)(txtSecondaryValue->getPaddingPerLine()) : 0),
+                      + (numSecondaryLines > 1 ? (numSecondaryLines - 1) * txtSecondaryValue->getPaddingPerLine() : 0),
                       imgSecondaryIcon->pos.y + imgSecondaryIcon->pos.h));
             int iconHeight3 = imgThirdIcon->disabled ? 0 :
             (std::max(txtThirdValue->getSize().y + txtThirdValue->getSize().h
-                      + (numThirdLines > 1 ? (numThirdLines - 1) * (int)(txtThirdValue->getPaddingPerLine()) : 0),
+                      + (numThirdLines > 1 ? (numThirdLines - 1) * txtThirdValue->getPaddingPerLine() : 0),
                       imgThirdIcon->pos.y + imgThirdIcon->pos.h));
             
             if ( !imgSpellIcon->disabled && txtPrimaryValue->getNumTextLines() <= 1 )

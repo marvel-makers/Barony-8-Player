@@ -875,12 +875,12 @@ void lowercaseString(std::string& str)
 
 void hashSpellProp(Uint32& hash, Uint32& hashShift, int& toSet)
 {
-	hash += (Uint32)(static_cast<Uint32>(abs(toSet)) << (hashShift % 32)); ++hashShift;
+	hash += static_cast<Uint32>(abs(toSet)) << hashShift % 32; ++hashShift;
 }
 
 void hashSpellProp(Uint32& hash, Uint32& hashShift, real_t& toSet)
 {
-	hash += (Uint32)(static_cast<Uint32>(abs(toSet) * 100000) << (hashShift % 32)); ++hashShift;
+	hash += static_cast<Uint32>(abs(toSet) * 100000) << hashShift % 32; ++hashShift;
 }
 
 void ItemTooltips_t::readItemsFromFile()
@@ -1125,9 +1125,9 @@ void ItemTooltips_t::readItemsFromFile()
 			items[i].item_slot = ItemEquippableSlot::EQUIPPABLE_IN_SLOT_HELM;
 		}
 
-		hash += (Uint32)(static_cast<Uint32>(items[i].weight) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(items[i].gold_value) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(items[i].level) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(items[i].weight) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(items[i].gold_value) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(items[i].level) << shift % 32; ++shift;
 		/*{
 			auto pair = std::make_pair(items[i].value, i);
 			auto lower = std::lower_bound(itemValueTable.begin(), itemValueTable.end(), pair,
@@ -1408,7 +1408,7 @@ void ItemTooltips_t::readItemsFromFile()
 		{
 			spellItem_t& t = find->second;
 			hash += djb2Hash(const_cast<char*>(t.internalName.c_str()));
-			hash += (Uint32)(static_cast<Uint32>(t.id) << (shift % 32)); ++shift;
+			hash += static_cast<Uint32>(t.id) << shift % 32; ++shift;
 			hash += djb2Hash(const_cast<char*>(t.spellTypeStr.c_str()));
 			for ( auto& tag : t.spellTagsStr )
 			{
@@ -1445,11 +1445,11 @@ void ItemTooltips_t::readItemsFromFile()
 
 			if ( t.skillID >= 0 )
 			{
-				hash += (Uint32)(static_cast<Uint32>(t.skillID) << (shift % 32)); ++shift;
+				hash += static_cast<Uint32>(t.skillID) << shift % 32; ++shift;
 			}
 			else
 			{
-				hash += (Uint32)(static_cast<Uint32>(1) << (shift % 32)); ++shift;
+				hash += static_cast<Uint32>(1) << shift % 32; ++shift;
 			}
 		}
 	}
@@ -3782,7 +3782,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 				int foodMod = (svFlags & SV_FLAG_HUNGER) ? 5 : 3;
 				if ( item.beatitude >= 0 || shouldInvertEquipmentBeatitude(stats[player]) )
 				{
-					foodMod += 3 * std::min(2, (int)abs(item.beatitude));
+					foodMod += 3 * std::min(2, abs(item.beatitude));
 				}
 				snprintf(buf, sizeof(buf), str.c_str(), foodMod,
 					getItemEquipmentEffectsForIconText(conditionalAttribute).c_str());
@@ -3792,7 +3792,7 @@ void ItemTooltips_t::formatItemIcon(const int player, std::string tooltipType, I
 				int effect = 10;
 				if ( item.beatitude >= 0 || shouldInvertEquipmentBeatitude(stats[player]) )
 				{
-					effect += 10 * std::min(2, (int)abs(item.beatitude));
+					effect += 10 * std::min(2, abs(item.beatitude));
 				}
 				snprintf(buf, sizeof(buf), str.c_str(), effect,
 					getItemEquipmentEffectsForIconText(conditionalAttribute).c_str());
@@ -5976,7 +5976,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 		}
 		else if ( detailTag.compare("lockpick_arrow_disarm") == 0 )
 		{
-			int chance = (100 - 100 / (std::max(1, static_cast<int>(stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 10)))); // disarm arrow traps
+			int chance = (100 - 100 / (std::max(1, stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 10))); // disarm arrow traps
 			if ( stats[player]->getModifiedProficiency(PRO_LOCKPICKING) < SKILL_LEVEL_BASIC )
 			{
 				chance = 0;
@@ -5996,7 +5996,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 			}
 			else
 			{
-				chance = (100 - 100 / (static_cast<int>(stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 20 + 1))); // lockpick automatons
+				chance = (100 - 100 / (stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 20 + 1)); // lockpick automatons
 			}
 			if ( compendiumTooltipIntro )
 			{
@@ -6016,7 +6016,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 			compendiumTooltipIntro ? nullptr : players[player]->entity);
 		if ( detailTag.compare("lockpick_arrow_disarm") == 0 )
 		{
-			int chance = (100 - 100 / (std::max(1, static_cast<int>(stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 10)))); // disarm arrow traps
+			int chance = (100 - 100 / (std::max(1, stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 10))); // disarm arrow traps
 			if ( stats[player]->getModifiedProficiency(PRO_LOCKPICKING) < SKILL_LEVEL_BASIC )
 			{
 				chance = 0;
@@ -6187,7 +6187,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 			int skillLVL = std::min(100, stats[player]->getModifiedProficiency(spell->skillID) + statGetINT(stats[player], players[player]->entity));
 			if ( !playerLearnedSpellbook(player, &item) && (spell && spell->difficulty > skillLVL) )
 			{
-				str.insert((size_t)0, 1, '^'); // red line character
+				str.insert(0, 1, '^'); // red line character
 			}
 
 			if ( spell )
@@ -6215,7 +6215,7 @@ void ItemTooltips_t::formatItemDetails(const int player, std::string tooltipType
 			int skillLVL = std::min(100, stats[player]->getModifiedProficiency(spell->skillID) + statGetINT(stats[player], players[player]->entity));
 			if ( !playerLearnedSpellbook(player, &item) && (spell && spell->difficulty > skillLVL) )
 			{
-				str.insert((size_t)0, 1, '^'); // red line character
+				str.insert(0, 1, '^'); // red line character
 			}
 			Sint32 INT = stats[player] ? statGetINT(stats[player], players[player]->entity) : 0;
 			Sint32 skill = stats[player] ? stats[player]->getModifiedProficiency(spell->skillID) : 0;
@@ -7334,7 +7334,7 @@ bool GlyphRenderer_t::readFromFile()
 			glyphData.unpressedRenderedFullpath += glyphData.filename;
 			if ( glyphData.unpressedRenderedFullpath[0] == '/' )
 			{
-				glyphData.unpressedRenderedFullpath.erase((size_t)0, (size_t)1);
+				glyphData.unpressedRenderedFullpath.erase(0, 1);
 			}
             if ( !PHYSFS_getRealDir(glyphData.unpressedRenderedFullpath.c_str()) )
             {
@@ -7346,7 +7346,7 @@ bool GlyphRenderer_t::readFromFile()
 			glyphData.pressedRenderedFullpath += glyphData.filename;
 			if ( glyphData.pressedRenderedFullpath[0] == '/' )
 			{
-				glyphData.pressedRenderedFullpath.erase((size_t)0, (size_t)1);
+				glyphData.pressedRenderedFullpath.erase(0, 1);
 			}
             if ( !PHYSFS_getRealDir(glyphData.pressedRenderedFullpath.c_str()) )
             {
@@ -7375,7 +7375,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 		pressedPath += keyValue.second.pressedGlyphPath;
 		if ( pressedPath[0] == '/' )
 		{
-			pressedPath.erase((size_t)0, (size_t)1);
+			pressedPath.erase(0, 1);
 		}
 
 		std::string unpressedPath = baseSourceFolder;
@@ -7383,7 +7383,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 		unpressedPath += keyValue.second.unpressedGlyphPath;
 		if ( unpressedPath[0] == '/' )
 		{
-			unpressedPath.erase((size_t)0, (size_t)1);
+			unpressedPath.erase(0, 1);
 		}
 
 		auto& glyphData = keyValue.second;
@@ -7403,7 +7403,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 			std::string keyPath = keyValue.second.fullpath;
 			if ( keyPath[0] == '/' )
 			{
-				keyPath.erase((size_t)0, (size_t)1);
+				keyPath.erase(0, 1);
 			}
 			auto key = Image::get(keyPath.c_str());
 			if ( key->getWidth() != 0 )
@@ -7420,7 +7420,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 
 				if ( writePath[0] == '/' )
 				{
-					writePath.erase((size_t)0, (size_t)1);
+					writePath.erase(0, 1);
 				}
 
 				if ( SDL_SavePNG(sprite, writePath.c_str()) == 0 )
@@ -7463,7 +7463,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 			std::string keyPath = keyValue.second.fullpath;
 			if ( keyPath[0] == '/' )
 			{
-				keyPath.erase((size_t)0, (size_t)1);
+				keyPath.erase(0, 1);
 			}
 			auto key = Image::get(keyPath.c_str());
 			if ( key->getWidth() != 0 )
@@ -7479,7 +7479,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 				std::string writePath = keyValue.second.pressedRenderedFullpath;
 				if ( writePath[0] == '/' )
 				{
-					writePath.erase((size_t)0, (size_t)1);
+					writePath.erase(0, 1);
 				}
 
 				if ( SDL_SavePNG(sprite, writePath.c_str()) == 0 )
@@ -10353,11 +10353,11 @@ void GameplayPreferences_t::receivePacket()
 	{
 		return;
 	}
-	int player = (Uint8)net_packet->data[4];
+	int player = net_packet->data[4];
 	if ( player >= 0 && player < MAXPLAYERS )
 	{
 		auto& playerPrefs = gameplayPreferences[player];
-		const int numPrefs = (Uint8)net_packet->data[5];
+		const int numPrefs = net_packet->data[5];
 		for ( int i = 0; i < numPrefs && i < GPREF_ENUM_END; ++i )
 		{
 			int data = (net_packet->data[6 + i] & 0xFF);
@@ -10623,7 +10623,7 @@ void GameplayPreferences_t::receiveGameConfig()
 {
 	if ( !net_packet ) { return; }
 	auto& gameConfig = GameplayPreferences_t::gameConfig;
-	const int numConfigs = (Uint8)net_packet->data[4];
+	const int numConfigs = net_packet->data[4];
 	for ( int i = 0; i < numConfigs && i < GOPT_ENUM_END; ++i )
 	{
 		int data = (net_packet->data[5 + i] & 0xFF);
@@ -12896,55 +12896,55 @@ bool GameModeManager_t::CurrentSession_t::ChallengeRun_t::loadScenario()
 			}
 			else if ( name.compare("HP") == 0 )
 			{
-				baseStats->HP = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->HP = itr->value.GetInt();
 			}
 			else if ( name.compare("MAXHP") == 0 )
 			{
-				baseStats->MAXHP = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->MAXHP = itr->value.GetInt();
 			}
 			else if ( name.compare("MP") == 0 )
 			{
-				baseStats->MP = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->MP = itr->value.GetInt();
 			}
 			else if ( name.compare("MAXMP") == 0 )
 			{
-				baseStats->MAXMP = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->MAXMP = itr->value.GetInt();
 			}
 			else if ( name.compare("STR") == 0 )
 			{
-				baseStats->STR = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->STR = itr->value.GetInt();
 			}
 			else if ( name.compare("DEX") == 0 )
 			{
-				baseStats->DEX = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->DEX = itr->value.GetInt();
 			}
 			else if ( name.compare("CON") == 0 )
 			{
-				baseStats->CON = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->CON = itr->value.GetInt();
 			}
 			else if ( name.compare("INT") == 0 )
 			{
-				baseStats->INT = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->INT = itr->value.GetInt();
 			}
 			else if ( name.compare("PER") == 0 )
 			{
-				baseStats->PER = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->PER = itr->value.GetInt();
 			}
 			else if ( name.compare("CHR") == 0 )
 			{
-				baseStats->CHR = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->CHR = itr->value.GetInt();
 			}
 			else if ( name.compare("EXP") == 0 )
 			{
-				baseStats->EXP = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->EXP = itr->value.GetInt();
 			}
 			else if ( name.compare("LVL") == 0 )
 			{
-				baseStats->LVL = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->LVL = itr->value.GetInt();
 			}
 			else if ( name.compare("GOLD") == 0 )
 			{
-				baseStats->GOLD = static_cast<Sint32>(itr->value.GetInt());
+				baseStats->GOLD = itr->value.GetInt();
 			}
 			else if ( name.compare("PROFICIENCIES") == 0 )
 			{
@@ -12974,55 +12974,55 @@ bool GameModeManager_t::CurrentSession_t::ChallengeRun_t::loadScenario()
 			}
 			else if ( name.compare("HP") == 0 )
 			{
-				addStats->HP = static_cast<Sint32>(itr->value.GetInt());
+				addStats->HP = itr->value.GetInt();
 			}
 			else if ( name.compare("MAXHP") == 0 )
 			{
-				addStats->MAXHP = static_cast<Sint32>(itr->value.GetInt());
+				addStats->MAXHP = itr->value.GetInt();
 			}
 			else if ( name.compare("MP") == 0 )
 			{
-				addStats->MP = static_cast<Sint32>(itr->value.GetInt());
+				addStats->MP = itr->value.GetInt();
 			}
 			else if ( name.compare("MAXMP") == 0 )
 			{
-				addStats->MAXMP = static_cast<Sint32>(itr->value.GetInt());
+				addStats->MAXMP = itr->value.GetInt();
 			}
 			else if ( name.compare("STR") == 0 )
 			{
-				addStats->STR = static_cast<Sint32>(itr->value.GetInt());
+				addStats->STR = itr->value.GetInt();
 			}
 			else if ( name.compare("DEX") == 0 )
 			{
-				addStats->DEX = static_cast<Sint32>(itr->value.GetInt());
+				addStats->DEX = itr->value.GetInt();
 			}
 			else if ( name.compare("CON") == 0 )
 			{
-				addStats->CON = static_cast<Sint32>(itr->value.GetInt());
+				addStats->CON = itr->value.GetInt();
 			}
 			else if ( name.compare("INT") == 0 )
 			{
-				addStats->INT = static_cast<Sint32>(itr->value.GetInt());
+				addStats->INT = itr->value.GetInt();
 			}
 			else if ( name.compare("PER") == 0 )
 			{
-				addStats->PER = static_cast<Sint32>(itr->value.GetInt());
+				addStats->PER = itr->value.GetInt();
 			}
 			else if ( name.compare("CHR") == 0 )
 			{
-				addStats->CHR = static_cast<Sint32>(itr->value.GetInt());
+				addStats->CHR = itr->value.GetInt();
 			}
 			else if ( name.compare("EXP") == 0 )
 			{
-				addStats->EXP = static_cast<Sint32>(itr->value.GetInt());
+				addStats->EXP = itr->value.GetInt();
 			}
 			else if ( name.compare("LVL") == 0 )
 			{
-				addStats->LVL = static_cast<Sint32>(itr->value.GetInt());
+				addStats->LVL = itr->value.GetInt();
 			}
 			else if ( name.compare("GOLD") == 0 )
 			{
-				addStats->GOLD = static_cast<Sint32>(itr->value.GetInt());
+				addStats->GOLD = itr->value.GetInt();
 			}
 			else if ( name.compare("PROFICIENCIES") == 0 )
 			{
@@ -13048,11 +13048,11 @@ bool GameModeManager_t::CurrentSession_t::ChallengeRun_t::loadScenario()
 			std::string name = itr->name.GetString();
 			if ( name.compare("class") == 0 )
 			{
-				classnum = static_cast<Sint32>(itr->value.GetInt());
+				classnum = itr->value.GetInt();
 			}
 			else if ( name.compare("race") == 0 )
 			{
-				race = static_cast<Sint32>(itr->value.GetInt());
+				race = itr->value.GetInt();
 			}
 		}
 	}
@@ -13067,56 +13067,56 @@ bool GameModeManager_t::CurrentSession_t::ChallengeRun_t::loadScenario()
 			{
 				if ( itr->value.GetInt() >= 0 )
 				{
-					winLevel = static_cast<Sint32>(itr->value.GetInt());
+					winLevel = itr->value.GetInt();
 				}
 			}
 			else if ( name.compare("event_type") == 0 )
 			{
 				if ( itr->value.GetInt() >= 0 )
 				{
-					eventType = static_cast<Sint32>(itr->value.GetInt());
+					eventType = itr->value.GetInt();
 				}
 			}
 			else if ( name.compare("numKills") == 0 )
 			{
 				if ( itr->value.GetInt() >= 0 )
 				{
-					numKills = static_cast<Sint32>(itr->value.GetInt());
+					numKills = itr->value.GetInt();
 				}
 			}
 			else if ( name.compare("startLevel") == 0 )
 			{
 				if ( itr->value.GetInt() >= 0 )
 				{
-					startLevel = static_cast<Sint32>(itr->value.GetInt());
+					startLevel = itr->value.GetInt();
 				}
 			}
 			else if ( name.compare("winCondition") == 0 )
 			{
 				if ( itr->value.GetInt() >= 0 )
 				{
-					winCondition = static_cast<Sint32>(itr->value.GetInt());
+					winCondition = itr->value.GetInt();
 				}
 			}
 			else if ( name.compare("globalXPPercent") == 0 )
 			{
 				if ( itr->value.GetInt() >= 0 )
 				{
-					globalXPPercent = static_cast<Sint32>(itr->value.GetInt());
+					globalXPPercent = itr->value.GetInt();
 				}
 			}
 			else if ( name.compare("globalGoldPercent") == 0 )
 			{
 				if ( itr->value.GetInt() >= 0 )
 				{
-					globalGoldPercent = static_cast<Sint32>(itr->value.GetInt());
+					globalGoldPercent = itr->value.GetInt();
 				}
 			}
 			else if ( name.compare("playerWeightPercent") == 0 )
 			{
 				if ( itr->value.GetInt() >= 0 )
 				{
-					playerWeightPercent = static_cast<Sint32>(itr->value.GetInt());
+					playerWeightPercent = itr->value.GetInt();
 				}
 			}
 			else if ( name.compare("playerSpeedMax") == 0 )
@@ -16853,7 +16853,7 @@ void Compendium_t::writeUnlocksSaveData()
 	for ( auto& pair : CompendiumItems_t::unlocks )
 	{
 		obj.AddMember(rapidjson::Value(pair.first.c_str(), exportDocument.GetAllocator()),
-			rapidjson::Value((int)pair.second), exportDocument.GetAllocator());
+			rapidjson::Value(pair.second), exportDocument.GetAllocator());
 	}
 	CustomHelpers::addMemberToRoot(exportDocument, "items", obj);
 
@@ -16861,7 +16861,7 @@ void Compendium_t::writeUnlocksSaveData()
 	for ( auto& pair : CompendiumItems_t::itemUnlocks )
 	{
 		obj.AddMember(rapidjson::Value(std::to_string(pair.first).c_str(), exportDocument.GetAllocator()),
-			rapidjson::Value((int)pair.second), exportDocument.GetAllocator());
+			rapidjson::Value(pair.second), exportDocument.GetAllocator());
 	}
 	CustomHelpers::addMemberToRoot(exportDocument, "items_status", obj);
 
@@ -16869,7 +16869,7 @@ void Compendium_t::writeUnlocksSaveData()
 	for ( auto& pair : AchievementData_t::unlocks )
 	{
 		obj.AddMember(rapidjson::Value(pair.first.c_str(), exportDocument.GetAllocator()),
-			rapidjson::Value((int)pair.second), exportDocument.GetAllocator());
+			rapidjson::Value(pair.second), exportDocument.GetAllocator());
 	}
 	CustomHelpers::addMemberToRoot(exportDocument, "achievements", obj);
 
@@ -16877,7 +16877,7 @@ void Compendium_t::writeUnlocksSaveData()
 	for ( auto& pair : CompendiumWorld_t::unlocks )
 	{
 		obj.AddMember(rapidjson::Value(pair.first.c_str(), exportDocument.GetAllocator()),
-			rapidjson::Value((int)pair.second), exportDocument.GetAllocator());
+			rapidjson::Value(pair.second), exportDocument.GetAllocator());
 	}
 	CustomHelpers::addMemberToRoot(exportDocument, "world", obj);
 
@@ -16885,7 +16885,7 @@ void Compendium_t::writeUnlocksSaveData()
 	for ( auto& pair : CompendiumCodex_t::unlocks )
 	{
 		obj.AddMember(rapidjson::Value(pair.first.c_str(), exportDocument.GetAllocator()),
-			rapidjson::Value((int)pair.second), exportDocument.GetAllocator());
+			rapidjson::Value(pair.second), exportDocument.GetAllocator());
 	}
 	CustomHelpers::addMemberToRoot(exportDocument, "codex", obj);
 
@@ -16893,7 +16893,7 @@ void Compendium_t::writeUnlocksSaveData()
 	for ( auto& pair : CompendiumMonsters_t::unlocks )
 	{
 		obj.AddMember(rapidjson::Value(pair.first.c_str(), exportDocument.GetAllocator()),
-			rapidjson::Value((int)pair.second), exportDocument.GetAllocator());
+			rapidjson::Value(pair.second), exportDocument.GetAllocator());
 	}
 	CustomHelpers::addMemberToRoot(exportDocument, "monsters", obj);
 

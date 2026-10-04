@@ -9216,7 +9216,7 @@ void doNewGame(bool makeHighscore) {
 									if ( c > 0 && multiplayer == SERVER && !players[c]->isLocalPlayer() )
 									{
 										strcpy((char*)net_packet->data, "LEAD");
-										SDLNet_Write32((Uint32)monster->getUID(), &net_packet->data[4]);
+										SDLNet_Write32(monster->getUID(), &net_packet->data[4]);
 										std::string name = monsterStats->name;
 										if ( name != "" && name == MonsterData_t::getSpecialNPCName(*monsterStats) )
 										{
@@ -10692,7 +10692,7 @@ void openGameoverWindow()
 		madetop = true;
 	}
 
-	scoreDeconstructor((void*)score);
+	scoreDeconstructor(score);
 
 	for ( int i = 0; i < MAXPLAYERS; ++i )
 	{
@@ -11800,9 +11800,9 @@ bool replayLastCharacter(const int index, int multiplayer)
 	if ( lastClass >= 0 && lastSex >= 0 && lastRace >= 0 && lastAppearance >= 0 && lastName != "" )
 	{
 		stats[index]->sex = static_cast<sex_t>(std::min(lastSex, static_cast<int>(sex_t::FEMALE)));
-		stats[index]->playerRace = std::min(std::max(static_cast<int>(RACE_HUMAN), lastRace), static_cast<int>(RACE_ENUM_END - 1));
+		stats[index]->playerRace = std::min(std::max(static_cast<int>(RACE_HUMAN), lastRace), RACE_ENUM_END - 1);
 		stats[index]->stat_appearance = lastAppearance;
-		client_classes[index] = std::min(std::max(0, lastClass), static_cast<int>(NUMCLASSES - 1));
+		client_classes[index] = std::min(std::max(0, lastClass), NUMCLASSES - 1);
 
 		switch ( isCharacterValidFromDLC(*stats[index], lastClass) )
 		{

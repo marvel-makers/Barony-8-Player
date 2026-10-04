@@ -976,7 +976,7 @@ static ConsoleVariable<bool> cvar_lava_bubbles_enabled("/lava_bubbles_enabled", 
 static ConsoleVariable<bool> cvar_lava_bubbles_enabled("/lava_bubbles_enabled", true);
 #endif
 
-static real_t drunkextend[MAXPLAYERS] = {(real_t)0.0};
+static real_t drunkextend[MAXPLAYERS] = {0.0};
 
 void gameLogic(void)
 {
@@ -1929,9 +1929,9 @@ void gameLogic(void)
                             tmpItem.type = (entity->skill[10] >= 0 && entity->skill[10] < NUMITEMS)
                                                ? static_cast<ItemType>(entity->skill[10])
                                                : ItemType::GEM_ROCK;
-                            tmpItem.status = (int)entity->skill[11] < Status::BROKEN
+                            tmpItem.status = entity->skill[11] < Status::BROKEN
                                                  ? Status::BROKEN
-                                                 : ((int)entity->skill[11] > EXCELLENT
+                                                 : (entity->skill[11] > EXCELLENT
                                                         ? EXCELLENT
                                                         : static_cast<Status>(entity->skill[11]));
                             tmpItem.beatitude =
@@ -2627,7 +2627,7 @@ void gameLogic(void)
                                         net_packet->data)
                                     {
                                         strcpy((char*)net_packet->data, "LEAD");
-                                        SDLNet_Write32((Uint32)monster->getUID(), &net_packet->data[4]);
+                                        SDLNet_Write32(monster->getUID(), &net_packet->data[4]);
                                         std::string name = monsterStats->name;
                                         if (name != "" && name == MonsterData_t::getSpecialNPCName(*monsterStats))
                                         {
@@ -7415,7 +7415,7 @@ static void doConsoleCommands()
                                     strcat(chatstring, ": ");
                                     strcat(chatstring, command_str);
                                     SDLNet_Write32(color, &net_packet->data[4]);
-                                    SDLNet_Write32((Uint32)MESSAGE_CHAT, &net_packet->data[8]);
+                                    SDLNet_Write32(MESSAGE_CHAT, &net_packet->data[8]);
                                     strcpy((char*)(&net_packet->data[12]), chatstring);
                                     net_packet->address.host = net_clients[c - 1].host;
                                     net_packet->address.port = net_clients[c - 1].port;

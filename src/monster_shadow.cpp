@@ -1608,7 +1608,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
 			{
 				continue;
 			}
-			Item* spellbook = newItem(static_cast<ItemType>(spellbookType), static_cast<Status>(DECREPIT), 0, 1, local_rng.rand(), true, nullptr);
+			Item* spellbook = newItem(static_cast<ItemType>(spellbookType), DECREPIT, 0, 1, local_rng.rand(), true, nullptr);
 			if ( !spellbook )
 			{
 				continue;
@@ -1647,7 +1647,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
 		{
 			continue;
 		}
-		Item* spellbook = newItem(static_cast<ItemType>(spellbookType), static_cast<Status>(DECREPIT), 0, 1, local_rng.rand(), true, nullptr);
+		Item* spellbook = newItem(static_cast<ItemType>(spellbookType), DECREPIT, 0, 1, local_rng.rand(), true, nullptr);
 		if ( !spellbook )
 		{
 			continue;

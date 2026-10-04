@@ -3601,7 +3601,7 @@ void printText( SDL_Surface* font_bmp, int x, int y, const char* str )
 	for ( c = 0; c < numbytes; c++ )
 	{
 		src.x = (str[c] * src.w) % font_bmp->w;
-		src.y = (int)((str[c] * src.w) / font_bmp->w) * src.h;
+		src.y = str[c] * src.w / font_bmp->w * src.h;
 		if ( str[c] != 10 && str[c] != 13 )   // LF/CR
 		{
 			odest.x = dest.x;
@@ -3649,7 +3649,7 @@ void debugPrintText(int x, int y, const SDL_Rect& viewport, char const * const f
 	// print the characters in the string
 	for (int c = 0; c < size; ++c) {
 		src.x = (str[c] * src.w) % font->w;
-		src.y = (int)((str[c] * src.w) / font->w) * src.h;
+		src.y = str[c] * src.w / font->w * src.h;
 		if (str[c] != '\n' && str[c] != '\r') {
             SDL_Rect odest;
 			odest.x = dest.x;
@@ -3691,7 +3691,7 @@ void printTextFormatted( SDL_Surface* font_bmp, int x, int y, char const * const
 	for ( c = 0; c < numbytes; c++ )
 	{
 		src.x = (str[c] * src.w) % font_bmp->w;
-		src.y = (int)((str[c] * src.w) / font_bmp->w) * src.h;
+		src.y = str[c] * src.w / font_bmp->w * src.h;
 		if ( str[c] != 10 && str[c] != 13 )   // LF/CR
 		{
 			odest.x = dest.x;
@@ -3756,7 +3756,7 @@ void printTextFormattedColor(SDL_Surface* font_bmp, int x, int y, Uint32 color, 
 	for ( c = 0; c < numbytes; c++ )
 	{
 		src.x = (str[c] * src.w) % font_bmp->w;
-		src.y = (int)((str[c] * src.w) / font_bmp->w) * src.h;
+		src.y = str[c] * src.w / font_bmp->w * src.h;
 		if ( str[c] != 10 && str[c] != 13 )   // LF/CR
 		{
 			odest.x = dest.x;

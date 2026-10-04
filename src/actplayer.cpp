@@ -1506,7 +1506,7 @@ void Player::Ghost_t::handleActions()
 					net_packet->data[4] = player.playernum;
 					if ( selectedEntity[player.playernum]->behavior == &actPlayerLimb )
 					{
-						SDLNet_Write32((Uint32)players[selectedEntity[player.playernum]->skill[2]]->entity->getUID(), &net_packet->data[5]);
+						SDLNet_Write32(players[selectedEntity[player.playernum]->skill[2]]->entity->getUID(), &net_packet->data[5]);
 					}
 					else
 					{
@@ -1515,16 +1515,16 @@ void Player::Ghost_t::handleActions()
 						{
 							if ( tempEntity->behavior == &actMonster )
 							{
-								SDLNet_Write32((Uint32)tempEntity->getUID(), &net_packet->data[5]);
+								SDLNet_Write32(tempEntity->getUID(), &net_packet->data[5]);
 							}
 							else
 							{
-								SDLNet_Write32((Uint32)selectedEntity[player.playernum]->getUID(), &net_packet->data[5]);
+								SDLNet_Write32(selectedEntity[player.playernum]->getUID(), &net_packet->data[5]);
 							}
 						}
 						else
 						{
-							SDLNet_Write32((Uint32)selectedEntity[player.playernum]->getUID(), &net_packet->data[5]);
+							SDLNet_Write32(selectedEntity[player.playernum]->getUID(), &net_packet->data[5]);
 						}
 					}
 					net_packet->address.host = net_server.host;
@@ -10365,7 +10365,7 @@ void actPlayer(Entity* my)
 							{
 								if (tempEntity->behavior == &actMonster)
 								{
-									SDLNet_Write32((Uint32)tempEntity->getUID(), &net_packet->data[5]);
+									SDLNet_Write32(tempEntity->getUID(), &net_packet->data[5]);
 								}
 								else
 								{
@@ -12218,7 +12218,7 @@ void actPlayer(Entity* my)
 						}
 						circleAmount *= scaleDown;
 						real_t circleTime = 20.0;
-						entity->pitch = circleAmount * cos(2 * PI * (PLAYER_ATTACKTIME / (real_t)circleTime));
+						entity->pitch = circleAmount * cos(2 * PI * (PLAYER_ATTACKTIME / circleTime));
 						if ( playerRace == TROLL )
 						{
 							entity->pitch -= scaleDown * (PI / 4) * std::min(1.0, (PLAYER_ATTACKTIME / static_cast<real_t>(5)));
@@ -12227,7 +12227,7 @@ void actPlayer(Entity* my)
 						{
 							entity->pitch -= scaleDown * (PI / 8) * std::min(1.0, (PLAYER_ATTACKTIME / static_cast<real_t>(5)));
 						}
-						PLAYER_WEAPONYAW = circleAmount * sin(2 * PI * (PLAYER_ATTACKTIME / (real_t)circleTime));
+						PLAYER_WEAPONYAW = circleAmount * sin(2 * PI * (PLAYER_ATTACKTIME / circleTime));
 						
 						if ( PLAYER_ATTACKTIME >= my->playerCastTimeAnim )
 						{
@@ -16084,16 +16084,16 @@ void playerAnimateSpider(Entity* my)
 				circleAmount *= scaleDown;
 
 				real_t circleTime = 20.0;
-				entity->pitch = circleAmount * cos(2 * PI * (PLAYER_ATTACKTIME / (real_t)circleTime));
+				entity->pitch = circleAmount * cos(2 * PI * (PLAYER_ATTACKTIME / circleTime));
 				entity->pitch -= scaleDown * (PI / 2) * std::min(1.0, (PLAYER_ATTACKTIME / static_cast<real_t>(5)));
 
 				if ( bodypart == 11 )
 				{
-					entity->yaw -= circleAmount * sin(2 * PI * (PLAYER_ATTACKTIME / (real_t)circleTime));
+					entity->yaw -= circleAmount * sin(2 * PI * (PLAYER_ATTACKTIME / circleTime));
 				}
 				else
 				{
-					entity->yaw += circleAmount * sin(2 * PI * (PLAYER_ATTACKTIME / (real_t)circleTime));
+					entity->yaw += circleAmount * sin(2 * PI * (PLAYER_ATTACKTIME / circleTime));
 				}
 
 				if ( ticks % 10 == 0 )

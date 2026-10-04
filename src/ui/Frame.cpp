@@ -73,7 +73,7 @@ void Frame::listener_t::onDeleted() {
 	if (!entry) {
 		return;
 	}
-	Frame::entry_t* entryCast = (Frame::entry_t *)entry;
+	Frame::entry_t* entryCast = entry;
 	entryCast->suicide = true;
 }
 
@@ -81,7 +81,7 @@ void Frame::listener_t::onChangeColor(bool selected, bool highlighted) {
 	if (!entry) {
 		return;
 	}
-	Frame::entry_t* entryCast = (Frame::entry_t *)entry;
+	Frame::entry_t* entryCast = entry;
 	if (selected) {
 		entryCast->color = makeColor( 255, 0, 0, 255);
 	} else if (highlighted) {
@@ -95,7 +95,7 @@ void Frame::listener_t::onChangeName(const char* name) {
 	if (!entry) {
 		return;
 	}
-	Frame::entry_t* entryCast = (Frame::entry_t *)entry;
+	Frame::entry_t* entryCast = entry;
 	entryCast->text = name;
 }
 
@@ -2560,7 +2560,7 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
 					outlineGlowEffect = (outlineGlowEffect * .5) + .5;
 					Uint8 r2, g2, b2, a2;
 					getColor(image->outlineColor, &r2, &g2, &b2, &a2);
-					Uint32 alpha = static_cast<Uint8>(255.0 * ((static_cast<real_t>(a) / 255.0) * static_cast<real_t>(a2 / 255.0) * outlineGlowEffect));
+					Uint32 alpha = static_cast<Uint8>(255.0 * ((static_cast<real_t>(a) / 255.0) * (a2 / 255.0) * outlineGlowEffect));
 					if ( alpha > 0 )
 					{
 						/*drawImageOutline(const_cast<Image*>(actualImage), src, scaledDest,

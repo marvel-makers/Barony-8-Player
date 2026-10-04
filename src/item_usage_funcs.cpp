@@ -3038,7 +3038,7 @@ void item_ScrollEnchantWeapon(Item* item, int player)
 			Sint32 goldSubtract = 0;
 			{
 				int goldCost = 75;
-				int bless = std::max(abs((int)(*toEnchant)->beatitude), 0);
+				int bless = std::max(abs((*toEnchant)->beatitude), 0);
 				if ( (*toEnchant)->beatitude > 0 )
 				{
 					bless = std::max(0, bless - 1);
@@ -3061,7 +3061,7 @@ void item_ScrollEnchantWeapon(Item* item, int player)
 					strcpy((char*)net_packet->data, "FXGD");
 					net_packet->data[4] = player;
 					SDLNet_Write32(static_cast<Uint32>(goldSubtract), &net_packet->data[5]);
-					SDLNet_Write32((Uint32)0, &net_packet->data[9]);
+					SDLNet_Write32(0, &net_packet->data[9]);
 
 					Uint16 spellID = SPELL_NONE;
 					SDLNet_Write16(spellID, &net_packet->data[13]);
@@ -3285,7 +3285,7 @@ void item_ScrollEnchantArmor(Item* item, int player)
 			Sint32 goldSubtract = 0;
 			{
 				int goldCost = 75;
-				int bless = std::max(abs((int)armor->beatitude), 0);
+				int bless = std::max(abs(armor->beatitude), 0);
 				if ( armor->beatitude > 0 )
 				{
 					bless = std::max(0, bless - 1);
@@ -3308,7 +3308,7 @@ void item_ScrollEnchantArmor(Item* item, int player)
 					strcpy((char*)net_packet->data, "FXGD");
 					net_packet->data[4] = player;
 					SDLNet_Write32(static_cast<Uint32>(goldSubtract), &net_packet->data[5]);
-					SDLNet_Write32((Uint32)0, &net_packet->data[9]);
+					SDLNet_Write32(0, &net_packet->data[9]);
 
 					Uint16 spellID = SPELL_NONE;
 					SDLNet_Write16(spellID, &net_packet->data[13]);
@@ -4412,18 +4412,18 @@ void item_ScrollSummon(Item* item, int player)
 		{
 			if ( numCreatures <= 1 )
 			{
-				messagePlayer(player, MESSAGE_HINT, Language::get(877), getMonsterLocalizedName((Monster)creature).c_str());
+				messagePlayer(player, MESSAGE_HINT, Language::get(877), getMonsterLocalizedName(creature).c_str());
 			}
 			else
 			{
-				messagePlayer(player, MESSAGE_HINT, Language::get(878), getMonsterLocalizedPlural((Monster)creature).c_str());
+				messagePlayer(player, MESSAGE_HINT, Language::get(878), getMonsterLocalizedPlural(creature).c_str());
 			}
 		}
 		else
 		{
 			if ( numCreatures <= 1 )
 			{
-				messagePlayer(player, MESSAGE_HINT, Language::get(879), getMonsterLocalizedName((Monster)creature).c_str());
+				messagePlayer(player, MESSAGE_HINT, Language::get(879), getMonsterLocalizedName(creature).c_str());
 				if ( item->beatitude >= 2 )
 				{
 					messagePlayer(player, MESSAGE_WORLD, Language::get(880));
@@ -4431,7 +4431,7 @@ void item_ScrollSummon(Item* item, int player)
 			}
 			else
 			{
-				messagePlayer(player, MESSAGE_HINT, Language::get(881), getMonsterLocalizedPlural((Monster)creature).c_str());
+				messagePlayer(player, MESSAGE_HINT, Language::get(881), getMonsterLocalizedPlural(creature).c_str());
 				if ( item->beatitude >= 2 )
 				{
 					messagePlayer(player, MESSAGE_WORLD, Language::get(882));
@@ -6706,7 +6706,7 @@ void item_ToolLootBag(Item*& item, int player)
 	if ( multiplayer == CLIENT )
 	{
 		strcpy((char*)net_packet->data, "LOOT");
-		SDLNet_Write32(static_cast<Uint32>(item->appearance), &net_packet->data[4]);
+		SDLNet_Write32(item->appearance, &net_packet->data[4]);
 		net_packet->data[8] = clientnum;
 		net_packet->address.host = net_server.host;
 		net_packet->address.port = net_server.port;

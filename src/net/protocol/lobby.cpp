@@ -86,7 +86,7 @@ NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bo
         stringCopy(stats[c]->name, (const char*)net_packet->data + 4, sizeof(Stat::name), 32);
 		client_classes[c] = static_cast<int>(SDLNet_Read32(&net_packet->data[36]));
 		stats[c]->sex = static_cast<sex_t>(static_cast<int>(SDLNet_Read32(&net_packet->data[40])));
-		Uint32 raceAndAppearance = (Uint32)SDLNet_Read32(&net_packet->data[44]);
+		Uint32 raceAndAppearance = SDLNet_Read32(&net_packet->data[44]);
 		stats[c]->stat_appearance = (raceAndAppearance & 0xFF00) >> 8;
 		stats[c]->playerRace = (raceAndAppearance & 0xFF);
 		net_clients[c - 1].host = net_packet->address.host;
@@ -168,7 +168,7 @@ NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bo
 					auto slot = player_slots[j];
 					if (slot) {
 						SDLNet_Write16(static_cast<Uint16>(slot->type), net_packet->data + 8 + x * chunk_size + 6 + 32 + j * 6);
-						SDLNet_Write32((Uint32)slot->appearance, net_packet->data + 8 + x * chunk_size + 6 + 32 + j * 6 + 2);
+						SDLNet_Write32(slot->appearance, net_packet->data + 8 + x * chunk_size + 6 + 32 + j * 6 + 2);
 					} else {
 						SDLNet_Write16(0xffff, net_packet->data + 8 + x * chunk_size + 6 + 32 + j * 6);
 						SDLNet_Write32(0xffffffff, net_packet->data + 8 + x * chunk_size + 6 + 32 + j * 6 + 2);

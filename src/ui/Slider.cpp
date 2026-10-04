@@ -82,11 +82,11 @@ void Slider::draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const 
 	SDL_Rect handleSize = this->handleSize;
 	if (handleSize.x == 0 && handleSize.y == 0) {
 		if (orientation == SLIDER_HORIZONTAL) {
-			handleSize.x = (railSize.x + border) - handleSize.w / 2 + ((float)(value - minValue) / (maxValue - minValue)) * (railSize.w - border * 2);
+			handleSize.x = (railSize.x + border) - handleSize.w / 2 + ((value - minValue) / (maxValue - minValue)) * (railSize.w - border * 2);
 			handleSize.y = railSize.y + railSize.h / 2 - handleSize.h / 2;
 		} else if (orientation == SLIDER_VERTICAL) {
 			handleSize.x = railSize.x + railSize.w / 2 - handleSize.w / 2;
-			handleSize.y = (railSize.y + border) - handleSize.h / 2 + ((float)(value - minValue) / (maxValue - minValue)) * (railSize.h - border * 2);
+			handleSize.y = (railSize.y + border) - handleSize.h / 2 + ((value - minValue) / (maxValue - minValue)) * (railSize.h - border * 2);
 		}
 	}
 	_handleSize.x = _size.x + std::max(0, handleSize.x - _actualSize.x);
@@ -143,11 +143,11 @@ void Slider::drawPost(SDL_Rect _size, SDL_Rect _actualSize,
 	SDL_Rect handleSize = this->handleSize;
 	if (handleSize.x == 0 && handleSize.y == 0) {
 		if (orientation == SLIDER_HORIZONTAL) {
-			handleSize.x = (railSize.x + border) - handleSize.w / 2 + ((float)(value - minValue) / (maxValue - minValue)) * (railSize.w - border * 2);
+			handleSize.x = (railSize.x + border) - handleSize.w / 2 + ((value - minValue) / (maxValue - minValue)) * (railSize.w - border * 2);
 			handleSize.y = railSize.y + railSize.h / 2 - handleSize.h / 2;
 		} else if (orientation == SLIDER_VERTICAL) {
 			handleSize.x = railSize.x + railSize.w / 2 - handleSize.w / 2;
-			handleSize.y = (railSize.y + border) - handleSize.h / 2 + ((float)(value - minValue) / (maxValue - minValue)) * (railSize.h - border * 2);
+			handleSize.y = (railSize.y + border) - handleSize.h / 2 + ((value - minValue) / (maxValue - minValue)) * (railSize.h - border * 2);
 		}
 	}
 	_handleSize.x = _size.x + std::max(0, handleSize.x - _actualSize.x);
@@ -162,11 +162,11 @@ void Slider::drawPost(SDL_Rect _size, SDL_Rect _actualSize,
 
 void Slider::updateHandlePosition() {
 	if (orientation == SLIDER_HORIZONTAL) {
-		handleSize.x = (railSize.x + border) - handleSize.w / 2 + ((float)(value - minValue) / (maxValue - minValue)) * (railSize.w - border * 2);
+		handleSize.x = (railSize.x + border) - handleSize.w / 2 + ((value - minValue) / (maxValue - minValue)) * (railSize.w - border * 2);
 		handleSize.y = railSize.y + railSize.h / 2 - handleSize.h / 2;
 	} else if (orientation == SLIDER_VERTICAL) {
 		handleSize.x = railSize.x + railSize.w / 2 - handleSize.w / 2;
-		handleSize.y = (railSize.y + border) - handleSize.h / 2 + ((float)(value - minValue) / (maxValue - minValue)) * (railSize.h - border * 2);
+		handleSize.y = (railSize.y + border) - handleSize.h / 2 + ((value - minValue) / (maxValue - minValue)) * (railSize.h - border * 2);
 	}
 }
 
@@ -274,10 +274,10 @@ Slider::result_t Slider::process(SDL_Rect _size, SDL_Rect _actualSize, const boo
 			pressed = true;
 			float oldValue = value;
 			if (orientation == SLIDER_HORIZONTAL) {
-				value = (static_cast<float>(mousex - offX) / (railSize.w - border * 2)) * (float)(maxValue - minValue) + minValue;
+				value = (static_cast<float>(mousex - offX) / (railSize.w - border * 2)) * (maxValue - minValue) + minValue;
 			}
 			else if (orientation == SLIDER_VERTICAL) {
-				value = (static_cast<float>(mousey - offY) / (railSize.h - border * 2)) * (float)(maxValue - minValue) + minValue;
+				value = (static_cast<float>(mousey - offY) / (railSize.h - border * 2)) * (maxValue - minValue) + minValue;
 			}
 			value = std::min(std::max(minValue, value), maxValue);
 			if (oldValue != value) {

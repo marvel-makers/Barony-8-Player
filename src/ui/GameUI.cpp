@@ -13695,9 +13695,9 @@ void Player::MessageZone_t::processChatbox()
             int textHeight = h;
             if (!useBigFont)
             {
-                int h2 = (int)(std::max(*cvar_log_lineheight_min + 2,
-                                        (static_cast<int>(textGet->getHeight()) + textLinePadding) * textGet->getNumTextLines() +
-                                        textLinePadding));
+                int h2 = std::max(*cvar_log_lineheight_min + 2,
+                                  (static_cast<int>(textGet->getHeight()) + textLinePadding) * textGet->getNumTextLines() +
+                                  textLinePadding);
                 textHeight = h2;
                 h = textHeight + *cvar_log_lineheight_offset;
             }
@@ -14521,7 +14521,7 @@ void addMessageToLogWindow(int player, string_t* string)
         field->setPaddingPerLine(*cvar_log_multiline_pady);
         if (auto text = field->getTextObject())
         {
-            textHeight = (int)(std::max(*cvar_log_lineheight_min, static_cast<int>(text->getHeight())) * static_cast<int>(string->lines) + 2);
+            textHeight = std::max(*cvar_log_lineheight_min, static_cast<int>(text->getHeight())) * static_cast<int>(string->lines) + 2;
             text_h = textHeight + *cvar_log_lineheight_offset;
             text_w = static_cast<int>(text->getWidth());
             field->setSize(SDL_Rect{8, y, text_w, textHeight});
@@ -14539,7 +14539,7 @@ void addMessageToLogWindow(int player, string_t* string)
         field->setPaddingPerLine(*cvar_log_multiline_pady);
         if (auto text = field->getTextObject())
         {
-            textHeight = (int)(std::max(*cvar_log_lineheight_min, static_cast<int>(text->getHeight())) * static_cast<int>(string->lines) + 2);
+            textHeight = std::max(*cvar_log_lineheight_min, static_cast<int>(text->getHeight())) * static_cast<int>(string->lines) + 2;
             text_h = textHeight + *cvar_log_lineheight_offset;
             text_w = static_cast<int>(text->getWidth());
             field->setSize(SDL_Rect{8, y, text_w, textHeight});
@@ -14749,7 +14749,7 @@ void openLogWindow(int player)
                     entry.img1->path = path;
                     entry.img1->pos.w = static_cast<int>(glyph->getWidth());
                     entry.img1->pos.h = static_cast<int>(glyph->getHeight());
-                    entry.img1->pos.y = (int)(h - 16 - entry.img1->pos.h / 2);
+                    entry.img1->pos.y = h - 16 - entry.img1->pos.h / 2;
                 }
             }
 
@@ -14763,7 +14763,7 @@ void openLogWindow(int player)
                     entry.img2->path = path;
                     entry.img2->pos.w = static_cast<int>(glyph->getWidth());
                     entry.img2->pos.h = static_cast<int>(glyph->getHeight());
-                    entry.img2->pos.y = (int)(h - 16 - entry.img2->pos.h / 2);
+                    entry.img2->pos.y = h - 16 - entry.img2->pos.h / 2;
                 }
             }
             if (entry.text->isDisabled())
@@ -23756,7 +23756,7 @@ void drawUnidentifiedItemEffectHotbarCallback(const Widget& widget, SDL_Rect rec
             opacity *= parent->getOpacity() / 100.0;
         }
         drawMesh(drawRect.x + offsetx, drawRect.y + offsety,
-                 (real_t)1.0, drawRect, makeColor(255, 255, 255, opacity));
+                 1.0, drawRect, makeColor(255, 255, 255, opacity));
     }
 }
 
@@ -23824,7 +23824,7 @@ void drawUnidentifiedItemEffectCallback(const Widget& widget, SDL_Rect rect)
             opacity *= parent->getOpacity() / 100.0;
         }
         drawMesh(drawRect.x + offsetx, drawRect.y + offsety,
-                 (real_t)1.0, drawRect, makeColor(255, 255, 255, opacity));
+                 1.0, drawRect, makeColor(255, 255, 255, opacity));
     }
 }
 
@@ -25857,7 +25857,7 @@ void glDrawWorldTile(view_t* camera, int mode, map_t& map)
     // upload uniforms for core shader
     if (&shader != &worldDarkShader)
     {
-        const GLfloat light[4] = {(float)getLightAtModifier, (float)getLightAtModifier, (float)getLightAtModifier, 1.f};
+        const GLfloat light[4] = {getLightAtModifier, getLightAtModifier, getLightAtModifier, 1.f};
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uLightFactor"), 1, light));
         const float cameraPos[4] = {static_cast<float>(camera->x) * 32.f, -static_cast<float>(camera->z), static_cast<float>(camera->y) * 32.f, 1.f};
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uCameraPos"), 1, cameraPos));
@@ -31037,11 +31037,11 @@ void Player::Inventory_t::activateItemContextMenuOption(Item* item, ItemContextM
         if (multiplayer == CLIENT)
         {
             strcpy((char*)net_packet->data, "FODA");
-            SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-            SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
+            SDLNet_Write32(item->type, &net_packet->data[4]);
+            SDLNet_Write32(item->status, &net_packet->data[8]);
             SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
             SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
-            SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+            SDLNet_Write32(item->appearance, &net_packet->data[20]);
             net_packet->data[24] = item->identified;
             net_packet->data[25] = player;
             net_packet->address.host = net_server.host;
@@ -32836,7 +32836,7 @@ void Player::HUD_t::updateXPBar()
             real_t setpointDiff = std::max(10.0, xpBar.animateSetpoint * 10.0 - xpBar.animateValue);
             real_t fpsScale = getFPSScale(144.0);
             xpBar.animateValue += fpsScale * (setpointDiff / 100.0); // reach it in x intervals, scaled to FPS
-            xpBar.animateValue = std::min(static_cast<real_t>(xpBar.animateSetpoint * 10.0), xpBar.animateValue);
+            xpBar.animateValue = std::min(xpBar.animateSetpoint * 10.0, xpBar.animateValue);
             //messagePlayer(0, "%.2f | %.2f", diff, scaledIncrement);
         }
         else if (xpBar.animateValue > xpBar.animateSetpoint * 10)
@@ -37481,7 +37481,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         }
         else if (tag == "RANGED_DEGRADE_CHANCE")
         {
-            val = 50 + static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20) * 10;
+            val = 50 + stats[playernum]->getModifiedProficiency(proficiency) / 20 * 10;
             if (stats[playernum]->type == GOBLIN)
             {
                 val += 20;
@@ -37534,7 +37534,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "BLOCK_DEGRADE_NORMAL_CHANCE")
         {
             val = 25 + (stats[playernum]->type == GOBLIN ? 10 : 0) + 10; // degrade > 0 dmg taken
-            val += 2 * (static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 10));
+            val += 2 * (stats[playernum]->getModifiedProficiency(proficiency) / 10);
             if (skillCapstoneUnlocked(playernum, proficiency))
             {
                 val = 0.0;
@@ -37552,7 +37552,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             {
                 val = 40 + (stats[playernum]->type == GOBLIN ? 10 : 0);
             }
-            val += 2 * (static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 10));
+            val += 2 * (stats[playernum]->getModifiedProficiency(proficiency) / 10);
             if (skillCapstoneUnlocked(playernum, proficiency))
             {
                 val = 0.0;
@@ -37605,13 +37605,13 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         }
         else if (tag == "UNARMED_BONUS_DMG")
         {
-            val = static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20);
+            val = stats[playernum]->getModifiedProficiency(proficiency) / 20;
             snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "GLOVE_DEGRADE_CHANCE")
         {
             val = 100 + (stats[playernum]->type == GOBLIN ? 20 : 0); // chance to degrade on > 0 dmg
-            val += (static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20)) * 10;
+            val += stats[playernum]->getModifiedProficiency(proficiency) / 20 * 10;
             if (svFlags & SV_FLAG_HARDCORE)
             {
                 val *= 2;
@@ -37629,7 +37629,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "GLOVE_DEGRADE0_CHANCE")
         {
             val = 8 + (stats[playernum]->type == GOBLIN ? 4 : 0); // chance to degrade on 0 dmg
-            val += static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20);
+            val += stats[playernum]->getModifiedProficiency(proficiency) / 20;
             if (svFlags & SV_FLAG_HARDCORE)
             {
                 val *= 2;
@@ -37646,7 +37646,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         }
         else if (tag == "UNARMED_KNOCKBACK_DIST")
         {
-            val = static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20) * 20;
+            val = stats[playernum]->getModifiedProficiency(proficiency) / 20 * 20;
             snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         return buf;
@@ -37692,7 +37692,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "SWORD_DEGRADE_CHANCE")
         {
             val = 50 + (stats[playernum]->type == GOBLIN ? 20 : 0); // chance to degrade on > 0 dmg
-            val += (static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20)) * 10;
+            val += stats[playernum]->getModifiedProficiency(proficiency) / 20 * 10;
             if (svFlags & SV_FLAG_HARDCORE)
             {
                 val *= 2;
@@ -37710,7 +37710,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "SWORD_DEGRADE0_CHANCE")
         {
             val = 4 + (stats[playernum]->type == GOBLIN ? 4 : 0); // chance to degrade on 0 dmg
-            val += static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20);
+            val += stats[playernum]->getModifiedProficiency(proficiency) / 20;
             if (svFlags & SV_FLAG_HARDCORE)
             {
                 val *= 2;
@@ -37768,7 +37768,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "POLEARM_DEGRADE_CHANCE")
         {
             val = 50 + (stats[playernum]->type == GOBLIN ? 20 : 0); // chance to degrade on > 0 dmg
-            val += (static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20)) * 10;
+            val += stats[playernum]->getModifiedProficiency(proficiency) / 20 * 10;
             if (svFlags & SV_FLAG_HARDCORE)
             {
                 val *= 2;
@@ -37786,7 +37786,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "POLEARM_DEGRADE0_CHANCE")
         {
             val = 4 + (stats[playernum]->type == GOBLIN ? 4 : 0); // chance to degrade on 0 dmg
-            val += static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20);
+            val += stats[playernum]->getModifiedProficiency(proficiency) / 20;
             if (svFlags & SV_FLAG_HARDCORE)
             {
                 val *= 2;
@@ -37844,7 +37844,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "AXE_DEGRADE_CHANCE")
         {
             val = 50 + (stats[playernum]->type == GOBLIN ? 20 : 0); // chance to degrade on > 0 dmg
-            val += (static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20)) * 10;
+            val += stats[playernum]->getModifiedProficiency(proficiency) / 20 * 10;
             if (svFlags & SV_FLAG_HARDCORE)
             {
                 val *= 2;
@@ -37862,7 +37862,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "AXE_DEGRADE0_CHANCE")
         {
             val = 4 + (stats[playernum]->type == GOBLIN ? 4 : 0); // chance to degrade on 0 dmg
-            val += static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20);
+            val += stats[playernum]->getModifiedProficiency(proficiency) / 20;
             if (svFlags & SV_FLAG_HARDCORE)
             {
                 val *= 2;
@@ -37920,7 +37920,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "MACE_DEGRADE_CHANCE")
         {
             val = 50 + (stats[playernum]->type == GOBLIN ? 20 : 0); // chance to degrade on > 0 dmg
-            val += (static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20)) * 10;
+            val += stats[playernum]->getModifiedProficiency(proficiency) / 20 * 10;
             if (svFlags & SV_FLAG_HARDCORE)
             {
                 val *= 2;
@@ -37938,7 +37938,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "MACE_DEGRADE0_CHANCE")
         {
             val = 4 + (stats[playernum]->type == GOBLIN ? 4 : 0); // chance to degrade on 0 dmg
-            val += static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20);
+            val += stats[playernum]->getModifiedProficiency(proficiency) / 20;
             if (svFlags & SV_FLAG_HARDCORE)
             {
                 val *= 2;
@@ -38287,7 +38287,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
             }
             else
             {
-                val = (100 - 100 / (static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20 + 1)));
+                val = (100 - 100 / (stats[playernum]->getModifiedProficiency(proficiency) / 20 + 1));
                 // lockpick automatons
             }
             snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
@@ -38295,7 +38295,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         else if (tag == "TINKERING_DISARM_ARROWS")
         {
             val = (100 - 100 / (std::max(
-                1, static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 10))));
+                1, stats[playernum]->getModifiedProficiency(proficiency) / 10)));
             // disarm arrow traps
             if (stats[playernum]->getModifiedProficiency(proficiency) < SKILL_LEVEL_BASIC)
             {
@@ -38307,7 +38307,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         {
             // bonus scrapping chances.
             int skillLVL = std::min(
-                5, static_cast<int>((stats[playernum]->getModifiedProficiency(proficiency) + PER) / 20));
+                5, (stats[playernum]->getModifiedProficiency(proficiency) + PER) / 20);
             skillLVL = std::max(0, skillLVL);
             switch (skillLVL)
             {
@@ -38394,18 +38394,18 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         }
         else if (tag == "ALCHEMY_DUPLICATION_CHANCE")
         {
-            val = 50.f + static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20) * 10;
+            val = 50.f + stats[playernum]->getModifiedProficiency(proficiency) / 20 * 10;
             snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "ALCHEMY_EMPTY_BOTTLE_CONSUME")
         {
             val = std::min(
-                80, (60 + static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20) * 10));
+                80, (60 + stats[playernum]->getModifiedProficiency(proficiency) / 20 * 10));
             snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "ALCHEMY_EMPTY_BOTTLE_BREW")
         {
-            val = 50.f + static_cast<int>(stats[playernum]->getModifiedProficiency(proficiency) / 20) * 5;
+            val = 50.f + stats[playernum]->getModifiedProficiency(proficiency) / 20 * 5;
             snprintf(buf, sizeof(buf), rawValue.c_str(), static_cast<int>(val));
         }
         else if (tag == "ALCHEMY_LEARNT_INGREDIENTS_BASE")
@@ -44943,7 +44943,7 @@ void updateLevelUpFrame(const int player)
     {
         if (statPosX.size() % 2 == 1)
         {
-            midpoint = statPosX[static_cast<size_t>(statPosX.size() / 2)];
+            midpoint = statPosX[(statPosX.size() / 2)];
         }
         else
         {
@@ -45751,7 +45751,7 @@ void updateSkillUpFrame(const int player)
             skillCurrentTxt->setColor(makeColor(r, g, b, skillUp.animCurrentStat * a));
         }
 
-        skillFramePos.w = std::max(120, (int)(skillBgImg->pos.x + skillBgImg->pos.w + 64));
+        skillFramePos.w = std::max(120, skillBgImg->pos.x + skillBgImg->pos.w + 64);
         if (skillUp.isSpell)
         {
             skillFramePos.w = std::max(skillFramePos.w, (skillBgCapImg->pos.x + skillBgCapImg->pos.w));
@@ -45799,7 +45799,7 @@ void updateSkillUpFrame(const int player)
                 getColor(0xFFFFFFFF, &r, &g, &b, &a);
                 skillNameTxt->setColor(makeColor(r, g, b, skillUp.animBackground * a));
 
-                skillFramePos.w = std::max(skillFramePos.w, (int)(pos.x + pos.w));
+                skillFramePos.w = std::max(skillFramePos.w, pos.x + pos.w);
                 skillFrame->setSize(skillFramePos);
             }
         }
@@ -45899,7 +45899,7 @@ void updateSkillUpFrame(const int player)
     {
         if (skillPosX.size() % 2 == 1)
         {
-            midpoint = skillPosX[static_cast<size_t>(skillPosX.size() / 2)];
+            midpoint = skillPosX[(skillPosX.size() / 2)];
         }
         else
         {

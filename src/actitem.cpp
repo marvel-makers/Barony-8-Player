@@ -793,7 +793,7 @@ void actItem(Entity* my)
 						playSoundEntity( players[i]->entity, 35 + local_rng.rand() % 3, 64 );
 					}
 					Item* item2 = newItemFromEntity(my);
-					if ( my->itemStolen == 1 && item2 && (static_cast<Uint32>(item2->ownerUid) == players[i]->entity->getUID()) )
+					if ( my->itemStolen == 1 && item2 && (item2->ownerUid == players[i]->entity->getUID()) )
 					{
 						steamAchievementClient(i, "BARONY_ACH_REPOSSESSION");
 					}

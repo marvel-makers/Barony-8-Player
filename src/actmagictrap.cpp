@@ -547,7 +547,7 @@ void daedalusShrineInteract(Entity* my, Entity* touched)
 			if ( !client_disconnected[i] )
 			{
 				strcpy((char*)net_packet->data, "DAED");
-				SDLNet_Write32(static_cast<Uint32>(my->getUID()), &net_packet->data[4]);
+				SDLNet_Write32(my->getUID(), &net_packet->data[4]);
 				net_packet->address.host = net_clients[i - 1].host;
 				net_packet->address.port = net_clients[i - 1].port;
 				net_packet->len = 8;

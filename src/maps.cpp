@@ -1402,7 +1402,7 @@ bool loadSubRoomData(const std::string& fullMapPath, list_t* mapList)
 	int checkMapHash = -1;
 	if ( fullMapPath.empty() || loadMap(fullMapPath.c_str(), subRoomMap, subRoomMap->entities, subRoomMap->creatures, &checkMapHash) == -1 )
 	{
-		mapDeconstructor((void*)subRoomMap);
+		mapDeconstructor(subRoomMap);
 		return false; // failed to load level
 	}
 	if ( !verifyMapHash(fullMapPath.c_str(), checkMapHash) )
@@ -8227,12 +8227,12 @@ void assignActions(map_t* map)
 								randType = map_rng.rand() % 2;
 								if ( randType == 0 )
 								{
-									entity->skill[10] = itemLevelCurve(static_cast<Category>(WEAPON), 0, currentlevel, map_rng);
+									entity->skill[10] = itemLevelCurve(WEAPON, 0, currentlevel, map_rng);
 									rolledLevelCurveItem = true;
 								}
 								else if ( randType == 1 )
 								{
-									entity->skill[10] = itemLevelCurve(static_cast<Category>(ARMOR), 0, currentlevel, map_rng);
+									entity->skill[10] = itemLevelCurve(ARMOR, 0, currentlevel, map_rng);
 									rolledLevelCurveItem = true;
 								}
 							}
@@ -8242,12 +8242,12 @@ void assignActions(map_t* map)
 								randType = map_rng.rand() % 2;
 								if ( randType == 0 )
 								{
-									entity->skill[10] = itemLevelCurve(static_cast<Category>(AMULET), 0, currentlevel, map_rng);
+									entity->skill[10] = itemLevelCurve(AMULET, 0, currentlevel, map_rng);
 									rolledLevelCurveItem = true;
 								}
 								else
 								{
-									entity->skill[10] = itemLevelCurve(static_cast<Category>(RING), 0, currentlevel, map_rng);
+									entity->skill[10] = itemLevelCurve(RING, 0, currentlevel, map_rng);
 									rolledLevelCurveItem = true;
 								}
 							}
@@ -8257,17 +8257,17 @@ void assignActions(map_t* map)
 								randType = map_rng.rand() % 3;
 								if ( randType == 0 )
 								{
-									entity->skill[10] = itemLevelCurve(static_cast<Category>(SCROLL), 0, currentlevel, map_rng);
+									entity->skill[10] = itemLevelCurve(SCROLL, 0, currentlevel, map_rng);
 									rolledLevelCurveItem = true;
 								}
 								else if ( randType == 1 )
 								{
-									entity->skill[10] = itemLevelCurve(static_cast<Category>(MAGICSTAFF), 0, currentlevel, map_rng);
+									entity->skill[10] = itemLevelCurve(MAGICSTAFF, 0, currentlevel, map_rng);
 									rolledLevelCurveItem = true;
 								}
 								else
 								{
-									entity->skill[10] = itemLevelCurve(static_cast<Category>(SPELLBOOK), 0, currentlevel, map_rng);
+									entity->skill[10] = itemLevelCurve(SPELLBOOK, 0, currentlevel, map_rng);
 									rolledLevelCurveItem = true;
 								}
 							}
@@ -9428,7 +9428,7 @@ void assignActions(map_t* map)
 						childEntity->x = entity->x - 8;
 						childEntity->y = entity->y - 8;
 						//printlog("32 Generated entity. Sprite: %d Uid: %d X: %.2f Y: %.2f\n",childEntity->sprite,childEntity->getUID(),childEntity->x,childEntity->y);
-						childEntity->yaw = ((int)(map_rng.rand() % 80) - 40 + c * 90) * (PI / 180.f);
+						childEntity->yaw = (map_rng.rand() % 80 - 40 + c * 90) * (PI / 180.f);
 						if ( childEntity->yaw >= PI * 2 )
 						{
 							childEntity->yaw -= PI * 2;

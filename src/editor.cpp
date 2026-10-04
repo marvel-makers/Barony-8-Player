@@ -10259,7 +10259,7 @@ int main(int argc, char** argv)
 				tilepalette = 0;
 			}
 
-			int numtiles = static_cast<int>(sizeof(tileEditorNameStrings) / sizeof(tileEditorNameStrings[0]));
+			int numtiles = sizeof(tileEditorNameStrings) / sizeof(tileEditorNameStrings[0]);
 
 			if ( (mousex <= xres && mousey <= yres) && palette[mousey + mousex * yres] >= 0 && palette[mousey + mousex * yres] <= numtiles)
 			{

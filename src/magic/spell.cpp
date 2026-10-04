@@ -397,7 +397,7 @@ bool addSpell(int spell, int player, bool ignoreSkill)
 			{
 				// can't learn, already have it.
 				messagePlayer(player, MESSAGE_STATUS, Language::get(439), new_spell->getSpellName());
-				spellDeconstructor((void*)new_spell);
+				spellDeconstructor(new_spell);
 				playSoundPlayer(player, 90, 64);
 				return false;
 			}
@@ -409,7 +409,7 @@ bool addSpell(int spell, int player, bool ignoreSkill)
 			//{
 			//}
 			messagePlayer(player, MESSAGE_STATUS, Language::get(439), new_spell->getSpellName());
-			spellDeconstructor((void*)new_spell);
+			spellDeconstructor(new_spell);
 			return false;
 		}
 	}
@@ -421,7 +421,7 @@ bool addSpell(int spell, int player, bool ignoreSkill)
 	if ( !ignoreSkill && skillLVL < new_spell->difficulty )
 	{
 		messagePlayer(player, MESSAGE_PROGRESSION, Language::get(440));
-		spellDeconstructor((void*)new_spell);
+		spellDeconstructor(new_spell);
 		playSoundPlayer(player, 90, 64);
 		return false;
 	}
@@ -986,7 +986,7 @@ real_t getSpellBonusFromCasterINT(Entity* caster, Stat* casterStats, int skillID
 			real_t mult = 1.0;
 			if ( casterStats->getModifiedProficiency(skillID) >= SKILL_LEVEL_EXPERT )
 			{
-				real_t ratio = (casterStats->getModifiedProficiency(skillID) - SKILL_LEVEL_EXPERT) / (real_t)40.0;
+				real_t ratio = (casterStats->getModifiedProficiency(skillID) - SKILL_LEVEL_EXPERT) / 40.0;
 				mult += (ratio * (60 / 100.0)); // 0.6 max
 			}
 			if ( casterStats->getModifiedProficiency(skillID) >= SKILL_LEVEL_LEGENDARY )
@@ -1063,7 +1063,7 @@ real_t getBonusFromCasterOfSpellElement(Entity* caster, Stat* casterStats, spell
 			if ( spellSkillID == PRO_SORCERY
 				|| spellSkillID == PRO_MYSTICISM )
 			{
-				bonus += 0.2 + (0.1 * std::max(0, ((int)(casterStats->getEffectActive(EFF_COUNSEL) & 0xF) - 1)));
+				bonus += 0.2 + (0.1 * std::max(0, ((casterStats->getEffectActive(EFF_COUNSEL) & 0xF) - 1)));
 			}
 		}
 		if ( casterStats->getEffectActive(EFF_RATION_SOUR) )

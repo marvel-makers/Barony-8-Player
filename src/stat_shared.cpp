@@ -152,7 +152,7 @@ Stat::Stat(Sint32 sprite) :
 
 	if ( multiplayer != CLIENT )
 	{
-		setDefaultMonsterStats(this, (int)sprite);
+		setDefaultMonsterStats(this, sprite);
 	}
 }
 

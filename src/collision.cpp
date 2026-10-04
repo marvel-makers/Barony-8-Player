@@ -335,7 +335,7 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
 						{
 							strcpy((char*)net_packet->data, "SNEL");
 							SDLNet_Write16(sfx, &net_packet->data[4]);
-							SDLNet_Write32((Uint32)players[player]->entity->getUID(), &net_packet->data[6]);
+							SDLNet_Write32(players[player]->entity->getUID(), &net_packet->data[6]);
 							SDLNet_Write16(vol, &net_packet->data[10]);
 							net_packet->address.host = net_clients[c - 1].host;
 							net_packet->address.port = net_clients[c - 1].port;
@@ -1326,7 +1326,7 @@ int barony_clear(real_t tx, real_t ty, Entity* my)
 				if ( entity->behavior == &actMonster && yourStats->type == NOTHING && multiplayer == CLIENT )
 				{
 					// client doesn't know about the type of the monster.
-					yourStats->type = static_cast<Monster>(entity->getMonsterTypeFromSprite());
+					yourStats->type = entity->getMonsterTypeFromSprite();
 				}
 				if ( monsterally[myStats->type][yourStats->type] )
 				{

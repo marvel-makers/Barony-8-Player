@@ -400,12 +400,12 @@ void serverSendItemToPickupAndEquip(int player, Item* item)
 
 	// send the client info on the item it just picked up
 	strcpy((char*)net_packet->data, "ITEQ");
-	SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-	SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
+	SDLNet_Write32(item->type, &net_packet->data[4]);
+	SDLNet_Write32(item->status, &net_packet->data[8]);
 	SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
 	SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
-	SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
-	SDLNet_Write32((Uint32)item->ownerUid, &net_packet->data[24]);
+	SDLNet_Write32(item->appearance, &net_packet->data[20]);
+	SDLNet_Write32(item->ownerUid, &net_packet->data[24]);
 	net_packet->data[28] = item->identified;
 	net_packet->address.host = net_clients[player - 1].host;
 	net_packet->address.port = net_clients[player - 1].port;

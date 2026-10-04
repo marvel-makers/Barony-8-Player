@@ -338,7 +338,7 @@ int saveScore(int player)
 	}
 	if ( c == MAXTOPSCORES )
 	{
-		scoreDeconstructor((void*)currentscore);
+		scoreDeconstructor(currentscore);
 		return -1; // do not save the score
 	}
 	node = list_AddNodeLast(scoresPtr);
@@ -5404,47 +5404,47 @@ void SaveGameInfo::computeHash(const int playernum, Uint32& hash)
 	}
 
 	Uint32 shift = 0;
-	hash += (Uint32)((Uint32)gamekey << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)mapseed << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)gametimer << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)svflags << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(multiplayer_type) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(dungeon_lvl) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(level_track) << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)customseed << (shift % 32)); ++shift;
+	hash += gamekey << shift % 32; ++shift;
+	hash += mapseed << shift % 32; ++shift;
+	hash += gametimer << shift % 32; ++shift;
+	hash += svflags << shift % 32; ++shift;
+	hash += static_cast<Uint32>(multiplayer_type) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(dungeon_lvl) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(level_track) << shift % 32; ++shift;
+	hash += customseed << shift % 32; ++shift;
 
 	auto& player = players[playernum];
-	hash += (Uint32)((Uint32)player.char_class << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)player.race << (shift % 32)); ++shift;
+	hash += player.char_class << shift % 32; ++shift;
+	hash += player.race << shift % 32; ++shift;
 
 	for ( auto k : player.kills )
 	{
-		hash += (Uint32)(static_cast<Uint32>(k) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(k) << shift % 32; ++shift;
 	}
 
-	hash += (Uint32)(static_cast<Uint32>(player.conductPenniless) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(player.conductFoodless) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(player.conductVegetarian) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(player.conductIlliterate) << (shift % 32)); ++shift;
+	hash += static_cast<Uint32>(player.conductPenniless) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(player.conductFoodless) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(player.conductVegetarian) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(player.conductIlliterate) << shift % 32; ++shift;
 	for ( int i = 0; i < NUM_CONDUCT_CHALLENGES; ++i )
 	{
-		hash += (Uint32)(static_cast<Uint32>(player.additionalConducts[i]) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(player.additionalConducts[i]) << shift % 32; ++shift;
 	}
 	for ( int i = 0; i < NUM_GAMEPLAY_STATISTICS; ++i )
 	{
-		hash += (Uint32)(static_cast<Uint32>(player.gameStatistics[i]) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(player.gameStatistics[i]) << shift % 32; ++shift;
 	}
 	for ( int i = 0; i < NUM_HOTBAR_SLOTS; ++i )
 	{
-		hash += (Uint32)((Uint32)player.hotbar[i] << (shift % 32)); ++shift;
+		hash += player.hotbar[i] << shift % 32; ++shift;
 		for ( int j = 0; j < NUM_HOTBAR_ALTERNATES; ++j )
 		{
-			hash += (Uint32)((Uint32)player.hotbar_alternate[j][i] << (shift % 32)); ++shift;
+			hash += player.hotbar_alternate[j][i] << shift % 32; ++shift;
 		}
 	}
 	for ( auto k : player.spells )
 	{
-		hash += (Uint32)((Uint32)k << (shift % 32)); ++shift;
+		hash += k << shift % 32; ++shift;
 	}
 
 	std::vector<Player::stat_t*> statsArr;
@@ -5456,44 +5456,44 @@ void SaveGameInfo::computeHash(const int playernum, Uint32& hash)
 
 	for ( auto stats : statsArr )
 	{
-		hash += (Uint32)((Uint32)stats->type << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->sex << (shift % 32)); ++shift;
-		hash += (Uint32)((Uint32)stats->statscore_appearance << (shift % 32)); ++shift;
+		hash += stats->type << shift % 32; ++shift;
+		hash += stats->sex << shift % 32; ++shift;
+		hash += stats->statscore_appearance << shift % 32; ++shift;
 
-		hash += (Uint32)(static_cast<Uint32>(stats->HP) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->maxHP) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->MP) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->maxMP) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->STR) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->DEX) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->CON) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->INT) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->PER) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->CHR) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->EXP) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->LVL) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->GOLD) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(stats->HUNGER) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(stats->HP) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->maxHP) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->MP) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->maxMP) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->STR) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->DEX) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->CON) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->INT) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->PER) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->CHR) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->EXP) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->LVL) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->GOLD) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(stats->HUNGER) << shift % 32; ++shift;
 
 		for ( auto k : stats->PROFICIENCIES )
 		{
-			hash += (Uint32)(static_cast<Uint32>(k) << (shift % 32)); ++shift;
+			hash += static_cast<Uint32>(k) << shift % 32; ++shift;
 		}
 		for ( auto k : stats->EFFECTS )
 		{
-			hash += (Uint32)(static_cast<Uint32>(k) << (shift % 32)); ++shift;
+			hash += static_cast<Uint32>(k) << shift % 32; ++shift;
 		}
 		for ( auto k : stats->EFFECTS_TIMERS )
 		{
-			hash += (Uint32)(static_cast<Uint32>(k) << (shift % 32)); ++shift;
+			hash += static_cast<Uint32>(k) << shift % 32; ++shift;
 		}
 		for ( auto k : stats->MISC_FLAGS )
 		{
-			hash += (Uint32)(static_cast<Uint32>(k) << (shift % 32)); ++shift;
+			hash += static_cast<Uint32>(k) << shift % 32; ++shift;
 		}
 		for ( auto& pair : stats->player_equipment )
 		{
-			hash += (Uint32)((Uint32)pair.second << (shift % 32)); ++shift;
+			hash += pair.second << shift % 32; ++shift;
 		}
 		for ( auto& pair : stats->npc_equipment )
 		{
@@ -5509,11 +5509,11 @@ void SaveGameInfo::computeHash(const int playernum, Uint32& hash)
 		}
 		for ( auto& bag : stats->player_lootbags )
 		{
-			hash += (Uint32)((Uint32)bag.first << (shift % 32)); ++shift;
-			hash += (Uint32)(static_cast<Uint32>(bag.second.spawn_x) << (shift % 32)); ++shift;
-			hash += (Uint32)(static_cast<Uint32>(bag.second.spawn_y) << (shift % 32)); ++shift;
-			hash += (Uint32)(static_cast<Uint32>(bag.second.looted) << (shift % 32)); ++shift;
-			hash += (Uint32)(static_cast<Uint32>(bag.second.spawnedOnGround) << (shift % 32)); ++shift;
+			hash += bag.first << shift % 32; ++shift;
+			hash += static_cast<Uint32>(bag.second.spawn_x) << shift % 32; ++shift;
+			hash += static_cast<Uint32>(bag.second.spawn_y) << shift % 32; ++shift;
+			hash += static_cast<Uint32>(bag.second.looted) << shift % 32; ++shift;
+			hash += static_cast<Uint32>(bag.second.spawnedOnGround) << shift % 32; ++shift;
 			for ( auto& item : bag.second.items )
 			{
 				item.computeHash(hash, shift);
@@ -5529,61 +5529,61 @@ void SaveGameInfo::computeHash(const int playernum, Uint32& hash)
 
 	for ( auto& val : players[playernum].itemDegradeRNG )
 	{
-		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(val.first) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(val.second) << shift % 32; ++shift;
 	}
 	for ( auto& val : players[playernum].escalatingRngRolls )
 	{
-		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(val.first) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(val.second) << shift % 32; ++shift;
 	}
 	for ( auto& val : players[playernum].escalatingSpellRngRolls )
 	{
-		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(val.first) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(val.second) << shift % 32; ++shift;
 	}
 	for ( auto& val : players[playernum].appraisal_item_progress )
 	{
-		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(val.first) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(val.second) << shift % 32; ++shift;
 	}
 	for ( auto& val : players[playernum].learnedSpells )
 	{
-		hash += (Uint32)(static_cast<Uint32>(val) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(val) << shift % 32; ++shift;
 	}
 	for ( auto& val : players[playernum].sustainedSpellIDCounter )
 	{
-		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(val.first) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(val.second) << shift % 32; ++shift;
 	}
 	for ( auto& val : players[playernum].ducksInARow )
 	{
-		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(val.first) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(val.second) << shift % 32; ++shift;
 	}
 	for ( auto& val : players[playernum].favoriteBooksAchievement )
 	{
-		hash += (Uint32)(static_cast<Uint32>(val.first) << (shift % 32)); ++shift;
-		hash += (Uint32)(static_cast<Uint32>(val.second) << (shift % 32)); ++shift;
+		hash += static_cast<Uint32>(val.first) << shift % 32; ++shift;
+		hash += static_cast<Uint32>(val.second) << shift % 32; ++shift;
 	}
-	hash += (Uint32)(static_cast<Uint32>(players[playernum].sustainedSpellMPUsedSorcery) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(players[playernum].sustainedSpellMPUsedMysticism) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(players[playernum].sustainedSpellMPUsedThaumaturgy) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(players[playernum].baseSpellMPUsedSorcery) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(players[playernum].baseSpellMPUsedMysticism) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(players[playernum].baseSpellMPUsedThaumaturgy) << (shift % 32)); ++shift;
+	hash += static_cast<Uint32>(players[playernum].sustainedSpellMPUsedSorcery) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(players[playernum].sustainedSpellMPUsedMysticism) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(players[playernum].sustainedSpellMPUsedThaumaturgy) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(players[playernum].baseSpellMPUsedSorcery) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(players[playernum].baseSpellMPUsedMysticism) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(players[playernum].baseSpellMPUsedThaumaturgy) << shift % 32; ++shift;
 }
 
 void SaveGameInfo::Player::stat_t::item_t::computeHash(Uint32& hash, Uint32& shift)
 {
-	hash += (Uint32)((Uint32)type << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)status << (shift % 32)); ++shift;
-	hash += (Uint32)((Uint32)appearance << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(beatitude) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(count) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(identified) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(x) << (shift % 32)); ++shift;
-	hash += (Uint32)(static_cast<Uint32>(y) << (shift % 32)); ++shift;
+	hash += type << shift % 32; ++shift;
+	hash += status << shift % 32; ++shift;
+	hash += appearance << shift % 32; ++shift;
+	hash += static_cast<Uint32>(beatitude) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(count) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(identified) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(x) << shift % 32; ++shift;
+	hash += static_cast<Uint32>(y) << shift % 32; ++shift;
 }
 
 int SaveGameInfo::populateFromSession(const int playernum)
@@ -5876,8 +5876,8 @@ int SaveGameInfo::populateFromSession(const int playernum)
 				for ( auto& item : loot.second.items )
 				{
 					loot2.second.items.push_back(SaveGameInfo::Player::stat_t::item_t(
-						(Uint32)item.type,
-						(Uint32)item.status,
+						item.type,
+						item.status,
 						item.appearance,
 						item.beatitude,
 						item.count,
@@ -6348,13 +6348,13 @@ std::string SaveGameInfo::serializeToOnlineHiscore(const int playernum, const in
 		rapidjson::Value itemArray(rapidjson::kArrayType);
 		itemArray.PushBack(static_cast<int>(item.type), d.GetAllocator());
 		itemArray.PushBack(static_cast<int>(item.status), d.GetAllocator());
-		itemArray.PushBack((int)item.beatitude, d.GetAllocator());
-		itemArray.PushBack((int)item.count, d.GetAllocator());
+		itemArray.PushBack(item.beatitude, d.GetAllocator());
+		itemArray.PushBack(item.count, d.GetAllocator());
 		itemArray.PushBack(static_cast<int>(item.appearance), d.GetAllocator());
 		itemArray.PushBack(static_cast<int>(item.identified), d.GetAllocator());
-		itemArray.PushBack((int)0 /* blank uid */, d.GetAllocator());
-		itemArray.PushBack((int)item.x, d.GetAllocator());
-		itemArray.PushBack((int)item.y, d.GetAllocator());
+		itemArray.PushBack(0 /* blank uid */, d.GetAllocator());
+		itemArray.PushBack(item.x, d.GetAllocator());
+		itemArray.PushBack(item.y, d.GetAllocator());
 
 		inventory.PushBack(itemArray, d.GetAllocator());
 	}
@@ -6369,13 +6369,13 @@ std::string SaveGameInfo::serializeToOnlineHiscore(const int playernum, const in
 				auto& item = player.stats.inventory[equipment.second];
 				itemArray.PushBack(static_cast<int>(item.type), d.GetAllocator());
 				itemArray.PushBack(static_cast<int>(item.status), d.GetAllocator());
-				itemArray.PushBack((int)item.beatitude, d.GetAllocator());
-				itemArray.PushBack((int)item.count, d.GetAllocator());
+				itemArray.PushBack(item.beatitude, d.GetAllocator());
+				itemArray.PushBack(item.count, d.GetAllocator());
 				itemArray.PushBack(static_cast<int>(item.appearance), d.GetAllocator());
 				itemArray.PushBack(static_cast<int>(item.identified), d.GetAllocator());
-				itemArray.PushBack((int)0 /* blank uid */, d.GetAllocator());
-				itemArray.PushBack((int)item.x, d.GetAllocator());
-				itemArray.PushBack((int)item.y, d.GetAllocator());
+				itemArray.PushBack(0 /* blank uid */, d.GetAllocator());
+				itemArray.PushBack(item.x, d.GetAllocator());
+				itemArray.PushBack(item.y, d.GetAllocator());
 			}
 			rapidjson::Value key(equipment.first.c_str(), d.GetAllocator());
 			character.AddMember(key, itemArray, d.GetAllocator());

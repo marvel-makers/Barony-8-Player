@@ -24,7 +24,7 @@ void sendEntityUDP(Entity* entity, int c, bool guarantee)
 
 	// send entity data to the client
 	strcpy((char*)net_packet->data, "ENTU");
-	SDLNet_Write32((Uint32)entity->getUID(), &net_packet->data[4]);
+	SDLNet_Write32(entity->getUID(), &net_packet->data[4]);
 	SDLNet_Write16(static_cast<Uint16>(entity->sprite), &net_packet->data[8]);
 	SDLNet_Write16(static_cast<Sint16>(entity->x * 32), &net_packet->data[10]);
 	SDLNet_Write16(static_cast<Sint16>(entity->y * 32), &net_packet->data[12]);
@@ -60,7 +60,7 @@ void sendEntityUDP(Entity* entity, int c, bool guarantee)
 			net_packet->data[34 + j / 8] |= power(2, j - (j / 8) * 8);
 		}
 	}
-	SDLNet_Write32((Uint32)ticks, &net_packet->data[36]);
+	SDLNet_Write32(ticks, &net_packet->data[36]);
 	SDLNet_Write16(static_cast<Sint16>(entity->vel_x * 32), &net_packet->data[40]);
 	SDLNet_Write16(static_cast<Sint16>(entity->vel_y * 32), &net_packet->data[42]);
 	SDLNet_Write16(static_cast<Sint16>(entity->vel_z * 32), &net_packet->data[44]);
@@ -517,7 +517,7 @@ Entity* receiveEntity(Entity* entity)
 	if ( entity == nullptr )
 	{
 		newentity = true;
-		entity = newEntity((int)SDLNet_Read16(&net_packet->data[8]), 0, map.entities, nullptr);
+		entity = newEntity(SDLNet_Read16(&net_packet->data[8]), 0, map.entities, nullptr);
 	}
 	else
 	{
@@ -594,7 +594,7 @@ Entity* receiveEntity(Entity* entity)
 		|| (entity->behavior == &actItem && entity->itemFollowUID != 0);
 
 	entity->lastupdate = ticks;
-	entity->lastupdateserver = (Uint32)SDLNet_Read32(&net_packet->data[36]);
+	entity->lastupdateserver = SDLNet_Read32(&net_packet->data[36]);
 	entity->setUID(static_cast<int>(SDLNet_Read32(&net_packet->data[4]))); // remember who I am
 	entity->new_x = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[10])) / 32.0;
 	entity->new_y = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[12])) / 32.0;
@@ -604,9 +604,9 @@ Entity* receiveEntity(Entity* entity)
 	entity->sizex = static_cast<Sint8>(net_packet->data[16]);
 	entity->sizey = static_cast<Sint8>(net_packet->data[17]);
 	if (newentity || monsterType != SLIME) {
-	    entity->scalex = ((Uint8)net_packet->data[18]) / 128.f;
-	    entity->scaley = ((Uint8)net_packet->data[19]) / 128.f;
-	    entity->scalez = ((Uint8)net_packet->data[20]) / 128.f;
+	    entity->scalex = net_packet->data[18] / 128.f;
+	    entity->scaley = net_packet->data[19] / 128.f;
+	    entity->scalez = net_packet->data[20] / 128.f;
 	}
 	if ( newentity || !excludeYaw )
 	{

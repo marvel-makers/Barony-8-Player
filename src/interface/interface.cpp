@@ -7868,7 +7868,7 @@ void stationOpenSound(int player, int type)
 				{
 					strcpy((char*)net_packet->data, "SNEL");
 					SDLNet_Write16(sfx, &net_packet->data[4]);
-					SDLNet_Write32((Uint32)players[player]->entity->getUID(), &net_packet->data[6]);
+					SDLNet_Write32(players[player]->entity->getUID(), &net_packet->data[6]);
 					SDLNet_Write16(vol, &net_packet->data[10]);
 					net_packet->address.host = net_clients[c - 1].host;
 					net_packet->address.port = net_clients[c - 1].port;
@@ -8068,11 +8068,11 @@ void GenericGUIMenu::adorciseItem(Item* item)
 		else
 		{
 			strcpy((char*)net_packet->data, "ADOR");
-			SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-			SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
+			SDLNet_Write32(item->type, &net_packet->data[4]);
+			SDLNet_Write32(item->status, &net_packet->data[8]);
 			SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
-			SDLNet_Write32((Uint32)1, &net_packet->data[16]);
-			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+			SDLNet_Write32(1, &net_packet->data[16]);
+			SDLNet_Write32(item->appearance, &net_packet->data[20]);
 			net_packet->data[24] = item->identified;
 			net_packet->data[25] = gui_player;
 			SDLNet_Write16(static_cast<Sint16>(x / 16), &net_packet->data[26]);
@@ -9286,11 +9286,11 @@ void GenericGUIMenu::alchemyCookCombination()
 				// if decrementing qty and holding item, then send "equip" for server to update their count of your held item.
 				strcpy((char*)net_packet->data, "COOK");
 				Item* shield = stats[gui_player]->shield;
-				SDLNet_Write32(static_cast<Uint32>(shield ? shield->type : TOOL_TORCH), &net_packet->data[4]);
-				SDLNet_Write32(static_cast<Uint32>(shield ? shield->status : BROKEN), &net_packet->data[8]);
+				SDLNet_Write32(shield ? shield->type : TOOL_TORCH, &net_packet->data[4]);
+				SDLNet_Write32(shield ? shield->status : BROKEN, &net_packet->data[8]);
 				SDLNet_Write32(static_cast<Uint32>(shield ? shield->beatitude : 0), &net_packet->data[12]);
 				SDLNet_Write32(static_cast<Uint32>(shield ? shield->count : 0), &net_packet->data[16]);
-				SDLNet_Write32(static_cast<Uint32>(shield ? shield->appearance : 0), &net_packet->data[20]);
+				SDLNet_Write32(shield ? shield->appearance : 0, &net_packet->data[20]);
 				net_packet->data[24] = shield ? shield->identified : false;
 				net_packet->data[25] = gui_player;
 				net_packet->address.host = net_server.host;
@@ -12574,7 +12574,7 @@ bool GenericGUIMenu::tinkeringRepairItem(Item* item)
 						net_packet->data[4] = gui_player;
 						net_packet->data[5] = armornum;
 						net_packet->data[6] = item->status;
-						SDLNet_Write32((Uint32)item->appearance, &net_packet->data[7]);
+						SDLNet_Write32(item->appearance, &net_packet->data[7]);
 						net_packet->address.host = net_server.host;
 						net_packet->address.port = net_server.port;
 						net_packet->len = 11;
@@ -12686,7 +12686,7 @@ bool GenericGUIMenu::tinkeringRepairItem(Item* item)
 						net_packet->data[4] = gui_player;
 						net_packet->data[5] = armornum;
 						net_packet->data[6] = item->status;
-						SDLNet_Write32((Uint32)item->appearance, &net_packet->data[7]);
+						SDLNet_Write32(item->appearance, &net_packet->data[7]);
 						net_packet->address.host = net_server.host;
 						net_packet->address.port = net_server.port;
 						net_packet->len = 11;
@@ -14634,7 +14634,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerMenu()
 			{
 				if ( titleStr[0] >= 'a' && titleStr[0] <= 'z' )
 				{
-					titleStr[0] = static_cast<char>(toupper((int)titleStr[0]));
+					titleStr[0] = static_cast<char>(toupper(titleStr[0]));
 				}
 				size_t found = titleStr.find(' ');
 				while ( found != std::string::npos )
@@ -14642,7 +14642,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerMenu()
 					auto& c = titleStr[std::min(found + 1, titleStr.size() - 1)];
 					if ( c >= 'a' && c <= 'z' )
 					{
-						c = static_cast<char>(toupper((int)c));
+						c = static_cast<char>(toupper(c));
 					}
 					found = titleStr.find(' ', found + 1);
 				}
@@ -17693,7 +17693,7 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 			{
 				if ( titleStr[0] >= 'a' && titleStr[0] <= 'z' )
 				{
-					titleStr[0] = static_cast<char>(toupper((int)titleStr[0]));
+					titleStr[0] = static_cast<char>(toupper(titleStr[0]));
 				}
 				size_t found = titleStr.find(' ');
 				while ( found != std::string::npos )
@@ -17701,7 +17701,7 @@ void GenericGUIMenu::AlchemyGUI_t::updateAlchemyMenu()
 					auto& c = titleStr[std::min(found + 1, titleStr.size() - 1)];
 					if ( c >= 'a' && c <= 'z' )
 					{
-						c = static_cast<char>(toupper((int)c));
+						c = static_cast<char>(toupper(c));
 					}
 					found = titleStr.find(' ', found + 1);
 				}
@@ -21979,7 +21979,7 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherMenu()
 			{
 				if ( titleStr[0] >= 'a' && titleStr[0] <= 'z' )
 				{
-					titleStr[0] = static_cast<char>(toupper((int)titleStr[0]));
+					titleStr[0] = static_cast<char>(toupper(titleStr[0]));
 				}
 				size_t found = titleStr.find(' ');
 				while ( found != std::string::npos )
@@ -21987,7 +21987,7 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherMenu()
 					auto& c = titleStr[std::min(found + 1, titleStr.size() - 1)];
 					if ( c >= 'a' && c <= 'z' )
 					{
-						c = static_cast<char>(toupper((int)c));
+						c = static_cast<char>(toupper(c));
 					}
 					found = titleStr.find(' ', found + 1);
 				}
@@ -25786,7 +25786,7 @@ void GenericGUIMenu::ItemEffectGUI_t::updateItemEffectMenu()
 			else if ( parentGUI.itemEffectUsingSpellbook && items[parentGUI.itemEffectItemType].category == SPELLBOOK )
 			{
 				if ( node_t* spellImageNode = 
-					ItemTooltips.getSpellNodeFromSpellID(getSpellIDFromSpellbook(static_cast<ItemType>(parentGUI.itemEffectItemType))) )
+					ItemTooltips.getSpellNodeFromSpellID(getSpellIDFromSpellbook(parentGUI.itemEffectItemType)) )
 				{
 					string_t* string = static_cast<string_t*>(spellImageNode->element);
 					if ( string )
@@ -30747,7 +30747,7 @@ void CalloutRadialMenu::drawCalloutMenu()
 					}
 					else
 					{
-						if ( createParticleCallout((real_t)moveToX, (real_t)moveToY, -4, 0, static_cast<CalloutCommand>(optionSelected)) )
+						if ( createParticleCallout(moveToX, moveToY, -4, 0, static_cast<CalloutCommand>(optionSelected)) )
 						{
 							sendCalloutText(static_cast<CalloutCommand>(optionSelected));
 						}
@@ -33743,7 +33743,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
 				sexBtn->setTickCallback(genericgui_deselect_fn);
 				sexBtn->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
 					auto& gui = GenericGUI[widget.getOwner()].assistShrineGUI;
-					auto button = const_cast<Button*>((Button*)(&widget));
+					auto button = (Button*)&widget;
 					pos.y += 2;
 					if ( (gui.selectedRace == -1 && gui.savedRace == -1 && stats[widget.getOwner()]->playerRace == RACE_AUTOMATON)
 						|| (gui.savedRace == RACE_AUTOMATON && gui.selectedRace == -1)

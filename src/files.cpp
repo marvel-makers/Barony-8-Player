@@ -5267,7 +5267,7 @@ void generateVBOs(int start, int end)
 		std::unique_ptr<GLfloat[]> positions(new GLfloat[9 * model->numfaces]);
 		std::unique_ptr<GLfloat[]> colors(new GLfloat[9 * model->numfaces]);
 		std::unique_ptr<GLfloat[]> normals(new GLfloat[9 * model->numfaces]);
-		for ( uint64_t i = 0; i < (uint64_t)model->numfaces; i++ )
+		for ( uint64_t i = 0; i < model->numfaces; i++ )
 		{
 			const polytriangle_t* face = &model->faces[i];
 			for ( uint64_t vert_index = 0; vert_index < 3; vert_index++ )

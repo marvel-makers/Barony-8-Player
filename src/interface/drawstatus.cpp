@@ -3376,11 +3376,11 @@ void drawStatusNew(const int player)
 							if ( multiplayer == CLIENT )
 							{
 								strcpy((char*)net_packet->data, "FODA");
-								SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-								SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
+								SDLNet_Write32(item->type, &net_packet->data[4]);
+								SDLNet_Write32(item->status, &net_packet->data[8]);
 								SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
 								SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
-								SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+								SDLNet_Write32(item->appearance, &net_packet->data[20]);
 								net_packet->data[24] = item->identified;
 								net_packet->data[25] = player;
 								net_packet->address.host = net_server.host;

@@ -250,7 +250,7 @@ mat4x4_t* fast_perspective(mat4x4_t* result, float fov, float aspect, float near
 
 mat4x4_t* mat_from_array(mat4x4_t* result, float matArray[16])
 {
-    memcpy((void*)result, (const void*)matArray, sizeof(mat4x4_t));
+    memcpy(result, matArray, sizeof(mat4x4_t));
 	return result;
 }
 
@@ -2559,7 +2559,7 @@ unsigned int GO_GetPixelU32(int x, int y, view_t& camera)
 #endif
 
 	GLubyte pixel[4];
-    GL_CHECK_ERR(glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, (void*)pixel));
+    GL_CHECK_ERR(glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel));
 	oldpix = pixel[0] + (static_cast<Uint32>(pixel[1]) << 8) + (static_cast<Uint32>(pixel[2]) << 16) + (static_cast<Uint32>(pixel[3]) << 24);
     if (!hdrEnabled) {
         main_framebuffer.bindForWriting();

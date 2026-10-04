@@ -41,7 +41,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		{
 			return;
 		}
-		memcpy((char*)net_packet->data, "PING", 4);
+		memcpy(net_packet->data, "PING", 4);
 		net_packet->address.host = net_clients[j - 1].host;
 		net_packet->address.port = net_clients[j - 1].port;
 		net_packet->len = 5;
@@ -147,7 +147,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			{
 				appearance = entity->skill[14] % MAGICSTAFF_SCEPTER_CHARGE_MAX;
 			}
-			statusBeatitudeQuantityAppearance |= (static_cast<Uint8>(appearance) & 0xFF); // appearance
+			statusBeatitudeQuantityAppearance |= (appearance & 0xFF); // appearance
 			SDLNet_Write32(statusBeatitudeQuantityAppearance, &net_packet->data[12]);
 
 			net_packet->len = 16;
@@ -291,8 +291,8 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 		auto vely = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[12])) / 128.0;
 		auto yaw = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[14])) / 128.0;
 		auto pitch = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[16])) / 128.0;
-		bool bounce = ((int)(net_packet->data[19] & 1) == 1) ? true : false;
-		int deactivated = ((int)((net_packet->data[19] >> 1) & 1) == 1) ? 1 : 0;
+		bool bounce = ((net_packet->data[19] & 1) == 1) ? true : false;
+		int deactivated = (((net_packet->data[19] >> 1) & 1) == 1) ? 1 : 0;
 
 		// update rotation
 		players[player]->ghost.my->yaw = yaw;
@@ -717,7 +717,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			{
 				continue;
 			}
-			memcpy((char*)net_packet->data, "DISC", 4);
+			memcpy(net_packet->data, "DISC", 4);
 			net_packet->data[4] = playerDisconnected;
 			net_packet->address.host = net_clients[c - 1].host;
 			net_packet->address.port = net_clients[c - 1].port;
@@ -820,9 +820,9 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			{
 				continue;
 			}
-			memcpy((char*)net_packet->data, "MSGS", 4);
+			memcpy(net_packet->data, "MSGS", 4);
 			SDLNet_Write32(color, &net_packet->data[4]);
-			SDLNet_Write32((Uint32)type, &net_packet->data[8]);
+			SDLNet_Write32(type, &net_packet->data[8]);
 			stringCopy((char*)(&net_packet->data[12]), fmt, len + 1, sizeof(fmt));
 			net_packet->address.host = net_clients[c - 1].host;
 			net_packet->address.port = net_clients[c - 1].port;
@@ -1067,7 +1067,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 
 	// close shop
 	{'SHPC', [](){
-		Entity* entity = uidToEntity((Uint32)SDLNet_Read32(&net_packet->data[4]));
+		Entity* entity = uidToEntity(SDLNet_Read32(&net_packet->data[4]));
 		if ( entity )
 		{
 			entity->skill[0] = 0;
@@ -1079,7 +1079,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 
 	// buy item from shop
 	{'SHPB', [](){
-		Uint32 uidnum = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		Uint32 uidnum = SDLNet_Read32(&net_packet->data[4]);
 		const int client = net_packet->data[29];
 		if (!barony::net::validPlayer(client))
 		{
@@ -1262,7 +1262,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 
 	// sell item to shop
 	{'SHPS', [](){
-		Uint32 uidnum = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		Uint32 uidnum = SDLNet_Read32(&net_packet->data[4]);
 		const int client = net_packet->data[29];
 		if (!barony::net::validPlayer(client))
 		{
@@ -2137,7 +2137,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 			equipment->status = BROKEN;
 		}
 		equipment->status = static_cast<Status>(net_packet->data[6]);
-		equipment->appearance = static_cast<Uint32>(SDLNet_Read32(&net_packet->data[7]));
+		equipment->appearance = SDLNet_Read32(&net_packet->data[7]);
 		return;
 	} },
 
@@ -2256,7 +2256,7 @@ static std::unordered_map<Uint32, void(*)()> serverPacketHandlers = {
 				{
 					strcpy((char*)net_packet->data, "SNEL");
 					SDLNet_Write16(sfx, &net_packet->data[4]);
-					SDLNet_Write32((Uint32)players[player]->entity->getUID(), &net_packet->data[6]);
+					SDLNet_Write32(players[player]->entity->getUID(), &net_packet->data[6]);
 					SDLNet_Write16(vol, &net_packet->data[10]);
 					net_packet->address.host = net_clients[c - 1].host;
 					net_packet->address.port = net_clients[c - 1].port;

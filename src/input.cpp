@@ -637,7 +637,7 @@ void Input::bind(const char* binding, const char* input) {
 		// game controller
 
 		char* type = nullptr;
-		Uint32 index = static_cast<Uint32>(strtol((const char*)(input + 3), &type, 10));
+		Uint32 index = static_cast<Uint32>(strtol(input + 3, &type, 10));
 		bool foundControllerForPlayer = false;
 		SDL_GameController* pad = nullptr;
 #ifndef EDITOR
@@ -651,7 +651,7 @@ void Input::bind(const char* binding, const char* input) {
 			(*b).second.pad = pad;
 			(*b).second.padIndex = index;
 			if (strncmp(type, "Button", 6) == 0) {
-				if (strcmp((const char*)(type + 6), "A") == 0) {
+				if (strcmp(type + 6, "A") == 0) {
 #ifdef NINTENDO
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_B;
 #else
@@ -659,7 +659,7 @@ void Input::bind(const char* binding, const char* input) {
 #endif
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 6), "B") == 0) {
+				} else if (strcmp(type + 6, "B") == 0) {
 #ifdef NINTENDO
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_A;
 #else
@@ -667,7 +667,7 @@ void Input::bind(const char* binding, const char* input) {
 #endif
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 6), "X") == 0) {
+				} else if (strcmp(type + 6, "X") == 0) {
 #ifdef NINTENDO
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_Y;
 #else
@@ -675,7 +675,7 @@ void Input::bind(const char* binding, const char* input) {
 #endif
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 6), "Y") == 0) {
+				} else if (strcmp(type + 6, "Y") == 0) {
 #ifdef NINTENDO
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_X;
 #else
@@ -683,28 +683,28 @@ void Input::bind(const char* binding, const char* input) {
 #endif
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 6), "Back") == 0) {
+				} else if (strcmp(type + 6, "Back") == 0) {
 					(*b).second.padButton = getControllerType() == ControllerType::PlayStation ?
                         SDL_CONTROLLER_BUTTON_TOUCHPAD : SDL_CONTROLLER_BUTTON_BACK;
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 6), "Start") == 0) {
+				} else if (strcmp(type + 6, "Start") == 0) {
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_START;
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 6), "LeftStick") == 0) {
+				} else if (strcmp(type + 6, "LeftStick") == 0) {
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_LEFTSTICK;
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 6), "RightStick") == 0) {
+				} else if (strcmp(type + 6, "RightStick") == 0) {
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_RIGHTSTICK;
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 6), "LeftBumper") == 0) {
+				} else if (strcmp(type + 6, "LeftBumper") == 0) {
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_LEFTSHOULDER;
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 6), "RightBumper") == 0) {
+				} else if (strcmp(type + 6, "RightBumper") == 0) {
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
@@ -713,22 +713,22 @@ void Input::bind(const char* binding, const char* input) {
 					return;
 				}
 			} else if (strncmp(type, "StickLeft", 9) == 0) {
-				if (strcmp((const char*)(type + 9), "X-") == 0) {
+				if (strcmp(type + 9, "X-") == 0) {
 					(*b).second.padAxisNegative = true;
 					(*b).second.padAxis = SDL_CONTROLLER_AXIS_LEFTX;
 					(*b).second.type = binding_t::CONTROLLER_AXIS;
 					return;
-				} else if (strcmp((const char*)(type + 9), "X+") == 0) {
+				} else if (strcmp(type + 9, "X+") == 0) {
 					(*b).second.padAxisNegative = false;
 					(*b).second.padAxis = SDL_CONTROLLER_AXIS_LEFTX;
 					(*b).second.type = binding_t::CONTROLLER_AXIS;
 					return;
-				} else if (strcmp((const char*)(type + 9), "Y-") == 0) {
+				} else if (strcmp(type + 9, "Y-") == 0) {
 					(*b).second.padAxisNegative = true;
 					(*b).second.padAxis = SDL_CONTROLLER_AXIS_LEFTY;
 					(*b).second.type = binding_t::CONTROLLER_AXIS;
 					return;
-				} else if (strcmp((const char*)(type + 9), "Y+") == 0) {
+				} else if (strcmp(type + 9, "Y+") == 0) {
 					(*b).second.padAxisNegative = false;
 					(*b).second.padAxis = SDL_CONTROLLER_AXIS_LEFTY;
 					(*b).second.type = binding_t::CONTROLLER_AXIS;
@@ -738,22 +738,22 @@ void Input::bind(const char* binding, const char* input) {
 					return;
 				}
 			} else if (strncmp(type, "StickRight", 10) == 0) {
-				if (strcmp((const char*)(type + 10), "X-") == 0) {
+				if (strcmp(type + 10, "X-") == 0) {
 					(*b).second.padAxisNegative = true;
 					(*b).second.padAxis = SDL_CONTROLLER_AXIS_RIGHTX;
 					(*b).second.type = binding_t::CONTROLLER_AXIS;
 					return;
-				} else if (strcmp((const char*)(type + 10), "X+") == 0) {
+				} else if (strcmp(type + 10, "X+") == 0) {
 					(*b).second.padAxisNegative = false;
 					(*b).second.padAxis = SDL_CONTROLLER_AXIS_RIGHTX;
 					(*b).second.type = binding_t::CONTROLLER_AXIS;
 					return;
-				} else if (strcmp((const char*)(type + 10), "Y-") == 0) {
+				} else if (strcmp(type + 10, "Y-") == 0) {
 					(*b).second.padAxisNegative = true;
 					(*b).second.padAxis = SDL_CONTROLLER_AXIS_RIGHTY;
 					(*b).second.type = binding_t::CONTROLLER_AXIS;
 					return;
-				} else if (strcmp((const char*)(type + 10), "Y+") == 0) {
+				} else if (strcmp(type + 10, "Y+") == 0) {
 					(*b).second.padAxisNegative = false;
 					(*b).second.padAxis = SDL_CONTROLLER_AXIS_RIGHTY;
 					(*b).second.type = binding_t::CONTROLLER_AXIS;
@@ -763,19 +763,19 @@ void Input::bind(const char* binding, const char* input) {
 					return;
 				}
 			} else if (strncmp(type, "Dpad", 4) == 0) {
-				if (strcmp((const char*)(type + 4), "X-") == 0) {
+				if (strcmp(type + 4, "X-") == 0) {
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_DPAD_LEFT;
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 4), "X+") == 0) {
+				} else if (strcmp(type + 4, "X+") == 0) {
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_DPAD_RIGHT;
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 4), "Y-") == 0) {
+				} else if (strcmp(type + 4, "Y-") == 0) {
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_DPAD_UP;
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
-				} else if (strcmp((const char*)(type + 4), "Y+") == 0) {
+				} else if (strcmp(type + 4, "Y+") == 0) {
 					(*b).second.padButton = SDL_CONTROLLER_BUTTON_DPAD_DOWN;
 					(*b).second.type = binding_t::CONTROLLER_BUTTON;
 					return;
@@ -805,7 +805,7 @@ void Input::bind(const char* binding, const char* input) {
 		// joystick
 
 		char* type = nullptr;
-		Uint32 index = static_cast<Uint32>(strtol((const char*)(input + 3), &type, 10));
+		Uint32 index = static_cast<Uint32>(strtol(input + 3, &type, 10));
 		auto& list = joysticks;
 		auto find = list.find(index);
 		if (find != list.end()) {
@@ -813,47 +813,47 @@ void Input::bind(const char* binding, const char* input) {
 			(*b).second.joystick = joystick;
 			if (strncmp(type, "Button", 6) == 0) {
 				(*b).second.type = binding_t::JOYSTICK_BUTTON;
-				(*b).second.joystickButton = static_cast<Uint32>(strtol((const char*)(type + 6), nullptr, 10));
+				(*b).second.joystickButton = static_cast<Uint32>(strtol(type + 6, nullptr, 10));
 				return;
 			} else if (strncmp(type, "Axis-", 5) == 0) {
 				(*b).second.type = binding_t::JOYSTICK_AXIS;
 				(*b).second.joystickAxisNegative = true;
-				(*b).second.joystickAxis = static_cast<Uint32>(strtol((const char*)(type + 5), nullptr, 10));
+				(*b).second.joystickAxis = static_cast<Uint32>(strtol(type + 5, nullptr, 10));
 				return;
 			} else if (strncmp(type, "Axis+", 5) == 0) {
 				(*b).second.type = binding_t::JOYSTICK_AXIS;
 				(*b).second.joystickAxisNegative = false;
-				(*b).second.joystickAxis = static_cast<Uint32>(strtol((const char*)(type + 5), nullptr, 10));
+				(*b).second.joystickAxis = static_cast<Uint32>(strtol(type + 5, nullptr, 10));
 				return;
 			} else if (strncmp(type, "Hat", 3) == 0) {
 				(*b).second.type = binding_t::JOYSTICK_HAT;
-				(*b).second.joystickHat = static_cast<Uint32>(strtol((const char*)(type + 3), nullptr, 10));
+				(*b).second.joystickHat = static_cast<Uint32>(strtol(type + 3, nullptr, 10));
 				if (type[3]) {
-					if (strncmp((const char*)(type + 4), "LeftUp", 6) == 0) {
+					if (strncmp(type + 4, "LeftUp", 6) == 0) {
 						(*b).second.joystickHatState = SDL_HAT_LEFTUP;
 						return;
-					} else if (strncmp((const char*)(type + 4), "Up", 2) == 0) {
+					} else if (strncmp(type + 4, "Up", 2) == 0) {
 						(*b).second.joystickHatState = SDL_HAT_UP;
 						return;
-					} else if (strncmp((const char*)(type + 4), "RightUp", 7) == 0) {
+					} else if (strncmp(type + 4, "RightUp", 7) == 0) {
 						(*b).second.joystickHatState = SDL_HAT_RIGHTUP;
 						return;
-					} else if (strncmp((const char*)(type + 4), "Right", 5) == 0) {
+					} else if (strncmp(type + 4, "Right", 5) == 0) {
 						(*b).second.joystickHatState = SDL_HAT_RIGHT;
 						return;
-					} else if (strncmp((const char*)(type + 4), "RightDown", 9) == 0) {
+					} else if (strncmp(type + 4, "RightDown", 9) == 0) {
 						(*b).second.joystickHatState = SDL_HAT_RIGHTDOWN;
 						return;
-					} else if (strncmp((const char*)(type + 4), "Down", 4) == 0) {
+					} else if (strncmp(type + 4, "Down", 4) == 0) {
 						(*b).second.joystickHatState = SDL_HAT_DOWN;
 						return;
-					} else if (strncmp((const char*)(type + 4), "LeftDown", 8) == 0) {
+					} else if (strncmp(type + 4, "LeftDown", 8) == 0) {
 						(*b).second.joystickHatState = SDL_HAT_LEFTDOWN;
 						return;
-					} else if (strncmp((const char*)(type + 4), "Left", 4) == 0) {
+					} else if (strncmp(type + 4, "Left", 4) == 0) {
 						(*b).second.joystickHatState = SDL_HAT_LEFT;
 						return;
-					} else if (strncmp((const char*)(type + 4), "Centered", 8) == 0) {
+					} else if (strncmp(type + 4, "Centered", 8) == 0) {
 						(*b).second.joystickHatState = SDL_HAT_CENTERED;
 						return;
 					} else {
@@ -871,17 +871,17 @@ void Input::bind(const char* binding, const char* input) {
 	} else if (len >= 5 && strncmp(input, "Mouse", 5) == 0) {
 		// mouse
 		(*b).second.type = binding_t::MOUSE_BUTTON;
-		if ( (strncmp((const char*)(input + 5), "WheelUp", 7) == 0) )
+		if ( (strncmp(input + 5, "WheelUp", 7) == 0) )
 		{
 			(*b).second.mouseButton = MOUSE_WHEEL_UP;
 			return;
 		}
-		else if ( (strncmp((const char*)(input + 5), "WheelDown", 9) == 0) )
+		else if ( (strncmp(input + 5, "WheelDown", 9) == 0) )
 		{
 			(*b).second.mouseButton = MOUSE_WHEEL_DOWN;
 			return;
 		}
-		Uint32 index = static_cast<Uint32>(strtol((const char*)(input + 5), nullptr, 10));
+		Uint32 index = static_cast<Uint32>(strtol(input + 5, nullptr, 10));
 		int result = std::min(index, 15U);
 		(*b).second.mouseButton = result;
 		return;
@@ -1003,7 +1003,7 @@ bool Input::binaryOf(binding_t& binding) {
 	} else if (binding.type == binding_t::KEYBOARD) {
 		SDL_Keycode key = binding.keycode;
 		if (key != SDLK_UNKNOWN) {
-			return keys[(int)key];
+			return keys[key];
 		}
 	}
 
@@ -1102,7 +1102,7 @@ float Input::analogOf(binding_t& binding) {
 	} else if (binding.type == binding_t::KEYBOARD) {
 		SDL_Keycode key = binding.keycode;
 		if (key != SDLK_UNKNOWN) {
-			return keys[(int)key] ? 1.f : 0.f;
+			return keys[key] ? 1.f : 0.f;
 		}
 	}
 

@@ -1710,7 +1710,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 						instances = std::min(std::max(1, instances), maxInstances);
 
 						Uint8 applyStrength = std::min(effectStrength + 1, instances);
-						if ( caster->setEffect(EFF_MAGICIANS_ARMOR, (Uint8)applyStrength, element->duration, true, true, true) )
+						if ( caster->setEffect(EFF_MAGICIANS_ARMOR, applyStrength, element->duration, true, true, true) )
 						{
 							if ( effectStrength == 0 )
 							{
@@ -1900,7 +1900,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 						static_cast<Uint8>(strength),
 						(caster->isEntityPlayer() >= 0) ? caster->skill[2] : -1);
 
-					if ( caster->setEffect(EFF_NIMBLENESS, (Uint8)effectStrength, element->duration, false, true, true) )
+					if ( caster->setEffect(EFF_NIMBLENESS, effectStrength, element->duration, false, true, true) )
 					{
 						messagePlayerColor(caster->isEntityPlayer(),
 							MESSAGE_HINT, makeColorRGB(0, 255, 0), Language::get(6476));
@@ -1929,7 +1929,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 						static_cast<Uint8>(strength),
 						(caster->isEntityPlayer() >= 0) ? caster->skill[2] : -1);
 
-					if ( caster->setEffect(EFF_GREATER_MIGHT, (Uint8)effectStrength, element->duration, false, true, true) )
+					if ( caster->setEffect(EFF_GREATER_MIGHT, effectStrength, element->duration, false, true, true) )
 					{
 						messagePlayerColor(caster->isEntityPlayer(),
 							MESSAGE_HINT, makeColorRGB(0, 255, 0), Language::get(6477));
@@ -1958,7 +1958,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 						static_cast<Uint8>(strength),
 						(caster->isEntityPlayer() >= 0) ? caster->skill[2] : -1);
 
-					if ( caster->setEffect(EFF_COUNSEL, (Uint8)effectStrength, element->duration, false, true, true) )
+					if ( caster->setEffect(EFF_COUNSEL, effectStrength, element->duration, false, true, true) )
 					{
 						messagePlayerColor(caster->isEntityPlayer(),
 							MESSAGE_HINT, makeColorRGB(0, 255, 0), Language::get(6478));
@@ -1987,7 +1987,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 						static_cast<Uint8>(strength),
 						(caster->isEntityPlayer() >= 0) ? caster->skill[2] : -1);
 
-					if ( caster->setEffect(EFF_STURDINESS, (Uint8)effectStrength, element->duration, false, true, true) )
+					if ( caster->setEffect(EFF_STURDINESS, effectStrength, element->duration, false, true, true) )
 					{
 						messagePlayerColor(caster->isEntityPlayer(),
 							MESSAGE_HINT, makeColorRGB(0, 255, 0), Language::get(6479));

@@ -141,7 +141,7 @@ static void changeLevel() {
 	secretlevel = net_packet->data[4];
 	mapseed = SDLNet_Read32(&net_packet->data[5]);
 	numplayers = 0;
-	entity_uids = (Uint32)SDLNet_Read32(&net_packet->data[9]);
+	entity_uids = SDLNet_Read32(&net_packet->data[9]);
 	printlog("Received map seed: %d. Entity UID start: %d\n", mapseed, entity_uids);
 
 	for ( int i = 0; i < barony::net::playerCapacity(); ++i )
@@ -399,7 +399,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		Entity *entity = uidToEntity(static_cast<int>(SDLNet_Read32(&net_packet->data[4])));
 		if ( entity )
 		{
-			if ( (Uint32)SDLNet_Read32(&net_packet->data[36]) < (Uint32)entity->lastupdateserver )
+			if (SDLNet_Read32(&net_packet->data[36]) < entity->lastupdateserver )
 			{
 				// old packet, not used
 			}
@@ -871,7 +871,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 			entity->flags[UPDATENEEDED] = true;
 			entity->flags[NOUPDATE] = false;
 
-			entity->itemFollowUID = ((Uint32)SDLNet_Read32(&net_packet->data[20]));
+			entity->itemFollowUID = SDLNet_Read32(&net_packet->data[20]);
 
 			entity->x = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[8])) / 32.0;
 			entity->y = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[10])) / 32.0;
@@ -896,7 +896,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// spawn an explosion, custom sprite
 	{'EXPS', [](){
-		Uint16 sprite = (Uint16)SDLNet_Read16(&net_packet->data[4]);
+		Uint16 sprite = SDLNet_Read16(&net_packet->data[4]);
 		Sint16 x = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[6]));
 		Sint16 y = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[8]));
 		Sint16 z = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[10]));
@@ -939,7 +939,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		Sint16 x = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[4]));
 		Sint16 y = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[6]));
 		Sint16 z = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[8]));
-		Uint16 scale = (Uint16)SDLNet_Read16(&net_packet->data[10]);
+		Uint16 scale = SDLNet_Read16(&net_packet->data[10]);
 		Entity* poof = spawnPoof(x, y, z, scale / 100.0);
 	}},
 
@@ -957,16 +957,16 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		Sint16 x = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[4]));
 		Sint16 y = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[6]));
 		Sint16 z = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[8]));
-		Uint32 sprite = (Uint32)SDLNet_Read32(&net_packet->data[10]);
+		Uint32 sprite = SDLNet_Read32(&net_packet->data[10]);
 		spawnMagicEffectParticles(x, y, z, sprite);
 	}},
 
 	// spawn magical bell effect particles
 	{ 'MAGB', []() {
-		Uint32 uid = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		Uint32 uid = SDLNet_Read32(&net_packet->data[4]);
 		if ( Entity* entity = uidToEntity(uid) )
 		{
-			Uint32 sprite = (Uint32)SDLNet_Read32(&net_packet->data[8]);
+			Uint32 sprite = SDLNet_Read32(&net_packet->data[8]);
 			spawnMagicEffectParticlesBell(entity, sprite);
 		}
 	} },
@@ -976,8 +976,8 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		Entity *entity = uidToEntity(static_cast<int>(SDLNet_Read32(&net_packet->data[4])));
 		if ( entity )
 		{
-			int particleType = static_cast<int>(net_packet->data[8]);
-			int sprite = static_cast<int>(SDLNet_Read16(&net_packet->data[9]));
+			int particleType = net_packet->data[8];
+			int sprite = SDLNet_Read16(&net_packet->data[9]);
 			switch ( particleType )
 			{
 				case PARTICLE_EFFECT_ABILITY_PURPLE:
@@ -1379,8 +1379,8 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		Sint16 particle_x = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[4]));
 		Sint16 particle_y = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[6]));
 		Sint16 particle_z = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[8]));
-		int particleType = static_cast<int>(net_packet->data[10]);
-		int sprite = static_cast<int>(SDLNet_Read16(&net_packet->data[11]));
+		int particleType = net_packet->data[10];
+		int sprite = SDLNet_Read16(&net_packet->data[11]);
 		//messagePlayer(1, "recv, %d, %d, %d, type: %d", particle_x, particle_y, particle_z, particleType);
 		switch ( particleType )
 		{
@@ -1616,8 +1616,8 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		}
 		char enemy_name[128] = "";
 		strcpy(enemy_name, (char*)(&net_packet->data[55]));
-		auto details = enemyHPDamageBarHandler[clientnum].addEnemyToList(static_cast<Sint32>(enemy_hp),
-			static_cast<Sint32>(enemy_maxhp), static_cast<Sint32>(oldhp), uid, enemy_name, lowPriorityTick, gib);
+		auto details = enemyHPDamageBarHandler[clientnum].addEnemyToList(enemy_hp,
+			enemy_maxhp, oldhp, uid, enemy_name, lowPriorityTick, gib);
 		if ( details )
 		{
 			details->enemy_statusEffects1 = SDLNet_Read32(&net_packet->data[15]);
@@ -1677,15 +1677,15 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// update steam statistic
 	{'SSTA', []() {
-		const int statisticNum = static_cast<int>(net_packet->data[4]);
-		int value = static_cast<int>(SDLNet_Read16(&net_packet->data[6]));
+		const int statisticNum = net_packet->data[4];
+		int value = SDLNet_Read16(&net_packet->data[6]);
 		steamStatisticUpdate(statisticNum, static_cast<ESteamStatTypes>(net_packet->data[5]), value);
 	}},
 
 	// update challenge counter
 	{ 'CHCT', []() {
-		int value = static_cast<int>(SDLNet_Read16(&net_packet->data[4]));
-		int max = static_cast<int>(SDLNet_Read16(&net_packet->data[6]));
+		int value = SDLNet_Read16(&net_packet->data[4]);
+		int max = SDLNet_Read16(&net_packet->data[6]);
 		const char* challengeName = "CHALLENGE_MONSTER_KILLS";
 		int eventType = net_packet->data[8];
 		if ( eventType == static_cast<int>(GameModeManager_t::CurrentSession_t::ChallengeRun_t::CHEVENT_KILLS_FURNITURE) )
@@ -1936,7 +1936,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 	{'TORC', [](){
 		ItemType itemType = static_cast<ItemType>(SDLNet_Read16(&net_packet->data[4]));
 		Status itemStatus = static_cast<Status>(net_packet->data[6]);
-		int qty = static_cast<int>(net_packet->data[7]);
+		int qty = net_packet->data[7];
 		if ( stats[clientnum]->shield && stats[clientnum]->shield->type == itemType )
 		{
 			stats[clientnum]->shield->status = itemStatus;
@@ -2173,7 +2173,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		Status checkStatus = static_cast<Status>(SDLNet_Read32(&net_packet->data[9]));
 		Sint16 checkBeatitude = static_cast<Sint16>(SDLNet_Read32(&net_packet->data[13]));
 		Sint16 checkCount = static_cast<Sint16>(SDLNet_Read32(&net_packet->data[17]));
-		Uint32 checkAppearance = static_cast<Uint32>(SDLNet_Read32(&net_packet->data[21]));
+		Uint32 checkAppearance = SDLNet_Read32(&net_packet->data[21]);
 		bool checkIdentified = net_packet->data[25] == 1 ? true : false;
 
 		if ( item )
@@ -2275,21 +2275,21 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		    SDLNet_Read32(&net_packet->data[4]),
 		    SDLNet_Read32(&net_packet->data[8]),
 		    SDLNet_Read16(&net_packet->data[12]),
-		    (Uint8)net_packet->data[14]);
+		    net_packet->data[14]);
 	}},
 
 		// play sound global
 	{'SNDG', [](){
 		playSound(
 		    SDLNet_Read16(&net_packet->data[4]),
-		    (Uint8)net_packet->data[6]);
+		    net_packet->data[6]);
 	}},
 
 	// play sound notification global
 	{ 'SNDN', []() {
 		playSoundNotification(
 			SDLNet_Read16(&net_packet->data[4]),
-			(Uint8)net_packet->data[6]);
+			net_packet->data[6]);
 	} },
 
 	// play sound entity local
@@ -2564,7 +2564,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		players[clientnum]->closeAllGUIs(DONT_CHANGE_SHOOTMODE, CLOSEGUI_DONT_CLOSE_INVENTORY);
 		players[clientnum]->openStatusScreen(GUI_MODE_SHOP, INVENTORY_MODE_ITEM, Player::GUI_t::MODULE_SHOP);
 
-		shopkeeper[clientnum] = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		shopkeeper[clientnum] = SDLNet_Read32(&net_packet->data[4]);
 		shopkeepertype[clientnum] = net_packet->data[8];
 		strcpy( shopkeepername_client[clientnum], (char*)(&net_packet->data[9]) );
 		shopkeepername[clientnum] = shopkeepername_client[clientnum];
@@ -2585,7 +2585,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		ItemType type = static_cast<ItemType>(SDLNet_Read32(&net_packet->data[4]));
 		Status status = static_cast<Status>(static_cast<Sint8>(net_packet->data[8]));
 		Sint16 beatitude = static_cast<Sint8>(net_packet->data[9]);
-		Sint16 count = (unsigned char)net_packet->data[10];
+		Sint16 count = net_packet->data[10];
 		Uint32 appearance = SDLNet_Read32(&net_packet->data[11]);
 		bool identified = static_cast<bool>(net_packet->data[15] & 1);
 		bool buybackItem = static_cast<bool>((net_packet->data[15] >> 1) & 1);
@@ -2691,11 +2691,11 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 					continue;
 				}
 				strcpy((char*)net_packet->data, "DIEI");
-				SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-				SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
+				SDLNet_Write32(item->type, &net_packet->data[4]);
+				SDLNet_Write32(item->status, &net_packet->data[8]);
 				SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
 				SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
-				SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+				SDLNet_Write32(item->appearance, &net_packet->data[20]);
 				net_packet->data[24] = item->identified;
 				net_packet->data[25] = clientnum;
 				net_packet->data[26] = static_cast<Uint8>(cameras[clientnum].x);
@@ -2729,11 +2729,11 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 					players[clientnum]->paperDoll.updateSlots();
 
 					strcpy((char*)net_packet->data, "DIEI");
-					SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-					SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
+					SDLNet_Write32(item->type, &net_packet->data[4]);
+					SDLNet_Write32(item->status, &net_packet->data[8]);
 					SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
 					SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
-					SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+					SDLNet_Write32(item->appearance, &net_packet->data[20]);
 					net_packet->data[24] = item->identified;
 					net_packet->data[25] = clientnum;
 					net_packet->data[26] = static_cast<Uint8>(cameras[clientnum].x);
@@ -2918,14 +2918,14 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// update attributes
 	{'ATTR', [](){
-		stats[clientnum]->STR = (static_cast<Sint8>(net_packet->data[5]) <= -8) ? (Uint8)net_packet->data[5] : static_cast<Sint8>(net_packet->data[5]);
-		stats[clientnum]->DEX = (static_cast<Sint8>(net_packet->data[6]) <= -8) ? (Uint8)net_packet->data[6] : static_cast<Sint8>(net_packet->data[6]);
-		stats[clientnum]->CON = (static_cast<Sint8>(net_packet->data[7]) <= -8) ? (Uint8)net_packet->data[7] : static_cast<Sint8>(net_packet->data[7]);
-		stats[clientnum]->INT = (static_cast<Sint8>(net_packet->data[8]) <= -8) ? (Uint8)net_packet->data[8] : static_cast<Sint8>(net_packet->data[8]);
-		stats[clientnum]->PER = (static_cast<Sint8>(net_packet->data[9]) <= -8) ? (Uint8)net_packet->data[9] : static_cast<Sint8>(net_packet->data[9]);
-		stats[clientnum]->CHR = (static_cast<Sint8>(net_packet->data[10]) <= -8) ? (Uint8)net_packet->data[10] : static_cast<Sint8>(net_packet->data[10]);
-		stats[clientnum]->EXP = (Uint8)net_packet->data[11];
-		stats[clientnum]->LVL = (Uint8)net_packet->data[12];
+		stats[clientnum]->STR = (static_cast<Sint8>(net_packet->data[5]) <= -8) ? net_packet->data[5] : static_cast<Sint8>(net_packet->data[5]);
+		stats[clientnum]->DEX = (static_cast<Sint8>(net_packet->data[6]) <= -8) ? net_packet->data[6] : static_cast<Sint8>(net_packet->data[6]);
+		stats[clientnum]->CON = (static_cast<Sint8>(net_packet->data[7]) <= -8) ? net_packet->data[7] : static_cast<Sint8>(net_packet->data[7]);
+		stats[clientnum]->INT = (static_cast<Sint8>(net_packet->data[8]) <= -8) ? net_packet->data[8] : static_cast<Sint8>(net_packet->data[8]);
+		stats[clientnum]->PER = (static_cast<Sint8>(net_packet->data[9]) <= -8) ? net_packet->data[9] : static_cast<Sint8>(net_packet->data[9]);
+		stats[clientnum]->CHR = (static_cast<Sint8>(net_packet->data[10]) <= -8) ? net_packet->data[10] : static_cast<Sint8>(net_packet->data[10]);
+		stats[clientnum]->EXP = net_packet->data[11];
+		stats[clientnum]->LVL = net_packet->data[12];
 		stats[clientnum]->HP = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[13]));
 		stats[clientnum]->MAXHP = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[15]));
 		stats[clientnum]->MP = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[17]));
@@ -2938,18 +2938,18 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 		players[clientnum]->hud.xpBar.animateState = Player::HUD_t::AnimateStates::ANIMATE_LEVELUP_RISING;
 		players[clientnum]->hud.xpBar.xpLevelups++;
 
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_STR] = (Uint8)net_packet->data[5];
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_DEX] = (Uint8)net_packet->data[6];
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_CON] = (Uint8)net_packet->data[7];
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_INT] = (Uint8)net_packet->data[8];
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_PER] = (Uint8)net_packet->data[9];
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_CHR] = (Uint8)net_packet->data[10];
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_STR + NUMSTATS] = (Uint8)net_packet->data[11];
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_DEX + NUMSTATS] = (Uint8)net_packet->data[12];
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_CON + NUMSTATS] = (Uint8)net_packet->data[13];
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_INT + NUMSTATS] = (Uint8)net_packet->data[14];
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_PER + NUMSTATS] = (Uint8)net_packet->data[15];
-		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_CHR + NUMSTATS] = (Uint8)net_packet->data[16];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_STR] = net_packet->data[5];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_DEX] = net_packet->data[6];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_CON] = net_packet->data[7];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_INT] = net_packet->data[8];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_PER] = net_packet->data[9];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_CHR] = net_packet->data[10];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_STR + NUMSTATS] = net_packet->data[11];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_DEX + NUMSTATS] = net_packet->data[12];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_CON + NUMSTATS] = net_packet->data[13];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_INT + NUMSTATS] = net_packet->data[14];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_PER + NUMSTATS] = net_packet->data[15];
+		stats[clientnum]->PLAYER_LVL_STAT_TIMER[STAT_CHR + NUMSTATS] = net_packet->data[16];
 
 		std::vector<LevelUpAnimation_t::LevelUp_t::StatUp_t> StatUps;
 		for ( int i = 0; i < NUMSTATS; ++i )
@@ -2993,7 +2993,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// killed a monster
 	{'MKIL', [](){
-		const int monster = (int)net_packet->data[4];
+		const int monster = net_packet->data[4];
 		if ( monster >= 0 && monster < NUMMONSTERS )
 		{
 			kills[monster]++;
@@ -3055,7 +3055,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// update sex
 	{'SEXU', [](){
-		int player = static_cast<int>(net_packet->data[4]);
+		int player = net_packet->data[4];
 		if ( player < 0 || !barony::net::validPlayer(player) || !stats[player] )
 		{
 			return;
@@ -3219,7 +3219,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 	// lead a monster
 	{'LEAD', [](){
 		Uint32* uidnum = static_cast<Uint32*>(malloc(sizeof(Uint32)));
-		*uidnum = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		*uidnum = SDLNet_Read32(&net_packet->data[4]);
 		node_t* node = list_AddNodeLast(&stats[clientnum]->FOLLOWERS);
 		node->element = uidnum;
 		node->deconstructor = &defaultDeconstructor;
@@ -3290,7 +3290,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// remove a monster from followers list
 	{'LDEL', [](){
-		Uint32 uidnum = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		Uint32 uidnum = SDLNet_Read32(&net_packet->data[4]);
 		if ( stats[clientnum] )
 		{
 			for ( node_t* allyNode = stats[clientnum]->FOLLOWERS.first; allyNode != nullptr; allyNode = allyNode->next )
@@ -3315,7 +3315,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// update client's follower data on level up or initial follow.
 	{'NPCI', [](){
-		Uint32 uidnum = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		Uint32 uidnum = SDLNet_Read32(&net_packet->data[4]);
 		Entity* monster = uidToEntity(uidnum);
 		if ( monster )
 		{
@@ -3335,7 +3335,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// update client's follower hp/maxhp data at intervals
 	{'NPCU', [](){
-		Uint32 uidnum = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		Uint32 uidnum = SDLNet_Read32(&net_packet->data[4]);
 		Entity* monster = uidToEntity(uidnum);
 		if ( monster )
 		{
@@ -3407,7 +3407,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 
 	// bless one piece of my equipment
 	{'BLE1', [](){
-		Uint32 chosen = static_cast<Uint32>(SDLNet_Read32(&net_packet->data[4]));
+		Uint32 chosen = SDLNet_Read32(&net_packet->data[4]);
 		switch ( chosen )
 		{
 			case 0:
@@ -4032,14 +4032,14 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 			}
 			textSourceScript.playerClearInventory(clearStats);
 		}
-		stats[clientnum]->STR = (static_cast<Sint8>(net_packet->data[5]) <= -8) ? (Uint8)net_packet->data[5] : static_cast<Sint8>(net_packet->data[5]);
-		stats[clientnum]->DEX = (static_cast<Sint8>(net_packet->data[6]) <= -8) ? (Uint8)net_packet->data[6] : static_cast<Sint8>(net_packet->data[6]);
-		stats[clientnum]->CON = (static_cast<Sint8>(net_packet->data[7]) <= -8) ? (Uint8)net_packet->data[7] : static_cast<Sint8>(net_packet->data[7]);
-		stats[clientnum]->INT = (static_cast<Sint8>(net_packet->data[8]) <= -8) ? (Uint8)net_packet->data[8] : static_cast<Sint8>(net_packet->data[8]);
-		stats[clientnum]->PER = (static_cast<Sint8>(net_packet->data[9]) <= -8) ? (Uint8)net_packet->data[9] : static_cast<Sint8>(net_packet->data[9]);
-		stats[clientnum]->CHR = (static_cast<Sint8>(net_packet->data[10]) <= -8) ? (Uint8)net_packet->data[10] : static_cast<Sint8>(net_packet->data[10]);
-		stats[clientnum]->EXP = (Uint8)net_packet->data[11];
-		stats[clientnum]->LVL = (Uint8)net_packet->data[12];
+		stats[clientnum]->STR = (static_cast<Sint8>(net_packet->data[5]) <= -8) ? net_packet->data[5] : static_cast<Sint8>(net_packet->data[5]);
+		stats[clientnum]->DEX = (static_cast<Sint8>(net_packet->data[6]) <= -8) ? net_packet->data[6] : static_cast<Sint8>(net_packet->data[6]);
+		stats[clientnum]->CON = (static_cast<Sint8>(net_packet->data[7]) <= -8) ? net_packet->data[7] : static_cast<Sint8>(net_packet->data[7]);
+		stats[clientnum]->INT = (static_cast<Sint8>(net_packet->data[8]) <= -8) ? net_packet->data[8] : static_cast<Sint8>(net_packet->data[8]);
+		stats[clientnum]->PER = (static_cast<Sint8>(net_packet->data[9]) <= -8) ? net_packet->data[9] : static_cast<Sint8>(net_packet->data[9]);
+		stats[clientnum]->CHR = (static_cast<Sint8>(net_packet->data[10]) <= -8) ? net_packet->data[10] : static_cast<Sint8>(net_packet->data[10]);
+		stats[clientnum]->EXP = net_packet->data[11];
+		stats[clientnum]->LVL = net_packet->data[12];
 		stats[clientnum]->HP = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[13]));
 		stats[clientnum]->MAXHP = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[15]));
 		stats[clientnum]->MP = static_cast<Sint16>(SDLNet_Read16(&net_packet->data[17]));
@@ -4148,10 +4148,10 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 	} },
 
 	{ 'BNTY', []() {
-		int player = (int)net_packet->data[4];
+		int player = net_packet->data[4];
 		if ( player >= 0 && barony::net::validPlayer(player) )
 		{
-			size_t numBounties = (size_t)net_packet->data[5];
+			size_t numBounties = net_packet->data[5];
 			int index = 6;
 			achievementObserver.playerAchievements[player].bountyTargets.clear();
 			while ( numBounties > 0 )
@@ -4165,7 +4165,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 	}},
 
 	{ 'BNTH', []() {
-		int player = (int)net_packet->data[4];
+		int player = net_packet->data[4];
 		if ( player >= 0 && barony::net::validPlayer(player) )
 		{
 			achievementObserver.playerAchievements[player].wearingBountyHat = net_packet->data[5] > 0 ? true : false;
@@ -4199,7 +4199,7 @@ static std::unordered_map<Uint32, void(*)()> clientPacketHandlers = {
 			return;
 		}
 		char buf[512];
-		stringCopy(buf, (char*)(&net_packet->data[7]), sizeof(buf), std::max(0, (int)net_packet->len - 7));
+		stringCopy(buf, (char*)(&net_packet->data[7]), sizeof(buf), std::max(0, net_packet->len - 7));
 		Compendium_t::Events_t::clientReceiveData[clientSequence][sequence] = buf;
 		if ( static_cast<int>(Compendium_t::Events_t::clientReceiveData[clientSequence].size()) == numchunks )
 		{
@@ -4577,7 +4577,7 @@ void clientHandlePacket()
 	if ( logCheckMainLoopTimers )
 	{
 		char packetinfo[NET_PACKET_SIZE];
-		memcpy(packetinfo, (char*)net_packet->data, net_packet->len);
+		memcpy(packetinfo, net_packet->data, net_packet->len);
 		packetinfo[net_packet->len] = '\0';
 
 		char packetHeader[5];
@@ -4599,7 +4599,7 @@ void clientHandlePacket()
 		if ( packetId == 'ENTU' )
 		{
 			int sprite = 0;
-			Uint32 uidpacket = static_cast<Uint32>(SDLNet_Read32(&net_packet->data[4]));
+			Uint32 uidpacket = SDLNet_Read32(&net_packet->data[4]);
 			if ( uidToEntity(uidpacket) )
 			{
 				sprite = uidToEntity(uidpacket)->sprite;

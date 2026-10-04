@@ -1364,7 +1364,7 @@ namespace MainMenu {
 					static Widget* current_selected_widget = nullptr;
 					if (current_selected_widget != selectedWidget) {
 						current_selected_widget = selectedWidget;
-						auto settings = static_cast<Frame*>(frame.getParent());
+						auto settings = frame.getParent();
 						auto tooltip = settings->findField("tooltip"); assert(tooltip);
 						tooltip->setText(field->getGuide());
 					}
@@ -1492,7 +1492,7 @@ namespace MainMenu {
 		}
         auto prompt = main_menu_frame->findFrame(name);
         if (prompt) {
-            auto dimmer = static_cast<Frame*>(prompt->getParent()); assert(dimmer);
+            auto dimmer = prompt->getParent(); assert(dimmer);
             dimmer->removeSelf();
         } else {
             printlog("no '%s' to delete!\n", name);
@@ -1616,7 +1616,7 @@ namespace MainMenu {
 		}
         auto prompt = main_menu_frame->findFrame("text_field_prompt"); assert(prompt);
         auto field = prompt->findField("field"); assert(field);
-        auto dimmer = static_cast<Frame*>(prompt->getParent()); assert(dimmer);
+        auto dimmer = prompt->getParent(); assert(dimmer);
         dimmer->removeSelf();
 	    return field->getText(); // note: this will only be valid for one frame!
 	}
@@ -3768,7 +3768,7 @@ namespace MainMenu {
 							} else if (story_text_adjust_box) {
 								story_text_adjust_box = false;
 								if (c >= '1' && c <= '9') {
-								    story_text_box_size = (int)(c - '0');
+								    story_text_box_size = c - '0';
 								    return; // skip printing this character
 								} else if (c == '0') {
 								    story_text_box_size = -2;
@@ -4104,7 +4104,7 @@ namespace MainMenu {
 		soundActivate();
 		allSettings.inventory_sorting = InventorySorting::reset();
 		auto window = static_cast<Frame*>(button.getParent());
-		auto dimmer = static_cast<Frame*>(window->getParent());
+		auto dimmer = window->getParent();
 		dimmer->removeSelf();
 		settingsCustomizeInventorySorting(button);
 
@@ -4158,7 +4158,7 @@ namespace MainMenu {
 				{
 					if ( auto window = main_menu_frame->findFrame("inventory_sorting_window") )
 					{
-						auto dimmer = static_cast<Frame*>(window->getParent());
+						auto dimmer = window->getParent();
 						dimmer->removeSelf();
 						if ( main_menu_frame ) {
 							auto settings = main_menu_frame->findFrame("settings");
@@ -4211,7 +4211,7 @@ namespace MainMenu {
 	static void inventorySortingConfirm(Button& button) {
 		soundActivate();
 		auto window = static_cast<Frame*>(button.getParent());
-		auto dimmer = static_cast<Frame*>(window->getParent());
+		auto dimmer = window->getParent();
 		dimmer->removeSelf();
 		auto settings = main_menu_frame->findFrame("settings");
 		if (settings) {
@@ -5647,7 +5647,7 @@ namespace MainMenu {
 		auto window = settingsGenericWindow("minimap", Language::get(5044),
 			[](Button& button){ // restore defaults
 				auto parent = static_cast<Frame*>(button.getParent()); assert(parent);
-				auto parent_background = static_cast<Frame*>(parent->getParent()); assert(parent_background);
+				auto parent_background = parent->getParent(); assert(parent_background);
 				parent_background->removeSelf();
 				allSettings.minimap = Minimap::reset();
 				settingsMinimap(button);
@@ -5668,7 +5668,7 @@ namespace MainMenu {
 					{
 						soundCancel();
 						auto parent = static_cast<Frame*>(button.getParent()); assert(parent);
-						auto parent_background = static_cast<Frame*>(parent->getParent()); assert(parent_background);
+						auto parent_background = parent->getParent(); assert(parent_background);
 						parent_background->removeSelf();
 						allSettings.minimap.load();
 						auto settings = main_menu_frame->findFrame("settings"); assert(settings);
@@ -5691,7 +5691,7 @@ namespace MainMenu {
 						{
 							if ( auto window = main_menu_frame->findFrame("minimap") )
 							{
-								auto dimmer = static_cast<Frame*>(window->getParent());
+								auto dimmer = window->getParent();
 								dimmer->removeSelf();
 								if ( main_menu_frame ) {
 									auto settings = main_menu_frame->findFrame("settings");
@@ -5747,7 +5747,7 @@ namespace MainMenu {
 			[](Button& button){ // confirm & exit
 				soundActivate();
 				auto parent = static_cast<Frame*>(button.getParent()); assert(parent);
-				auto parent_background = static_cast<Frame*>(parent->getParent()); assert(parent_background);
+				auto parent_background = parent->getParent(); assert(parent_background);
 				parent_background->removeSelf();
 				allSettings.minimap.save();
 			    auto settings = main_menu_frame->findFrame("settings"); assert(settings);
@@ -5798,7 +5798,7 @@ namespace MainMenu {
 		auto window = settingsGenericWindow("messages", Language::get(5055),
 			[](Button& button){ // restore defaults
 				auto parent = static_cast<Frame*>(button.getParent()); assert(parent);
-				auto parent_background = static_cast<Frame*>(parent->getParent()); assert(parent_background);
+				auto parent_background = parent->getParent(); assert(parent_background);
 				parent_background->removeSelf();
 				allSettings.show_messages = Messages::reset();
 				settingsMessages(button);
@@ -5819,7 +5819,7 @@ namespace MainMenu {
 					{
 						soundCancel();
 						auto parent = static_cast<Frame*>(button.getParent()); assert(parent);
-						auto parent_background = static_cast<Frame*>(parent->getParent()); assert(parent_background);
+						auto parent_background = parent->getParent(); assert(parent_background);
 						parent_background->removeSelf();
 						allSettings.show_messages.load();
 						auto settings = main_menu_frame->findFrame("settings"); assert(settings);
@@ -5842,7 +5842,7 @@ namespace MainMenu {
 						{
 							if ( auto window = main_menu_frame->findFrame("messages") )
 							{
-								auto dimmer = static_cast<Frame*>(window->getParent());
+								auto dimmer = window->getParent();
 								dimmer->removeSelf();
 								if ( main_menu_frame ) {
 									auto settings = main_menu_frame->findFrame("settings");
@@ -5898,7 +5898,7 @@ namespace MainMenu {
 			[](Button& button){ // confirm & exit
 				soundActivate();
 				auto parent = static_cast<Frame*>(button.getParent()); assert(parent);
-				auto parent_background = static_cast<Frame*>(parent->getParent()); assert(parent_background);
+				auto parent_background = parent->getParent(); assert(parent_background);
 				parent_background->removeSelf();
 				allSettings.show_messages.save();
 			    auto settings = main_menu_frame->findFrame("settings"); assert(settings);
@@ -6031,7 +6031,7 @@ namespace MainMenu {
 		auto window = settingsGenericWindow("bindings", Language::get(5082),
 			[](Button& button){ // restore defaults
 				auto parent = static_cast<Frame*>(button.getParent()); assert(parent);
-				auto parent_background = static_cast<Frame*>(parent->getParent()); assert(parent_background);
+				auto parent_background = parent->getParent(); assert(parent_background);
 				parent_background->removeSelf();
 				allSettings.bindings = Bindings::reset(defaultControlLayout);
 				const int player = multiplayer == CLIENT ? 0 : getMenuOwner();
@@ -6053,7 +6053,7 @@ namespace MainMenu {
 					{
 						soundCancel();
 						auto parent = static_cast<Frame*>(button.getParent()); assert(parent);
-						auto parent_background = static_cast<Frame*>(parent->getParent()); assert(parent_background);
+						auto parent_background = parent->getParent(); assert(parent_background);
 						parent_background->removeSelf();
 						allSettings.bindings = old_bindings;
 
@@ -6084,7 +6084,7 @@ namespace MainMenu {
 						{
 							if ( auto window = main_menu_frame->findFrame("bindings") )
 							{
-								auto dimmer = static_cast<Frame*>(window->getParent());
+								auto dimmer = window->getParent();
 								dimmer->removeSelf();
 								if ( main_menu_frame ) {
 									auto settings = main_menu_frame->findFrame("settings"); assert(settings);
@@ -6147,7 +6147,7 @@ namespace MainMenu {
 			[](Button& button){ // confirm & exit
 				soundActivate();
 				auto parent = static_cast<Frame*>(button.getParent()); assert(parent);
-				auto parent_background = static_cast<Frame*>(parent->getParent()); assert(parent_background);
+				auto parent_background = parent->getParent(); assert(parent_background);
 				parent_background->removeSelf();
 				allSettings.bindings.save();
                 
@@ -6201,7 +6201,7 @@ namespace MainMenu {
 					bound_binding = name.substr(sizeof("setting_") - 1, name.size() - (sizeof("_binding_button") - 1) - (sizeof("setting_") - 1));
 					button.setText(". . .");
 					auto subwindow = static_cast<Frame*>(button.getParent()); assert(subwindow);
-					auto settings = static_cast<Frame*>(subwindow->getParent()); assert(settings);
+					auto settings = subwindow->getParent(); assert(settings);
 					auto tooltip = settings->findField("tooltip"); assert(tooltip);
 					char buf[256];
 					
@@ -7349,7 +7349,7 @@ bind_failed:
                 settingsOpenDropdown(button, "player_dropdown", DropdownType::Short,
                     [](Frame::entry_t& entry){
                         soundActivate();
-                        const int player = (int)(entry.name.back() - '1');
+                        const int player = entry.name.back() - '1';
                     
                         assert(main_menu_frame);
                         auto settings = main_menu_frame->findFrame("settings"); assert(settings);
@@ -8754,8 +8754,8 @@ bind_failed:
 			auto back = createBackWidget(window, [](Button& button){
 				soundCancel();
 				auto frame = static_cast<Frame*>(button.getParent());
-				frame = static_cast<Frame*>(frame->getParent());
-				frame = static_cast<Frame*>(frame->getParent());
+				frame = frame->getParent();
+				frame = frame->getParent();
 				frame->removeSelf();
 				if (!main_menu_frame) {
 					return;
@@ -8771,8 +8771,8 @@ bind_failed:
 			auto back = createBackWidget(window, [](Button& button) {
 				soundCancel();
 				auto frame = static_cast<Frame*>(button.getParent());
-				frame = static_cast<Frame*>(frame->getParent());
-				frame = static_cast<Frame*>(frame->getParent());
+				frame = frame->getParent();
+				frame = frame->getParent();
 				frame->removeSelf();
 				if ( !main_menu_frame ) {
 					return;
@@ -8789,8 +8789,8 @@ bind_failed:
 			auto back = createBackWidget(window, [](Button& button) {
 				soundCancel();
 				auto frame = static_cast<Frame*>(button.getParent());
-				frame = static_cast<Frame*>(frame->getParent());
-				frame = static_cast<Frame*>(frame->getParent());
+				frame = frame->getParent();
+				frame = frame->getParent();
 				frame->removeSelf();
 				if ( !main_menu_frame ) {
 					return;
@@ -8807,8 +8807,8 @@ bind_failed:
 			auto back = createBackWidget(window, [](Button& button) {
 				soundCancel();
 				auto frame = static_cast<Frame*>(button.getParent());
-				frame = static_cast<Frame*>(frame->getParent());
-				frame = static_cast<Frame*>(frame->getParent());
+				frame = frame->getParent();
+				frame = frame->getParent();
 				frame->removeSelf();
 				if ( !main_menu_frame ) {
 					return;
@@ -9373,13 +9373,13 @@ bind_failed:
 							if ( score->stats->killer_monster >= 0 && score->stats->killer_monster < NUMMONSTERS )
 							{
 								cause_of_death = getMonsterLocalizedName(score->stats->killer_monster);
-								cause_of_death[0] = static_cast<char>(toupper((int)cause_of_death[0]));
+								cause_of_death[0] = static_cast<char>(toupper(cause_of_death[0]));
 							}
 						}
 						else 
 						{
 							cause_of_death = score->stats->killer_name;
-							cause_of_death[0] = static_cast<char>(toupper((int)cause_of_death[0]));
+							cause_of_death[0] = static_cast<char>(toupper(cause_of_death[0]));
 						}
 						break;
 					}
@@ -10524,8 +10524,8 @@ bind_failed:
 		auto back_button = createBackWidget(window,[](Button& button){
 			soundCancel();
 			auto frame = static_cast<Frame*>(button.getParent());
-			frame = static_cast<Frame*>(frame->getParent());
-			frame = static_cast<Frame*>(frame->getParent());
+			frame = frame->getParent();
+			frame = frame->getParent();
 			frame->removeSelf();
 			if (!main_menu_frame) {
 				return;
@@ -10957,7 +10957,7 @@ bind_failed:
         frame->setTickCallback([](Widget& widget){
             const int player = clientnum;
             auto frame = static_cast<Frame*>(&widget);
-            auto lobby = static_cast<Frame*>(frame->getParent());
+            auto lobby = frame->getParent();
 
             const int w = frame->getSize().w;
             const int h = frame->getSize().h;
@@ -11156,7 +11156,7 @@ bind_failed:
 	    close_button->setTextHighlightColor(makeColor(201, 162, 100, 255));
         close_button->setCallback([](Button& button){
             auto frame = static_cast<Frame*>(button.getParent());
-            auto lobby = static_cast<Frame*>(frame->getParent());
+            auto lobby = frame->getParent();
 			frame->removeSelf();
 			auto card = lobby->findFrame((std::string("card") + std::to_string(clientnum)).c_str());
 			if (!card) {
@@ -11443,7 +11443,7 @@ bind_failed:
 
 		    // encode class, sex, race, and appearance
             SDLNet_Write32(static_cast<Uint32>(client_classes[player]), &net_packet->data[37]);
-            SDLNet_Write32((Uint32)stats[player]->sex, &net_packet->data[41]);
+            SDLNet_Write32(stats[player]->sex, &net_packet->data[41]);
             Uint32 raceAndAppearance =
                 ((stats[player]->stat_appearance & 0xff) << 8) |
                 (stats[player]->playerRace & 0xff);
@@ -11683,7 +11683,7 @@ bind_failed:
 				}
 			}
 #endif
-			memcpy((char*)net_packet->data, "MODS", 4);
+			memcpy(net_packet->data, "MODS", 4);
 			net_packet->len = 5;
 			if ( Mods::disableSteamAchievements )
 			{
@@ -11724,7 +11724,7 @@ bind_failed:
 		msg = msgStr.c_str();
 		len += numCharsAdded;
 
-		memcpy((char*)net_packet->data, "CMSG", 4);
+		memcpy(net_packet->data, "CMSG", 4);
 		SDLNet_Write32(color, &net_packet->data[4]);
 		stringCopy((char*)net_packet->data + 8, msg, 256, len);
 		net_packet->len = 8 + static_cast<int>(len) + 1;
@@ -11901,7 +11901,7 @@ bind_failed:
 			}
 			const Uint8 player = std::min(net_packet->data[4], static_cast<Uint8>((MAXPLAYERS - 1)));
 		    Uint8 status = net_packet->data[5];
-		    createReadyStone((int)player, false, status ? true : false);
+		    createReadyStone(player, false, status ? true : false);
 		}},
 
 		// got a chat message from client
@@ -11928,7 +11928,7 @@ bind_failed:
 			if (client_disconnected[j] || players[j]->isLocalPlayer()) {
 				return;
 			}
-			memcpy((char*)net_packet->data, "PING", 4);
+			memcpy(net_packet->data, "PING", 4);
 			net_packet->address.host = net_clients[j - 1].host;
 			net_packet->address.port = net_clients[j - 1].port;
 			net_packet->len = 5;
@@ -12002,7 +12002,7 @@ bind_failed:
 				sendPacketSafe(net_sock, -1, net_packet, c - 1);
 			}
 
-			memcpy((char*)net_packet->data, "MODS", 4);
+			memcpy(net_packet->data, "MODS", 4);
 			net_packet->len = 5;
 			if ( Mods::disableSteamAchievements )
 			{
@@ -12260,7 +12260,7 @@ bind_failed:
 		    addLobbyChatMessage(uint32ColorBaronyBlue, buf);*/
 
 	        if (player != clientnum) {
-	            createReadyStone((int)player, false, false);
+	            createReadyStone(player, false, false);
 	        }
 	    }},
 
@@ -12305,7 +12305,7 @@ bind_failed:
 	        const int player = std::min(net_packet->data[4], static_cast<Uint8>((MAXPLAYERS - 1)));
 	        Uint8 status = net_packet->data[5];
 	        if (player != clientnum) {
-	            createReadyStone((int)player, false, status ? true : false);
+	            createReadyStone(player, false, status ? true : false);
 	        }
 	    }},
 
@@ -12393,7 +12393,7 @@ bind_failed:
 				return;
 			}
 			char buf[512];
-			stringCopy(buf, (char*)(&net_packet->data[5]), sizeof(buf), std::max(0, (int)net_packet->len - 5));
+			stringCopy(buf, (char*)(&net_packet->data[5]), sizeof(buf), std::max(0, net_packet->len - 5));
 			lobbyCustomScenarioClient[sequence] = buf;
 			if ( static_cast<int>(lobbyCustomScenarioClient.size()) == numchunks )
 			{
@@ -12669,7 +12669,7 @@ bind_failed:
 								auto type = SDLNet_Read16(net_packet->data + 8 + c * chunk_size + 6 + 32 + e * 6);
 								auto appearance = SDLNet_Read32(net_packet->data + 8 + c * chunk_size + 6 + 32 + e * 6 + 2);
 								if (type != 0xffff) {
-									slot = newItem(static_cast<ItemType>(type), Status::EXCELLENT, 0, 1, (Uint32)appearance, true, nullptr);
+									slot = newItem(static_cast<ItemType>(type), Status::EXCELLENT, 0, 1, appearance, true, nullptr);
 								}
 							}
 						} else {
@@ -12912,7 +12912,7 @@ bind_failed:
 	    memcpy(net_packet->data, "JOIN", 4);
 	    stringCopy((char*)net_packet->data + 4, stats[index]->name, 32, sizeof(Stat::name));
 	    SDLNet_Write32(static_cast<Uint32>(client_classes[index]), &net_packet->data[36]);
-	    SDLNet_Write32((Uint32)stats[index]->sex, &net_packet->data[40]);
+	    SDLNet_Write32(stats[index]->sex, &net_packet->data[40]);
 	    Uint32 appearanceAndRace = (static_cast<Uint8>(stats[index]->stat_appearance) << 8); // store in bits 8 - 15
 	    appearanceAndRace |= static_cast<Uint8>(stats[index]->playerRace); // store in bits 0 - 7
 	    SDLNet_Write32(appearanceAndRace, &net_packet->data[44]);
@@ -14137,7 +14137,7 @@ failed:
                             stats[index]->stat_appearance = 0;
                         }
 						stats[index]->sex = FEMALE;
-						auto card = static_cast<Frame*>(frame->getParent()); assert(card);
+						auto card = frame->getParent(); assert(card);
 						auto bottom = card->findFrame("bottom"); assert(bottom);
 						auto female = bottom->findButton("female");
 						auto male = bottom->findButton("male");
@@ -14153,7 +14153,7 @@ failed:
                             stats[index]->stat_appearance = 0;
                         }
 						stats[index]->sex = MALE;
-						auto card = static_cast<Frame*>(frame->getParent()); assert(card);
+						auto card = frame->getParent(); assert(card);
 						auto bottom = card->findFrame("bottom"); assert(bottom);
 						auto female = bottom->findButton("female");
 						auto male = bottom->findButton("male");
@@ -14227,7 +14227,7 @@ failed:
             }
         }
 
-		auto card = static_cast<Frame*>(frame->getParent());
+		auto card = frame->getParent();
 		if (card) {
 		    RaceDescriptions::update_details_text(*card);
 		}
@@ -14237,7 +14237,7 @@ failed:
 		button.setColor(makeColor(255, 255, 255, 255));
 		button.setHighlightColor(makeColor(255, 255, 255, 255));
 		auto bottom = static_cast<Frame*>(button.getParent()); assert(bottom);
-		auto card = static_cast<Frame*>(bottom->getParent()); assert(card);
+		auto card = bottom->getParent(); assert(card);
 		auto female = bottom->findButton("female");
 		stats[index]->sex = MALE;
 		if (female) {
@@ -14293,7 +14293,7 @@ failed:
 		button.setColor(makeColor(255, 255, 255, 255));
 		button.setHighlightColor(makeColor(255, 255, 255, 255));
 		auto bottom = static_cast<Frame*>(button.getParent()); assert(bottom);
-		auto card = static_cast<Frame*>(bottom->getParent()); assert(card);
+		auto card = bottom->getParent(); assert(card);
 		auto male = bottom->findButton("male");
 		stats[index]->sex = FEMALE;
 		if (male) {
@@ -16235,7 +16235,7 @@ failed:
 		appearances->setWidgetDown(Language::get(5370));
 		appearances->setTickCallback([](Widget& widget){
 			auto frame = static_cast<Frame*>(&widget);
-			auto parent = static_cast<Frame*>(frame->getParent());
+			auto parent = frame->getParent();
 			auto backdrop = frame->findImage("background"); assert(backdrop);
 			auto box = frame->findImage("selection_box"); assert(box);
 			box->pos.y = frame->getActualSize().y;
@@ -17003,7 +17003,7 @@ failed:
 		    (*class_name->getTickCallback())(*class_name);
 		}
 
-		const int height = std::max(254, 6 + 54 * (int)(num_classes / 4 + ((num_classes % 4) ? 1 : 0)));
+		const int height = std::max(254, 6 + 54 * (num_classes / 4 + (num_classes % 4 ? 1 : 0)));
 
 		auto subframe = card->addFrame("subframe");
 		subframe->setScrollBarsEnabled(false);
@@ -18930,9 +18930,9 @@ failed:
 			            continue;
 		            }
 		            if (intro) {
-		                memcpy((char*)net_packet->data, "STRT", 4);
+		                memcpy(net_packet->data, "STRT", 4);
 		            } else {
-		                memcpy((char*)net_packet->data, "RSTR", 4);
+		                memcpy(net_packet->data, "RSTR", 4);
 		            }
 		            SDLNet_Write32(svFlags, &net_packet->data[4]);
 		            SDLNet_Write32(uniqueGameKey, &net_packet->data[8]);
@@ -20428,7 +20428,7 @@ failed:
 	                input.refresh(); // this has to be deferred because it knocks out consumed statuses.
 	            }
 		        auto parent = static_cast<Frame*>(button->getParent());
-		        parent = static_cast<Frame*>(parent->getParent());
+		        parent = parent->getParent();
 	            parent->removeSelf();
 	            parent->setDisabled(true);
 	            soundActivate();
@@ -20437,7 +20437,7 @@ failed:
 		    };
 
         static real_t bounce;
-        bounce = (real_t)0.0;
+        bounce = 0.0;
         auto prompt_tick_callback = [](Widget& widget){
             auto frame = static_cast<Frame*>(widget.getParent());
             const int index = multiplayer == CLIENT ? 0 : frame->getOwner();
@@ -20478,7 +20478,7 @@ failed:
         header->setJustify(Field::justify_t::CENTER);
         header->setText(Language::get(5476));
 
-        auto dimmer = static_cast<Frame*>(prompt->getParent());
+        auto dimmer = prompt->getParent();
         dimmer->setOwner(index);
 
 		auto button = prompt->addButton("button");
@@ -21401,7 +21401,7 @@ failed:
 
 		// remove "Local or Network" window
 		auto frame = static_cast<Frame*>(button.getParent());
-		frame = static_cast<Frame*>(frame->getParent());
+		frame = frame->getParent();
 		frame->removeSelf();
 
 		auto dimmer = main_menu_frame->addFrame("dimmer");
@@ -21508,8 +21508,8 @@ failed:
 				createLocalOrNetworkMenu();
 				// remove parent window
 				auto frame = static_cast<Frame*>(button.getParent());
-				frame = static_cast<Frame*>(frame->getParent());
-				frame = static_cast<Frame*>(frame->getParent());
+				frame = frame->getParent();
+				frame = frame->getParent();
 				frame->removeSelf();
 			}
 		    }, SDL_Rect{292, 4, 0, 0});
@@ -22752,7 +22752,7 @@ failed:
 		(void)createBackWidget(window, [](Button& button){
 			soundCancel();
 			auto frame = static_cast<Frame*>(button.getParent());
-			frame = static_cast<Frame*>(frame->getParent());
+			frame = frame->getParent();
 			frame->removeSelf();
 			assert(main_menu_frame);
 			auto dimmer = main_menu_frame->findFrame("dimmer"); assert(dimmer);
@@ -22857,7 +22857,7 @@ failed:
                     tutorial_map_destination = button.getName();
                 } else {
                     auto frame = static_cast<Frame*>(button.getParent()); assert(frame);
-                    frame = static_cast<Frame*>(frame->getParent()); assert(frame);
+                    frame = frame->getParent(); assert(frame);
                     auto enter = frame->findButton("enter"); assert(enter);
                     enter->activate();
                 }
@@ -23163,8 +23163,8 @@ failed:
 		(void)createBackWidget(window, [](Button& button){
 			soundCancel();
 			auto frame = static_cast<Frame*>(button.getParent());
-			frame = static_cast<Frame*>(frame->getParent());
-			frame = static_cast<Frame*>(frame->getParent());
+			frame = frame->getParent();
+			frame = frame->getParent();
 			frame->removeSelf();
 			assert(main_menu_frame);
 
@@ -23586,8 +23586,8 @@ failed:
 		(void)createBackWidget(window, [](Button& button){
 			soundCancel();
 			auto frame = static_cast<Frame*>(button.getParent());
-			frame = static_cast<Frame*>(frame->getParent());
-			frame = static_cast<Frame*>(frame->getParent());
+			frame = frame->getParent();
+			frame = frame->getParent();
 			frame->removeSelf();
 
 			gameModeManager.currentSession.restoreSavedServerFlags();
@@ -23758,7 +23758,7 @@ failed:
 						assert(main_menu_frame);
 						auto window = main_menu_frame->findFrame("play_game_window");
 						if (window) {
-							auto dimmer = static_cast<Frame*>(window->getParent()); assert(dimmer);
+							auto dimmer = window->getParent(); assert(dimmer);
 							dimmer->removeSelf();
 							createLocalOrNetworkMenu();
 						}
@@ -23783,7 +23783,7 @@ failed:
 
 	    // remove "Play Game" window
 	    auto frame = static_cast<Frame*>(button.getParent());
-	    frame = static_cast<Frame*>(frame->getParent());
+	    frame = frame->getParent();
 	    frame->removeSelf();
 	}
 
@@ -24233,7 +24233,7 @@ failed:
         // portrait
         const std::string portrait_path =
             monsterData.getAllyIconFromSprite(playerHeadSprite(
-                (Monster)getMonsterFromPlayerRace(info.players[player].race),
+                getMonsterFromPlayerRace(info.players[player].race),
                 static_cast<sex_t>(info.players[player].stats.sex),
                 static_cast<int>(info.players[player].stats.statscore_appearance)));
         auto portrait = subframe->addImage(
@@ -24679,7 +24679,7 @@ failed:
 
 		// remove "Play Game" window
 		auto frame = static_cast<Frame*>(button.getParent());
-		frame = static_cast<Frame*>(frame->getParent());
+		frame = frame->getParent();
 		frame->removeSelf();
 
 		auto dimmer = main_menu_frame->addFrame("dimmer");
@@ -25005,8 +25005,8 @@ failed:
 			savegame_selected = nullptr;
 			soundCancel();
 			auto frame = static_cast<Frame*>(button.getParent());
-			frame = static_cast<Frame*>(frame->getParent());
-			frame = static_cast<Frame*>(frame->getParent());
+			frame = frame->getParent();
+			frame = frame->getParent();
 			frame->removeSelf();
 			createPlayWindow();
 			}, SDL_Rect{16, 0, 0, 0});
@@ -25529,7 +25529,7 @@ failed:
 					}
 					auto settings = static_cast<Frame*>(button.getParent());
 					if (settings) {
-						auto dimmer = static_cast<Frame*>(settings->getParent());
+						auto dimmer = settings->getParent();
 						dimmer->removeSelf();
 					}
 					return;
@@ -25556,7 +25556,7 @@ failed:
 
 						if ( auto window = main_menu_frame->findFrame("settings") )
 						{
-							auto dimmer = static_cast<Frame*>(window->getParent());
+							auto dimmer = window->getParent();
 							dimmer->removeSelf();
 						}
 					}
@@ -25635,7 +25635,7 @@ failed:
 					settings_button->select();
 					auto settings = main_menu_frame->findFrame("settings");
 					if (settings) {
-						auto dimmer = static_cast<Frame*>(settings->getParent());
+						auto dimmer = settings->getParent();
 						dimmer->removeSelf();
 					}
 				}
@@ -25832,7 +25832,7 @@ failed:
 
 						Compendium_t::Events_t::sendClientDataOverNet(c);
 
-	                    memcpy((char*)net_packet->data, "RSTR", 4);
+	                    memcpy(net_packet->data, "RSTR", 4);
 	                    SDLNet_Write32(svFlags, &net_packet->data[4]);
 	                    SDLNet_Write32(uniqueGameKey, &net_packet->data[8]);
 	                    net_packet->data[12] = 0;
@@ -26192,8 +26192,8 @@ failed:
 				    const char* filename;
 				    void (*end_func)();
 				};
-				auto classicEnding = [](){(void)beginFade(FadeDestination::Victory);};
-				auto fullEnding = [](){(void)beginFade(FadeDestination::Victory); steamAchievement("BARONY_ACH_ALWAYS_WAITING");};
+				auto classicEnding = [](){beginFade(FadeDestination::Victory);};
+				auto fullEnding = [](){beginFade(FadeDestination::Victory); steamAchievement("BARONY_ACH_ALWAYS_WAITING");};
 				auto loadNextLevel = [](){
 					if (multiplayer != CLIENT) 
 					{
@@ -27707,7 +27707,7 @@ failed:
             ++placement;
         }
 	    const bool madetop = placement <= MAXTOPSCORES;
-	    scoreDeconstructor((void*)score);
+	    scoreDeconstructor(score);
 
 		// identify all inventory items
 		if (!survivingPlayer) {
@@ -27754,7 +27754,7 @@ failed:
 
         window->setTickCallback([](Widget& widget){
             auto window = static_cast<Frame*>(&widget);
-            auto parent = static_cast<Frame*>(window->getParent());
+            auto parent = window->getParent();
             auto size = window->getSize();
             auto height = (parent->getSize().h - size.h) / 2;
             if (size.y < height) {
@@ -27800,10 +27800,10 @@ failed:
         case KilledBy::MONSTER: {
             if (stats[player]->killer_name.empty()) {
                 cause_of_death = getMonsterLocalizedName(stats[player]->killer_monster);
-                cause_of_death[0] = static_cast<char>(toupper((int)cause_of_death[0]));
+                cause_of_death[0] = static_cast<char>(toupper(cause_of_death[0]));
             } else {
                 cause_of_death = stats[player]->killer_name;
-				cause_of_death[0] = static_cast<char>(toupper((int)cause_of_death[0]));
+				cause_of_death[0] = static_cast<char>(toupper(cause_of_death[0]));
             }
             break;
         }
@@ -27913,7 +27913,7 @@ failed:
             dismiss->setCallback([](Button& button){
                 soundCancel();
                 auto window = static_cast<Frame*>(button.getParent());
-                auto frame = static_cast<Frame*>(window->getParent());
+                auto frame = window->getParent();
                 frame->removeSelf();
 
 				int player = reinterpret_cast<intptr_t>(button.getUserData()) - 1;
@@ -28037,7 +28037,7 @@ failed:
 
 						Compendium_t::Events_t::sendClientDataOverNet(c);
 
-						memcpy((char*)net_packet->data, "RSTR", 4);
+						memcpy(net_packet->data, "RSTR", 4);
 						SDLNet_Write32(svFlags, &net_packet->data[4]);
 						SDLNet_Write32(uniqueGameKey, &net_packet->data[8]);
 						net_packet->data[12] = 0;
@@ -28070,7 +28070,7 @@ failed:
 			dismiss->setCallback([](Button& button) {
 				soundCancel();
 			auto window = static_cast<Frame*>(button.getParent());
-			auto frame = static_cast<Frame*>(window->getParent());
+			auto frame = window->getParent();
 			frame->removeSelf();
 
 			int player = reinterpret_cast<intptr_t>(button.getUserData()) - 1;
@@ -28329,7 +28329,7 @@ failed:
         }
 
         static real_t bounce;
-        bounce = (real_t)0.0;
+        bounce = 0.0;
         auto prompt_tick_callback = [](Widget& widget){
             auto frame = static_cast<Frame*>(widget.getParent());
             const int player = frame->getOwner();
@@ -28391,7 +28391,7 @@ failed:
             });
         //back->select();
 
-        auto dimmer = static_cast<Frame*>(prompt->getParent());
+        auto dimmer = prompt->getParent();
         dimmer->setOwner(player);
 
 	    int playercount = 0;
@@ -30352,7 +30352,7 @@ failed:
 			if ( startModdedGame() )
 			{
 				auto frame = static_cast<Frame*>(button.getParent());
-				frame = static_cast<Frame*>(frame->getParent());
+				frame = frame->getParent();
 				frame->removeSelf();
 
 				createPlayWindow();
@@ -35906,7 +35906,7 @@ failed:
 							item_widget->setInheritParentFrameOpacity(false);
 							item_widget->setOpacity(0.0);
 							item_widget->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
-								auto frame = const_cast<Frame*>((Frame*)(&widget));
+								auto frame = (Frame*)&widget;
 							if ( auto parent = frame->getParent() )
 							{
 								if ( auto tooltip = parent->findFrame("player tooltip 0") )
@@ -36025,7 +36025,7 @@ failed:
 							item_widget->setInheritParentFrameOpacity(false);
 							item_widget->setOpacity(0.0);
 							item_widget->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
-								auto frame = const_cast<Frame*>((Frame*)(&widget));
+								auto frame = (Frame*)&widget;
 							if ( auto parent = frame->getParent() )
 							{
 								if ( auto tooltip = parent->findFrame("player tooltip 0") )
@@ -36175,7 +36175,7 @@ failed:
 					}
 
 					entry->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
-						auto frame = const_cast<Frame*>((Frame*)(&widget));
+						auto frame = (Frame*)&widget;
 						if ( frame->isSelected() && !isMouseVisible() )
 						{
 							if ( auto itemBg = frame->findImage("item bg") )
@@ -38507,7 +38507,7 @@ failed:
 				if ( auto myStats = monster->getStats() )
 				{
 					myStats->setAttribute("monster_portrait", "true");
-					(void)actMonster(monster);
+					actMonster(monster);
 					monster->yaw = 0.0;
 					myStats->clearEffect(EFF_ASLEEP);
 					monsterAnimate(compendiumMonster, myStats, 0.0);
@@ -39592,7 +39592,7 @@ failed:
 		page_prev->setWidgetBack("back_button");
 		page_prev->setWidgetSearchParent("compendium");
 		page_prev->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
-			auto button = const_cast<Button*>((Button*)(&widget));
+			auto button = (Button*)&widget;
 			auto frame = static_cast<Frame*>(button->getParent());
 			if ( auto contents = frame->findFrame("contents") )
 			{
@@ -39665,7 +39665,7 @@ failed:
 		page_next->setWidgetBack("back_button");
 		page_next->setWidgetSearchParent("compendium");
 		page_next->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
-			auto button = const_cast<Button*>((Button*)(&widget));
+			auto button = (Button*)&widget;
 			auto frame = static_cast<Frame*>(button->getParent());
 			if ( auto contents = frame->findFrame("contents") )
 			{
@@ -39805,7 +39805,7 @@ failed:
 
 		compendiumPageRightHideUnlocked(page_right, false, true);
 
-		if ( Frame* parent = static_cast<Frame*>(page_right->getParent()) )
+		if ( Frame* parent = page_right->getParent() )
 		{
 			if ( auto achievements = parent->findFrame("achievements") )
 			{
@@ -40696,7 +40696,7 @@ failed:
 			page_right_reveal->setClickable(false);
 
 			page_right_reveal->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
-				auto frame = const_cast<Frame*>((Frame*)(&widget));
+				auto frame = (Frame*)&widget;
 				static Uint32 animTicks = 0;
 
 				if ( frame->getTicks() == 0 || frame->getTicks() == 1 )
@@ -40782,7 +40782,7 @@ failed:
 		{
 			if ( auto compendium = main_menu_frame->findFrame("compendium") )
 			{
-				if ( auto frame = static_cast<Frame*>(compendium->getParent()) )
+				if ( auto frame = compendium->getParent() )
 				{
 					frame->removeSelf();
 				}
@@ -40865,8 +40865,8 @@ failed:
 		Button* back_button = createBackWidget(window, [](Button& button) {
 			soundCancel();
 			auto frame = static_cast<Frame*>(button.getParent());
-			frame = static_cast<Frame*>(frame->getParent());
-			frame = static_cast<Frame*>(frame->getParent());
+			frame = frame->getParent();
+			frame = frame->getParent();
 			frame->removeSelf();
 			//assert(main_menu_frame);
 			if ( main_menu_frame ) {
@@ -40907,7 +40907,7 @@ failed:
 			txt->setHJustify(Field::justify_t::RIGHT);
 			txt->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
 				Compendium_t::PointsAnim_t::tickAnimate();
-			auto txt = const_cast<Field*>((Field*)(&widget));
+			auto txt = (Field*)&widget;
 			SDL_Rect size = txt->getSize();
 			size.x = 0;
 			if ( Compendium_t::PointsAnim_t::noFundsAnimate )
@@ -42031,7 +42031,7 @@ failed:
 				"nav_filter_bg"
 			);
 			nav_filters->setDrawCallback([](const Widget& widget, SDL_Rect pos){
-				auto frame = const_cast<Frame*>((Frame*)(&widget));
+				auto frame = (Frame*)&widget;
 				if ( main_menu_frame )
 				{
 					if ( auto selectedWidget = main_menu_frame->findSelectedWidget(getMenuOwner()) )
@@ -42758,7 +42758,7 @@ failed:
 		page_right->addWidgetAction("MenuPageRight", "tab_right");
 		page_right->addWidgetMovement("MenuAlt2", "nav_filter_sort");
 		page_right->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
-			auto frame = const_cast<Frame*>((Frame*)(&widget));
+			auto frame = (Frame*)&widget;
 			const real_t fpsScale = getFPSScale(144.0);
 			auto slider = frame->findSlider("right_slider");
 			if ( !slider ) { return; }
@@ -43273,7 +43273,7 @@ failed:
 		page_right_next->setSize(SDL_Rect{ page_right->getSize().x + 4, page_right->getSize().y + 475 + 8, 378, 28 });
 		page_right_next->setColor(makeColorRGB(135, 94, 45));
 		page_right_next->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
-			auto txt = const_cast<Field*>((Field*)(&widget));
+			auto txt = (Field*)&widget;
 			auto frame = static_cast<Frame*>(txt->getParent());
 			if ( auto contents = frame->findFrame("contents") )
 			{
@@ -43305,7 +43305,7 @@ failed:
 		page_left_prev->setSize(SDL_Rect{ page_left->getSize().x + 6, page_right->getSize().y + 475 + 8, 378, 28 });
 		page_left_prev->setColor(makeColorRGB(135, 94, 45));
 		page_left_prev->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
-			auto txt = const_cast<Field*>((Field*)(&widget));
+			auto txt = (Field*)&widget;
 			auto frame = static_cast<Frame*>(txt->getParent());
 			if ( auto contents = frame->findFrame("contents") )
 			{

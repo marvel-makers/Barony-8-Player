@@ -179,7 +179,7 @@ public:
 			{
 				return invalidEntry;
 			}
-			return (arr[static_cast<rapidjson::SizeType>(monster_stat_rng.rand() % arr.Size())].GetString());
+			return (arr[(monster_stat_rng.rand() % arr.Size())].GetString());
 		}
 		int getRandomArrayInt(const rapidjson::GenericArray<true, rapidjson::GenericValue<rapidjson::UTF8<>>>& arr, int invalidEntry)
 		{
@@ -187,7 +187,7 @@ public:
 			{
 				return invalidEntry;
 			}
-			return (arr[static_cast<rapidjson::SizeType>(monster_stat_rng.rand() % arr.Size())].GetInt());
+			return (arr[(monster_stat_rng.rand() % arr.Size())].GetInt());
 		}
 
 		bool readKeyToItemEntry(rapidjson::Value::ConstMemberIterator& itr)
@@ -459,7 +459,7 @@ public:
 		{
 			strcpy(myStats->name, name);
 			myStats->type = static_cast<Monster>(type);
-			myStats->sex = static_cast<sex_t>(sex);
+			myStats->sex = sex;
 			myStats->stat_appearance = appearance;
 			myStats->HP = HP;
 			myStats->MAXHP = MAXHP;
@@ -899,127 +899,127 @@ public:
 		}
 		else if ( name.compare("HP") == 0 )
 		{
-			statEntry.HP = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.HP = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("MAXHP") == 0 )
 		{
-			statEntry.MAXHP = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.MAXHP = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("MP") == 0 )
 		{
-			statEntry.MP = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.MP = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("MAXMP") == 0 )
 		{
-			statEntry.MAXMP = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.MAXMP = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("STR") == 0 )
 		{
-			statEntry.STR = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.STR = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("DEX") == 0 )
 		{
-			statEntry.DEX = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.DEX = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("CON") == 0 )
 		{
-			statEntry.CON = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.CON = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("INT") == 0 )
 		{
-			statEntry.INT = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.INT = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("PER") == 0 )
 		{
-			statEntry.PER = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.PER = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("CHR") == 0 )
 		{
-			statEntry.CHR = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.CHR = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("EXP") == 0 )
 		{
-			statEntry.EXP = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.EXP = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("LVL") == 0 )
 		{
-			statEntry.LVL = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.LVL = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("GOLD") == 0 )
 		{
-			statEntry.GOLD = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.GOLD = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_STR") == 0 )
 		{
-			statEntry.RANDOM_STR = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_STR = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_DEX") == 0 )
 		{
-			statEntry.RANDOM_DEX = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_DEX = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_CON") == 0 )
 		{
-			statEntry.RANDOM_CON = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_CON = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_INT") == 0 )
 		{
-			statEntry.RANDOM_INT = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_INT = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_PER") == 0 )
 		{
-			statEntry.RANDOM_PER = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_PER = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_CHR") == 0 )
 		{
-			statEntry.RANDOM_CHR = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_CHR = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_MAXHP") == 0 )
 		{
-			statEntry.RANDOM_MAXHP = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_MAXHP = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_HP") == 0 )
 		{
-			statEntry.RANDOM_HP = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_HP = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_MAXMP") == 0 )
 		{
-			statEntry.RANDOM_MAXMP = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_MAXMP = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_MP") == 0 )
 		{
-			statEntry.RANDOM_MP = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_MP = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_LVL") == 0 )
 		{
-			statEntry.RANDOM_LVL = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_LVL = itr->value.GetInt();
 			return true;
 		}
 		else if ( name.compare("RANDOM_GOLD") == 0 )
 		{
-			statEntry.RANDOM_GOLD = static_cast<Sint32>(itr->value.GetInt());
+			statEntry.RANDOM_GOLD = itr->value.GetInt();
 			return true;
 		}
 		else
@@ -1028,7 +1028,7 @@ public:
 			{
 				if ( name.compare(getSkillLangEntry(i)) == 0 )
 				{
-					statEntry.PROFICIENCIES[i] = static_cast<Sint32>(itr->value.GetInt());
+					statEntry.PROFICIENCIES[i] = itr->value.GetInt();
 					return true;
 				}
 			}

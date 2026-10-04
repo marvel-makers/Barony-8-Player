@@ -943,7 +943,7 @@ void actColliderMushroomCap(Entity* my)
 						{
 							continue;
 						}
-						if ( entityDist(my, entity) > (real_t)(range + 4.0) )
+						if ( entityDist(my, entity) > range + 4.0 )
 						{
 							continue;
 						}
@@ -994,7 +994,7 @@ void actColliderMushroomCap(Entity* my)
 						real_t tangent = atan2(entity->y - parent->y, entity->x - parent->x);
 						bool oldPassable = entity->flags[PASSABLE];
 						entity->flags[PASSABLE] = false;
-						real_t d = lineTraceTarget(parent, parent->x, parent->y, tangent, (real_t)(range + 4.0), 0, false, entity);
+						real_t d = lineTraceTarget(parent, parent->x, parent->y, tangent, range + 4.0, 0, false, entity);
 						entity->flags[PASSABLE] = oldPassable;
 						if ( hit.entity != entity )
 						{
@@ -1376,7 +1376,7 @@ void Entity::colliderOnDestroy()
 								if ( !client_disconnected[i] )
 								{
 									strcpy((char*)net_packet->data, "BREK");
-									SDLNet_Write32(static_cast<Uint32>(entity->getUID()), &net_packet->data[4]);
+									SDLNet_Write32(entity->getUID(), &net_packet->data[4]);
 									net_packet->address.host = net_clients[i - 1].host;
 									net_packet->address.port = net_clients[i - 1].port;
 									net_packet->len = 8;
@@ -1415,7 +1415,7 @@ void Entity::colliderOnDestroy()
 											if ( !client_disconnected[i] )
 											{
 												strcpy((char*)net_packet->data, "BREK");
-												SDLNet_Write32(static_cast<Uint32>(ent->getUID()), &net_packet->data[4]);
+												SDLNet_Write32(ent->getUID(), &net_packet->data[4]);
 												net_packet->address.host = net_clients[i - 1].host;
 												net_packet->address.port = net_clients[i - 1].port;
 												net_packet->len = 8;
@@ -1456,7 +1456,7 @@ void Entity::colliderOnDestroy()
 								if ( !client_disconnected[i] )
 								{
 									strcpy((char*)net_packet->data, "BREK");
-									SDLNet_Write32(static_cast<Uint32>(entity->getUID()), &net_packet->data[4]);
+									SDLNet_Write32(entity->getUID(), &net_packet->data[4]);
 									net_packet->address.host = net_clients[i - 1].host;
 									net_packet->address.port = net_clients[i - 1].port;
 									net_packet->len = 8;
@@ -5094,7 +5094,7 @@ void TextSourceScript::updateClientInformation(int player, bool clearInventory, 
 		SDLNet_Write16(static_cast<Sint16>(stats[player]->MAXHP), &net_packet->data[15]);
 		SDLNet_Write16(static_cast<Sint16>(stats[player]->MP), &net_packet->data[17]);
 		SDLNet_Write16(static_cast<Sint16>(stats[player]->MAXMP), &net_packet->data[19]);
-		SDLNet_Write32((Sint32)stats[player]->GOLD, &net_packet->data[21]);
+		SDLNet_Write32(stats[player]->GOLD, &net_packet->data[21]);
 		if ( clearInventory )
 		{
 			net_packet->data[25] = 1;
@@ -5286,7 +5286,7 @@ void TextSourceScript::parseScriptInMapGeneration(Entity& src)
 		int result = textSourceProcessScriptTag(script, "@triggerif=", src);
 		if ( result != k_ScriptError )
 		{
-			textSourceScript.setTriggerType(src.textSourceIsScript, static_cast<ScriptTriggeredBy>(result));
+			textSourceScript.setTriggerType(src.textSourceIsScript, result);
 		}
 	}
 
@@ -6660,12 +6660,12 @@ void actBell(Entity* my)
 				if ( successes == 1 )
 				{
 					messagePlayer(BELL_LAST_TOUCHED_PLAYER, MESSAGE_INTERACTION, Language::get(6234),
-						getMonsterLocalizedName((Monster)type).c_str(), Language::get(6269));
+						getMonsterLocalizedName(type).c_str(), Language::get(6269));
 				}
 				else if ( successes > 1 )
 				{
 					messagePlayer(BELL_LAST_TOUCHED_PLAYER, MESSAGE_INTERACTION, Language::get(6253),
-						getMonsterLocalizedPlural((Monster)type).c_str(), Language::get(6269));
+						getMonsterLocalizedPlural(type).c_str(), Language::get(6269));
 				}
 			}
 
@@ -6707,7 +6707,7 @@ void actBell(Entity* my)
 								if ( !client_disconnected[i] )
 								{
 									strcpy((char*)net_packet->data, "BELI");
-									SDLNet_Write32(static_cast<Uint32>(entity->getUID()), &net_packet->data[4]);
+									SDLNet_Write32(entity->getUID(), &net_packet->data[4]);
 									net_packet->address.host = net_clients[i - 1].host;
 									net_packet->address.port = net_clients[i - 1].port;
 									net_packet->len = 8;
@@ -6739,7 +6739,7 @@ void actBell(Entity* my)
 								if ( !client_disconnected[i] )
 								{
 									strcpy((char*)net_packet->data, "BELI");
-									SDLNet_Write32(static_cast<Uint32>(entity->getUID()), &net_packet->data[4]);
+									SDLNet_Write32(entity->getUID(), &net_packet->data[4]);
 									net_packet->address.host = net_clients[i - 1].host;
 									net_packet->address.port = net_clients[i - 1].port;
 									net_packet->len = 8;

@@ -59,7 +59,7 @@ void closeShop(const int player)
 		{
 			// inform server that we're done talking to shopkeeper
 			strcpy((char*)net_packet->data, "SHPC");
-			SDLNet_Write32((Uint32)shopkeeper[player], &net_packet->data[4]);
+			SDLNet_Write32(shopkeeper[player], &net_packet->data[4]);
 			net_packet->address.host = net_server.host;
 			net_packet->address.port = net_server.port;
 			net_packet->len = 8;
@@ -134,7 +134,7 @@ void startTradingServer(Entity* entity, int player)
 		// open shop on client
 		Stat* entitystats = entity->getStats();
 		strcpy((char*)net_packet->data, "SHOP");
-		SDLNet_Write32((Uint32)entity->getUID(), &net_packet->data[4]);
+		SDLNet_Write32(entity->getUID(), &net_packet->data[4]);
 		net_packet->data[8] = entity->monsterStoreType;
 		strcpy((char*)(&net_packet->data[9]), entitystats->name);
 		net_packet->data[9 + strlen(entitystats->name)] = 0;
@@ -153,7 +153,7 @@ void startTradingServer(Entity* entity, int player)
 			net_packet->data[8] = static_cast<Sint8>(item->status);
 			net_packet->data[9] = static_cast<Sint8>(item->beatitude);
 			net_packet->data[10] = static_cast<unsigned char>(item->count);
-			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[11]);
+			SDLNet_Write32(item->appearance, &net_packet->data[11]);
 			if ( item->identified )
 			{
 				net_packet->data[15] = 1;
@@ -359,14 +359,14 @@ bool buyItemFromShop(const int player, Item* item, bool& bOutConsumedEntireStack
 			SDLNet_Write16(item->beatitude, &net_packet->data[16]);
 			net_packet->data[18] = static_cast<Sint8>(item->x);
 			net_packet->data[19] = static_cast<Sint8>(item->y);
-			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+			SDLNet_Write32(item->appearance, &net_packet->data[20]);
 			if ( itemTypeIsQuiver(item->type) )
 			{
 				SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[24]);
 			}
 			else
 			{
-				SDLNet_Write32((Uint32)(1), &net_packet->data[24]);
+				SDLNet_Write32(1, &net_packet->data[24]);
 			}
 			if ( item->identified )
 			{
@@ -720,14 +720,14 @@ bool sellItemToShop(const int player, Item* item)
 		SDLNet_Write16(item->beatitude, &net_packet->data[16]);
 		net_packet->data[18] = static_cast<Sint8>(xout);
 		net_packet->data[19] = static_cast<Sint8>(yout);
-		SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+		SDLNet_Write32(item->appearance, &net_packet->data[20]);
 		if ( itemTypeIsQuiver(item->type) )
 		{
 			SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[24]);
 		}
 		else
 		{
-			SDLNet_Write32((Uint32)(1), &net_packet->data[24]);
+			SDLNet_Write32(1, &net_packet->data[24]);
 		}
 		if ( item->identified )
 		{

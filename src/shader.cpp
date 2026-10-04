@@ -49,7 +49,7 @@ void Shader::unbind() {
 int Shader::uniform(const char* name) {
     auto find = uniforms.find(name);
     if (find == uniforms.end()) {
-        int handle = GL_CHECK_ERR_RET(glGetUniformLocation(program, (GLchar*)name));
+        int handle = GL_CHECK_ERR_RET(glGetUniformLocation(program, name));
         if (handle == -1) {
             printlog("uniform %s not found!", name);
         }
@@ -95,7 +95,7 @@ bool Shader::compile(const char* source, size_t len, Shader::Type type) {
         return true;
     } else {
         char log[1024];
-        GL_CHECK_ERR(glGetShaderInfoLog(shader, (GLint)sizeof(log), nullptr, (GLchar*)log));
+        GL_CHECK_ERR(glGetShaderInfoLog(shader, sizeof(log), nullptr, log));
         printlog("failed to compile shader: %s", log);
         GL_CHECK_ERR(glDeleteShader(shader));
         return false;
@@ -113,7 +113,7 @@ bool Shader::link() {
         return true;
     } else {
         char log[1024];
-        GL_CHECK_ERR(glGetProgramInfoLog(program, sizeof(log), nullptr, (GLchar*)log));
+        GL_CHECK_ERR(glGetProgramInfoLog(program, sizeof(log), nullptr, log));
         printlog("failed to link shaders for '%s': %s", name, log);
         return false;
     }

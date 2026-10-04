@@ -98,7 +98,7 @@ void initCockatrice(Entity* my, Stat* myStats)
 				case 4:
 					if ( rng.rand() % 20 == 0 ) // 5% drop stoneblood spellbook
 					{
-						newItem(static_cast<ItemType>(SPELLBOOK_STONEBLOOD), static_cast<Status>(1 + rng.rand() % 4), -1 + rng.rand() % 3, 1, rng.rand(), false, &myStats->inventory);
+						newItem(SPELLBOOK_STONEBLOOD, static_cast<Status>(1 + rng.rand() % 4), -1 + rng.rand() % 3, 1, rng.rand(), false, &myStats->inventory);
 					}
 				case 3:
 					if ( rng.rand() % 5 == 0 ) // 20% for gemstone, luckstone to obsidian. qty 1-2.
@@ -109,13 +109,13 @@ void initCockatrice(Entity* my, Stat* myStats)
 						}
 						else
 						{
-							newItem(static_cast<ItemType>(GEM_LUCK + rng.rand() % 16), static_cast<Status>(EXCELLENT), 0, 1 + rng.rand() % 2, rng.rand(), false, &myStats->inventory);
+							newItem(static_cast<ItemType>(GEM_LUCK + rng.rand() % 16), EXCELLENT, 0, 1 + rng.rand() % 2, rng.rand(), false, &myStats->inventory);
 						}
 					}
 				case 2:
 					if ( rng.rand() % 10 < 3 ) // 30% drop stoneblood magicstaff
 					{
-						newItem(static_cast<ItemType>(MAGICSTAFF_STONEBLOOD), static_cast<Status>(1 + rng.rand() % 4), -1 + rng.rand() % 3, 1, rng.rand(), false, &myStats->inventory);
+						newItem(MAGICSTAFF_STONEBLOOD, static_cast<Status>(1 + rng.rand() % 4), -1 + rng.rand() % 3, 1, rng.rand(), false, &myStats->inventory);
 					}
 				case 1:
 					for ( int i = 0; i < numRolls; ++i )

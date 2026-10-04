@@ -2173,7 +2173,7 @@ bool makeFollower(int monsterclicked, bool ringconflict, char namesays[64],
 	{
 		//Tell the client he suckered somebody into his cult.
 		strcpy((char*) (net_packet->data), "LEAD");
-		SDLNet_Write32((Uint32 )my->getUID(), &net_packet->data[4]);
+		SDLNet_Write32(my->getUID(), &net_packet->data[4]);
 		std::string name = myStats->name;
 		if ( name != "" && name == MonsterData_t::getSpecialNPCName(*myStats) )
 		{
@@ -2329,11 +2329,11 @@ bool makeFollower(int monsterclicked, bool ringconflict, char namesays[64],
 		{
 			strcpy((char*)net_packet->data, "STLA");
 			net_packet->data[4] = 9;
-			SDLNet_Write32(static_cast<Uint32>(armor->type), &net_packet->data[5]);
-			SDLNet_Write32(static_cast<Uint32>(armor->status), &net_packet->data[9]);
+			SDLNet_Write32(armor->type, &net_packet->data[5]);
+			SDLNet_Write32(armor->status, &net_packet->data[9]);
 			SDLNet_Write32(static_cast<Uint32>(armor->beatitude), &net_packet->data[13]);
 			SDLNet_Write32(static_cast<Uint32>(armor->count), &net_packet->data[17]);
-			SDLNet_Write32(static_cast<Uint32>(armor->appearance), &net_packet->data[21]);
+			SDLNet_Write32(armor->appearance, &net_packet->data[21]);
 			net_packet->data[25] = armor->identified;
 			net_packet->address.host = net_clients[monsterclicked - 1].host;
 			net_packet->address.port = net_clients[monsterclicked - 1].port;
@@ -2459,7 +2459,7 @@ void printFollowerTableForSkillsheet(int monsterclicked, Entity* my, Stat* mySta
 					if ( !firstAlly ) { arrayList += ",\n"; }
 					firstAlly = false;
 					arrayList += "\"";
-					arrayList += monstertypename[(int)ally];
+					arrayList += monstertypename[ally];
 					arrayList += "\"";
 				}
 			}
@@ -6484,7 +6484,7 @@ timeToGoAgain:
 												hit.entity->doorHealth--; // decrease door health
 												if ( myStats->STR > 20 )
 												{
-													hit.entity->doorHealth -= static_cast<int>(std::max((myStats->STR - 20), 0) / 3); // decrease door health
+													hit.entity->doorHealth -= std::max(myStats->STR - 20, 0) / 3; // decrease door health
 													hit.entity->doorHealth = std::max(hit.entity->doorHealth, 0);
 												}
 												if ( myStats->type == MINOTAUR )
@@ -6537,7 +6537,7 @@ timeToGoAgain:
 											hit.entity->furnitureHealth--; // decrease door health
 											if ( myStats->STR > 20 )
 											{
-												hit.entity->furnitureHealth -= static_cast<int>(std::max((myStats->STR - 20), 0) / 3); // decrease door health
+												hit.entity->furnitureHealth -= std::max(myStats->STR - 20, 0) / 3; // decrease door health
 												hit.entity->furnitureHealth = std::max(hit.entity->furnitureHealth, 0);
 											}
 											playSoundEntity(hit.entity, 28, 64);
@@ -7765,7 +7765,7 @@ timeToGoAgain:
 											hit.entity->doorHealth--; // decrease door health
 											if ( myStats->STR > 20 )
 											{
-												hit.entity->doorHealth -= static_cast<int>(std::max((myStats->STR - 20), 0) / 3); // decrease door health
+												hit.entity->doorHealth -= std::max(myStats->STR - 20, 0) / 3; // decrease door health
 												hit.entity->doorHealth = std::max(hit.entity->doorHealth, 0);
 											}
 											if ( myStats->type == MINOTAUR )
@@ -7803,7 +7803,7 @@ timeToGoAgain:
 										hit.entity->furnitureHealth--; // decrease door health
 										if ( myStats->STR > 20 )
 										{
-											hit.entity->furnitureHealth -= static_cast<int>(std::max((myStats->STR - 20), 0) / 3); // decrease door health
+											hit.entity->furnitureHealth -= std::max(myStats->STR - 20, 0) / 3; // decrease door health
 											hit.entity->furnitureHealth = std::max(hit.entity->furnitureHealth, 0);
 										}
 										if ( myStats->type == MINOTAUR )
@@ -11242,7 +11242,7 @@ bool forceFollower(Entity& leader, Entity& follower)
 	{
 		//Tell the client he suckered somebody into his cult.
 		strcpy((char*) (net_packet->data), "LEAD");
-		SDLNet_Write32((Uint32 )follower.getUID(), &net_packet->data[4]);
+		SDLNet_Write32(follower.getUID(), &net_packet->data[4]);
 		std::string name = followerStats->name;
 		if ( name != "" && name == MonsterData_t::getSpecialNPCName(*followerStats) )
 		{

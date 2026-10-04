@@ -140,7 +140,7 @@ public:
     
     void loadFloat(float* data, int width, int height, bool clamp, bool point) {
         GL_CHECK_ERR(glBindTexture(GL_TEXTURE_2D, _texid));
-        GL_CHECK_ERR(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, (GLsizei)width, (GLsizei)height, 0, GL_RGBA, GL_FLOAT, data));
+        GL_CHECK_ERR(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, data));
         setParameters(clamp, point);
         _w = width;
         _h = height;

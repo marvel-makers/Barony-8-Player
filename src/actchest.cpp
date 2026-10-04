@@ -1075,7 +1075,7 @@ void Entity::actChest()
 					{
 						//Send all of the items to the client.
 						strcpy((char*)net_packet->data, "CHST");  //Chest.
-						SDLNet_Write32((Uint32)getUID(), &net_packet->data[4]); //Give the client the UID.
+						SDLNet_Write32(getUID(), &net_packet->data[4]); //Give the client the UID.
 						net_packet->data[8] = chestVoidState != 0 ? 1 : 0;
 						net_packet->address.host = net_clients[chestclicked - 1].host;
 						net_packet->address.port = net_clients[chestclicked - 1].port;
@@ -1085,11 +1085,11 @@ void Entity::actChest()
 						{
 							item = static_cast<Item*>(node->element);
 							strcpy((char*)net_packet->data, "CITM");  //Chest item.
-							SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-							SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
+							SDLNet_Write32(item->type, &net_packet->data[4]);
+							SDLNet_Write32(item->status, &net_packet->data[8]);
 							SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
 							SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
-							SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+							SDLNet_Write32(item->appearance, &net_packet->data[20]);
 							net_packet->data[24] = item->identified;
 							net_packet->data[25] = 1; //forceNewStack ? 1 : 0;
 							net_packet->data[26] = static_cast<Sint8>(item->x);
@@ -1326,11 +1326,11 @@ Item* Entity::addItemToVoidChest(int player, Item* item, bool forceNewStack, Ite
 			net_packet->data[4] = player;
 			net_packet->address.host = net_server.host;
 			net_packet->address.port = net_server.port;
-			SDLNet_Write32((Uint32)item->type, &net_packet->data[5]);
-			SDLNet_Write32((Uint32)item->status, &net_packet->data[9]);
+			SDLNet_Write32(item->type, &net_packet->data[5]);
+			SDLNet_Write32(item->status, &net_packet->data[9]);
 			SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[13]);
 			SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[17]);
-			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[21]);
+			SDLNet_Write32(item->appearance, &net_packet->data[21]);
 			net_packet->data[25] = item->identified;
 			net_packet->data[26] = forceNewStack ? 1 : 0;
 			net_packet->data[27] = 1;
@@ -1363,11 +1363,11 @@ Item* Entity::addItemToChest(Item* item, bool forceNewStack, Item* specificDesti
 		net_packet->data[4] = player;
 		net_packet->address.host = net_server.host;
 		net_packet->address.port = net_server.port;
-		SDLNet_Write32((Uint32)item->type, &net_packet->data[5]);
-		SDLNet_Write32((Uint32)item->status, &net_packet->data[9]);
+		SDLNet_Write32(item->type, &net_packet->data[5]);
+		SDLNet_Write32(item->status, &net_packet->data[9]);
 		SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[13]);
 		SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[17]);
-		SDLNet_Write32((Uint32)item->appearance, &net_packet->data[21]);
+		SDLNet_Write32(item->appearance, &net_packet->data[21]);
 		net_packet->data[25] = item->identified;
 		net_packet->data[26] = forceNewStack ? 1 : 0;
 		net_packet->data[27] = players[player]->inventoryUI.chestGUI.voidChest ? 1 : 0;
@@ -1415,11 +1415,11 @@ Item* Entity::addItemToChest(Item* item, bool forceNewStack, Item* specificDesti
 	if ( !players[chestOpener]->isLocalPlayer() && multiplayer == SERVER )
 	{
 		strcpy((char*)net_packet->data, "CITM");
-		SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-		SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
+		SDLNet_Write32(item->type, &net_packet->data[4]);
+		SDLNet_Write32(item->status, &net_packet->data[8]);
 		SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[12]);
 		SDLNet_Write32(static_cast<Uint32>(item->count), &net_packet->data[16]);
-		SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+		SDLNet_Write32(item->appearance, &net_packet->data[20]);
 		net_packet->data[24] = item->identified;
 		net_packet->data[25] = forceNewStack ? 1 : 0;
 		net_packet->data[26] = static_cast<Sint8>(item->x);
@@ -1627,12 +1627,12 @@ Item* Entity::getItemFromChest(Item* item, int amount, bool getInfoOnly)
 			net_packet->data[4] = player;
 			net_packet->address.host = net_server.host;
 			net_packet->address.port = net_server.port;
-			SDLNet_Write32((Uint32)item->type, &net_packet->data[5]);
-			SDLNet_Write32((Uint32)item->status, &net_packet->data[9]);
+			SDLNet_Write32(item->type, &net_packet->data[5]);
+			SDLNet_Write32(item->status, &net_packet->data[9]);
 			SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[13]);
 			Sint16 count = static_cast<Sint16>(amount);
 			SDLNet_Write32(static_cast<Uint32>(count), &net_packet->data[17]);
-			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[21]);
+			SDLNet_Write32(item->appearance, &net_packet->data[21]);
 			net_packet->data[25] = item->identified;
 			net_packet->data[26] = 0;
 			net_packet->data[27] = players[player]->inventoryUI.chestGUI.voidChest ? 1 : 0;

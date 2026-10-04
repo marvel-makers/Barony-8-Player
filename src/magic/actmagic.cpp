@@ -3385,7 +3385,7 @@ void actMagicMissile(Entity* my)   //TODO: Verify this function.
 					else
 					{
 						int increase = std::max(damage, getSpellDamageFromID(SPELL_ABSORB_MAGIC, hit.entity, nullptr, hit.entity));
-						effectStrength = std::min(101, (int)(effectStrength + increase));
+						effectStrength = std::min(101, effectStrength + increase);
 						hit.entity->setEffect(EFF_ABSORB_MAGIC, effectStrength, hitstats->EFFECTS_TIMERS[EFF_ABSORB_MAGIC], false, true, true);
 						if ( hit.entity->behavior == &actPlayer )
 						{
@@ -9117,7 +9117,7 @@ void actParticleAestheticOrbit(Entity* my)
 				my->y = parent->y;
 				real_t setpoint = -7.5;
 				real_t dist = setpoint - 7.5;
-				my->z = 7.5 + dist * (sin(std::min(1.0, my->ticks / ((real_t)1.5 * TICKS_PER_SECOND)) * PI / 2));
+				my->z = 7.5 + dist * (sin(std::min(1.0, my->ticks / (1.5 * TICKS_PER_SECOND)) * PI / 2));
 
 				if ( my->ticks >= TICKS_PER_SECOND )
 				{
@@ -9139,7 +9139,7 @@ void actParticleAestheticOrbit(Entity* my)
 			{
 				Uint32 tickOffset = TICKS_PER_SECOND;
 				real_t anim = my->ticks < tickOffset ? (0.5 - 0.5 * (my->ticks / static_cast<real_t>(tickOffset))) 
-					: std::min(1.0, (my->ticks - tickOffset) / ((real_t)0.15 * TICKS_PER_SECOND));
+					: std::min(1.0, (my->ticks - tickOffset) / (0.15 * TICKS_PER_SECOND));
 				my->yaw = my->fskill[0];// +anim * (my->fskill[1] - my->fskill[0]);
 				my->pitch = my->fskill[1];
 
@@ -13248,7 +13248,7 @@ void actParticleTimer(Entity* my)
 								{
 									continue;
 								}
-								if ( entityDist(my, entity) > (real_t)(range + 4.0) )
+								if ( entityDist(my, entity) > range + 4.0 )
 								{
 									continue;
 								}
@@ -13291,7 +13291,7 @@ void actParticleTimer(Entity* my)
 								real_t tangent = atan2(entity->y - parent->y, entity->x - parent->x);
 								bool oldPassable = entity->flags[PASSABLE];
 								entity->flags[PASSABLE] = false;
-								real_t d = lineTraceTarget(parent, parent->x, parent->y, tangent, (real_t)(range + 4.0), 0, false, entity);
+								real_t d = lineTraceTarget(parent, parent->x, parent->y, tangent, range + 4.0, 0, false, entity);
 								entity->flags[PASSABLE] = oldPassable;
 								if ( hit.entity != entity )
 								{

@@ -167,7 +167,7 @@ bool messagePlayerColor(int player, Uint32 type, Uint32 color, char const * cons
 	{
 		strcpy((char*)net_packet->data, "MSGS");
 		SDLNet_Write32(color, &net_packet->data[4]);
-		SDLNet_Write32((Uint32)type, &net_packet->data[8]);
+		SDLNet_Write32(type, &net_packet->data[8]);
 		strcpy((char*)(&net_packet->data[12]), str);
 		net_packet->address.host = net_clients[player - 1].host;
 		net_packet->address.port = net_clients[player - 1].port;

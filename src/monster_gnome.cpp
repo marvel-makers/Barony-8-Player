@@ -340,7 +340,7 @@ void initGnome(Entity* my, Stat* myStats)
 					{
 						if ( rng.rand() % 2 == 0 )
 						{
-							newItem(static_cast<ItemType>(GEM_GLASS), static_cast<Status>(1 + rng.rand() % 4), 0, 1, rng.rand(), false, &myStats->inventory);
+							newItem(GEM_GLASS, static_cast<Status>(1 + rng.rand() % 4), 0, 1, rng.rand(), false, &myStats->inventory);
 						}
 						else
 						{

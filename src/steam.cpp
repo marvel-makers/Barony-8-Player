@@ -736,7 +736,7 @@ SteamAPICall_t cpp_SteamMatchmaking_CreateLobby(ELobbyType eLobbyType, int cMaxM
 	if ( old_lobby )
 	{
 		SteamMatchmaking()->LeaveLobby(*old_lobby);
-		cpp_Free_CSteamID((void*)old_lobby);
+		cpp_Free_CSteamID(old_lobby);
 		currentLobby = nullptr;
 	}
     steamAwaitingLobbyCreation = true;

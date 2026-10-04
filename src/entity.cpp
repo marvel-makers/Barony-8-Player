@@ -193,7 +193,7 @@ Entity::~Entity()
 
 				// send the delete entity command to the client
 				strcpy((char*)net_packet->data, "ENTD");
-				SDLNet_Write32((Uint32)uid, &net_packet->data[4]);
+				SDLNet_Write32(uid, &net_packet->data[4]);
 				net_packet->address.host = net_clients[i - 1].host;
 				net_packet->address.port = net_clients[i - 1].port;
 				net_packet->len = 8;
@@ -1597,7 +1597,7 @@ void Entity::effectTimes()
 				{
 					if ( myStats->EFFECTS_TIMERS[c] < 10 * TICKS_PER_SECOND )
 					{
-						setEffect(EFF_GROWTH, (Uint8)myStats->getEffectActive(c), 30 * TICKS_PER_SECOND, false);
+						setEffect(EFF_GROWTH, myStats->getEffectActive(c), 30 * TICKS_PER_SECOND, false);
 					}
 				}
 				/*else if ( myStats->EFFECTS_TIMERS[c] == 0 )
@@ -3212,7 +3212,7 @@ void Entity::setHP(int amount)
 				// tell the client its HP changed
 				strcpy((char*)net_packet->data, "UPHP");
 				SDLNet_Write32(static_cast<Uint32>(entitystats->HP), &net_packet->data[4]);
-				SDLNet_Write32((Uint32)NOTHING, &net_packet->data[8]);
+				SDLNet_Write32(NOTHING, &net_packet->data[8]);
 				net_packet->address.host = net_clients[i - 1].host;
 				net_packet->address.port = net_clients[i - 1].port;
 				net_packet->len = 12;
@@ -3949,8 +3949,8 @@ void Entity::handleEffects(Stat* myStats)
 			maxMPMod += 10;
 			if ( myStats->ring->beatitude >= 0 || shouldInvertEquipmentBeatitude(myStats) )
 			{
-				maxHPMod += 10 * std::min(2, (int)abs(myStats->ring->beatitude));
-				maxMPMod += 10 * std::min(2, (int)abs(myStats->ring->beatitude));
+				maxHPMod += 10 * std::min(2, abs(myStats->ring->beatitude));
+				maxMPMod += 10 * std::min(2, abs(myStats->ring->beatitude));
 			}
 		}
 		if ( myStats->getEffectActive(EFF_STURDINESS) )
@@ -5314,7 +5314,7 @@ void Entity::handleEffects(Stat* myStats)
 				int foodMod = 5;
 				if ( myStats->mask->beatitude >= 0 || shouldInvertEquipmentBeatitude(myStats) )
 				{
-					foodMod += 3 * std::min(2, (int)abs(myStats->mask->beatitude));
+					foodMod += 3 * std::min(2, abs(myStats->mask->beatitude));
 				}
 				int interval = std::max(1, (30 * TICKS_PER_SECOND) / foodMod);
 				if ( (myStats->EFFECTS_TIMERS[EFF_MARIGOLD] + 1) % interval == 0 )
@@ -5927,7 +5927,7 @@ void Entity::handleEffects(Stat* myStats)
 										else if ( multiplayer == SERVER && !players[player]->isLocalPlayer() )
 										{
 											strcpy((char*)net_packet->data, "NOMP");
-											SDLNet_Write32((Uint32)myStats->shield->type, &net_packet->data[4]); // force stop defending with shield
+											SDLNet_Write32(myStats->shield->type, &net_packet->data[4]); // force stop defending with shield
 											net_packet->address.host = net_clients[player - 1].host;
 											net_packet->address.port = net_clients[player - 1].port;
 											net_packet->len = 8;
@@ -6065,7 +6065,7 @@ void Entity::handleEffects(Stat* myStats)
 							else if ( multiplayer == SERVER && !players[player]->isLocalPlayer() )
 							{
 								strcpy((char*)net_packet->data, "NOMP");
-								SDLNet_Write32((Uint32)myStats->shield->type, &net_packet->data[4]); // force stop defending with shield
+								SDLNet_Write32(myStats->shield->type, &net_packet->data[4]); // force stop defending with shield
 								net_packet->address.host = net_clients[player - 1].host;
 								net_packet->address.port = net_clients[player - 1].port;
 								net_packet->len = 8;
@@ -13012,9 +13012,9 @@ void Entity::attack(int pose, int charge, Entity* target)
 					}
 
 					int olddamage = damage;
-					real_t chargeMult = (real_t)std::min(2, 
-						static_cast<int>(std::max(charge, static_cast<int>(Stat::getMaxAttackCharge(myStats) / 2)) 
-														/ static_cast<double>(Stat::getMaxAttackCharge(myStats) / 2)));
+					real_t chargeMult = std::min(2, 
+					                             static_cast<int>(std::max(charge, Stat::getMaxAttackCharge(myStats) / 2) 
+						                             / static_cast<double>(Stat::getMaxAttackCharge(myStats) / 2)));
 					if ( myStats->weapon && myStats->weapon->type == RAPIER && !shapeshifted )
 					{
 						if ( charge >= Stat::getMaxAttackCharge(myStats) )
@@ -13109,7 +13109,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 					}
 
 					Item** weaponToBreak = nullptr;
-					ItemType weaponType = static_cast<ItemType>(WOODEN_SHIELD);
+					ItemType weaponType = WOODEN_SHIELD;
 					bool hasMeleeGloves = false;
 					if ( myStats->gloves && !shapeshifted )
 					{
@@ -14446,11 +14446,11 @@ void Entity::attack(int pose, int charge, Entity* target)
 								{
 									strcpy((char*)net_packet->data, "STLA");
 									net_packet->data[4] = armornum;
-									SDLNet_Write32(static_cast<Uint32>(armor->type), &net_packet->data[5]);
-									SDLNet_Write32(static_cast<Uint32>(armor->status), &net_packet->data[9]);
+									SDLNet_Write32(armor->type, &net_packet->data[5]);
+									SDLNet_Write32(armor->status, &net_packet->data[9]);
 									SDLNet_Write32(static_cast<Uint32>(armor->beatitude), &net_packet->data[13]);
 									SDLNet_Write32(static_cast<Uint32>(startCount), &net_packet->data[17]);
-									SDLNet_Write32(static_cast<Uint32>(armor->appearance), &net_packet->data[21]);
+									SDLNet_Write32(armor->appearance, &net_packet->data[21]);
 									net_packet->data[25] = armor->identified;
 									net_packet->address.host = net_clients[playerhit - 1].host;
 									net_packet->address.port = net_clients[playerhit - 1].port;
@@ -14601,11 +14601,11 @@ void Entity::attack(int pose, int charge, Entity* target)
 								{
 									strcpy((char*)net_packet->data, "STLA");
 									net_packet->data[4] = armornum;
-									SDLNet_Write32(static_cast<Uint32>(armor->type), &net_packet->data[5]);
-									SDLNet_Write32(static_cast<Uint32>(armor->status), &net_packet->data[9]);
+									SDLNet_Write32(armor->type, &net_packet->data[5]);
+									SDLNet_Write32(armor->status, &net_packet->data[9]);
 									SDLNet_Write32(static_cast<Uint32>(armor->beatitude), &net_packet->data[13]);
 									SDLNet_Write32(static_cast<Uint32>(startCount), &net_packet->data[17]);
-									SDLNet_Write32(static_cast<Uint32>(armor->appearance), &net_packet->data[21]);
+									SDLNet_Write32(armor->appearance, &net_packet->data[21]);
 									net_packet->data[25] = armor->identified;
 									net_packet->address.host = net_clients[playerhit - 1].host;
 									net_packet->address.port = net_clients[playerhit - 1].port;
@@ -16109,7 +16109,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 									}
 									else
 									{
-										hitstats->EFFECTS_TIMERS[EFF_BLEEDING] = std::max(480 + (int)local_rng.rand() % 360 - hit.entity->getCON() * 100, 120); // 2.4-16.8 seconds
+										hitstats->EFFECTS_TIMERS[EFF_BLEEDING] = std::max(480 + local_rng.rand() % 360 - hit.entity->getCON() * 100, 120); // 2.4-16.8 seconds
 									}
 									hitstats->setEffectActive(EFF_BLEEDING, 1);
 									strcpy(playerHitMessage, Language::get(701));
@@ -16126,7 +16126,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 								{
 									if ( !wasBleeding )
 									{
-										hitstats->EFFECTS_TIMERS[EFF_BLEEDING] = std::max(500 + (int)local_rng.rand() % 500 - hit.entity->getCON() * 10, 250); // 5-20 seconds
+										hitstats->EFFECTS_TIMERS[EFF_BLEEDING] = std::max(500 + local_rng.rand() % 500 - hit.entity->getCON() * 10, 250); // 5-20 seconds
 										hitstats->setEffectActive(EFF_BLEEDING, 1);
 										strcpy(playerHitMessage, Language::get(2451));
 										if ( !strcmp(hitstats->name, "") || monsterNameIsGeneric(*hitstats) )
@@ -16140,7 +16140,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 									}
 									else
 									{
-										hitstats->EFFECTS_TIMERS[EFF_BLEEDING] += std::max((int)local_rng.rand() % 350 - hit.entity->getCON() * 5, 100); // 2-7 seconds in addition
+										hitstats->EFFECTS_TIMERS[EFF_BLEEDING] += std::max(local_rng.rand() % 350 - hit.entity->getCON() * 5, 100); // 2-7 seconds in addition
 										hitstats->setEffectActive(EFF_BLEEDING, 1);
 										strcpy(playerHitMessage, Language::get(2454));
 										if ( !strcmp(hitstats->name, "") || monsterNameIsGeneric(*hitstats) )
@@ -16903,7 +16903,7 @@ void Entity::attack(int pose, int charge, Entity* target)
 		net_packet->data[5] = pose;
 		net_packet->data[6] = charge;
 		SDLNet_Write32(static_cast<Sint32>(myStats->weapon ? myStats->weapon->type : 0), &net_packet->data[7]);
-		SDLNet_Write32((Uint32)(myStats->weapon ? myStats->weapon->appearance : 0), &net_packet->data[11]);
+		SDLNet_Write32(myStats->weapon ? myStats->weapon->appearance : 0, &net_packet->data[11]);
 		net_packet->address.host = net_server.host;
 		net_packet->address.port = net_server.port;
 		net_packet->len = 15;
@@ -19973,11 +19973,11 @@ void createMonsterEquipment(Stat* stats, BaronyRNG& rng)
 						randType = rng.rand() % 2;
 						if ( randType == 0 )
 						{
-							itemId = itemLevelCurve(static_cast<Category>(WEAPON), 0, currentlevel, rng);
+							itemId = itemLevelCurve(WEAPON, 0, currentlevel, rng);
 						}
 						else if ( randType == 1 )
 						{
-							itemId = itemLevelCurve(static_cast<Category>(ARMOR), 0, currentlevel, rng);
+							itemId = itemLevelCurve(ARMOR, 0, currentlevel, rng);
 						}
 					}
 					else if ( category == 15 )
@@ -19986,11 +19986,11 @@ void createMonsterEquipment(Stat* stats, BaronyRNG& rng)
 						randType = rng.rand() % 2;
 						if ( randType == 0 )
 						{
-							itemId = itemLevelCurve(static_cast<Category>(AMULET), 0, currentlevel, rng);
+							itemId = itemLevelCurve(AMULET, 0, currentlevel, rng);
 						}
 						else
 						{
-							itemId = itemLevelCurve(static_cast<Category>(RING), 0, currentlevel, rng);
+							itemId = itemLevelCurve(RING, 0, currentlevel, rng);
 						}
 					}
 					else if ( category == 16 )
@@ -19999,15 +19999,15 @@ void createMonsterEquipment(Stat* stats, BaronyRNG& rng)
 						randType = rng.rand() % 3;
 						if ( randType == 0 )
 						{
-							itemId = itemLevelCurve(static_cast<Category>(SCROLL), 0, currentlevel, rng);
+							itemId = itemLevelCurve(SCROLL, 0, currentlevel, rng);
 						}
 						else if ( randType == 1 )
 						{
-							itemId = itemLevelCurve(static_cast<Category>(MAGICSTAFF), 0, currentlevel, rng);
+							itemId = itemLevelCurve(MAGICSTAFF, 0, currentlevel, rng);
 						}
 						else
 						{
-							itemId = itemLevelCurve(static_cast<Category>(SPELLBOOK), 0, currentlevel, rng);
+							itemId = itemLevelCurve(SPELLBOOK, 0, currentlevel, rng);
 						}
 					}
 				}
@@ -23962,7 +23962,7 @@ void Entity::serverUpdateEffectsForEntity(bool guarantee)
 		*/
 
 		strcpy((char*)net_packet->data, "EFFE");
-		SDLNet_Write32(static_cast<Uint32>(getUID()), &net_packet->data[4]);
+		SDLNet_Write32(getUID(), &net_packet->data[4]);
 
 		int numBytes = NUMEFFECTS / 8;
 		for ( int i = 0; i < numBytes; ++i )
@@ -26835,7 +26835,7 @@ int Entity::getHealringFromEquipment(Entity* my, Stat& myStats, bool isPlayer)
 				healring++;
 				if ( cursedItemIsBuff )
 				{
-					healring += std::min(static_cast<int>(abs(myStats.ring->beatitude)), 1);
+					healring += std::min(abs(myStats.ring->beatitude), 1);
 				}
 				else
 				{
@@ -32254,7 +32254,7 @@ real_t Entity::monsterGetWeightRatio()
 	}
 	weight += myStats->getGoldWeight();
 	weight /= 2; // on monsters weight shouldn't matter so much
-	double weightratio = (1000 + std::max((Sint32)0, getSTR()) * 100 - weight) / static_cast<double>(1000 + std::max((Sint32)0, getSTR()) * 100);
+	double weightratio = (1000 + std::max(0, getSTR()) * 100 - weight) / static_cast<double>(1000 + std::max(0, getSTR()) * 100);
 	weightratio = fmin(fmax(0, weightratio), 1);
 	return weightratio;
 }
@@ -32530,7 +32530,7 @@ bool Entity::modifyDamageMultipliersFromEffects(Entity* hitentity, Entity* attac
 			if ( hitentity->behavior == &actMonster 
 				&& !hitentity->monsterAllyGetPlayerLeader() )
 			{
-				damageMultiplier += 0.1 + (0.1 * (int)(hitstats->getEffectActive(EFF_SIGIL) & 0xF));
+				damageMultiplier += 0.1 + (0.1 * (hitstats->getEffectActive(EFF_SIGIL) & 0xF));
 				if ( players[caster]->entity )
 				{
 					players[caster]->mechanics.updateSustainedSpellEvent(SPELL_SIGIL, 30.0, 1.0, hitentity);
@@ -32541,7 +32541,7 @@ bool Entity::modifyDamageMultipliersFromEffects(Entity* hitentity, Entity* attac
 	}
 	if ( hitstats->getEffectActive(EFF_SANCTUARY) )
 	{
-		real_t reduction = std::min(0.8, std::max(0.0, 0.1 + (0.15 * (int)(hitstats->getEffectActive(EFF_SANCTUARY) & 0xF))));
+		real_t reduction = std::min(0.8, std::max(0.0, 0.1 + (0.15 * (hitstats->getEffectActive(EFF_SANCTUARY) & 0xF))));
 		damageMultiplier = std::max(0.1, damageMultiplier * (1.0 - reduction));
 
 		int caster = StatusEffectOwnerEncoding::decodeOwnerNibbleToPlayer(hitstats->getEffectActive(EFF_SANCTUARY));
@@ -32572,7 +32572,7 @@ real_t Entity::getHealingSpellPotionModifierFromEffects(bool processLevelup)
 				if ( (behavior == &actMonster
 					&& monsterAllyGetPlayerLeader()) || behavior == &actPlayer )
 				{
-					result += 0.1 + (0.1 * (int)(myStats->getEffectActive(EFF_SIGIL) & 0xF));
+					result += 0.1 + (0.1 * (myStats->getEffectActive(EFF_SIGIL) & 0xF));
 					if ( processLevelup )
 					{
 						if ( players[caster]->entity )

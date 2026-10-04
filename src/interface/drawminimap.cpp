@@ -511,7 +511,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 					if ( ticks % 40 - ticks % 20 )
 					{
 						// exit
-						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(255, 0, 0, 255));
+						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(255, 0, 0, 255));
 					}
 				}
 			}
@@ -584,7 +584,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 								warningEffect = true;
 								int x = std::min<int>(std::max<int>(0, entity->x / 16), map.width - 1);
 								int y = std::min<int>(std::max<int>(0, entity->y / 16), map.height - 1);
-								drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 191, 191, 255));
+								drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(191, 191, 191, 255));
 								break;
 							}
 						}
@@ -599,7 +599,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 							warningEffect = true;
 							int x = std::min<int>(std::max<int>(0, entity->x / 16), map.width - 1);
 							int y = std::min<int>(std::max<int>(0, entity->y / 16), map.height - 1);
-							drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 191, 191, 255));
+							drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(191, 191, 191, 255));
 						}
 					}
 
@@ -643,18 +643,18 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 										{
 											if ( ticks % 40 - ticks % 20 )
 											{
-												drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(200, 200, 255, 255));
+												drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(200, 200, 255, 255));
 											}
 										}
 										else
 										{
 											if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_PINPOINT )
 											{
-												drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
+												drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(240, 228, 66, 255));
 											}
 											else
 											{
-												drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
+												drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(191, 127, 191, 255));
 											}
 										}
 										warningEffect = true;
@@ -698,18 +698,18 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 									{
 										if ( ticks % 40 - ticks % 20 )
 										{
-											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(200, 200, 255, 255));
+											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(200, 200, 255, 255));
 										}
 									}
 									else
 									{
 										if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_PINPOINT )
 										{
-											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
+											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(240, 228, 66, 255));
 										}
 										else
 										{
-											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
+											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(191, 127, 191, 255));
 										}
 									}
 									warningEffect = true;
@@ -737,7 +737,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 											entity->setEntityShowOnMap(Entity::SHOW_MAP_DEFAULT, std::max(entity->getEntityShowOnMapDuration(), TICKS_PER_SECOND * 5));
 											int x = std::min<int>(std::max<int>(0, entity->x / 16), map.width - 1);
 											int y = std::min<int>(std::max<int>(0, entity->y / 16), map.height - 1);
-											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
+											drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(191, 127, 191, 255));
 											warningEffect = true;
 											break;
 										}
@@ -760,7 +760,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 										entity->setEntityShowOnMap(Entity::SHOW_MAP_DEFAULT, std::max(entity->getEntityShowOnMapDuration(), TICKS_PER_SECOND * 5));
 										int x = std::min<int>(std::max<int>(0, entity->x / 16), map.width - 1);
 										int y = std::min<int>(std::max<int>(0, entity->y / 16), map.height - 1);
-										drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
+										drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(191, 127, 191, 255));
 										warningEffect = true;
 									}
 								}
@@ -776,7 +776,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 				if ( minimap[y][x] == 1 || minimap[y][x] == 2 )
 				{
 					// boulder
-					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 63, 0, 255));
+					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(191, 63, 0, 255));
 				}
 			}
 			else if ( entity->behavior == &actItem && entity->sprite >= items[TOOL_PLAYER_LOOT_BAG].index &&
@@ -797,7 +797,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 				if ( ticks % 40 - ticks % 20 )
 				{
 					// item
-					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
+					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(240, 228, 66, 255));
 				}
 			}
 			else if ( entity->getEntityShowOnMapDuration() > 0 )
@@ -806,25 +806,25 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 				int y = std::min<int>(std::max<int>(0, entity->y / 16), map.height - 1);
 				if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_DETECT_MONSTER )
 				{
-					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(191, 127, 191, 255));
+					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(191, 127, 191, 255));
 				}
 				else if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_PINPOINT )
 				{
-					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
+					drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(240, 228, 66, 255));
 				}
 				else if ( (ticks % 40 - ticks % 20) )
 				{
 					if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_SCRY )
 					{
-						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(200, 200, 255, 255));
+						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(200, 200, 255, 255));
 					}
 					else if ( entity->getEntityShowOnMapSource() == Entity::SHOW_MAP_DONATION )
 					{
-						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(240, 228, 66, 255));
+						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(240, 228, 66, 255));
 					}
 					else
 					{
-						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, (real_t)1.0, rect, makeColor(255, 168, 200, 255));
+						drawCircleMesh(static_cast<real_t>(x) + 0.5, static_cast<real_t>(y) + 0.5, 1.0, rect, makeColor(255, 168, 200, 255));
 					}
 				}
 			}
@@ -877,14 +877,14 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 						if ( aliveTime >= (DEATH_PING_TIME - (TICKS_PER_SECOND * .5)) )
 						{
 							// start fading ping after 9 seconds, lasting 0.5 seconds.
-							real_t alphafade = 1 - (aliveTime - (DEATH_PING_TIME - (TICKS_PER_SECOND * .5))) / static_cast<real_t>(TICKS_PER_SECOND * 0.5);
+							real_t alphafade = 1 - (aliveTime - (DEATH_PING_TIME - (TICKS_PER_SECOND * .5))) / (TICKS_PER_SECOND * 0.5);
 							alpha = std::max(static_cast<int>(alphafade * alpha), 0);
 						}
 					}
 					else if ( aliveTime >= (DEFAULT_PING_TIME - (TICKS_PER_SECOND * .5)) )
 					{
 						// start fading ping after 2 seconds, lasting 0.5 seconds.
-						real_t alphafade = 1 - (aliveTime - (DEFAULT_PING_TIME - (TICKS_PER_SECOND * .5))) / static_cast<real_t>(TICKS_PER_SECOND * 0.5);
+						real_t alphafade = 1 - (aliveTime - (DEFAULT_PING_TIME - (TICKS_PER_SECOND * .5))) / (TICKS_PER_SECOND * 0.5);
 						alpha = std::max(static_cast<int>(alphafade * alpha), 0);
 					}
 
@@ -909,7 +909,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 					}
 					else
 					{
-			            drawCircleMesh(static_cast<real_t>(ping.x) + 0.5, static_cast<real_t>(ping.y) + 0.5, (real_t)1.0, rect, color);
+			            drawCircleMesh(static_cast<real_t>(ping.x) + 0.5, static_cast<real_t>(ping.y) + 0.5, 1.0, rect, color);
 			        }
 				}
 			}
@@ -1025,7 +1025,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
 					alpha -= std::min(static_cast<Uint32>(255), static_cast<Uint32>(255 * (lifePercent - 0.8) / 0.2));
 				}
 				color = makeColor(r, g, b, alpha);
-				drawCircleMesh(static_cast<real_t>(ping.x) + 0.5, static_cast<real_t>(ping.y) + 0.5, (real_t)1.0, rect, color);
+				drawCircleMesh(static_cast<real_t>(ping.x) + 0.5, static_cast<real_t>(ping.y) + 0.5, 1.0, rect, color);
 			}
 			priorityQueue.pop();
 		}

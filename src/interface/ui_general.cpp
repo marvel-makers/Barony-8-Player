@@ -216,7 +216,7 @@ void UIToastNotification::animate(int& xout, int& current_ticks, int duration, i
 	// scale duration to FPS - tested @ 144hz
 	double scaledDuration = (duration / (144.0 / (std::max(1U, fpsLimit))));
 
-	double t = current_ticks / static_cast<double>(scaledDuration);
+	double t = current_ticks / scaledDuration;
 	double result = -width * t * t * (3.0f - 2.0f * t); // bezier from 0 to width as t (0-1)
 	xout = static_cast<int>(floor(result) + width);
 	isHidden = false;
