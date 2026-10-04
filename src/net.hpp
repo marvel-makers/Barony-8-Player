@@ -12,7 +12,8 @@
 #pragma once
 
 #include "game.hpp"
-#include <queue>
+#include <cstddef>
+#include <vector>
 
 #define DEFAULT_PORT 57165
 #define LOBBY_CHATBOX_LENGTH 62
@@ -59,6 +60,21 @@ void serverUpdatePlayerSummonStrength(int player);
 void serverUpdateAllyHP(int player, Uint32 uidToUpdate, int HP, int MAXHP, bool guarantee = false);
 void sendMinimapPing(Uint8 player, Uint8 x, Uint8 y, Uint8 pingType = 0, bool radius = false);
 void sendAllyCommandClient(int player, Uint32 uid, int command, Uint8 x, Uint8 y, Uint32 targetUid = 0);
+
+enum class LobbyJoinError : Uint32
+{
+	Full = 240,
+	VersionMismatch,
+	UnexpectedSave,
+	MissingSave,
+	IncompatibleSave,
+	WrongLevel,
+	LobbyKeyMismatch,
+	SnapshotTooLarge
+};
+
+constexpr Uint32 NET_JOIN_ERROR_BASE = static_cast<Uint32>(LobbyJoinError::Full);
+
 enum NetworkingLobbyJoinRequestResult : int
 {
 	NET_LOBBY_JOIN_P2P_FAILURE,
@@ -66,7 +82,7 @@ enum NetworkingLobbyJoinRequestResult : int
 	NET_LOBBY_JOIN_DIRECTIP_FAILURE,
 	NET_LOBBY_JOIN_DIRECTIP_SUCCESS
 };
-NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, bool lockedSlots[MAXPLAYERS], bool& outUseChunkedHelo);
+NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bool* lockedSlots);
 Entity* receiveEntity(Entity* entity);
 void clientActions(Entity* entity);
 void clientHandleMessages(Uint32 framerateBreakInterval);
@@ -93,53 +109,8 @@ const Uint32 NUM_SERVER_FLAGS =  10;
 
 extern bool keepInventoryGlobal;
 
-class SteamPacketWrapper
-{
-	Uint8* _data;
-	int _len;
-	//TODO: Encapsulate CSteam ID?
-public:
-	SteamPacketWrapper(Uint8* data, int len);
-	~SteamPacketWrapper(); //NOTE: DOES free _data. Don't keep it somewhere else or segfaults will ensue. If you're lucky.
-
-	Uint8*& data();
-	int& len();
-};
-
-class NetHandler
-{
-	SDL_Thread* steam_packet_thread;
-	bool continue_multithreading_steam_packets;
-	SDL_mutex* game_packets_lock;
-public:
-	NetHandler();
-	~NetHandler();
-	std::queue<SteamPacketWrapper* > game_packets;
-
-	void initializeMultithreadedPacketHandling();
-	void stopMultithreadedPacketHandling();
-	void toggleMultithreading(bool disableMultithreading);
-
-	bool getContinueMultithreadingSteamPackets();
-
-	void addGamePacket(SteamPacketWrapper* packet);
-
-	/*
-	 * This function will take the next packet in the queue, pop it off, and then return it.
-	 * Returns nullptr if no packets.
-	 * NOTE: You *MUST* free the data returned by this, or else you will leak memory! Such is the way of things.
-	 */
-	SteamPacketWrapper* getGamePacket();
-
-	SDL_mutex* continue_multithreading_steam_packets_lock;
-};
-extern NetHandler* net_handler;
-
 extern bool disableMultithreadedSteamNetworking;
 extern bool disableFPSLimitOnNetworkMessages;
-
-int steamPacketThread(void* data);
-int EOSPacketThread(void* data);
 
 void deleteMultiplayerSaveGames(); //Server function, deletes its own save and broadcasts delete packet to clients.
 
@@ -184,4 +155,28 @@ struct PingNetworkStatus_t
 	static void update();
 	static void reset();
 };
-extern PingNetworkStatus_t PingNetworkStatus[MAXPLAYERS];
+class PingNetworkStatusStore
+{
+public:
+	PingNetworkStatus_t& operator[](std::size_t index)
+	{
+		if (index >= values_.size())
+		{
+			values_.resize(index + 1);
+		}
+		return values_[index];
+	}
+
+	const PingNetworkStatus_t& operator[](std::size_t index) const
+	{
+		return values_.at(index);
+	}
+
+	void resize(std::size_t size) { values_.resize(size); }
+	std::size_t size() const noexcept { return values_.size(); }
+
+private:
+	std::vector<PingNetworkStatus_t> values_;
+};
+
+extern PingNetworkStatusStore PingNetworkStatus;

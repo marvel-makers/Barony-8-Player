@@ -23,17 +23,17 @@
 #include "player.hpp"
 #include "mod_tools.hpp"
 #include "interface/ui.hpp"
-#ifdef STEAMWORKS
+//#ifdef STEAMWORKS
 #include <steam/steam_api.h>
 #include <steam/steam_gameserver.h>
 #include "steam.hpp"
 #include "lobbies.hpp"
-#endif
+//#endif
 
-#define STEAMDEBUG
+//#define STEAMDEBUG
 //#define DEBUG_ACHIEVEMENTS
 
-#ifdef STEAMWORKS
+//#ifdef STEAMWORKS
 
 static std::string roomkey_cached;
 Uint32 numSteamLobbies = 0;
@@ -128,7 +128,7 @@ const std::string CSteamLeaderboards::leaderboardNames[CSteamLeaderboards::k_num
 	"Fastest Time (Multiplayer Hell Route - Monsters Only)",
 	"Highest Score (Multiplayer Hell Route - Monsters Only)"
 };
-#endif
+//#endif
 
 
 
@@ -140,7 +140,7 @@ const std::string CSteamLeaderboards::leaderboardNames[CSteamLeaderboards::k_num
 //These are all an utter bodge. They really, really should not exist, but potato.
 
 
-#ifdef STEAMWORKS
+// #ifdef STEAMWORKS
 //TODO: Unused?
 void (*cpp_SteamServerClientWrapper_GameServerPingOnServerResponded)(void* steamID);
 void (*cpp_SteamServerClientWrapper_OnLobbyDataUpdate)(void* pCallback);
@@ -396,7 +396,7 @@ std::string SteamServerClientWrapper::requestAuthTicket()
 
 #if defined(LINUX) || defined(APPLE)
     // TODO update steamworks SDK for linux and mac
-    authTicketHandle = SteamUser()->GetAuthSessionTicket(rgubTicket, sizeof(rgubTicket), &cubTicket);
+    authTicketHandle = SteamUser()->GetAuthSessionTicket(rgubTicket, sizeof(rgubTicket), &cubTicket, nullptr);
 #else
     authTicketHandle = SteamUser()->GetAuthSessionTicket(rgubTicket, sizeof(rgubTicket), &cubTicket, nullptr);
 #endif
@@ -776,7 +776,7 @@ void SteamServerClientWrapper::OnGetNumberOfCurrentPlayers(NumberOfCurrentPlayer
 	//printlog("Number of players currently playing: %d\n", pCallback->m_cPlayers);
 }
 
-#endif //defined Steamworks
+// #endif //defined Steamworks
 
 /* ***** END UTTER BODGE ***** */
 

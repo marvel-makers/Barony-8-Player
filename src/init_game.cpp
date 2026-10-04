@@ -24,6 +24,7 @@
 #include "magic/magic.hpp"
 #include "monster.hpp"
 #include "net.hpp"
+#include "net/transport/transport.hpp"
 #ifdef STEAMWORKS
 #include <steam/steam_api.h>
 #include "steam.hpp"
@@ -369,13 +370,14 @@ int initGame()
 		}
 		updateLoadingScreen(96);
 		
-		if ( !loadMusic() )
-		{
-			printlog("WARN: loadMusic() from initGame() failed!");
-		}
-
 		loadAllScores(SCORESFILE);
 		loadAllScores(SCORESFILE_MULTIPLAYER);
+
+#ifdef USE_FMOD
+#ifndef EDITOR
+		ensembleSounds.setup();
+#endif
+#endif
 
 		updateLoadingScreen(98);
 		loading_done = true;
@@ -800,6 +802,7 @@ void deinitGame()
 	}
 	for ( int c = 0; c < MAXPLAYERS; c++ )
 	{
+		barony::net::clearSteamPeer(static_cast<barony::net::HostIndex>(c));
 		if ( steamIDRemote[c] )
 		{
 			cpp_Free_CSteamID(steamIDRemote[c]);
@@ -901,8 +904,7 @@ void loadAchievementData(const char* path) {
 		printlog("[JSON]: Error: could not parse %s", path);
 		return;
 	}
-	// Avoid WinAPI GetObject macro expansion on Windows.
-	const auto& achievements = (d["achievements"].GetObject)();
+	const auto& achievements = d["achievements"].GetObject();
 
 	for (const auto& it : achievements) {
 		if (!it.name.IsString()) {
@@ -944,7 +946,7 @@ void loadAchievementData(const char* path) {
 			continue;
 		}
 #endif
-		const auto& ach = (it.value.GetObject)();
+		const auto& ach = it.value.GetObject();
 		auto& achData = Compendium_t::achievements[achName];
 		if (ach.HasMember("name") && ach["name"].IsString()) {
 			achData.name = ach["name"].GetString();

@@ -115,18 +115,6 @@ list(APPEND GAME_SOURCES
 	"${CMAKE_CURRENT_SOURCE_DIR}/monster_duck.cpp"
 )
 
-if (BARONY_SMOKE_TESTS)
-	list(APPEND GAME_SOURCES
-		"${CMAKE_CURRENT_SOURCE_DIR}/smoke/SmokeHooksMainMenu.cpp"
-		"${CMAKE_CURRENT_SOURCE_DIR}/smoke/SmokeHooksGameplay.cpp"
-		"${CMAKE_CURRENT_SOURCE_DIR}/smoke/SmokeHooksGameUI.cpp"
-		"${CMAKE_CURRENT_SOURCE_DIR}/smoke/SmokeHooksNet.cpp"
-		"${CMAKE_CURRENT_SOURCE_DIR}/smoke/SmokeHooksCombat.cpp"
-		"${CMAKE_CURRENT_SOURCE_DIR}/smoke/SmokeHooksSaveReload.cpp"
-		"${CMAKE_CURRENT_SOURCE_DIR}/smoke/SmokeHooksMapgen.cpp"
-	)
-endif()
-
 list(APPEND EDITOR_SOURCES
 	"${CMAKE_CURRENT_SOURCE_DIR}/main.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/init.cpp"
@@ -154,11 +142,11 @@ list(APPEND EDITOR_SOURCES
 	"${CMAKE_CURRENT_SOURCE_DIR}/shader.cpp"
 )
 
+add_subdirectory(net)
 add_subdirectory(magic)
 add_subdirectory(interface)
 add_subdirectory(ui)
 add_subdirectory(engine)
-add_subdirectory(imgui)
 
 set(GAME_SOURCES ${GAME_SOURCES} PARENT_SCOPE)
 set(EDITOR_SOURCES ${EDITOR_SOURCES} PARENT_SCOPE)

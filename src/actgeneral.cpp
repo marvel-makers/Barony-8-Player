@@ -3141,7 +3141,7 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 				}
 				else
 				{
-					for ( int c = 0; c < MAXPLAYERS; ++c )
+					for ( int c = 0; c < std::size(client_classes); ++c )
 					{
 						if ( stats[c] && !client_disconnected[c] && players[c] && players[c]->entity )
 						{
@@ -3161,13 +3161,13 @@ void TextSourceScript::handleTextSourceScript(Entity& src, std::string input)
 
 					if (multiplayer == SERVER)
 					{
-						for (int c = 1; c < MAXPLAYERS; ++c)
+						for (int c = 1; c < std::size(client_classes); ++c)
 						{
 							if (!client_disconnected[c] &&!players[c]->isLocalPlayer())
 							{
-								strcpy((char*)net_packet->data, "SCRC");
-								net_packet->data[4] = (Uint8)player;
-								net_packet->data[5] = (Uint8)client_classes[player];
+								strcpy(reinterpret_cast<char*>(net_packet->data), "SCRC");
+								net_packet->data[4] = static_cast<Uint8>(player);
+								net_packet->data[5] = static_cast<Uint8>(client_classes[player]);
 								net_packet->address.host = net_clients[c - 1].host;
 								net_packet->address.port = net_clients[c - 1].port;
 								net_packet->len = 6;

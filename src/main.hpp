@@ -70,9 +70,9 @@ using std::string; //Instead of including an entire namespace, please explicitly
 #include "nintendo/baronynx.hpp"
 #endif
 
-#ifdef STEAMWORKS
+//#ifdef STEAMWORKS
 #define STEAM_APPID 371970
-#endif
+//#endif
 
 enum ESteamStatTypes
 {
@@ -188,9 +188,9 @@ extern bool autoLimbReload;
 #include "savepng.hpp"
 
 //Ifdef steam or something?
-#ifdef STEAMWORKS
+//#ifdef STEAMWORKS
 //#include <steamworks_cwrapper/steam_wrapper.h>
-#endif
+//#endif
 
 #ifdef WINDOWS
 #include <io.h>
@@ -676,7 +676,7 @@ typedef struct door_t
 #ifdef BARONY_SUPER_MULTIPLAYER
 #define MAXPLAYERS 15
 #else
-#define MAXPLAYERS 4
+#define MAXPLAYERS 8
 #endif
 
 // shaking/bobbing, that sort of thing
@@ -911,10 +911,8 @@ extern bool initialized; //So that messagePlayer doesn't explode before the game
 
 void GO_SwapBuffers(SDL_Window* screen);
 
-static const int NUM_STEAM_STATISTICS = 73;
+static constexpr int NUM_STEAM_STATISTICS = 73;
 extern SteamStat_t g_SteamStats[NUM_STEAM_STATISTICS];
-
-#ifdef STEAMWORKS
  #include <steam/steam_api.h>
  struct SteamGlobalStat_t
  {
@@ -930,19 +928,6 @@ extern SteamStat_t g_SteamStats[NUM_STEAM_STATISTICS];
  extern CSteamLeaderboards* g_SteamLeaderboards;
  extern CSteamWorkshop* g_SteamWorkshop;
  extern CSteamStatistics* g_SteamStatistics;
-#else
-struct SteamGlobalStat_t
-{
-	int m_ID;
-	ESteamStatTypes m_eStatType;
-	const char *m_pchStatName;
-
-	long long m_iValue;
-	float m_flValue;
-	float m_flAvgNumerator;
-	float m_flAvgDenominator;
-};
-#endif // STEAMWORKS
 extern SteamGlobalStat_t g_SteamAPIGlobalStats[1];
 
 #ifdef USE_EOS

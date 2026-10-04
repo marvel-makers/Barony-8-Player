@@ -31,10 +31,10 @@
  #include "editor.hpp"
 #endif // NINTENDO
 #include "menu.hpp"
-#ifdef STEAMWORKS
+// #ifdef STEAMWORKS
  #include <steam/steam_api.h>
  #include "steam.hpp"
-#endif // STEAMWORKS
+//  #endif // STEAMWORKS
 #ifndef EDITOR
 #include "player.hpp"
 #endif
@@ -50,7 +50,7 @@
 #include "mod_tools.hpp"
 #include "ui/MainMenu.hpp"
 #include "interface/consolecommand.hpp"
-static ConsoleVariable<bool> cvar_sdl_disablejoystickrawinput("/sdl_joystick_rawinput_disable", false, "disable SDL rawinput for gamepads (helps SDL_HapticOpen())");
+static ConsoleVariable cvar_sdl_disablejoystickrawinput("/sdl_joystick_rawinput_disable", false, "disable SDL rawinput for gamepads (helps SDL_HapticOpen())");
 #endif
 
 #include <thread>
@@ -62,21 +62,21 @@ bool mountBaseDataFolders() {
         const auto holiday = getCurrentHoliday();
         const auto holiday_dir = holidayThemeDirs[holiday];
         const auto holiday_dir_str = (std::string(datadir) + "/") + holiday_dir;
-        if (!PHYSFS_mount(holiday_dir_str.c_str(), NULL, 1)) {
+        if (!PHYSFS_mount(holiday_dir_str.c_str(), nullptr, 1)) {
             printlog("[PhysFS]: unsuccessfully mounted holiday %s folder. Error: %s",
                 holiday_dir_str.c_str(), PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return false;
         }
     }
 
-	if ( !PHYSFS_mount(datadir, NULL, 1) )
+	if ( !PHYSFS_mount(datadir, nullptr, 1) )
 	{
 		printlog("[PhysFS]: unsuccessfully mounted base %s folder. Error: %s",
             datadir, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 		return false;
 	}
 
-	if ( PHYSFS_mount(outputdir, NULL, 1) )
+	if ( PHYSFS_mount(outputdir, nullptr, 1) )
 	{
 		printlog("[PhysFS]: successfully mounted output \"%s\" folder", outputdir);
 		if ( PHYSFS_setWriteDir(outputdir) )
@@ -93,9 +93,9 @@ bool mountBaseDataFolders() {
 			PHYSFS_mkdir("data/statues");
 			PHYSFS_mkdir("data/scripts");
 			PHYSFS_mkdir("config");
-#ifdef STEAMWORKS
+//#ifdef STEAMWORKS
 			PHYSFS_mkdir("workshop_cache");
-#endif
+//#endif
 #ifdef NINTENDO
 			PHYSFS_mkdir("mods");
 			std::string path = outputdir;
@@ -134,7 +134,7 @@ bool remountBaseDataFolders() {
     // first unmount everything.
     bool success = true;
 	char** i;
-	for ( i = PHYSFS_getSearchPath(); *i != NULL; i++ ) {
+	for ( i = PHYSFS_getSearchPath(); *i != nullptr; i++ ) {
         if ( PHYSFS_unmount(*i) == 0 ) {
             success = false;
             printlog("[%s] unsuccessfully removed from the search path.\n", *i);
@@ -163,7 +163,7 @@ bool remountBaseDataFolders() {
 -------------------------------------------------------------------------------*/
 
 FILE* logfile = nullptr;
-bool steam_init = false;
+static bool steam_init = false;
 
 int initApp(char const * const title, int fullscreen)
 {
@@ -180,26 +180,17 @@ int initApp(char const * const title, int fullscreen)
 		openLogFile();
 	}
 
-	/*for (c = 0; c < NUM_JOY_STATUS; ++c)
-	{
-		joystatus[c] = 0;
-	}
-	for (c = 0; c < NUM_JOY_TRIGGER_STATUS; ++c)
-	{
-		joy_trigger_status[c] = 0;
-	}*/
-
 	// init some lists
-	button_l.first = NULL;
-	button_l.last = NULL;
-	light_l.first = NULL;
-	light_l.last = NULL;
-	entitiesdeleted.first = NULL;
-	entitiesdeleted.last = NULL;
-	for (int c = 0; c < HASH_SIZE; ++c)
+	button_l.first = nullptr;
+	button_l.last = nullptr;
+	light_l.first = nullptr;
+	light_l.last = nullptr;
+	entitiesdeleted.first = nullptr;
+	entitiesdeleted.last = nullptr;
+	for (auto & [first, last] : ttfTextHash)
 	{
-		ttfTextHash[c].first = NULL;
-		ttfTextHash[c].last = NULL;
+		first = nullptr;
+		last = nullptr;
 	}
 
 	// init PHYSFS
@@ -210,17 +201,12 @@ int initApp(char const * const title, int fullscreen)
 
 	if ( !PHYSFS_isInit() )
 	{
-		printlog("[PhysFS]: failed to initialize! Error: %s",
-            PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		printlog("[PhysFS]: failed to initialize! Error: %s",PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 		return 13;
 	}
-	else
-	{
-		printlog("[PhysFS]: successfully initialized, last error: %s",
-            PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
-	}
+	printlog("[PhysFS]: successfully initialized, last error: %s",PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 
-    if (!mountBaseDataFolders()) {
+	if (!mountBaseDataFolders()) {
         return 13;
     }
 
@@ -248,17 +234,8 @@ int initApp(char const * const title, int fullscreen)
 	}
 #endif
 #endif
-    // do this in main() now.
-	/*Uint32 init_flags = SDL_INIT_VIDEO | SDL_INIT_EVENTS;
-	init_flags |= SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC;
-	if (SDL_Init(init_flags) == -1)
-	{
-		printlog("failed to initialize SDL: %s\n", SDL_GetError());
-		return 1;
-	}*/
-
 	// init steamworks
-#ifdef STEAMWORKS
+// #ifdef STEAMWORKS
 	SteamAPI_RestartAppIfNecessary(STEAM_APPID);
 	if ( !SteamAPI_Init() )
 	{
@@ -270,7 +247,7 @@ int initApp(char const * const title, int fullscreen)
 	g_SteamLeaderboards = new CSteamLeaderboards();
 	g_SteamWorkshop = new CSteamWorkshop();
 	g_SteamStatistics = new CSteamStatistics(g_SteamStats, g_SteamAPIGlobalStats, NUM_STEAM_STATISTICS);
-    if (xres == 1280 && yres == 720 && SteamUtils()->IsSteamRunningOnSteamDeck()) {
+    if (xres == 1280 && yres == 720 && SteamUtils()->IsRunningOnSteamHardware()) {
         // default steam deck native resolution
         xres = 1280;
         yres = 800;
@@ -284,7 +261,7 @@ int initApp(char const * const title, int fullscreen)
 #endif
 	// Preloads mod content from a workshop fileID
 	//gamemodsWorkshopPreloadMod(YOUR WORKSHOP FILE ID HERE, "YOUR WORKSHOP TITLE HERE");
-#endif
+// #endif
 #if defined USE_EOS
 	EOS.readFromFile();
 	EOS.readFromCmdLineArgs();
@@ -398,18 +375,9 @@ int initApp(char const * const title, int fullscreen)
 #else
 	SDL_GameControllerAddMappingsFromFile("gamecontrollerdb.txt");
 #endif
-
-	//printlog("initializing SDL_mixer. rate: %d format: %d channels: %d buffers: %d\n", audio_rate, audio_format, audio_channels, audio_buffers);
-	/*if( Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) ) {
-		SDL_Quit();
-		printlog("failed to initialize SDL_mixer: %s\n", Mix_GetError());
-		return 2;
-	}*/
-
 #ifndef EDITOR
 	initSoundEngine(); //Yes, this silently ignores the return value...(which is not good, but not important either)
 #endif
-
 	printlog("initializing SDL_net...\n");
 	if ( SDLNet_Init() < 0 )
 	{
@@ -482,7 +450,7 @@ int initApp(char const * const title, int fullscreen)
 	allsurfaces = (SDL_Surface**) malloc(sizeof(SDL_Surface*)*MAXTEXTURES);
 	for (int c = 0; c < MAXTEXTURES; ++c)
 	{
-		allsurfaces[c] = NULL;
+		allsurfaces[c] = nullptr;
 	}
     GL_CHECK_ERR(glGenTextures(MAXTEXTURES, texid));
 
@@ -506,17 +474,17 @@ int initApp(char const * const title, int fullscreen)
 
 	// load resources
 	printlog("loading engine resources...\n");
-	if ((font8x8_bmp = loadImage("images/system/font8x8.png")) == NULL)
+	if ((font8x8_bmp = loadImage("images/system/font8x8.png")) == nullptr)
 	{
 		printlog("failed to load font8x8.png\n");
 		return 5;
 	}
-	if ((font12x12_bmp = loadImage("images/system/font12x12.png")) == NULL)
+	if ((font12x12_bmp = loadImage("images/system/font12x12.png")) == nullptr)
 	{
 		printlog("failed to load font12x12.png\n");
 		return 5;
 	}
-	if ((font16x16_bmp = loadImage("images/system/font16x16.png")) == NULL)
+	if ((font16x16_bmp = loadImage("images/system/font16x16.png")) == nullptr)
 	{
 		printlog("failed to load font16x16.png\n");
 		return 5;
@@ -560,7 +528,7 @@ int initApp(char const * const title, int fullscreen)
 		char name[128] = { '\0' };
 		fp->gets2(name, 128);
 		sprites[c] = loadImage(name);
-		if ( sprites[c] == NULL )
+		if ( sprites[c] == nullptr)
 		{
 			printlog("warning: failed to load '%s' listed at line %d in sprites.txt\n", name, c + 1);
 			if ( c == 0 )
@@ -610,7 +578,7 @@ int initApp(char const * const title, int fullscreen)
 		animatedtiles[c] = false;
 		lavatiles[c] = false;
 		swimmingtiles[c] = false;
-		if ( tiles[c] != NULL )
+		if ( tiles[c] != nullptr)
 		{
 			for (int x = 0; x < strlen(name); x++)
 			{
@@ -713,7 +681,7 @@ int initApp(char const * const title, int fullscreen)
 			char name[128];
 			fp->gets2(name, 128);
 			models[c] = loadVoxel(name);
-			if ( models[c] == NULL )
+			if ( models[c] == nullptr)
 			{
 				printlog("warning: failed to load '%s' listed at line %d in models.txt\n", name, c + 1);
 				if ( c == 0 )
@@ -826,7 +794,7 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
 	char filename[128] = { 0 };
 	snprintf(filename, 127, "/lang/%s.txt", lang);
 	std::string langFilepath;
-	if ( PHYSFS_isInit() && PHYSFS_getRealDir(filename) != NULL && !forceLoadBaseDirectory )
+	if ( PHYSFS_isInit() && PHYSFS_getRealDir(filename) != nullptr && !forceLoadBaseDirectory )
 	{
 		std::string langRealDir = PHYSFS_getRealDir(filename);
 		langFilepath = langRealDir + PHYSFS_getDirSeparator() + filename;
@@ -870,7 +838,7 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
 	char fontPath[1024];
 	snprintf(fontName, 63, "lang/%s.ttf", lang);
 	std::string fontFilepath;
-	if ( PHYSFS_isInit() && PHYSFS_getRealDir(fontName) != NULL )
+	if ( PHYSFS_isInit() && PHYSFS_getRealDir(fontName) != nullptr)
 	{
 		std::string fontRealDir = PHYSFS_getRealDir(fontName);
 		fontFilepath = fontRealDir + PHYSFS_getDirSeparator() + fontName;
@@ -883,7 +851,7 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
 	if ( !dataPathExists(fontFilepath.c_str()) )
 	{
 		strncpy(fontName, "lang/en.ttf", 63);
-		if ( PHYSFS_isInit() && PHYSFS_getRealDir(fontName) != NULL )
+		if ( PHYSFS_isInit() && PHYSFS_getRealDir(fontName) != nullptr)
 		{
 			std::string fontRealDir = PHYSFS_getRealDir(fontName);
 			fontFilepath = fontRealDir + PHYSFS_getDirSeparator() + fontName;
@@ -903,7 +871,7 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
 	{
 		TTF_CloseFont(ttf8);
 	}
-	if ((ttf8 = TTF_OpenFont(fontPath, TTF8_HEIGHT)) == NULL )
+	if ((ttf8 = TTF_OpenFont(fontPath, TTF8_HEIGHT)) == nullptr)
 	{
 		printlog("failed to load size 8 ttf: %s\n", TTF_GetError());
 		return 1;
@@ -914,7 +882,7 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
 	{
 		TTF_CloseFont(ttf12);
 	}
-	if ((ttf12 = TTF_OpenFont(fontPath, TTF12_HEIGHT)) == NULL )
+	if ((ttf12 = TTF_OpenFont(fontPath, TTF12_HEIGHT)) == nullptr)
 	{
 		printlog("failed to load size 12 ttf: %s\n", TTF_GetError());
 		return 1;
@@ -925,7 +893,7 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
 	{
 		TTF_CloseFont(ttf16);
 	}
-	if ((ttf16 = TTF_OpenFont(fontPath, TTF16_HEIGHT)) == NULL )
+	if ((ttf16 = TTF_OpenFont(fontPath, TTF16_HEIGHT)) == nullptr)
 	{
 		printlog("failed to load size 16 ttf: %s\n", TTF_GetError());
 		return 1;
@@ -1015,9 +983,9 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
 		snprintf(entryText, 15, "%d", entry);
 		if ( entries.find(entry) != entries.end() )
 		{
-			printlog("warning: duplicate entry %d in '%s':%d\n", entry, langFilepath.c_str(), line);
+			//printlog("warning: duplicate entry %d in '%s':%d\n", entry, langFilepath.c_str(), line);
 		}
-		entries[entry] = (char*)(data + strlen(entryText) + 1);
+		entries[entry] = data + strlen(entryText) + 1;
 		//printlog("loading entry %d...text: \"%s\"\n", entry, Language::get(entry));
 	}
 
@@ -1038,7 +1006,7 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
 
 int Language::reloadLanguage()
 {
-	if ( PHYSFS_isInit() && PHYSFS_getRealDir("lang/en.txt") != NULL )
+	if ( PHYSFS_isInit() && PHYSFS_getRealDir("lang/en.txt") != nullptr)
 	{
 		std::string langRealDir = PHYSFS_getRealDir("lang/en.txt");
 		if ( langRealDir != BASE_DATA_DIR )
@@ -1364,17 +1332,17 @@ int deinitApp()
 	main_framebuffer.destroy();
 	if (renderer) {
 		SDL_GL_DeleteContext(renderer);
-		renderer = NULL;
+		renderer = nullptr;
 	}
 	if (screen) {
 		SDL_DestroyWindow(screen);
-		screen = NULL;
+		screen = nullptr;
 	}
 	TTF_Quit();
 	SDL_Quit();
 
 	// shutdown steamworks
-#ifdef STEAMWORKS
+//#ifdef STEAMWORKS
 	if (steam_init) {
 		printlog("storing user stats to Steam...\n");
 		SteamUserStats()->StoreStats();
@@ -1389,7 +1357,7 @@ int deinitApp()
 		}
 		SteamAPI_Shutdown();
 	}
-#endif
+//#endif
 
 
 #ifndef NINTENDO
@@ -1652,7 +1620,7 @@ bool initVideo()
 
 	if ( !renderer )
 	{
-		if ((renderer = SDL_GL_CreateContext(screen)) == NULL)
+		if ((renderer = SDL_GL_CreateContext(screen)) == nullptr)
 		{
 			printlog("failed to create GL context. Reason: \"%s\"\n", SDL_GetError());
 			printlog("You may need to update your video drivers.\n");

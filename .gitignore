@@ -91,3 +91,13 @@ xcode/Barony/Barony.xcodeproj/xcuserdata/*
 # Local smoke outputs and SDK drops
 tests/smoke/artifacts/
 third_party/steamworks_sdk/
+/fmod
+/steamworks
+Barony.AppDir
+*.idea
+/build-editor-appimage.sh
+/Barony.AppImage
+/build-barony.sh
+/themes/merry/preview.png
+/themes/scarony/preview.png
+/squashfs-root

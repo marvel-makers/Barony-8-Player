@@ -11,7 +11,7 @@
 
 #pragma once
 
-#define FMOD_AUDIO_GUID_FMT "%.8x%.16llx"
+#define FMOD_AUDIO_GUID_FMT "%.8x%.16lx"
 
 #include <stdio.h>
 #ifdef USE_FMOD

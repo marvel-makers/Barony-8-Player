@@ -1618,7 +1618,7 @@ bool EOSFuncs::HandleReceivedMessagesAndIgnore(EOS_ProductUserId* remoteIdReturn
 	}
 }
 
-void EOSFuncs::SendMessageP2P(EOS_ProductUserId RemoteId, const void* data, int len)
+void EOSFuncs::SendMessageP2P(EOS_ProductUserId RemoteId, const void* data, int len, bool reliable)
 {
 	if (!EOSFuncs::Helpers_t::productIdIsValid(RemoteId))
 	{
@@ -1650,7 +1650,9 @@ void EOSFuncs::SendMessageP2P(EOS_ProductUserId RemoteId, const void* data, int 
 	SendPacketOptions.SocketId = &SocketId;
 	SendPacketOptions.bAllowDelayedDelivery = EOS_TRUE;
 	SendPacketOptions.Channel = 0;
-	SendPacketOptions.Reliability = EOS_EPacketReliability::EOS_PR_UnreliableUnordered;
+	SendPacketOptions.Reliability = reliable
+		? EOS_EPacketReliability::EOS_PR_ReliableOrdered
+		: EOS_EPacketReliability::EOS_PR_UnreliableUnordered;
 
 	SendPacketOptions.DataLengthBytes = len;
 	SendPacketOptions.Data = (char*)data;

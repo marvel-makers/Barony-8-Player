@@ -25,6 +25,7 @@ See LICENSE for details.
 #include "interface/interface.hpp"
 #include "colors.hpp"
 #include "net.hpp"
+#include "net/transport/transport.hpp"
 
 LobbyHandler_t LobbyHandler;
 
@@ -285,15 +286,22 @@ void LobbyHandler_t::handleLobbyListRequests()
 			// get number of lobby members (capped to game limit)
 
 			// record CSteamID of lobby owner (and nobody else)
-			int lobbyMembers = SteamMatchmaking()->GetNumLobbyMembers(*static_cast<CSteamID*>(currentLobby));
+			int lobbyMembers = std::min(
+                SteamMatchmaking()->GetNumLobbyMembers(*static_cast<CSteamID*>(currentLobby)),
+                MAXPLAYERS);
 			if ( steamIDRemote[0] )
 			{
 				cpp_Free_CSteamID(steamIDRemote[0]);
 			}
 			steamIDRemote[0] = cpp_SteamMatchmaking_GetLobbyOwner(currentLobby); //TODO: Bugger void pointers!
+			if (steamIDRemote[0])
+			{
+				barony::net::registerSteamPeer(0, static_cast<CSteamID*>(steamIDRemote[0])->ConvertToUint64());
+			}
 			int c;
 			for ( c = 1; c < MAXPLAYERS; c++ )
 			{
+				barony::net::clearSteamPeer(static_cast<barony::net::HostIndex>(c));
 				if ( steamIDRemote[c] )
 				{
 					cpp_Free_CSteamID(steamIDRemote[c]);
@@ -303,6 +311,10 @@ void LobbyHandler_t::handleLobbyListRequests()
 			for ( c = 1; c < lobbyMembers; ++c )
 			{
 				steamIDRemote[c] = cpp_SteamMatchmaking_GetLobbyMember(currentLobby, c);
+				if (steamIDRemote[c])
+				{
+					barony::net::registerSteamPeer(static_cast<barony::net::HostIndex>(c), static_cast<CSteamID*>(steamIDRemote[c])->ConvertToUint64());
+				}
 			}
 			buttonJoinLobby(NULL);
 		}

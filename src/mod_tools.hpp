@@ -3171,10 +3171,9 @@ extern VideoManager_t VideoManager[MAXPLAYERS];
 
 #ifndef EDITOR
 #ifdef USE_IMGUI
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_sdl.h"
-#include "imgui/imgui_impl_opengl3.h"
-
+#include <imgui.h>
+#include <backends/imgui_impl_sdl2.h>
+#include <backends/imgui_impl_opengl3.h>
 class ImGui_t
 {
 public:
@@ -3183,7 +3182,7 @@ public:
 	static bool queueDeinit;
 	static bool disablePlayerControl;
 	static SDL_Rect debugRect;
-	ImGui_t() {};
+	ImGui_t() = default;
 	~ImGui_t()
 	{
 		// Cleanup

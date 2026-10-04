@@ -12,8 +12,7 @@
 
 #include <algorithm>
 
-Input Input::inputs[MAXPLAYERS];
-
+std::vector<Input> Input::inputs;
 const float Input::sensitivity = 1.f;
 const float Input::deadzone = 0.2f;
 const float Input::rebinding_deadzone = 0.5f;
@@ -31,15 +30,16 @@ std::string Input::lastInputOfAnyKind;
 int Input::waitingToBindControllerForPlayer = 0;
 
 void Input::defaultBindings() {
-	for (int i = 0; i < MAXPLAYERS; ++i) {
-		inputs[i].player = i;
-		inputs[i].kb_system_bindings.clear();
-		inputs[i].gamepad_system_bindings.clear();
-		inputs[i].joystick_system_bindings.clear();
+	for (int i = 0; i < std::size(inputs); ++i) {
+		auto& input = inputs[i];
+		input.player= i;
+		input.kb_system_bindings.clear();
+		input.gamepad_system_bindings.clear();
+		input.joystick_system_bindings.clear();
 	}
 
 	// these bindings should probably not be accessible to the player to change.
-	for (int c = 0; c < MAXPLAYERS; ++c) {
+	for (int c = 0; c < std::size(inputs); ++c) {
 		// NOTE disabled on public release!!!
 #ifdef NINTENDO_DEBUG
 		inputs[c].gamepad_system_bindings.insert(std::make_pair("ConsoleCommand1", (std::string("Pad") + std::to_string(c) + std::string("ButtonLeftBumper")).c_str()));
@@ -274,24 +274,24 @@ void Input::refresh() {
 	bindings.clear();
 	defaultBindings();
 #ifndef EDITOR
-	for ( auto& binding : kb_system_bindings )
+	for ( auto& [fst, snd] : kb_system_bindings )
 	{
-		bind(binding.first.c_str(), binding.second.c_str());
+		bind(fst.c_str(), snd.c_str());
 	}
-	if ( getPlayerControlType() == playerControlType_t::PLAYER_CONTROLLED_BY_KEYBOARD )
+	if ( getPlayerControlType() == PLAYER_CONTROLLED_BY_KEYBOARD )
 	{
 		printlog("keyboard bindings for player %d", player);
-	    for (auto& binding : getKeyboardBindings() )
+	    for (auto& [fst, snd] : getKeyboardBindings() )
 	    {
-		    bind(binding.first.c_str(), binding.second.c_str());
+		    bind(fst.c_str(), snd.c_str());
 	    }
 	}
-	if ( getPlayerControlType() == playerControlType_t::PLAYER_CONTROLLED_BY_CONTROLLER )
+	if ( getPlayerControlType() == PLAYER_CONTROLLED_BY_CONTROLLER )
 	{
 		printlog("controller bindings for player %d", player);
-		for ( auto& binding : gamepad_system_bindings )
+		for ( auto& [fst, snd] : gamepad_system_bindings )
 		{
-			bind(binding.first.c_str(), binding.second.c_str());
+			bind(fst.c_str(), snd.c_str());
 		}
 
 		std::string prefix;
@@ -319,12 +319,12 @@ void Input::refresh() {
 			}
 		}
 	}
-	if ( getPlayerControlType() == playerControlType_t::PLAYER_CONTROLLED_BY_JOYSTICK )
+	if ( getPlayerControlType() == PLAYER_CONTROLLED_BY_JOYSTICK )
 	{
 		printlog("joystick bindings for player %d", player);
-		for ( auto& binding : joystick_system_bindings )
+		for ( auto& [fst, snd] : joystick_system_bindings )
 		{
-			bind(binding.first.c_str(), binding.second.c_str());
+			bind(fst.c_str(), snd.c_str());
 		}
 
 		std::string prefix;
@@ -341,8 +341,8 @@ Input::binding_t Input::input(const char* binding) const {
 	if (multiplayer != SINGLE && player != 0) {
 		return inputs[0].input(binding);
 	}
-	auto b = bindings.find(binding);
-	return b != bindings.end() ? (*b).second : Input::binding_t();
+	const auto b = bindings.find(binding);
+	return b != bindings.end() ? b->second : binding_t();
 }
 
 Input::ControllerType Input::getControllerType() const {
@@ -350,10 +350,10 @@ Input::ControllerType Input::getControllerType() const {
 }
 
 #ifndef EDITOR
-static ConsoleVariable<int> cvar_forceGlyphs("/forceglyphs", -1, "Force use of specific controller glyphs");
+static ConsoleVariable cvar_forceGlyphs("/forceglyphs", -1, "Force use of specific controller glyphs");
 #endif
 
-Input::ControllerType Input::getControllerType(int index) {
+Input::ControllerType Input::getControllerType(const int index) {
 #if defined(EDITOR)
     return ControllerType::Xbox;
 #elif defined(NINTENDO)
@@ -365,17 +365,15 @@ Input::ControllerType Input::getControllerType(int index) {
     }
 #else
     if (*cvar_forceGlyphs >= 0) {
-        return (ControllerType)*cvar_forceGlyphs;
+        return static_cast<ControllerType>(*cvar_forceGlyphs);
     } else {
-#ifdef STEAMWORKS
-        if (SteamUtils()->IsSteamRunningOnSteamDeck()) {
+// #ifdef STEAMWORKS
+        if (SteamUtils()->IsRunningOnSteamHardware()) {
             return ControllerType::SteamDeck;
         }
-#endif
+// #endif
         // SDL lets us differentiate controller types
-        const int device = ::inputs.getControllerID(index);
-        auto type = SDL_GameControllerTypeForIndex(device);
-        switch(type) {
+switch(const int device = ::inputs.getControllerID(index); SDL_GameControllerTypeForIndex(device)) {
         default:
         case SDL_CONTROLLER_TYPE_UNKNOWN: return ControllerType::Xbox;
         case SDL_CONTROLLER_TYPE_XBOX360: return ControllerType::Xbox;
@@ -391,16 +389,11 @@ Input::ControllerType Input::getControllerType(int index) {
     }
 #endif
 }
-
-const char* Input::getKeyboardGlyph(int index) {
+const char* Input::getKeyboardGlyph() {
     return "*#images/ui/Glyphs/G_Control_KBM_01.png";
 }
 
-const char* Input::getKeyboardGlyph() const {
-    return "*#images/ui/Glyphs/G_Control_KBM_01.png";
-}
-
-const char* Input::getControllerGlyph(int index) {
+const char* Input::getControllerGlyph(const int index) {
     switch (getControllerType(index)) {
     default:
     case ControllerType::Xbox:
@@ -644,7 +637,7 @@ void Input::bind(const char* binding, const char* input) {
 		// game controller
 
 		char* type = nullptr;
-		Uint32 index = (Uint32)strtol((const char*)(input + 3), &type, 10);
+		Uint32 index = static_cast<Uint32>(strtol((const char*)(input + 3), &type, 10));
 		bool foundControllerForPlayer = false;
 		SDL_GameController* pad = nullptr;
 #ifndef EDITOR
@@ -812,7 +805,7 @@ void Input::bind(const char* binding, const char* input) {
 		// joystick
 
 		char* type = nullptr;
-		Uint32 index = (Uint32)strtol((const char*)(input + 3), &type, 10);
+		Uint32 index = static_cast<Uint32>(strtol((const char*)(input + 3), &type, 10));
 		auto& list = joysticks;
 		auto find = list.find(index);
 		if (find != list.end()) {
@@ -820,21 +813,21 @@ void Input::bind(const char* binding, const char* input) {
 			(*b).second.joystick = joystick;
 			if (strncmp(type, "Button", 6) == 0) {
 				(*b).second.type = binding_t::JOYSTICK_BUTTON;
-				(*b).second.joystickButton = (Uint32)strtol((const char*)(type + 6), nullptr, 10);
+				(*b).second.joystickButton = static_cast<Uint32>(strtol((const char*)(type + 6), nullptr, 10));
 				return;
 			} else if (strncmp(type, "Axis-", 5) == 0) {
 				(*b).second.type = binding_t::JOYSTICK_AXIS;
 				(*b).second.joystickAxisNegative = true;
-				(*b).second.joystickAxis = (Uint32)strtol((const char*)(type + 5), nullptr, 10);
+				(*b).second.joystickAxis = static_cast<Uint32>(strtol((const char*)(type + 5), nullptr, 10));
 				return;
 			} else if (strncmp(type, "Axis+", 5) == 0) {
 				(*b).second.type = binding_t::JOYSTICK_AXIS;
 				(*b).second.joystickAxisNegative = false;
-				(*b).second.joystickAxis = (Uint32)strtol((const char*)(type + 5), nullptr, 10);
+				(*b).second.joystickAxis = static_cast<Uint32>(strtol((const char*)(type + 5), nullptr, 10));
 				return;
 			} else if (strncmp(type, "Hat", 3) == 0) {
 				(*b).second.type = binding_t::JOYSTICK_HAT;
-				(*b).second.joystickHat = (Uint32)strtol((const char*)(type + 3), nullptr, 10);
+				(*b).second.joystickHat = static_cast<Uint32>(strtol((const char*)(type + 3), nullptr, 10));
 				if (type[3]) {
 					if (strncmp((const char*)(type + 4), "LeftUp", 6) == 0) {
 						(*b).second.joystickHatState = SDL_HAT_LEFTUP;
@@ -888,7 +881,7 @@ void Input::bind(const char* binding, const char* input) {
 			(*b).second.mouseButton = MOUSE_WHEEL_DOWN;
 			return;
 		}
-		Uint32 index = (Uint32)strtol((const char*)(input + 5), nullptr, 10);
+		Uint32 index = static_cast<Uint32>(strtol((const char*)(input + 5), nullptr, 10));
 		int result = std::min(index, 15U);
 		(*b).second.mouseButton = result;
 		return;
