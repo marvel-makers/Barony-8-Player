@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: sound.hpp
-	Desc: Defines sound related stuff.
+ BARONY
+ File: sound.hpp
+    Desc: Defines sound related stuff.
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+    Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -215,23 +215,23 @@ extern bool sfxUseDynamicAmbientVolume, sfxUseDynamicEnvironmentVolume;
 class VoiceChat_t
 {
     static int packetVoiceDataIdx; // index start of voice data in VOIP packet
-	int recording_latency_ms = 50;
-	int recordDeviceIndex = 0;
-	bool bInit = false;
-	int nativeRate = 0;
-	int nativeChannels = 1;
-	FMOD::Sound* recordingSound = nullptr;
-	FMOD::Channel* recordingChannel = nullptr;
-	unsigned int recordingSoundLength = 0;
-	unsigned int recordingSamples = 0;
-	unsigned int recordingAdjustedLatency = 0;
-	unsigned int recordingDesiredLatency = 0;
-	unsigned int recordingLastPos = 0;
-	Uint32 lastRecordTick = 0;
-	bool bIsRecording = false;
-	std::vector<std::vector<char>> recordingDatagrams;
-	Uint32 datagramSequence = 0;
-	UDPpacket* loopbackPacket = nullptr;
+    int recording_latency_ms = 50;
+    int recordDeviceIndex = 0;
+    bool bInit = false;
+    int nativeRate = 0;
+    int nativeChannels = 1;
+    FMOD::Sound* recordingSound = nullptr;
+    FMOD::Channel* recordingChannel = nullptr;
+    unsigned int recordingSoundLength = 0;
+    unsigned int recordingSamples = 0;
+    unsigned int recordingAdjustedLatency = 0;
+    unsigned int recordingDesiredLatency = 0;
+    unsigned int recordingLastPos = 0;
+    Uint32 lastRecordTick = 0;
+    bool bIsRecording = false;
+    std::vector<std::vector<char>> recordingDatagrams;
+    Uint32 datagramSequence = 0;
+    UDPpacket* loopbackPacket = nullptr;
 public:
     enum DSPOrder : int;
     bool mainMenuAudioTabOpen();
@@ -240,10 +240,10 @@ public:
     static constexpr float kNormalizeFadeTime = 100.f;
     static constexpr float kMaxNormalizeAmp = 100.f;
     static constexpr float kMaxNormalizeThreshold = 1.f;
-	bool useSystem = false;
-	bool bRecordingInit = false;
-	float loopback_input_volume = 0.f;
-	float loopback_output_volume = 0.f;
+    bool useSystem = false;
+    bool bRecordingInit = false;
+    float loopback_input_volume = 0.f;
+    float loopback_output_volume = 0.f;
     struct AudioSettings_t
     {
         bool loopback_local_record = false;
@@ -282,61 +282,61 @@ public:
     float getAudioSettingFloat(AudioSettingFloat option);
     void updateOnMapChange3DRolloff();
 #ifdef USE_OPUS
-	bool using_encoding = true;
+    bool using_encoding = true;
 #else
     bool using_encoding = false;
 #endif
-	bool voiceToggleTalk = false;
-	FMOD::ChannelGroup* outChannelGroup = nullptr;
-	class PlayerChannels_t
-	{
-	public:
-		std::mutex audio_queue_mutex;
-		float channelGain = 100.f;
+    bool voiceToggleTalk = false;
+    FMOD::ChannelGroup* outChannelGroup = nullptr;
+    class PlayerChannels_t
+    {
+    public:
+        std::mutex audio_queue_mutex;
+        float channelGain = 100.f;
         float localChannelGain = 100.f;
         float normalize_amp = 20.f;
         float normalize_threshold = 0.1f;
-		int talkingTicks = 0;
+        int talkingTicks = 0;
         int lastAudibleTick = 0;
-		int player = -1;
-		int drift_ms = 10;
-		int native_rate = 0;
-		int playback_latency_ms = 150;
-		float monitor_input_volume = 0.f;
-		float monitor_output_volume = 0.f;
-		unsigned int minimumSamplesWritten = -1;
-		unsigned int driftThreshold = 0;
-		float driftCorrectionPercentage = 0.5f;
-		static const size_t audioQueueSizeLimit = 48000;
-		std::vector<char> audioQueue;
-		int totalSamplesRead = 0;
-		int totalSamplesWritten = 0;
-		void updateLatency();
-		FMOD::Sound* outputSound = nullptr;
-		FMOD::Channel* outputChannel = nullptr;
-		unsigned int desiredLatency = 0;
-		unsigned int adjustedLatency = 0;
-		int actualLatency = 0;
-		void setupPlayback();
-		void deinit();
-		std::priority_queue<std::pair<int, std::vector<char>>> voiceDatagrams;
-	};
+        int player = -1;
+        int drift_ms = 10;
+        int native_rate = 0;
+        int playback_latency_ms = 150;
+        float monitor_input_volume = 0.f;
+        float monitor_output_volume = 0.f;
+        unsigned int minimumSamplesWritten = -1;
+        unsigned int driftThreshold = 0;
+        float driftCorrectionPercentage = 0.5f;
+        static const size_t audioQueueSizeLimit = 48000;
+        std::vector<char> audioQueue;
+        int totalSamplesRead = 0;
+        int totalSamplesWritten = 0;
+        void updateLatency();
+        FMOD::Sound* outputSound = nullptr;
+        FMOD::Channel* outputChannel = nullptr;
+        unsigned int desiredLatency = 0;
+        unsigned int adjustedLatency = 0;
+        int actualLatency = 0;
+        void setupPlayback();
+        void deinit();
+        std::priority_queue<std::pair<int, std::vector<char>>> voiceDatagrams;
+    };
 
-	PlayerChannels_t PlayerChannels[MAXPLAYERS];
+    PlayerChannels_t PlayerChannels[MAXPLAYERS];
 
-	VoiceChat_t();
+    VoiceChat_t();
 
-	void setRecordingDevice(int device_index);
-	void init();
-	void deinitRecording(bool resetPushTalkToggle = true);
-	void initRecording();
-	void deinit();
-	void updateRecording();
+    void setRecordingDevice(int device_index);
+    void init();
+    void deinitRecording(bool resetPushTalkToggle = true);
+    void initRecording();
+    void deinit();
+    void updateRecording();
     const char* getVoiceChatBindingName(int player);
     void pushAvailableDatagrams();
-	void update();
-	void receivePacket(UDPpacket* packet);
-	void sendPackets();
+    void update();
+    void receivePacket(UDPpacket* packet);
+    void sendPackets();
     enum VoicePlayerBarState
     {
         VOICE_STATE_NONE,
@@ -373,25 +373,25 @@ public:
         va_end(argptr);
         printlog("[FMOD Voice Info]: %s", newstr);
     }
-	class RingBuffer
-	{
-	public:
-		RingBuffer(int sizeBytes);
-		~RingBuffer();
-		int Read(char* dataPtr, int numBytes);
-		int Write(char* dataPtr, int numBytes);
-		bool Empty(void);
-		int GetSize();
-		int GetWriteAvail();
-		int GetReadAvail();
-	private:
-		char* _data;
-		int _size;
-		int _readPtr;
-		int _writePtr;
-		int _writeBytesAvail;
-	};
-	static RingBuffer ringBufferRecord;
+    class RingBuffer
+    {
+    public:
+        RingBuffer(int sizeBytes);
+        ~RingBuffer();
+        int Read(char* dataPtr, int numBytes);
+        int Write(char* dataPtr, int numBytes);
+        bool Empty(void);
+        int GetSize();
+        int GetWriteAvail();
+        int GetReadAvail();
+    private:
+        char* _data;
+        int _size;
+        int _readPtr;
+        int _writePtr;
+        int _writeBytesAvail;
+    };
+    static RingBuffer ringBufferRecord;
 #ifdef USE_OPUS
     class OpusAudioCodec_t
     {
@@ -514,7 +514,7 @@ struct OPENAL_BUFFER;
 struct OPENAL_SOUND;
 
 struct FMOD_VECTOR {
-	float x,y,z;
+    float x,y,z;
 };
 
 extern OPENAL_BUFFER** sounds;

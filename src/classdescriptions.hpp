@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: classdescriptions.hpp
-	Desc: class description strings
+ BARONY
+ File: classdescriptions.hpp
+    Desc: class description strings
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+   Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 

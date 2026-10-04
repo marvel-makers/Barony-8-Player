@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: menu.hpp
-	Desc: definitions and prototypes for menu.c
+ BARONY
+ File: menu.hpp
+ Desc: definitions and prototypes for menu.c
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+   Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -33,19 +33,19 @@ extern int fourthendmovietime;
 extern int DLCendmovieStageAndTime[8][2];
 enum NewMovieStageAndTimeIndex : int
 {
-	MOVIE_STAGE,
-	MOVIE_TIME,
+    MOVIE_STAGE,
+    MOVIE_TIME,
 };
 enum NewMovieCrawlTypes : int
 {
-	MOVIE_MIDGAME_HERX_MONSTERS,
-	MOVIE_MIDGAME_BAPHOMET_MONSTERS,
-	MOVIE_MIDGAME_BAPHOMET_HUMAN_AUTOMATON,
-	MOVIE_CLASSIC_WIN_MONSTERS,
-	MOVIE_CLASSIC_WIN_BAPHOMET_MONSTERS,
-	MOVIE_WIN_AUTOMATON,
-	MOVIE_WIN_DEMONS_UNDEAD,
-	MOVIE_WIN_BEASTS
+    MOVIE_MIDGAME_HERX_MONSTERS,
+    MOVIE_MIDGAME_BAPHOMET_MONSTERS,
+    MOVIE_MIDGAME_BAPHOMET_HUMAN_AUTOMATON,
+    MOVIE_CLASSIC_WIN_MONSTERS,
+    MOVIE_CLASSIC_WIN_BAPHOMET_MONSTERS,
+    MOVIE_WIN_AUTOMATON,
+    MOVIE_WIN_DEMONS_UNDEAD,
+    MOVIE_WIN_BEASTS
 };
 extern bool losingConnection[MAXPLAYERS];
 extern int rebindaction;
@@ -273,13 +273,13 @@ extern button_t* revertResolutionButton;
 
 int getNumDisplays();
 struct resolution {
-	int x;
-	int y;
-	int hz;
+    int x;
+    int y;
+    int hz;
 
-	bool operator==(const resolution& rhs) const {
-		return x == rhs.x && y == rhs.y && hz == rhs.hz;
-	}
+    bool operator==(const resolution& rhs) const {
+        return x == rhs.x && y == rhs.y && hz == rhs.hz;
+    }
 };
 void getResolutionList(int device_id, std::list<resolution>&);
 void applySettings();
@@ -308,34 +308,34 @@ void doEndgameExpansion();
 
 enum CharacterDLCValidation : int
 {
-	INVALID_CHARACTER,
-	VALID_OK_CHARACTER,
-	INVALID_REQUIREDLC1,
-	INVALID_REQUIREDLC2,
-	INVALID_REQUIRE_ACHIEVEMENT,
-	INVALID_REQUIREDLC3
+    INVALID_CHARACTER,
+    VALID_OK_CHARACTER,
+    INVALID_REQUIREDLC1,
+    INVALID_REQUIREDLC2,
+    INVALID_REQUIRE_ACHIEVEMENT,
+    INVALID_REQUIREDLC3
 };
 
 struct LastCreatedCharacter {
-	static const int NUM_LAST_CHARACTERS = 6;
-	static const int LASTCHAR_LAN_PERSONA_INDEX = 4;
-	static const int LASTCHAR_ONLINE_PERSONA_INDEX = 5;
-	int characterClass[NUM_LAST_CHARACTERS];
-	int characterAppearance[NUM_LAST_CHARACTERS];
-	int characterSex[NUM_LAST_CHARACTERS];
-	int characterRace[NUM_LAST_CHARACTERS];
-	std::string characterName[NUM_LAST_CHARACTERS];
-	LastCreatedCharacter()
-	{
-		for ( int i = 0; i < NUM_LAST_CHARACTERS; ++i )
-		{
-			characterClass[i] = -1;
-			characterAppearance[i] = -1;
-			characterSex[i] = -1;
-			characterRace[i] = -1;
-			characterName[i] = "";
-		}
-	}
+    static const int NUM_LAST_CHARACTERS = 6;
+    static const int LASTCHAR_LAN_PERSONA_INDEX = 4;
+    static const int LASTCHAR_ONLINE_PERSONA_INDEX = 5;
+    int characterClass[NUM_LAST_CHARACTERS];
+    int characterAppearance[NUM_LAST_CHARACTERS];
+    int characterSex[NUM_LAST_CHARACTERS];
+    int characterRace[NUM_LAST_CHARACTERS];
+    std::string characterName[NUM_LAST_CHARACTERS];
+    LastCreatedCharacter()
+    {
+        for ( int i = 0; i < NUM_LAST_CHARACTERS; ++i )
+        {
+            characterClass[i] = -1;
+            characterAppearance[i] = -1;
+            characterSex[i] = -1;
+            characterRace[i] = -1;
+            characterName[i] = "";
+        }
+    }
 };
 extern LastCreatedCharacter LastCreatedCharacterSettings;
 

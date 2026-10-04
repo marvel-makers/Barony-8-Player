@@ -12,12 +12,12 @@ EOSFuncs EOS;
 
 bool EOSFuncs::initAuth(std::string hostname, std::string tokenName)
 {
-	return true;
+    return true;
 }
 
 bool EOSFuncs::initPlatform(bool enableLogging)
 {
-	return true;
+    return true;
 }
 
 void EOSFuncs::readFromFile()

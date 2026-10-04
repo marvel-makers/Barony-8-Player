@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: updatechestinventory.cpp
-	Desc: contains updateChestInventory()
+ BARONY
+ File: updatechestinventory.cpp
+ Desc: contains updateChestInventory()
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+ Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -23,105 +23,105 @@ Entity* openedChest[MAXPLAYERS] = { nullptr };
 
 int numItemsInChest(const int player)
 {
-	node_t* node = nullptr;
+    node_t* node = nullptr;
 
-	list_t* chestInventory = nullptr;
-	if ( multiplayer == CLIENT )
-	{
-		chestInventory = &chestInv[player];
-	}
-	else if ( openedChest[player] )
-	{
-		chestInventory = openedChest[player]->getChestInventoryList();
-	}
+    list_t* chestInventory = nullptr;
+    if ( multiplayer == CLIENT )
+    {
+        chestInventory = &chestInv[player];
+    }
+    else if ( openedChest[player] )
+    {
+        chestInventory = openedChest[player]->getChestInventoryList();
+    }
 
-	int i = 0;
+    int i = 0;
 
-	if ( chestInventory )
-	{
-		for (node = chestInventory->first; node != nullptr; node = node->next)
-		{
-			++i;
-		}
-	}
+    if ( chestInventory )
+    {
+        for (node = chestInventory->first; node != nullptr; node = node->next)
+        {
+            ++i;
+        }
+    }
 
-	return i;
+    return i;
 }
 
 /*-------------------------------------------------------------------------------
 
-	updateChestInventory
+ updateChestInventory
 
-	Processes and draws everything related to chest inventory
+  Processes and draws everything related to chest inventory
 
 -------------------------------------------------------------------------------*/
 
 void updateChestInventory(const int player)
 {
-	if ( !openedChest[player] )
-	{
-		return;
-	}
+    if ( !openedChest[player] )
+    {
+        return;
+    }
 
-	list_t* chest_inventory = nullptr;
-	if ( multiplayer == CLIENT )
-	{
-		chest_inventory = &chestInv[player];
-	}
-	else if ( openedChest[player] )
-	{
-		chest_inventory = openedChest[player]->getChestInventoryList();
-	}
+    list_t* chest_inventory = nullptr;
+    if ( multiplayer == CLIENT )
+    {
+        chest_inventory = &chestInv[player];
+    }
+    else if ( openedChest[player] )
+    {
+        chest_inventory = openedChest[player]->getChestInventoryList();
+    }
 
-	if ( chest_inventory )
-	{
-		std::unordered_set<int> takenSlots;
-		std::vector<Item*> itemsToRearrange;
-		for ( node_t* node = chest_inventory->first; node != nullptr; node = node->next )
-		{
-			if ( node->element )
-			{
-				auto item = static_cast<Item*>(node->element);
-				if ( item )
-				{
-					int key = item->x + 100 * item->y;
-					if ( item->x >= 0 && item->x < players[player]->inventoryUI.MAX_CHEST_X
-						&& item->y >= 0 && item->y < players[player]->inventoryUI.MAX_CHEST_Y
-						&& takenSlots.find(key) == takenSlots.end() )
-					{
-						takenSlots.insert(key);
-					}
-					else
-					{
-						itemsToRearrange.push_back(item);
-					}
-				}
-			}
-		}
-		for ( auto item : itemsToRearrange )
-		{
-			bool foundSlot = false;
-			for ( int y = 0; y < players[player]->inventoryUI.MAX_CHEST_Y && !foundSlot; ++y )
-			{
-				for ( int x = 0; x < players[player]->inventoryUI.MAX_CHEST_X && !foundSlot; ++x )
-				{
-					int key = x + 100 * y;
-					if ( takenSlots.find(key) == takenSlots.end() )
-					{
-						foundSlot = true;
-						takenSlots.insert(key);
-						item->x = x;
-						item->y = y;
-					}
-				}
-			}
-			if ( !foundSlot )
-			{
-				item->x = players[player]->inventoryUI.MAX_CHEST_X;
-				item->y = players[player]->inventoryUI.MAX_CHEST_Y;
-			}
-		}
-	}
+    if ( chest_inventory )
+    {
+        std::unordered_set<int> takenSlots;
+        std::vector<Item*> itemsToRearrange;
+        for ( node_t* node = chest_inventory->first; node != nullptr; node = node->next )
+        {
+            if ( node->element )
+            {
+                auto item = static_cast<Item*>(node->element);
+                if ( item )
+                {
+                    int key = item->x + 100 * item->y;
+                    if ( item->x >= 0 && item->x < players[player]->inventoryUI.MAX_CHEST_X
+                        && item->y >= 0 && item->y < players[player]->inventoryUI.MAX_CHEST_Y
+                        && takenSlots.find(key) == takenSlots.end() )
+                    {
+                        takenSlots.insert(key);
+                    }
+                    else
+                    {
+                        itemsToRearrange.push_back(item);
+                    }
+                }
+            }
+        }
+        for ( auto item : itemsToRearrange )
+        {
+            bool foundSlot = false;
+            for ( int y = 0; y < players[player]->inventoryUI.MAX_CHEST_Y && !foundSlot; ++y )
+            {
+                for ( int x = 0; x < players[player]->inventoryUI.MAX_CHEST_X && !foundSlot; ++x )
+                {
+                    int key = x + 100 * y;
+                    if ( takenSlots.find(key) == takenSlots.end() )
+                    {
+                        foundSlot = true;
+                        takenSlots.insert(key);
+                        item->x = x;
+                        item->y = y;
+                    }
+                }
+            }
+            if ( !foundSlot )
+            {
+                item->x = players[player]->inventoryUI.MAX_CHEST_X;
+                item->y = players[player]->inventoryUI.MAX_CHEST_Y;
+            }
+        }
+    }
 
-	return;
+    return;
 }

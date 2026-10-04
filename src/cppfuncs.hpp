@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: cppfuncs.hpp
-	Desc: contains functions for random, generic, recycled code that gets used in every project under the sun for menial tasks.
+ BARONY
+ File: cppfuncs.hpp
+ Desc: contains functions for random, generic, recycled code that gets used in every project under the sun for menial tasks.
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+   Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -21,17 +21,17 @@ template<typename T>
 T randomEntryFromVector(std::vector<T> vector)
 {
 #ifndef NINTENDO
-	if ( !vector.size() )
-	{
-		throw "Empty vector!";
-	}
+    if ( !vector.size() )
+    {
+        throw "Empty vector!";
+    }
 #else
-	if (!vector.size())
-	{
-		return T();
-	}
+    if (!vector.size())
+    {
+        return T();
+    }
 #endif
 
     static BaronyRNG rng;
-	return vector[rng.rand() % vector.size()];
+    return vector[rng.rand() % vector.size()];
 }

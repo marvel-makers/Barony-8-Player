@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: stat.hpp
-	Desc: header for stat.cpp (contains Stat class definition)
+ BARONY
+ File: stat.hpp
+ Desc: header for stat.cpp (contains Stat class definition)
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+    Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -202,22 +202,22 @@ static const int SKILL_LEVEL_LEGENDARY = 100;
 static const int CAPSTONE_LOCKPICKING_UNLOCK = SKILL_LEVEL_LEGENDARY;
 static const int CAPSTONE_UNLOCK_LEVEL[NUMPROFICIENCIES] =
 {
-		100,		//Lockpicking
-		100,		//Stealth
-		100,		//Trading
-		100,		//Appraisal
-		100,		//Swimming
-		100,		//Leadership
-		100,		//Spellcasting
-		100,		//Magic
-		100,		//Ranged
-		100,		//Sword
-		100,		//Mace
-		100,		//Axe
-		100,		//Polearm
-		100,		//Shield
-		100,		//Unarmed
-		100			//Alchemy
+        100,        //Lockpicking
+        100,        //Stealth
+        100,        //Trading
+        100,        //Appraisal
+        100,        //Swimming
+        100,        //Leadership
+        100,        //Spellcasting
+        100,        //Magic
+        100,        //Ranged
+        100,        //Sword
+        100,        //Mace
+        100,        //Axe
+        100,        //Polearm
+        100,        //Shield
+        100,        //Unarmed
+        100         //Alchemy
 };
 
 static const int CAPSTONE_LOCKPICKING_CHEST_GOLD_AMOUNT = 100;
@@ -272,8 +272,8 @@ static const int STAT_FLAG_ASSISTANCE_PLAYER_PTS = 29;
 
 typedef enum
 {
-	MALE = 0,
-	FEMALE = 1
+    MALE = 0,
+    FEMALE = 1
 } sex_t;
 
 enum KilledBy {
@@ -303,249 +303,249 @@ enum KilledBy {
     FOUNTAIN,
     SINK,
     FAILED_ALCHEMY,
-	FAILED_CHALLENGE,
-	BELL,
-	MUSHROOM,
-	LEAVES,
-	DEATH_KNOCKBACK
+    FAILED_CHALLENGE,
+    BELL,
+    MUSHROOM,
+    LEAVES,
+    DEATH_KNOCKBACK
 };
 
 class Stat
 {
-	Sint32 PROFICIENCIES[NUMPROFICIENCIES];
-	Uint8 EFFECTS[NUMEFFECTS];
+    Sint32 PROFICIENCIES[NUMPROFICIENCIES];
+    Uint8 EFFECTS[NUMEFFECTS];
 public:
-	Monster type;
-	sex_t sex;
-	Uint32 stat_appearance = 0;
-	char name[128];
+    Monster type;
+    sex_t sex;
+    Uint32 stat_appearance = 0;
+    char name[128];
 
-	// uid of the entity which killed me via burning/poison (for rewarding XP to them)
-	Uint32 poisonKiller;
+    // uid of the entity which killed me via burning/poison (for rewarding XP to them)
+    Uint32 poisonKiller;
 
-	// Obituary stuff
-	char obituary[128];
-	KilledBy killer = KilledBy::UNKNOWN;
-	Uint32 killer_uid = 0;
-	Monster killer_monster;
-	ItemType killer_item;
-	std::string killer_name = "";
+    // Obituary stuff
+    char obituary[128];
+    KilledBy killer = KilledBy::UNKNOWN;
+    Uint32 killer_uid = 0;
+    Monster killer_monster;
+    ItemType killer_item;
+    std::string killer_name = "";
 
-	// attributes
-	Sint32 HP, MAXHP, OLDHP;
-	Sint32 MP, MAXMP;
-	Sint32 STR, DEX, CON, INT, PER, CHR;
-	Sint32 EXP, LVL;
-	Sint32 GOLD, HUNGER;
-	// randomised additional values to add to attributes
-	Sint32 RANDOM_STR, RANDOM_DEX, RANDOM_CON, RANDOM_INT, RANDOM_PER, RANDOM_CHR;
-	Sint32 RANDOM_MAXHP, RANDOM_HP, RANDOM_MAXMP, RANDOM_MP;
-	Sint32 RANDOM_LVL;
-	Sint32 RANDOM_GOLD;
-	// flags to set for future entity behaviour
-	Sint32 MISC_FLAGS[32];
+    // attributes
+    Sint32 HP, MAXHP, OLDHP;
+    Sint32 MP, MAXMP;
+    Sint32 STR, DEX, CON, INT, PER, CHR;
+    Sint32 EXP, LVL;
+    Sint32 GOLD, HUNGER;
+    // randomised additional values to add to attributes
+    Sint32 RANDOM_STR, RANDOM_DEX, RANDOM_CON, RANDOM_INT, RANDOM_PER, RANDOM_CHR;
+    Sint32 RANDOM_MAXHP, RANDOM_HP, RANDOM_MAXMP, RANDOM_MP;
+    Sint32 RANDOM_LVL;
+    Sint32 RANDOM_GOLD;
+    // flags to set for future entity behaviour
+    Sint32 MISC_FLAGS[32];
 
-	// flags for player stats only
-	Sint32 PLAYER_LVL_STAT_BONUS[NUMSTATS];
-	Sint32 PLAYER_LVL_STAT_TIMER[NUMSTATS * 2];
+    // flags for player stats only
+    Sint32 PLAYER_LVL_STAT_BONUS[NUMSTATS];
+    Sint32 PLAYER_LVL_STAT_TIMER[NUMSTATS * 2];
 
-	// skills and effects
-	Sint32 getProficiency(int skill) const
-	{
-		if ( skill >= 0 && skill < NUMPROFICIENCIES )
-		{
-			return PROFICIENCIES[skill];
-		}
-		return 0;
-	}
-	Sint32 getModifiedProficiency(int skill) const;
-	void setProficiency(int skill, int value)
-	{
-		if ( skill >= 0 && skill < NUMPROFICIENCIES )
-		{
-			PROFICIENCIES[skill] = std::min(std::max(0, value), 100);
-		}
-	}
-	void setProficiencyUnsafe(int skill, int value)
-	{
-		PROFICIENCIES[skill] = value;
-	}
-	int getGoldWeight() const;
-	static constexpr Uint8 nullEffectValue = 0;
-	const Uint8& getEffectActive(int effect) const
-	{
-		if ( effect >= 0 && effect < NUMEFFECTS )
-		{
-			return EFFECTS[effect];
-		}
-		return Stat::nullEffectValue;
-	}
-	void clearEffect(int effect)
-	{
-		if ( effect >= 0 && effect < NUMEFFECTS )
-		{
-			EFFECTS[effect] = 0;
-		}
-	}
-	void setEffectActive(int effect, Uint8 effectStrength)
-	{
+    // skills and effects
+    Sint32 getProficiency(int skill) const
+    {
+        if ( skill >= 0 && skill < NUMPROFICIENCIES )
+        {
+            return PROFICIENCIES[skill];
+        }
+        return 0;
+    }
+    Sint32 getModifiedProficiency(int skill) const;
+    void setProficiency(int skill, int value)
+    {
+        if ( skill >= 0 && skill < NUMPROFICIENCIES )
+        {
+            PROFICIENCIES[skill] = std::min(std::max(0, value), 100);
+        }
+    }
+    void setProficiencyUnsafe(int skill, int value)
+    {
+        PROFICIENCIES[skill] = value;
+    }
+    int getGoldWeight() const;
+    static constexpr Uint8 nullEffectValue = 0;
+    const Uint8& getEffectActive(int effect) const
+    {
+        if ( effect >= 0 && effect < NUMEFFECTS )
+        {
+            return EFFECTS[effect];
+        }
+        return Stat::nullEffectValue;
+    }
+    void clearEffect(int effect)
+    {
+        if ( effect >= 0 && effect < NUMEFFECTS )
+        {
+            EFFECTS[effect] = 0;
+        }
+    }
+    void setEffectActive(int effect, Uint8 effectStrength)
+    {
 #ifndef EDITOR
-		assert(effectStrength > 0);
+        assert(effectStrength > 0);
 #endif
-		if ( effect >= 0 && effect < NUMEFFECTS )
-		{
-			EFFECTS[effect] = std::max(EFFECTS[effect], effectStrength); // strongest value remains
-		}
-	}
-	void setEffectValueUnsafe(int effect, Uint8 effectStrength)
-	{
-		if ( effect >= 0 && effect < NUMEFFECTS )
-		{
-			EFFECTS[effect] = effectStrength;
-		}
-	}
-	Uint32 EFFECTS_ACCRETION_TIME[NUMEFFECTS];
-	Sint32 EFFECTS_TIMERS[NUMEFFECTS];
-	bool defending;
-	Uint32 parrying = 0;
-	Sint32& sneaking; // MISC_FLAGS[1]
-	Sint32& allyItemPickup; // MISC_FLAGS[2]
-	Sint32& allyClass; // MISC_FLAGS[3]
-	Sint32& playerRace; // MISC_FLAGS[4]
-	Sint32& playerPolymorphStorage; // MISC_FLAGS[5]
-	Sint32& playerSummonLVLHP; // MISC_FLAGS[6]
-	Sint32& playerSummonSTRDEXCONINT; // MISC_FLAGS[7]
-	Sint32& playerSummonPERCHR; // MISC_FLAGS[8]
-	Sint32& playerSummon2LVLHP; // MISC_FLAGS[9]
-	Sint32& playerSummon2STRDEXCONINT; // MISC_FLAGS[10]
-	Sint32& playerSummon2PERCHR; // MISC_FLAGS[11]
-	Sint32& monsterIsCharmed; // MISC_FLAGS[12]
-	Sint32& playerShapeshiftStorage; // MISC_FLAGS[13]
-	Sint32& monsterTinkeringStatus; // MISC_FLAGS[14]
-	Sint32& monsterMimicLockedBy; // MISC_FLAGS[14]
-	Sint32& monsterDemonHasBeenExorcised; // MISC_FLAGS[15]
-	Sint32& bleedInflictedBy; // MISC_FLAGS[17]
-	Sint32& burningInflictedBy; // MISC_FLAGS[18]
-	Sint32& monsterNoDropItems; // MISC_FLAGS[19]
-	Sint32& monsterForceAllegiance; // MISC_FLAGS[20]
+        if ( effect >= 0 && effect < NUMEFFECTS )
+        {
+            EFFECTS[effect] = std::max(EFFECTS[effect], effectStrength); // strongest value remains
+        }
+    }
+    void setEffectValueUnsafe(int effect, Uint8 effectStrength)
+    {
+        if ( effect >= 0 && effect < NUMEFFECTS )
+        {
+            EFFECTS[effect] = effectStrength;
+        }
+    }
+    Uint32 EFFECTS_ACCRETION_TIME[NUMEFFECTS];
+    Sint32 EFFECTS_TIMERS[NUMEFFECTS];
+    bool defending;
+    Uint32 parrying = 0;
+    Sint32& sneaking; // MISC_FLAGS[1]
+    Sint32& allyItemPickup; // MISC_FLAGS[2]
+    Sint32& allyClass; // MISC_FLAGS[3]
+    Sint32& playerRace; // MISC_FLAGS[4]
+    Sint32& playerPolymorphStorage; // MISC_FLAGS[5]
+    Sint32& playerSummonLVLHP; // MISC_FLAGS[6]
+    Sint32& playerSummonSTRDEXCONINT; // MISC_FLAGS[7]
+    Sint32& playerSummonPERCHR; // MISC_FLAGS[8]
+    Sint32& playerSummon2LVLHP; // MISC_FLAGS[9]
+    Sint32& playerSummon2STRDEXCONINT; // MISC_FLAGS[10]
+    Sint32& playerSummon2PERCHR; // MISC_FLAGS[11]
+    Sint32& monsterIsCharmed; // MISC_FLAGS[12]
+    Sint32& playerShapeshiftStorage; // MISC_FLAGS[13]
+    Sint32& monsterTinkeringStatus; // MISC_FLAGS[14]
+    Sint32& monsterMimicLockedBy; // MISC_FLAGS[14]
+    Sint32& monsterDemonHasBeenExorcised; // MISC_FLAGS[15]
+    Sint32& bleedInflictedBy; // MISC_FLAGS[17]
+    Sint32& burningInflictedBy; // MISC_FLAGS[18]
+    Sint32& monsterNoDropItems; // MISC_FLAGS[19]
+    Sint32& monsterForceAllegiance; // MISC_FLAGS[20]
 
-	// group think
-	Uint32 leader_uid;
-	list_t FOLLOWERS;
+    // group think
+    Uint32 leader_uid;
+    list_t FOLLOWERS;
 
-	// equipment
-	list_t inventory;
-	Item* helmet;
-	Item* breastplate;
-	Item* gloves;
-	Item* shoes;
-	Item* shield;
-	Item* weapon;
-	Item* cloak;
-	Item* amulet;
-	Item* ring;
-	Item* mask;
+    // equipment
+    list_t inventory;
+    Item* helmet;
+    Item* breastplate;
+    Item* gloves;
+    Item* shoes;
+    Item* shield;
+    Item* weapon;
+    Item* cloak;
+    Item* amulet;
+    Item* ring;
+    Item* mask;
 
-	// misc
+    // misc
 #ifdef USE_FMOD
-	FMOD::Channel* monster_sound;
+    FMOD::Channel* monster_sound;
 #else
-	void* monster_sound;
+    void* monster_sound;
 #endif
-	int monster_idlevar;
-	std::map<std::string, std::string> attributes;
-	struct Lootbag_t
-	{
-		int spawn_x = 0;
-		int spawn_y = 0;
-		bool spawnedOnGround = false;
-		bool looted = false;
-		std::vector<Item> items;
-	};
-	std::map<Uint32, Lootbag_t> player_lootbags;
-	list_t void_chest_inventory;
-	list_t magic_effects; //Makes things like the invisibility spell work.
-	Stat(Sint32 sprite);
-	~Stat();
-	void clearStats();
-	void freePlayerEquipment();
-	Stat* copyStats();
-	void copyNPCStatsAndInventoryFrom(Stat& src);
-	void printStats();
-	Sint32 EDITOR_ITEMS[ITEM_SLOT_NUM];
-	int pickRandomEquippedItemToDegradeOnHit(Item** returnItem, bool excludeWeapon, bool excludeShield, bool excludeArmor, bool excludeJewelry);
-	int pickRandomEquippedItem(Item** returnItem, bool excludeWeapon, bool excludeShield, bool excludeArmor, bool excludeJewelry);
-	enum MonsterForceAllegiance : int
-	{
-		MONSTER_FORCE_ALLEGIANCE_NONE = 0,
-		MONSTER_FORCE_PLAYER_ALLY,
-		MONSTER_FORCE_PLAYER_ENEMY,
-		MONSTER_FORCE_PLAYER_RECRUITABLE
-	};
-	int getPassiveShieldBonus(bool checkShield, bool excludeSkill) const;
-	int getActiveShieldBonus(bool checkShield, bool excludeSkill, Item* shieldItem = nullptr, bool checkNonShieldBonus = false) const;
-	static int getParryingACBonus(Stat* myStats, Item* myWeapon, bool checkWeapon, bool excludeSkill, int weaponSkill);
-	std::string getAttribute(std::string key) const
-	{ 
-		if ( attributes.find(key) != attributes.end() )
-		{
-			return attributes.at(key);
-		}
-		else
-		{
-			return "";
-		}
-	}
-	void setAttribute(std::string key, std::string value);
-	bool statusEffectRemovedByCureAilment(const int effect, Entity* my);
-	int numShillelaghDebuffsActive(Entity* my);
-	void addItemToLootingBag(const int player, const real_t x, const real_t y, Item& item);
-	Uint32 getLootingBagKey(const int player);
-	static bool emptyLootingBag(const int player, Uint32 key);
-	static int maxEquipmentBonusToSkill;
-	enum EnsembleEffectsBonusType
-	{
-		ENSEMBLE_FLUTE_EFF_1,
-		ENSEMBLE_FLUTE_EFF_2,
-		ENSEMBLE_FLUTE_TIER,
-		ENSEMBLE_LUTE_EFF_1,
-		ENSEMBLE_LUTE_EFF_2,
-		ENSEMBLE_LUTE_TIER,
-		ENSEMBLE_DRUM_EFF_1,
-		ENSEMBLE_DRUM_EFF_2,
-		ENSEMBLE_DRUM_TIER,
-		ENSEMBLE_HORN_EFF_1,
-		ENSEMBLE_HORN_EFF_2,
-		ENSEMBLE_HORN_TIER,
-		ENSEMBLE_LYRE_EFF_1,
-		ENSEMBLE_LYRE_EFF_2,
-		ENSEMBLE_LYRE_TIER,
-		ENSEMBLE_LYRE_TIER_2
-	};
-	static const Sint32 kEnsembleBreakPointTier4 = 40;
-	static const Sint32 kEnsembleBreakPointTier3 = 20;
-	static const Sint32 kEnsembleBreakPointTier2 = 5;
-	static const Sint32 kEnsembleBreakPointTier1 = 0;
-	real_t getEnsembleEffectBonus(EnsembleEffectsBonusType bonusType, int checkEffectStrength = -1);
-	Sint32 getThaumProficiencySpellStatBonus(int whichStat, Sint32 currentBonus);
-	static int getMaxAttackCharge(Stat* myStats);
-	struct MonsterRangedAccuracy
-	{
-		Uint32 lastTarget = 0;
-		real_t accuracy = 0.0;
-		Uint32 lastTick = 0;
-		real_t getAccuracy(Uint32 target);
-		void incrementAccuracy();
-		void modifyProjectile(Entity& my, Entity& projectile);
-	};
-	MonsterRangedAccuracy monsterRangedAccuracy;
-	std::map<ItemType, Uint32> itemLastDegradeTick;
+    int monster_idlevar;
+    std::map<std::string, std::string> attributes;
+    struct Lootbag_t
+    {
+        int spawn_x = 0;
+        int spawn_y = 0;
+        bool spawnedOnGround = false;
+        bool looted = false;
+        std::vector<Item> items;
+    };
+    std::map<Uint32, Lootbag_t> player_lootbags;
+    list_t void_chest_inventory;
+    list_t magic_effects; //Makes things like the invisibility spell work.
+    Stat(Sint32 sprite);
+    ~Stat();
+    void clearStats();
+    void freePlayerEquipment();
+    Stat* copyStats();
+    void copyNPCStatsAndInventoryFrom(Stat& src);
+    void printStats();
+    Sint32 EDITOR_ITEMS[ITEM_SLOT_NUM];
+    int pickRandomEquippedItemToDegradeOnHit(Item** returnItem, bool excludeWeapon, bool excludeShield, bool excludeArmor, bool excludeJewelry);
+    int pickRandomEquippedItem(Item** returnItem, bool excludeWeapon, bool excludeShield, bool excludeArmor, bool excludeJewelry);
+    enum MonsterForceAllegiance : int
+    {
+        MONSTER_FORCE_ALLEGIANCE_NONE = 0,
+        MONSTER_FORCE_PLAYER_ALLY,
+        MONSTER_FORCE_PLAYER_ENEMY,
+        MONSTER_FORCE_PLAYER_RECRUITABLE
+    };
+    int getPassiveShieldBonus(bool checkShield, bool excludeSkill) const;
+    int getActiveShieldBonus(bool checkShield, bool excludeSkill, Item* shieldItem = nullptr, bool checkNonShieldBonus = false) const;
+    static int getParryingACBonus(Stat* myStats, Item* myWeapon, bool checkWeapon, bool excludeSkill, int weaponSkill);
+    std::string getAttribute(std::string key) const
+    { 
+        if ( attributes.find(key) != attributes.end() )
+        {
+            return attributes.at(key);
+        }
+        else
+        {
+            return "";
+        }
+    }
+    void setAttribute(std::string key, std::string value);
+    bool statusEffectRemovedByCureAilment(const int effect, Entity* my);
+    int numShillelaghDebuffsActive(Entity* my);
+    void addItemToLootingBag(const int player, const real_t x, const real_t y, Item& item);
+    Uint32 getLootingBagKey(const int player);
+    static bool emptyLootingBag(const int player, Uint32 key);
+    static int maxEquipmentBonusToSkill;
+    enum EnsembleEffectsBonusType
+    {
+        ENSEMBLE_FLUTE_EFF_1,
+        ENSEMBLE_FLUTE_EFF_2,
+        ENSEMBLE_FLUTE_TIER,
+        ENSEMBLE_LUTE_EFF_1,
+        ENSEMBLE_LUTE_EFF_2,
+        ENSEMBLE_LUTE_TIER,
+        ENSEMBLE_DRUM_EFF_1,
+        ENSEMBLE_DRUM_EFF_2,
+        ENSEMBLE_DRUM_TIER,
+        ENSEMBLE_HORN_EFF_1,
+        ENSEMBLE_HORN_EFF_2,
+        ENSEMBLE_HORN_TIER,
+        ENSEMBLE_LYRE_EFF_1,
+        ENSEMBLE_LYRE_EFF_2,
+        ENSEMBLE_LYRE_TIER,
+        ENSEMBLE_LYRE_TIER_2
+    };
+    static const Sint32 kEnsembleBreakPointTier4 = 40;
+    static const Sint32 kEnsembleBreakPointTier3 = 20;
+    static const Sint32 kEnsembleBreakPointTier2 = 5;
+    static const Sint32 kEnsembleBreakPointTier1 = 0;
+    real_t getEnsembleEffectBonus(EnsembleEffectsBonusType bonusType, int checkEffectStrength = -1);
+    Sint32 getThaumProficiencySpellStatBonus(int whichStat, Sint32 currentBonus);
+    static int getMaxAttackCharge(Stat* myStats);
+    struct MonsterRangedAccuracy
+    {
+        Uint32 lastTarget = 0;
+        real_t accuracy = 0.0;
+        Uint32 lastTick = 0;
+        real_t getAccuracy(Uint32 target);
+        void incrementAccuracy();
+        void modifyProjectile(Entity& my, Entity& projectile);
+    };
+    MonsterRangedAccuracy monsterRangedAccuracy;
+    std::map<ItemType, Uint32> itemLastDegradeTick;
 };
 extern Stat* stats[MAXPLAYERS];
 
 inline bool skillCapstoneUnlocked(int player, int proficiency)
 {
-	return (stats[player]->getModifiedProficiency(proficiency) >= CAPSTONE_UNLOCK_LEVEL[proficiency]);
+    return (stats[player]->getModifiedProficiency(proficiency) >= CAPSTONE_UNLOCK_LEVEL[proficiency]);
 }
 static const int MAX_PLAYER_STAT_VALUE = 248;
 void setDefaultMonsterStats(Stat* stats, int sprite);

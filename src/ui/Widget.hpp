@@ -40,12 +40,12 @@ public:
     virtual type_t      getType() const = 0;
     Widget*             getParent() { return parent; }
     const Widget*       getParent() const { return parent; }
-    const char*		    getName() const { return name.c_str(); }
-    bool			    isPressed() const { return reallyPressed; }
-	bool				isCurrentlyPressed() const { return pressed; }
-    bool			    isHighlighted() const { return highlighted; }
-    bool			    isSelected() const { return selected; }
-    bool			    isDisabled() const { return disabled; }
+    const char*         getName() const { return name.c_str(); }
+    bool                isPressed() const { return reallyPressed; }
+    bool                isCurrentlyPressed() const { return pressed; }
+    bool                isHighlighted() const { return highlighted; }
+    bool                isSelected() const { return selected; }
+    bool                isDisabled() const { return disabled; }
     bool                isInvisible() const { return invisible; }
     bool                isToBeDeleted() const { return toBeDeleted; }
     bool                isHideGlyphs() const { return hideGlyphs; }
@@ -53,8 +53,8 @@ public:
     bool                isHideSelectors() const { return hideSelectors; }
     Uint32              getHighlightTime() const { return highlightTime; }
     Sint32              getOwner() const { return owner; }
-    void			    (*getTickCallback() const)(Widget&) { return tickCallback; }
-    void			    (*getDrawCallback() const)(const Widget&, const SDL_Rect) { return drawCallback; }
+    void                (*getTickCallback() const)(Widget&) { return tickCallback; }
+    void                (*getDrawCallback() const)(const Widget&, const SDL_Rect) { return drawCallback; }
     const char*         getWidgetSearchParent() const { return widgetSearchParent.c_str(); }
     auto&               getWidgetActions() const { return widgetActions; }
     auto&               getWidgetMovements() const { return widgetMovements; }
@@ -65,16 +65,16 @@ public:
     SDL_Rect            getSelectorOffset() const { return selectorOffset; }
     glyph_position_t    getGlyphPosition() const { return glyphPosition; }
 
-    void	setName(const char* _name) { name = _name; }
-    void	setPressed(bool _pressed) { reallyPressed = pressed = _pressed; }
-    void	setDisabled(bool _disabled) { disabled = _disabled; }
+    void    setName(const char* _name) { name = _name; }
+    void    setPressed(bool _pressed) { reallyPressed = pressed = _pressed; }
+    void    setDisabled(bool _disabled) { disabled = _disabled; }
     void    setInvisible(bool _invisible) { invisible = _invisible; }
     void    setHideGlyphs(bool _hideGlyphs) { hideGlyphs = _hideGlyphs; }
     void    setHideKeyboardGlyphs(bool _hideGlyphs) { hideKeyboardGlyphs = _hideGlyphs; }
     void    setHideSelectors(bool _hideSelectors) { hideSelectors = _hideSelectors; }
     void    setOwner(Sint32 _owner) { owner = _owner; }
-    void	setTickCallback(void (*const fn)(Widget&)) { tickCallback = fn; }
-    void	setDrawCallback(void (*const fn)(const Widget&, const SDL_Rect)) { drawCallback = fn; }
+    void    setTickCallback(void (*const fn)(Widget&)) { tickCallback = fn; }
+    void    setDrawCallback(void (*const fn)(const Widget&, const SDL_Rect)) { drawCallback = fn; }
     void    setWidgetRight(const char* s) { widgetMovements["MenuRight"] = s; widgetMovements["AltMenuRight"] = s; }
     void    setWidgetDown(const char* s) { widgetMovements["MenuDown"] = s; widgetMovements["AltMenuDown"] = s; }
     void    setWidgetLeft(const char* s) { widgetMovements["MenuLeft"] = s; widgetMovements["AltMenuLeft"] = s; }
@@ -89,7 +89,7 @@ public:
     void    setUserData(void* p) { userData = p; }
     void    setButtonsOffset(SDL_Rect r) { buttonsOffset = r; }
     void    setSelectorOffset(SDL_Rect r) { selectorOffset = r; }
-	void	setMenuConfirmControlType(int flags) { menuConfirmControlType = flags; }
+    void    setMenuConfirmControlType(int flags) { menuConfirmControlType = flags; }
     void    setGlyphPosition(glyph_position_t p) { glyphPosition = p; }
     void    setAlwaysShowGlyphs(bool b) { alwaysShowGlyphs = b; }
     void    setDontSearchAncestors(bool b) { dontSearchAncestors = b; }
@@ -140,10 +140,10 @@ public:
         BREADTH_FIRST
     };
 
-	enum MenuConfirmTypes : int {
-		MENU_CONFIRM_KEYBOARD = 1,
-		MENU_CONFIRM_CONTROLLER
-	};
+    enum MenuConfirmTypes : int {
+        MENU_CONFIRM_KEYBOARD = 1,
+        MENU_CONFIRM_CONTROLLER
+    };
 
     //! find a widget amongst our children
     //! @param name the name of the widget to find
@@ -178,26 +178,26 @@ protected:
     Widget* parent = nullptr;                                       //!< parent widget
     std::list<Widget*> widgets;                                     //!< widget children
     std::string name;                                               //!< widget name
-    bool pressed = false;							                //!< pressed state
-    bool reallyPressed = false;						                //!< the "actual" pressed state, pre-mouse process
+    bool pressed = false;                                           //!< pressed state
+    bool reallyPressed = false;                                     //!< the "actual" pressed state, pre-mouse process
     bool highlighted = false;                                       //!< if true, this widget has the mouse over it
-    bool selected = false;							                //!< if true, this widget has focus
-    bool disabled = false;							                //!< if true, the widget is unusable and grayed out
+    bool selected = false;                                          //!< if true, this widget has focus
+    bool disabled = false;                                          //!< if true, the widget is unusable and grayed out
     bool invisible = false;                                         //!< if true, widget is both unusable and invisible
-	bool toBeDeleted = false;						                //!< if true, the widget will be removed at the end of its process
+    bool toBeDeleted = false;                                       //!< if true, the widget will be removed at the end of its process
     bool hideGlyphs = false;                                        //!< true if you don't want to see controller button glyphs on the widget
     bool hideKeyboardGlyphs = true;                                 //!< true if you don't want to see keyboard glyphs on the widget
     bool hideSelectors = false;                                     //!< true if you don't want to see selectors on the borders of this widget
     bool alwaysShowGlyphs = false;                                  //!< true if you want relevant glyphs to always be displayed for this widget
-	int menuConfirmControlType =									//!< which input types are allowed to 'activate' the widget via 'MenuConfirm'
-		MenuConfirmTypes::MENU_CONFIRM_KEYBOARD 
-		| MenuConfirmTypes::MENU_CONFIRM_CONTROLLER;
-    Uint32 highlightTime = 0u;						                //!< records the time since the widget was highlighted
+    int menuConfirmControlType =                                    //!< which input types are allowed to 'activate' the widget via 'MenuConfirm'
+        MenuConfirmTypes::MENU_CONFIRM_KEYBOARD 
+        | MenuConfirmTypes::MENU_CONFIRM_CONTROLLER;
+    Uint32 highlightTime = 0u;                                      //!< records the time since the widget was highlighted
     Sint32 owner = 0;                                               //!< which player owns this widget (0 = player 1, 1 = player 2, etc)
     SDL_Rect selectorOffset {0, 0, 0, 0};                           //!< offset for x, y, w, h in the selector box
     SDL_Rect buttonsOffset {0, 0, 0, 0};                            //!< offset for x, y in button prompts
     glyph_position_t glyphPosition = CENTERED_BOTTOM;               //!< default button position
-    void (*tickCallback)(Widget&) = nullptr;		                //!< the callback to run each frame for this widget
+    void (*tickCallback)(Widget&) = nullptr;                        //!< the callback to run each frame for this widget
     void (*drawCallback)(const Widget&, const SDL_Rect) = nullptr;  //!< the callback to run after the widget is drawn
     void* userData = nullptr;                                       //!< user data
     bool dontSearchAncestors = false;                               //!< if true, doesn't fall back to a full-search if a widget can't be found for a binding

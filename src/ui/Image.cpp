@@ -6,24 +6,24 @@
 #include "Frame.hpp"
 
 Image::Image(const char* _name) {
-	name = _name;
+    name = _name;
 
-	const char* clippedName = _name;
-	do {
-		if (clippedName[0] == '#') {
-			++clippedName;
-			clamp = true;
-		}
-		else if (clippedName[0] == '*') {
-			++clippedName;
-			point = true;
-		}
-		else {
-			break;
-		}
-	} while (1);
+    const char* clippedName = _name;
+    do {
+        if (clippedName[0] == '#') {
+            ++clippedName;
+            clamp = true;
+        }
+        else if (clippedName[0] == '*') {
+            ++clippedName;
+            point = true;
+        }
+        else {
+            break;
+        }
+    } while (1);
 
-	std::string path = clippedName;
+    std::string path = clippedName;
     if ( PHYSFS_getRealDir(path.c_str()) != nullptr )
     {
         const char* baseDir = PHYSFS_getRealDir(path.c_str());
@@ -35,24 +35,24 @@ Image::Image(const char* _name) {
         path.insert(0, BASE_DATA_DIR);
 #endif
     }
-	printlog("loading image '%s'...", path.c_str());
-	if ((surf = IMG_Load(path.c_str())) == nullptr) {
-		printlog("failed to load image '%s'", path.c_str());
-		return;
-	}
+    printlog("loading image '%s'...", path.c_str());
+    if ((surf = IMG_Load(path.c_str())) == nullptr) {
+        printlog("failed to load image '%s'", path.c_str());
+        return;
+    }
 
-	// translate the original surface to an RGBA surface
-	SDL_Surface* newSurf = SDL_CreateRGBSurface(0, surf->w, surf->h, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-	SDL_BlitSurface(surf, nullptr, newSurf, nullptr); // blit onto a purely RGBA Surface
-	SDL_FreeSurface(surf);
-	surf = newSurf;
+    // translate the original surface to an RGBA surface
+    SDL_Surface* newSurf = SDL_CreateRGBSurface(0, surf->w, surf->h, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+    SDL_BlitSurface(surf, nullptr, newSurf, nullptr); // blit onto a purely RGBA Surface
+    SDL_FreeSurface(surf);
+    surf = newSurf;
 
-	(void)finalize();
+    (void)finalize();
 }
 
 bool Image::finalize() {
-	if (surf) {
-		SDL_LockSurface(surf);
+    if (surf) {
+        SDL_LockSurface(surf);
         GL_CHECK_ERR(glGenTextures(1, &texid));
         GL_CHECK_ERR(glBindTexture(GL_TEXTURE_2D, texid));
         GL_CHECK_ERR(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surf->w, surf->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surf->pixels));
@@ -60,27 +60,27 @@ bool Image::finalize() {
         GL_CHECK_ERR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, clamp ? GL_CLAMP_TO_EDGE : GL_REPEAT));
         GL_CHECK_ERR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, point ? GL_NEAREST : GL_LINEAR));
         GL_CHECK_ERR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, point ? GL_NEAREST : GL_LINEAR));
-		SDL_UnlockSurface(surf);
-		return true;
-	} else {
-		return false;
-	}
+        SDL_UnlockSurface(surf);
+        return true;
+    } else {
+        return false;
+    }
 }
 
 Image::~Image() {
-	if (surf) {
-		SDL_FreeSurface(surf);
-		surf = nullptr;
-	}
-	if (texid) {
+    if (surf) {
+        SDL_FreeSurface(surf);
+        surf = nullptr;
+    }
+    if (texid) {
         GL_CHECK_ERR(glDeleteTextures(1, &texid));
-		texid = 0;
-	}
-	if ( outlineSurf )
-	{
-		SDL_FreeSurface(outlineSurf);
-		outlineSurf = nullptr;
-	}
+        texid = 0;
+    }
+    if ( outlineSurf )
+    {
+        SDL_FreeSurface(outlineSurf);
+        outlineSurf = nullptr;
+    }
 }
 
 void Image::bind() const {
@@ -91,7 +91,7 @@ void Image::draw(const SDL_Rect* src, const SDL_Rect dest, const SDL_Rect viewpo
     if (!surf || !texid) {
         return;
     }
-	draw(texid, surf->w, surf->h, src, dest, viewport, 0xffffffff);
+    draw(texid, surf->w, surf->h, src, dest, viewport, 0xffffffff);
 }
 
 void Image::drawColor(const SDL_Rect* src, const SDL_Rect dest, const SDL_Rect viewport, const Uint32& color) const {
@@ -306,12 +306,12 @@ void Image::draw(GLuint texid, int textureWidth, int textureHeight,
     const SDL_Rect* src, const SDL_Rect dest, const SDL_Rect viewport,
     const Uint32& color, real_t angle)
 {
-	// read color
-	Uint8 r, g, b, a;
-	getColor(color, &r, &g, &b, &a);
-	if (!a) {
-		return;
-	}
+    // read color
+    Uint8 r, g, b, a;
+    getColor(color, &r, &g, &b, &a);
+    if (!a) {
+        return;
+    }
     
     // default src
     SDL_Rect _src;
@@ -433,54 +433,54 @@ static const size_t IMAGE_BUDGET = 1 * 1024 * 1024 * 512; // in bytes
 static size_t IMAGE_VOLUME = 0; // in bytes
 
 size_t Image::hash(const char* name) {
-	if (!name || name[0] == '\0') {
-		return 0;
-	}
-	return hashed_images.hash_function()(name);
+    if (!name || name[0] == '\0') {
+        return 0;
+    }
+    return hashed_images.hash_function()(name);
 }
 
 Image* Image::get(size_t hash, const char* name) {
-	if (!name || name[0] == '\0') {
-		return nullptr;
-	}
+    if (!name || name[0] == '\0') {
+        return nullptr;
+    }
 
-	// search for text using precomputed hash
-	auto& map = hashed_images;
-	auto bc = map.bucket_count();
-	if (bc) {
-		const auto& hash_fn = map.hash_function();
-		auto chash = !(bc & (bc - 1)) ? hash & (bc - 1) :
-			(hash < bc ? hash : hash % bc);
-		for (auto it = map.begin(chash); it != map.end(chash); ++it) {
-			if (hash == hash_fn(it->first) && it->first == name) {
-				return it->second;
-			}
-		}
-	}
+    // search for text using precomputed hash
+    auto& map = hashed_images;
+    auto bc = map.bucket_count();
+    if (bc) {
+        const auto& hash_fn = map.hash_function();
+        auto chash = !(bc & (bc - 1)) ? hash & (bc - 1) :
+            (hash < bc ? hash : hash % bc);
+        for (auto it = map.begin(chash); it != map.end(chash); ++it) {
+            if (hash == hash_fn(it->first) && it->first == name) {
+                return it->second;
+            }
+        }
+    }
 
-	// image not found in cache, load it
-	if (IMAGE_VOLUME > IMAGE_BUDGET) {
-		dumpCache();
-	}
-	auto image = new Image(name);
-	hashed_images.insert(std::make_pair(name, image));
-	IMAGE_VOLUME += sizeof(Image) + sizeof(SDL_Surface); // header data
-	IMAGE_VOLUME += image->getWidth() * image->getHeight() * 4; // 32-bpp pixel data
-	IMAGE_VOLUME += 1024; // 1-kB buffer
+    // image not found in cache, load it
+    if (IMAGE_VOLUME > IMAGE_BUDGET) {
+        dumpCache();
+    }
+    auto image = new Image(name);
+    hashed_images.insert(std::make_pair(name, image));
+    IMAGE_VOLUME += sizeof(Image) + sizeof(SDL_Surface); // header data
+    IMAGE_VOLUME += image->getWidth() * image->getHeight() * 4; // 32-bpp pixel data
+    IMAGE_VOLUME += 1024; // 1-kB buffer
 
-	return image;
+    return image;
 }
 
 Image* Image::get(const char* name) {
-	return get(hash(name), name);
+    return get(hash(name), name);
 }
 
 void Image::dumpCache() {
-	for (auto image : hashed_images) {
-		delete image.second;
-	}
-	hashed_images.clear();
-	IMAGE_VOLUME = 0;
+    for (auto image : hashed_images) {
+        delete image.second;
+    }
+    hashed_images.clear();
+    IMAGE_VOLUME = 0;
     mesh.destroy();
     clockwiseMesh.destroy();
     shader.destroy();

@@ -1,12 +1,12 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: messages.hpp
-	Desc: defines stuff for messages that draw onto the screen and then
-	fade away after a while.
+ BARONY
+ File: messages.hpp
+ Desc: defines stuff for messages that draw onto the screen and then
+    fade away after a while.
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+  Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -26,27 +26,27 @@
 
 typedef struct Message
 {
-	string_t* text; //Same size as the message in draw.c. Make sure not to overrun it.
+    string_t* text; //Same size as the message in draw.c. Make sure not to overrun it.
 
-	//The time it's been displayed so far.
-	int time_displayed;
+    //The time it's been displayed so far.
+    int time_displayed;
 
-	//The alpha of the message (SDL > 1.1.5, or whatever version it was, has 255 as SDL_ALPHA_OPAQUE and 0 as ASL_ALPHA_TRANSPARENT).
-	/*
-	 * Building on that last point, we could probably:
-		if (SDL_ALPHA_TRANSPARENT < SDL_ALPHA_OPAQUE)
-		{
-			alpha--;
-		}
-		else
-		{
-			alpha++;
-		}
-	 * To ensure everything always works right. I guess. Maybe not necessary. Whatever. There are much bigger problems to worry about.
-	 */
-	Sint16 alpha;
+    //The alpha of the message (SDL > 1.1.5, or whatever version it was, has 255 as SDL_ALPHA_OPAQUE and 0 as ASL_ALPHA_TRANSPARENT).
+    /*
+  * Building on that last point, we could probably:
+     if (SDL_ALPHA_TRANSPARENT < SDL_ALPHA_OPAQUE)
+      {
+          alpha--;
+       }
+      else
+       {
+          alpha++;
+       }
+   * To ensure everything always works right. I guess. Maybe not necessary. Whatever. There are much bigger problems to worry about.
+  */
+    Sint16 alpha;
 
-	static const int CHAT_MESSAGE_SFX = 238;
+    static const int CHAT_MESSAGE_SFX = 238;
 } Message;
 
 /*

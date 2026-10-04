@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: prng.hpp
-	Desc: prototypes for prng.cpp, pseudo-random number generation
+ BARONY
+ File: prng.hpp
+ Desc: prototypes for prng.cpp, pseudo-random number generation
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+    Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 

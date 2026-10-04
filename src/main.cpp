@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: main.cpp
-	Desc: contains various miscellaneous functions
+ BARONY
+ File: main.cpp
+ Desc: contains various miscellaneous functions
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+    Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -17,8 +17,8 @@
 #ifdef WINDOWS
 extern "C"
 {
-	__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
-	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+    __declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+    __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 }
 #endif
 
@@ -29,7 +29,7 @@ char* stringCopy(char* dest, const char* src, size_t dest_size, size_t src_size)
     assert(dest);
     assert(src);
     if (!dest || !src || !dest_size) {
-	    return dest;
+        return dest;
     }
 
     // copy string
@@ -41,7 +41,7 @@ char* stringCopy(char* dest, const char* src, size_t dest_size, size_t src_size)
         dest[dest_size - 1] = '\0';
     }
 
-	return dest;
+    return dest;
 }
 
 char* stringCopyUnsafe(char* dest, const char* src, size_t size) {
@@ -49,7 +49,7 @@ char* stringCopyUnsafe(char* dest, const char* src, size_t size) {
     assert(dest);
     assert(src);
     if (!dest || !src || !size) {
-	    return dest;
+        return dest;
     }
 
     // copy string
@@ -58,9 +58,9 @@ char* stringCopyUnsafe(char* dest, const char* src, size_t size) {
     for (; c < size && src[c] != '\0'; ++c) {
         dest[c] = src[c];
     }
-	dest[c] = '\0';
+    dest[c] = '\0';
 
-	return dest;
+    return dest;
 }
 
 char* stringCat(char* dest, const char* src, size_t dest_size, size_t src_size) {
@@ -68,7 +68,7 @@ char* stringCat(char* dest, const char* src, size_t dest_size, size_t src_size) 
     assert(dest);
     assert(src);
     if (!dest || !src || !dest_size || !src_size) {
-	    return dest;
+        return dest;
     }
 
     // find end of dest string
@@ -89,7 +89,7 @@ char* stringCat(char* dest, const char* src, size_t dest_size, size_t src_size) 
         dest[dest_size - 1] = '\0';
     }
 
-	return dest;
+    return dest;
 }
 
 int stringCmp(const char* str1, const char* str2, size_t str1_size, size_t str2_size) {
@@ -97,7 +97,7 @@ int stringCmp(const char* str1, const char* str2, size_t str1_size, size_t str2_
     assert(str1);
     assert(str2);
     if (!str1 || !str2) {
-	    return 0;
+        return 0;
     }
 
     // scan strings for first difference
@@ -138,7 +138,7 @@ size_t stringLen(const char* str, size_t size) {
     assert(str);
     assert(size);
     if (!str || !size) {
-	    return 0;
+        return 0;
     }
 
     // find end of string
@@ -152,7 +152,7 @@ const char* stringStr(const char* str1, const char* str2, size_t str1_size, size
     assert(str1);
     assert(str2);
     if (!str1 || !str2) {
-	    return nullptr;
+        return nullptr;
     }
 
     // scan str1 for a match of str2
@@ -172,7 +172,7 @@ char* stringStr(char* str1, const char* str2, size_t str1_size, size_t str2_size
     assert(str1);
     assert(str2);
     if (!str1 || !str2) {
-	    return nullptr;
+        return nullptr;
     }
 
     // scan str1 for a match of str2
@@ -236,84 +236,84 @@ int clientnum = 0;
 int multiplayer = 0;
 SteamGlobalStat_t g_SteamAPIGlobalStats[1] =
 {
-	{ 57, STEAM_STAT_INT, "STAT_GLOBAL_GAME_STARTED" }
+    { 57, STEAM_STAT_INT, "STAT_GLOBAL_GAME_STARTED" }
 };
 
 SteamStat_t g_SteamStats[NUM_STEAM_STATISTICS] =
 {
-	{ 1, STEAM_STAT_INT, "STAT_BOULDER_DEATHS" },
-	{ 2, STEAM_STAT_INT, "STAT_WORTHLESS_GLASS" },
-	{ 3, STEAM_STAT_INT, "STAT_TOUGH_AS_NAILS" },
-	{ 4, STEAM_STAT_INT, "STAT_UNSTOPPABLE_FORCE" },
-	{ 5, STEAM_STAT_INT, "STAT_GAMES_STARTED" },
-	{ 6, STEAM_STAT_INT, "STAT_GAMES_WON" },
-	{ 7, STEAM_STAT_INT, "STAT_BOMBARDIER" },
-	{ 8, STEAM_STAT_INT, "STAT_IN_THE_MIX" },
-	{ 9, STEAM_STAT_INT, "STAT_FREE_REFILLS" },
-	{ 10, STEAM_STAT_INT, "STAT_TAKE_THIS_OUTSIDE" },
-	{ 11, STEAM_STAT_INT, "STAT_ALTER_EGO" },
-	{ 12, STEAM_STAT_INT, "STAT_BLOOD_SPORT" },
-	{ 13, STEAM_STAT_INT, "STAT_BAD_BLOOD" },
-	{ 14, STEAM_STAT_INT, "STAT_IRON_GUT" },
-	{ 15, STEAM_STAT_INT, "STAT_BOTTLE_NOSED" },
-	{ 16, STEAM_STAT_INT, "STAT_BARFIGHT_CHAMP" },
-	{ 17, STEAM_STAT_INT, "STAT_VOLATILE" },
-	{ 18, STEAM_STAT_INT, "STAT_SURROGATES" },
-	{ 19, STEAM_STAT_INT, "STAT_KILL_COMMAND" },
-	{ 20, STEAM_STAT_INT, "STAT_TRASH_COMPACTOR" },
-	{ 21, STEAM_STAT_INT, "STAT_SPICY" },
-	{ 22, STEAM_STAT_INT, "STAT_SERIAL_THRILLA" },
-	{ 23, STEAM_STAT_INT, "STAT_TRADITION" },
-	{ 24, STEAM_STAT_INT, "STAT_POP_QUIZ" },
-	{ 25, STEAM_STAT_INT, "STAT_DYSLEXIA" },
-	{ 26, STEAM_STAT_INT, "STAT_BOOKWORM" },
-	{ 27, STEAM_STAT_INT, "STAT_MONARCH" },
-	{ 28, STEAM_STAT_INT, "STAT_SUPER_SHREDDER" },
-	{ 29, STEAM_STAT_INT, "STAT_FIXER_UPPER" },
-	{ 30, STEAM_STAT_INT, "STAT_TORCHERER" },
-	{ 31, STEAM_STAT_INT, "STAT_MANY_PEDI_PALP" },
-	{ 32, STEAM_STAT_INT, "STAT_5000_SECOND_RULE" },
-	{ 33, STEAM_STAT_INT, "STAT_SOCIAL_BUTTERFLY" },
-	{ 34, STEAM_STAT_INT, "STAT_ROLL_THE_BONES" },
-	{ 35, STEAM_STAT_INT, "STAT_COWBOY_FROM_HELL" },
-	{ 36, STEAM_STAT_INT, "STAT_SELF_FLAGELLATION" },
-	{ 37, STEAM_STAT_INT, "STAT_CHOPPING_BLOCK" },
-	{ 38, STEAM_STAT_INT, "STAT_IF_YOU_LOVE_SOMETHING" },
-	{ 39, STEAM_STAT_INT, "STAT_RAGE_AGAINST" },
-	{ 40, STEAM_STAT_INT, "STAT_GUERILLA_RADIO" },
-	{ 41, STEAM_STAT_INT, "STAT_FASCIST" },
-	{ 42, STEAM_STAT_INT, "STAT_ITS_A_LIVING" },
-	{ 43, STEAM_STAT_INT, "STAT_OVERCLOCKED" },
-	{ 44, STEAM_STAT_INT, "STAT_BACK_TO_BASICS" },
-	{ 45, STEAM_STAT_INT, "STAT_EXTRA_CREDIT" },
-	{ 46, STEAM_STAT_INT, "STAT_EXTRA_CREDIT_LVLS" },
-	{ 47, STEAM_STAT_INT, "STAT_DIPLOMA" },
-	{ 48, STEAM_STAT_INT, "STAT_DIPLOMA_LVLS" },
-	{ 49, STEAM_STAT_INT, "STAT_TUTORIAL_ENTERED" },
-	{ 50, STEAM_STAT_INT, "STAT_I_NEEDED_THAT" },
-	{ 51, STEAM_STAT_INT, "STAT_DAPPER_1"},
-	{ 52, STEAM_STAT_INT, "STAT_DAPPER_2"},
-	{ 53, STEAM_STAT_INT, "STAT_DAPPER_3"},
-	{ 54, STEAM_STAT_INT, "STAT_DAPPER"},
-	{ 55, STEAM_STAT_INT, "STAT_DUNGEONSEED" },
-	{ 56, STEAM_STAT_INT, "STAT_PITCH_PERFECT" },
-	{ 57, STEAM_STAT_INT, "STAT_RUNG_OUT" },
-	{ 58, STEAM_STAT_INT, "STAT_SMASH_MELEE" },
-	{ 59, STEAM_STAT_INT, "STAT_CALL_LOCKSMITH" },
-	{ 60, STEAM_STAT_INT, "STAT_PREMIUM_LOOTBOX" },
-	{ 61, STEAM_STAT_INT, "STAT_WITCHES_BREW" },
-	{ 62, STEAM_STAT_INT, "STAT_HOBBYIST" },
-	{ 63, STEAM_STAT_INT, "STAT_BLESSED_ADDITION" },
-	{ 64, STEAM_STAT_INT, "STAT_THATS_A_WRAP" },
-	{ 65, STEAM_STAT_INT, "STAT_LET_HIM_COOK" },
-	{ 66, STEAM_STAT_INT, "STAT_TOUCHE" },
-	{ 67, STEAM_STAT_INT, "STAT_MERCENARY_ARMY" },
-	{ 68, STEAM_STAT_INT, "STAT_COLONIST" },
-	{ 69, STEAM_STAT_INT, "STAT_PRICKLY_PERSONALITY" },
-	{ 70, STEAM_STAT_INT, "STAT_BOOM_DYNAMITE" },
-	{ 71, STEAM_STAT_INT, "STAT_PAY_TO_WIN" },
-	{ 72, STEAM_STAT_INT, "STAT_DOESNT_COUNT" },
-	{ 73, STEAM_STAT_INT, "STAT_SOURCE_ENGINE" }
+    { 1, STEAM_STAT_INT, "STAT_BOULDER_DEATHS" },
+    { 2, STEAM_STAT_INT, "STAT_WORTHLESS_GLASS" },
+    { 3, STEAM_STAT_INT, "STAT_TOUGH_AS_NAILS" },
+    { 4, STEAM_STAT_INT, "STAT_UNSTOPPABLE_FORCE" },
+    { 5, STEAM_STAT_INT, "STAT_GAMES_STARTED" },
+    { 6, STEAM_STAT_INT, "STAT_GAMES_WON" },
+    { 7, STEAM_STAT_INT, "STAT_BOMBARDIER" },
+    { 8, STEAM_STAT_INT, "STAT_IN_THE_MIX" },
+    { 9, STEAM_STAT_INT, "STAT_FREE_REFILLS" },
+    { 10, STEAM_STAT_INT, "STAT_TAKE_THIS_OUTSIDE" },
+    { 11, STEAM_STAT_INT, "STAT_ALTER_EGO" },
+    { 12, STEAM_STAT_INT, "STAT_BLOOD_SPORT" },
+    { 13, STEAM_STAT_INT, "STAT_BAD_BLOOD" },
+    { 14, STEAM_STAT_INT, "STAT_IRON_GUT" },
+    { 15, STEAM_STAT_INT, "STAT_BOTTLE_NOSED" },
+    { 16, STEAM_STAT_INT, "STAT_BARFIGHT_CHAMP" },
+    { 17, STEAM_STAT_INT, "STAT_VOLATILE" },
+    { 18, STEAM_STAT_INT, "STAT_SURROGATES" },
+    { 19, STEAM_STAT_INT, "STAT_KILL_COMMAND" },
+    { 20, STEAM_STAT_INT, "STAT_TRASH_COMPACTOR" },
+    { 21, STEAM_STAT_INT, "STAT_SPICY" },
+    { 22, STEAM_STAT_INT, "STAT_SERIAL_THRILLA" },
+    { 23, STEAM_STAT_INT, "STAT_TRADITION" },
+    { 24, STEAM_STAT_INT, "STAT_POP_QUIZ" },
+    { 25, STEAM_STAT_INT, "STAT_DYSLEXIA" },
+    { 26, STEAM_STAT_INT, "STAT_BOOKWORM" },
+    { 27, STEAM_STAT_INT, "STAT_MONARCH" },
+    { 28, STEAM_STAT_INT, "STAT_SUPER_SHREDDER" },
+    { 29, STEAM_STAT_INT, "STAT_FIXER_UPPER" },
+    { 30, STEAM_STAT_INT, "STAT_TORCHERER" },
+    { 31, STEAM_STAT_INT, "STAT_MANY_PEDI_PALP" },
+    { 32, STEAM_STAT_INT, "STAT_5000_SECOND_RULE" },
+    { 33, STEAM_STAT_INT, "STAT_SOCIAL_BUTTERFLY" },
+    { 34, STEAM_STAT_INT, "STAT_ROLL_THE_BONES" },
+    { 35, STEAM_STAT_INT, "STAT_COWBOY_FROM_HELL" },
+    { 36, STEAM_STAT_INT, "STAT_SELF_FLAGELLATION" },
+    { 37, STEAM_STAT_INT, "STAT_CHOPPING_BLOCK" },
+    { 38, STEAM_STAT_INT, "STAT_IF_YOU_LOVE_SOMETHING" },
+    { 39, STEAM_STAT_INT, "STAT_RAGE_AGAINST" },
+    { 40, STEAM_STAT_INT, "STAT_GUERILLA_RADIO" },
+    { 41, STEAM_STAT_INT, "STAT_FASCIST" },
+    { 42, STEAM_STAT_INT, "STAT_ITS_A_LIVING" },
+    { 43, STEAM_STAT_INT, "STAT_OVERCLOCKED" },
+    { 44, STEAM_STAT_INT, "STAT_BACK_TO_BASICS" },
+    { 45, STEAM_STAT_INT, "STAT_EXTRA_CREDIT" },
+    { 46, STEAM_STAT_INT, "STAT_EXTRA_CREDIT_LVLS" },
+    { 47, STEAM_STAT_INT, "STAT_DIPLOMA" },
+    { 48, STEAM_STAT_INT, "STAT_DIPLOMA_LVLS" },
+    { 49, STEAM_STAT_INT, "STAT_TUTORIAL_ENTERED" },
+    { 50, STEAM_STAT_INT, "STAT_I_NEEDED_THAT" },
+    { 51, STEAM_STAT_INT, "STAT_DAPPER_1"},
+    { 52, STEAM_STAT_INT, "STAT_DAPPER_2"},
+    { 53, STEAM_STAT_INT, "STAT_DAPPER_3"},
+    { 54, STEAM_STAT_INT, "STAT_DAPPER"},
+    { 55, STEAM_STAT_INT, "STAT_DUNGEONSEED" },
+    { 56, STEAM_STAT_INT, "STAT_PITCH_PERFECT" },
+    { 57, STEAM_STAT_INT, "STAT_RUNG_OUT" },
+    { 58, STEAM_STAT_INT, "STAT_SMASH_MELEE" },
+    { 59, STEAM_STAT_INT, "STAT_CALL_LOCKSMITH" },
+    { 60, STEAM_STAT_INT, "STAT_PREMIUM_LOOTBOX" },
+    { 61, STEAM_STAT_INT, "STAT_WITCHES_BREW" },
+    { 62, STEAM_STAT_INT, "STAT_HOBBYIST" },
+    { 63, STEAM_STAT_INT, "STAT_BLESSED_ADDITION" },
+    { 64, STEAM_STAT_INT, "STAT_THATS_A_WRAP" },
+    { 65, STEAM_STAT_INT, "STAT_LET_HIM_COOK" },
+    { 66, STEAM_STAT_INT, "STAT_TOUCHE" },
+    { 67, STEAM_STAT_INT, "STAT_MERCENARY_ARMY" },
+    { 68, STEAM_STAT_INT, "STAT_COLONIST" },
+    { 69, STEAM_STAT_INT, "STAT_PRICKLY_PERSONALITY" },
+    { 70, STEAM_STAT_INT, "STAT_BOOM_DYNAMITE" },
+    { 71, STEAM_STAT_INT, "STAT_PAY_TO_WIN" },
+    { 72, STEAM_STAT_INT, "STAT_DOESNT_COUNT" },
+    { 73, STEAM_STAT_INT, "STAT_SOURCE_ENGINE" }
 };
 
 #ifdef STEAMWORKS
@@ -528,115 +528,115 @@ hit_t hit;
 
 /*-------------------------------------------------------------------------------
 
-	longestline
+ longestline
 
-	returns the longest line of characters in a string (stopping for
-	newlines)
+   returns the longest line of characters in a string (stopping for
+   newlines)
 
 -------------------------------------------------------------------------------*/
 
 int longestline(char const * const str)
 {
-	int x = 0, result = 0;
-	for ( int c = 0; c < strlen(str); c++ )
-	{
-		if ( str[c] == 10 )
-		{
-			x = 0;
-			continue;
-		}
-		x++;
-		result = std::max(x, result);
-	}
-	return result;
+    int x = 0, result = 0;
+    for ( int c = 0; c < strlen(str); c++ )
+    {
+        if ( str[c] == 10 )
+        {
+            x = 0;
+            continue;
+        }
+        x++;
+        result = std::max(x, result);
+    }
+    return result;
 }
 
 /*-------------------------------------------------------------------------------
 
-	concatedStringLength
+ concatedStringLength
 
-	returns the length of all the given strings combined together
-	e.g. concatedStringLength("chicken %s", "potato")
+  returns the length of all the given strings combined together
+  e.g. concatedStringLength("chicken %s", "potato")
 
 -------------------------------------------------------------------------------*/
 
 int concatedStringLength(char* str, ...)
 {
-	va_list argptr;
-	char newstr[1024] = { 0 };
+    va_list argptr;
+    char newstr[1024] = { 0 };
 
-	int result = 0;
+    int result = 0;
 
-	va_start(argptr, str);
-	vsnprintf(newstr, 1023, str, argptr);
-	va_end(argptr);
+    va_start(argptr, str);
+    vsnprintf(newstr, 1023, str, argptr);
+    va_end(argptr);
 
-	return strlen(newstr);
+    return strlen(newstr);
 }
 
 /*-------------------------------------------------------------------------------
 
-	sgn
+ sgn
 
-	returns the sign of the given double (positive or negative);
+   returns the sign of the given double (positive or negative);
 
 -------------------------------------------------------------------------------*/
 
 int sgn(real_t x)
 {
-	return (x > 0) - (x < 0);
+    return (x > 0) - (x < 0);
 }
 
 /*-------------------------------------------------------------------------------
 
-	numdigits
+ numdigits
 
-	return the number of digits of the given int (includes the sign if negative)
+ return the number of digits of the given int (includes the sign if negative)
 
 -------------------------------------------------------------------------------*/
 
 int numdigits_sint16(Sint16 x)
 {
-	return snprintf(nullptr, 0, "%d", x);
+    return snprintf(nullptr, 0, "%d", x);
 }
 
 /*-------------------------------------------------------------------------------
 
-	printlog
+ printlog
 
-	prints the given formatted text to the log file
+  prints the given formatted text to the log file
 
 -------------------------------------------------------------------------------*/
 
 void printlog(const char* str, ...)
 {
-	char newstr[1024] = { 0 };
-	va_list argptr;
+    char newstr[1024] = { 0 };
+    va_list argptr;
 
-	// format the content
-	va_start( argptr, str );
-	vsnprintf( newstr, 1023, str, argptr );
-	va_end( argptr );
+    // format the content
+    va_start( argptr, str );
+    vsnprintf( newstr, 1023, str, argptr );
+    va_end( argptr );
 
-	// timestamp the message
-	char buffer[32];
+    // timestamp the message
+    char buffer[32];
     getTimeFormatted(getTime(), buffer, sizeof(buffer));
 
-	// print to the log
-	if ( newstr[strlen(newstr) - 1] != '\n' )
-	{
-		int c = static_cast<int>(strlen(newstr));
-		newstr[c] = '\n';
-		newstr[c + 1] = 0;
-	}
+    // print to the log
+    if ( newstr[strlen(newstr) - 1] != '\n' )
+    {
+        int c = static_cast<int>(strlen(newstr));
+        newstr[c] = '\n';
+        newstr[c + 1] = 0;
+    }
 #ifndef NINTENDO
-	//fprintf( stderr, "%s", newstr );
-	fprintf( stderr, "[%s] %s", buffer, newstr );
-	fflush( stderr );
+    //fprintf( stderr, "%s", newstr );
+    fprintf( stderr, "[%s] %s", buffer, newstr );
+    fflush( stderr );
 #endif
-	//fprintf( stdout, "%s", newstr );
-	fprintf( stdout, "[%s] %s", buffer, newstr );
-	fflush( stdout );
+    //fprintf( stdout, "%s", newstr );
+    fprintf( stdout, "[%s] %s", buffer, newstr );
+    fflush( stdout );
 }
 
 #ifdef NDEBUG
@@ -659,28 +659,28 @@ std::string stackTrace() {
 
     // perform stack trace
     constexpr unsigned int STACK_SIZE = 16;
-	void* array[STACK_SIZE];
-	size_t size = backtrace(array, STACK_SIZE);
-	if (size < 4) {
-	    return "";
-	}
-	char** symbols = backtrace_symbols(array, size);
+    void* array[STACK_SIZE];
+    size_t size = backtrace(array, STACK_SIZE);
+    if (size < 4) {
+        return "";
+    }
+    char** symbols = backtrace_symbols(array, size);
 
     // build string
     std::string trace;
-	for (auto c = 3; c < size; ++c) {
-	    trace += "\n";
-	    symbols[c] = strrchr(symbols[c], (int)'(');
-	    trace += symbols[c];
-	}
+    for (auto c = 3; c < size; ++c) {
+        trace += "\n";
+        symbols[c] = strrchr(symbols[c], (int)'(');
+        trace += symbols[c];
+    }
 
-	// free backtrace table
-	free(symbols);
+    // free backtrace table
+    free(symbols);
 
     return trace;
 #endif
 #endif
-	return "";
+    return "";
 }
 
 void stackTraceUnique() {
@@ -692,33 +692,33 @@ void stackTraceUnique() {
 
     // perform stack trace
     constexpr unsigned int STACK_SIZE = 16;
-	void* array[STACK_SIZE];
-	size_t size = backtrace(array, STACK_SIZE);
-	if (size < 4) {
-	    return;
-	}
-	char** symbols = backtrace_symbols(array, size);
+    void* array[STACK_SIZE];
+    size_t size = backtrace(array, STACK_SIZE);
+    if (size < 4) {
+        return;
+    }
+    char** symbols = backtrace_symbols(array, size);
 
     // build string
     std::string trace;
-	for (auto c = 3; c < size; ++c) {
-	    trace += "\n";
-	    //symbols[c] = strrchr(symbols[c], (int)'(');
-	    trace += symbols[c];
-	}
+    for (auto c = 3; c < size; ++c) {
+        trace += "\n";
+        //symbols[c] = strrchr(symbols[c], (int)'(');
+        trace += symbols[c];
+    }
 
-	// free backtrace table
-	free(symbols);
+    // free backtrace table
+    free(symbols);
 
     // attempt to place in map, or increment if it already exists
-	auto result = unique_traces.emplace(trace, 1);
-	if (result.second) {
-	    // haven't seen this trace before
-	    printlog(trace.c_str());
-	} else {
-	    // have seen this trace, simply increment counter
-	    ++result.first->second;
-	}
+    auto result = unique_traces.emplace(trace, 1);
+    if (result.second) {
+        // haven't seen this trace before
+        printlog(trace.c_str());
+    } else {
+        // have seen this trace, simply increment counter
+        ++result.first->second;
+    }
 #endif
 #endif
 }

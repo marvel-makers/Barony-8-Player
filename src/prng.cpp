@@ -159,22 +159,22 @@ static ConsoleCommand test_rng_normal(
 #endif
 
 void BaronyRNG::testSeedHealth() const {
-	std::string seed_str;
-	seed_str.reserve(2049);
-	real_t sum = 0.0;
-	for (int c = 0; c < 256; ++c) {
-	    for (int b = 0; b < 8; ++b) {
-	        if (buf[c] & (1 << b)) {
-	            sum += 1.0;
-	            seed_str.append("1");
-	        } else {
-	            seed_str.append("0");
-	        }
-	    }
-	}
-	sum /= 2048.0;
-	printlog("rng seed bits are %.2f%% on", sum * 100.0);
-	printlog("seed: %s", seed_str.c_str());
+    std::string seed_str;
+    seed_str.reserve(2049);
+    real_t sum = 0.0;
+    for (int c = 0; c < 256; ++c) {
+        for (int b = 0; b < 8; ++b) {
+            if (buf[c] & (1 << b)) {
+                sum += 1.0;
+                seed_str.append("1");
+            } else {
+                seed_str.append("0");
+            }
+        }
+    }
+    sum /= 2048.0;
+    printlog("rng seed bits are %.2f%% on", sum * 100.0);
+    printlog("seed: %s", seed_str.c_str());
 }
 
 size_t BaronyRNG::bytesRead() const {
@@ -188,24 +188,24 @@ static inline void swap_byte(uint8_t& a, uint8_t& b) {
 }
 
 void BaronyRNG::seedImpl(const void* key, size_t size) {
-	assert(key != nullptr && size > 0);
-	for (int i = 0; i < 256; ++i) {
-		buf[i] = i;
-	}
+    assert(key != nullptr && size > 0);
+    for (int i = 0; i < 256; ++i) {
+        buf[i] = i;
+    }
 
-	uint8_t b = 0;
-	auto bytes = static_cast<const uint8_t*>(key);
-	for (int i = 0; i < 256; ++i) {
-		b = b + buf[i] + bytes[i % size];
-		swap_byte(buf[i], buf[b]);
-	}
+    uint8_t b = 0;
+    auto bytes = static_cast<const uint8_t*>(key);
+    for (int i = 0; i < 256; ++i) {
+        b = b + buf[i] + bytes[i % size];
+        swap_byte(buf[i], buf[b]);
+    }
 
-	memcpy(seed, key, size);
-	seed_size = size;
+    memcpy(seed, key, size);
+    seed_size = size;
 
-	i1 = i2 = 0;
-	bytes_read = 0;
-	seeded = true;
+    i1 = i2 = 0;
+    bytes_read = 0;
+    seeded = true;
 }
 
 void BaronyRNG::seedBytes(const void* key, size_t size) {
@@ -215,7 +215,7 @@ void BaronyRNG::seedBytes(const void* key, size_t size) {
 void BaronyRNG::seedTime() {
     // we only want a 32-bit seed
     uint32_t t = static_cast<uint32_t>(getTime());
-	seedImpl(&t, sizeof(t));
+    seedImpl(&t, sizeof(t));
 }
 
 int BaronyRNG::getSeed(void* out, size_t size) const {
@@ -236,89 +236,89 @@ void BaronyRNG::getBytes(void* data_, size_t size) {
         }
     }*/
 #endif
-	if (!seeded) {
-	    printlog("rng not seeded, seeding by unix time");
+    if (!seeded) {
+        printlog("rng not seeded, seeding by unix time");
         // we only want a 32-bit seed
         uint32_t t = static_cast<uint32_t>(getTime());
-	    seedImpl(&t, sizeof(t));
-	}
-	for (auto data = static_cast<uint8_t*>(data_); size-- > 0; ++data) {
-	    i1 = (static_cast<int>(i1) + 1) & 255;
-	    i2 = (static_cast<int>(i2) + buf[i1]) & 255;
-	    swap_byte(buf[i1], buf[i2]);
-		*data = buf[(buf[i1] + buf[i2]) & 255];
-		++bytes_read;
-	}
+        seedImpl(&t, sizeof(t));
+    }
+    for (auto data = static_cast<uint8_t*>(data_); size-- > 0; ++data) {
+        i1 = (static_cast<int>(i1) + 1) & 255;
+        i2 = (static_cast<int>(i2) + buf[i1]) & 255;
+        swap_byte(buf[i1], buf[i2]);
+        *data = buf[(buf[i1] + buf[i2]) & 255];
+        ++bytes_read;
+    }
 #ifdef NDEBUG
-	//checkMarker();
+    //checkMarker();
 #endif
 }
 
 uint8_t BaronyRNG::getU8() {
     uint8_t result;
-	getBytes(&result, sizeof(result));
-	return result;
+    getBytes(&result, sizeof(result));
+    return result;
 }
 
 uint16_t BaronyRNG::getU16() {
     uint16_t result;
-	getBytes(&result, sizeof(result));
-	return result;
+    getBytes(&result, sizeof(result));
+    return result;
 }
 
 uint32_t BaronyRNG::getU32() {
     uint32_t result;
-	getBytes(&result, sizeof(result));
-	return result;
+    getBytes(&result, sizeof(result));
+    return result;
 }
 
 uint64_t BaronyRNG::getU64() {
     uint64_t result;
-	getBytes(&result, sizeof(result));
-	return result;
+    getBytes(&result, sizeof(result));
+    return result;
 }
 
 int8_t BaronyRNG::getI8() {
     int8_t result;
-	getBytes(&result, sizeof(result));
-	return result;
+    getBytes(&result, sizeof(result));
+    return result;
 }
 
 int16_t BaronyRNG::getI16() {
     int16_t result;
-	getBytes(&result, sizeof(result));
-	return result;
+    getBytes(&result, sizeof(result));
+    return result;
 }
 
 int32_t BaronyRNG::getI32() {
     int32_t result;
-	getBytes(&result, sizeof(result));
-	return result;
+    getBytes(&result, sizeof(result));
+    return result;
 }
 
 int64_t BaronyRNG::getI64() {
     int64_t result;
-	getBytes(&result, sizeof(result));
-	return result;
+    getBytes(&result, sizeof(result));
+    return result;
 }
 
 float BaronyRNG::getF32() {
     uint32_t u32;
-	getBytes(&u32, sizeof(u32));
-	constexpr uint64_t div = static_cast<uint64_t>(1) << 32;
-	return static_cast<float>(u32) / div;
+    getBytes(&u32, sizeof(u32));
+    constexpr uint64_t div = static_cast<uint64_t>(1) << 32;
+    return static_cast<float>(u32) / div;
 }
 
 double BaronyRNG::getF64() {
     uint32_t u32;
-	getBytes(&u32, sizeof(u32));
-	constexpr uint64_t div = static_cast<uint64_t>(1) << 32;
-	return static_cast<double>(u32) / div;
+    getBytes(&u32, sizeof(u32));
+    constexpr uint64_t div = static_cast<uint64_t>(1) << 32;
+    return static_cast<double>(u32) / div;
 }
 
 int BaronyRNG::rand() {
     int i;
-	getBytes(&i, sizeof(i));
+    getBytes(&i, sizeof(i));
     return i & 0x7fffffff;
 }
 

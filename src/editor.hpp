@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: editor.hpp
-	Desc: header file for the editor
+ BARONY
+ File: editor.hpp
+   Desc: header file for the editor
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+  Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -211,7 +211,7 @@ void steamStatisticUpdate(int statisticNum, ESteamStatTypes type, int value);
 class AchievementObserver
 {
 public:
-	void updateGlobalStat(int index, int value); // dummy :<
+    void updateGlobalStat(int index, int value); // dummy :<
 };
 extern AchievementObserver achievementObserver;
 void propertyPageTextAndInput(int numProperties, int width);

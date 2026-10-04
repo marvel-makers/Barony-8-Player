@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: monster.hpp
-	Desc: header file for monsters
+ BARONY
+ File: monster.hpp
+  Desc: header file for monsters
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+    Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -21,60 +21,60 @@ extern ConsoleVariable<bool> cvar_summonBosses;
 
 enum Monster : int
 {
-	NOTHING,
-	HUMAN,
-	RAT,
-	GOBLIN,
-	SLIME,
-	TROLL,
-	BAT_SMALL,
-	SPIDER,
-	GHOUL,
-	SKELETON,
-	SCORPION,
-	CREATURE_IMP, //Because Apple so unkindly is already using the IMP keyword.
-	CRAB,
-	GNOME,
-	DEMON,
-	SUCCUBUS,
-	MIMIC,
-	LICH,
-	MINOTAUR,
-	DEVIL,
-	SHOPKEEPER,
-	KOBOLD,
-	SCARAB,
-	CRYSTALGOLEM,
-	INCUBUS,
-	VAMPIRE,
-	SHADOW,
-	COCKATRICE,
-	INSECTOID,
-	GOATMAN,
-	AUTOMATON,
-	LICH_ICE,
-	LICH_FIRE,
-	SENTRYBOT,
-	SPELLBOT,
-	GYROBOT,
-	DUMMYBOT,
-	BUGBEAR,
-	DRYAD,
-	MYCONID,
-	SALAMANDER,
-	GREMLIN,
-	REVENANT_SKULL,
-	MINIMIMIC,
-	MONSTER_ADORCISED_WEAPON,
-	FLAME_ELEMENTAL,
-	HOLOGRAM,
-	MOTH_SMALL,
-	EARTH_ELEMENTAL,
-	DUCK_SMALL,
-	MONSTER_UNUSED_6,
-	MONSTER_UNUSED_7,
-	MONSTER_UNUSED_8,
-	MAX_MONSTER
+    NOTHING,
+    HUMAN,
+    RAT,
+    GOBLIN,
+    SLIME,
+    TROLL,
+    BAT_SMALL,
+    SPIDER,
+    GHOUL,
+    SKELETON,
+    SCORPION,
+    CREATURE_IMP, //Because Apple so unkindly is already using the IMP keyword.
+    CRAB,
+    GNOME,
+    DEMON,
+    SUCCUBUS,
+    MIMIC,
+    LICH,
+    MINOTAUR,
+    DEVIL,
+    SHOPKEEPER,
+    KOBOLD,
+    SCARAB,
+    CRYSTALGOLEM,
+    INCUBUS,
+    VAMPIRE,
+    SHADOW,
+    COCKATRICE,
+    INSECTOID,
+    GOATMAN,
+    AUTOMATON,
+    LICH_ICE,
+    LICH_FIRE,
+    SENTRYBOT,
+    SPELLBOT,
+    GYROBOT,
+    DUMMYBOT,
+    BUGBEAR,
+    DRYAD,
+    MYCONID,
+    SALAMANDER,
+    GREMLIN,
+    REVENANT_SKULL,
+    MINIMIMIC,
+    MONSTER_ADORCISED_WEAPON,
+    FLAME_ELEMENTAL,
+    HOLOGRAM,
+    MOTH_SMALL,
+    EARTH_ELEMENTAL,
+    DUCK_SMALL,
+    MONSTER_UNUSED_6,
+    MONSTER_UNUSED_7,
+    MONSTER_UNUSED_8,
+    MAX_MONSTER
 };
 const int NUMMONSTERS = MAX_MONSTER;
 extern int kills[NUMMONSTERS];
@@ -116,9 +116,9 @@ static std::vector<Sint32> monsterSprites[NUMMONSTERS] = {
     {
         189, 1108, 1109, 1110, 1111, 1112, // blue
         210, 1113, 1114, 1115, 1116, 1117, // green
-		1380, 1383, 1384, 1385, 1386, 1387, // red
-		1381, 1388, 1389, 1390, 1391, 1392, // tar
-		1382, 1393, 1394, 1395, 1396, 1397, // metal
+        1380, 1383, 1384, 1385, 1386, 1387, // red
+        1381, 1388, 1389, 1390, 1391, 1392, // tar
+        1382, 1393, 1394, 1395, 1396, 1397, // metal
     },
 
     // TROLL
@@ -130,7 +130,7 @@ static std::vector<Sint32> monsterSprites[NUMMONSTERS] = {
 
     // BAT_SMALL
     {
-		1408
+        1408
     },
 
     // SPIDER
@@ -140,7 +140,7 @@ static std::vector<Sint32> monsterSprites[NUMMONSTERS] = {
         823,    // player spider body
         1001,   // player crab body
         1118,   // shelob body
-		1189,	// bubbles body
+        1189,   // bubbles body
     },
 
     // GHOUL
@@ -193,8 +193,8 @@ static std::vector<Sint32> monsterSprites[NUMMONSTERS] = {
 
     // MIMIC
     {
-		1247,
-		1792
+        1247,
+        1792
     },
 
     // LICH
@@ -305,126 +305,126 @@ static std::vector<Sint32> monsterSprites[NUMMONSTERS] = {
         889,
     },
 
-	// BUGBEAR
-	{
-		1412,
-	},
+    // BUGBEAR
+    {
+        1412,
+    },
 
-	//DRYAD
-	{
-		1485, 1486, 1514, 1515,
-		1963, 1964, 1992, 1993
-	},
-	//MYCONID
-	{
-		1519, 1520,
-		1997, 1998
-	},
-	//SALAMANDER
-	{
-		1536, 1538, 1540, 1537, 1539, 1541,
-		2014, 2015, 2016, 2017, 2018, 2019
-	},
-	//GREMLIN
-	{
-		1569, 1570, 2047, 2048
-	},
-	//REVENANT_SKULL
-	{
-		1796
-	},
-	//MINIMIMIC
-	{
-		1794
-	},
-	//MONSTER_ADORCISED_WEAPON
-	{
-		1797
-	},
-	//FLAME_ELEMENTAL
-	{
-		1804
-	},
-	//HOLOGRAM
-	{
-		1803
-	},
-	//MOTH__SMALL
-	{
-		1819, 1822
-	},
-	//EARTH_ELEMENTAL
-	{
-		1871, 1876
-	},
-	// DUCK_SMALL
-	{
-		2225, 2226, 2231, 2232, 2237, 2238, 2307, 2308
-	},
-	//MONSTER_UNUSED_6
-	{
-	},
-	//MONSTER_UNUSED_7
-	{
-	},
-	//MONSTER_UNUSED_8
+    //DRYAD
+    {
+        1485, 1486, 1514, 1515,
+        1963, 1964, 1992, 1993
+    },
+    //MYCONID
+    {
+        1519, 1520,
+        1997, 1998
+    },
+    //SALAMANDER
+    {
+        1536, 1538, 1540, 1537, 1539, 1541,
+        2014, 2015, 2016, 2017, 2018, 2019
+    },
+    //GREMLIN
+    {
+        1569, 1570, 2047, 2048
+    },
+    //REVENANT_SKULL
+    {
+        1796
+    },
+    //MINIMIMIC
+    {
+        1794
+    },
+    //MONSTER_ADORCISED_WEAPON
+    {
+        1797
+    },
+    //FLAME_ELEMENTAL
+    {
+        1804
+    },
+    //HOLOGRAM
+    {
+        1803
+    },
+    //MOTH__SMALL
+    {
+        1819, 1822
+    },
+    //EARTH_ELEMENTAL
+    {
+        1871, 1876
+    },
+    // DUCK_SMALL
+    {
+        2225, 2226, 2231, 2232, 2237, 2238, 2307, 2308
+    },
+    //MONSTER_UNUSED_6
+    {
+    },
+    //MONSTER_UNUSED_7
+    {
+    },
+    //MONSTER_UNUSED_8
 };
 
 static char monstertypename[][32] =
 {
-	"nothing",
-	"human",
-	"rat",
-	"goblin",
-	"slime",
-	"troll",
-	"bat",
-	"spider",
-	"ghoul",
-	"skeleton",
-	"scorpion",
-	"imp",
-	"crab",
-	"gnome",
-	"demon",
-	"succubus",
-	"mimic",
-	"lich",
-	"minotaur",
-	"devil",
-	"shopkeeper",
-	"kobold",
-	"scarab",
-	"crystalgolem",
-	"incubus",
-	"vampire",
-	"shadow",
-	"cockatrice",
-	"insectoid",
-	"goatman",
-	"automaton",
-	"lichice",
-	"lichfire",
-	"sentrybot",
-	"spellbot",
-	"gyrobot",
-	"dummybot",
-	"bugbear",
-	"dryad",
-	"myconid",
-	"salamander",
-	"gremlin",
-	"revenant_skull",
-	"minimimic",
-	"monster_adorcised_weapon",
-	"flame_elemental",
-	"hologram",
-	"moth",
-	"earth_elemental",
-	"duck_small",
-	"monster_unused_6",
-	"monster_unused_7",
-	"monster_unused_8"
+    "nothing",
+    "human",
+    "rat",
+    "goblin",
+    "slime",
+    "troll",
+    "bat",
+    "spider",
+    "ghoul",
+    "skeleton",
+    "scorpion",
+    "imp",
+    "crab",
+    "gnome",
+    "demon",
+    "succubus",
+    "mimic",
+    "lich",
+    "minotaur",
+    "devil",
+    "shopkeeper",
+    "kobold",
+    "scarab",
+    "crystalgolem",
+    "incubus",
+    "vampire",
+    "shadow",
+    "cockatrice",
+    "insectoid",
+    "goatman",
+    "automaton",
+    "lichice",
+    "lichfire",
+    "sentrybot",
+    "spellbot",
+    "gyrobot",
+    "dummybot",
+    "bugbear",
+    "dryad",
+    "myconid",
+    "salamander",
+    "gremlin",
+    "revenant_skull",
+    "minimimic",
+    "monster_adorcised_weapon",
+    "flame_elemental",
+    "hologram",
+    "moth",
+    "earth_elemental",
+    "duck_small",
+    "monster_unused_6",
+    "monster_unused_7",
+    "monster_unused_8"
 };
 
 // body part focal points
@@ -436,59 +436,59 @@ extern float limbs[NUMMONSTERS][30][3];
 // 3: slime
 static char gibtype[NUMMONSTERS] =
 {
-	0,	//NOTHING,
-	1,	//HUMAN,
-	1,	//RAT,
-	1,	//GOBLIN,
-	3,	//SLIME,
-	1,	//TROLL,
-	1,	//BAT_SMALL,
-	2,	//SPIDER,
-	2,	//GHOUL,
-	5,	//SKELETON,
-	2,	//SCORPION,
-	1,	//CREATURE_IMP
-	2,	//CRAB,
-	1,	//GNOME,
-	1,	//DEMON,
-	1,	//SUCCUBUS,
-	1,	//MIMIC,
-	2,	//LICH,
-	1,	//MINOTAUR,
-	1,	//DEVIL,
-	1,	//SHOPKEEPER,
-	1,	//KOBOLD,
-	2,	//SCARAB,
-	0,	//CRYSTALGOLEM,
-	1,	//INCUBUS,
-	1,	//VAMPIRE,
-	4,	//SHADOW,
-	1,	//COCKATRICE
-	2,	//INSECTOID,
-	1,	//GOATMAN,
-	0,	//AUTOMATON,
-	2,	//LICH_ICE,
-	2,	//LICH_FIRE
-	0,	//SENTRYBOT
-	0,	//SPELLBOT
-	0,  //GYROBOT
-	0,	//DUMMYBOT
-	1,	//BUGBEAR
-	1,	//DRYAD
-	1,	//MYCONID
-	1,	//SALAMANDER
-	1,	//GREMLIN
-	5,  //REVENANT_SKULL
-	1,  //MINIMIMIC
-	0,  //MONSTER_ADORCISED_WEAPON
-	0,  //FLAME_ELEMENTAL
-	0,  //HOLOGRAM
-	2,  //MOTH_SMALL
-	0,  //EARTH_ELEMENTAL
-	0,  //DUCK_SMALL
-	1,  //MONSTER_UNUSED_6
-	1,  //MONSTER_UNUSED_7
-	1   //MONSTER_UNUSED_8
+    0,  //NOTHING,
+    1,  //HUMAN,
+    1,  //RAT,
+    1,  //GOBLIN,
+    3,  //SLIME,
+    1,  //TROLL,
+    1,  //BAT_SMALL,
+    2,  //SPIDER,
+    2,  //GHOUL,
+    5,  //SKELETON,
+    2,  //SCORPION,
+    1,  //CREATURE_IMP
+    2,  //CRAB,
+    1,  //GNOME,
+    1,  //DEMON,
+    1,  //SUCCUBUS,
+    1,  //MIMIC,
+    2,  //LICH,
+    1,  //MINOTAUR,
+    1,  //DEVIL,
+    1,  //SHOPKEEPER,
+    1,  //KOBOLD,
+    2,  //SCARAB,
+    0,  //CRYSTALGOLEM,
+    1,  //INCUBUS,
+    1,  //VAMPIRE,
+    4,  //SHADOW,
+    1,  //COCKATRICE
+    2,  //INSECTOID,
+    1,  //GOATMAN,
+    0,  //AUTOMATON,
+    2,  //LICH_ICE,
+    2,  //LICH_FIRE
+    0,  //SENTRYBOT
+    0,  //SPELLBOT
+    0,  //GYROBOT
+    0,  //DUMMYBOT
+    1,  //BUGBEAR
+    1,  //DRYAD
+    1,  //MYCONID
+    1,  //SALAMANDER
+    1,  //GREMLIN
+    5,  //REVENANT_SKULL
+    1,  //MINIMIMIC
+    0,  //MONSTER_ADORCISED_WEAPON
+    0,  //FLAME_ELEMENTAL
+    0,  //HOLOGRAM
+    2,  //MOTH_SMALL
+    0,  //EARTH_ELEMENTAL
+    0,  //DUCK_SMALL
+    1,  //MONSTER_UNUSED_6
+    1,  //MONSTER_UNUSED_7
+    1   //MONSTER_UNUSED_8
 };
 
 // columns go like this:
@@ -496,233 +496,233 @@ static char gibtype[NUMMONSTERS] =
 // lower number means less effective, higher number means more effective
 static double damagetables[NUMMONSTERS][7] =
 {
-	{ 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // nothing
-	{ 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // human
-	{ 1.1, 1.1, 0.9, 0.9, 1.2, 1.f, 1.3 }, // rat
-	{ 0.9, 1.f, 1.1, 1.1, 1.1, 1.f, 0.8 }, // goblin
-	{ 1.4, 0.5, 1.3, 0.7, 0.5, 1.3, 0.5 }, // slime
-	{ 1.1, 0.8, 1.1, 0.8, 0.9, 1.f, 0.8 }, // troll
-	{ 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 0.5 }, // bat
-	{ 1.f, 1.1, 1.f, 1.2, 1.1, 1.f, 1.1 }, // spider
-	{ 1.f, 1.2, 0.8, 1.1, 0.6, 0.8, 1.1 }, // ghoul
-	{ 0.5, 1.4, 0.8, 1.3, 0.5, 0.8, 1.1 }, // skeleton
-	{ 0.9, 1.1, 1.f, 1.3, 1.f, 1.f, 1.2 }, // scorpion
-	{ 1.1, 1.f, 0.8, 1.f, 1.f, 1.2, 1.f }, // imp
-	{ 1.f, 1.1, 1.f, 1.2, 1.1, 1.f, 1.1 }, // crab
-	{ 0.9, 1.f, 1.f, 0.9, 1.1, 1.1, 1.f }, // gnome
-	{ 0.9, 0.8, 1.f, 0.8, 0.9, 1.1, 0.8 }, // demon
-	{ 1.2, 1.f, 1.f, 0.9, 1.f, 0.8, 1.f }, // succubus
-	{ 0.5, 0.5, 1.0, 0.5, 0.5, 1.3, 0.5 }, // mimic
-	{ 2.5, 2.5, 2.5, 2.5, 1.3, 1.f, 1.8 }, // lich
-	{ 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // minotaur
-	{ 2.f, 2.f, 2.f, 2.f, 1.f, 1.f, 1.f }, // devil
-	{ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 }, // shopkeeper
-	{ 0.9, 1.2, 1.2, 0.9, 1.1, 0.2, 0.8 }, // kobold
-	{ 1.5, 1.1, 1.4, 0.7, 1.1, 0.2, 1.4 }, // scarab
-	{ 1.f, 1.5, 1.3, 0.8, 0.6, 0.6, 0.6 }, // crystal golem
-	{ 1.2, 1.f, 1.f, 0.7, 1.3, 0.8, 1.f }, // incubus
-	{ 0.8, 1.2, 0.8, 1.1, 0.5, 0.8, 1.f }, // vampire
-	{ 0.5, 0.5, 0.5, 0.5, 0.5, 2.0, 0.5 }, // shadow
-	{ 1.6, 1.1, 1.3, 1.8, 0.5, 0.5, 0.8 }, // cockatrice
-	{ 1.f, 0.7, 1.3, 1.3, 1.1, 1.f, 0.8 }, // insectoid
-	{ 0.9, 1.f, 1.1, 1.1, 1.1, 1.4, 1.f }, // goatman
-	{ 1.f, 1.4, 1.3, 1.f, 0.8, 1.2, 0.8 }, // automaton
-	{ 1.5, 1.5, 1.5, 1.5, 1.5, 0.7, 1.2 }, // lich ice
-	{ 1.8, 1.8, 1.8, 1.8, 1.5, 1.f, 1.4 }, // lich fire
-	{ 1.f, 1.f, 1.f, 1.f, 0.5, 0.5, 1.f }, // sentrybot
-	{ 1.f, 1.f, 1.f, 1.f, 0.5, 0.5, 1.f }, // sentrybot
-	{ 1.f, 1.f, 1.f, 1.f, 0.5, 0.5, 1.f }, // gyrobot
-	{ 1.f, 1.f, 1.f, 1.f, 0.5, 1.2, 0.5 }, // dummybot
-	{ 1.3, 1.2, 1.2, 0.7, 0.8, 1.f, 0.7 }, // bugbear
-	{ 1.3, 1.f, 1.3, 0.9, 0.7, 1.1, 0.8 }, // monster_d
-	{ 1.3, 0.7, 1.1, 1.f, 1.f, 0.7, 1.f }, // monster_m
-	{ 0.8, 1.f, 1.f, 1.2, 1.1, 1.f, 0.9 }, // monster_s
-	{ 1.3, 0.9, 1.1, 0.8, 0.9, 0.8, 0.9 }, // monster_g
-	{ 0.7, 1.5, 0.8, 0.8, 0.8, 1.3, 0.7 }, // revenant_skull
-	{ 0.5, 0.5, 1.0, 0.5, 0.5, 1.3, 0.5 }, // minimimic
-	{ 0.5, 1.f, 0.7, 0.5, 0.5, 1.5, 0.5 }, // monster_adorcised_weapon
-	{ 0.5, 0.5, 0.5, 0.5, 0.5, 1.5, 0.5 }, // flame_elemental
-	{ 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f }, // hologram
-	{ 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // moth_small
-	{ 0.7, 1.5, 1.f, 1.f, 0.7, 1.5, 0.7 }, // earth_elemental
-	{ 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // duck_small
-	{ 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // monster_unused_6
-	{ 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // monster_unused_7
-	{ 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }  // monster_unused_8
+    { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // nothing
+    { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // human
+    { 1.1, 1.1, 0.9, 0.9, 1.2, 1.f, 1.3 }, // rat
+    { 0.9, 1.f, 1.1, 1.1, 1.1, 1.f, 0.8 }, // goblin
+    { 1.4, 0.5, 1.3, 0.7, 0.5, 1.3, 0.5 }, // slime
+    { 1.1, 0.8, 1.1, 0.8, 0.9, 1.f, 0.8 }, // troll
+    { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 0.5 }, // bat
+    { 1.f, 1.1, 1.f, 1.2, 1.1, 1.f, 1.1 }, // spider
+    { 1.f, 1.2, 0.8, 1.1, 0.6, 0.8, 1.1 }, // ghoul
+    { 0.5, 1.4, 0.8, 1.3, 0.5, 0.8, 1.1 }, // skeleton
+    { 0.9, 1.1, 1.f, 1.3, 1.f, 1.f, 1.2 }, // scorpion
+    { 1.1, 1.f, 0.8, 1.f, 1.f, 1.2, 1.f }, // imp
+    { 1.f, 1.1, 1.f, 1.2, 1.1, 1.f, 1.1 }, // crab
+    { 0.9, 1.f, 1.f, 0.9, 1.1, 1.1, 1.f }, // gnome
+    { 0.9, 0.8, 1.f, 0.8, 0.9, 1.1, 0.8 }, // demon
+    { 1.2, 1.f, 1.f, 0.9, 1.f, 0.8, 1.f }, // succubus
+    { 0.5, 0.5, 1.0, 0.5, 0.5, 1.3, 0.5 }, // mimic
+    { 2.5, 2.5, 2.5, 2.5, 1.3, 1.f, 1.8 }, // lich
+    { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // minotaur
+    { 2.f, 2.f, 2.f, 2.f, 1.f, 1.f, 1.f }, // devil
+    { 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 }, // shopkeeper
+    { 0.9, 1.2, 1.2, 0.9, 1.1, 0.2, 0.8 }, // kobold
+    { 1.5, 1.1, 1.4, 0.7, 1.1, 0.2, 1.4 }, // scarab
+    { 1.f, 1.5, 1.3, 0.8, 0.6, 0.6, 0.6 }, // crystal golem
+    { 1.2, 1.f, 1.f, 0.7, 1.3, 0.8, 1.f }, // incubus
+    { 0.8, 1.2, 0.8, 1.1, 0.5, 0.8, 1.f }, // vampire
+    { 0.5, 0.5, 0.5, 0.5, 0.5, 2.0, 0.5 }, // shadow
+    { 1.6, 1.1, 1.3, 1.8, 0.5, 0.5, 0.8 }, // cockatrice
+    { 1.f, 0.7, 1.3, 1.3, 1.1, 1.f, 0.8 }, // insectoid
+    { 0.9, 1.f, 1.1, 1.1, 1.1, 1.4, 1.f }, // goatman
+    { 1.f, 1.4, 1.3, 1.f, 0.8, 1.2, 0.8 }, // automaton
+    { 1.5, 1.5, 1.5, 1.5, 1.5, 0.7, 1.2 }, // lich ice
+    { 1.8, 1.8, 1.8, 1.8, 1.5, 1.f, 1.4 }, // lich fire
+    { 1.f, 1.f, 1.f, 1.f, 0.5, 0.5, 1.f }, // sentrybot
+    { 1.f, 1.f, 1.f, 1.f, 0.5, 0.5, 1.f }, // sentrybot
+    { 1.f, 1.f, 1.f, 1.f, 0.5, 0.5, 1.f }, // gyrobot
+    { 1.f, 1.f, 1.f, 1.f, 0.5, 1.2, 0.5 }, // dummybot
+    { 1.3, 1.2, 1.2, 0.7, 0.8, 1.f, 0.7 }, // bugbear
+    { 1.3, 1.f, 1.3, 0.9, 0.7, 1.1, 0.8 }, // monster_d
+    { 1.3, 0.7, 1.1, 1.f, 1.f, 0.7, 1.f }, // monster_m
+    { 0.8, 1.f, 1.f, 1.2, 1.1, 1.f, 0.9 }, // monster_s
+    { 1.3, 0.9, 1.1, 0.8, 0.9, 0.8, 0.9 }, // monster_g
+    { 0.7, 1.5, 0.8, 0.8, 0.8, 1.3, 0.7 }, // revenant_skull
+    { 0.5, 0.5, 1.0, 0.5, 0.5, 1.3, 0.5 }, // minimimic
+    { 0.5, 1.f, 0.7, 0.5, 0.5, 1.5, 0.5 }, // monster_adorcised_weapon
+    { 0.5, 0.5, 0.5, 0.5, 0.5, 1.5, 0.5 }, // flame_elemental
+    { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f }, // hologram
+    { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // moth_small
+    { 0.7, 1.5, 1.f, 1.f, 0.7, 1.5, 0.7 }, // earth_elemental
+    { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // duck_small
+    { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // monster_unused_6
+    { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }, // monster_unused_7
+    { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f }  // monster_unused_8
 };
 
 enum DamageTableType : int
 {
-	DAMAGE_TABLE_SWORD,
-	DAMAGE_TABLE_MACE,
-	DAMAGE_TABLE_AXE,
-	DAMAGE_TABLE_POLEARM,
-	DAMAGE_TABLE_RANGED,
-	DAMAGE_TABLE_MAGIC,
-	DAMAGE_TABLE_UNARMED
+    DAMAGE_TABLE_SWORD,
+    DAMAGE_TABLE_MACE,
+    DAMAGE_TABLE_AXE,
+    DAMAGE_TABLE_POLEARM,
+    DAMAGE_TABLE_RANGED,
+    DAMAGE_TABLE_MAGIC,
+    DAMAGE_TABLE_UNARMED
 };
 static const int numDamageTableTypes = 7;
 
 static std::vector<std::vector<unsigned int>> classStatGrowth =
 {
-	// stat weightings for classes on level up
-	//	STR	DEX	CON	INT	PER	CHR -- sum is approx 24.
-	{	6,	5,	5,	2,	4,	2 }, // BARB 0
-	{	7,	2,	6,	1,	2,	6 }, // WARRIOR 1
-	{	3,	3,	4,	6,	5,	3 }, // HEALER 2
-	{	2,	7,	1,	2,	7,	5 }, // ROGUE 3
-	{	5,	4,	5,	3,	5,	2 }, // WANDERER 4
-	{	4,	2,	5,	5,	4,	4 }, // CLERIC 5
-	{	3,	2,	4,	3,	5,	7 }, // MERCHANT 6
-	{	1,	3,	2,	7,	6,	5 }, // WIZARD 7
-	{	2,	6,	2,	6,	6,	2 }, // ARCANIST 8
-	{	4,	4,	4,	4,	4,	4 }, // JOKER 9
-	{	3,	4,	2,	4,	2,	3 }, // SEXTON 10
-	{	4,	6,	3,	2,	4,	1 }, // NINJA 11
-	{	4,	2,	5,	3,	2,	2 }, // MONK 12
-	{	3,	2,	4,	6,	4,	4 }, // CONJURER 13
-	{	3,	3,	1,	6,	6,	3 }, // ACCURSED 14
-	{	3,	3,	1,	6,	4,	7 }, // MESMER 15
-	{	4,	5,	5,	2,	3,	5 }, // BREWER 16
-	{	2,	5,	2,	4,	7,	4 }, // MACHINIST 17
-	{	4,	3,	2,	3,	4,	4 }, // PUNISHER 18
-	{	4,	4,	4,	4,	4,	4 }, // SHAMAN 19
-	{	1,	7,	1,	4,	7,	4 }, // HUNTER 20
-	{	2,	5,	3,	4,	3,	7 },
-	{	5,	5,	5,	4,	3,	2 },
-	{	2,	3,	2,	8,	4,	5 },
-	{	4,	2,	3,	6,	3,	5 },
-	{	6,	3,	5,	3,	2,	5 }
+    // stat weightings for classes on level up
+    //  STR DEX CON INT PER CHR -- sum is approx 24.
+    {   6,  5,  5,  2,  4,  2 }, // BARB 0
+    {   7,  2,  6,  1,  2,  6 }, // WARRIOR 1
+    {   3,  3,  4,  6,  5,  3 }, // HEALER 2
+    {   2,  7,  1,  2,  7,  5 }, // ROGUE 3
+    {   5,  4,  5,  3,  5,  2 }, // WANDERER 4
+    {   4,  2,  5,  5,  4,  4 }, // CLERIC 5
+    {   3,  2,  4,  3,  5,  7 }, // MERCHANT 6
+    {   1,  3,  2,  7,  6,  5 }, // WIZARD 7
+    {   2,  6,  2,  6,  6,  2 }, // ARCANIST 8
+    {   4,  4,  4,  4,  4,  4 }, // JOKER 9
+    {   3,  4,  2,  4,  2,  3 }, // SEXTON 10
+    {   4,  6,  3,  2,  4,  1 }, // NINJA 11
+    {   4,  2,  5,  3,  2,  2 }, // MONK 12
+    {   3,  2,  4,  6,  4,  4 }, // CONJURER 13
+    {   3,  3,  1,  6,  6,  3 }, // ACCURSED 14
+    {   3,  3,  1,  6,  4,  7 }, // MESMER 15
+    {   4,  5,  5,  2,  3,  5 }, // BREWER 16
+    {   2,  5,  2,  4,  7,  4 }, // MACHINIST 17
+    {   4,  3,  2,  3,  4,  4 }, // PUNISHER 18
+    {   4,  4,  4,  4,  4,  4 }, // SHAMAN 19
+    {   1,  7,  1,  4,  7,  4 }, // HUNTER 20
+    {   2,  5,  3,  4,  3,  7 },
+    {   5,  5,  5,  4,  3,  2 },
+    {   2,  3,  2,  8,  4,  5 },
+    {   4,  2,  3,  6,  3,  5 },
+    {   6,  3,  5,  3,  2,  5 }
 };
 
 enum AllyNPCCommand : int
 {
-	ALLY_CMD_DEFEND,
-	ALLY_CMD_CLASS_TOGGLE,
-	ALLY_CMD_MOVETO_SELECT,
-	ALLY_CMD_PICKUP_TOGGLE,
-	ALLY_CMD_MOVEASIDE,
-	ALLY_CMD_DROP_EQUIP,
-	ALLY_CMD_ATTACK_SELECT,
-	ALLY_CMD_SPECIAL,
-	ALLY_CMD_FOLLOW,
-	ALLY_CMD_MOVETO_CONFIRM,
-	ALLY_CMD_CANCEL,
-	ALLY_CMD_ATTACK_CONFIRM,
-	ALLY_CMD_RETURN_SOUL,
-	ALLY_CMD_GYRO_DEPLOY,
-	ALLY_CMD_GYRO_PATROL,
-	ALLY_CMD_GYRO_LIGHT_TOGGLE,
-	ALLY_CMD_GYRO_RETURN,
-	ALLY_CMD_GYRO_DETECT_TOGGLE,
-	ALLY_CMD_DUMMYBOT_RETURN,
-	ALLY_CMD_END
+    ALLY_CMD_DEFEND,
+    ALLY_CMD_CLASS_TOGGLE,
+    ALLY_CMD_MOVETO_SELECT,
+    ALLY_CMD_PICKUP_TOGGLE,
+    ALLY_CMD_MOVEASIDE,
+    ALLY_CMD_DROP_EQUIP,
+    ALLY_CMD_ATTACK_SELECT,
+    ALLY_CMD_SPECIAL,
+    ALLY_CMD_FOLLOW,
+    ALLY_CMD_MOVETO_CONFIRM,
+    ALLY_CMD_CANCEL,
+    ALLY_CMD_ATTACK_CONFIRM,
+    ALLY_CMD_RETURN_SOUL,
+    ALLY_CMD_GYRO_DEPLOY,
+    ALLY_CMD_GYRO_PATROL,
+    ALLY_CMD_GYRO_LIGHT_TOGGLE,
+    ALLY_CMD_GYRO_RETURN,
+    ALLY_CMD_GYRO_DETECT_TOGGLE,
+    ALLY_CMD_DUMMYBOT_RETURN,
+    ALLY_CMD_END
 };
 
 static const int AllyNPCSkillRequirements[19] =
 {
-	SKILL_LEVEL_NOVICE,	// ALLY_CMD_DEFEND,
-	SKILL_LEVEL_SKILLED,// ALLY_CMD_CLASS_TOGGLE,
-	SKILL_LEVEL_BASIC,// ALLY_CMD_MOVETO_SELECT,
-	SKILL_LEVEL_BASIC,	// ALLY_CMD_PICKUP_TOGGLE,
-	0,					// ALLY_CMD_MOVEASIDE,
-	SKILL_LEVEL_SKILLED,// ALLY_CMD_DROP_EQUIP,
-	SKILL_LEVEL_BASIC,	// ALLY_CMD_ATTACK_SELECT,
-	SKILL_LEVEL_SKILLED,// ALLY_CMD_SPECIAL,
-	SKILL_LEVEL_NOVICE,	// ALLY_CMD_FOLLOW,
-	SKILL_LEVEL_BASIC,	// ALLY_CMD_MOVETO_CONFIRM,
-	0,					// ALLY_CMD_CANCEL
-	SKILL_LEVEL_EXPERT, // ALLY_CMD_ATTACK_CONFIRM
-	0,					// ALLY_CMD_RETURN_SOUL
-	0,					// ALLY_CMD_GYRO_DEPLOY,
-	0,					// ALLY_CMD_GYRO_PATROL,
-	0,					// ALLY_CMD_GYRO_LIGHT_TOGGLE,
-	0,					// ALLY_CMD_GYRO_RETURN,
-	SKILL_LEVEL_SKILLED,// ALLY_CMD_GYRO_DETECT_TOGGLE,
-	0					// ALLY_CMD_END
+    SKILL_LEVEL_NOVICE, // ALLY_CMD_DEFEND,
+    SKILL_LEVEL_SKILLED,// ALLY_CMD_CLASS_TOGGLE,
+    SKILL_LEVEL_BASIC,// ALLY_CMD_MOVETO_SELECT,
+    SKILL_LEVEL_BASIC,  // ALLY_CMD_PICKUP_TOGGLE,
+    0,                  // ALLY_CMD_MOVEASIDE,
+    SKILL_LEVEL_SKILLED,// ALLY_CMD_DROP_EQUIP,
+    SKILL_LEVEL_BASIC,  // ALLY_CMD_ATTACK_SELECT,
+    SKILL_LEVEL_SKILLED,// ALLY_CMD_SPECIAL,
+    SKILL_LEVEL_NOVICE, // ALLY_CMD_FOLLOW,
+    SKILL_LEVEL_BASIC,  // ALLY_CMD_MOVETO_CONFIRM,
+    0,                  // ALLY_CMD_CANCEL
+    SKILL_LEVEL_EXPERT, // ALLY_CMD_ATTACK_CONFIRM
+    0,                  // ALLY_CMD_RETURN_SOUL
+    0,                  // ALLY_CMD_GYRO_DEPLOY,
+    0,                  // ALLY_CMD_GYRO_PATROL,
+    0,                  // ALLY_CMD_GYRO_LIGHT_TOGGLE,
+    0,                  // ALLY_CMD_GYRO_RETURN,
+    SKILL_LEVEL_SKILLED,// ALLY_CMD_GYRO_DETECT_TOGGLE,
+    0                   // ALLY_CMD_END
 };
 
 enum AllyNPCState : int
 {
-	ALLY_STATE_DEFAULT,
-	ALLY_STATE_MOVETO,
-	ALLY_STATE_DEFEND,
-	ALLY_STATE_INTERACT
+    ALLY_STATE_DEFAULT,
+    ALLY_STATE_MOVETO,
+    ALLY_STATE_DEFEND,
+    ALLY_STATE_INTERACT
 };
 
 enum AllyNPCPickup : int
 {
-	ALLY_PICKUP_NONPLAYER,
-	ALLY_PICKUP_NONE,
-	ALLY_PICKUP_ALL
+    ALLY_PICKUP_NONPLAYER,
+    ALLY_PICKUP_NONE,
+    ALLY_PICKUP_ALL
 };
 
 enum AllyNPCClass : int
 {
-	ALLY_CLASS_MIXED,
-	ALLY_CLASS_MELEE,
-	ALLY_CLASS_RANGED
+    ALLY_CLASS_MIXED,
+    ALLY_CLASS_MELEE,
+    ALLY_CLASS_RANGED
 };
 
 enum AllyNPCGyroLight : int
 {
-	ALLY_GYRO_LIGHT_NONE,
-	ALLY_GYRO_LIGHT_FAINT,
-	ALLY_GYRO_LIGHT_BRIGHT,
-	ALLY_GYRO_LIGHT_END
+    ALLY_GYRO_LIGHT_NONE,
+    ALLY_GYRO_LIGHT_FAINT,
+    ALLY_GYRO_LIGHT_BRIGHT,
+    ALLY_GYRO_LIGHT_END
 };
 
 enum AllyNPCGyroDetection : int
 {
-	ALLY_GYRO_DETECT_NONE,
-	ALLY_GYRO_DETECT_ITEMS_METAL,
-	ALLY_GYRO_DETECT_ITEMS_MAGIC,
-	ALLY_GYRO_DETECT_TRAPS,
-	ALLY_GYRO_DETECT_EXITS,
-	ALLY_GYRO_DETECT_MONSTERS,
-	ALLY_GYRO_DETECT_ITEMS_VALUABLE,
-	ALLY_GYRO_DETECT_END
+    ALLY_GYRO_DETECT_NONE,
+    ALLY_GYRO_DETECT_ITEMS_METAL,
+    ALLY_GYRO_DETECT_ITEMS_MAGIC,
+    ALLY_GYRO_DETECT_TRAPS,
+    ALLY_GYRO_DETECT_EXITS,
+    ALLY_GYRO_DETECT_MONSTERS,
+    ALLY_GYRO_DETECT_ITEMS_VALUABLE,
+    ALLY_GYRO_DETECT_END
 };
 
 enum AllyNPCChatter : int
 {
-	ALLY_EVENT_MOVEASIDE,
-	ALLY_EVENT_MOVETO_BEGIN,
-	ALLY_EVENT_MOVETO_END,
-	ALLY_EVENT_MOVETO_FAIL,
-	ALLY_EVENT_MOVETO_REPATH,
-	ALLY_EVENT_INTERACT_ITEM_UNKNOWN,
-	ALLY_EVENT_INTERACT_ITEM_NOUSE,
-	ALLY_EVENT_INTERACT_ITEM_FOOD_GOOD,
-	ALLY_EVENT_INTERACT_ITEM_FOOD_BAD,
-	ALLY_EVENT_INTERACT_ITEM_FOOD_ROTTEN,
-	ALLY_EVENT_INTERACT_ITEM_FOOD_FULL,
-	ALLY_EVENT_INTERACT_ITEM_CURSED,
-	ALLY_EVENT_INTERACT_OTHER,
-	ALLY_EVENT_ATTACK,
-	ALLY_EVENT_ATTACK_FRIENDLY_FIRE,
-	ALLY_EVENT_DROP_WEAPON,
-	ALLY_EVENT_DROP_EQUIP,
-	ALLY_EVENT_DROP_ALL,
-	ALLY_EVENT_DROP_HUMAN_REFUSE,
-	ALLY_EVENT_SPOT_ENEMY,
-	ALLY_EVENT_WAIT,
-	ALLY_EVENT_FOLLOW,
-	ALLY_EVENT_REST,
-	ALLY_EVENT_DROP_FAILED
+    ALLY_EVENT_MOVEASIDE,
+    ALLY_EVENT_MOVETO_BEGIN,
+    ALLY_EVENT_MOVETO_END,
+    ALLY_EVENT_MOVETO_FAIL,
+    ALLY_EVENT_MOVETO_REPATH,
+    ALLY_EVENT_INTERACT_ITEM_UNKNOWN,
+    ALLY_EVENT_INTERACT_ITEM_NOUSE,
+    ALLY_EVENT_INTERACT_ITEM_FOOD_GOOD,
+    ALLY_EVENT_INTERACT_ITEM_FOOD_BAD,
+    ALLY_EVENT_INTERACT_ITEM_FOOD_ROTTEN,
+    ALLY_EVENT_INTERACT_ITEM_FOOD_FULL,
+    ALLY_EVENT_INTERACT_ITEM_CURSED,
+    ALLY_EVENT_INTERACT_OTHER,
+    ALLY_EVENT_ATTACK,
+    ALLY_EVENT_ATTACK_FRIENDLY_FIRE,
+    ALLY_EVENT_DROP_WEAPON,
+    ALLY_EVENT_DROP_EQUIP,
+    ALLY_EVENT_DROP_ALL,
+    ALLY_EVENT_DROP_HUMAN_REFUSE,
+    ALLY_EVENT_SPOT_ENEMY,
+    ALLY_EVENT_WAIT,
+    ALLY_EVENT_FOLLOW,
+    ALLY_EVENT_REST,
+    ALLY_EVENT_DROP_FAILED
 };
 
 enum AllyNPCSpecialCmd : int
 {
-	ALLY_SPECIAL_CMD_NONE,
-	ALLY_SPECIAL_CMD_REST
+    ALLY_SPECIAL_CMD_NONE,
+    ALLY_SPECIAL_CMD_REST
 };
 
 enum MonsterDefendType : int
 {
-	MONSTER_DEFEND_NONE,
-	MONSTER_DEFEND_ALLY,
-	MONSTER_DEFEND_HOLD
+    MONSTER_DEFEND_NONE,
+    MONSTER_DEFEND_ALLY,
+    MONSTER_DEFEND_HOLD
 };
 
 #define WAIT_FOLLOWDIST 48
@@ -1272,174 +1272,174 @@ static const int DUCK_RETURN = 3;
 
 struct MonsterData_t
 {
-	struct MonsterDataEntry_t
-	{
-		int monsterType = NOTHING;
-		std::string defaultIconPath = "";
-		struct IconLookup_t
-		{
-			std::string key = "";
-			std::string iconPath = "";
-		};
-		std::map<int, IconLookup_t> iconSpritesAndPaths;
-		std::map<std::string, std::vector<int>> keyToSpriteLookup;
-		std::set<int> modelIndexes;
-		std::set<int> playerModelIndexes;
-		std::string defaultShortDisplayName = "";
-		struct SpecialNPCEntry_t
-		{
-			std::string internalName = "";
-			std::string name = "";
-			std::string shortname = "";
-			std::set<int> modelIndexes;
-			int baseModel = 0;
-			std::string uniqueIcon = "";
-		};
-		std::map<std::string, SpecialNPCEntry_t> specialNPCs;
-		MonsterDataEntry_t(int type)
-		{
-			monsterType = type;
-			defaultShortDisplayName = "";
-			defaultIconPath = "";
-		};
-		MonsterDataEntry_t() = default;
-	};
-	static std::string iconDefaultString;
-	static std::string keyDefaultString;
-	static std::map<int, MonsterDataEntry_t> monsterDataEntries;
-	static std::string& getAllyIconFromSprite(int sprite, int type = -1);
-	static std::string& getKeyFromSprite(int sprite, int type = -1);
-	static int getSpriteFromKey(int sprite, std::string key, int type = -1);
-	static int getSpecialNPCBaseModel(Stat& myStats);
-	static std::string getSpecialNPCName(Stat& myStats);
-	static bool nameMatchesSpecialNPCName(Stat& myStats, std::string npcKey);
-	static void loadMonsterDataJSON();
+    struct MonsterDataEntry_t
+    {
+        int monsterType = NOTHING;
+        std::string defaultIconPath = "";
+        struct IconLookup_t
+        {
+            std::string key = "";
+            std::string iconPath = "";
+        };
+        std::map<int, IconLookup_t> iconSpritesAndPaths;
+        std::map<std::string, std::vector<int>> keyToSpriteLookup;
+        std::set<int> modelIndexes;
+        std::set<int> playerModelIndexes;
+        std::string defaultShortDisplayName = "";
+        struct SpecialNPCEntry_t
+        {
+            std::string internalName = "";
+            std::string name = "";
+            std::string shortname = "";
+            std::set<int> modelIndexes;
+            int baseModel = 0;
+            std::string uniqueIcon = "";
+        };
+        std::map<std::string, SpecialNPCEntry_t> specialNPCs;
+        MonsterDataEntry_t(int type)
+        {
+            monsterType = type;
+            defaultShortDisplayName = "";
+            defaultIconPath = "";
+        };
+        MonsterDataEntry_t() = default;
+    };
+    static std::string iconDefaultString;
+    static std::string keyDefaultString;
+    static std::map<int, MonsterDataEntry_t> monsterDataEntries;
+    static std::string& getAllyIconFromSprite(int sprite, int type = -1);
+    static std::string& getKeyFromSprite(int sprite, int type = -1);
+    static int getSpriteFromKey(int sprite, std::string key, int type = -1);
+    static int getSpecialNPCBaseModel(Stat& myStats);
+    static std::string getSpecialNPCName(Stat& myStats);
+    static bool nameMatchesSpecialNPCName(Stat& myStats, std::string npcKey);
+    static void loadMonsterDataJSON();
 };
 extern MonsterData_t monsterData;
 
 class ShopkeeperPlayerHostility_t
 {
 public:
-	enum WantedLevel : int
-	{
-		NO_WANTED_LEVEL,
-		FAILURE_TO_IDENTIFY,
-		WANTED_FOR_AGGRESSION_SHOPKEEP_INITIATED,
-		WANTED_FOR_ACCESSORY,
-		WANTED_FOR_AGGRESSION,
-		WANTED_FOR_KILL
-	};
-	struct PlayerRaceHostility_t
-	{
-	public:
-		int numAggressions = 0;
-		int numKills = 0;
-		int numAccessories = 0;
-		Monster playerRace = NOTHING;
-		sex_t sex = sex_t::MALE;
-		Uint8 equipment = 0;
-		Uint32 type = NOTHING;
-		WantedLevel wantedLevel = NO_WANTED_LEVEL;
-		int player = -1;
-		bool bRequiresNetUpdate = false;
-		PlayerRaceHostility_t()
-		{
-			wantedLevel = NO_WANTED_LEVEL;
-			type = NOTHING;
-			playerRace = NOTHING;
-			sex = sex_t::MALE;
-			equipment = 0;
-			player = -1;
-			numAggressions = 0;
-			numKills = 0;
-			numAccessories = 0;
-		};
-		PlayerRaceHostility_t(const Uint32 _type, const WantedLevel _wantedLevel, const int _player) :
-			PlayerRaceHostility_t()
-		{
-			wantedLevel = _wantedLevel;
-			type = _type;
-			playerRace = static_cast<Monster>(_type & 0xFF);
-			sex = ((_type >> 8) & 0x1) ? sex_t::MALE : sex_t::FEMALE;
-			equipment = ((_type >> 9) & 0x7F);
-			player = _player;
-		}
+    enum WantedLevel : int
+    {
+        NO_WANTED_LEVEL,
+        FAILURE_TO_IDENTIFY,
+        WANTED_FOR_AGGRESSION_SHOPKEEP_INITIATED,
+        WANTED_FOR_ACCESSORY,
+        WANTED_FOR_AGGRESSION,
+        WANTED_FOR_KILL
+    };
+    struct PlayerRaceHostility_t
+    {
+    public:
+        int numAggressions = 0;
+        int numKills = 0;
+        int numAccessories = 0;
+        Monster playerRace = NOTHING;
+        sex_t sex = sex_t::MALE;
+        Uint8 equipment = 0;
+        Uint32 type = NOTHING;
+        WantedLevel wantedLevel = NO_WANTED_LEVEL;
+        int player = -1;
+        bool bRequiresNetUpdate = false;
+        PlayerRaceHostility_t()
+        {
+            wantedLevel = NO_WANTED_LEVEL;
+            type = NOTHING;
+            playerRace = NOTHING;
+            sex = sex_t::MALE;
+            equipment = 0;
+            player = -1;
+            numAggressions = 0;
+            numKills = 0;
+            numAccessories = 0;
+        };
+        PlayerRaceHostility_t(const Uint32 _type, const WantedLevel _wantedLevel, const int _player) :
+            PlayerRaceHostility_t()
+        {
+            wantedLevel = _wantedLevel;
+            type = _type;
+            playerRace = static_cast<Monster>(_type & 0xFF);
+            sex = ((_type >> 8) & 0x1) ? sex_t::MALE : sex_t::FEMALE;
+            equipment = ((_type >> 9) & 0x7F);
+            player = _player;
+        }
 
-		bool serialize(FileInterface* fp);
-	};
-	bool playerRaceCheckHostility(const int player, const Monster type) const;
-	PlayerRaceHostility_t* getPlayerHostility(const int player, Uint32 overrideType = NOTHING);
-	void serverSendClientUpdate(const bool force = false);
-	void reset();
-	void resetPlayerHostility(const int player, bool clearAll = false);
-	ShopkeeperPlayerHostility_t();
-	bool isPlayerEnemy(const int player);
-	void setWantedLevel(PlayerRaceHostility_t& h, WantedLevel wantedLevel, Entity* shopkeeper, bool primaryPlayerCheck);
-	WantedLevel getWantedLevel(const int player);
-	void onShopkeeperDeath(Entity* my, Stat* myStats, Entity* attacker);
-	void onShopkeeperHit(Entity* my, Stat* myStats, Entity* attacker);
-	void updateShopkeeperActMonster(Entity& my, Stat& myStats, bool ringconflict);
-	std::map<Uint32, PlayerRaceHostility_t> playerHostility[MAXPLAYERS];
+        bool serialize(FileInterface* fp);
+    };
+    bool playerRaceCheckHostility(const int player, const Monster type) const;
+    PlayerRaceHostility_t* getPlayerHostility(const int player, Uint32 overrideType = NOTHING);
+    void serverSendClientUpdate(const bool force = false);
+    void reset();
+    void resetPlayerHostility(const int player, bool clearAll = false);
+    ShopkeeperPlayerHostility_t();
+    bool isPlayerEnemy(const int player);
+    void setWantedLevel(PlayerRaceHostility_t& h, WantedLevel wantedLevel, Entity* shopkeeper, bool primaryPlayerCheck);
+    WantedLevel getWantedLevel(const int player);
+    void onShopkeeperDeath(Entity* my, Stat* myStats, Entity* attacker);
+    void onShopkeeperHit(Entity* my, Stat* myStats, Entity* attacker);
+    void updateShopkeeperActMonster(Entity& my, Stat& myStats, bool ringconflict);
+    std::map<Uint32, PlayerRaceHostility_t> playerHostility[MAXPLAYERS];
 };
 extern ShopkeeperPlayerHostility_t ShopkeeperPlayerHostility;
 
 struct MonsterAllyFormation_t
 {
-	struct MonsterAllies_t
-	{
-		struct FormationInfo_t
-		{
-			int x = 0;
-			int y = 0;
-			int pathingDelay = 0;
-			int tryExtendPath = 0;
-			bool init = false;
-			bool expired = false;
-		};
-		std::unordered_map<Uint32, FormationInfo_t> meleeUnits;
-		std::unordered_map<Uint32, FormationInfo_t> rangedUnits;
-		Uint32 updatedOnTick = 0;
-	};
-	void updateFormation(Uint32 leaderUid, Uint32 monsterUpdateUid = 0);
-	bool getFollowLocation(Uint32 uid, Uint32 leaderUid, std::pair<int, int>& outPos);
-	void updateOnPathFail(Uint32 uid, Entity* entity);
-	void updateOnPathSucceed(Uint32 uid, Entity* entity);
-	void updateOnFollowCommand(Uint32 uid, Entity* entity);
-	std::unordered_map<Uint32, MonsterAllies_t> units;
-	std::vector<std::pair<int, int>> formationShape;
-	MonsterAllyFormation_t()
-	{
-		formationShape.push_back(std::make_pair(-2, 0));
-		formationShape.push_back(std::make_pair(2, 0));
-		for ( int i = 1; i < 50; ++i )
-		{
-			if ( i % 2 == 0 )
-			{
-				formationShape.push_back(std::make_pair(-2, -i));
-				formationShape.push_back(std::make_pair(2, -i));
-				formationShape.push_back(std::make_pair(0, -i));
-			}
-			else
-			{
-				formationShape.push_back(std::make_pair(-1, -i));
-				formationShape.push_back(std::make_pair(1, -i));
-			}
-		}
-	}
-	void reset() { units.clear(); }
-	int getFollowerChaseLeaderInterval(Entity& my, Stat& myStats);
-	int getFollowerPathingDelay(Entity& my, Stat& myStats);
-	int getFollowerTryExtendedPathSearch(Entity& my, Stat& myStats);
+    struct MonsterAllies_t
+    {
+        struct FormationInfo_t
+        {
+            int x = 0;
+            int y = 0;
+            int pathingDelay = 0;
+            int tryExtendPath = 0;
+            bool init = false;
+            bool expired = false;
+        };
+        std::unordered_map<Uint32, FormationInfo_t> meleeUnits;
+        std::unordered_map<Uint32, FormationInfo_t> rangedUnits;
+        Uint32 updatedOnTick = 0;
+    };
+    void updateFormation(Uint32 leaderUid, Uint32 monsterUpdateUid = 0);
+    bool getFollowLocation(Uint32 uid, Uint32 leaderUid, std::pair<int, int>& outPos);
+    void updateOnPathFail(Uint32 uid, Entity* entity);
+    void updateOnPathSucceed(Uint32 uid, Entity* entity);
+    void updateOnFollowCommand(Uint32 uid, Entity* entity);
+    std::unordered_map<Uint32, MonsterAllies_t> units;
+    std::vector<std::pair<int, int>> formationShape;
+    MonsterAllyFormation_t()
+    {
+        formationShape.push_back(std::make_pair(-2, 0));
+        formationShape.push_back(std::make_pair(2, 0));
+        for ( int i = 1; i < 50; ++i )
+        {
+            if ( i % 2 == 0 )
+            {
+                formationShape.push_back(std::make_pair(-2, -i));
+                formationShape.push_back(std::make_pair(2, -i));
+                formationShape.push_back(std::make_pair(0, -i));
+            }
+            else
+            {
+                formationShape.push_back(std::make_pair(-1, -i));
+                formationShape.push_back(std::make_pair(1, -i));
+            }
+        }
+    }
+    void reset() { units.clear(); }
+    int getFollowerChaseLeaderInterval(Entity& my, Stat& myStats);
+    int getFollowerPathingDelay(Entity& my, Stat& myStats);
+    int getFollowerTryExtendedPathSearch(Entity& my, Stat& myStats);
 };
 extern MonsterAllyFormation_t monsterAllyFormations;
 
 struct MimicGenerator
 {
-	BaronyRNG mimic_rng;
-	std::unordered_set<unsigned int> mimic_floors;
-	std::unordered_set<unsigned int> mimic_secret_floors;
-	void init();
-	bool bForceSpawnForCurrentFloor();
+    BaronyRNG mimic_rng;
+    std::unordered_set<unsigned int> mimic_floors;
+    std::unordered_set<unsigned int> mimic_secret_floors;
+    void init();
+    bool bForceSpawnForCurrentFloor();
 };
 extern MimicGenerator mimic_generator;
 

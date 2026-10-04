@@ -21,10 +21,10 @@ public:
 
     //! the result of the slider process
     struct result_t {
-        bool highlighted;				//!< was highlighted this frame
-        bool clicked;					//!< was modified this frame
-        Uint32 highlightTime;			//!< time since slider was highlighted
-        const char* tooltip = nullptr;	//!< slider tooltip to be displayed
+        bool highlighted;               //!< was highlighted this frame
+        bool clicked;                   //!< was modified this frame
+        Uint32 highlightTime;           //!< time since slider was highlighted
+        const char* tooltip = nullptr;  //!< slider tooltip to be displayed
     };
 
     enum orientation_t {
@@ -38,7 +38,7 @@ public:
     //! draws the slider
     //! @param _size size and position of slider's parent frame
     //! @param _actualSize offset into the parent frame space (scroll)
-	//! @param selectedWidgets the currently selected widgets, if any
+    //! @param selectedWidgets the currently selected widgets, if any
     void draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const Widget*>& selectedWidgets) const;
 
     //! draws post elements in the slider
@@ -86,12 +86,12 @@ public:
     const char*                 getTooltip() const { return tooltip.c_str(); }
     const Uint32&               getColor() const { return color; }
     const Uint32&               getHighlightColor() const { return highlightColor; }
-    void						(*getCallback() const)(Slider&) { return callback; }
+    void                        (*getCallback() const)(Slider&) { return callback; }
     bool                        isActivated() const { return activated; }
     const char*                 getHandleImageActivated() const { return handleImageActivated.c_str(); }
     const char*                 getHandleImage() const { return handleImage.c_str(); }
     const char*                 getRailImage() const { return railImage.c_str(); }
-	const bool					isOntop() const { return ontop; }
+    const bool                  isOntop() const { return ontop; }
 
     void    setOrientation(orientation_t o) { orientation = o; }
     void    setValue(float _value) { value = _value; }
@@ -104,14 +104,14 @@ public:
     void    setTooltip(const char* _tooltip) { tooltip = _tooltip; }
     void    setColor(const Uint32& _color) { color = _color; }
     void    setHighlightColor(const Uint32& _color) { highlightColor = _color; }
-    void	setCallback(void (*const fn)(Slider&)) { callback = fn; }
+    void    setCallback(void (*const fn)(Slider&)) { callback = fn; }
     void    setHandleImageActivated(const char* _image) { handleImageActivated = _image; }
     void    setHandleImage(const char* _image) { handleImage = _image; }
     void    setRailImage(const char* _image) { railImage = _image; }
-	void	setOntop(const bool _ontop) { ontop = _ontop; }
+    void    setOntop(const bool _ontop) { ontop = _ontop; }
 
 private:
-    void (*callback)(Slider&) = nullptr;		    //!< native callback for clicking
+    void (*callback)(Slider&) = nullptr;            //!< native callback for clicking
     orientation_t orientation = SLIDER_HORIZONTAL;  //!< horizontal or vertical slider?
     float value = 0.f;                              //!< value
     float maxValue = 0.f;                           //!< maximum value
@@ -121,13 +121,13 @@ private:
     bool activated = false;                         //!< if true, the slider captures all input
     SDL_Rect handleSize{0, 0, 0, 0};                //!< size of the handle in pixels
     SDL_Rect railSize{0, 0, 0, 0};                  //!< size of the rail in pixels
-    std::string tooltip;						    //!< if empty, slider has no tooltip; otherwise, it does
-    Uint32 color = 0xffffffff;					    //!< the slider's color
+    std::string tooltip;                            //!< if empty, slider has no tooltip; otherwise, it does
+    Uint32 color = 0xffffffff;                      //!< the slider's color
     Uint32 highlightColor = 0xffffffff;             //!< slider's color when highlighted
     Uint32 moveStartTime = 0u;                      //!< when the player started holding a direction to move the slider
     Uint32 lastMoveTime = 0u;                       //!< last time the slider was moved
     std::string handleImageActivated;               //!< image to use for the handle (when activated)
     std::string handleImage;                        //!< image to use for the handle
     std::string railImage;                          //!< image to use for the rail
-	bool ontop = false;								//!< whether the slider is drawn ontop of others
+    bool ontop = false;                             //!< whether the slider is drawn ontop of others
 };

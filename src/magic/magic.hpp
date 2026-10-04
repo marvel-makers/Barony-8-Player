@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: magic.hpp
-	Desc: Defines magic related stuff.
+ BARONY
+ File: magic.hpp
+    Desc: Defines magic related stuff.
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+    Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -430,53 +430,53 @@ static const int PARTICLE_TIMER_ACTION_SWEEP_ATTACK = 36;
 
 struct ParticleEmitterHit_t
 {
-	Uint32 tick = 0;
-	int hits = 0;
+    Uint32 tick = 0;
+    int hits = 0;
 };
 struct ParticleTimerEffect_t
 {
-	enum EffectType
-	{
-		EFFECT_NONE,
-		EFFECT_ICE_WAVE,
-		EFFECT_TEST_1,
-		EFFECT_TEST_2,
-		EFFECT_TEST_3,
-		EFFECT_DISRUPT_EARTH,
-		EFFECT_LIGHTNING_BOLT,
-		EFFECT_ROOTS_SELF,
-		EFFECT_TEST_7,
-		EFFECT_FIRE_WAVE,
-		EFFECT_KINETIC_FIELD,
-		EFFECT_PULSE,
-		EFFECT_SPORES,
-		EFFECT_TUNNEL,
-		EFFECT_CHRONOMIC_FIELD,
-		EFFECT_ROOTS_TILE,
-		EFFECT_ROOTS_PATH,
-		EFFECT_MYCELIUM,
-		EFFECT_ROOTS_SELF_SUSTAIN,
-		EFFECT_ROOTS_TILE_VOID
-	};
-	struct Effect_t
-	{
-		real_t x = 0.0;
-		real_t y = 0.0;
-		EffectType effectType = EFFECT_NONE;
-		real_t yaw = 0.0;
-		int sfx = 0;
-		bool firstEffect = false;
-	};
+    enum EffectType
+    {
+        EFFECT_NONE,
+        EFFECT_ICE_WAVE,
+        EFFECT_TEST_1,
+        EFFECT_TEST_2,
+        EFFECT_TEST_3,
+        EFFECT_DISRUPT_EARTH,
+        EFFECT_LIGHTNING_BOLT,
+        EFFECT_ROOTS_SELF,
+        EFFECT_TEST_7,
+        EFFECT_FIRE_WAVE,
+        EFFECT_KINETIC_FIELD,
+        EFFECT_PULSE,
+        EFFECT_SPORES,
+        EFFECT_TUNNEL,
+        EFFECT_CHRONOMIC_FIELD,
+        EFFECT_ROOTS_TILE,
+        EFFECT_ROOTS_PATH,
+        EFFECT_MYCELIUM,
+        EFFECT_ROOTS_SELF_SUSTAIN,
+        EFFECT_ROOTS_TILE_VOID
+    };
+    struct Effect_t
+    {
+        real_t x = 0.0;
+        real_t y = 0.0;
+        EffectType effectType = EFFECT_NONE;
+        real_t yaw = 0.0;
+        int sfx = 0;
+        bool firstEffect = false;
+    };
 
-	struct EffectLocations_t
-	{
-		real_t yawOffset = 0.0;
-		real_t xOffset = 0.0;
-		real_t seconds = 0.0;
-		real_t dist = 0.0;
-		int sfx = 0;
-	};
-	std::map<Uint32, Effect_t> effectMap;
+    struct EffectLocations_t
+    {
+        real_t yawOffset = 0.0;
+        real_t xOffset = 0.0;
+        real_t seconds = 0.0;
+        real_t dist = 0.0;
+        int sfx = 0;
+    };
+    std::map<Uint32, Effect_t> effectMap;
 };
 extern std::map<Uint32, std::map<Uint32, ParticleEmitterHit_t>> particleTimerEmitterHitEntities;
 extern std::map<Uint32, ParticleTimerEffect_t> particleTimerEffects;
@@ -494,55 +494,55 @@ typedef struct spellElement_t spellElement_t;
 typedef struct spellElement_t
 {
 private:
-	int damage = 0;
-	int damage2 = 0;
-	int duration2 = 0;
-	real_t damage_mult = 1.0;
-	real_t damage2_mult = 1.0;
-	real_t channeledMana_mult = 1.0;
-	real_t duration_mult = 0.0;
-	real_t duration2_mult = 0.0;
-	int channeledMana_duration = TICKS_PER_SECOND;
+    int damage = 0;
+    int damage2 = 0;
+    int duration2 = 0;
+    real_t damage_mult = 1.0;
+    real_t damage2_mult = 1.0;
+    real_t channeledMana_mult = 1.0;
+    real_t duration_mult = 0.0;
+    real_t duration2_mult = 0.0;
+    int channeledMana_duration = TICKS_PER_SECOND;
 public:
-	void setDamage(int _damage) { damage = _damage; }
-	int getDamage() { return damage; }
-	void setDamageSecondary(int _damage) { damage2 = _damage; }
-	int getDamageSecondary() { return damage2; }
-	void setDurationSecondary(int _duration) { duration2 = _duration; }
-	int getDurationSecondary() { return duration2; }
-	real_t getDamageMult() { return damage_mult; }
-	real_t getDamageSecondaryMult() { return damage2_mult; }
-	real_t getDurationMult() { return duration_mult; }
-	real_t getDurationSecondaryMult() { return duration2_mult; }
-	void setDamageMult(real_t _mult) { damage_mult = _mult; }
-	void setDamageSecondaryMult(real_t _mult) { damage2_mult = _mult; }
-	void setDurationMult(real_t _mult) { duration_mult = _mult; }
-	void setDurationSecondaryMult(real_t _mult) { duration2_mult = _mult; }
-	real_t getChanneledManaMult() { return channeledMana_mult; }
-	int getChanneledManaDuration() { return channeledMana_duration; }
-	void setChanneledManaDuration(int _duration) { channeledMana_duration = _duration; }
-	void setChanneledManaMult(real_t _mult) { channeledMana_mult = _mult; }
-	int duration; // travel time if it's a missile element, duration for a light spell, duration for curses/enchants/traps/beams/rays/effects/what have you.
-	char element_internal_name[64];
-	int elementID = 0;
-	bool can_be_learned; // if a spellElement can't be learned, a player won't be able to build spells with it.
-	int channeledMana = 0; // sustained spell if channeled cost > 0
-	bool fociSpell = false;
-	/*
-	I've been thinking about mana consumption. I think it should drain mana 1 by 1 regardless of how much the spell initially cost to cast.
-	So:
-	//----------
-	timer = duration / mana; //TODO: UH OH. I just realized it drains for the whole spell's cost. Umm. It should only drain the channeled element's cost.
-	...
-	if (timer <= 0)
-		consumeMana(1);
-	//----------
-	So, what this does is divide the spell's duration up into a number of equal parts based on how much mana the element is being pumped with.
-	So, for example, if a fire element costs 3 mana to sustain and it's duration is one minute, the timer will be set to 20 seconds and will consume one mana every 20 seconds.
-	*/
+    void setDamage(int _damage) { damage = _damage; }
+    int getDamage() { return damage; }
+    void setDamageSecondary(int _damage) { damage2 = _damage; }
+    int getDamageSecondary() { return damage2; }
+    void setDurationSecondary(int _duration) { duration2 = _duration; }
+    int getDurationSecondary() { return duration2; }
+    real_t getDamageMult() { return damage_mult; }
+    real_t getDamageSecondaryMult() { return damage2_mult; }
+    real_t getDurationMult() { return duration_mult; }
+    real_t getDurationSecondaryMult() { return duration2_mult; }
+    void setDamageMult(real_t _mult) { damage_mult = _mult; }
+    void setDamageSecondaryMult(real_t _mult) { damage2_mult = _mult; }
+    void setDurationMult(real_t _mult) { duration_mult = _mult; }
+    void setDurationSecondaryMult(real_t _mult) { duration2_mult = _mult; }
+    real_t getChanneledManaMult() { return channeledMana_mult; }
+    int getChanneledManaDuration() { return channeledMana_duration; }
+    void setChanneledManaDuration(int _duration) { channeledMana_duration = _duration; }
+    void setChanneledManaMult(real_t _mult) { channeledMana_mult = _mult; }
+    int duration; // travel time if it's a missile element, duration for a light spell, duration for curses/enchants/traps/beams/rays/effects/what have you.
+    char element_internal_name[64];
+    int elementID = 0;
+    bool can_be_learned; // if a spellElement can't be learned, a player won't be able to build spells with it.
+    int channeledMana = 0; // sustained spell if channeled cost > 0
+    bool fociSpell = false;
+    /*
+ I've been thinking about mana consumption. I think it should drain mana 1 by 1 regardless of how much the spell initially cost to cast.
+    So:
+    //----------
+   timer = duration / mana; //TODO: UH OH. I just realized it drains for the whole spell's cost. Umm. It should only drain the channeled element's cost.
+  ...
+    if (timer <= 0)
+        consumeMana(1);
+    //----------
+   So, what this does is divide the spell's duration up into a number of equal parts based on how much mana the element is being pumped with.
+ So, for example, if a fire element costs 3 mana to sustain and it's duration is one minute, the timer will be set to 20 seconds and will consume one mana every 20 seconds.
+    */
 
-	list_t elements; // all spell elements attached to this one.
-	node_t* node; // points to its location in whatever list it's in.
+    list_t elements; // all spell elements attached to this one.
+    node_t* node; // points to its location in whatever list it's in.
 } spellElement_t;
 
 /*
@@ -760,27 +760,27 @@ extern std::map<int, spellElement_t> spellElementMap;
 
 enum SpellElementIDs_t
 {
-	SPELL_ELEMENT_NONE = 10000,
-	SPELL_ELEMENT_PROPULSION_FOCI_SPRAY,
-	SPELL_ELEMENT_PROPULSION_MISSILE,
-	SPELL_ELEMENT_METEOR_FLAMES,
-	SPELL_ELEMENT_PROPULSION_FLOOR_TILE,
-	SPELL_ELEMENT_PROPULSION_MAGIC_SPRAY,
-	SPELL_ELEMENT_PROPULSION_MISSILE_NOCOST,
-	SPELL_ELEMENT_SPRITE_FLAMES,
-	SPELL_ELEMENT_METEOR_EXPLODE,
-	SPELL_ELEMENT_MAX
+    SPELL_ELEMENT_NONE = 10000,
+    SPELL_ELEMENT_PROPULSION_FOCI_SPRAY,
+    SPELL_ELEMENT_PROPULSION_MISSILE,
+    SPELL_ELEMENT_METEOR_FLAMES,
+    SPELL_ELEMENT_PROPULSION_FLOOR_TILE,
+    SPELL_ELEMENT_PROPULSION_MAGIC_SPRAY,
+    SPELL_ELEMENT_PROPULSION_MISSILE_NOCOST,
+    SPELL_ELEMENT_SPRITE_FLAMES,
+    SPELL_ELEMENT_METEOR_EXPLODE,
+    SPELL_ELEMENT_MAX
 };
 
 enum SpellRangefinderType
 {
-	RANGEFINDER_NONE,
-	RANGEFINDER_TARGET,
-	RANGEFINDER_TOUCH,
-	RANGEFINDER_TOUCH_FLOOR_TILE,
-	RANGEFINDER_TOUCH_WALL_TILE,
-	RANGEFINDER_TOUCH_INTERACT,
-	RANGEFINDER_TOUCH_INTERACT_TEST
+    RANGEFINDER_NONE,
+    RANGEFINDER_TARGET,
+    RANGEFINDER_TOUCH,
+    RANGEFINDER_TOUCH_FLOOR_TILE,
+    RANGEFINDER_TOUCH_WALL_TILE,
+    RANGEFINDER_TOUCH_INTERACT,
+    RANGEFINDER_TOUCH_INTERACT_TEST
 };
 
 /*
@@ -794,79 +794,79 @@ enum SpellRangefinderType
 //TODO: Here's a good question: How do we determine spell casting times? By the total mana you need to amass & magic skills?
 typedef struct spell_t
 {
-	int ID;
-	char spell_internal_name[64];
-	//spellElement_t *elements;
-	int difficulty; //The proficiency you need in the magic skill to learn this spell. //TODO: Should this instead be determined by the spell elements?
-	//int skill_caster; //The spellcasting skill it was cast with. Lower skill can introduce inefficiencies and other !!FUN!!
-	bool sustain; //If a spell is channeled, should it be sustained? (NOTE: True by default. Set to false when the player decides to cancel/abandon a spell)
-	bool magicstaff; // if true the spell was cast from a magicstaff and thus it may have slightly different behavior
-	bool spellbook = false;
-	node_t* sustain_node = nullptr; //Node in the sustained/channeled spells list.
-	node_t* magic_effects_node = nullptr;
-	bool hide_from_ui = false; // hide from skillsheet/other UI places
-	SpellRangefinderType rangefinder = SpellRangefinderType::RANGEFINDER_NONE;
+    int ID;
+    char spell_internal_name[64];
+    //spellElement_t *elements;
+    int difficulty; //The proficiency you need in the magic skill to learn this spell. //TODO: Should this instead be determined by the spell elements?
+    //int skill_caster; //The spellcasting skill it was cast with. Lower skill can introduce inefficiencies and other !!FUN!!
+    bool sustain; //If a spell is channeled, should it be sustained? (NOTE: True by default. Set to false when the player decides to cancel/abandon a spell)
+    bool magicstaff; // if true the spell was cast from a magicstaff and thus it may have slightly different behavior
+    bool spellbook = false;
+    node_t* sustain_node = nullptr; //Node in the sustained/channeled spells list.
+    node_t* magic_effects_node = nullptr;
+    bool hide_from_ui = false; // hide from skillsheet/other UI places
+    SpellRangefinderType rangefinder = SpellRangefinderType::RANGEFINDER_NONE;
 
-	Uint32 caster = 0;
-	real_t distance = 0.0;
-	real_t distance_mult = 1.0;
-	int skillID = PRO_SORCERY;
-	real_t cast_time = 1.0;
-	real_t cast_time_mult = 1.0;
-	int mana = 1;
-	int needsDataFreed = 0;
+    Uint32 caster = 0;
+    real_t distance = 0.0;
+    real_t distance_mult = 1.0;
+    int skillID = PRO_SORCERY;
+    real_t cast_time = 1.0;
+    real_t cast_time_mult = 1.0;
+    int mana = 1;
+    int needsDataFreed = 0;
 
-	int radius = 0;
-	real_t radius_mult = 0.0;
-	int drop_table = -1;
-	int life_time = 0; // for floor based effects
-	real_t life_time_mult = 1.0;
-	int sustainEffectDissipate = -1; // when the spell is unsustained, clear this effect from the player (unique spell effects)
-	int channel_duration = 0; //This is the value to reset the timer to when a spell is channeled.
-	int channel_effectStrength = 1; // how strong to reapply the effect each duration tick
-	list_t elements; //NOTE: This could technically allow a spell to have multiple roots. So you could make a flurry of fireballs, for example.
-	//TODO: Some way to make spells work with "need to cast more to get better at casting the spell." A sort of spell learning curve. The first time you cast it, prone to failure. Less the more you cast it.
-	
-	enum SpellBasePropertiesFloat
-	{
-		SPELLPROP_MODIFIED_DISTANCE,
-		SPELLPROP_DISTANCE_MULT,
-		SPELLPROP_CAST_TIME,
-		SPELLPROP_CAST_TIME_MULT,
-		SPELLPROP_MODIFIED_FOCI_CAST_TIME,
-		SPELLPROP_MODIFIED_SPELL_CAST_TIME,
-		SPELLPROP_DAMAGE_MULT,
-		SPELLPROP_DAMAGE_SECONDARY_MULT,
-		SPELLPROP_BASE_PROPERTY_FLOAT_ENUM_END
-	};
+    int radius = 0;
+    real_t radius_mult = 0.0;
+    int drop_table = -1;
+    int life_time = 0; // for floor based effects
+    real_t life_time_mult = 1.0;
+    int sustainEffectDissipate = -1; // when the spell is unsustained, clear this effect from the player (unique spell effects)
+    int channel_duration = 0; //This is the value to reset the timer to when a spell is channeled.
+    int channel_effectStrength = 1; // how strong to reapply the effect each duration tick
+    list_t elements; //NOTE: This could technically allow a spell to have multiple roots. So you could make a flurry of fireballs, for example.
+    //TODO: Some way to make spells work with "need to cast more to get better at casting the spell." A sort of spell learning curve. The first time you cast it, prone to failure. Less the more you cast it.
+    
+    enum SpellBasePropertiesFloat
+    {
+        SPELLPROP_MODIFIED_DISTANCE,
+        SPELLPROP_DISTANCE_MULT,
+        SPELLPROP_CAST_TIME,
+        SPELLPROP_CAST_TIME_MULT,
+        SPELLPROP_MODIFIED_FOCI_CAST_TIME,
+        SPELLPROP_MODIFIED_SPELL_CAST_TIME,
+        SPELLPROP_DAMAGE_MULT,
+        SPELLPROP_DAMAGE_SECONDARY_MULT,
+        SPELLPROP_BASE_PROPERTY_FLOAT_ENUM_END
+    };
 
-	enum SpellBasePropertiesInt
-	{
-		SPELLPROP_FOCI_REFIRE_TICKS,
-		SPELLPROP_FOCI_SECONDARY_MANA_COST,
-		SPELLPROP_MODIFIED_RADIUS,
-		SPELLPROP_BASE_PROPERTY_INT_ENUM_END
-	};
+    enum SpellBasePropertiesInt
+    {
+        SPELLPROP_FOCI_REFIRE_TICKS,
+        SPELLPROP_FOCI_SECONDARY_MANA_COST,
+        SPELLPROP_MODIFIED_RADIUS,
+        SPELLPROP_BASE_PROPERTY_INT_ENUM_END
+    };
 
-	enum SpellOnCastEventTypes
-	{
-		SPELL_LEVEL_EVENT_DEFAULT = 1,
-		SPELL_LEVEL_EVENT_DMG = 2,
-		SPELL_LEVEL_EVENT_EFFECT = 4,
-		SPELL_LEVEL_EVENT_SUMMON = 8,
-		SPELL_LEVEL_EVENT_SHAPESHIFT = 16,
-		SPELL_LEVEL_EVENT_SUSTAIN = 32,
-		SPELL_LEVEL_EVENT_MAGICSTAFF = 64,
-		SPELL_LEVEL_EVENT_SPELLBOOK = 128,
-		SPELL_LEVEL_EVENT_ASSIST = 256,
-		SPELL_LEVEL_EVENT_MINOR_CHANCE = 512,
-		SPELL_LEVEL_EVENT_ALWAYS = 1024,
-		SPELL_LEVEL_EVENT_ENUM_END = 2048
-	};
+    enum SpellOnCastEventTypes
+    {
+        SPELL_LEVEL_EVENT_DEFAULT = 1,
+        SPELL_LEVEL_EVENT_DMG = 2,
+        SPELL_LEVEL_EVENT_EFFECT = 4,
+        SPELL_LEVEL_EVENT_SUMMON = 8,
+        SPELL_LEVEL_EVENT_SHAPESHIFT = 16,
+        SPELL_LEVEL_EVENT_SUSTAIN = 32,
+        SPELL_LEVEL_EVENT_MAGICSTAFF = 64,
+        SPELL_LEVEL_EVENT_SPELLBOOK = 128,
+        SPELL_LEVEL_EVENT_ASSIST = 256,
+        SPELL_LEVEL_EVENT_MINOR_CHANCE = 512,
+        SPELL_LEVEL_EVENT_ALWAYS = 1024,
+        SPELL_LEVEL_EVENT_ENUM_END = 2048
+    };
 
-	// get localized spell name
-	const char* getSpellName(bool lowercase = false);
-	const char* getSpellTierName();
+    // get localized spell name
+    const char* getSpellName(bool lowercase = false);
+    const char* getSpellTierName();
 } spell_t;
 
 extern list_t channeledSpells[MAXPLAYERS]; //Spells the player is currently channeling. //TODO: Universalize it for all entities that can cast spells? //TODO: Cleanup and stuff.
@@ -946,17 +946,17 @@ extern spell_t spell_slime_metal;
 
 struct CastSpellProps_t
 {
-	real_t caster_x = 0.0;
-	real_t caster_y = 0.0;
-	real_t target_x = 0.0;
-	real_t target_y = 0.0;
-	Uint32 targetUID = 0;
-	int elementIndex = 0;
-	real_t distanceOffset = 0.0;
-	int wallDir = 0;
-	Uint8 optionalData = 0;
-	Uint8 overcharge = 0;
-	bool setToMonsterCast(Entity* monster, int spellID);
+    real_t caster_x = 0.0;
+    real_t caster_y = 0.0;
+    real_t target_x = 0.0;
+    real_t target_y = 0.0;
+    Uint32 targetUID = 0;
+    int elementIndex = 0;
+    real_t distanceOffset = 0.0;
+    int wallDir = 0;
+    Uint8 optionalData = 0;
+    Uint8 overcharge = 0;
+    bool setToMonsterCast(Entity* monster, int spellID);
 };
 
 void setupSpells();
@@ -974,7 +974,7 @@ int getSpellbookBaseINTBonus(Entity* caster, Stat* casterStats, int skillID);
 void magicOnEntityHit(Entity* parent, Entity* particle, Entity* hitentity, Stat* hitstats, Sint32 preResistanceDamage, Sint32 damage, Sint32 oldHP, int spellID, int selfCastUsingItem = 0);
 void magicTrapOnHit(Entity* parent, Entity* hitentity, Stat* hitstats, Sint32 oldHP, int spellID);
 bool applyGenericMagicDamage(Entity* caster, Entity* hitentity, Entity& damageSourceProjectile, int spellID, int damage, bool alertMonsters,
-	bool monsterCollisionOnly = false, int usingSpellbookID = 0);
+    bool monsterCollisionOnly = false, int usingSpellbookID = 0);
 #endif
 bool isSpellcasterBeginner(int player, Entity* caster, int skillID);
 void actMagicTrap(Entity* my);
@@ -1111,46 +1111,46 @@ void actMagicRangefinder(Entity* my);
 
 typedef struct spellcastingAnimationManager
 {
-	//The data to pass on to the castSpell function.
-	spell_t* spell;
-	Uint32 caster;
-	int player;
+    //The data to pass on to the castSpell function.
+    spell_t* spell;
+    Uint32 caster;
+    int player;
 
-	bool active;
-	bool active_spellbook;
-	int stage; //The current stage of the animation.
-	int circle_count; //How many times it's circled around in the circle stage.
-	int times_to_circle; //How many times to circle around in the circle stage.
-	int throw_count = 0;
-	int active_count = 0;
-	int overcharge = 0;
-	int overcharge_init = 0;
+    bool active;
+    bool active_spellbook;
+    int stage; //The current stage of the animation.
+    int circle_count; //How many times it's circled around in the circle stage.
+    int times_to_circle; //How many times to circle around in the circle stage.
+    int throw_count = 0;
+    int active_count = 0;
+    int overcharge = 0;
+    int overcharge_init = 0;
 
-	int consume_interval; //Every consume_interval ticks, eat a mana.
-	int consume_timer; //How many ticks left till next mana consume.
-	int mana_left; //How much mana is left to consume.
-	int mana_cost; //Tracking cost of spell
-	bool consumeMana; //If false, goes through the motions, even casts the spell -- just doesn't consume any mana.
+    int consume_interval; //Every consume_interval ticks, eat a mana.
+    int consume_timer; //How many ticks left till next mana consume.
+    int mana_left; //How much mana is left to consume.
+    int mana_cost; //Tracking cost of spell
+    bool consumeMana; //If false, goes through the motions, even casts the spell -- just doesn't consume any mana.
 
-	float lefthand_movex;
-	float lefthand_movey;
-	float lefthand_angle;
-	float vibrate_x = 0.f;
-	float vibrate_y = 0.f;
+    float lefthand_movex;
+    float lefthand_movey;
+    float lefthand_angle;
+    float vibrate_x = 0.f;
+    float vibrate_y = 0.f;
 
-	real_t target_x = 0.0;
-	real_t target_y = 0.0;
-	real_t caster_x = 0.0;
-	real_t caster_y = 0.0;
-	Uint32 targetUid = 0;
-	int wallDir = 0;
-	SpellRangefinderType rangefinder = RANGEFINDER_NONE;
-	void setRangeFinderLocation();
-	void resetRangefinder();
-	bool hideShieldFromBasicCast();
-	void executeAttackSpell(bool swingweapon);
-	bool spellWaitingAttackInput();
-	bool spellIgnoreAttack();
+    real_t target_x = 0.0;
+    real_t target_y = 0.0;
+    real_t caster_x = 0.0;
+    real_t caster_y = 0.0;
+    Uint32 targetUid = 0;
+    int wallDir = 0;
+    SpellRangefinderType rangefinder = RANGEFINDER_NONE;
+    void setRangeFinderLocation();
+    void resetRangefinder();
+    bool hideShieldFromBasicCast();
+    void executeAttackSpell(bool swingweapon);
+    bool spellWaitingAttackInput();
+    bool spellIgnoreAttack();
 } spellcasting_animation_manager_t;
 extern spellcasting_animation_manager_t cast_animation[MAXPLAYERS];
 
@@ -1210,124 +1210,124 @@ bool spellIsNaturallyLearnedByRaceOrClass(Entity* caster, Stat& stat, int spellI
 
 struct AOEIndicators_t
 {
-	static Uint32 uids;
-	enum SurfaceCacheTypes : int
-	{
-		CACHE_NONE,
-		CACHE_VORTEX,
-		CACHE_CASTING,
-		CACHE_BOOBY_TRAP,
-		CACHE_BOOBY_TRAP2,
-		CACHE_IGNITE,
-		CACHE_IGNITE2,
-		CACHE_SHATTER_OBJECTS,
-		CACHE_SHATTER_OBJECTS2,
-		CACHE_FLAME_CLOAK,
-		CACHE_EXPLOSION_AREA,
-		CACHE_MUSHROOM_1,
-		CACHE_MUSHROOM_2,
-		CACHE_MUSHROOM_3,
-		CACHE_MUSHROOM_4,
-		CACHE_MAGICIANS_ARMOR,
-		CACHE_THAUM_ARMOR,
-		CACHE_PSYCHIC_SPEAR,
-		CACHE_RADIUS_MAGIC_GENERIC
-	};
-	struct Indicator_t
-	{
-		TempTexture* texture = nullptr;
-		SDL_Surface* surfaceOld = nullptr;
-		int radiusMax = 128;
-		int radiusMin = 32;
-		int radius = 32;
-		int size = 132;
-		int lifetime = 1;
-		int gradient = 8;
-		Uint32 uid = 0;
-		bool loop = true;
-		bool castingTarget = false;
-		Uint32 framesPerTick = 1;
-		Uint32 ticksPerUpdate = 1;
-		Uint32 delayTicks = 0;
-		Uint32 indicatorColor = 0xFFFFFFFF;
-		real_t arc = 0.0;
-		bool expired = false;
-		int loopType = 0;
-		Uint32 loopTicks = 0;
-		Uint32 loopTimer = 0;
-		real_t expireAlphaRate = 0.9;
-		SurfaceCacheTypes cacheType = CACHE_NONE;
+    static Uint32 uids;
+    enum SurfaceCacheTypes : int
+    {
+        CACHE_NONE,
+        CACHE_VORTEX,
+        CACHE_CASTING,
+        CACHE_BOOBY_TRAP,
+        CACHE_BOOBY_TRAP2,
+        CACHE_IGNITE,
+        CACHE_IGNITE2,
+        CACHE_SHATTER_OBJECTS,
+        CACHE_SHATTER_OBJECTS2,
+        CACHE_FLAME_CLOAK,
+        CACHE_EXPLOSION_AREA,
+        CACHE_MUSHROOM_1,
+        CACHE_MUSHROOM_2,
+        CACHE_MUSHROOM_3,
+        CACHE_MUSHROOM_4,
+        CACHE_MAGICIANS_ARMOR,
+        CACHE_THAUM_ARMOR,
+        CACHE_PSYCHIC_SPEAR,
+        CACHE_RADIUS_MAGIC_GENERIC
+    };
+    struct Indicator_t
+    {
+        TempTexture* texture = nullptr;
+        SDL_Surface* surfaceOld = nullptr;
+        int radiusMax = 128;
+        int radiusMin = 32;
+        int radius = 32;
+        int size = 132;
+        int lifetime = 1;
+        int gradient = 8;
+        Uint32 uid = 0;
+        bool loop = true;
+        bool castingTarget = false;
+        Uint32 framesPerTick = 1;
+        Uint32 ticksPerUpdate = 1;
+        Uint32 delayTicks = 0;
+        Uint32 indicatorColor = 0xFFFFFFFF;
+        real_t arc = 0.0;
+        bool expired = false;
+        int loopType = 0;
+        Uint32 loopTicks = 0;
+        Uint32 loopTimer = 0;
+        real_t expireAlphaRate = 0.9;
+        SurfaceCacheTypes cacheType = CACHE_NONE;
 
-		struct PrevData_t
-		{
-			Uint8 r = 0;
-			Uint8 g = 0;
-			Uint8 b = 0;
-			Uint8 a = 0;
-			real_t radMin = 0.0;
-			real_t radMax = 0.0;
-			int size = 0;
-		};
-		PrevData_t prevData;
+        struct PrevData_t
+        {
+            Uint8 r = 0;
+            Uint8 g = 0;
+            Uint8 b = 0;
+            Uint8 a = 0;
+            real_t radMin = 0.0;
+            real_t radMax = 0.0;
+            int size = 0;
+        };
+        PrevData_t prevData;
 
-		void updateIndicator();
-		Indicator_t(int _radiusMin, int _radiusMax, int _size, int _lifetime, Uint32 _uid)
-		{
-			radiusMax = _radiusMax;
-			radiusMin = _radiusMin;
-			radius = radiusMin;
-			size = _size;
-			lifetime = _lifetime;
-			uid = _uid;
-		}
-		~Indicator_t()
-		{
-			if ( texture )
-			{
-				delete texture;
-				texture = nullptr;
-			}
-			if ( surfaceOld )
-			{
-				if ( cacheType == CACHE_NONE )
-				{
-					SDL_FreeSurface(surfaceOld);
-				}
-				surfaceOld = nullptr;
-			}
-		}
-	};
-	static std::map<int, std::map<std::tuple<Uint8, Uint8, Uint8, Uint8, real_t, real_t, int>, SDL_Surface*>> surfaceCache;
-	static void cleanup();
-	static std::map<Uint32, Indicator_t> indicators;
+        void updateIndicator();
+        Indicator_t(int _radiusMin, int _radiusMax, int _size, int _lifetime, Uint32 _uid)
+        {
+            radiusMax = _radiusMax;
+            radiusMin = _radiusMin;
+            radius = radiusMin;
+            size = _size;
+            lifetime = _lifetime;
+            uid = _uid;
+        }
+        ~Indicator_t()
+        {
+            if ( texture )
+            {
+                delete texture;
+                texture = nullptr;
+            }
+            if ( surfaceOld )
+            {
+                if ( cacheType == CACHE_NONE )
+                {
+                    SDL_FreeSurface(surfaceOld);
+                }
+                surfaceOld = nullptr;
+            }
+        }
+    };
+    static std::map<int, std::map<std::tuple<Uint8, Uint8, Uint8, Uint8, real_t, real_t, int>, SDL_Surface*>> surfaceCache;
+    static void cleanup();
+    static std::map<Uint32, Indicator_t> indicators;
 
-	static TempTexture* getTexture(Uint32 uid)
-	{
-		auto find = indicators.find(uid);
-		if ( find != indicators.end() )
-		{
-			return find->second.texture;
-		}
-		return nullptr;
-	}
-	static SDL_Surface* getSurface(Uint32 uid)
-	{
-		auto find = indicators.find(uid);
-		if ( find != indicators.end() )
-		{
-			return find->second.surfaceOld;
-		}
-		return nullptr;
-	}
-	static Indicator_t* getIndicator(Uint32 uid)
-	{
-		auto find = indicators.find(uid);
-		if ( find != indicators.end() )
-		{
-			return &find->second;
-		}
-		return nullptr;
-	}
-	static void update();
-	static Uint32 createIndicator(int _radiusMin, int _radiusMax, int _size, int _lifetime);
+    static TempTexture* getTexture(Uint32 uid)
+    {
+        auto find = indicators.find(uid);
+        if ( find != indicators.end() )
+        {
+            return find->second.texture;
+        }
+        return nullptr;
+    }
+    static SDL_Surface* getSurface(Uint32 uid)
+    {
+        auto find = indicators.find(uid);
+        if ( find != indicators.end() )
+        {
+            return find->second.surfaceOld;
+        }
+        return nullptr;
+    }
+    static Indicator_t* getIndicator(Uint32 uid)
+    {
+        auto find = indicators.find(uid);
+        if ( find != indicators.end() )
+        {
+            return &find->second;
+        }
+        return nullptr;
+    }
+    static void update();
+    static Uint32 createIndicator(int _radiusMin, int _radiusMax, int _size, int _lifetime);
 };

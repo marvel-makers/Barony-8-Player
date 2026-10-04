@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: main.hpp
-	Desc: contains some prototypes as well as various type definitions
+ BARONY
+ File: main.hpp
+ Desc: contains some prototypes as well as various type definitions
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+    Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -76,20 +76,20 @@ using std::string; //Instead of including an entire namespace, please explicitly
 
 enum ESteamStatTypes
 {
-	STEAM_STAT_INT = 0,
-	STEAM_STAT_FLOAT = 1,
-	STEAM_STAT_AVGRATE = 2,
+    STEAM_STAT_INT = 0,
+    STEAM_STAT_FLOAT = 1,
+    STEAM_STAT_AVGRATE = 2,
 };
 
 struct SteamStat_t
 {
-	int m_ID;
-	ESteamStatTypes m_eStatType;
-	const char *m_pchStatName;
-	int m_iValue;
-	float m_flValue;
-	float m_flAvgNumerator;
-	float m_flAvgDenominator;
+    int m_ID;
+    ESteamStatTypes m_eStatType;
+    const char *m_pchStatName;
+    int m_iValue;
+    float m_flValue;
+    float m_flAvgNumerator;
+    float m_flAvgDenominator;
 };
 
 extern bool spamming;
@@ -121,15 +121,15 @@ extern bool autoLimbReload;
 #endif
 #define PATH_MAX 1024
 #include <windows.h>
-	#pragma warning ( push )
-	#pragma warning( disable : 4091 ) // disable typedef warnings from dbghelp.h
-	#include <Dbghelp.h>
-	#pragma warning( pop )
-	#undef min
-	#undef max
-	#ifdef GetObject
-		#undef GetObject
-	#endif
+    #pragma warning ( push )
+    #pragma warning( disable : 4091 ) // disable typedef warnings from dbghelp.h
+    #include <Dbghelp.h>
+    #pragma warning( pop )
+    #undef min
+    #undef max
+    #ifdef GetObject
+        #undef GetObject
+    #endif
 #endif
 
 #ifdef APPLE
@@ -148,7 +148,7 @@ extern bool autoLimbReload;
   #include <GL/gl.h>
   #include <GL/glu.h>
   #ifdef LINUX
-  	typedef uint16_t GLhalf;
+    typedef uint16_t GLhalf;
   #endif
  #endif
 #ifndef WINDOWS
@@ -194,10 +194,10 @@ extern bool autoLimbReload;
 
 #ifdef WINDOWS
 #include <io.h>
-#define F_OK 0	// check for existence
-#define X_OK 1	// check for execute permission
-#define W_OK 2	// check for write permission
-#define R_OK 4	// check for read permission
+#define F_OK 0  // check for existence
+#define X_OK 1  // check for execute permission
+#define W_OK 2  // check for write permission
+#define R_OK 4  // check for read permission
 
 #if _MSC_VER != 1900 //Don't need this if running visual studio 2015.
 #define snprintf _snprintf
@@ -212,20 +212,20 @@ const char* gl_error_string(GLenum err);
 #ifdef _MSC_VER
 #define GL_CHECK_ERR(expression) expression;\
     {\
-		GLenum err;\
-		while((err = glGetError()) != GL_NO_ERROR) {\
-			printlog("[OpenGL]: ERROR type = 0x%x, message = %s",\
-				err, gl_error_string(err));\
-		}\
-	}
+        GLenum err;\
+        while((err = glGetError()) != GL_NO_ERROR) {\
+            printlog("[OpenGL]: ERROR type = 0x%x, message = %s",\
+                err, gl_error_string(err));\
+        }\
+    }
 #define GL_CHECK_ERR_RET(expression) expression;\
     {\
-		GLenum err;\
-		while((err = glGetError()) != GL_NO_ERROR) {\
-			printlog("[OpenGL]: ERROR type = 0x%x, message = %s",\
-				err, gl_error_string(err));\
-		}\
-	}
+        GLenum err;\
+        while((err = glGetError()) != GL_NO_ERROR) {\
+            printlog("[OpenGL]: ERROR type = 0x%x, message = %s",\
+                err, gl_error_string(err));\
+        }\
+    }
 #else
 #define GL_CHECK_ERR(expression) ({ \
     expression;\
@@ -333,31 +333,31 @@ extern bool stop;
 #define NUMIMPULSES 25
 static const std::vector<std::string> impulseStrings =
 {
-	"IN_FORWARD",
-	"IN_LEFT",
-	"IN_BACK",
-	"IN_RIGHT",
-	"IN_TURNL",
-	"IN_TURNR",
-	"IN_UP",
-	"IN_DOWN",
-	"IN_CHAT",
-	"IN_COMMAND",
-	"IN_STATUS",
-	"IN_SPELL_LIST",
-	"IN_CAST_SPELL",
-	"IN_DEFEND",
-	"IN_ATTACK",
-	"IN_USE",
-	"IN_AUTOSORT",
-	"IN_MINIMAPSCALE",
-	"IN_TOGGLECHATLOG",
-	"IN_FOLLOWERMENU",
-	"IN_FOLLOWERMENU_LASTCMD",
-	"IN_FOLLOWERMENU_CYCLENEXT",
-	"IN_HOTBAR_SCROLL_LEFT",
-	"IN_HOTBAR_SCROLL_RIGHT",
-	"IN_HOTBAR_SCROLL_SELECT"
+    "IN_FORWARD",
+    "IN_LEFT",
+    "IN_BACK",
+    "IN_RIGHT",
+    "IN_TURNL",
+    "IN_TURNR",
+    "IN_UP",
+    "IN_DOWN",
+    "IN_CHAT",
+    "IN_COMMAND",
+    "IN_STATUS",
+    "IN_SPELL_LIST",
+    "IN_CAST_SPELL",
+    "IN_DEFEND",
+    "IN_ATTACK",
+    "IN_USE",
+    "IN_AUTOSORT",
+    "IN_MINIMAPSCALE",
+    "IN_TOGGLECHATLOG",
+    "IN_FOLLOWERMENU",
+    "IN_FOLLOWERMENU_LASTCMD",
+    "IN_FOLLOWERMENU_CYCLENEXT",
+    "IN_HOTBAR_SCROLL_LEFT",
+    "IN_HOTBAR_SCROLL_RIGHT",
+    "IN_HOTBAR_SCROLL_SELECT"
 };
 
 //Joystick/gamepad impulses
@@ -431,9 +431,9 @@ static const int RIGHT_CLICK_IMPULSE = 285; // right click
 
 enum LightModifierValues : int
 {
-	GLOBAL_LIGHT_MODIFIER_STOPPED,
-	GLOBAL_LIGHT_MODIFIER_INUSE,
-	GLOBAL_LIGHT_MODIFIER_DISSIPATING
+    GLOBAL_LIGHT_MODIFIER_STOPPED,
+    GLOBAL_LIGHT_MODIFIER_INUSE,
+    GLOBAL_LIGHT_MODIFIER_DISSIPATING
 };
 
 class Entity; //TODO: Bugger?
@@ -441,19 +441,19 @@ class Entity; //TODO: Bugger?
 // node structure
 typedef struct node_t
 {
-	struct node_t* next;
-	struct node_t* prev;
-	struct list_t* list;
-	void* element;
-	void (*deconstructor)(void* data);
-	Uint32 size;
+    struct node_t* next;
+    struct node_t* prev;
+    struct list_t* list;
+    void* element;
+    void (*deconstructor)(void* data);
+    Uint32 size;
 } node_t;
 
 // list structure
 typedef struct list_t
 {
-	node_t* first;
-	node_t* last;
+    node_t* first;
+    node_t* last;
 } list_t;
 extern list_t button_l;
 extern list_t light_l;
@@ -461,46 +461,46 @@ extern list_t light_l;
 // game world structure
 typedef struct map_t
 {
-	char name[32];   // name of the map
-	char author[32]; // author of the map
-	unsigned int width, height, skybox;  // size of the map + skybox
-	Sint32 flags[16];
-	std::vector<Sint32> tiles;
-	std::unordered_map<Sint32, node_t*> entities_map;
-	list_t* entities = nullptr;
-	list_t* creatures = nullptr; //A list of Entity* pointers.
-	list_t* worldUI = nullptr; //A list of Entity* pointers.
-	bool* trapexcludelocations = nullptr;
-	bool* monsterexcludelocations = nullptr;
-	bool* lootexcludelocations = nullptr;
-	std::set<int> liquidSfxPlayedTiles;
-	std::map<int, Uint32> tileAttributes;
-	static const Uint32 TILE_ATTRIBUTE_NODIG = 1 << 0;
-	static const Uint32 TILE_ATTRIBUTE_SLIPPERY = 1 << 1;
-	static const Uint32 TILE_ATTRIBUTE_SLOW = 1 << 2;
-	static const Uint32 TILE_ATTRIBUTE_GREASE = 1 << 3;
-	static const Uint32 TILE_ATTRIBUTE_TREASURE_ROOM = 1 << 4;
-	bool tileHasAttribute(int x, int y, int layer, Uint32 attribute);
-	void setMapHDRSettings();
-	char filename[256];
-	~map_t()
-	{
-		if ( trapexcludelocations )
-		{
-			free(trapexcludelocations);
-			trapexcludelocations = nullptr;
-		}
-		if ( monsterexcludelocations )
-		{
-			free(monsterexcludelocations);
-			monsterexcludelocations = nullptr;
-		}
-		if ( lootexcludelocations )
-		{
-			free(lootexcludelocations);
-			lootexcludelocations = nullptr;
-		}
-	}
+    char name[32];   // name of the map
+    char author[32]; // author of the map
+    unsigned int width, height, skybox;  // size of the map + skybox
+    Sint32 flags[16];
+    std::vector<Sint32> tiles;
+    std::unordered_map<Sint32, node_t*> entities_map;
+    list_t* entities = nullptr;
+    list_t* creatures = nullptr; //A list of Entity* pointers.
+    list_t* worldUI = nullptr; //A list of Entity* pointers.
+    bool* trapexcludelocations = nullptr;
+    bool* monsterexcludelocations = nullptr;
+    bool* lootexcludelocations = nullptr;
+    std::set<int> liquidSfxPlayedTiles;
+    std::map<int, Uint32> tileAttributes;
+    static const Uint32 TILE_ATTRIBUTE_NODIG = 1 << 0;
+    static const Uint32 TILE_ATTRIBUTE_SLIPPERY = 1 << 1;
+    static const Uint32 TILE_ATTRIBUTE_SLOW = 1 << 2;
+    static const Uint32 TILE_ATTRIBUTE_GREASE = 1 << 3;
+    static const Uint32 TILE_ATTRIBUTE_TREASURE_ROOM = 1 << 4;
+    bool tileHasAttribute(int x, int y, int layer, Uint32 attribute);
+    void setMapHDRSettings();
+    char filename[256];
+    ~map_t()
+    {
+        if ( trapexcludelocations )
+        {
+            free(trapexcludelocations);
+            trapexcludelocations = nullptr;
+        }
+        if ( monsterexcludelocations )
+        {
+            free(monsterexcludelocations);
+            monsterexcludelocations = nullptr;
+        }
+        if ( lootexcludelocations )
+        {
+            free(lootexcludelocations);
+            lootexcludelocations = nullptr;
+        }
+    }
 } map_t;
 
 #define MAP_LAYERS 3 // number of layers contained in a single map
@@ -548,8 +548,8 @@ static const int MAP_FLAG_PERIMETER_GAP = 19;
 // delete entity structure
 typedef struct deleteent_t
 {
-	Uint32 uid;
-	Uint32 tries;
+    Uint32 uid;
+    Uint32 tries;
 } deleteent_t;
 #define MAXTRIES 6 // max number of attempts on a packet
 #define MAXDELETES 2 // max number of packets resent in a frame
@@ -559,114 +559,114 @@ typedef struct deleteent_t
 #define VERTICAL 2
 typedef struct hit_t
 {
-	real_t x, y;
-	int mapx, mapy;
-	Entity* entity;
-	int side;
+    real_t x, y;
+    int mapx, mapy;
+    Entity* entity;
+    int side;
 } hit_t;
 extern hit_t hit;
 
 // button structure
 typedef struct button_t
 {
-	char label[32];      // button label
-	Sint32 x, y;         // onscreen position
-	Uint32 sizex, sizey; // size of the button
-	Uint8 visible;       // invisible buttons are ignored by the handler
-	Uint8 focused;       // allows this button to function when a subwindow is open
-	SDL_Keycode key;     // key shortcut to activate button
-	int joykey;          // gamepad button used to activate this button.
-	bool pressed;        // whether the button is being pressed or not
-	bool needclick;      // involved in triggering buttons
-	bool outline;        // draw golden border if true. For such things as indicated which settings tab gamepad has selected.
+    char label[32];      // button label
+    Sint32 x, y;         // onscreen position
+    Uint32 sizex, sizey; // size of the button
+    Uint8 visible;       // invisible buttons are ignored by the handler
+    Uint8 focused;       // allows this button to function when a subwindow is open
+    SDL_Keycode key;     // key shortcut to activate button
+    int joykey;          // gamepad button used to activate this button.
+    bool pressed;        // whether the button is being pressed or not
+    bool needclick;      // involved in triggering buttons
+    bool outline;        // draw golden border if true. For such things as indicated which settings tab gamepad has selected.
 
-	// a pointer to the button's location in a list
-	node_t* node;
+    // a pointer to the button's location in a list
+    node_t* node;
 
-	void (*action)(struct button_t* my);
+    void (*action)(struct button_t* my);
 } button_t;
 
 // voxel structure
 typedef struct voxel_t
 {
-	Sint32 sizex, sizey, sizez;
-	Uint8* data;
-	Uint8 palette[256][3];
+    Sint32 sizex, sizey, sizez;
+    Uint8* data;
+    Uint8 palette[256][3];
 } voxel_t;
 
 // vertex structure
 typedef struct vertex_t
 {
-	real_t x, y, z;
+    real_t x, y, z;
 } vertex_t;
 
 // quad structure
 typedef struct polyquad_t
 {
-	vertex_t vertex[4];
-	Uint8 r, g, b;
-	int side;
+    vertex_t vertex[4];
+    Uint8 r, g, b;
+    int side;
 } polyquad_t;
 
 // triangle structure
 typedef struct polytriangle_t
 {
-	vertex_t vertex[3];
+    vertex_t vertex[3];
     vertex_t normal;
-	Uint8 r, g, b;
+    Uint8 r, g, b;
 } polytriangle_t;
 
 // polymodel structure
 typedef struct polymodel_t
 {
-	polytriangle_t* faces;
-	uint64_t numfaces;
+    polytriangle_t* faces;
+    uint64_t numfaces;
     GLuint vao;
     
     // vbos
-	GLuint positions;
-	GLuint colors;
+    GLuint positions;
+    GLuint colors;
     GLuint normals;
-	//GLuint colors_shifted;
-	//GLuint grayscale_colors;
-	//GLuint grayscale_colors_shifted;
+    //GLuint colors_shifted;
+    //GLuint grayscale_colors;
+    //GLuint grayscale_colors_shifted;
 } polymodel_t;
 
 // string structure
 typedef struct string_t
 {
-	Uint32 lines;
-	char* data;
-	node_t* node;
-	Uint32 color;
-	Uint32 time;
-	int player = -1;
+    Uint32 lines;
+    char* data;
+    node_t* node;
+    Uint32 color;
+    Uint32 time;
+    int player = -1;
 } string_t;
 
 // door structure (used for map generation)
 typedef struct door_t
 {
-	enum DoorDir : Sint32
-	{
-		DIR_EAST,
-		DIR_SOUTH,
-		DIR_WEST,
-		DIR_NORTH
-	};
-	enum DoorEdge : Sint32
-	{
-		EDGE_EAST,
-		EDGE_SOUTHEAST,
-		EDGE_SOUTH,
-		EDGE_SOUTHWEST,
-		EDGE_WEST,
-		EDGE_NORTHWEST,
-		EDGE_NORTH,
-		EDGE_NORTHEAST
-	};
-	Sint32 x, y;
-	DoorDir dir;
-	DoorEdge edge;
+    enum DoorDir : Sint32
+    {
+        DIR_EAST,
+        DIR_SOUTH,
+        DIR_WEST,
+        DIR_NORTH
+    };
+    enum DoorEdge : Sint32
+    {
+        EDGE_EAST,
+        EDGE_SOUTHEAST,
+        EDGE_SOUTH,
+        EDGE_SOUTHWEST,
+        EDGE_WEST,
+        EDGE_NORTHWEST,
+        EDGE_NORTH,
+        EDGE_NORTHEAST
+    };
+    Sint32 x, y;
+    DoorDir dir;
+    DoorEdge edge;
 } door_t;
 
 #define CLIPNEAR 2
@@ -681,10 +681,10 @@ typedef struct door_t
 
 // shaking/bobbing, that sort of thing
 struct cameravars_t {
-	real_t shakex;
-	real_t shakex2;
-	int shakey;
-	int shakey2;
+    real_t shakex;
+    real_t shakex2;
+    int shakey;
+    int shakey2;
 };
 extern cameravars_t cameravars[MAXPLAYERS];
 
@@ -758,13 +758,13 @@ extern int minotaurlevel;
 // language stuff
 struct Language
 {
-	static const char* get(const int line);
-	static std::map<int, std::string> entries;
-	static std::map<int, std::string> tmpEntries;
-	static void reset();
-	static int loadLanguage(char const* const lang, bool forceLoadBaseDirectory);
-	static int reloadLanguage();
-	static std::string languageCode;
+    static const char* get(const int line);
+    static std::map<int, std::string> entries;
+    static std::map<int, std::string> tmpEntries;
+    static void reset();
+    static int loadLanguage(char const* const lang, bool forceLoadBaseDirectory);
+    static int reloadLanguage();
+    static std::string languageCode;
 };
 
 // random game defines
@@ -860,14 +860,14 @@ void list_RemoveNode(node_t* node);
 template <typename T>
 void list_RemoveNodeWithElement(list_t &list, T element)
 {
-	for ( node_t *node = list.first; node != nullptr; node = node->next )
-	{
-		if ( *static_cast<T*>(node->element) == element )
-		{
-			list_RemoveNode(node);
-			return;
-		}
-	}
+    for ( node_t *node = list.first; node != nullptr; node = node->next )
+    {
+        if ( *static_cast<T*>(node->element) == element )
+        {
+            list_RemoveNode(node);
+            return;
+        }
+    }
 }
 node_t* list_AddNodeFirst(list_t* list);
 node_t* list_AddNodeLast(list_t* list);
@@ -916,13 +916,13 @@ extern SteamStat_t g_SteamStats[NUM_STEAM_STATISTICS];
  #include <steam/steam_api.h>
  struct SteamGlobalStat_t
  {
-	 int m_ID;
-	 ESteamStatTypes m_eStatType;
-	 const char *m_pchStatName;
-	 int64 m_iValue;
-	 float m_flValue;
-	 float m_flAvgNumerator;
-	 float m_flAvgDenominator;
+     int m_ID;
+     ESteamStatTypes m_eStatType;
+     const char *m_pchStatName;
+     int64 m_iValue;
+     float m_flValue;
+     float m_flAvgNumerator;
+     float m_flAvgDenominator;
  };
  #include "steam.hpp"
  extern CSteamLeaderboards* g_SteamLeaderboards;

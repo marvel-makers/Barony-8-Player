@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: light.cpp
-	Desc: light spawning code
+ BARONY
+ File: light.cpp
+    Desc: light spawning code
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+ Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -15,89 +15,89 @@
 
 /*-------------------------------------------------------------------------------
 
-	lightSphereShadow
+ lightSphereShadow
 
-	Adds a circle of light to the lightmap at x and y with the supplied
-	radius and color; casts shadows against walls
+ Adds a circle of light to the lightmap at x and y with the supplied
+    radius and color; casts shadows against walls
 
 -------------------------------------------------------------------------------*/
 
 light_t* lightSphereShadow(int index, Sint32 x, Sint32 y, Sint32 radius, float r, float g, float b, float a, float exp)
 {
-	light_t* light = newLight(index, x, y, radius);
+    light_t* light = newLight(index, x, y, radius);
     r = r * 255.f;
     g = g * 255.f;
     b = b * 255.f;
     a = a * 255.f;
 
-	for (int v = y - radius; v <= y + radius; ++v) {
-		for (int u = x - radius; u <= x + radius; ++u) {
-			if (u >= 0 && v >= 0 && u < map.width && v < map.height) {
-				const int dx = u - x;
-				const int dy = v - y;
-				const int dxabs = abs(dx);
-				const int dyabs = abs(dy);
-				real_t a0 = dyabs * .5;
-				real_t b0 = dxabs * .5;
-				int u2 = u;
-				int v2 = v;
+    for (int v = y - radius; v <= y + radius; ++v) {
+        for (int u = x - radius; u <= x + radius; ++u) {
+            if (u >= 0 && v >= 0 && u < map.width && v < map.height) {
+                const int dx = u - x;
+                const int dy = v - y;
+                const int dxabs = abs(dx);
+                const int dyabs = abs(dy);
+                real_t a0 = dyabs * .5;
+                real_t b0 = dxabs * .5;
+                int u2 = u;
+                int v2 = v;
                 
                 // check origin is okay
-				bool wallhit = true;
-				const int mapindex = v * MAP_LAYERS + u * MAP_LAYERS * map.height;
-				for (int z = 0; z < MAP_LAYERS; z++) {
-					if ( !map.tiles[mapindex + z] || map.tiles[mapindex + z] == TRANSPARENT_TILE ) {
-						wallhit = false;
-						break;
-					}
-				}
-				if (wallhit == true) {
-					continue;
-				}
+                bool wallhit = true;
+                const int mapindex = v * MAP_LAYERS + u * MAP_LAYERS * map.height;
+                for (int z = 0; z < MAP_LAYERS; z++) {
+                    if ( !map.tiles[mapindex + z] || map.tiles[mapindex + z] == TRANSPARENT_TILE ) {
+                        wallhit = false;
+                        break;
+                    }
+                }
+                if (wallhit == true) {
+                    continue;
+                }
                 
                 // line test
                 if (dxabs >= dyabs) { // the line is more horizontal than vertical
-					for (int i = 0; i < dxabs; ++i) {
-						u2 -= sgn(dx);
-						b0 += dyabs;
-						if (b0 >= dxabs) {
-							b0 -= dxabs;
-							v2 -= sgn(dy);
-						}
-						if (u2 >= 0 && u2 < map.width && v2 >= 0 && v2 < map.height) {
-							if ( map.tiles[OBSTACLELAYER + v2 * MAP_LAYERS + u2 * MAP_LAYERS * map.height]
+                    for (int i = 0; i < dxabs; ++i) {
+                        u2 -= sgn(dx);
+                        b0 += dyabs;
+                        if (b0 >= dxabs) {
+                            b0 -= dxabs;
+                            v2 -= sgn(dy);
+                        }
+                        if (u2 >= 0 && u2 < map.width && v2 >= 0 && v2 < map.height) {
+                            if ( map.tiles[OBSTACLELAYER + v2 * MAP_LAYERS + u2 * MAP_LAYERS * map.height]
                                 && map.tiles[OBSTACLELAYER + v2 * MAP_LAYERS + u2 * MAP_LAYERS * map.height] != TRANSPARENT_TILE ) {
-								wallhit = true;
-								break;
-							}
-						}
-					}
-				}
+                                wallhit = true;
+                                break;
+                            }
+                        }
+                    }
+                }
                 else { // the line is more vertical than horizontal
-					for (int i = 0; i < dyabs; ++i) {
-						v2 -= sgn(dy);
-						a0 += dxabs;
-						if (a0 >= dyabs) {
-							a0 -= dyabs;
-							u2 -= sgn(dx);
-						}
-						if (u2 >= 0 && u2 < map.width && v2 >= 0 && v2 < map.height) {
-							if (map.tiles[OBSTACLELAYER + v2 * MAP_LAYERS + u2 * MAP_LAYERS * map.height]
+                    for (int i = 0; i < dyabs; ++i) {
+                        v2 -= sgn(dy);
+                        a0 += dxabs;
+                        if (a0 >= dyabs) {
+                            a0 -= dyabs;
+                            u2 -= sgn(dx);
+                        }
+                        if (u2 >= 0 && u2 < map.width && v2 >= 0 && v2 < map.height) {
+                            if (map.tiles[OBSTACLELAYER + v2 * MAP_LAYERS + u2 * MAP_LAYERS * map.height]
                                 && map.tiles[OBSTACLELAYER + v2 * MAP_LAYERS + u2 * MAP_LAYERS * map.height] != TRANSPARENT_TILE) {
-								wallhit = true;
-								break;
-							}
-						}
-					}
-				}
+                                wallhit = true;
+                                break;
+                            }
+                        }
+                    }
+                }
                 
                 // light tile if it passed line test
-				if (wallhit == false || (wallhit == true && u2 == u && v2 == v)) {
+                if (wallhit == false || (wallhit == true && u2 == u && v2 == v)) {
                     const float dist = exp != 1.f ? powf(dx * dx + dy * dy, exp) : dx * dx + dy * dy;
                     const auto falloff = std::min<float>(dist / radius, 1.0f);
                     const auto soff = (dy + radius) + (dx + radius) * (radius * 2 + 1);
                     auto& s = light->tiles[soff];
-					s.x += r - r * falloff;
+                    s.x += r - r * falloff;
                     s.y += g - g * falloff;
                     s.z += b - b * falloff;
                     s.w += a - a * falloff;
@@ -118,34 +118,34 @@ light_t* lightSphereShadow(int index, Sint32 x, Sint32 y, Sint32 radius, float r
                         }
                     }
                 }
-			}
-		}
-	}
-	return light;
+            }
+        }
+    }
+    return light;
 }
 
 /*-------------------------------------------------------------------------------
 
-	lightSphere
+ lightSphere
 
-	Adds a circle of light to the lightmap at x and y with the supplied
-	radius and color; casts no shadows
+   Adds a circle of light to the lightmap at x and y with the supplied
+    radius and color; casts no shadows
 
 -------------------------------------------------------------------------------*/
 
 light_t* lightSphere(int index, Sint32 x, Sint32 y, Sint32 radius, float r, float g, float b, float a, float exp)
 {
-	light_t* light = newLight(index, x, y, radius);
+    light_t* light = newLight(index, x, y, radius);
     r = r * 255.f;
     g = g * 255.f;
     b = b * 255.f;
     a = a * 255.f;
 
-	for (int v = y - radius; v <= y + radius; ++v) {
-		for (int u = x - radius; u <= x + radius; ++u) {
-			if (u >= 0 && v >= 0 && u < map.width && v < map.height) {
-				const int dx = u - x;
-				const int dy = v - y;
+    for (int v = y - radius; v <= y + radius; ++v) {
+        for (int u = x - radius; u <= x + radius; ++u) {
+            if (u >= 0 && v >= 0 && u < map.width && v < map.height) {
+                const int dx = u - x;
+                const int dy = v - y;
                 const float dist = exp != 1.f ? powf(dx * dx + dy * dy, exp) : dx * dx + dy * dy;
                 const auto falloff = std::min<float>(dist / radius, 1.0f);
                 const auto soff = (dy + radius) + (dx + radius) * (radius * 2 + 1);
@@ -170,10 +170,10 @@ light_t* lightSphere(int index, Sint32 x, Sint32 y, Sint32 radius, float r, floa
                         d.w += s.w;
                     }
                 }
-			}
-		}
-	}
-	return light;
+            }
+        }
+    }
+    return light;
 }
 
 #include "rapidjson/document.h"

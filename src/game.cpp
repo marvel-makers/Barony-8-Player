@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: game.cpp
-	Desc: contains main game code
+ BARONY
+ File: game.cpp
+ Desc: contains main game code
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+ Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -472,38 +472,38 @@ void TimerExperiments::renderCameras(view_t& camera, int player)
     return;
     //if ( players[player]->entity )
     //{
-    //	// store original x/y by game logic
-    //	playerBodypartOffsets[player].entity_ox = players[player]->entity->x;
-    //	playerBodypartOffsets[player].entity_oy = players[player]->entity->y;
+    //  // store original x/y by game logic
+    //  playerBodypartOffsets[player].entity_ox = players[player]->entity->x;
+    //  playerBodypartOffsets[player].entity_oy = players[player]->entity->y;
 
-    //	players[player]->entity->lerp_ox = players[player]->entity->x;
-    //	players[player]->entity->lerp_oy = players[player]->entity->y;
+    //  players[player]->entity->lerp_ox = players[player]->entity->x;
+    //  players[player]->entity->lerp_oy = players[player]->entity->y;
 
-    //	// set to interpolated position
-    //	players[player]->entity->x = TimerExperiments::cameraRenderState[player].x.position * 16.0;
-    //	players[player]->entity->y = TimerExperiments::cameraRenderState[player].y.position * 16.0;
+    //  // set to interpolated position
+    //  players[player]->entity->x = TimerExperiments::cameraRenderState[player].x.position * 16.0;
+    //  players[player]->entity->y = TimerExperiments::cameraRenderState[player].y.position * 16.0;
 
-    //	// adjust bodyparts for this interpolation too, ignore static HUD elements
-    //	playerBodypartOffsets[player].limb_newx = players[player]->entity->x - playerBodypartOffsets[player].entity_ox;
-    //	playerBodypartOffsets[player].limb_newy = players[player]->entity->y - playerBodypartOffsets[player].entity_oy;
-    //	for ( Entity *bodypart : players[player]->entity->bodyparts )
-    //	{
-    //		if ( players[player]->isLocalPlayer() )
-    //		{
-    //			if ( bodypart->behavior == &actHudAdditional
-    //				|| bodypart->behavior == &actHudWeapon
-    //				|| bodypart->behavior == &actHudArm
-    //				|| bodypart->behavior == &actHudArrowModel
-    //				|| bodypart->behavior == &actHudShield
-    //				|| bodypart->behavior == &actLeftHandMagic
-    //				|| bodypart->behavior == &actRightHandMagic )
-    //			{
-    //				continue;
-    //			}
-    //		}
-    //		bodypart->x += playerBodypartOffsets[player].limb_newx;
-    //		bodypart->y += playerBodypartOffsets[player].limb_newy;
-    //	}
+    //  // adjust bodyparts for this interpolation too, ignore static HUD elements
+    //  playerBodypartOffsets[player].limb_newx = players[player]->entity->x - playerBodypartOffsets[player].entity_ox;
+    //  playerBodypartOffsets[player].limb_newy = players[player]->entity->y - playerBodypartOffsets[player].entity_oy;
+    //  for ( Entity *bodypart : players[player]->entity->bodyparts )
+    //  {
+    //      if ( players[player]->isLocalPlayer() )
+    //      {
+    //          if ( bodypart->behavior == &actHudAdditional
+    //              || bodypart->behavior == &actHudWeapon
+    //              || bodypart->behavior == &actHudArm
+    //              || bodypart->behavior == &actHudArrowModel
+    //              || bodypart->behavior == &actHudShield
+    //              || bodypart->behavior == &actLeftHandMagic
+    //              || bodypart->behavior == &actRightHandMagic )
+    //          {
+    //              continue;
+    //          }
+    //      }
+    //      bodypart->x += playerBodypartOffsets[player].limb_newx;
+    //      bodypart->y += playerBodypartOffsets[player].limb_newy;
+    //  }
     //}
 }
 
@@ -962,9 +962,9 @@ static ConsoleCommand ccmd_demo_play("/demo_play", "play a recorded demo(default
 
 /*-------------------------------------------------------------------------------
 
-	gameLogic
+ gameLogic
 
-	Updates the gamestate; moves actors, primarily
+ Updates the gamestate; moves actors, primarily
 
 -------------------------------------------------------------------------------*/
 
@@ -1874,7 +1874,7 @@ void gameLogic(void)
                             {
                                 auto t2 = std::chrono::high_resolution_clock::now();
                                 //printlog("%d: %d %f", entity->sprite, entity->monsterState,
-                                //	1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t).count());
+                                //  1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t).count());
                                 accum += 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t).
                                     count();
                                 entityAccum[entity->sprite] += 1000 * std::chrono::duration_cast<std::chrono::duration<
@@ -4071,9 +4071,9 @@ void gameLogic(void)
 
 /*-------------------------------------------------------------------------------
 
-	handleButtons
+ handleButtons
 
-	Draws buttons and processes clicks
+ Draws buttons and processes clicks
 
 -------------------------------------------------------------------------------*/
 
@@ -4247,9 +4247,9 @@ void handleButtons(void)
 
 /*-------------------------------------------------------------------------------
 
-	handleEvents
+ handleEvents
 
-	Handles all SDL events; receives input, updates gamestate, etc.
+  Handles all SDL events; receives input, updates gamestate, etc.
 
 -------------------------------------------------------------------------------*/
 
@@ -4485,7 +4485,7 @@ bool handleEvents(void)
         }
     }
 #endif // USE_EOS
-	}
+    }
 #endif // NINTENDO
 
 #ifdef DEBUG_EVENT_TIMERS
@@ -4513,7 +4513,7 @@ bool handleEvents(void)
         }
         time1 = std::chrono::high_resolution_clock::now();
 #endif
-		}
+        }
 #endif
         // Global events
         switch (event.type)
@@ -4905,55 +4905,55 @@ bool handleEvents(void)
             //evs[event.motion.timestamp].push_back(event.motion);
             //if ( evs[event.motion.timestamp].size() > 1 )
             //{
-            //	static std::map<Uint32, std::map<Sint32, std::map<Sint32, std::map<Sint32, std::map<Sint32, int>>>>> ss;
-            //	auto& val = ss[event.motion.timestamp][event.motion.x][event.motion.y][event.motion.xrel][event.motion.yrel];
-            //	val++;
-            //	if ( evs[event.motion.timestamp].size() >= 2000 )
-            //	{
-            //		mousexrel -= event.motion.xrel;
-            //		mouseyrel -= event.motion.yrel;
-            //		messagePlayer(0, MESSAGE_DEBUG, "cleared");
-            //	}
+            //  static std::map<Uint32, std::map<Sint32, std::map<Sint32, std::map<Sint32, std::map<Sint32, int>>>>> ss;
+            //  auto& val = ss[event.motion.timestamp][event.motion.x][event.motion.y][event.motion.xrel][event.motion.yrel];
+            //  val++;
+            //  if ( evs[event.motion.timestamp].size() >= 2000 )
+            //  {
+            //      mousexrel -= event.motion.xrel;
+            //      mouseyrel -= event.motion.yrel;
+            //      messagePlayer(0, MESSAGE_DEBUG, "cleared");
+            //  }
             //}
             //if ( evs.size() > 100 )
             //{
-            //	size_t m = 0;
-            //	for ( auto& v : evs )
-            //	{
-            //		m = std::max(v.second.size(), m);
-            //	}
-            //	//if ( m > 25 )
-            //	{
-            //		for ( auto& v : evs )
-            //		{
-            //			//if ( v.second.size() > 25 )
-            //			{
-            //				int netx = 0;
-            //				int nety = 0;
-            //				int dupes = 0;
-            //				std::map<Sint32, std::map<Sint32, std::map<Sint32, std::map<Sint32, int>>>> ss;
-            //				for ( auto& s : v.second )
-            //				{
-            //					ss[s.x][s.y][s.xrel][s.yrel]++;
-            //					if ( ss[s.x][s.y][s.xrel][s.yrel] > 1 )
-            //					{
-            //						++dupes;
-            //					}
-            //					netx += s.xrel;
-            //					nety += s.yrel;
-            //				}
-            //				if ( dupes > 0 )
-            //				{
-            //					int rx = 0;
-            //					int ry = 0;
-            //					SDL_GetRelativeMouseState(&rx, &ry);
-            //					messagePlayer(0, MESSAGE_DEBUG, "net x: %d y: %d | dupes: %d | rx: %d ry: %d", netx, nety, dupes, rx, ry);
-            //				}
-            //			}
-            //		}
-            //		messagePlayer(0, MESSAGE_DEBUG, "max dupe: %d", m);
-            //	}
-            //	evs.clear();
+            //  size_t m = 0;
+            //  for ( auto& v : evs )
+            //  {
+            //      m = std::max(v.second.size(), m);
+            //  }
+            //  //if ( m > 25 )
+            //  {
+            //      for ( auto& v : evs )
+            //      {
+            //          //if ( v.second.size() > 25 )
+            //          {
+            //              int netx = 0;
+            //              int nety = 0;
+            //              int dupes = 0;
+            //              std::map<Sint32, std::map<Sint32, std::map<Sint32, std::map<Sint32, int>>>> ss;
+            //              for ( auto& s : v.second )
+            //              {
+            //                  ss[s.x][s.y][s.xrel][s.yrel]++;
+            //                  if ( ss[s.x][s.y][s.xrel][s.yrel] > 1 )
+            //                  {
+            //                      ++dupes;
+            //                  }
+            //                  netx += s.xrel;
+            //                  nety += s.yrel;
+            //              }
+            //              if ( dupes > 0 )
+            //              {
+            //                  int rx = 0;
+            //                  int ry = 0;
+            //                  SDL_GetRelativeMouseState(&rx, &ry);
+            //                  messagePlayer(0, MESSAGE_DEBUG, "net x: %d y: %d | dupes: %d | rx: %d ry: %d", netx, nety, dupes, rx, ry);
+            //              }
+            //          }
+            //      }
+            //      messagePlayer(0, MESSAGE_DEBUG, "max dupe: %d", m);
+            //  }
+            //  evs.clear();
             //}
             //}
 
@@ -5650,9 +5650,9 @@ bool handleEvents(void)
 
 /*-------------------------------------------------------------------------------
 
-	pauseGame
+ pauseGame
 
-	pauses or unpauses the game, depending on its current state
+ pauses or unpauses the game, depending on its current state
 
 -------------------------------------------------------------------------------*/
 
@@ -5804,10 +5804,10 @@ void pauseGame(int mode /* 0 == toggle, 1 == force unpause, 2 == force pause */,
 
 /*-------------------------------------------------------------------------------
 
-	frameRateLimit
+ frameRateLimit
 
-	Returns true until the correct number of frames has passed from the
-	beginning of the last cycle in the main loop.
+    Returns true until the correct number of frames has passed from the
+    beginning of the last cycle in the main loop.
 
 -------------------------------------------------------------------------------*/
 
@@ -6547,14 +6547,14 @@ void ingameHud()
             }
             //else if ( players[player]->gui_mode == GUI_MODE_MAGIC )
             //{
-            //	updateCharacterSheet(player);
-            //	//updateMagicGUI();
+            //  updateCharacterSheet(player);
+            //  //updateMagicGUI();
             //}
             //else if ( players[player]->gui_mode == GUI_MODE_SHOP
-            //	|| )
+            //  || )
             //{
-            //	//updateCharacterSheet(player);
-            //	//updateShopWindow(player);
+            //  //updateCharacterSheet(player);
+            //  //updateShopWindow(player);
             //}
         }
 
@@ -7166,10 +7166,10 @@ void drawAllPlayerCameras()
 
 /*-------------------------------------------------------------------------------
 
-	main
+ main
 
-	Initializes game resources, harbors main game loop, and cleans up
-	afterwards
+  Initializes game resources, harbors main game loop, and cleans up
+  afterwards
 
 -------------------------------------------------------------------------------*/
 
@@ -7541,8 +7541,8 @@ int main(int argc, char** argv)
         //chdir("..");
         //chdir("..");
 #endif
-		}
-		else
+        }
+        else
         {
             printlog("Failed to get binary path. Program may not work corectly!\n");
         }
@@ -7646,7 +7646,7 @@ int main(int argc, char** argv)
                         no_sound = true;
                     }
 #ifdef BARONY_SMOKE_TESTS
-					else
+                    else
                     {
                         std::string smokeOptionError;
                         if (SmokeTestHooks::Mapgen::parseIntegrationOptionArg(
@@ -7664,8 +7664,8 @@ int main(int argc, char** argv)
 #ifdef USE_EOS
                     EOS.CommandLineArgs.push_back(argv[c]);
 #endif // USE_EOS
-						}
-					}
+                        }
+                    }
 #else
                     else
                     {

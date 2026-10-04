@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: stat.hpp
-	Desc: header for stat.cpp (contains Stat class definition)
+ BARONY
+ File: stat.hpp
+ Desc: header for stat.cpp (contains Stat class definition)
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+    Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -24,39 +24,39 @@ class Item;
 
 typedef enum
 {
-	NOTHING,
-	HUMAN,
-	RAT,
-	GOBLIN,
-	SLIME,
-	TROLL,
-	BAT_SMALL,
-	SPIDER,
-	GHOUL,
-	SKELETON,
-	SCORPION,
-	CREATURE_IMP, //Because Apple so unkindly is already using the IMP keyword.
-	CRAB,
-	GNOME,
-	DEMON,
-	SUCCUBUS,
-	MIMIC,
-	LICH,
-	MINOTAUR,
-	DEVIL,
-	SHOPKEEPER,
-	KOBOLD,
-	SCARAB,
-	CRYSTALGOLEM,
-	INCUBUS,
-	VAMPIRE,
-	SHADOW,
-	COCKATRICE,
-	INSECTOID,
-	GOATMAN,
-	AUTOMATON,
-	LICH_ICE,
-	LICH_FIRE
+    NOTHING,
+    HUMAN,
+    RAT,
+    GOBLIN,
+    SLIME,
+    TROLL,
+    BAT_SMALL,
+    SPIDER,
+    GHOUL,
+    SKELETON,
+    SCORPION,
+    CREATURE_IMP, //Because Apple so unkindly is already using the IMP keyword.
+    CRAB,
+    GNOME,
+    DEMON,
+    SUCCUBUS,
+    MIMIC,
+    LICH,
+    MINOTAUR,
+    DEVIL,
+    SHOPKEEPER,
+    KOBOLD,
+    SCARAB,
+    CRYSTALGOLEM,
+    INCUBUS,
+    VAMPIRE,
+    SHADOW,
+    COCKATRICE,
+    INSECTOID,
+    GOATMAN,
+    AUTOMATON,
+    LICH_ICE,
+    LICH_FIRE
 } Monster;
 #define NUMMONSTERS 33
 extern int kills[NUMMONSTERS];
@@ -103,67 +103,67 @@ static const int NUMPROFICIENCIES = 14;
 
 typedef enum
 {
-	MALE,
-	FEMALE
+    MALE,
+    FEMALE
 } sex_t;
 
 class Stat
 {
 public:
-	Monster type;
-	sex_t sex;
-	Uint32 appearance;
-	char name[128];
-	char obituary[128];
-	Uint32 poisonKiller; // uid of the entity which killed me via burning/poison
+    Monster type;
+    sex_t sex;
+    Uint32 appearance;
+    char name[128];
+    char obituary[128];
+    Uint32 poisonKiller; // uid of the entity which killed me via burning/poison
 
-	// attributes
-	Sint32 HP, MAXHP, OLDHP;
-	Sint32 MP, MAXMP;
-	Sint32 STR, DEX, CON, INT, PER, CHR;
-	Sint32 EXP, LVL;
-	Sint32 GOLD, HUNGER;
+    // attributes
+    Sint32 HP, MAXHP, OLDHP;
+    Sint32 MP, MAXMP;
+    Sint32 STR, DEX, CON, INT, PER, CHR;
+    Sint32 EXP, LVL;
+    Sint32 GOLD, HUNGER;
 
-	// skills and effects
-	Sint32 PROFICIENCIES[NUMPROFICIENCIES];
-	bool EFFECTS[NUMEFFECTS];
-	Sint32 EFFECTS_TIMERS[NUMEFFECTS];
-	bool defending;
+    // skills and effects
+    Sint32 PROFICIENCIES[NUMPROFICIENCIES];
+    bool EFFECTS[NUMEFFECTS];
+    Sint32 EFFECTS_TIMERS[NUMEFFECTS];
+    bool defending;
 
-	// group think
-	Uint32 leader_uid;
-	list_t FOLLOWERS;
-	int stache_x1, stache_x2;
-	int stache_y1, stache_y2;
+    // group think
+    Uint32 leader_uid;
+    list_t FOLLOWERS;
+    int stache_x1, stache_x2;
+    int stache_y1, stache_y2;
 
-	// equipment
-	list_t inventory;
-	Item* helmet;
-	Item* breastplate;
-	Item* gloves;
-	Item* shoes;
-	Item* shield;
-	Item* weapon;
-	Item* cloak;
-	Item* amulet;
-	Item* ring;
-	Item* mask;
+    // equipment
+    list_t inventory;
+    Item* helmet;
+    Item* breastplate;
+    Item* gloves;
+    Item* shoes;
+    Item* shield;
+    Item* weapon;
+    Item* cloak;
+    Item* amulet;
+    Item* ring;
+    Item* mask;
 
-	// misc
+    // misc
 #ifdef USE_FMOD
-	FMOD::Channel* monster_sound;
+    FMOD::Channel* monster_sound;
 #else
-	void* monster_sound;
+    void* monster_sound;
 #endif
-	int monster_idlevar;
+    int monster_idlevar;
 
-	list_t magic_effects; //Makes things like the invisibility spell work.
-	Stat();
-	~Stat();
-	void clearStats();
-	void freePlayerEquipment();
-	Stat* copyStats();
-	void printStats();
+    list_t magic_effects; //Makes things like the invisibility spell work.
+    Stat();
+    ~Stat();
+    void clearStats();
+    void freePlayerEquipment();
+    Stat* copyStats();
+    void printStats();
 };
 
 extern Stat* stats[MAXPLAYERS];

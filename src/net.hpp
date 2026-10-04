@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: net.hpp
-	Desc: prototypes and definitions for net.cpp
+ BARONY
+ File: net.hpp
+  Desc: prototypes and definitions for net.cpp
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+  Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -63,24 +63,24 @@ void sendAllyCommandClient(int player, Uint32 uid, int command, Uint8 x, Uint8 y
 
 enum class LobbyJoinError : Uint32
 {
-	Full = 240,
-	VersionMismatch,
-	UnexpectedSave,
-	MissingSave,
-	IncompatibleSave,
-	WrongLevel,
-	LobbyKeyMismatch,
-	SnapshotTooLarge
+    Full = 240,
+    VersionMismatch,
+    UnexpectedSave,
+    MissingSave,
+    IncompatibleSave,
+    WrongLevel,
+    LobbyKeyMismatch,
+    SnapshotTooLarge
 };
 
 constexpr Uint32 NET_JOIN_ERROR_BASE = static_cast<Uint32>(LobbyJoinError::Full);
 
 enum NetworkingLobbyJoinRequestResult : int
 {
-	NET_LOBBY_JOIN_P2P_FAILURE,
-	NET_LOBBY_JOIN_P2P_SUCCESS,
-	NET_LOBBY_JOIN_DIRECTIP_FAILURE,
-	NET_LOBBY_JOIN_DIRECTIP_SUCCESS
+    NET_LOBBY_JOIN_P2P_FAILURE,
+    NET_LOBBY_JOIN_P2P_SUCCESS,
+    NET_LOBBY_JOIN_DIRECTIP_FAILURE,
+    NET_LOBBY_JOIN_DIRECTIP_SUCCESS
 };
 NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bool* lockedSlots);
 Entity* receiveEntity(Entity* entity);
@@ -118,65 +118,65 @@ void handleScanPacket(); // when we receive a SCAN packet (request for lobby inf
 
 struct PingNetworkStatus_t
 {
-	std::map<Uint32, Uint32> pings;
-	Uint32 lastPingtime = 0;
-	Uint32 lastSequence = 0;
-	Uint32 oldestSequenceTicks = 0;
-	Uint32 sequence = 0;
-	Uint32 displayMillis = 0;
-	Uint32 displayMillisImmediate = 0;
-	Uint32 hudDisplayOKTicks = 0;
-	bool needsUpdate = true;
-	void saveDisplayMillis(bool forceUpdate = false);
-	void clear()
-	{
-		pings.clear();
-		needsUpdate = true;
-		hudDisplayOKTicks = 0;
-		lastPingtime = 0;
-		lastSequence = 0;
-		oldestSequenceTicks = 0;
-		displayMillis = 0;
-		sequence = 0;
-		displayMillisImmediate = 0;
-	}
-	static bool bEnabled;
-	static int pingLimitGreen;
-	static int pingLimitYellow;
-	static int pingLimitOrange;
-	static bool pingHUDDisplayGreen;
-	static bool pingHUDDisplayYellow;
-	static bool pingHUDDisplayOrange;
-	static bool pingHUDDisplayRed;
-	static bool pingHUDShowOKBriefly;
-	static bool pingHUDShowNumericValue;
-	static void receive();
-	static void respond();
-	static void update();
-	static void reset();
+    std::map<Uint32, Uint32> pings;
+    Uint32 lastPingtime = 0;
+    Uint32 lastSequence = 0;
+    Uint32 oldestSequenceTicks = 0;
+    Uint32 sequence = 0;
+    Uint32 displayMillis = 0;
+    Uint32 displayMillisImmediate = 0;
+    Uint32 hudDisplayOKTicks = 0;
+    bool needsUpdate = true;
+    void saveDisplayMillis(bool forceUpdate = false);
+    void clear()
+    {
+        pings.clear();
+        needsUpdate = true;
+        hudDisplayOKTicks = 0;
+        lastPingtime = 0;
+        lastSequence = 0;
+        oldestSequenceTicks = 0;
+        displayMillis = 0;
+        sequence = 0;
+        displayMillisImmediate = 0;
+    }
+    static bool bEnabled;
+    static int pingLimitGreen;
+    static int pingLimitYellow;
+    static int pingLimitOrange;
+    static bool pingHUDDisplayGreen;
+    static bool pingHUDDisplayYellow;
+    static bool pingHUDDisplayOrange;
+    static bool pingHUDDisplayRed;
+    static bool pingHUDShowOKBriefly;
+    static bool pingHUDShowNumericValue;
+    static void receive();
+    static void respond();
+    static void update();
+    static void reset();
 };
 class PingNetworkStatusStore
 {
 public:
-	PingNetworkStatus_t& operator[](std::size_t index)
-	{
-		if (index >= values_.size())
-		{
-			values_.resize(index + 1);
-		}
-		return values_[index];
-	}
+    PingNetworkStatus_t& operator[](std::size_t index)
+    {
+        if (index >= values_.size())
+        {
+            values_.resize(index + 1);
+        }
+        return values_[index];
+    }
 
-	const PingNetworkStatus_t& operator[](std::size_t index) const
-	{
-		return values_.at(index);
-	}
+    const PingNetworkStatus_t& operator[](std::size_t index) const
+    {
+        return values_.at(index);
+    }
 
-	void resize(std::size_t size) { values_.resize(size); }
-	std::size_t size() const noexcept { return values_.size(); }
+    void resize(std::size_t size) { values_.resize(size); }
+    std::size_t size() const noexcept { return values_.size(); }
 
 private:
-	std::vector<PingNetworkStatus_t> values_;
+    std::vector<PingNetworkStatus_t> values_;
 };
 
 extern PingNetworkStatusStore PingNetworkStatus;

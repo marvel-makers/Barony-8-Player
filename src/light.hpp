@@ -1,24 +1,24 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: light.hpp
-	Desc: prototypes for light.cpp, light-related types and prototypes
+ BARONY
+ File: light.hpp
+    Desc: prototypes for light.cpp, light-related types and prototypes
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+    Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 #pragma once
 
 typedef struct light_t
 {
-	Sint32 x, y;
-	Sint32 radius;
-	vec4_t* tiles;
+    Sint32 x, y;
+    Sint32 radius;
+    vec4_t* tiles;
     int index; // which lightmap this actually exists in
 
-	// a pointer to the light's location in a list
-	node_t* node;
+    // a pointer to the light's location in a list
+    node_t* node;
 } light_t;
 
 light_t* lightSphereShadow(int index, Sint32 x, Sint32 y, Sint32 radius, float r, float g, float b, float a, float exp);
@@ -32,7 +32,7 @@ struct LightDef {
     float r = 0.f;
     float g = 0.f;
     float b = 0.f;
-	float a = 0.f;
+    float a = 0.f;
     float falloff_exp = 1.f;
     bool shadows = false;
 };

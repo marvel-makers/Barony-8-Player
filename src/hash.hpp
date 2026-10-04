@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: hash.hpp
-	Desc: header for hash.cpp
+ BARONY
+ File: hash.hpp
+ Desc: header for hash.cpp
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+ Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -15,10 +15,10 @@
 
 typedef struct ttfTextHash_t
 {
-	char* str;
-	SDL_Surface* surf;
-	TTF_Font* font;
-	bool outline;
+    char* str;
+    SDL_Surface* surf;
+    TTF_Font* font;
+    bool outline;
 } ttfTextHash_t;
 
 unsigned long djb2Hash(char* str);

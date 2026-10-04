@@ -3025,12 +3025,12 @@ void updateAllyBarFrame(const int player, Frame* baseFrame, int activeBars, int 
                     hpForegroundValue = HPBar.animateSetpoint;
                 }
 
-                /*	int increment = 3;
+                /*  int increment = 3;
                 double scaledIncrement = (increment * (getFPSScale(144.0)));*/
                 //real_t diff = std::max(.1, (HPBar.animateSetpoint * 10 - hpForegroundValue) / (maxValue / 5)); // 0.1-5 value
                 //if ( HPBar.animateSetpoint * 10 >= maxValue )
                 //{
-                //	diff = 5;
+                //  diff = 5;
                 //}
                 //scaledIncrement *= 0.2 * pow(diff, 2) + .5;
 
@@ -3808,9 +3808,9 @@ Frame* createPauseMenuPlayerBars()
         if (clientnum < 0 || players[clientnum]->hud.playerBars.size() == 0
             || voice_no_recv & (1 << clientnum) || !voice_any_send
 #ifdef NINTENDO
-			|| directConnect
+            || directConnect
 #endif
-			)
+            )
     {
         //frame->setOpacity(0.0);
         //frame->setInheritParentFrameOpacity(false);
@@ -3864,7 +3864,7 @@ Frame* createPauseMenuPlayerBars()
             }
         }
     }
-		});
+        });
 #endif
     return frame;
 }
@@ -5289,15 +5289,15 @@ void Player::HUD_t::updateUINavigation()
                 // options to use specific text 'open log' etc
                 //if ( selectedElement == Player::CharacterSheet_t::SHEET_SKILL_LIST )
                 //{
-                //	additionalTxt->setText(Language::get(4095));
+                //  additionalTxt->setText(Language::get(4095));
                 //}
                 //else if ( selectedElement == Player::CharacterSheet_t::SHEET_OPEN_LOG )
                 //{
-                //	additionalTxt->setText(Language::get(4106));
+                //  additionalTxt->setText(Language::get(4106));
                 //}
                 //else if ( selectedElement == Player::CharacterSheet_t::SHEET_OPEN_MAP )
                 //{
-                //	additionalTxt->setText(Language::get(4105));
+                //  additionalTxt->setText(Language::get(4105));
                 //}
                 additionalTxt->setText(Language::get(4107)); // activate
             }
@@ -13166,14 +13166,14 @@ void Player::HUD_t::processHUD()
 
             //if ( keystatus[SDLK_c] )
             //{
-            //	// debug stuff
-            //	if ( auto tex = AOEIndicators_t::getTexture(AOEIndicators_t::uids - 1) )
-            //	{
-            //	Image::draw(tex->texid, tex->w, tex->h, nullptr, SDL_Rect{
-            //		Frame::virtualScreenX / 2 - 128 * 2, Frame::virtualScreenY / 2 - 128 * 2, 128 * 4, 128 * 4
-            //		},
-            //		SDL_Rect{ 0, 0, Frame::virtualScreenX, Frame::virtualScreenY }, 0xffffffff);
-            //	}
+            //  // debug stuff
+            //  if ( auto tex = AOEIndicators_t::getTexture(AOEIndicators_t::uids - 1) )
+            //  {
+            //  Image::draw(tex->texid, tex->w, tex->h, nullptr, SDL_Rect{
+            //      Frame::virtualScreenX / 2 - 128 * 2, Frame::virtualScreenY / 2 - 128 * 2, 128 * 4, 128 * 4
+            //      },
+            //      SDL_Rect{ 0, 0, Frame::virtualScreenX, Frame::virtualScreenY }, 0xffffffff);
+            //  }
             //}
         });
     }
@@ -15515,7 +15515,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
         characterInnerFrame->setSize(SDL_Rect{6, 0, 202, 104});
         {
             //characterInnerFrame->addImage(SDL_Rect{ 0, 0, characterInnerFrame->getSize().w, characterInnerFrame->getSize().h }, 0xFFFFFFFF,
-            //	"*#images/ui/CharSheet/HUD_CharSheet_Window_01A_TopTmp.png", "character info tmp img");
+            //  "*#images/ui/CharSheet/HUD_CharSheet_Window_01A_TopTmp.png", "character info tmp img");
 
 
             SDL_Rect characterTextPos{2, 0, 198, 24};
@@ -17234,8 +17234,8 @@ void Player::GUIDropdown_t::process()
     int textStartX = textPaddingX;
     //if ( optionFrames.size() > 0 )
     //{
-    //	auto img = std::get<0>(optionFrames[0]);
-    //	textStartX += (img->disabled ? 0 : img->pos.x + img->pos.w);
+    //  auto img = std::get<0>(optionFrames[0]);
+    //  textStartX += (img->disabled ? 0 : img->pos.x + img->pos.w);
     //}
     const int frameWidth = maxWidth + textStartX + textPaddingX;
 
@@ -18879,17 +18879,17 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
 
     //if ( keystatus[SDLK_g] )
     //{
-    //	keystatus[SDLK_g] = 0;
-    //	blitCharacterSheetTooltipToSurf = !blitCharacterSheetTooltipToSurf;
-    //	messagePlayer(0, MESSAGE_DEBUG, "%d", blitCharacterSheetTooltipToSurf);
-    //	if ( !blitCharacterSheetTooltipToSurf )
-    //	{
-    //		tooltipFrame->setBlitChildren(false);
-    //	}
-    //	else if ( blitCharacterSheetTooltipToSurf )
-    //	{
-    //		tooltipFrame->setBlitChildren(true);
-    //	}
+    //  keystatus[SDLK_g] = 0;
+    //  blitCharacterSheetTooltipToSurf = !blitCharacterSheetTooltipToSurf;
+    //  messagePlayer(0, MESSAGE_DEBUG, "%d", blitCharacterSheetTooltipToSurf);
+    //  if ( !blitCharacterSheetTooltipToSurf )
+    //  {
+    //      tooltipFrame->setBlitChildren(false);
+    //  }
+    //  else if ( blitCharacterSheetTooltipToSurf )
+    //  {
+    //      tooltipFrame->setBlitChildren(true);
+    //  }
     //}
 
     bool redraw = false;
@@ -19888,20 +19888,20 @@ void Player::CharacterSheet_t::updateCharacterSheetTooltip(SheetElements element
         Sint32 attackPower = displayAttackPower(player.playernum, attackHoverTextInfo);
 
         //#ifndef NDEBUG
-        //		if ( keystatus[SDLK_V] )
-        //		{
-        //			keystatus[SDLK_V] = 0;
-        //			messagePlayer(player.playernum, MESSAGE_DEBUG, "Remove this");
-        //			stats[player.playernum]->playerRace = RACE_AUTOMATON;
-        //			stats[player.playernum]->appearance = 0;
-        //		}
-        //		if ( keystatus[SDLK_B] )
-        //		{
-        //			keystatus[SDLK_B] = 0;
-        //			messagePlayer(player.playernum, MESSAGE_DEBUG, "Remove this");
-        //			stats[player.playernum]->playerRace = RACE_INSECTOID;
-        //			stats[player.playernum]->appearance = 0;
-        //		}
+        //      if ( keystatus[SDLK_V] )
+        //      {
+        //          keystatus[SDLK_V] = 0;
+        //          messagePlayer(player.playernum, MESSAGE_DEBUG, "Remove this");
+        //          stats[player.playernum]->playerRace = RACE_AUTOMATON;
+        //          stats[player.playernum]->appearance = 0;
+        //      }
+        //      if ( keystatus[SDLK_B] )
+        //      {
+        //          keystatus[SDLK_B] = 0;
+        //          messagePlayer(player.playernum, MESSAGE_DEBUG, "Remove this");
+        //          stats[player.playernum]->playerRace = RACE_INSECTOID;
+        //          stats[player.playernum]->appearance = 0;
+        //      }
         //#endif // !NDEBUG
 
         bool isAutomatonHTRegen = stats[player.playernum]->type == AUTOMATON;
@@ -23921,13 +23921,13 @@ void resetInventorySlotFrames(const int player)
 {
     //for ( int x = 0; x < players[player]->inventoryUI.getSizeX(); ++x )
     //{
-    //	for ( int y = Player::Inventory_t::PaperDollRows::DOLL_ROW_1; y < players[player]->inventoryUI.DEFAULT_INVENTORY_SIZEY + players[player]->inventoryUI.getPlayerBackpackBonusSizeY(); ++y )
-    //	{
-    //		if ( auto slotFrame = players[player]->inventoryUI.getInventorySlotFrame(x, y) )
-    //		{
-    //			slotFrame->setDisabled(true);
-    //		}
-    //	}
+    //  for ( int y = Player::Inventory_t::PaperDollRows::DOLL_ROW_1; y < players[player]->inventoryUI.DEFAULT_INVENTORY_SIZEY + players[player]->inventoryUI.getPlayerBackpackBonusSizeY(); ++y )
+    //  {
+    //      if ( auto slotFrame = players[player]->inventoryUI.getInventorySlotFrame(x, y) )
+    //      {
+    //          slotFrame->setDisabled(true);
+    //      }
+    //  }
     //}
 
     if (players[player]->inventoryUI.frame)
@@ -23940,13 +23940,13 @@ void resetInventorySlotFrames(const int player)
 
     //for ( int x = 0; x < Player::Inventory_t::MAX_SPELLS_X; ++x )
     //{
-    //	for ( int y = 0; y < Player::Inventory_t::MAX_SPELLS_Y; ++y )
-    //	{
-    //		if ( auto slotFrame = players[player]->inventoryUI.getSpellSlotFrame(x, y) )
-    //		{
-    //			slotFrame->setDisabled(true);
-    //		}
-    //	}
+    //  for ( int y = 0; y < Player::Inventory_t::MAX_SPELLS_Y; ++y )
+    //  {
+    //      if ( auto slotFrame = players[player]->inventoryUI.getSpellSlotFrame(x, y) )
+    //      {
+    //          slotFrame->setDisabled(true);
+    //      }
+    //  }
     //}
 
     if (players[player]->inventoryUI.spellFrame)
@@ -23959,13 +23959,13 @@ void resetInventorySlotFrames(const int player)
 
     //for ( int x = 0; x < Player::Inventory_t::MAX_CHEST_X; ++x )
     //{
-    //	for ( int y = 0; y < Player::Inventory_t::MAX_CHEST_Y; ++y )
-    //	{
-    //		if ( auto slotFrame = players[player]->inventoryUI.getChestSlotFrame(x, y) )
-    //		{
-    //			slotFrame->setDisabled(true);
-    //		}
-    //	}
+    //  for ( int y = 0; y < Player::Inventory_t::MAX_CHEST_Y; ++y )
+    //  {
+    //      if ( auto slotFrame = players[player]->inventoryUI.getChestSlotFrame(x, y) )
+    //      {
+    //          slotFrame->setDisabled(true);
+    //      }
+    //  }
     //}
 
     if (players[player]->inventoryUI.chestFrame)
@@ -23978,13 +23978,13 @@ void resetInventorySlotFrames(const int player)
 
     //for ( int x = 0; x < Player::ShopGUI_t::MAX_SHOP_X; ++x )
     //{
-    //	for ( int y = 0; y < Player::ShopGUI_t::MAX_SHOP_Y; ++y )
-    //	{
-    //		if ( auto slotFrame = players[player]->shopGUI.getShopSlotFrame(x, y) )
-    //		{
-    //			slotFrame->setDisabled(true);
-    //		}
-    //	}
+    //  for ( int y = 0; y < Player::ShopGUI_t::MAX_SHOP_Y; ++y )
+    //  {
+    //      if ( auto slotFrame = players[player]->shopGUI.getShopSlotFrame(x, y) )
+    //      {
+    //          slotFrame->setDisabled(true);
+    //      }
+    //  }
     //}
 
     if (players[player]->shopGUI.shopFrame)
@@ -26587,18 +26587,18 @@ void drawObjectPreview(std::string modelsPath, Entity* object, SDL_Rect pos, rea
         }
         //for ( node_t* node = map.entities->first; node != NULL; node = node->next )
         //{
-        //	Entity* entity = (Entity*)node->element;
-        //	if ( (Sint32)entity->getUID() == -4 ) // torch sprites
-        //	{
-        //		if ( (entity->skill[1] - 1) != player )
-        //		{
-        //			continue;
-        //		}
-        //		bool b = entity->flags[BRIGHT];
-        //		if ( !dark ) { entity->flags[BRIGHT] = true; }
-        //		glDrawSprite(&view, entity, REALCOLORS);
-        //		entity->flags[BRIGHT] = b;
-        //	}
+        //  Entity* entity = (Entity*)node->element;
+        //  if ( (Sint32)entity->getUID() == -4 ) // torch sprites
+        //  {
+        //      if ( (entity->skill[1] - 1) != player )
+        //      {
+        //          continue;
+        //      }
+        //      bool b = entity->flags[BRIGHT];
+        //      if ( !dark ) { entity->flags[BRIGHT] = true; }
+        //      glDrawSprite(&view, entity, REALCOLORS);
+        //      entity->flags[BRIGHT] = b;
+        //  }
         //}
     }
 
@@ -32828,7 +32828,7 @@ void Player::HUD_t::updateXPBar()
             //real_t diff = std::max(.1, (xpBar.animateSetpoint * 10 - xpBar.animateValue) / 200.0); // 0.1-5 value
             //if ( xpBar.animateSetpoint * 10 >= xpBar.maxValue )
             //{
-            //	diff = 5;
+            //  diff = 5;
             //}
             //scaledIncrement *= 0.2 * pow(diff, 2) + .5;
             //xpBar.animateValue = std::min(xpBar.animateSetpoint * 10.0, xpBar.animateValue + scaledIncrement);
@@ -32845,74 +32845,74 @@ void Player::HUD_t::updateXPBar()
         }
         //else if ( xpBar.animateValue > xpBar.animateSetpoint * 10 )
         //{
-        //	real_t fpsScale = getFPSScale(144.0);
-        //	xpBar.animateValue += fpsScale * (10); // constant speed
-        //	xpBar.animateValue = std::min(xpBar.maxValue, xpBar.animateValue);
+        //  real_t fpsScale = getFPSScale(144.0);
+        //  xpBar.animateValue += fpsScale * (10); // constant speed
+        //  xpBar.animateValue = std::min(xpBar.maxValue, xpBar.animateValue);
         //}
         //else
         //{
-        //	xpBar.animateTicks = ticks;
+        //  xpBar.animateTicks = ticks;
         //}
 
         xpBar.animateTicks = ticks;
 
         //if ( xpBar.animateValue == xpBar.maxValue )
         //{
-        //	xpBar.animateState = ANIMATE_LEVELUP;
+        //  xpBar.animateState = ANIMATE_LEVELUP;
         //}
     }
 
     //if ( xpInfo.cycleProcessedOnTick != ticks )
     //{
-    //	++xpInfo.cycleTicks;
+    //  ++xpInfo.cycleTicks;
     //}
 
     //if ( bCompactWidth )
     //{
-    //	if ( xpInfo.cycleStatus == XPInfo_t::CYCLE_NONE )
-    //	{
-    //		xpInfo.cycleStatus = XPInfo_t::CYCLE_LVL;
-    //	}
+    //  if ( xpInfo.cycleStatus == XPInfo_t::CYCLE_NONE )
+    //  {
+    //      xpInfo.cycleStatus = XPInfo_t::CYCLE_LVL;
+    //  }
 
-    //	if ( !xpInfo.fadeIn )
-    //	{
-    //		xpInfo.cycleTicks = 0;
-    //	}
+    //  if ( !xpInfo.fadeIn )
+    //  {
+    //      xpInfo.cycleTicks = 0;
+    //  }
 
-    //	if ( xpInfo.cycleTicks > 0 &&
-    //		(xpInfo.cycleTicks >= TICKS_PER_SECOND * 5 || xpBar.animateState != ANIMATE_NONE) )
-    //	{
-    //		xpInfo.fadeIn = false;
-    //	}
+    //  if ( xpInfo.cycleTicks > 0 &&
+    //      (xpInfo.cycleTicks >= TICKS_PER_SECOND * 5 || xpBar.animateState != ANIMATE_NONE) )
+    //  {
+    //      xpInfo.fadeIn = false;
+    //  }
 
-    //	if ( !xpInfo.fadeIn )
-    //	{
-    //		const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-    //		real_t setpointDiffX = fpsScale * std::max(.1, (xpInfo.fade)) / (2.5);
-    //		xpInfo.fade -= setpointDiffX;
-    //		xpInfo.fade = std::max(0.0, xpInfo.fade);
-    //		if ( xpInfo.fade <= 0.0 )
-    //		{
-    //			if ( xpInfo.cycleStatus == XPInfo_t::CYCLE_LVL )
-    //			{
-    //				xpInfo.cycleStatus = XPInfo_t::CYCLE_XP;
-    //			}
-    //			else
-    //			{
-    //				xpInfo.cycleStatus = XPInfo_t::CYCLE_LVL;
-    //			}
-    //			xpInfo.fadeIn = true;
-    //		}
-    //	}
-    //	else
-    //	{
-    //		const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-    //		real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - xpInfo.fade)) / (2.5);
-    //		xpInfo.fade += setpointDiffX;
-    //		xpInfo.fade = std::min(1.0, xpInfo.fade);
-    //	}
+    //  if ( !xpInfo.fadeIn )
+    //  {
+    //      const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
+    //      real_t setpointDiffX = fpsScale * std::max(.1, (xpInfo.fade)) / (2.5);
+    //      xpInfo.fade -= setpointDiffX;
+    //      xpInfo.fade = std::max(0.0, xpInfo.fade);
+    //      if ( xpInfo.fade <= 0.0 )
+    //      {
+    //          if ( xpInfo.cycleStatus == XPInfo_t::CYCLE_LVL )
+    //          {
+    //              xpInfo.cycleStatus = XPInfo_t::CYCLE_XP;
+    //          }
+    //          else
+    //          {
+    //              xpInfo.cycleStatus = XPInfo_t::CYCLE_LVL;
+    //          }
+    //          xpInfo.fadeIn = true;
+    //      }
+    //  }
+    //  else
+    //  {
+    //      const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
+    //      real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - xpInfo.fade)) / (2.5);
+    //      xpInfo.fade += setpointDiffX;
+    //      xpInfo.fade = std::min(1.0, xpInfo.fade);
+    //  }
 
-    //	messagePlayer(0, MESSAGE_DEBUG, "%f", xpInfo.fade);
+    //  messagePlayer(0, MESSAGE_DEBUG, "%f", xpInfo.fade);
     //}
     //else
     {
@@ -33963,11 +33963,11 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBarStatusEffects(
     //const int iconTotalWidth = iconWidth + 2;
     //if ( numIcons % 2 == 1 ) // odd numbered
     //{
-    //	currentX -= ((iconTotalWidth) * (numIcons / 2)) + (iconTotalWidth / 2);
+    //  currentX -= ((iconTotalWidth) * (numIcons / 2)) + (iconTotalWidth / 2);
     //}
     //else
     //{
-    //	currentX -= ((iconTotalWidth) * (numIcons / 2));
+    //  currentX -= ((iconTotalWidth) * (numIcons / 2));
     //}
 
     if (statusEffectIcons.empty())
@@ -34084,13 +34084,13 @@ void Player::HUD_t::updateEnemyBar2(Frame* whichFrame, void* enemyHPDetails)
     bool bIsMostRecentHPBar = enemyHPDamageBarHandler[player.playernum].getMostRecentHPBar() == enemyDetails;
     //if ( bIsMostRecentHPBar && !enemyDetails->hasDistanceCheck )
     //{
-    //	//enemyDetails->hasDistanceCheck = true;
-    //	auto& camera = cameras[player.playernum];
-    //	double playerdist = sqrt(pow(camera.x * 16.0 - enemyDetails->worldX, 2) + pow(camera.y * 16.0 - enemyDetails->worldY, 2));
-    //	if ( playerdist >= 3 * 16.0 )
-    //	{
-    //		//enemyDetails->displayOnHUD = true;
-    //	}
+    //  //enemyDetails->hasDistanceCheck = true;
+    //  auto& camera = cameras[player.playernum];
+    //  double playerdist = sqrt(pow(camera.x * 16.0 - enemyDetails->worldX, 2) + pow(camera.y * 16.0 - enemyDetails->worldY, 2));
+    //  if ( playerdist >= 3 * 16.0 )
+    //  {
+    //      //enemyDetails->displayOnHUD = true;
+    //  }
     //}
 
     SDL_Rect pos = whichFrame->getSize();
@@ -34390,8 +34390,8 @@ void Player::HUD_t::updateEnemyBar2(Frame* whichFrame, void* enemyHPDetails)
         //real_t& opacity = enemyDetails->animator.damageFrameOpacity;
         //if ( doAnimation )
         //{
-        //	real_t opacityChange = .5 * getFPSScale(144.0); // change by .05% independent of fps
-        //	opacity = std::max(0.0, opacity - opacityChange);
+        //  real_t opacityChange = .5 * getFPSScale(144.0); // change by .05% independent of fps
+        //  opacity = std::max(0.0, opacity - opacityChange);
         //}
         //dmgFrame->setOpacity(opacity);
         //dmgFrame->setOpacity(dmgFrame->getOpacity() * enemyDetails->animator.fadeOut / 100.0);
@@ -34734,7 +34734,7 @@ void Player::HUD_t::updateEnemyBar(Frame* whichFrame)
     whichFrame->setSize(pos);
 
     //messagePlayer(0, "%.2f | %.2f | %.2f | %d", enemyDetails->animateValue,
-    //	enemyDetails->animateValue2, enemyDetails->animatePreviousSetpoint, enemyDetails->animateSetpoint);
+    //  enemyDetails->animateValue2, enemyDetails->animatePreviousSetpoint, enemyDetails->animateSetpoint);
 
     enemyBar->animatePreviousSetpoint = enemyBar->animateSetpoint;
     real_t& hpForegroundValue = enemyBar->animateValue;
@@ -35080,12 +35080,12 @@ void Player::HUD_t::updateHPBar()
             hpForegroundValue = HPBar.animateSetpoint;
         }
 
-        /*	int increment = 3;
+        /*  int increment = 3;
             double scaledIncrement = (increment * (getFPSScale(144.0)));*/
         //real_t diff = std::max(.1, (HPBar.animateSetpoint * 10 - hpForegroundValue) / (maxValue / 5)); // 0.1-5 value
         //if ( HPBar.animateSetpoint * 10 >= maxValue )
         //{
-        //	diff = 5;
+        //  diff = 5;
         //}
         //scaledIncrement *= 0.2 * pow(diff, 2) + .5;
 
@@ -37957,34 +37957,34 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
     }
     //else if ( proficiency == PRO_LEGACY_SWIMMING )
     //{
-    //	if ( tag == "SWIM_SPEED_TOTAL" )
-    //	{
-    //		val = (((stats[playernum]->getModifiedProficiency(proficiency) / 100.f) * 50.f) + 50); // water movement speed
-    //		if ( stats[playernum]->type == SKELETON )
-    //		{
-    //			val *= .5;
-    //		}
-    //		snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
-    //	}
-    //	else if ( tag == "SWIM_SPEED_BASE" )
-    //	{
-    //		val = -50.0; // water movement speed
-    //		if ( stats[playernum]->type == SKELETON )
-    //		{
-    //			val -= 25.0;
-    //		}
-    //		snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
-    //	}
-    //	else if ( tag == "SWIM_SPEED_BONUS" )
-    //	{
-    //		val = (((stats[playernum]->getModifiedProficiency(proficiency) / 100.f) * 50.f)); // water movement speed
-    //		if ( stats[playernum]->type == SKELETON )
-    //		{
-    //			val *= .5;
-    //		}
-    //		snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
-    //	}
-    //	return buf;
+    //  if ( tag == "SWIM_SPEED_TOTAL" )
+    //  {
+    //      val = (((stats[playernum]->getModifiedProficiency(proficiency) / 100.f) * 50.f) + 50); // water movement speed
+    //      if ( stats[playernum]->type == SKELETON )
+    //      {
+    //          val *= .5;
+    //      }
+    //      snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+    //  }
+    //  else if ( tag == "SWIM_SPEED_BASE" )
+    //  {
+    //      val = -50.0; // water movement speed
+    //      if ( stats[playernum]->type == SKELETON )
+    //      {
+    //          val -= 25.0;
+    //      }
+    //      snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+    //  }
+    //  else if ( tag == "SWIM_SPEED_BONUS" )
+    //  {
+    //      val = (((stats[playernum]->getModifiedProficiency(proficiency) / 100.f) * 50.f)); // water movement speed
+    //      if ( stats[playernum]->type == SKELETON )
+    //      {
+    //          val *= .5;
+    //      }
+    //      snprintf(buf, sizeof(buf), rawValue.c_str(), (int)val);
+    //  }
+    //  return buf;
     //}
     else if (proficiency == PRO_LEADERSHIP)
     {
@@ -38121,7 +38121,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         {
             //if ( skillCapstoneUnlocked(playernum, proficiency) )
             //{
-            //	snprintf(buf, sizeof(buf), "%s", Language::get(6965)); // "any"
+            //  snprintf(buf, sizeof(buf), "%s", Language::get(6965)); // "any"
             //}
             //else
             {
@@ -38157,7 +38157,7 @@ std::string formatSkillSheetEffects(int playernum, int proficiency, std::string&
         {
             //if ( skillCapstoneUnlocked(playernum, proficiency) )
             //{
-            //	snprintf(buf, sizeof(buf), "%s", Language::get(4065)); // "any"
+            //  snprintf(buf, sizeof(buf), "%s", Language::get(4065)); // "any"
             //}
             //else
             {
@@ -38857,352 +38857,352 @@ void Player::SkillSheet_t::selectSkill(int skill)
 
 //void positionSkillSheetBlitField(Field* f, Text* tex, SDL_Rect& pos, int yoff = 0)
 //{
-//	Font* actualFont = Font::get(f->getFont());
-//	int lines = std::max(1, tex->getNumTextLines());
-//	int fullH = lines * (actualFont->height(false) + actualFont->getOutline() * 2);
-//	if ( f->getVJustify() == Field::justify_t::TOP )
-//	{
-//		pos.y = pos.y + yoff + std::min(pos.h - fullH, 0);
-//	}
-//	else if ( f->getVJustify() == Field::justify_t::CENTER )
-//	{
-//		pos.y = pos.y + yoff + (pos.h - fullH) / 2;
-//	}
-//	if ( f->getHJustify() == Field::justify_t::RIGHT )
-//	{
-//		pos.x = pos.x + pos.w - tex->getWidth();
-//	}
-//	else if ( f->getHJustify() == Field::justify_t::CENTER )
-//	{
-//		pos.x = pos.x + pos.w / 2 - tex->getWidth() / 2;
-//	}
+//  Font* actualFont = Font::get(f->getFont());
+//  int lines = std::max(1, tex->getNumTextLines());
+//  int fullH = lines * (actualFont->height(false) + actualFont->getOutline() * 2);
+//  if ( f->getVJustify() == Field::justify_t::TOP )
+//  {
+//      pos.y = pos.y + yoff + std::min(pos.h - fullH, 0);
+//  }
+//  else if ( f->getVJustify() == Field::justify_t::CENTER )
+//  {
+//      pos.y = pos.y + yoff + (pos.h - fullH) / 2;
+//  }
+//  if ( f->getHJustify() == Field::justify_t::RIGHT )
+//  {
+//      pos.x = pos.x + pos.w - tex->getWidth();
+//  }
+//  else if ( f->getHJustify() == Field::justify_t::CENTER )
+//  {
+//      pos.x = pos.x + pos.w / 2 - tex->getWidth() / 2;
+//  }
 //}
 //
 //SDL_Surface* blitSkillSheet(Frame* skillsFrame)
 //{
-//	int player = skillsFrame->getOwner();
-//	SDL_Surface* sprite = SDL_CreateRGBSurface(0, skillsFrame->getSize().w, skillsFrame->getSize().h, 32,
-//		0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+//  int player = skillsFrame->getOwner();
+//  SDL_Surface* sprite = SDL_CreateRGBSurface(0, skillsFrame->getSize().w, skillsFrame->getSize().h, 32,
+//      0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 //
-//	real_t opacity = 1.0; // skillsFrame->getOpacity() / 100.0
+//  real_t opacity = 1.0; // skillsFrame->getOpacity() / 100.0
 //
-//	SDL_Rect totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
-//	/*for ( auto& img : skillSheetEntryFrames[player].entryFrameLeft->getImages() )
-//	{
-//		if ( img->disabled ) { continue; }
-//		if ( img->path == "" ) { continue; }
-//		SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
-//		Uint8 r, g, b, a;
-//		getColor(img->color, &r, &g, &b, &a);
-//		SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
-//		SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//		SDL_Rect pos = img->pos;
-//		pos.x += totalPos.x;
-//		pos.y += totalPos.y;
-//		pos.x += skillSheetEntryFrames[player].entryFrameLeft->getSize().x;
-//		pos.y += skillSheetEntryFrames[player].entryFrameLeft->getSize().y;
-//		SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
-//	}
+//  SDL_Rect totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
+//  /*for ( auto& img : skillSheetEntryFrames[player].entryFrameLeft->getImages() )
+//  {
+//      if ( img->disabled ) { continue; }
+//      if ( img->path == "" ) { continue; }
+//      SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+//      Uint8 r, g, b, a;
+//      getColor(img->color, &r, &g, &b, &a);
+//      SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
+//      SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//      SDL_Rect pos = img->pos;
+//      pos.x += totalPos.x;
+//      pos.y += totalPos.y;
+//      pos.x += skillSheetEntryFrames[player].entryFrameLeft->getSize().x;
+//      pos.y += skillSheetEntryFrames[player].entryFrameLeft->getSize().y;
+//      SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
+//  }
 //
-//	for ( auto& img : skillSheetEntryFrames[player].entryFrameRight->getImages() )
-//	{
-//		if ( img->disabled ) { continue; }
-//		if ( img->path == "" ) { continue; }
-//		SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
-//		Uint8 r, g, b, a;
-//		getColor(img->color, &r, &g, &b, &a);
-//		SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
-//		SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//		SDL_Rect pos = img->pos;
-//		pos.x += totalPos.x;
-//		pos.y += totalPos.y;
-//		pos.x += skillSheetEntryFrames[player].entryFrameRight->getSize().x;
-//		pos.y += skillSheetEntryFrames[player].entryFrameRight->getSize().y;
-//		SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
-//	}*/
+//  for ( auto& img : skillSheetEntryFrames[player].entryFrameRight->getImages() )
+//  {
+//      if ( img->disabled ) { continue; }
+//      if ( img->path == "" ) { continue; }
+//      SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+//      Uint8 r, g, b, a;
+//      getColor(img->color, &r, &g, &b, &a);
+//      SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
+//      SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//      SDL_Rect pos = img->pos;
+//      pos.x += totalPos.x;
+//      pos.y += totalPos.y;
+//      pos.x += skillSheetEntryFrames[player].entryFrameRight->getSize().x;
+//      pos.y += skillSheetEntryFrames[player].entryFrameRight->getSize().y;
+//      SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
+//  }*/
 //
-//	for ( auto frame : skillSheetEntryFrames[player].skillsFrame->getFrames() )
-//	{
-//		totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
+//  for ( auto frame : skillSheetEntryFrames[player].skillsFrame->getFrames() )
+//  {
+//      totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
 //
-//		totalPos.x += frame->getSize().x;
-//		totalPos.y += frame->getSize().y;
-//		for ( auto& img : frame->getImages() )
-//		{
-//			if ( img->disabled ) { continue; }
-//			if ( img->path == "" ) { continue; }
-//			if ( img->ontop ) { continue; }
-//			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
-//			Uint8 r, g, b, a;
-//			getColor(img->color, &r, &g, &b, &a);
-//			SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
-//			//SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//			SDL_Rect pos = img->pos;
-//			pos.x += totalPos.x;
-//			pos.y += totalPos.y;
-//			SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
-//		}
-//	}
+//      totalPos.x += frame->getSize().x;
+//      totalPos.y += frame->getSize().y;
+//      for ( auto& img : frame->getImages() )
+//      {
+//          if ( img->disabled ) { continue; }
+//          if ( img->path == "" ) { continue; }
+//          if ( img->ontop ) { continue; }
+//          SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+//          Uint8 r, g, b, a;
+//          getColor(img->color, &r, &g, &b, &a);
+//          SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
+//          //SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//          SDL_Rect pos = img->pos;
+//          pos.x += totalPos.x;
+//          pos.y += totalPos.y;
+//          SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
+//      }
+//  }
 //
-//	for ( int i = 0; i < NUMPROFICIENCIES; ++i )
-//	{
-//		Frame* frame = skillSheetEntryFrames[player].entryFrames[i];
-//		totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
-//		totalPos.x += frame->getSize().x;
-//		if ( i >= 8 )
-//		{
-//			totalPos.x += skillSheetEntryFrames[player].entryFrameLeft->getSize().x;
-//		}
-//		else
-//		{
-//			totalPos.x += skillSheetEntryFrames[player].entryFrameRight->getSize().x;
-//		}
-//		totalPos.y += frame->getSize().y;
-//		if ( i >= 8 )
-//		{
-//			totalPos.y += skillSheetEntryFrames[player].entryFrameLeft->getSize().y;
-//		}
-//		else
-//		{
-//			totalPos.y += skillSheetEntryFrames[player].entryFrameRight->getSize().y;
-//		}
-//		for ( auto img : frame->getImages() )
-//		{
-//			if ( img->disabled ) { continue; }
-//			if ( img->path == "" ) { continue; }
-//			if ( img->ontop ) { continue; }
-//			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
-//			Uint8 r, g, b, a;
-//			getColor(img->color, &r, &g, &b, &a);
-//			SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
-//			//SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//			SDL_Rect pos = img->pos;
-//			pos.x += totalPos.x;
-//			pos.y += totalPos.y;
-//			SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
-//		}
+//  for ( int i = 0; i < NUMPROFICIENCIES; ++i )
+//  {
+//      Frame* frame = skillSheetEntryFrames[player].entryFrames[i];
+//      totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
+//      totalPos.x += frame->getSize().x;
+//      if ( i >= 8 )
+//      {
+//          totalPos.x += skillSheetEntryFrames[player].entryFrameLeft->getSize().x;
+//      }
+//      else
+//      {
+//          totalPos.x += skillSheetEntryFrames[player].entryFrameRight->getSize().x;
+//      }
+//      totalPos.y += frame->getSize().y;
+//      if ( i >= 8 )
+//      {
+//          totalPos.y += skillSheetEntryFrames[player].entryFrameLeft->getSize().y;
+//      }
+//      else
+//      {
+//          totalPos.y += skillSheetEntryFrames[player].entryFrameRight->getSize().y;
+//      }
+//      for ( auto img : frame->getImages() )
+//      {
+//          if ( img->disabled ) { continue; }
+//          if ( img->path == "" ) { continue; }
+//          if ( img->ontop ) { continue; }
+//          SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+//          Uint8 r, g, b, a;
+//          getColor(img->color, &r, &g, &b, &a);
+//          SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
+//          //SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//          SDL_Rect pos = img->pos;
+//          pos.x += totalPos.x;
+//          pos.y += totalPos.y;
+//          SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
+//      }
 //
-//		for ( auto img : frame->getImages() )
-//		{
-//			if ( img->disabled ) { continue; }
-//			if ( img->path == "" ) { continue; }
-//			if ( !img->ontop ) { continue; }
-//			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
-//			Uint8 r, g, b, a;
-//			getColor(img->color, &r, &g, &b, &a);
-//			SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
-//			//SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//			SDL_Rect pos = img->pos;
-//			pos.x += totalPos.x;
-//			pos.y += totalPos.y;
-//			SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
-//		}
+//      for ( auto img : frame->getImages() )
+//      {
+//          if ( img->disabled ) { continue; }
+//          if ( img->path == "" ) { continue; }
+//          if ( !img->ontop ) { continue; }
+//          SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+//          Uint8 r, g, b, a;
+//          getColor(img->color, &r, &g, &b, &a);
+//          SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
+//          //SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//          SDL_Rect pos = img->pos;
+//          pos.x += totalPos.x;
+//          pos.y += totalPos.y;
+//          SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
+//      }
 //
-//		for ( auto f : frame->getFields() )
-//		{
-//			auto tex = f->getTextObject();
-//			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(tex->getSurf());
-//			SDL_SetSurfaceAlphaMod(srcSurf, 255 * opacity);
-//			//SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//			SDL_Rect pos = f->getSize();
+//      for ( auto f : frame->getFields() )
+//      {
+//          auto tex = f->getTextObject();
+//          SDL_Surface* srcSurf = const_cast<SDL_Surface*>(tex->getSurf());
+//          SDL_SetSurfaceAlphaMod(srcSurf, 255 * opacity);
+//          //SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//          SDL_Rect pos = f->getSize();
 //
-//			positionSkillSheetBlitField(f, tex, pos);
+//          positionSkillSheetBlitField(f, tex, pos);
 //
-//			pos.x += totalPos.x;
-//			pos.y += totalPos.y;
-//			SDL_BlitSurface(srcSurf, nullptr, sprite, &pos);
-//		}
-//	}
+//          pos.x += totalPos.x;
+//          pos.y += totalPos.y;
+//          SDL_BlitSurface(srcSurf, nullptr, sprite, &pos);
+//      }
+//  }
 //
-//	for ( auto frame : skillSheetEntryFrames[player].skillsFrame->getFrames() )
-//	{
-//		totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
+//  for ( auto frame : skillSheetEntryFrames[player].skillsFrame->getFrames() )
+//  {
+//      totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
 //
-//		totalPos.x += frame->getSize().x;
-//		totalPos.y += frame->getSize().y;
-//		for ( auto& img : frame->getImages() )
-//		{
-//			if ( img->disabled ) { continue; }
-//			if ( img->path == "" ) { continue; }
-//			if ( !img->ontop ) { continue; }
-//			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
-//			Uint8 r, g, b, a;
-//			getColor(img->color, &r, &g, &b, &a);
-//			SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
-//			//SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//			SDL_Rect pos = img->pos;
-//			pos.x += totalPos.x;
-//			pos.y += totalPos.y;
-//			SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
-//		}
-//	}
+//      totalPos.x += frame->getSize().x;
+//      totalPos.y += frame->getSize().y;
+//      for ( auto& img : frame->getImages() )
+//      {
+//          if ( img->disabled ) { continue; }
+//          if ( img->path == "" ) { continue; }
+//          if ( !img->ontop ) { continue; }
+//          SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+//          Uint8 r, g, b, a;
+//          getColor(img->color, &r, &g, &b, &a);
+//          SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
+//          //SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//          SDL_Rect pos = img->pos;
+//          pos.x += totalPos.x;
+//          pos.y += totalPos.y;
+//          SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
+//      }
+//  }
 //
-//	//for ( auto img : skillsFrame->getImages() )
-//	//{
-//	//	if ( img->disabled ) { continue; }
-//	//	if ( img->path == "" ) { continue; }
-//	//	SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
-//	//	Uint8 r, g, b, a;
-//	//	getColor(img->color, &r, &g, &b, &a);
-//	//	SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
-//	//	//SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//	//	SDL_Rect pos = img->pos;
-//	//	SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
-//	//}
+//  //for ( auto img : skillsFrame->getImages() )
+//  //{
+//  //  if ( img->disabled ) { continue; }
+//  //  if ( img->path == "" ) { continue; }
+//  //  SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+//  //  Uint8 r, g, b, a;
+//  //  getColor(img->color, &r, &g, &b, &a);
+//  //  SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
+//  //  //SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//  //  SDL_Rect pos = img->pos;
+//  //  SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
+//  //}
 //
-//	for ( auto frame : skillsFrame->getFrames() )
-//	{
-//		totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
+//  for ( auto frame : skillsFrame->getFrames() )
+//  {
+//      totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
 //
-//		for ( auto f : frame->getFields() )
-//		{
-//			auto tex = f->getTextObject();
-//			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(tex->getSurf());
-//			SDL_SetSurfaceAlphaMod(srcSurf, 255 * opacity);
-//			//SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//			SDL_Rect pos = f->getSize();
+//      for ( auto f : frame->getFields() )
+//      {
+//          auto tex = f->getTextObject();
+//          SDL_Surface* srcSurf = const_cast<SDL_Surface*>(tex->getSurf());
+//          SDL_SetSurfaceAlphaMod(srcSurf, 255 * opacity);
+//          //SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//          SDL_Rect pos = f->getSize();
 //
-//			positionSkillSheetBlitField(f, tex, pos);
+//          positionSkillSheetBlitField(f, tex, pos);
 //
-//			pos.x += totalPos.x;
-//			pos.y += totalPos.y;
-//			SDL_BlitSurface(srcSurf, nullptr, sprite, &pos);
-//		}
-//	}
+//          pos.x += totalPos.x;
+//          pos.y += totalPos.y;
+//          SDL_BlitSurface(srcSurf, nullptr, sprite, &pos);
+//      }
+//  }
 //
-//	for ( auto frame : skillSheetEntryFrames[player].skillDescFrame->getFrames() )
-//	{
-//		totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
-//		totalPos.x += skillSheetEntryFrames[player].skillDescFrame->getSize().x;
-//		totalPos.y += skillSheetEntryFrames[player].skillDescFrame->getSize().y;
+//  for ( auto frame : skillSheetEntryFrames[player].skillDescFrame->getFrames() )
+//  {
+//      totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
+//      totalPos.x += skillSheetEntryFrames[player].skillDescFrame->getSize().x;
+//      totalPos.y += skillSheetEntryFrames[player].skillDescFrame->getSize().y;
 //
-//		totalPos.x += frame->getSize().x;
-//		totalPos.y += frame->getSize().y;
-//		for ( auto& img : frame->getImages() )
-//		{
-//			if ( img->disabled ) { continue; }
-//			if ( img->path == "" ) { continue; }
-//			//if ( !img->ontop ) { continue; }
-//			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
-//			Uint8 r, g, b, a;
-//			getColor(img->color, &r, &g, &b, &a);
-//			SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
-//			//SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//			SDL_Rect pos = img->pos;
-//			pos.x += totalPos.x;
-//			pos.y += totalPos.y;
-//			SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
-//		}
+//      totalPos.x += frame->getSize().x;
+//      totalPos.y += frame->getSize().y;
+//      for ( auto& img : frame->getImages() )
+//      {
+//          if ( img->disabled ) { continue; }
+//          if ( img->path == "" ) { continue; }
+//          //if ( !img->ontop ) { continue; }
+//          SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+//          Uint8 r, g, b, a;
+//          getColor(img->color, &r, &g, &b, &a);
+//          SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
+//          //SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//          SDL_Rect pos = img->pos;
+//          pos.x += totalPos.x;
+//          pos.y += totalPos.y;
+//          SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
+//      }
 //
-//		for ( auto f : frame->getFields() )
-//		{
-//			auto tex = f->getTextObject();
-//			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(tex->getSurf());
-//			SDL_SetSurfaceAlphaMod(srcSurf, 255 * opacity);
-//			//SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//			SDL_Rect pos = f->getSize();
+//      for ( auto f : frame->getFields() )
+//      {
+//          auto tex = f->getTextObject();
+//          SDL_Surface* srcSurf = const_cast<SDL_Surface*>(tex->getSurf());
+//          SDL_SetSurfaceAlphaMod(srcSurf, 255 * opacity);
+//          //SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//          SDL_Rect pos = f->getSize();
 //
-//			positionSkillSheetBlitField(f, tex, pos);
+//          positionSkillSheetBlitField(f, tex, pos);
 //
-//			pos.x += totalPos.x;
-//			pos.y += totalPos.y;
-//			SDL_BlitSurface(srcSurf, nullptr, sprite, &pos);
-//		}
-//	}
+//          pos.x += totalPos.x;
+//          pos.y += totalPos.y;
+//          SDL_BlitSurface(srcSurf, nullptr, sprite, &pos);
+//      }
+//  }
 //
-//	for ( auto frame : skillSheetEntryFrames[player].scrollAreaOuterFrame->getFrames() )
-//	{
-//		totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
-//		totalPos.x += skillSheetEntryFrames[player].skillDescFrame->getSize().x;
-//		totalPos.y += skillSheetEntryFrames[player].skillDescFrame->getSize().y;
-//		totalPos.x += skillSheetEntryFrames[player].scrollAreaOuterFrame->getSize().x;
-//		totalPos.y += skillSheetEntryFrames[player].scrollAreaOuterFrame->getSize().y;
+//  for ( auto frame : skillSheetEntryFrames[player].scrollAreaOuterFrame->getFrames() )
+//  {
+//      totalPos = skillSheetEntryFrames[player].skillsFrame->getSize();
+//      totalPos.x += skillSheetEntryFrames[player].skillDescFrame->getSize().x;
+//      totalPos.y += skillSheetEntryFrames[player].skillDescFrame->getSize().y;
+//      totalPos.x += skillSheetEntryFrames[player].scrollAreaOuterFrame->getSize().x;
+//      totalPos.y += skillSheetEntryFrames[player].scrollAreaOuterFrame->getSize().y;
 //
-//		totalPos.x += frame->getSize().x;
-//		totalPos.y += frame->getSize().y;
-//		for ( auto& img : frame->getImages() )
-//		{
-//			if ( img->disabled ) { continue; }
-//			if ( img->path == "" ) { continue; }
-//			//if ( !img->ontop ) { continue; }
-//			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
-//			Uint8 r, g, b, a;
-//			getColor(img->color, &r, &g, &b, &a);
-//			SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
-//			//SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//			SDL_Rect pos = img->pos;
-//			pos.x += totalPos.x;
-//			pos.y += totalPos.y;
-//			SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
-//		}
+//      totalPos.x += frame->getSize().x;
+//      totalPos.y += frame->getSize().y;
+//      for ( auto& img : frame->getImages() )
+//      {
+//          if ( img->disabled ) { continue; }
+//          if ( img->path == "" ) { continue; }
+//          //if ( !img->ontop ) { continue; }
+//          SDL_Surface* srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+//          Uint8 r, g, b, a;
+//          getColor(img->color, &r, &g, &b, &a);
+//          SDL_SetSurfaceAlphaMod(srcSurf, a * opacity);
+//          //SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//          SDL_Rect pos = img->pos;
+//          pos.x += totalPos.x;
+//          pos.y += totalPos.y;
+//          SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
+//      }
 //
-//		for ( auto f : frame->getFields() )
-//		{
-//			if ( f->isDisabled() ) { continue; }
-//			auto tex = f->getTextObject();
-//			SDL_Surface* srcSurf = const_cast<SDL_Surface*>(tex->getSurf());
-//			SDL_SetSurfaceAlphaMod(srcSurf, 255 * opacity);
-//			//SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
-//			SDL_Rect pos = f->getSize();
+//      for ( auto f : frame->getFields() )
+//      {
+//          if ( f->isDisabled() ) { continue; }
+//          auto tex = f->getTextObject();
+//          SDL_Surface* srcSurf = const_cast<SDL_Surface*>(tex->getSurf());
+//          SDL_SetSurfaceAlphaMod(srcSurf, 255 * opacity);
+//          //SDL_SetSurfaceBlendMode(srcSurf, SDL_BLENDMODE_NONE);
+//          SDL_Rect pos = f->getSize();
 //
-//			if ( tex->getNumTextLines() > 1 )
-//			{
-//				char* buf = (char*)malloc(f->getTextLen() + 1);
-//				memcpy(buf, f->getText(), f->getTextLen() + 1);
+//          if ( tex->getNumTextLines() > 1 )
+//          {
+//              char* buf = (char*)malloc(f->getTextLen() + 1);
+//              memcpy(buf, f->getText(), f->getTextLen() + 1);
 //
-//				int yoff = 0;
-//				int currentLine = -1;
-//				char* nexttoken;
-//				char* token = buf;
-//				do {
-//					++currentLine;
-//					nexttoken = Field::tokenize(token, "\n");
+//              int yoff = 0;
+//              int currentLine = -1;
+//              char* nexttoken;
+//              char* token = buf;
+//              do {
+//                  ++currentLine;
+//                  nexttoken = Field::tokenize(token, "\n");
 //
-//					Text* text = Text::get(token, f->getFont(), f->getTextColor(), f->getOutlineColor());
-//					assert(text);
+//                  Text* text = Text::get(token, f->getFont(), f->getTextColor(), f->getOutlineColor());
+//                  assert(text);
 //
-//					positionSkillSheetBlitField(f, text, pos, yoff);
-//					pos.x += totalPos.x;
-//					pos.y += totalPos.y;
+//                  positionSkillSheetBlitField(f, text, pos, yoff);
+//                  pos.x += totalPos.x;
+//                  pos.y += totalPos.y;
 //
-//					srcSurf = const_cast<SDL_Surface*>(text->getSurf());
-//					SDL_SetSurfaceAlphaMod(srcSurf, 255 * opacity);
+//                  srcSurf = const_cast<SDL_Surface*>(text->getSurf());
+//                  SDL_SetSurfaceAlphaMod(srcSurf, 255 * opacity);
 //
-//					SDL_Rect srcPos = pos;
-//					srcPos.x = 0;
-//					srcPos.y = 0;
-//					if ( f->getSize().y + yoff + frame->getSize().y < 0 )
-//					{
-//						int diff = f->getSize().y + yoff + frame->getSize().y;
-//						srcPos.y -= diff;
-//						pos.y -= diff;
-//					}
-//					else if ( f->getSize().y + yoff + text->getHeight() - (frame->getSize().h - frame->getSize().y) < 0 )
-//					{
-//						int diff = f->getSize().y + yoff + text->getHeight() - (frame->getSize().h - frame->getSize().y);
-//						srcPos.y -= diff;
-//						pos.y -= diff;
-//					}
-//					SDL_BlitSurface(srcSurf, &srcPos, sprite, &pos);
+//                  SDL_Rect srcPos = pos;
+//                  srcPos.x = 0;
+//                  srcPos.y = 0;
+//                  if ( f->getSize().y + yoff + frame->getSize().y < 0 )
+//                  {
+//                      int diff = f->getSize().y + yoff + frame->getSize().y;
+//                      srcPos.y -= diff;
+//                      pos.y -= diff;
+//                  }
+//                  else if ( f->getSize().y + yoff + text->getHeight() - (frame->getSize().h - frame->getSize().y) < 0 )
+//                  {
+//                      int diff = f->getSize().y + yoff + text->getHeight() - (frame->getSize().h - frame->getSize().y);
+//                      srcPos.y -= diff;
+//                      pos.y -= diff;
+//                  }
+//                  SDL_BlitSurface(srcSurf, &srcPos, sprite, &pos);
 //
-//					Font* actualFont = Font::get(f->getFont());
-//					yoff += actualFont->height(true);
-//					pos = f->getSize();
-//				} while ( (token = nexttoken) != NULL );
+//                  Font* actualFont = Font::get(f->getFont());
+//                  yoff += actualFont->height(true);
+//                  pos = f->getSize();
+//              } while ( (token = nexttoken) != NULL );
 //
-//				free(buf);
-//			}
-//			else
-//			{
-//				positionSkillSheetBlitField(f, tex, pos);
-//				pos.x += totalPos.x;
-//				pos.y += totalPos.y;
-//				SDL_BlitSurface(srcSurf, nullptr, sprite, &pos);
-//			}
-//		}
-//	}
+//              free(buf);
+//          }
+//          else
+//          {
+//              positionSkillSheetBlitField(f, tex, pos);
+//              pos.x += totalPos.x;
+//              pos.y += totalPos.y;
+//              SDL_BlitSurface(srcSurf, nullptr, sprite, &pos);
+//          }
+//      }
+//  }
 //
-//	return sprite;
+//  return sprite;
 //}
 
 void buttonSkillsheetUpdateSelectorOnHighlight(const int player, Button* button)
@@ -40460,76 +40460,76 @@ void Player::SkillSheet_t::processSkillSheet()
                     // check marquee if needed
                     //if ( false )
                     //{
-                    //	auto textGetTitle = Text::get(effectTxt->getText(), effectTxt->getFont(),
-                    //		effectTxt->getTextColor(), effectTxt->getOutlineColor());
-                    //	int titleWidth = textGetTitle->getWidth();
-                    //	if ( numEffectLines > 1 )
-                    //	{
-                    //		auto textGetTitle = Text::get(effectTxt->getLongestLine().c_str(), effectTxt->getFont(),
-                    //			effectTxt->getTextColor(), effectTxt->getOutlineColor());
-                    //		titleWidth = textGetTitle->getWidth();
-                    //	}
+                    //  auto textGetTitle = Text::get(effectTxt->getText(), effectTxt->getFont(),
+                    //      effectTxt->getTextColor(), effectTxt->getOutlineColor());
+                    //  int titleWidth = textGetTitle->getWidth();
+                    //  if ( numEffectLines > 1 )
+                    //  {
+                    //      auto textGetTitle = Text::get(effectTxt->getLongestLine().c_str(), effectTxt->getFont(),
+                    //          effectTxt->getTextColor(), effectTxt->getOutlineColor());
+                    //      titleWidth = textGetTitle->getWidth();
+                    //  }
 
-                    //	if ( ticks - openTick > TICKS_PER_SECOND * 2 )
-                    //	{
-                    //		bool doMarquee = false;
-                    //		doMarquee = doMarquee || (titleWidth > (effectTxt->getSize().x + effectTxtFrame->getSize().w));
-                    //		doMarquee = doMarquee || (valueWidth > (effectVal->getSize().x + effectValFrame->getSize().w));
+                    //  if ( ticks - openTick > TICKS_PER_SECOND * 2 )
+                    //  {
+                    //      bool doMarquee = false;
+                    //      doMarquee = doMarquee || (titleWidth > (effectTxt->getSize().x + effectTxtFrame->getSize().w));
+                    //      doMarquee = doMarquee || (valueWidth > (effectVal->getSize().x + effectValFrame->getSize().w));
 
-                    //		if ( doMarquee )
-                    //		{
-                    //			const real_t fpsScale = getFPSScale(60.0); // ported from 60Hz
-                    //			effect_t.marquee[player.playernum] += (.005 * fpsScale);
-                    //			//effect_t.marquee[player.playernum] = std::min(1.0, effect_t.marquee[player.playernum]);
+                    //      if ( doMarquee )
+                    //      {
+                    //          const real_t fpsScale = getFPSScale(60.0); // ported from 60Hz
+                    //          effect_t.marquee[player.playernum] += (.005 * fpsScale);
+                    //          //effect_t.marquee[player.playernum] = std::min(1.0, effect_t.marquee[player.playernum]);
 
-                    //			/*if ( effect_t.marqueeTicks[player.playernum] == 0 && effect_t.marquee[player.playernum] >= 1.0 )
-                    //			{
-                    //				effect_t.marqueeTicks[player.playernum] = ticks;
-                    //			}*/
-                    //			/*if ( effect_t.marqueeTicks[player.playernum] > 0 && (ticks - effect_t.marqueeTicks[player.playernum] > TICKS_PER_SECOND * 2) )
-                    //			{
-                    //				effect_t.marqueeTicks[player.playernum] = 0;
-                    //				effect_t.marquee[player.playernum] = 0.0;
-                    //			}*/
-                    //		}
-                    //	}
-                    //	SDL_Rect posTitle = effectTxt->getSize();
-                    //	int scrollTitleLength = titleWidth - effectTxtFrame->getSize().w;
-                    //	if ( titleWidth <= effectTxtFrame->getSize().w )
-                    //	{
-                    //		scrollTitleLength = 0;
-                    //		posTitle.x = 0;
-                    //		effect_t.marqueeCompleted[player.playernum] = false;
-                    //		effect_t.marquee[player.playernum] = 0.0;
-                    //		effect_t.marqueeTicks[player.playernum] = 0;
-                    //	}
-                    //	else
-                    //	{
-                    //		posTitle.x = std::max((int)(-effect_t.marquee[player.playernum] * 100), -scrollTitleLength);
-                    //		if ( posTitle.x == -scrollTitleLength )
-                    //		{
-                    //			if ( !effect_t.marqueeCompleted[player.playernum] )
-                    //			{
-                    //				effect_t.marqueeTicks[player.playernum] = ticks;
-                    //			}
-                    //			effect_t.marqueeCompleted[player.playernum] = true;
-                    //		}
-                    //		else
-                    //		{
-                    //			effect_t.marqueeCompleted[player.playernum] = false;
-                    //		}
-                    //	}
-                    //	//posTitle.x = -scrollTitleLength * effect_t.marquee[player.playernum];
-                    //	effectTxt->setSize(posTitle);
+                    //          /*if ( effect_t.marqueeTicks[player.playernum] == 0 && effect_t.marquee[player.playernum] >= 1.0 )
+                    //          {
+                    //              effect_t.marqueeTicks[player.playernum] = ticks;
+                    //          }*/
+                    //          /*if ( effect_t.marqueeTicks[player.playernum] > 0 && (ticks - effect_t.marqueeTicks[player.playernum] > TICKS_PER_SECOND * 2) )
+                    //          {
+                    //              effect_t.marqueeTicks[player.playernum] = 0;
+                    //              effect_t.marquee[player.playernum] = 0.0;
+                    //          }*/
+                    //      }
+                    //  }
+                    //  SDL_Rect posTitle = effectTxt->getSize();
+                    //  int scrollTitleLength = titleWidth - effectTxtFrame->getSize().w;
+                    //  if ( titleWidth <= effectTxtFrame->getSize().w )
+                    //  {
+                    //      scrollTitleLength = 0;
+                    //      posTitle.x = 0;
+                    //      effect_t.marqueeCompleted[player.playernum] = false;
+                    //      effect_t.marquee[player.playernum] = 0.0;
+                    //      effect_t.marqueeTicks[player.playernum] = 0;
+                    //  }
+                    //  else
+                    //  {
+                    //      posTitle.x = std::max((int)(-effect_t.marquee[player.playernum] * 100), -scrollTitleLength);
+                    //      if ( posTitle.x == -scrollTitleLength )
+                    //      {
+                    //          if ( !effect_t.marqueeCompleted[player.playernum] )
+                    //          {
+                    //              effect_t.marqueeTicks[player.playernum] = ticks;
+                    //          }
+                    //          effect_t.marqueeCompleted[player.playernum] = true;
+                    //      }
+                    //      else
+                    //      {
+                    //          effect_t.marqueeCompleted[player.playernum] = false;
+                    //      }
+                    //  }
+                    //  //posTitle.x = -scrollTitleLength * effect_t.marquee[player.playernum];
+                    //  effectTxt->setSize(posTitle);
 
-                    //	SDL_Rect posValue = effectVal->getSize();
-                    //	int scrollValueLength = valueWidth - effectValFrame->getSize().w;
-                    //	if ( valueWidth <= effectValFrame->getSize().w )
-                    //	{
-                    //		scrollValueLength = 0;
-                    //	}
-                    //	posValue.x = -scrollValueLength * effect_t.marquee[player.playernum];
-                    //	effectVal->setSize(posValue);
+                    //  SDL_Rect posValue = effectVal->getSize();
+                    //  int scrollValueLength = valueWidth - effectValFrame->getSize().w;
+                    //  if ( valueWidth <= effectValFrame->getSize().w )
+                    //  {
+                    //      scrollValueLength = 0;
+                    //  }
+                    //  posValue.x = -scrollValueLength * effect_t.marquee[player.playernum];
+                    //  effectVal->setSize(posValue);
                     //}
                     previousEffectFrameHeight = effectFrame->getSize().y + effectFrame->getSize().h;
                     //DebugTimers.addTimePoint("skill", effectFrame->getName());
@@ -42779,7 +42779,7 @@ void Player::HUD_t::updateMinotaurWarning()
                     // keep on player 1's camera for now.
                     SDL_Rect pos = minotaurSharedDisplay->getSize();
                     //int diff = (players[0]->camera_virtualx1() + players[0]->camera_virtualWidth()) -
-                    //	(minotaurSharedDisplay->getSize().x + minotaurSharedDisplay->getSize().w);
+                    //  (minotaurSharedDisplay->getSize().x + minotaurSharedDisplay->getSize().w);
                     //pos.x -= abs(diff) + 4;
                     pos.x = players[0]->camera_virtualx1() + players[0]->camera_virtualWidth() - pos.w - 4;
                     pos.y = players[0]->camera_virtualy1() + players[0]->camera_virtualHeight() - pos.h - 4;
@@ -45416,21 +45416,21 @@ void updateSkillUpFrame(const int player)
 
     //if ( enableDebugKeys && keystatus[SDLK_g] )
     //{
-    //	keystatus[SDLK_g] = 0;
+    //  keystatus[SDLK_g] = 0;
 
-    //	int skill = PRO_APPRAISAL; local_rng.rand() % NUMPROFICIENCIES;
-    //	int currentSkill = stats[player]->PROFICIENCIES[skill];
-    //	int increaseSkill = 1;
-    //	skillUpAnim.addSkillUp(skill, currentSkill, increaseSkill);
-    //	//skillUpAnim.skillUps.push_back(SkillUpAnimation_t::SkillUp_t(skill, currentSkill, increaseSkill));
-    //	++stats[player]->PROFICIENCIES[skill];
+    //  int skill = PRO_APPRAISAL; local_rng.rand() % NUMPROFICIENCIES;
+    //  int currentSkill = stats[player]->PROFICIENCIES[skill];
+    //  int increaseSkill = 1;
+    //  skillUpAnim.addSkillUp(skill, currentSkill, increaseSkill);
+    //  //skillUpAnim.skillUps.push_back(SkillUpAnimation_t::SkillUp_t(skill, currentSkill, increaseSkill));
+    //  ++stats[player]->PROFICIENCIES[skill];
     //}
 
     //if ( enableDebugKeys && keystatus[SDLK_h] )
     //{
-    //	keystatus[SDLK_h] = 0;
+    //  keystatus[SDLK_h] = 0;
 
-    //	skillUpAnim.addSpellLearned(SPELL_FORCEBOLT + local_rng.rand() % (NUM_SPELLS - 1));
+    //  skillUpAnim.addSpellLearned(SPELL_FORCEBOLT + local_rng.rand() % (NUM_SPELLS - 1));
     //}
 
     if (skillUpAnim.skillUps.empty() || levelUpAnimation[player].lvlUps.size() > 0)

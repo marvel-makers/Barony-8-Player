@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: opengl.cpp
-	Desc: contains all drawing functions for opengl
+ BARONY
+ File: opengl.cpp
+   Desc: contains all drawing functions for opengl
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+   Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -34,118 +34,118 @@ static ConsoleVariable<bool> cvar_fullBright("/fullbright", false);
 static void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar)
 {
     GLdouble fH = tan(fovY / 360 * PI) * zNear;
-	GLdouble fW = fH * aspect;
+    GLdouble fW = fH * aspect;
 
     GL_CHECK_ERR(glFrustum(-fW, fW, -fH, fH, zNear, zFar));
 }
 
 vec4_t vec4_copy(const vec4_t* v) {
-	return vec4_t(v->x, v->y, v->z, v->w);
+    return vec4_t(v->x, v->y, v->z, v->w);
 }
 
 vec4_t* mul_mat_vec4(vec4_t* result, const mat4x4_t* m, const vec4_t* v) {
-	result->x = m->x.x * v->x + m->y.x * v->y + m->z.x * v->z + m->w.x * v->w;
-	result->y = m->x.y * v->x + m->y.y * v->y + m->z.y * v->z + m->w.y * v->w;
-	result->z = m->x.z * v->x + m->y.z * v->y + m->z.z * v->z + m->w.z * v->w;
-	result->w = m->x.w * v->x + m->y.w * v->y + m->z.w * v->z + m->w.w * v->w;
-	return result;
+    result->x = m->x.x * v->x + m->y.x * v->y + m->z.x * v->z + m->w.x * v->w;
+    result->y = m->x.y * v->x + m->y.y * v->y + m->z.y * v->z + m->w.y * v->w;
+    result->z = m->x.z * v->x + m->y.z * v->y + m->z.z * v->z + m->w.z * v->w;
+    result->w = m->x.w * v->x + m->y.w * v->y + m->z.w * v->z + m->w.w * v->w;
+    return result;
 }
 
 vec4_t* add_vec4(vec4_t* result, const vec4_t* a, const vec4_t* b) {
-	result->x = a->x + b->x;
-	result->y = a->y + b->y;
-	result->z = a->z + b->z;
-	result->w = a->w + b->w;
-	return result;
+    result->x = a->x + b->x;
+    result->y = a->y + b->y;
+    result->z = a->z + b->z;
+    result->w = a->w + b->w;
+    return result;
 }
 
 vec4_t* sub_vec4(vec4_t* result, const vec4_t* a, const vec4_t* b) {
-	result->x = a->x - b->x;
-	result->y = a->y - b->y;
-	result->z = a->z - b->z;
-	result->w = a->w - b->w;
-	return result;
+    result->x = a->x - b->x;
+    result->y = a->y - b->y;
+    result->z = a->z - b->z;
+    result->w = a->w - b->w;
+    return result;
 }
 
 vec4_t* mul_vec4(vec4_t* result, const vec4_t* a, const vec4_t* b) {
-	result->x = a->x * b->x;
-	result->y = a->y * b->y;
-	result->z = a->z * b->z;
-	result->w = a->w * b->w;
-	return result;
+    result->x = a->x * b->x;
+    result->y = a->y * b->y;
+    result->z = a->z * b->z;
+    result->w = a->w * b->w;
+    return result;
 }
 
 vec4_t* div_vec4(vec4_t* result, const vec4_t* a, const vec4_t* b) {
-	result->x = a->x / b->x;
-	result->y = a->y / b->y;
-	result->z = a->z / b->z;
-	result->w = a->w / b->w;
-	return result;
+    result->x = a->x / b->x;
+    result->y = a->y / b->y;
+    result->z = a->z / b->z;
+    result->w = a->w / b->w;
+    return result;
 }
 
 vec4_t* pow_vec4(vec4_t* result, const vec4_t* v, float f) {
-	result->x = v->x * f;
-	result->y = v->y * f;
-	result->z = v->z * f;
-	result->w = v->w * f;
-	return result;
+    result->x = v->x * f;
+    result->y = v->y * f;
+    result->z = v->z * f;
+    result->w = v->w * f;
+    return result;
 }
 
 float dot_vec4(const vec4_t* a, const vec4_t* b) {
-	return a->x * b->x + a->y * b->y + a->z * b->z + a->w * b->w;
+    return a->x * b->x + a->y * b->y + a->z * b->z + a->w * b->w;
 }
 
 vec4_t* cross_vec3(vec4_t* result, const vec4_t* a, const vec4_t* b) {
-	result->x = a->y * b->z - a->z * b->y;
-	result->y = a->z * b->x - a->x * b->z;
-	result->z = a->x * b->y - a->y * b->x;
-	return result;
+    result->x = a->y * b->z - a->z * b->y;
+    result->y = a->z * b->x - a->x * b->z;
+    result->z = a->x * b->y - a->y * b->x;
+    return result;
 }
 
 vec4_t* cross_vec4(vec4_t* result, const vec4_t* a, const vec4_t* b) {
-	result->x = a->y * b->z - a->z * b->y;
-	result->y = a->z * b->w - a->w * b->z;
-	result->z = a->w * b->x - a->x * b->w;
-	result->w = a->x * b->y - a->y * b->x;
-	return result;
+    result->x = a->y * b->z - a->z * b->y;
+    result->y = a->z * b->w - a->w * b->z;
+    result->z = a->w * b->x - a->x * b->w;
+    result->w = a->x * b->y - a->y * b->x;
+    return result;
 }
 
 float length_vec4(const vec4_t* v) {
-	return sqrtf(v->x * v->x + v->y * v->y + v->z * v->z + v->w * v->w);
+    return sqrtf(v->x * v->x + v->y * v->y + v->z * v->z + v->w * v->w);
 }
 
 vec4_t* normal_vec4(vec4_t* result, const vec4_t* v) {
-	float length = length_vec4(v);
-	result->x = v->x / length;
-	result->y = v->y / length;
-	result->z = v->z / length;
-	result->w = v->w / length;
-	return result;
+    float length = length_vec4(v);
+    result->x = v->x / length;
+    result->y = v->y / length;
+    result->z = v->z / length;
+    result->w = v->w / length;
+    return result;
 }
 
 mat4x4_t* mul_mat(mat4x4_t* result, const mat4x4_t* m1, const mat4x4_t* m2) {
-	vec4 v[6];
-	(void)add_vec4(
-		&result->x,
-		add_vec4(&v[0], pow_vec4(&v[1], &m1->x, m2->x.x), pow_vec4(&v[2], &m1->y, m2->x.y)),
-		add_vec4(&v[3], pow_vec4(&v[4], &m1->z, m2->x.z), pow_vec4(&v[5], &m1->w, m2->x.w))
-	);
-	(void)add_vec4(
-		&result->y,
-		add_vec4(&v[0], pow_vec4(&v[1], &m1->x, m2->y.x), pow_vec4(&v[2], &m1->y, m2->y.y)),
-		add_vec4(&v[3], pow_vec4(&v[4], &m1->z, m2->y.z), pow_vec4(&v[5], &m1->w, m2->y.w))
-	);
-	(void)add_vec4(
-		&result->z,
-		add_vec4(&v[0], pow_vec4(&v[1], &m1->x, m2->z.x), pow_vec4(&v[2], &m1->y, m2->z.y)),
-		add_vec4(&v[3], pow_vec4(&v[4], &m1->z, m2->z.z), pow_vec4(&v[5], &m1->w, m2->z.w))
-	);
-	(void)add_vec4(
-		&result->w,
-		add_vec4(&v[0], pow_vec4(&v[1], &m1->x, m2->w.x), pow_vec4(&v[2], &m1->y, m2->w.y)),
-		add_vec4(&v[3], pow_vec4(&v[4], &m1->z, m2->w.z), pow_vec4(&v[5], &m1->w, m2->w.w))
-	);
-	return result;
+    vec4 v[6];
+    (void)add_vec4(
+        &result->x,
+        add_vec4(&v[0], pow_vec4(&v[1], &m1->x, m2->x.x), pow_vec4(&v[2], &m1->y, m2->x.y)),
+        add_vec4(&v[3], pow_vec4(&v[4], &m1->z, m2->x.z), pow_vec4(&v[5], &m1->w, m2->x.w))
+    );
+    (void)add_vec4(
+        &result->y,
+        add_vec4(&v[0], pow_vec4(&v[1], &m1->x, m2->y.x), pow_vec4(&v[2], &m1->y, m2->y.y)),
+        add_vec4(&v[3], pow_vec4(&v[4], &m1->z, m2->y.z), pow_vec4(&v[5], &m1->w, m2->y.w))
+    );
+    (void)add_vec4(
+        &result->z,
+        add_vec4(&v[0], pow_vec4(&v[1], &m1->x, m2->z.x), pow_vec4(&v[2], &m1->y, m2->z.y)),
+        add_vec4(&v[3], pow_vec4(&v[4], &m1->z, m2->z.z), pow_vec4(&v[5], &m1->w, m2->z.w))
+    );
+    (void)add_vec4(
+        &result->w,
+        add_vec4(&v[0], pow_vec4(&v[1], &m1->x, m2->w.x), pow_vec4(&v[2], &m1->y, m2->w.y)),
+        add_vec4(&v[3], pow_vec4(&v[4], &m1->z, m2->w.z), pow_vec4(&v[5], &m1->w, m2->w.w))
+    );
+    return result;
 }
 
 mat4x4_t* translate_mat(mat4x4_t* result, const mat4x4_t* m, const vec4_t* v) {
@@ -249,160 +249,160 @@ mat4x4_t* fast_perspective(mat4x4_t* result, float fov, float aspect, float near
 mat4x4_t* mat_from_array(mat4x4_t* result, float matArray[16])
 {
     memcpy(result, matArray, sizeof(mat4x4_t));
-	return result;
+    return result;
 }
 
 bool invertMatrix4x4(mat4x4_t* result, const mat4x4_t* m)
 {
-	float inv[16];
+    float inv[16];
 
-	inv[0] = m->y.y * m->z.z * m->w.w -
-		m->y.y * m->z.w * m->w.z -
-		m->z.y * m->y.z * m->w.w +
-		m->z.y * m->y.w * m->w.z +
-		m->w.y * m->y.z * m->z.w -
-		m->w.y * m->y.w * m->z.z;
+    inv[0] = m->y.y * m->z.z * m->w.w -
+        m->y.y * m->z.w * m->w.z -
+        m->z.y * m->y.z * m->w.w +
+        m->z.y * m->y.w * m->w.z +
+        m->w.y * m->y.z * m->z.w -
+        m->w.y * m->y.w * m->z.z;
 
-	inv[4] = -m->y.x * m->z.z * m->w.w +
-		m->y.x * m->z.w * m->w.z +
-		m->z.x * m->y.z * m->w.w -
-		m->z.x * m->y.w * m->w.z -
-		m->w.x * m->y.z * m->z.w +
-		m->w.x * m->y.w * m->z.z;
+    inv[4] = -m->y.x * m->z.z * m->w.w +
+        m->y.x * m->z.w * m->w.z +
+        m->z.x * m->y.z * m->w.w -
+        m->z.x * m->y.w * m->w.z -
+        m->w.x * m->y.z * m->z.w +
+        m->w.x * m->y.w * m->z.z;
 
-	inv[8] = m->y.x * m->z.y * m->w.w -
-		m->y.x * m->z.w * m->w.y -
-		m->z.x * m->y.y * m->w.w +
-		m->z.x * m->y.w * m->w.y +
-		m->w.x * m->y.y * m->z.w -
-		m->w.x * m->y.w * m->z.y;
+    inv[8] = m->y.x * m->z.y * m->w.w -
+        m->y.x * m->z.w * m->w.y -
+        m->z.x * m->y.y * m->w.w +
+        m->z.x * m->y.w * m->w.y +
+        m->w.x * m->y.y * m->z.w -
+        m->w.x * m->y.w * m->z.y;
 
-	inv[12] = -m->y.x * m->z.y * m->w.z +
-		m->y.x * m->z.z * m->w.y +
-		m->z.x * m->y.y * m->w.z -
-		m->z.x * m->y.z * m->w.y -
-		m->w.x * m->y.y * m->z.z +
-		m->w.x * m->y.z * m->z.y;
+    inv[12] = -m->y.x * m->z.y * m->w.z +
+        m->y.x * m->z.z * m->w.y +
+        m->z.x * m->y.y * m->w.z -
+        m->z.x * m->y.z * m->w.y -
+        m->w.x * m->y.y * m->z.z +
+        m->w.x * m->y.z * m->z.y;
 
-	inv[1] = -m->x.y * m->z.z * m->w.w +
-		m->x.y * m->z.w * m->w.z +
-		m->z.y * m->x.z * m->w.w -
-		m->z.y * m->x.w * m->w.z -
-		m->w.y * m->x.z * m->z.w +
-		m->w.y * m->x.w * m->z.z;
+    inv[1] = -m->x.y * m->z.z * m->w.w +
+        m->x.y * m->z.w * m->w.z +
+        m->z.y * m->x.z * m->w.w -
+        m->z.y * m->x.w * m->w.z -
+        m->w.y * m->x.z * m->z.w +
+        m->w.y * m->x.w * m->z.z;
 
-	inv[5] = m->x.x * m->z.z * m->w.w -
-		m->x.x * m->z.w * m->w.z -
-		m->z.x * m->x.z * m->w.w +
-		m->z.x * m->x.w * m->w.z +
-		m->w.x * m->x.z * m->z.w -
-		m->w.x * m->x.w * m->z.z;
+    inv[5] = m->x.x * m->z.z * m->w.w -
+        m->x.x * m->z.w * m->w.z -
+        m->z.x * m->x.z * m->w.w +
+        m->z.x * m->x.w * m->w.z +
+        m->w.x * m->x.z * m->z.w -
+        m->w.x * m->x.w * m->z.z;
 
-	inv[9] = -m->x.x * m->z.y * m->w.w +
-		m->x.x * m->z.w * m->w.y +
-		m->z.x * m->x.y * m->w.w -
-		m->z.x * m->x.w * m->w.y -
-		m->w.x * m->x.y * m->z.w +
-		m->w.x * m->x.w * m->z.y;
+    inv[9] = -m->x.x * m->z.y * m->w.w +
+        m->x.x * m->z.w * m->w.y +
+        m->z.x * m->x.y * m->w.w -
+        m->z.x * m->x.w * m->w.y -
+        m->w.x * m->x.y * m->z.w +
+        m->w.x * m->x.w * m->z.y;
 
-	inv[13] = m->x.x * m->z.y * m->w.z -
-		m->x.x * m->z.z * m->w.y -
-		m->z.x * m->x.y * m->w.z +
-		m->z.x * m->x.z * m->w.y +
-		m->w.x * m->x.y * m->z.z -
-		m->w.x * m->x.z * m->z.y;
+    inv[13] = m->x.x * m->z.y * m->w.z -
+        m->x.x * m->z.z * m->w.y -
+        m->z.x * m->x.y * m->w.z +
+        m->z.x * m->x.z * m->w.y +
+        m->w.x * m->x.y * m->z.z -
+        m->w.x * m->x.z * m->z.y;
 
-	inv[2] = m->x.y * m->y.z * m->w.w -
-		m->x.y * m->y.w * m->w.z -
-		m->y.y * m->x.z * m->w.w +
-		m->y.y * m->x.w * m->w.z +
-		m->w.y * m->x.z * m->y.w -
-		m->w.y * m->x.w * m->y.z;
+    inv[2] = m->x.y * m->y.z * m->w.w -
+        m->x.y * m->y.w * m->w.z -
+        m->y.y * m->x.z * m->w.w +
+        m->y.y * m->x.w * m->w.z +
+        m->w.y * m->x.z * m->y.w -
+        m->w.y * m->x.w * m->y.z;
 
-	inv[6] = -m->x.x * m->y.z * m->w.w +
-		m->x.x * m->y.w * m->w.z +
-		m->y.x * m->x.z * m->w.w -
-		m->y.x * m->x.w * m->w.z -
-		m->w.x * m->x.z * m->y.w +
-		m->w.x * m->x.w * m->y.z;
+    inv[6] = -m->x.x * m->y.z * m->w.w +
+        m->x.x * m->y.w * m->w.z +
+        m->y.x * m->x.z * m->w.w -
+        m->y.x * m->x.w * m->w.z -
+        m->w.x * m->x.z * m->y.w +
+        m->w.x * m->x.w * m->y.z;
 
-	inv[10] = m->x.x * m->y.y * m->w.w -
-		m->x.x * m->y.w * m->w.y -
-		m->y.x * m->x.y * m->w.w +
-		m->y.x * m->x.w * m->w.y +
-		m->w.x * m->x.y * m->y.w -
-		m->w.x * m->x.w * m->y.y;
+    inv[10] = m->x.x * m->y.y * m->w.w -
+        m->x.x * m->y.w * m->w.y -
+        m->y.x * m->x.y * m->w.w +
+        m->y.x * m->x.w * m->w.y +
+        m->w.x * m->x.y * m->y.w -
+        m->w.x * m->x.w * m->y.y;
 
-	inv[14] = -m->x.x * m->y.y * m->w.z +
-		m->x.x * m->y.z * m->w.y +
-		m->y.x * m->x.y * m->w.z -
-		m->y.x * m->x.z * m->w.y -
-		m->w.x * m->x.y * m->y.z +
-		m->w.x * m->x.z * m->y.y;
+    inv[14] = -m->x.x * m->y.y * m->w.z +
+        m->x.x * m->y.z * m->w.y +
+        m->y.x * m->x.y * m->w.z -
+        m->y.x * m->x.z * m->w.y -
+        m->w.x * m->x.y * m->y.z +
+        m->w.x * m->x.z * m->y.y;
 
-	inv[3] = -m->x.y * m->y.z * m->z.w +
-		m->x.y * m->y.w * m->z.z +
-		m->y.y * m->x.z * m->z.w -
-		m->y.y * m->x.w * m->z.z -
-		m->z.y * m->x.z * m->y.w +
-		m->z.y * m->x.w * m->y.z;
+    inv[3] = -m->x.y * m->y.z * m->z.w +
+        m->x.y * m->y.w * m->z.z +
+        m->y.y * m->x.z * m->z.w -
+        m->y.y * m->x.w * m->z.z -
+        m->z.y * m->x.z * m->y.w +
+        m->z.y * m->x.w * m->y.z;
 
-	inv[7] = m->x.x * m->y.z * m->z.w -
-		m->x.x * m->y.w * m->z.z -
-		m->y.x * m->x.z * m->z.w +
-		m->y.x * m->x.w * m->z.z +
-		m->z.x * m->x.z * m->y.w -
-		m->z.x * m->x.w * m->y.z;
+    inv[7] = m->x.x * m->y.z * m->z.w -
+        m->x.x * m->y.w * m->z.z -
+        m->y.x * m->x.z * m->z.w +
+        m->y.x * m->x.w * m->z.z +
+        m->z.x * m->x.z * m->y.w -
+        m->z.x * m->x.w * m->y.z;
 
-	inv[11] = -m->x.x * m->y.y * m->z.w +
-		m->x.x * m->y.w * m->z.y +
-		m->y.x * m->x.y * m->z.w -
-		m->y.x * m->x.w * m->z.y -
-		m->z.x * m->x.y * m->y.w +
-		m->z.x * m->x.w * m->y.y;
+    inv[11] = -m->x.x * m->y.y * m->z.w +
+        m->x.x * m->y.w * m->z.y +
+        m->y.x * m->x.y * m->z.w -
+        m->y.x * m->x.w * m->z.y -
+        m->z.x * m->x.y * m->y.w +
+        m->z.x * m->x.w * m->y.y;
 
-	inv[15] = m->x.x * m->y.y * m->z.z -
-		m->x.x * m->y.z * m->z.y -
-		m->y.x * m->x.y * m->z.z +
-		m->y.x * m->x.z * m->z.y +
-		m->z.x * m->x.y * m->y.z -
-		m->z.x * m->x.z * m->y.y;
+    inv[15] = m->x.x * m->y.y * m->z.z -
+        m->x.x * m->y.z * m->z.y -
+        m->y.x * m->x.y * m->z.z +
+        m->y.x * m->x.z * m->z.y +
+        m->z.x * m->x.y * m->y.z -
+        m->z.x * m->x.z * m->y.y;
 
-	float det = m->x.x * inv[0] + m->x.y * inv[4] + m->x.z * inv[8] + m->x.w * inv[12];
+    float det = m->x.x * inv[0] + m->x.y * inv[4] + m->x.z * inv[8] + m->x.w * inv[12];
 
     if (det == 0.f) {
         return false;
     }
 
-	det = 1.f / det;
+    det = 1.f / det;
 
     auto out = (float*)result;
     for (int i = 0; i < 16; ++i) {
         out[i] = inv[i] * det;
     }
 
-	return true;
+    return true;
 }
 
 vec4_t project(
-	const vec4_t* world,
-	const mat4x4_t* model,
-	const mat4x4_t* projview,
-	const vec4_t* window
+    const vec4_t* world,
+    const mat4x4_t* model,
+    const mat4x4_t* projview,
+    const vec4_t* window
 ) {
-	vec4 copy;
-	vec4_t result = *world; result.w = 1.f;
-	copy = vec4_copy(&result); mul_mat_vec4(&result, model, &copy);
-	copy = vec4_copy(&result); mul_mat_vec4(&result, projview, &copy);
+    vec4 copy;
+    vec4_t result = *world; result.w = 1.f;
+    copy = vec4_copy(&result); mul_mat_vec4(&result, model, &copy);
+    copy = vec4_copy(&result); mul_mat_vec4(&result, projview, &copy);
 
-	vec4 half(0.5f);
-	vec4 w(result.w);
-	div_vec4(&result, &result, &w);
-	mul_vec4(&result, &result, &half);
-	add_vec4(&result, &result, &half);
-	result.x = result.x * window->z + window->x;
-	result.y = result.y * window->w + window->y;
-	return result;
+    vec4 half(0.5f);
+    vec4 w(result.w);
+    div_vec4(&result, &result, &w);
+    mul_vec4(&result, &result, &half);
+    add_vec4(&result, &result, &half);
+    result.x = result.x * window->z + window->x;
+    result.y = result.y * window->w + window->y;
+    return result;
 }
 
 ClipResult project_clipped(
@@ -538,35 +538,35 @@ ClipResult project_clipped2(
 }
 
 vec4_t unproject(
-	const vec4_t* screenCoords,
-	const mat4x4_t* model,
-	const mat4x4_t* projview,
-	const vec4_t* window
+    const vec4_t* screenCoords,
+    const mat4x4_t* model,
+    const mat4x4_t* projview,
+    const vec4_t* window
 ) {
-	vec4_t result = *screenCoords;
-	result.x = (result.x - window->x) / window->z;
-	result.y = (result.y - window->y) / window->w;
+    vec4_t result = *screenCoords;
+    result.x = (result.x - window->x) / window->z;
+    result.y = (result.y - window->y) / window->w;
 
-	vec4 half(0.5f);
-	sub_vec4(&result, &result, &half);
-	div_vec4(&result, &result, &half);
+    vec4 half(0.5f);
+    sub_vec4(&result, &result, &half);
+    div_vec4(&result, &result, &half);
 
     vec4 copy;
     mat4x4_t inv;
     invertMatrix4x4(&inv, projview);
-	copy = vec4_copy(&result); mul_mat_vec4(&result, &inv, &copy);
+    copy = vec4_copy(&result); mul_mat_vec4(&result, &inv, &copy);
     
     vec4 w(result.w);
     div_vec4(&result, &result, &w);
 
-	return result;
+    return result;
 }
 
 /*-------------------------------------------------------------------------------
 
-	glDrawVoxel
+ glDrawVoxel
 
-	Draws a voxel model at the given world coordinates
+   Draws a voxel model at the given world coordinates
 
 -------------------------------------------------------------------------------*/
 
@@ -1083,9 +1083,9 @@ void glBeginCamera(view_t* camera, bool useHDR, map_t& map)
     GL_CHECK_ERR(glEnable(GL_DEPTH_TEST));
     
     const float aspect = static_cast<real_t>(camera->winw) / static_cast<real_t>(camera->winh);
-	const float rotx = camera->vang * 180.f / PI; // get x rotation
-	const float roty = (camera->ang - 3.f * PI / 2.f) * 180.f / PI; // get y rotation
-	const float rotz = 0.f; // get z rotation
+    const float rotx = camera->vang * 180.f / PI; // get x rotation
+    const float roty = (camera->ang - 3.f * PI / 2.f) * 180.f / PI; // get y rotation
+    const float rotz = 0.f; // get z rotation
     
     // setup projection + view matrix (shader)
     mat4x4_t proj, view, view2, identity;
@@ -1147,7 +1147,7 @@ void glBeginCamera(view_t* camera, bool useHDR, map_t& map)
     }
 #endif
 
-	// upload uniforms
+    // upload uniforms
     uploadUniforms(voxelShader, (float*)&proj, (float*)&view, (float*)&mapDims);
     uploadUniforms(voxelBrightShader, (float*)&proj, (float*)&view, nullptr);
     uploadUniforms(voxelDitheredShader, (float*)&proj, (float*)&view, (float*)&mapDims);
@@ -1301,38 +1301,38 @@ void glEndCamera(view_t* camera, bool useHDR, map_t& map)
 }
 
 void glDrawVoxel(view_t* camera, Entity* entity, int mode) {
-	if (!camera || !entity) {
-		return;
-	}
+    if (!camera || !entity) {
+        return;
+    }
 
-	// select model
+    // select model
     voxel_t* model = nullptr;
     int modelindex = -1;
 #ifndef EDITOR
-	static ConsoleVariable<int> cvar_forceModel("/forcemodel", -1, "force all voxel models to use a specific index");
-	modelindex = *cvar_forceModel;
+    static ConsoleVariable<int> cvar_forceModel("/forcemodel", -1, "force all voxel models to use a specific index");
+    modelindex = *cvar_forceModel;
 #endif
-	if (modelindex < 0) {
-		modelindex = entity->sprite;
-	}
-	if (modelindex >= 0 && modelindex < nummodels) {
-		if (models[modelindex] != nullptr) {
-			model = models[modelindex];
-		} else {
-			model = models[0];
-		}
-	} else {
-		model = models[0];
-		modelindex = 0;
-	}
-	if (!model || model == models[0]) {
-		return; // don't draw green balls
-	}
+    if (modelindex < 0) {
+        modelindex = entity->sprite;
+    }
+    if (modelindex >= 0 && modelindex < nummodels) {
+        if (models[modelindex] != nullptr) {
+            model = models[modelindex];
+        } else {
+            model = models[0];
+        }
+    } else {
+        model = models[0];
+        modelindex = 0;
+    }
+    if (!model || model == models[0]) {
+        return; // don't draw green balls
+    }
     
     // set GL state
-	if (mode == REALCOLORS) {
+    if (mode == REALCOLORS) {
         GL_CHECK_ERR(glEnable(GL_BLEND));
-	}
+    }
 
     int player = -1;
     for ( player = 0; player < MAXPLAYERS; ++player ) {
@@ -1360,14 +1360,14 @@ void glDrawVoxel(view_t* camera, Entity* entity, int mode) {
 #endif
 
     bool changedDepthRange = false;
-	if (entity->flags[OVERDRAW] 
+    if (entity->flags[OVERDRAW] 
         || telepath
-		|| modelindex == FOLLOWER_SELECTED_PARTICLE
-		|| modelindex == FOLLOWER_TARGET_PARTICLE
+        || modelindex == FOLLOWER_SELECTED_PARTICLE
+        || modelindex == FOLLOWER_TARGET_PARTICLE
         || (modelindex >= PINPOINT_PARTICLE_START && modelindex < PINPOINT_PARTICLE_END)) {
         changedDepthRange = true;
         GL_CHECK_ERR(glDepthRange(0, 0.1));
-	}
+    }
     
     // bind shader
     auto& dither = entity->dithering[camera];
@@ -1521,9 +1521,9 @@ void glDrawVoxel(view_t* camera, Entity* entity, int mode) {
 
 /*-------------------------------------------------------------------------------
 
-	glDrawSprite
+ glDrawSprite
 
-	Draws a 2D sprite to represent an object in 3D
+  Draws a 2D sprite to represent an object in 3D
 
 -------------------------------------------------------------------------------*/
 
@@ -1558,17 +1558,17 @@ void glDrawEnemyBarSprite(view_t* camera, int mode, int playerViewport, void* en
 {
 #ifndef EDITOR
     if (!camera || mode != REALCOLORS || !enemyHPBarDetails) {
-		return;
-	}
-	auto enemybar = static_cast<EnemyHPDamageBarHandler::EnemyHPDetails*>(enemyHPBarDetails);
-	SDL_Surface* sprite = enemybar->worldSurfaceSprite;
-	if (!sprite || !enemybar->worldTexture) {
-		return;
-	}
+        return;
+    }
+    auto enemybar = static_cast<EnemyHPDamageBarHandler::EnemyHPDetails*>(enemyHPBarDetails);
+    SDL_Surface* sprite = enemybar->worldSurfaceSprite;
+    if (!sprite || !enemybar->worldTexture) {
+        return;
+    }
 
-	// bind texture
-	TempTexture* tex = enemybar->worldTexture;
-	tex->bind();
+    // bind texture
+    TempTexture* tex = enemybar->worldTexture;
+    tex->bind();
     
     // bind shader
     GL_CHECK_ERR(glEnable(GL_BLEND));
@@ -1612,22 +1612,22 @@ void glDrawEnemyBarSprite(view_t* camera, int mode, int playerViewport, void* en
             topOfWindow += factorY * (sprite->h > 50 ? 0 : -26); 
         }
         float pixelOffset = drawOffsetY;
-		vec4_t screenCoordinates = project(&worldCoords, &m, &camera->projview, &window);
+        vec4_t screenCoordinates = project(&worldCoords, &m, &camera->projview, &window);
         if (screenCoordinates.y >= topOfWindow && screenCoordinates.z >= 0.f) {
             // above camera limit
-			pixelOffset += fabs(screenCoordinates.y - topOfWindow);
+            pixelOffset += fabs(screenCoordinates.y - topOfWindow);
             
-		}
+        }
 
         if ( fabs(pixelOffset) > 0.001 )
         {
-		    screenCoordinates.y -= pixelOffset;
+            screenCoordinates.y -= pixelOffset;
             // convert back into worldCoords
-		    vec4_t worldCoords2 = unproject(&screenCoordinates, &m, &camera->projview, &window);
+            vec4_t worldCoords2 = unproject(&screenCoordinates, &m, &camera->projview, &window);
             worldCoords2.y -= scale * tex->h * 0.5f;
             m.w = worldCoords2;
         }
-	}
+    }
 
     // upload model matrix
     GL_CHECK_ERR(glUniformMatrix4fv(shader.uniform("uModel"), 1, false, (float*)&m));
@@ -1666,30 +1666,30 @@ void glDrawEnemyBarSprite(view_t* camera, int mode, int playerViewport, void* en
 void glDrawWorldDialogueSprite(view_t* camera, void* worldDialogue, int mode)
 {
 #ifndef EDITOR
-	if (!camera || !worldDialogue || mode != REALCOLORS) {
-		return;
-	}
-	auto dialogue = static_cast<Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t*>(worldDialogue);
-	if (dialogue->alpha <= 0.0) {
-		return;
-	}
-	SDL_Surface* sprite = nullptr;
-	if (dialogue->dialogueTooltipSurface) {
+    if (!camera || !worldDialogue || mode != REALCOLORS) {
+        return;
+    }
+    auto dialogue = static_cast<Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t*>(worldDialogue);
+    if (dialogue->alpha <= 0.0) {
+        return;
+    }
+    SDL_Surface* sprite = nullptr;
+    if (dialogue->dialogueTooltipSurface) {
         sprite = dialogue->dialogueTooltipSurface;
-	} else {
+    } else {
         sprite = dialogue->blitDialogueTooltip();
-	}
-	if (!sprite) {
-		return;
-	}
+    }
+    if (!sprite) {
+        return;
+    }
 
-	// bind texture
-	TempTexture* tex = nullptr;
-	tex = new TempTexture();
-	if (sprite) {
-		tex->load(sprite, false, true);
+    // bind texture
+    TempTexture* tex = nullptr;
+    tex = new TempTexture();
+    if (sprite) {
+        tex->load(sprite, false, true);
         tex->bind();
-	}
+    }
     
     // depth range
     GL_CHECK_ERR(glDepthRange(0.f, .6f));
@@ -1766,10 +1766,10 @@ void glDrawWorldDialogueSprite(view_t* camera, void* worldDialogue, int mode)
     spriteMesh.draw();
 
     // cleanup
-	if (tex) {
-		delete tex;
-		tex = nullptr;
-	}
+    if (tex) {
+        delete tex;
+        tex = nullptr;
+    }
     
     // reset GL state
     GL_CHECK_ERR(glDepthRange(0.f, 1.f));
@@ -1780,25 +1780,25 @@ void glDrawWorldDialogueSprite(view_t* camera, void* worldDialogue, int mode)
 void glDrawWorldUISprite(view_t* camera, Entity* entity, int mode)
 {
 #ifndef EDITOR
-	if (!camera || !entity || intro) {
-		return;
-	}
+    if (!camera || !entity || intro) {
+        return;
+    }
     if (mode != REALCOLORS) {
         return;
     }
 
     // find player that this UI sprite is drawing for
-	int player = -1;
-	if ( entity->behavior == &actSpriteWorldTooltip ) {
-		if ( entity->worldTooltipIgnoreDrawing != 0 ) {
-			return;
-		}
-		for (player = 0; player < MAXPLAYERS; ++player) {
-			if (&cameras[player] == camera) {
-				break;
-			}
-		}
-		if (player >= 0 && player < MAXPLAYERS) {
+    int player = -1;
+    if ( entity->behavior == &actSpriteWorldTooltip ) {
+        if ( entity->worldTooltipIgnoreDrawing != 0 ) {
+            return;
+        }
+        for (player = 0; player < MAXPLAYERS; ++player) {
+            if (&cameras[player] == camera) {
+                break;
+            }
+        }
+        if (player >= 0 && player < MAXPLAYERS) {
             //if ( CalloutMenu[player].calloutMenuIsOpen() )
             //{
             //    real_t dx, dy;
@@ -1809,54 +1809,54 @@ void glDrawWorldUISprite(view_t* camera, Entity* entity, int mode)
             //        return; // too far, ignore drawing
             //    }
             //}
-			if (entity->worldTooltipPlayer != player) {
-				return;
-			}
-			if (entity->worldTooltipActive == 0 && entity->worldTooltipFadeDelay == 0) {
-				return;
-			}
-		} else {
-			return;
-		}
-		if (!uidToEntity(entity->parent)) {
-			return;
-		}
-	}
+            if (entity->worldTooltipPlayer != player) {
+                return;
+            }
+            if (entity->worldTooltipActive == 0 && entity->worldTooltipFadeDelay == 0) {
+                return;
+            }
+        } else {
+            return;
+        }
+        if (!uidToEntity(entity->parent)) {
+            return;
+        }
+    }
 
-	// bind texture
+    // bind texture
     TempTexture* tex = nullptr;
-	SDL_Surface* sprite = nullptr;
-	if (entity->behavior == &actSpriteWorldTooltip)
-	{
-		Entity* parent = uidToEntity(entity->parent);
-		if (parent && parent->behavior == &actItem && (multiplayer != CLIENT
+    SDL_Surface* sprite = nullptr;
+    if (entity->behavior == &actSpriteWorldTooltip)
+    {
+        Entity* parent = uidToEntity(entity->parent);
+        if (parent && parent->behavior == &actItem && (multiplayer != CLIENT
             || (multiplayer == CLIENT && (parent->itemReceivedDetailsFromServer != 0 || parent->skill[10] != 0))))
-		{
-			Item* item = newItemFromEntity(uidToEntity(entity->parent), true);
-			if (!item) {
-				return;
-			}
-			sprite = players[player]->worldUI.worldTooltipItem.blitItemWorldTooltip(item);
-			free(item);
-		}
+        {
+            Item* item = newItemFromEntity(uidToEntity(entity->parent), true);
+            if (!item) {
+                return;
+            }
+            sprite = players[player]->worldUI.worldTooltipItem.blitItemWorldTooltip(item);
+            free(item);
+        }
 
-		tex = new TempTexture();
-		if (sprite) {
-		    tex->load(sprite, false, true);
-		    tex->bind();
-		}
-	}
-	else {
-		if (entity->sprite >= 0 && entity->sprite < numsprites) {
-			if (sprites[entity->sprite] != nullptr) {
-				sprite = sprites[entity->sprite];
-			} else {
-				sprite = sprites[0];
-			}
-		} else {
-			sprite = sprites[0];
-		}
-	}
+        tex = new TempTexture();
+        if (sprite) {
+            tex->load(sprite, false, true);
+            tex->bind();
+        }
+    }
+    else {
+        if (entity->sprite >= 0 && entity->sprite < numsprites) {
+            if (sprites[entity->sprite] != nullptr) {
+                sprite = sprites[entity->sprite];
+            } else {
+                sprite = sprites[0];
+            }
+        } else {
+            sprite = sprites[0];
+        }
+    }
     
     // depth range
     if (entity->flags[OVERDRAW]) {
@@ -2086,7 +2086,7 @@ void glDrawSprite(view_t* camera, Entity* entity, int mode)
         GL_CHECK_ERR(glDepthMask(GL_FALSE));
     }
 
-	// draw
+    // draw
     spriteMesh.draw();
     
     // reset GL state
@@ -2108,12 +2108,12 @@ void glDrawSprite(view_t* camera, Entity* entity, int mode)
 
 void glDrawSpriteFromImage(view_t* camera, Entity* entity, std::string text, int mode, bool useTextAsImgPath, bool rotate)
 {
-	if (!camera || !entity || text.empty()) {
-		return;
-	}
+    if (!camera || !entity || text.empty()) {
+        return;
+    }
 
     // set color
-	Uint32 color = makeColor(255, 255, 255, 255);
+    Uint32 color = makeColor(255, 255, 255, 255);
     if ( entity->behavior == &actDamageGib ) {
 #ifndef EDITOR
         if ( !EnemyHPDamageBarHandler::bDamageGibTypesEnabled )
@@ -2129,9 +2129,9 @@ void glDrawSpriteFromImage(view_t* camera, Entity* entity, std::string text, int
         }
 #endif // !EDITOR
     }
-	else if (entity->behavior == &actSpriteNametag) {
-		color = entity->skill[1];
-	}
+    else if (entity->behavior == &actSpriteNametag) {
+        color = entity->skill[1];
+    }
 
     GLfloat w = 0.0;
     GLfloat h = 0.0;
@@ -2151,10 +2151,10 @@ void glDrawSpriteFromImage(view_t* camera, Entity* entity, std::string text, int
     }
     else
     {
-	    auto rendered_text = Text::get(
+        auto rendered_text = Text::get(
             text.c_str(), "fonts/pixel_maz.ttf#32#2",
-		    color, makeColor(0, 0, 0, 255));
-	    auto textureId = rendered_text->getTexID();
+            color, makeColor(0, 0, 0, 255));
+        auto textureId = rendered_text->getTexID();
 
         // bind texture
         GL_CHECK_ERR(glBindTexture(GL_TEXTURE_2D, textureId));
@@ -2166,21 +2166,21 @@ void glDrawSpriteFromImage(view_t* camera, Entity* entity, std::string text, int
     }
     
     // set GL state
-	if (entity->flags[OVERDRAW]) {
+    if (entity->flags[OVERDRAW]) {
         GL_CHECK_ERR(glDepthRange(0.f, 0.1f));
-	} else {
-		if (entity->behavior == &actDamageGib) {
+    } else {
+        if (entity->behavior == &actDamageGib) {
 #ifndef EDITOR
             GL_CHECK_ERR(glDepthRange(0.f, *cvar_dmgSpriteDepthRange));
 #endif // !EDITOR
-		}
-		else if (entity->behavior != &actSpriteNametag) {
+        }
+        else if (entity->behavior != &actSpriteNametag) {
             GL_CHECK_ERR(glDepthRange(0.f, 0.98f));
-		}
-		else if (entity->behavior == &actSpriteNametag) {
+        }
+        else if (entity->behavior == &actSpriteNametag) {
             GL_CHECK_ERR(glDepthRange(0.f, 0.52f));
-		}
-	}
+        }
+    }
     
     // bind shader
     auto& shader = spriteUIShader;
@@ -2257,9 +2257,9 @@ void glDrawSpriteFromImage(view_t* camera, Entity* entity, std::string text, int
 
 /*-------------------------------------------------------------------------------
 
-	glDrawWorld
+ glDrawWorld
 
-	Draws the current map from the given camera point
+   Draws the current map from the given camera point
 
 -------------------------------------------------------------------------------*/
 
@@ -2544,26 +2544,26 @@ unsigned int GO_GetPixelU32(int x, int y, view_t& camera)
     float fogDistance = *cvar_fogDistance;
     *cvar_fogDistance = 0.f;
 #endif
-	if (dirty) {
+    if (dirty) {
         GL_CHECK_ERR(glClearColor(0.f, 0.f, 0.f, 0.f));
         GL_CHECK_ERR(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-		glBeginCamera(&camera, false, map);
-		glDrawWorld(&camera, ENTITYUIDS);
-		drawEntities3D(&camera, ENTITYUIDS);
-		glEndCamera(&camera, false, map);
-	}
+        glBeginCamera(&camera, false, map);
+        glDrawWorld(&camera, ENTITYUIDS);
+        drawEntities3D(&camera, ENTITYUIDS);
+        glEndCamera(&camera, false, map);
+    }
 #ifndef EDITOR
     *cvar_fogDistance = fogDistance;
 #endif
 
-	GLubyte pixel[4];
+    GLubyte pixel[4];
     GL_CHECK_ERR(glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel));
-	oldpix = pixel[0] + (static_cast<Uint32>(pixel[1]) << 8) + (static_cast<Uint32>(pixel[2]) << 16) + (static_cast<Uint32>(pixel[3]) << 24);
+    oldpix = pixel[0] + (static_cast<Uint32>(pixel[1]) << 8) + (static_cast<Uint32>(pixel[2]) << 16) + (static_cast<Uint32>(pixel[3]) << 24);
     if (!hdrEnabled) {
         main_framebuffer.bindForWriting();
     }
-	dirty = 0;
-	return oldpix;
+    dirty = 0;
+    return oldpix;
 }
 
 const char* gl_error_string(GLenum err) {
@@ -2602,7 +2602,7 @@ const char* gl_error_string(GLenum err) {
 
 void GO_SwapBuffers(SDL_Window* screen)
 {
-	dirty = 1;
+    dirty = 1;
     
     if (!hdrEnabled) {
         main_framebuffer.unbindForWriting();
@@ -2611,7 +2611,7 @@ void GO_SwapBuffers(SDL_Window* screen)
         GL_CHECK_ERR(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         main_framebuffer.draw(vidgamma);
     }
-	
+    
     SDL_GL_SwapWindow(screen);
     
 #ifndef EDITOR

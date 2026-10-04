@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: draw.hpp
-	Desc: prototypes for draw.cpp, various drawing functions
+ BARONY
+ File: draw.hpp
+ Desc: prototypes for draw.cpp, various drawing functions
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+  Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -82,18 +82,18 @@ vec4_t unproject(
 // https://github.com/g-truc/glm
 
 union uif32 {
-	uif32() :
-		i(0)
-	{}
-	uif32(float f_) :
-		f(f_)
-	{}
-	uif32(unsigned int i_) :
-		i(i_)
-	{}
+    uif32() :
+        i(0)
+    {}
+    uif32(float f_) :
+        f(f_)
+    {}
+    uif32(unsigned int i_) :
+        i(i_)
+    {}
 
-	float f;
-	unsigned int i;
+    float f;
+    unsigned int i;
 };
 
 float foverflow();

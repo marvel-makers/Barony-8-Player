@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------------
 
-	BARONY
-	File: collision.hpp
-	Desc: collision.cpp header file
+ BARONY
+ File: collision.hpp
+    Desc: collision.cpp header file
 
-	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
-	See LICENSE for details.
+   Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
+    See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 
@@ -20,11 +20,11 @@
 real_t entityDist(Entity* my, Entity* your);
 enum EntityClickType
 {
-	ENTITY_CLICK_USE,
-	ENTITY_CLICK_USE_TOOLTIPS_ONLY,
-	ENTITY_CLICK_HELD_USE_TOOLTIPS_ONLY,
-	ENTITY_CLICK_FOLLOWER_INTERACT,
-	ENTITY_CLICK_CALLOUT
+    ENTITY_CLICK_USE,
+    ENTITY_CLICK_USE_TOOLTIPS_ONLY,
+    ENTITY_CLICK_HELD_USE_TOOLTIPS_ONLY,
+    ENTITY_CLICK_FOLLOWER_INTERACT,
+    ENTITY_CLICK_CALLOUT
 };
 Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, EntityClickType clicktype);
 bool entityInsideTile(Entity* entity, int x, int y, int z, bool checkSafeTiles = false);
@@ -39,7 +39,7 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
 
 struct MonsterTrapIgnoreEntities_t
 {
-	std::set<Uint32> ignoreEntities;
-	Uint32 parent = 0;
+    std::set<Uint32> ignoreEntities;
+    Uint32 parent = 0;
 };
 extern std::map<Uint32, MonsterTrapIgnoreEntities_t> monsterTrapIgnoreEntities;

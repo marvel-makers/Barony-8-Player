@@ -93,9 +93,9 @@ void sendEntityUDP(Entity* entity, int c, bool guarantee)
 
 /*-------------------------------------------------------------------------------
 
-	sendMapSeedTCP
+ sendMapSeedTCP
 
-	Sends the seed necessary to generate the next map
+    Sends the seed necessary to generate the next map
 
 -------------------------------------------------------------------------------*/
 
@@ -106,9 +106,9 @@ void sendMapSeedTCP(int c)
 
 /*-------------------------------------------------------------------------------
 
-	sendMapTCP
+ sendMapTCP
 
-	Sends all map data to clients
+    Sends all map data to clients
 
 -------------------------------------------------------------------------------*/
 
@@ -119,9 +119,9 @@ void sendMapTCP(int c)
 
 /*-------------------------------------------------------------------------------
 
-	serverUpdateBodypartIDs
+ serverUpdateBodypartIDs
 
-	Updates the uid numbers of all the given bodyparts for the given entity
+   Updates the uid numbers of all the given bodyparts for the given entity
 
 -------------------------------------------------------------------------------*/
 
@@ -166,9 +166,9 @@ void serverUpdateBodypartIDs(Entity* entity)
 
 /*-------------------------------------------------------------------------------
 
-	serverUpdateEntityBodypart
+ serverUpdateEntityBodypart
 
-	Updates the given bodypart of the given entity for all clients
+    Updates the given bodypart of the given entity for all clients
 
 -------------------------------------------------------------------------------*/
 
@@ -207,30 +207,30 @@ void serverUpdateEntityBodypart(Entity* entity, int bodypart)
     }
     //if ( entity->behavior == &actPlayer )
     //{
-    //	++numPlayerBodypartUpdates;
+    //  ++numPlayerBodypartUpdates;
     //}
     //else if ( entity->behavior == &actMonster )
     //{
-    //	++numMonsterBodypartUpdates;
+    //  ++numMonsterBodypartUpdates;
     //}
     //if ( lastbodypartTick == 0 )
     //{
-    //	lastbodypartTick = ticks;
+    //  lastbodypartTick = ticks;
     //}
     //if ( ticks - lastbodypartTick >= 250 )
     //{
-    //	messagePlayer(0, "Bodypart updates (%ds) players: %d, monster: %d", (ticks - lastbodypartTick) / 50, numPlayerBodypartUpdates, numMonsterBodypartUpdates);
-    //	lastbodypartTick = 0;
-    //	numMonsterBodypartUpdates = 0;
-    //	numPlayerBodypartUpdates = 0;
+    //  messagePlayer(0, "Bodypart updates (%ds) players: %d, monster: %d", (ticks - lastbodypartTick) / 50, numPlayerBodypartUpdates, numMonsterBodypartUpdates);
+    //  lastbodypartTick = 0;
+    //  numMonsterBodypartUpdates = 0;
+    //  numPlayerBodypartUpdates = 0;
     //}
 }
 
 /*-------------------------------------------------------------------------------
 
-	serverUpdateEntitySprite
+ serverUpdateEntitySprite
 
-	Updates the given entity's sprite for all clients
+  Updates the given entity's sprite for all clients
 
 -------------------------------------------------------------------------------*/
 
@@ -258,9 +258,9 @@ void serverUpdateEntitySprite(Entity* entity)
 
 /*-------------------------------------------------------------------------------
 
-	serverUpdateEntitySkill
+ serverUpdateEntitySkill
 
-	Updates a specific entity skill for all clients
+   Updates a specific entity skill for all clients
 
 -------------------------------------------------------------------------------*/
 
@@ -427,9 +427,9 @@ void serverSpawnMiscParticlesAtLocation(Sint16 x, Sint16 y, Sint16 z, int partic
 
 /*-------------------------------------------------------------------------------
 
-	serverUpdateEntityFlag
+ serverUpdateEntityFlag
 
-	Updates a specific entity flag for all clients
+    Updates a specific entity flag for all clients
 
 -------------------------------------------------------------------------------*/
 
@@ -528,40 +528,40 @@ Entity* receiveEntity(Entity* entity)
 
     //if ( Entity::getMonsterTypeFromSprite(entity->sprite) == SPIDER )
     //{
-    //	if ( arachnophobia_filter )
-    //	{
-    //		switch ( entity->sprite )
-    //		{
-    //			case 267: // spider
-    //				entity->sprite = 997; // crab
-    //				break;
-    //			case 823: // player spider
-    //				entity->sprite = 1001; // player crab
-    //				break;
-    //			case 1118: // shelob
-    //				entity->sprite = 1189; // bubbles
-    //				break;
-    //			default:
-    //				break;
-    //		}
-    //	}
-    //	else
-    //	{
-    //		switch ( entity->sprite )
-    //		{
-    //			case 997: // crab
-    //				entity->sprite = 997; // spider
-    //				break;
-    //			case 1001: // player crab
-    //				entity->sprite = 823; // player spider
-    //				break;
-    //			case 1189: // bubbles
-    //				entity->sprite = 1118; // bubbles
-    //				break;
-    //			default:
-    //				break;
-    //		}
-    //	}
+    //  if ( arachnophobia_filter )
+    //  {
+    //      switch ( entity->sprite )
+    //      {
+    //          case 267: // spider
+    //              entity->sprite = 997; // crab
+    //              break;
+    //          case 823: // player spider
+    //              entity->sprite = 1001; // player crab
+    //              break;
+    //          case 1118: // shelob
+    //              entity->sprite = 1189; // bubbles
+    //              break;
+    //          default:
+    //              break;
+    //      }
+    //  }
+    //  else
+    //  {
+    //      switch ( entity->sprite )
+    //      {
+    //          case 997: // crab
+    //              entity->sprite = 997; // spider
+    //              break;
+    //          case 1001: // player crab
+    //              entity->sprite = 823; // player spider
+    //              break;
+    //          case 1189: // bubbles
+    //              entity->sprite = 1118; // bubbles
+    //              break;
+    //          default:
+    //              break;
+    //      }
+    //  }
     //}
 
     if (excludeForAnimation)
@@ -646,9 +646,9 @@ Entity* receiveEntity(Entity* entity)
 
 /*-------------------------------------------------------------------------------
 
-	clientActions
+ clientActions
 
-	Assigns an action to a given entity based mainly on its sprite
+ Assigns an action to a given entity based mainly on its sprite
 
 -------------------------------------------------------------------------------*/
 
@@ -1006,8 +1006,8 @@ void clientActions(Entity* entity)
 
 /*-------------------------------------------------------------------------------
 
-	clientHandlePacket
+ clientHandlePacket
 
-	Called by clientHandleMessages. Does the actual handling of a packet.
+    Called by clientHandleMessages. Does the actual handling of a packet.
 
 -------------------------------------------------------------------------------*/
