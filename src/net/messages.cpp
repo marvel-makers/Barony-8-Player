@@ -150,7 +150,7 @@ bool messagePlayerColor(int player, Uint32 type, Uint32 color, char const * cons
             addMessageToLogWindow(player, string);
         }
 #else
-        auto string = newString(&messages, color, completionTime, player, str);
+        const auto string = newString(&messages, color, completionTime, player, str);
         addMessageToLogWindow(player, string);
 #endif
         while ( list_Size(&messages) > MESSAGE_LIST_SIZE_CAP )

@@ -99,7 +99,7 @@ void initSuccubus(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
                                                          // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -612,10 +612,10 @@ void succubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
             // right arm
             case LIMB_HUMANOID_RIGHTARM:
             {
-                node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
+                const node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
                 if ( weaponNode )
                 {
-                    auto weapon = static_cast<Entity*>(weaponNode->element);
+                    const auto weapon = static_cast<Entity*>(weaponNode->element);
                     if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterAttack == 0) )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -645,10 +645,10 @@ void succubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
             case LIMB_HUMANOID_LEFTARM:
             {
                 shieldarm = entity;
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] )
                     {
                         // if weapon invisible, relax arm.
@@ -1007,10 +1007,10 @@ void succubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
+    const node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;
@@ -1046,7 +1046,7 @@ void Entity::succubusChooseWeapon(const Entity* target, double dist)
 
     if ( monsterSpecialTimer == 0 && (ticks % 10 == 0) && monsterAttack == 0 )
     {
-        Stat* targetStats = target->getStats();
+        const Stat* targetStats = target->getStats();
         if ( !targetStats )
         {
             return;

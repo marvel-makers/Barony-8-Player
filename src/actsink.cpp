@@ -157,7 +157,7 @@ void actSink(Entity* my)
 
                             //Generate a random status.
                             Status status = SERVICABLE;
-                            int status_rand = rng.rand() % 4;
+                            const int status_rand = rng.rand() % 4;
                             switch (status_rand)
                             {
                                 case 0:
@@ -177,7 +177,7 @@ void actSink(Entity* my)
                                     break;
                             }
                             //Random beatitude (third parameter).
-                            int beatitude = rng.rand() % 5 - 2; //No item will be able to generate with less than -2 or more than +2 beatitude
+                            const int beatitude = rng.rand() % 5 - 2; //No item will be able to generate with less than -2 or more than +2 beatitude
 
                             //Actually create the item, put it in the player's inventory, and then free the memory of the temp item.
                             Item* item = newItem(static_cast<ItemType>(ring), status, beatitude, 1, rng.rand(), false, nullptr);
@@ -200,7 +200,7 @@ void actSink(Entity* my)
                             {
                                 monster->seedEntityRNG(rng.getU32());
                                 slimeSetType(monster, monster->getStats(), true, &rng);
-                                Uint32 color = makeColorRGB(255, 128, 0);
+                                const Uint32 color = makeColorRGB(255, 128, 0);
                                 messagePlayerColor(i, MESSAGE_HINT, color, Language::get(582));
                                 Compendium_t::Events_t::eventUpdateWorld(i, Compendium_t::CPDM_SINKS_SLIMES, "sink", 1);
                             }
@@ -215,7 +215,7 @@ void actSink(Entity* my)
                             Compendium_t::Events_t::eventUpdateWorld(i, Compendium_t::CPDM_SINKS_USED, "sink", 1);
                             if ( stats[i]->type == AUTOMATON )
                             {
-                                Uint32 color = makeColorRGB(255, 128, 0);
+                                const Uint32 color = makeColorRGB(255, 128, 0);
                                 messagePlayerColor(i, MESSAGE_STATUS, color, Language::get(3700));
                                 playSoundEntity(players[i]->entity, 52, 64);
                                 stats[i]->HUNGER -= 200; //Lose boiler
@@ -236,13 +236,13 @@ void actSink(Entity* my)
                                 }
                                 players[i]->entity->modHP(2 + local_rng.rand() % 2);
 
-                                int mpAmount = players[i]->entity->modMP(1 + local_rng.rand() % 2);
+                                const int mpAmount = players[i]->entity->modMP(1 + local_rng.rand() % 2);
                                 players[i]->entity->playerInsectoidIncrementHungerToMP(mpAmount);
                                 Compendium_t::Events_t::eventUpdateWorld(i, Compendium_t::CPDM_SINKS_HEALTH_RESTORED, "sink", 1);
 
                                 if ( stats[i]->type == DRYAD )
                                 {
-                                    if ( auto effectStrength = stats[i]->getEffectActive(EFF_GROWTH) )
+                                    if (const auto effectStrength = stats[i]->getEffectActive(EFF_GROWTH) )
                                     {
                                         int chance = 5;
                                         if ( (stats[i]->type == DRYAD && stats[i]->sex == FEMALE) )
@@ -269,7 +269,7 @@ void actSink(Entity* my)
                                 players[i]->entity->setObituary(Language::get(1533));
                                 stats[i]->killer = KilledBy::SINK;
 
-                                Uint32 color = makeColorRGB(255, 0, 0);
+                                const Uint32 color = makeColorRGB(255, 0, 0);
                                 messagePlayerColor(i, MESSAGE_STATUS, color, Language::get(3183));
                                 if ( i >= 0 && players[i]->isLocalPlayer() )
                                 {
@@ -298,7 +298,7 @@ void actSink(Entity* my)
                             Compendium_t::Events_t::eventUpdateWorld(i, Compendium_t::CPDM_SINKS_USED, "sink", 1);
                             if ( stats[i]->type == AUTOMATON )
                             {
-                                Uint32 color = makeColorRGB(255, 128, 0);
+                                const Uint32 color = makeColorRGB(255, 128, 0);
                                 messagePlayerColor(i, MESSAGE_STATUS, color, Language::get(3701));
                                 playSoundEntity(players[i]->entity, 52, 64);
                                 stats[i]->HUNGER += 200; //Gain boiler
@@ -322,7 +322,7 @@ void actSink(Entity* my)
                                 players[i]->entity->setObituary(Language::get(1533));
                                 stats[i]->killer = KilledBy::SINK;
 
-                                Uint32 color = makeColorRGB(255, 0, 0);
+                                const Uint32 color = makeColorRGB(255, 0, 0);
                                 messagePlayerColor(i, MESSAGE_STATUS, color, Language::get(584));
 
                                 if ( i >= 0 && players[i]->isLocalPlayer() )
@@ -356,7 +356,7 @@ void actSink(Entity* my)
                         my->skill[0]--; //Deduct one usage.
 
                         //Randomly choose second usage stats.
-                        int effect = rng.rand() % 10; //4 possible effects.
+                        const int effect = rng.rand() % 10; //4 possible effects.
                         switch (effect)
                         {
                             case 0:

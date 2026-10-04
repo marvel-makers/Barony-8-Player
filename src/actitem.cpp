@@ -92,14 +92,14 @@ bool itemProcessReturnItemEffect(Entity* my, bool fallingIntoVoid)
 {
     if ( Entity* returnToParent = uidToEntity(my->itemReturnUID) )
     {
-        int returnTime = std::max(10, std::max(getSpellDamageSecondaryFromID(SPELL_RETURN_ITEMS, returnToParent, nullptr, returnToParent, 0.0, false),
+        const int returnTime = std::max(10, std::max(getSpellDamageSecondaryFromID(SPELL_RETURN_ITEMS, returnToParent, nullptr, returnToParent, 0.0, false),
             getSpellDamageFromID(SPELL_RETURN_ITEMS, returnToParent, nullptr, returnToParent, 0.0, false)));
         if ( fallingIntoVoid || (my->ticks >= returnTime && returnToParent->behavior == &actPlayer) )
         {
-            int cost = std::max(1, getSpellEffectDurationSecondaryFromID(SPELL_RETURN_ITEMS, returnToParent, nullptr, returnToParent));
+            const int cost = std::max(1, getSpellEffectDurationSecondaryFromID(SPELL_RETURN_ITEMS, returnToParent, nullptr, returnToParent));
             if ( cost > 0 && !returnToParent->safeConsumeMP(cost) )
             {
-                Stat* returnStats = returnToParent->getStats();
+                const Stat* returnStats = returnToParent->getStats();
                 if ( returnStats && returnStats->MP > 0 )
                 {
                     returnToParent->modMP(-returnStats->MP);
@@ -118,11 +118,11 @@ bool itemProcessReturnItemEffect(Entity* my, bool fallingIntoVoid)
             }
             else
             {
-                int i = returnToParent->skill[2];
+                const int i = returnToParent->skill[2];
                 Item* item2 = newItemFromEntity(my);
                 if ( item2 )
                 {
-                    int pickedUpCount = item2->count;
+                    const int pickedUpCount = item2->count;
                     Item* item = itemPickup(i, item2);
                     if ( item )
                     {
@@ -130,7 +130,7 @@ bool itemProcessReturnItemEffect(Entity* my, bool fallingIntoVoid)
                         {
                             // item is the new inventory stack for server, free the picked up items
                             free(item2);
-                            int oldcount = item->count;
+                            const int oldcount = item->count;
                             item->count = pickedUpCount;
                             messagePlayer(i, MESSAGE_INTERACTION | MESSAGE_INVENTORY, Language::get(3746), item->getName());
                             item->count = oldcount;
@@ -143,7 +143,7 @@ bool itemProcessReturnItemEffect(Entity* my, bool fallingIntoVoid)
 
                         if ( returnToParent->behavior == &actPlayer )
                         {
-                            if ( auto spell = getSpellFromID(SPELL_RETURN_ITEMS) )
+                            if (const auto spell = getSpellFromID(SPELL_RETURN_ITEMS) )
                             {
                                 players[returnToParent->skill[2]]->mechanics.sustainedSpellIncrementMP(cost, spell->skillID);
                             }
@@ -284,18 +284,18 @@ bool jewelItemRecruit(Entity* parent, Entity* entity, int itemStatus, const char
         return false;
     }
 
-    int allowedFollowers = std::min(8, std::max(4, 2 * (stats[parent->skill[2]]->getModifiedProficiency(PRO_LEADERSHIP) / 20)));
+    const int allowedFollowers = std::min(8, std::max(4, 2 * (stats[parent->skill[2]]->getModifiedProficiency(PRO_LEADERSHIP) / 20)));
     int numFollowers = 0;
-    for ( node_t* node = stats[parent->skill[2]]->FOLLOWERS.first; node; node = node->next )
+    for (const node_t* node = stats[parent->skill[2]]->FOLLOWERS.first; node; node = node->next )
     {
-        Entity* follower = nullptr;
+        const Entity* follower = nullptr;
         if ( static_cast<Uint32*>(node->element) )
         {
             follower = uidToEntity(*static_cast<Uint32*>(node->element));
         }
         if ( follower )
         {
-            Stat* followerStats = follower->getStats();
+            const Stat* followerStats = follower->getStats();
             if ( followerStats )
             {
                 if ( !(followerStats->type == SENTRYBOT || followerStats->type == GYROBOT
@@ -383,11 +383,11 @@ bool jewelItemRecruit(Entity* parent, Entity* entity, int itemStatus, const char
         if ( monsterChangesColorWhenAlly(entitystats) )
         {
             int bodypart = 0;
-            for ( node_t* node = (entity)->children.first; node != nullptr; node = node->next )
+            for (const node_t* node = (entity)->children.first; node != nullptr; node = node->next )
             {
                 if ( bodypart >= LIMB_HUMANOID_TORSO )
                 {
-                    auto tmp = static_cast<Entity*>(node->element);
+                    const auto tmp = static_cast<Entity*>(node->element);
                     if ( tmp )
                     {
                         tmp->flags[USERFLAG2] = true;

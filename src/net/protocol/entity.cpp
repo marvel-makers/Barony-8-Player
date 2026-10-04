@@ -147,7 +147,7 @@ void serverUpdateBodypartIDs(Entity* entity)
             {
                 continue;
             }
-            auto tempEntity = static_cast<Entity*>(node->element);
+            const auto tempEntity = static_cast<Entity*>(node->element);
             if (entity->behavior == &actMonster)
             {
                 SDLNet_Write32(tempEntity->getUID(), &net_packet->data[8 + 4 * (i - 2)]);
@@ -191,12 +191,12 @@ void serverUpdateEntityBodypart(Entity* entity, int bodypart)
         strcpy((char*)net_packet->data, "ENTB");
         SDLNet_Write32(entity->getUID(), &net_packet->data[4]);
         net_packet->data[8] = bodypart;
-        node_t* node = list_Node(&entity->children, bodypart);
+        const node_t* node = list_Node(&entity->children, bodypart);
         if (!node)
         {
             continue;
         }
-        auto tempEntity = static_cast<Entity*>(node->element);
+        const auto tempEntity = static_cast<Entity*>(node->element);
         SDLNet_Write32(tempEntity->sprite, &net_packet->data[9]);
         net_packet->data[13] = (tempEntity->flags[INVISIBLE] ? 1 : 0);
         net_packet->data[13] |= (tempEntity->flags[INVISIBLE_DITHER] ? (1 << 1) : 0);
@@ -845,14 +845,14 @@ void clientActions(Entity* entity)
             entity->flags[PASSABLE] = true;
             entity->flags[INVISIBLE] = true;
             entity->flags[GENIUS] = true;
-            Uint32 specialFlags = (SDLNet_Read32(&net_packet->data[30]) >> 8) & 0xFFFFFF;
+            const Uint32 specialFlags = (SDLNet_Read32(&net_packet->data[30]) >> 8) & 0xFFFFFF;
             if ((specialFlags & 0xFF))
             {
                 entity->monsterSpecialState = (specialFlags & 0xFF);
             }
             if ((specialFlags >> 8) & 0xFFFF)
             {
-                int cosmeticSprite = (specialFlags >> 8) & 0xFFFF;
+                const int cosmeticSprite = (specialFlags >> 8) & 0xFFFF;
                 entity->skill[10] = cosmeticSprite;
             }
             entity->sizex = 2;
@@ -880,7 +880,7 @@ void clientActions(Entity* entity)
     // if the above method failed, we check the value of skill[2] (stored in net_packet->data[30]) and assign an action based on that
     if (entity->behavior == nullptr)
     {
-        Sint32 c = static_cast<Sint32>(SDLNet_Read32(&net_packet->data[30]));
+        const Sint32 c = static_cast<Sint32>(SDLNet_Read32(&net_packet->data[30]));
         if (c < 0)
         {
             switch (c)
@@ -937,7 +937,7 @@ void clientActions(Entity* entity)
                 if (static_cast<Uint8>(c & 0xFF) == 17)
                 {
                     entity->arrowShotByWeapon = (c >> 8) & 0xFFF;
-                    int dropOffModifier = (c >> 20) & 0xF;
+                    const int dropOffModifier = (c >> 20) & 0xF;
                     entity->arrowDropOffEquipmentModifier = dropOffModifier - 8;
                     entity->behavior = &actArrow;
                 }
@@ -994,8 +994,8 @@ void clientActions(Entity* entity)
                     entity->behavior = &actTeleporter;
                     entity->skill[2] = c;
                     entity->flags[NOUPDATE] = true;
-                    int duration = (c >> 8) & 0xFFFF;
-                    int dir = (c >> 24) & 0xF;
+                    const int duration = (c >> 8) & 0xFFFF;
+                    const int dir = (c >> 24) & 0xF;
                     tunnelPortalSetAttributes(entity, duration, dir);
                 }
                 break;

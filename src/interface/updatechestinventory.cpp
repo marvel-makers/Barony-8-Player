@@ -23,9 +23,9 @@ Entity* openedChest[MAXPLAYERS] = { nullptr };
 
 int numItemsInChest(const int player)
 {
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
 
-    list_t* chestInventory = nullptr;
+    const list_t* chestInventory = nullptr;
     if ( multiplayer == CLIENT )
     {
         chestInventory = &chestInv[player];
@@ -63,7 +63,7 @@ void updateChestInventory(const int player)
         return;
     }
 
-    list_t* chest_inventory = nullptr;
+    const list_t* chest_inventory = nullptr;
     if ( multiplayer == CLIENT )
     {
         chest_inventory = &chestInv[player];
@@ -77,7 +77,7 @@ void updateChestInventory(const int player)
     {
         std::unordered_set<int> takenSlots;
         std::vector<Item*> itemsToRearrange;
-        for ( node_t* node = chest_inventory->first; node != nullptr; node = node->next )
+        for (const node_t* node = chest_inventory->first; node != nullptr; node = node->next )
         {
             if ( node->element )
             {
@@ -98,7 +98,7 @@ void updateChestInventory(const int player)
                 }
             }
         }
-        for ( auto item : itemsToRearrange )
+        for (const auto item : itemsToRearrange )
         {
             bool foundSlot = false;
             for ( int y = 0; y < players[player]->inventoryUI.MAX_CHEST_Y && !foundSlot; ++y )

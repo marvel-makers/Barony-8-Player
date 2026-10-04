@@ -22,7 +22,7 @@ bool handleSafePacket()
         const Uint32 acknowledged = SDLNet_Read32(&net_packet->data[5]);
         for (node_t* node = safePacketsSent.first; node; node = node->next)
         {
-            auto* packet = static_cast<packetsend_t*>(node->element);
+            const auto* packet = static_cast<packetsend_t*>(node->element);
             if (packet && packet->num == acknowledged)
             {
                 list_RemoveNode(node);

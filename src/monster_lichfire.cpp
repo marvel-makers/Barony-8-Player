@@ -71,7 +71,7 @@ void initLichFire(Entity* my, Stat* myStats)
             myStats->OLDHP = myStats->HP;
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // boss variants
 
@@ -89,7 +89,7 @@ void initLichFire(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
                                                          // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -245,10 +245,10 @@ void lichFireDie(Entity* my)
     playSoundEntity(my, 94, 128);
     my->removeLightField();
     // kill all other monsters on the level
-    for ( node_t* node = map.creatures->first; my->monsterLichAllyStatus == LICH_ALLY_DEAD && node != nullptr; node = nextnode )
+    for (const node_t* node = map.creatures->first; my->monsterLichAllyStatus == LICH_ALLY_DEAD && node != nullptr; node = nextnode )
     {
         nextnode = node->next;
-        auto entity = static_cast<Entity*>(node->element);
+        const auto entity = static_cast<Entity*>(node->element);
         if ( entity )
         {
             if ( entity == my || entity->sprite == 650 )
@@ -294,7 +294,7 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
     my->removeLightField();
 
     // obtain head entity
-    node_t* node = list_Node(&my->children, LICH_HEAD);
+    const node_t* node = list_Node(&my->children, LICH_HEAD);
     if ( node )
     {
         head = static_cast<Entity*>(node->element);
@@ -372,8 +372,8 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
         if ( my->monsterLichBattleState == LICH_BATTLE_IMMOBILE && my->ticks > TICKS_PER_SECOND )
         {
             int sides = 0;
-            int my_x = static_cast<int>(my->x) >> 4;
-            int my_y = static_cast<int>(my->y) >> 4;
+            const int my_x = static_cast<int>(my->x) >> 4;
+            const int my_y = static_cast<int>(my->y) >> 4;
             int mapIndex = (my_y)* MAP_LAYERS + (my_x + 1) * MAP_LAYERS * map.height;
             if ( map.tiles[OBSTACLELAYER + mapIndex] )   // wall
             {
@@ -411,7 +411,7 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
                         }
                         else
                         {
-                            double newDistToPlayer = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
+                            const double newDistToPlayer = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
                             if ( newDistToPlayer < distToPlayer )
                             {
                                 distToPlayer = newDistToPlayer;
@@ -619,7 +619,7 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
                 // horizontal chop windup
                 else if ( my->monsterAttack == MONSTER_POSE_MELEE_WINDUP2 )
                 {
-                    int windupDuration = (my->monsterState == MONSTER_STATE_LICH_CASTSPELLS) ? 10 : 6;
+                    const int windupDuration = (my->monsterState == MONSTER_STATE_LICH_CASTSPELLS) ? 10 : 6;
                     if ( my->monsterAttackTime == 0 )
                     {
                         // init rotations
@@ -736,13 +736,13 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
                                 {
                                     my->monsterAttackTime = 20; //reset this attack time to allow successive strikes
                                 }
-                                real_t dir = 0.f;
+                                const real_t dir = 0.f;
                                 Entity* target = uidToEntity(my->monsterTarget);
                                 if ( my->monsterState == MONSTER_STATE_LICH_CASTSPELLS )
                                 {
                                     if ( target )
                                     {
-                                        real_t targetDist = std::max(8.0, entityDist(my, target) - 48.0);
+                                        const real_t targetDist = std::max(8.0, entityDist(my, target) - 48.0);
                                         for ( int i = 0; i < 5; ++i )
                                         {
                                             my->castFallingMagicMissile(SPELL_FIREBALL, targetDist -4 + local_rng.rand() % 9 + i * 16, 0.f, i * 20);
@@ -751,7 +751,7 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
                                 }
                                 else if ( my->monsterState == MONSTER_STATE_LICHFIRE_DIE )
                                 {
-                                    real_t randomAngle = (PI / 180.f) * (local_rng.rand() % 360);
+                                    const real_t randomAngle = (PI / 180.f) * (local_rng.rand() % 360);
                                     for ( int i = 0; i < 5; ++i )
                                     {
                                         my->castFallingMagicMissile(SPELL_FIREBALL, 16.f - 4 + local_rng.rand() % 9 + i * 16, randomAngle, i * 20);
@@ -773,7 +773,7 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
                                 {
                                     if ( target )
                                     {
-                                        real_t targetDist = std::min(entityDist(my, target), 32.0);
+                                        const real_t targetDist = std::min(entityDist(my, target), 32.0);
                                         for ( int i = 0; i < 8; ++i )
                                         {
                                             my->castFallingMagicMissile(SPELL_FIREBALL, std::max(targetDist - 8 + local_rng.rand() % 8, 4.0), dir + i * PI / 4, 0);
@@ -878,11 +878,11 @@ void lichFireAnimate(Entity* my, Stat* myStats, double dist)
                         myStats->EFFECTS_TIMERS[EFF_STUNNED] = 20;
                     }
                 }
-                double animationYawSetpoint = normaliseAngle2PI(my->yaw + 1 * PI / 8);
-                double animationYawEndpoint = normaliseAngle2PI(my->yaw - 1 * PI / 8);
-                double armSwingRate = 0.15;
-                double animationPitchSetpoint = 13 * PI / 8;
-                double animationPitchEndpoint = 11 * PI / 8;
+                const double animationYawSetpoint = normaliseAngle2PI(my->yaw + 1 * PI / 8);
+                const double animationYawEndpoint = normaliseAngle2PI(my->yaw - 1 * PI / 8);
+                const double armSwingRate = 0.15;
+                const double animationPitchSetpoint = 13 * PI / 8;
+                const double animationPitchEndpoint = 11 * PI / 8;
 
                 if ( spellarm->skill[1] == 0 )
                 {
@@ -1259,7 +1259,7 @@ void Entity::lichFireSetNextAttack(Stat& myStats)
 void Entity::lichFireTeleport()
 {
     monsterLichTeleportTimer = 0;
-    Entity* spellTimer = createParticleTimer(this, 40, 593);
+    const Entity* spellTimer = createParticleTimer(this, 40, 593);
     if ( monsterState == MONSTER_STATE_LICHFIRE_TELEPORT_STATIONARY )
     {
         spellTimer->particleTimerEndAction = PARTICLE_EFFECT_LICHFIRE_TELEPORT_STATIONARY; // teleport behavior of timer.
@@ -1279,8 +1279,8 @@ void Entity::lichFireTeleport()
 
 void Entity::lichFireSummonMonster(Monster creature)
 {
-    Entity* target = nullptr;
-    for ( node_t* searchNode = map.entities->first; searchNode != nullptr; searchNode = searchNode->next )
+    const Entity* target = nullptr;
+    for (const node_t* searchNode = map.entities->first; searchNode != nullptr; searchNode = searchNode->next )
     {
         target = static_cast<Entity*>(searchNode->element);
         if ( target->behavior == &actDevilTeleport

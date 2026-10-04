@@ -72,7 +72,7 @@ void initMonsterD(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
 
             // boss variants
@@ -2122,7 +2122,7 @@ void monsterDMoveBodyparts(Entity* my, Stat* myStats, double dist)
 
 void Entity::monsterDChooseWeapon(const Entity* target, double dist)
 {
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( !myStats )
     {
         return;
@@ -2197,7 +2197,7 @@ void Entity::monsterDChooseWeapon(const Entity* target, double dist)
         {
             if ( target && dist < 64.0 )
             {
-                int roll = 5;
+                const int roll = 5;
                 if ( local_rng.rand() % roll == 0 )
                 {
                     monsterSpecialState = MONSTER_D_SPECIAL_CAST3;

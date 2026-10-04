@@ -41,8 +41,8 @@ void actArrowTrap(Entity* my)
 
     // eliminate arrow traps that have been destroyed.
     // check wall inside me.
-    int checkx = static_cast<int>(my->x) >> 4;
-    int checky = static_cast<int>(my->y) >> 4;
+    const int checkx = static_cast<int>(my->x) >> 4;
+    const int checky = static_cast<int>(my->y) >> 4;
     if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )   // wall
     {
         list_RemoveNode(my->mynode);
@@ -57,8 +57,8 @@ void actArrowTrap(Entity* my)
     {
         if ( multiplayer != CLIENT )
         {
-            auto quiver = static_cast<ItemType>(ARROWTRAP_TYPE);
-            int qty = 2 + (5 - ARROWTRAP_FIRED / 2); // 2 to 7
+            const auto quiver = static_cast<ItemType>(ARROWTRAP_TYPE);
+            const int qty = 2 + (5 - ARROWTRAP_FIRED / 2); // 2 to 7
             Compendium_t::Events_t::eventUpdateWorld(ARROWTRAP_DISABLED - 1, Compendium_t::CPDM_ARROWS_PILFERED, "arrow trap", qty);
             Entity* dropped = dropItemMonster(newItem(quiver, SERVICABLE, 0, qty, ITEM_GENERATED_QUIVER_APPEARANCE, false, nullptr), my, nullptr, qty);
             std::vector<std::pair<int, int>> freeTiles;
@@ -94,7 +94,7 @@ void actArrowTrap(Entity* my)
             }
             if ( !freeTiles.empty() )
             {
-                std::pair<int, int> chosenTile = freeTiles[local_rng.rand() % freeTiles.size()];
+                const std::pair<int, int> chosenTile = freeTiles[local_rng.rand() % freeTiles.size()];
                 dropped->x += (chosenTile.first - x) * 8;
                 dropped->y += (chosenTile.second - y) * 8;
                 dropped->vel_x = (chosenTile.first - x);
@@ -158,7 +158,7 @@ void actArrowTrap(Entity* my)
         return;
     }
 
-    Entity* targetToAutoHit = nullptr;
+    const Entity* targetToAutoHit = nullptr;
 
     // received on signal
     if ( (my->skill[28] == 2 || ARROWTRAP_DISABLED == -1) && my->actTrapSabotaged == 0 )
@@ -186,9 +186,9 @@ void actArrowTrap(Entity* my)
             }
             ARROWTRAP_REFIRE = 0;
             // misfire from a lockpick, try to find a nearby target.
-            for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
+            for (const node_t* node = map.creatures->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( entity && entity->behavior == &actPlayer && entityDist(my, entity) < TOUCHRANGE )
                 {
                     targetToAutoHit = entity;
@@ -222,14 +222,14 @@ void actArrowTrap(Entity* my)
                         y = -12;
                         break;
                 }
-                int checkx = (my->x + x) / 16;
-                int checky = (my->y + y) / 16;
+                const int checkx = (my->x + x) / 16;
+                const int checky = (my->y + y) / 16;
                 if ( !(checkx >= 0 && checkx < map.width && checky >= 0 && checky < map.height) )
                 {
                     // out of bounds.
                     continue;
                 }
-                int index = checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height;
+                const int index = checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height;
                 if ( !map.tiles[OBSTACLELAYER + index] )
                 {
                     Entity* entity = newEntity(166, 1, map.entities, nullptr); // arrow
@@ -320,7 +320,7 @@ void actArrowTrap(Entity* my)
                       entity->y = targetToAutoHit->y;*/
                         if ( local_rng.rand() % 2 == 0 )
                         {
-                            double tangent = atan2(entity->y - targetToAutoHit->y, entity->x - targetToAutoHit->x);
+                            const double tangent = atan2(entity->y - targetToAutoHit->y, entity->x - targetToAutoHit->x);
                             entity->yaw = tangent + PI;
                             entity->vel_x = cos(entity->yaw) * entity->arrowSpeed;
                             entity->vel_y = sin(entity->yaw) * entity->arrowSpeed;

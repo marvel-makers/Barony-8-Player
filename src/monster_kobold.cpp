@@ -51,7 +51,7 @@ void initKobold(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // boss variants
 
@@ -72,7 +72,7 @@ void initKobold(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
             // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             int cultist = 0;
 
@@ -583,7 +583,7 @@ void koboldMoveBodyparts(Entity* my, Stat* myStats, double dist)
         my->creatureHandleLiftZ();
     }
 
-    Entity* shieldarm = nullptr;
+    const Entity* shieldarm = nullptr;
 
     //Move bodyparts
     for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, ++bodypart)
@@ -731,10 +731,10 @@ void koboldMoveBodyparts(Entity* my, Stat* myStats, double dist)
             // right arm
             case LIMB_HUMANOID_RIGHTARM:
             {
-                node_t* weaponNode = list_Node(&my->children, 7);
+                const node_t* weaponNode = list_Node(&my->children, 7);
                 if ( weaponNode )
                 {
-                    auto weapon = static_cast<Entity*>(weaponNode->element);
+                    const auto weapon = static_cast<Entity*>(weaponNode->element);
                     if ( my->monsterArmbended || (weapon->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT) )
                     {
                         // if weapon invisible and I'm not moving, relax arm.
@@ -766,10 +766,10 @@ void koboldMoveBodyparts(Entity* my, Stat* myStats, double dist)
             case LIMB_HUMANOID_LEFTARM:
             {
                 shieldarm = entity;
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT )
                     {
                         // if shield invisible and I'm not moving, relax arm.
@@ -1101,10 +1101,10 @@ void koboldMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, 8);
+    const node_t* shieldNode = list_Node(&my->children, 8);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;

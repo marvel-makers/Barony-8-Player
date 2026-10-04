@@ -245,7 +245,7 @@ void Image::setupGL(GLuint texid, const Uint32& color) {
     // upload color
     Uint8 r, g, b, a;
     getColor(color, &r, &g, &b, &a);
-    float cv[] = {r / 255.f, g / 255.f, b / 255.f, a / 255.f};
+    const float cv[] = {r / 255.f, g / 255.f, b / 255.f, a / 255.f};
     GL_CHECK_ERR(glUniform4fv(shader.uniform("uColor"), 1, cv));
 }
 
@@ -446,10 +446,10 @@ Image* Image::get(size_t hash, const char* name) {
 
     // search for text using precomputed hash
     auto& map = hashed_images;
-    auto bc = map.bucket_count();
+    const auto bc = map.bucket_count();
     if (bc) {
         const auto& hash_fn = map.hash_function();
-        auto chash = !(bc & (bc - 1)) ? hash & (bc - 1) :
+        const auto chash = !(bc & (bc - 1)) ? hash & (bc - 1) :
             (hash < bc ? hash : hash % bc);
         for (auto it = map.begin(chash); it != map.end(chash); ++it) {
             if (hash == hash_fn(it->first) && it->first == name) {
@@ -476,7 +476,7 @@ Image* Image::get(const char* name) {
 }
 
 void Image::dumpCache() {
-    for (auto image : hashed_images) {
+    for (const auto image : hashed_images) {
         delete image.second;
     }
     hashed_images.clear();

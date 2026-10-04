@@ -220,7 +220,7 @@ bool loadLights(bool forceLoadBaseDirectory) {
     }
     
     char buf[65536];
-    int count = static_cast<int>(fp->read(buf, sizeof(buf[0]), sizeof(buf)));
+    const int count = static_cast<int>(fp->read(buf, sizeof(buf[0]), sizeof(buf)));
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -267,7 +267,7 @@ light_t* addLight(Sint32 x, Sint32 y, const char* name, int range_bonus, int ind
     if (!name || !name[0]) {
         return nullptr;
     }
-    auto find = lightDefs.find(name);
+    const auto find = lightDefs.find(name);
     if (find == lightDefs.end()) {
         return nullptr;
     }

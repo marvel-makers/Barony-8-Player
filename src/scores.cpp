@@ -84,7 +84,7 @@ score_t* scoreConstructor(int player)
 {
     node_t* node;
 
-    auto score = static_cast<score_t*>(malloc(sizeof(score_t)));
+    const auto score = static_cast<score_t*>(malloc(sizeof(score_t)));
     if ( !score )
     {
         printlog( "failed to allocate memory for new score!\n" );
@@ -161,77 +161,77 @@ score_t* scoreConstructor(int player)
     list_Copy(&score->stats->inventory, &stats[player]->inventory);
     for ( node = score->stats->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         item->node = node;
     }
     list_Copy(&score->stats->void_chest_inventory, &stats[player]->void_chest_inventory);
     for ( node = score->stats->void_chest_inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         item->node = node;
     }
     int c;
     for ( c = 0, node = stats[player]->inventory.first; node != nullptr; node = node->next, c++ )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( stats[player]->helmet == item )
         {
-            node_t* node2 = list_Node(&score->stats->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&score->stats->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             score->stats->helmet = item2;
         }
         else if ( stats[player]->breastplate == item )
         {
-            node_t* node2 = list_Node(&score->stats->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&score->stats->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             score->stats->breastplate = item2;
         }
         else if ( stats[player]->gloves == item )
         {
-            node_t* node2 = list_Node(&score->stats->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&score->stats->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             score->stats->gloves = item2;
         }
         else if ( stats[player]->shoes == item )
         {
-            node_t* node2 = list_Node(&score->stats->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&score->stats->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             score->stats->shoes = item2;
         }
         else if ( stats[player]->shield == item )
         {
-            node_t* node2 = list_Node(&score->stats->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&score->stats->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             score->stats->shield = item2;
         }
         else if ( stats[player]->weapon == item )
         {
-            node_t* node2 = list_Node(&score->stats->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&score->stats->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             score->stats->weapon = item2;
         }
         else if ( stats[player]->cloak == item )
         {
-            node_t* node2 = list_Node(&score->stats->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&score->stats->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             score->stats->cloak = item2;
         }
         else if ( stats[player]->amulet == item )
         {
-            node_t* node2 = list_Node(&score->stats->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&score->stats->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             score->stats->amulet = item2;
         }
         else if ( stats[player]->ring == item )
         {
-            node_t* node2 = list_Node(&score->stats->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&score->stats->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             score->stats->ring = item2;
         }
         else if ( stats[player]->mask == item )
         {
-            node_t* node2 = list_Node(&score->stats->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&score->stats->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             score->stats->mask = item2;
         }
     }
@@ -285,7 +285,7 @@ void scoreDeconstructor(void* data)
 {
     if ( data )
     {
-        auto score = static_cast<score_t*>(data);
+        const auto score = static_cast<score_t*>(data);
         if ( score->stats )
         {
             delete score->stats;
@@ -319,10 +319,10 @@ int saveScore(int player)
 
     int c;
     node_t* node;
-    Uint32 total = totalScore(currentscore);
+    const Uint32 total = totalScore(currentscore);
     for ( c = 0, node = scoresPtr->first; node != nullptr; node = node->next, c++ )
     {
-        auto score = static_cast<score_t*>(node->element);
+        const auto score = static_cast<score_t*>(node->element);
         if ( total > totalScore(score) )
         {
             node_t* newNode = list_AddNode(scoresPtr, c);
@@ -361,9 +361,9 @@ int totalScore(score_t* score)
 {
     int amount = 0;
 
-    for ( node_t* node = score->stats->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = score->stats->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         amount += items[item->type].gold_value;
     }
     amount += score->stats->GOLD;
@@ -524,14 +524,14 @@ void loadScore(score_t* score)
     list_Copy(&stats[0]->inventory, &score->stats->inventory);
     for ( node_t* node = stats[0]->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         item->node = node;
     }
     list_FreeAll(&stats[0]->void_chest_inventory);
     list_Copy(&stats[0]->void_chest_inventory, &score->stats->void_chest_inventory);
     for ( node_t* node = stats[0]->void_chest_inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         item->node = node;
     }
 
@@ -539,65 +539,65 @@ void loadScore(score_t* score)
     node_t* node;
     for ( c = 0, node = score->stats->inventory.first; node != nullptr; node = node->next, c++ )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( score->stats->helmet == item )
         {
-            node_t* node2 = list_Node(&stats[0]->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&stats[0]->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             stats[0]->helmet = item2;
         }
         else if ( score->stats->breastplate == item )
         {
-            node_t* node2 = list_Node(&stats[0]->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&stats[0]->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             stats[0]->breastplate = item2;
         }
         else if ( score->stats->gloves == item )
         {
-            node_t* node2 = list_Node(&stats[0]->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&stats[0]->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             stats[0]->gloves = item2;
         }
         else if ( score->stats->shoes == item )
         {
-            node_t* node2 = list_Node(&stats[0]->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&stats[0]->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             stats[0]->shoes = item2;
         }
         else if ( score->stats->shield == item )
         {
-            node_t* node2 = list_Node(&stats[0]->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&stats[0]->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             stats[0]->shield = item2;
         }
         else if ( score->stats->weapon == item )
         {
-            node_t* node2 = list_Node(&stats[0]->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&stats[0]->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             stats[0]->weapon = item2;
         }
         else if ( score->stats->cloak == item )
         {
-            node_t* node2 = list_Node(&stats[0]->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&stats[0]->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             stats[0]->cloak = item2;
         }
         else if ( score->stats->amulet == item )
         {
-            node_t* node2 = list_Node(&stats[0]->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&stats[0]->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             stats[0]->amulet = item2;
         }
         else if ( score->stats->ring == item )
         {
-            node_t* node2 = list_Node(&stats[0]->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&stats[0]->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             stats[0]->ring = item2;
         }
         else if ( score->stats->mask == item )
         {
-            node_t* node2 = list_Node(&stats[0]->inventory, c);
-            auto item2 = static_cast<Item*>(node2->element);
+            const node_t* node2 = list_Node(&stats[0]->inventory, c);
+            const auto item2 = static_cast<Item*>(node2->element);
             stats[0]->mask = item2;
         }
     }
@@ -615,7 +615,7 @@ void loadScore(score_t* score)
 
 void loadScore(int scorenum)
 {
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
     if ( scoreDisplayMultiplayer )
     {
         node = list_Node(&topscoresMultiplayer_json, scorenum);
@@ -628,7 +628,7 @@ void loadScore(int scorenum)
     {
         return;
     }
-    auto score = static_cast<score_t*>(node->element);
+    const auto score = static_cast<score_t*>(node->element);
     loadScore(score);
 }
 
@@ -1010,11 +1010,11 @@ void saveAllScores(const std::string& scoresfilename)
     versionNumber = atoi(versionStr); // convert from string to int.
 
     // header info
-    int booksReadNum = list_Size(&booksRead);
+    const int booksReadNum = list_Size(&booksRead);
     fp->write(&booksReadNum, sizeof(Uint32), 1);
-    for ( node_t* node = booksRead.first; node != nullptr; node = node->next )
+    for (const node_t* node = booksRead.first; node != nullptr; node = node->next )
     {
-        auto book = static_cast<char*>(node->element);
+        const auto book = static_cast<char*>(node->element);
         int c = strlen(book);
         fp->write(&c, sizeof(Uint32), 1);
         fp->puts(book);
@@ -1045,7 +1045,7 @@ void saveAllScores(const std::string& scoresfilename)
 
     for (; node != nullptr; node = node->next )
     {
-        auto score = static_cast<score_t*>(node->element);
+        const auto score = static_cast<score_t*>(node->element);
         for ( int c = 0; c < NUMMONSTERS; c++ )
         {
             fp->write(&score->kills[c], sizeof(Sint32), 1);
@@ -1120,9 +1120,9 @@ void saveAllScores(const std::string& scoresfilename)
         // inventory
         int inventorySize = list_Size(&score->stats->inventory);
         fp->write(&inventorySize, sizeof(ItemType), 1);
-        for ( node_t* node2 = score->stats->inventory.first; node2 != nullptr; node2 = node2->next )
+        for (const node_t* node2 = score->stats->inventory.first; node2 != nullptr; node2 = node2->next )
         {
-            auto item = static_cast<Item*>(node2->element);
+            const auto item = static_cast<Item*>(node2->element);
             fp->write(&item->type, sizeof(ItemType), 1);
             fp->write(&item->status, sizeof(Status), 1);
             fp->write(&item->beatitude, sizeof(Sint16), 1);
@@ -1237,7 +1237,7 @@ void saveAllScores(const std::string& scoresfilename)
 
 bool deleteScore(bool multiplayer, int index)
 {
-    auto node = list_Node(multiplayer ?
+    const auto node = list_Node(multiplayer ?
         &topscoresMultiplayer_json : &topscores_json, index);
     if (node) {
         list_RemoveNode(node);
@@ -1293,8 +1293,8 @@ bool verifyScoreStruct(score_t* score, score_t* score2)
     assert(score->stats->sex == score2->stats->sex);
     assert(score->stats->stat_appearance == score2->stats->stat_appearance);
     assert(score->stats->playerRace == score2->stats->playerRace);
-    std::string name1 = score->stats->name;
-    std::string name2 = score2->stats->name;
+    const std::string name1 = score->stats->name;
+    const std::string name2 = score2->stats->name;
     assert(name1 == name2);
     assert(score->classnum == score2->classnum);
     assert(score->victory == score2->victory);
@@ -1351,15 +1351,15 @@ bool verifyScoreStruct(score_t* score, score_t* score2)
     int inventory_items = list_Size(&score->stats->inventory);
     for ( int i = 0; i < inventory_items; ++i )
     {
-        node_t* node1 = list_Node(&score->stats->inventory, i);
-        node_t* node2 = list_Node(&score2->stats->inventory, i);
+        const node_t* node1 = list_Node(&score->stats->inventory, i);
+        const node_t* node2 = list_Node(&score2->stats->inventory, i);
 
         assert(node1 && node2);
 
         if ( node1 && node2 )
         {
-            auto item1 = static_cast<Item*>(node1->element);
-            auto item2 = static_cast<Item*>(node2->element);
+            const auto item1 = static_cast<Item*>(node1->element);
+            const auto item2 = static_cast<Item*>(node2->element);
 
             assert(item1->type == item2->type);
             assert(item1->status == item2->status);
@@ -1385,15 +1385,15 @@ bool verifyScoreStruct(score_t* score, score_t* score2)
     inventory_items = list_Size(&score->stats->void_chest_inventory);
     for ( int i = 0; i < inventory_items; ++i )
     {
-        node_t* node1 = list_Node(&score->stats->void_chest_inventory, i);
-        node_t* node2 = list_Node(&score2->stats->void_chest_inventory, i);
+        const node_t* node1 = list_Node(&score->stats->void_chest_inventory, i);
+        const node_t* node2 = list_Node(&score2->stats->void_chest_inventory, i);
 
         assert(node1 && node2);
 
         if ( node1 && node2 )
         {
-            auto item1 = static_cast<Item*>(node1->element);
-            auto item2 = static_cast<Item*>(node2->element);
+            const auto item1 = static_cast<Item*>(node1->element);
+            const auto item2 = static_cast<Item*>(node2->element);
 
             assert(item1->type == item2->type);
             assert(item1->status == item2->status);
@@ -1414,8 +1414,8 @@ bool verifyScoreLoader()
     assert(numScores == numScores2);
     for ( int i = 0; i < numScores; ++i )
     {
-        node_t* score1 = list_Node(&topscores_legacy, i);
-        node_t* score2 = list_Node(&topscores_json, i);
+        const node_t* score1 = list_Node(&topscores_legacy, i);
+        const node_t* score2 = list_Node(&topscores_json, i);
         assert(score1 && score2);
         if ( score1 && score2 )
         {
@@ -1428,8 +1428,8 @@ bool verifyScoreLoader()
     assert(numScores == numScores2);
     for ( int i = 0; i < numScores; ++i )
     {
-        node_t* score1 = list_Node(&topscoresMultiplayer_legacy, i);
-        node_t* score2 = list_Node(&topscoresMultiplayer_json, i);
+        const node_t* score1 = list_Node(&topscoresMultiplayer_legacy, i);
+        const node_t* score2 = list_Node(&topscoresMultiplayer_json, i);
         assert(score1 && score2);
         if ( score1 && score2 )
         {
@@ -1457,7 +1457,8 @@ public:
     }
 
     Ch Peek() const { return *current_; }
-    Ch Take() { Ch c = *current_; Read(); return c; }
+    Ch Take() {
+ const Ch c = *current_; Read(); return c; }
     size_t Tell() const { return count_ + static_cast<size_t>(current_ - buffer_); }
 
     // Not implemented
@@ -2520,7 +2521,7 @@ int deleteSaveGame(int gametype, int saveIndex)
         if (access(path, F_OK) != -1)
         {
             printlog("deleting savegame in '%s'...\n", path);
-            int r = remove(path);
+            const int r = remove(path);
             if (r)
             {
                 result |= r;
@@ -2546,7 +2547,7 @@ int deleteSaveGame(int gametype, int saveIndex)
 bool saveGameExists(bool singleplayer, int saveIndex)
 {
     char path[PATH_MAX] = "";
-    auto savefile = setSaveGameFileName(singleplayer, SaveFileType::JSON, saveIndex);
+    const auto savefile = setSaveGameFileName(singleplayer, SaveFileType::JSON, saveIndex);
     completePath(path, savefile.c_str(), outputdir);
 
     if (access(path, F_OK ) == -1) {
@@ -2580,12 +2581,12 @@ bool saveGameExists(bool singleplayer, int saveIndex)
 SaveGameInfo getSaveGameInfo(bool singleplayer, int saveIndex)
 {
     char path[PATH_MAX] = "";
-    auto savefile = setSaveGameFileName(singleplayer, SaveFileType::JSON, saveIndex);
+    const auto savefile = setSaveGameFileName(singleplayer, SaveFileType::JSON, saveIndex);
     completePath(path, savefile.c_str(), outputdir);
 
     // read info object, check file read succeeded
     SaveGameInfo info;
-    bool result = FileHelper::readObject(path, info);
+    const bool result = FileHelper::readObject(path, info);
     if (!result) {
         info.game_version = -1;
     }
@@ -2622,7 +2623,7 @@ SaveGameInfo getSaveGameInfo(bool singleplayer, int saveIndex)
     
     // check hash
     Uint32 hash = 0;
-    struct tm* tm = nullptr;
+    const struct tm* tm = nullptr;
 #ifdef WINDOWS
     struct _stat s;
     if (_stat(path, &s) == 0) {
@@ -2640,7 +2641,7 @@ SaveGameInfo getSaveGameInfo(bool singleplayer, int saveIndex)
     if (info.players.size() > info.player_num) {
         if ( info.game_version < 410 )
         {
-            auto& stats = info.players[info.player_num].stats;
+            const auto& stats = info.players[info.player_num].stats;
             hash += stats.STR + stats.LVL + stats.DEX * stats.INT;
             hash += stats.CON * stats.PER + std::min(stats.GOLD, 5000) - stats.CON;
             hash += stats.HP - stats.MP;
@@ -2974,9 +2975,9 @@ void updateGameplayStatisticsInMainLoop()
     }
     if ( gameStatistics[STATISTICS_FORUM_TROLL] > 0 )
     {
-        int walls = gameStatistics[STATISTICS_FORUM_TROLL] & 0xFF;
-        int trolls = ((gameStatistics[STATISTICS_FORUM_TROLL] >> 8) & 0xFF);
-        int fears = ((gameStatistics[STATISTICS_FORUM_TROLL] >> 16) & 0xFF);
+        const int walls = gameStatistics[STATISTICS_FORUM_TROLL] & 0xFF;
+        const int trolls = ((gameStatistics[STATISTICS_FORUM_TROLL] >> 8) & 0xFF);
+        const int fears = ((gameStatistics[STATISTICS_FORUM_TROLL] >> 16) & 0xFF);
         if ( walls == 3 && trolls == 3 && fears == 3 )
         {
             steamAchievement("BARONY_ACH_FORUM_TROLL");
@@ -2999,13 +3000,13 @@ void updateGameplayStatisticsInMainLoop()
 
     if ( gameStatistics[STATISTICS_ALCHEMY_RECIPES] != 0 && clientLearnedAlchemyIngredients[clientnum].empty() )
     {
-        int numpotions = static_cast<int>(potionStandardAppearanceMap.size());
+        const int numpotions = static_cast<int>(potionStandardAppearanceMap.size());
         for ( int i = 0; i < numpotions; ++i )
         {
-            bool learned = gameStatistics[STATISTICS_ALCHEMY_RECIPES] & (1 << i);
+            const bool learned = gameStatistics[STATISTICS_ALCHEMY_RECIPES] & (1 << i);
             if ( learned )
             {
-                auto typeAppearance = potionStandardAppearanceMap.at(i);
+                const auto typeAppearance = potionStandardAppearanceMap.at(i);
                 int type = typeAppearance.first;
                 clientLearnedAlchemyIngredients[clientnum].insert(type);
             }
@@ -3014,13 +3015,13 @@ void updateGameplayStatisticsInMainLoop()
 
     if ( (ticks % (TICKS_PER_SECOND * 8) == 0) && gameStatistics[STATISTICS_ALCHEMY_RECIPES] != 0 )
     {
-        int numpotions = static_cast<int>(potionStandardAppearanceMap.size());
+        const int numpotions = static_cast<int>(potionStandardAppearanceMap.size());
         bool failAchievement = false;
         for ( int i = 0; i < numpotions; ++i )
         {
-            bool learned = gameStatistics[STATISTICS_ALCHEMY_RECIPES] & (1 << i);
-            auto typeAppearance = potionStandardAppearanceMap.at(i);
-            int type = typeAppearance.first;
+            const bool learned = gameStatistics[STATISTICS_ALCHEMY_RECIPES] & (1 << i);
+            const auto typeAppearance = potionStandardAppearanceMap.at(i);
+            const int type = typeAppearance.first;
             if ( !learned && (GenericGUI[clientnum].isItemBaseIngredient(type) || GenericGUI[clientnum].isItemSecondaryIngredient(type)) )
             {
                 failAchievement = true;
@@ -3160,9 +3161,9 @@ void updateGameplayStatisticsInMainLoop()
         }
         int dummy1 = 0;
         int dummy2 = 0;
-        for ( node_t* node = stats[clientnum]->inventory.first; node != nullptr; node = node->next )
+        for (const node_t* node = stats[clientnum]->inventory.first; node != nullptr; node = node->next )
         {
-            auto item = static_cast<Item*>(node->element);
+            const auto item = static_cast<Item*>(node->element);
             if ( item )
             {
                 if ( itemCategory(item) == POTION )
@@ -3449,7 +3450,7 @@ void updateAchievementRhythmOfTheKnight(int player, Entity* target, bool playerI
             }
             else
             {
-                int size = achievementRhythmOfTheKnightVec[player].size();
+                const int size = achievementRhythmOfTheKnightVec[player].size();
                 if ( size % 2 == 1 ) // 1, 3, 5
                 {
                     // we're on correct sequence and same monster, add entry to vector.
@@ -3457,7 +3458,7 @@ void updateAchievementRhythmOfTheKnight(int player, Entity* target, bool playerI
                     if ( size == 5 )
                     {
                         // we pushed back to a total of 6 entries, get achievement.
-                        real_t timeTaken = (achievementRhythmOfTheKnightVec[player].at(5).first - achievementRhythmOfTheKnightVec[player].at(0).first) / 50.f;
+                        const real_t timeTaken = (achievementRhythmOfTheKnightVec[player].at(5).first - achievementRhythmOfTheKnightVec[player].at(0).first) / 50.f;
                         if ( timeTaken <= 3 )
                         {
                             //messagePlayer(0, "achievement get!, time taken %f", timeTaken);
@@ -3496,7 +3497,7 @@ void updateAchievementRhythmOfTheKnight(int player, Entity* target, bool playerI
                 achievementRhythmOfTheKnightVec[player].clear();
                 //messagePlayer(0, "cleared, not blocking same target");
             }
-            int size = achievementRhythmOfTheKnightVec[player].size();
+            const int size = achievementRhythmOfTheKnightVec[player].size();
             if ( size == 1 || size == 3 || size == 5 )
             {
                 achievementRhythmOfTheKnightVec[player].clear();
@@ -3572,7 +3573,7 @@ void updateAchievementThankTheTank(int player, Entity* target, bool targetKilled
                     achievementThankTheTankPair[player].erase(target->getUID());
                     if ( players[player]->mechanics.allowedRaiseBlockingAgainstEntity(*target) )
                     {
-                        int skillLVL = 3 * (stats[player]->getProficiency(PRO_SHIELD) / 20);
+                        const int skillLVL = 3 * (stats[player]->getProficiency(PRO_SHIELD) / 20);
                         if ( local_rng.rand() % (5 + skillLVL) == 0 )
                         {
                             bool increase = true;
@@ -4173,7 +4174,7 @@ void AchievementObserver::updateClientBounties(bool firstSend)
         // check if any bounties had become followers, then remove them
         for ( int c = 0; c < MAXPLAYERS; ++c )
         {
-            for ( node_t* node = stats[c]->FOLLOWERS.first; node != nullptr; node = node->next )
+            for (const node_t* node = stats[c]->FOLLOWERS.first; node != nullptr; node = node->next )
             {
                 if ( static_cast<Uint32*>(node->element) )
                 {
@@ -4264,7 +4265,7 @@ void AchievementObserver::updateClientBounties(bool firstSend)
                 net_packet->data[4] = c;
                 net_packet->data[5] = static_cast<Uint8>(bounties.size());
                 int index = 6;
-                for ( auto uid : bounties )
+                for (const auto uid : bounties )
                 {
                     SDLNet_Write32(uid, &net_packet->data[index]);
                     index += 4;
@@ -4291,12 +4292,12 @@ void AchievementObserver::updateData()
     }
 
     std::vector<Entity*> monstersGeneratedOnLevel;
-    for ( node_t* node = map.creatures->first; node; node = node->next )
+    for (const node_t* node = map.creatures->first; node; node = node->next )
     {
         auto mapCreature = static_cast<Entity*>(node->element);
         if ( mapCreature && mapCreature->behavior == &actMonster )
         {
-            if ( auto stats = mapCreature->getStats() )
+            if (const auto stats = mapCreature->getStats() )
             {
                 if ( stats->type == SPELLBOT
                     || stats->type == SENTRYBOT
@@ -4314,9 +4315,9 @@ void AchievementObserver::updateData()
     if ( multiplayer != CLIENT )
     {
         std::vector<Uint32> chestsOnLevel;
-        for ( node_t* node = map.entities->first; node; node = node->next )
+        for (const node_t* node = map.entities->first; node; node = node->next )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             if ( entity && (entity->behavior == &actChest || (entity->behavior == &actMonster && entity->getStats() && entity->getStats()->type == MIMIC) ) )
             {
                 chestsOnLevel.push_back(entity->getUID());
@@ -4334,7 +4335,7 @@ void AchievementObserver::updateData()
                 std::fill(chances.begin(), chances.end(), 1);
                 while ( playerAchievements[i].manifestDestinyChests.size() < chestsOnLevel.size() )
                 {
-                    int pick = chestSeed.discrete(chances.data(), chances.size());
+                    const int pick = chestSeed.discrete(chances.data(), chances.size());
                     playerAchievements[i].manifestDestinyChests.push_back(chestsOnLevel[pick]);
                     chances[pick] = 0;
                 }
@@ -4399,10 +4400,10 @@ bool AchievementObserver::addEntityAchievementTimer(Entity* entity, int achievem
         return false;
     }
 
-    auto it = entityAchievementsToProcess.find(uid);
+    const auto it = entityAchievementsToProcess.find(uid);
     if ( it != entityAchievementsToProcess.end() )
     {
-        auto inner_it = (*it).second.find(achievement);
+        const auto inner_it = (*it).second.find(achievement);
         if ( inner_it != (*it).second.end() )
         {
             //achievement exists, need to update the ticks value.
@@ -4491,11 +4492,11 @@ void AchievementObserver::awardAchievementIfActive(int player, Entity* entity, i
     {
         return;
     }
-    Uint32 uid = entity->getUID();
-    auto it = entityAchievementsToProcess.find(uid);
+    const Uint32 uid = entity->getUID();
+    const auto it = entityAchievementsToProcess.find(uid);
     if ( it != entityAchievementsToProcess.end() )
     {
-        auto inner_it = (*it).second.find(achievement);
+        const auto inner_it = (*it).second.find(achievement);
         if ( inner_it != (*it).second.end() && (*it).second[achievement].first != 0 )
         {
             if ( achievement == BARONY_ACH_BOMBTRACK )
@@ -4540,7 +4541,7 @@ void AchievementObserver::checkMapScriptsOnVariableSet()
 {
     for ( auto it = textSourceScript.scriptVariables.begin(); it != textSourceScript.scriptVariables.end(); ++it )
     {
-        size_t found = (*it).first.find("$ACH_TUTORIAL_SECRET");
+        const size_t found = (*it).first.find("$ACH_TUTORIAL_SECRET");
         if ( found != std::string::npos )
         {
             std::string mapname = map.name;
@@ -4608,7 +4609,7 @@ int AchievementObserver::PlayerAchievements::getItemIndexForDapperAchievement(It
 
     if ( item )
     {
-        auto find = dapperItems.find(item->type);
+        const auto find = dapperItems.find(item->type);
         if ( find != dapperItems.end() )
         {
             return find->second;
@@ -5259,10 +5260,10 @@ bool AchievementObserver::PlayerAchievements::checkTraditionKill(Entity* player,
     bool foundFountain = false;
     for (auto it = entLists.begin(); it != entLists.end(); ++it )
     {
-        list_t* currentList = *it;
-        for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+        const list_t* currentList = *it;
+        for (const node_t* node = currentList->first; node != nullptr; node = node->next )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             if ( entity && entity->behavior == &actFountain )
             {
                 if ( entityDist(target, entity) < 16 * 3 )
@@ -6096,9 +6097,9 @@ int saveGame(int saveIndex) {
     static ConsoleVariable<bool> cvar_saveText("/save_text_format", true);
 
     char path[PATH_MAX] = "";
-    std::string savefile = setSaveGameFileName(multiplayer == SINGLE, SaveFileType::JSON, saveIndex);
+    const std::string savefile = setSaveGameFileName(multiplayer == SINGLE, SaveFileType::JSON, saveIndex);
     completePath(path, savefile.c_str(), outputdir);
-    auto result = FileHelper::writeObject(path, *cvar_saveText ? EFileFormat::Json_Compact : EFileFormat::Binary, info);
+    const auto result = FileHelper::writeObject(path, *cvar_saveText ? EFileFormat::Json_Compact : EFileFormat::Binary, info);
 #ifdef BARONY_SMOKE_TESTS
     if ( result == true && SmokeTestHooks::SaveReload::isOwnerEncodingSweepEnabled() )
     {
@@ -6114,11 +6115,11 @@ int saveGame(int saveIndex) {
 
 int SaveGameInfo::getTotalScore(const int playernum, const int victory)
 {
-    auto player = players[playernum];
-    Player::stat_t* stats = &players[playernum].stats;
+    const auto player = players[playernum];
+    const Player::stat_t* stats = &players[playernum].stats;
     int amount = 0;
 
-    for ( auto& item : stats->inventory )
+    for (const auto& item : stats->inventory )
     {
         amount += items[item.type].gold_value;
     }
@@ -6171,7 +6172,7 @@ int SaveGameInfo::getTotalScore(const int playernum, const int victory)
         amount += victory * 10000;
     }
 
-    Uint32 gametimer = std::min(this->gametimer, static_cast<Uint32>(0xFFFFFF));
+    const Uint32 gametimer = std::min(this->gametimer, static_cast<Uint32>(0xFFFFFF));
 
     amount -= gametimer / TICKS_PER_SECOND;
     if ( victory )
@@ -6914,13 +6915,13 @@ list_t* loadGameFollowers(const SaveGameInfo& info) {
     }
 
     // create followers list
-    auto followers = static_cast<list_t*>(malloc(sizeof(list_t)));
+    const auto followers = static_cast<list_t*>(malloc(sizeof(list_t)));
     followers->first = nullptr;
     followers->last = nullptr;
 
     // read the follower data
     for (auto& player : info.players) {
-        auto followerList = static_cast<list_t*>(malloc(sizeof(list_t)));
+        const auto followerList = static_cast<list_t*>(malloc(sizeof(list_t)));
         followerList->first = nullptr;
         followerList->last = nullptr;
         node_t* node = list_AddNodeLast(followers);
@@ -6932,7 +6933,7 @@ list_t* loadGameFollowers(const SaveGameInfo& info) {
         for (auto& follower : player.followers) {
             // Stat init to 0 as monster type not needed,
             // values will be overwritten by the saved follower data
-            auto stats = new Stat(0);
+            const auto stats = new Stat(0);
 
             node_t* node = list_AddNodeLast(followerList);
             node->element = stats;
@@ -6998,12 +6999,12 @@ list_t* loadGameFollowers(const SaveGameInfo& info) {
 
             // read follower inventory
             for (auto& item : follower.inventory) {
-                auto type = static_cast<ItemType>(item.type);
-                auto status = static_cast<Status>(item.status);
-                Sint16 beatitude = item.beatitude;
-                Sint16 count = item.count;
-                Uint32 appearance = item.appearance;
-                bool identified = item.identified;
+                const auto type = static_cast<ItemType>(item.type);
+                const auto status = static_cast<Status>(item.status);
+                const Sint16 beatitude = item.beatitude;
+                const Sint16 count = item.count;
+                const Uint32 appearance = item.appearance;
+                const bool identified = item.identified;
                 Item* i = newItem(type, status, beatitude, count,
                     appearance, identified, &stats->inventory);
                 i->x = item.x;
@@ -7027,12 +7028,12 @@ list_t* loadGameFollowers(const SaveGameInfo& info) {
                 auto find = slots.find(item.first);
                 if (find != slots.end()) {
                     auto& slot = find->second;
-                    auto type = static_cast<ItemType>(item.second.type);
-                    auto status = static_cast<Status>(item.second.status);
-                    Sint16 beatitude = item.second.beatitude;
-                    Sint16 count = item.second.count;
-                    Uint32 appearance = item.second.appearance;
-                    bool identified = item.second.identified;
+                    const auto type = static_cast<ItemType>(item.second.type);
+                    const auto status = static_cast<Status>(item.second.status);
+                    const Sint16 beatitude = item.second.beatitude;
+                    const Sint16 count = item.second.count;
+                    const Uint32 appearance = item.second.appearance;
+                    const bool identified = item.second.identified;
                     Item* i = newItem(type, status, beatitude, count,
                         appearance, identified, nullptr);
                     i->x = item.second.x;

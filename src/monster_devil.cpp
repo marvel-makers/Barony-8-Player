@@ -204,9 +204,9 @@ void devilDie(Entity* my)
             }
         }
     }
-    for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+    for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
     {
-        auto entity = static_cast<Entity*>(node->element);
+        const auto entity = static_cast<Entity*>(node->element);
         if ( entity->skill[28] )
         {
             entity->skill[28] = 2;
@@ -257,8 +257,8 @@ void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;
-    Entity* rightbody = nullptr;
-    Entity* leftbody = nullptr;
+    const Entity* rightbody = nullptr;
+    const Entity* leftbody = nullptr;
     int bodypart;
 
     // set invisibility //TODO: isInvisible()?
@@ -451,14 +451,14 @@ void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
             case 2:
             {
                 entity->z -= 16;
-                Entity* playertotrack = nullptr;
-                for ( node_t* tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Searching for players only? Don't search full map.entities then.
+                const Entity* playertotrack = nullptr;
+                for (const node_t* tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Searching for players only? Don't search full map.entities then.
                 {
-                    auto tempEntity = static_cast<Entity*>(tempNode->element);
-                    double lowestdist = 5000;
+                    const auto tempEntity = static_cast<Entity*>(tempNode->element);
+                    const double lowestdist = 5000;
                     if ( tempEntity->behavior == &actPlayer )
                     {
-                        double disttoplayer = entityDist(my, tempEntity);
+                        const double disttoplayer = entityDist(my, tempEntity);
                         if ( disttoplayer < lowestdist )
                         {
                             playertotrack = tempEntity;
@@ -467,7 +467,7 @@ void devilMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 }
                 if ( playertotrack && !MONSTER_ATTACK )
                 {
-                    double tangent = atan2( playertotrack->y - entity->y, playertotrack->x - entity->x );
+                    const double tangent = atan2( playertotrack->y - entity->y, playertotrack->x - entity->x );
                     double dir = entity->yaw - tangent;
                     while ( dir >= PI )
                     {
@@ -620,14 +620,14 @@ void actDevilTeleport(Entity* my)
 }
 bool Entity::devilSummonMonster(Entity* summonOnEntity, Monster creature, int radiusFromCenter, int playerToTarget)
 {
-    Entity* target = nullptr;
+    const Entity* target = nullptr;
     if ( summonOnEntity )
     {
         target = summonOnEntity;
     }
     else
     {
-        for ( node_t* searchNode = map.entities->first; searchNode != nullptr; searchNode = searchNode->next )
+        for (const node_t* searchNode = map.entities->first; searchNode != nullptr; searchNode = searchNode->next )
         {
             target = static_cast<Entity*>(searchNode->element);
             if ( target->behavior == &actDevilTeleport
@@ -640,18 +640,18 @@ bool Entity::devilSummonMonster(Entity* summonOnEntity, Monster creature, int ra
     }
     if ( target )
     {
-        int hellArena_x0 = 17;
-        int hellArena_x1 = 47;
-        int hellArena_y0 = 17;
-        int hellArena_y1 = 47;
-        int spawn_x = static_cast<int>(target->x / 16);
-        int spawn_y = static_cast<int>(target->y / 16);
+        const int hellArena_x0 = 17;
+        const int hellArena_x1 = 47;
+        const int hellArena_y0 = 17;
+        const int hellArena_y1 = 47;
+        const int spawn_x = static_cast<int>(target->x / 16);
+        const int spawn_y = static_cast<int>(target->y / 16);
         std::vector<std::pair<int, int>> goodspots;
         for ( int j = std::max(hellArena_y0, spawn_y - radiusFromCenter); j <= std::min(hellArena_y1, spawn_y + radiusFromCenter); ++j )
         {
             for ( int i = std::max(hellArena_x0, spawn_x - radiusFromCenter); i <= std::min(hellArena_x1, spawn_x + radiusFromCenter); ++i )
             {
-                int index = (j)* MAP_LAYERS + (i)* MAP_LAYERS * map.height;
+                const int index = (j)* MAP_LAYERS + (i)* MAP_LAYERS * map.height;
                 if ( !map.tiles[OBSTACLELAYER + index] &&
                     ((target->behavior == &actPlayer && !map.tiles[index])
                         || (target->behavior != &actPlayer 
@@ -662,8 +662,8 @@ bool Entity::devilSummonMonster(Entity* summonOnEntity, Monster creature, int ra
                     // spawn on no floor, or lava if the target is a player.
 
                     // otherwise, spawn on solid ground.
-                    real_t oldx = this->x;
-                    real_t oldy = this->y;
+                    const real_t oldx = this->x;
+                    const real_t oldy = this->y;
                     this->x = i * 16 + 8;
                     this->y = j * 16 + 8;
                     goodspots.push_back(std::make_pair(i, j));
@@ -676,7 +676,7 @@ bool Entity::devilSummonMonster(Entity* summonOnEntity, Monster creature, int ra
         {
             return false;
         }
-        std::pair<int,int> chosen = goodspots.at(local_rng.rand() % goodspots.size());
+        const std::pair<int,int> chosen = goodspots.at(local_rng.rand() % goodspots.size());
         Entity* timer = createParticleTimer(this, 70, 174);
         timer->x = chosen.first * 16.0 + 8;
         timer->y = chosen.second * 16.0 + 8;
@@ -696,14 +696,14 @@ bool Entity::devilSummonMonster(Entity* summonOnEntity, Monster creature, int ra
 
 int Entity::devilGetNumMonstersInArena(Monster creature)
 {
-    int hellArena_x0 = 15;
-    int hellArena_x1 = 49;
-    int hellArena_y0 = 15;
-    int hellArena_y1 = 49;
+    const int hellArena_x0 = 15;
+    const int hellArena_x1 = 49;
+    const int hellArena_y0 = 15;
+    const int hellArena_y1 = 49;
     int numMonstersActiveInArena = 0;
-    for ( node_t* tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next )
+    for (const node_t* tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next )
     {
-        auto monster = static_cast<Entity*>(tempNode->element);
+        const auto monster = static_cast<Entity*>(tempNode->element);
         if ( monster && monster->getMonsterTypeFromSprite() == creature )
         {
             if ( static_cast<int>(monster->x / 16) >= hellArena_x0 && static_cast<int>(monster->x / 16) <= hellArena_x1 )
@@ -722,8 +722,8 @@ bool Entity::devilBoulderSummonIfPlayerIsHiding(int player)
 {
     if ( players[player] && players[player]->entity )
     {
-        int player_x = static_cast<int>(players[player]->entity->x / 16);
-        int player_y = static_cast<int>(players[player]->entity->y / 16);
+        const int player_x = static_cast<int>(players[player]->entity->x / 16);
+        const int player_y = static_cast<int>(players[player]->entity->y / 16);
         int doSummon = 0;
         if ( entityDist(this, players[player]->entity) > 16 * 16 /*16 tiles*/ )
         {
@@ -738,7 +738,7 @@ bool Entity::devilBoulderSummonIfPlayerIsHiding(int player)
             else
             {
                 // standing on no floor.
-                real_t tangent = atan2(players[player]->entity->y - this->y, players[player]->entity->x - this->x);
+                const real_t tangent = atan2(players[player]->entity->y - this->y, players[player]->entity->x - this->x);
                 Entity* ohitentity = hit.entity;
                 lineTraceTarget(this, this->x, this->y, tangent, 1024, 0, false, players[player]->entity);
                 if ( hit.entity != players[player]->entity )

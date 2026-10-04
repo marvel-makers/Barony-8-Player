@@ -55,7 +55,7 @@ public:
     // @return buf if successfully read a string, otherwise nullptr
     char* gets2(char* buf, int size)
     {
-        auto result = gets(buf, size);
+        const auto result = gets(buf, size);
         for (int c = 0; c < size; ++c)
         {
             if (buf[c] == '\n' || buf[c] == '\r')
@@ -78,7 +78,7 @@ public:
             return nullptr;
         }
         for (int c = 0; c < size - 1; ++c) {
-            size_t bytesRead = read(buf, sizeof(char), 1);
+            const size_t bytesRead = read(buf, sizeof(char), 1);
             if (bytesRead > 0U) {
                 if (*buf == '\0' || *buf == '\n') {
                     buf += bytesRead;
@@ -104,7 +104,7 @@ public:
     {
         char field[64];
         gets(field, 64);
-        long result = strtol(field, nullptr, 10);
+        const long result = strtol(field, nullptr, 10);
         return static_cast<int>(result);
     }
 
@@ -130,7 +130,7 @@ public:
         va_start(args, fmt);
 
         char buf[1024];
-        int result = vsnprintf(buf, 1024, fmt, args);
+        const int result = vsnprintf(buf, 1024, fmt, args);
         buf[1023] = '\0';
 
         write(buf, sizeof(char), result);
@@ -145,7 +145,7 @@ public:
     // @return 0 on success, -1 on error
     int puts(const char* str)
     {
-        size_t size = strlen(str);
+        const size_t size = strlen(str);
         return write(str, sizeof(char), size) == size ? 0 : -1;
     }
 

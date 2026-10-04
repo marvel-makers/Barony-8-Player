@@ -44,11 +44,11 @@ std::vector<Item*> generateShopkeeperConsumables(Entity& my, Stat& myStats, int 
         const int tradingReq = slots.slotTradingReq;
 
         std::vector<unsigned int> chances;
-        for ( auto& slot : slots.itemEntries )
+        for (const auto& slot : slots.itemEntries )
         {
             chances.push_back(slot.weightedChance);
         }
-        int result = rng.discrete(chances.data(), chances.size());
+        const int result = rng.discrete(chances.data(), chances.size());
         auto& slot = slots.itemEntries.at(result);
 
         if ( rng.rand() % 100 >= slot.percentChance )
@@ -60,9 +60,9 @@ std::vector<Item*> generateShopkeeperConsumables(Entity& my, Stat& myStats, int 
             continue;
         }
 
-        ItemType type = slot.type[rng.uniform(0, slot.type.size() - 1)];
-        Status status = slot.status[rng.uniform(0, slot.status.size() - 1)];
-        Sint16 beatitude = slot.beatitude[rng.uniform(0, slot.beatitude.size() - 1)];
+        const ItemType type = slot.type[rng.uniform(0, slot.type.size() - 1)];
+        const Status status = slot.status[rng.uniform(0, slot.status.size() - 1)];
+        const Sint16 beatitude = slot.beatitude[rng.uniform(0, slot.beatitude.size() - 1)];
         Sint16 count = slot.count[rng.uniform(0, slot.count.size() - 1)];
         if ( !strcmp(map.name, "Mages Guild") )
         {
@@ -76,7 +76,7 @@ std::vector<Item*> generateShopkeeperConsumables(Entity& my, Stat& myStats, int 
             }
             if ( type == POTION_HEALING || type == POTION_RESTOREMAGIC )
             {
-                int limit = std::max(2, 1 + numplayers);
+                const int limit = std::max(2, 1 + numplayers);
                 if ( count > limit )
                 {
                     count = limit;
@@ -92,7 +92,7 @@ std::vector<Item*> generateShopkeeperConsumables(Entity& my, Stat& myStats, int 
         {
             appearance = slot.appearance[rng.uniform(0, slot.appearance.size() - 1)];
         }
-        bool identified = slot.identified[rng.uniform(0, slot.identified.size() - 1)];
+        const bool identified = slot.identified[rng.uniform(0, slot.identified.size() - 1)];
         
         if ( Item* item = newItem(type, status, beatitude, count, appearance, identified, &myStats.inventory) )
         {
@@ -113,7 +113,7 @@ std::vector<Item*> generateShopkeeperConsumables(Entity& my, Stat& myStats, int 
     std::vector<Item*> shuffled;
     while ( !itemsGenerated.empty() )
     {
-        size_t index = rng.rand() % itemsGenerated.size();
+        const size_t index = rng.rand() % itemsGenerated.size();
         shuffled.push_back(itemsGenerated[index]);
         itemsGenerated.erase(itemsGenerated.begin() + index);
     }
@@ -1671,10 +1671,10 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
             // right arm
             case LIMB_HUMANOID_RIGHTARM:
             {
-                node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
+                const node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
                 if ( weaponNode )
                 {
-                    auto weapon = static_cast<Entity*>(weaponNode->element);
+                    const auto weapon = static_cast<Entity*>(weaponNode->element);
                     if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState != MONSTER_STATE_ATTACK) )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -1705,10 +1705,10 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
             // left arm
             case LIMB_HUMANOID_LEFTARM:
             {
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] && (my->monsterState != MONSTER_STATE_ATTACK) )
                     {
                         // if shield invisible and I'm not attacking, relax arm.
@@ -2089,10 +2089,10 @@ void shopkeeperMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
+    const node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;

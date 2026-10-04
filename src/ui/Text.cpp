@@ -29,8 +29,8 @@ Text::~Text() {
 
 size_t getNumTextLines(std::string& str)
 {
-    int numLines = 1;
-    size_t newlines = std::count(str.begin(), str.end(), '\n');
+    const int numLines = 1;
+    const size_t newlines = std::count(str.begin(), str.end(), '\n');
 
     return numLines + newlines;
 }
@@ -313,7 +313,7 @@ void Text::drawColor(const SDL_Rect _src, const SDL_Rect _dest, const SDL_Rect v
 
 int Text::countNumTextLines() const {
     int numLines = 1;
-    for (auto c : name) {
+    for (const auto c : name) {
         switch (c) {
         case fontBreak: return numLines;
         case '\0': return numLines;
@@ -331,7 +331,7 @@ static bool bRequireTextDump = false;
 
 static inline void uint32tox(uint32_t value, char* out) {
     for (int i = 28; i >= 0; i -= 4) {
-        uint8_t shift = (value >> i) & 0x0F;
+        const uint8_t shift = (value >> i) & 0x0F;
         *out = (shift < 10u) ? shift + '0' : shift - 10 + 'a';
         ++out;
     }
@@ -389,10 +389,10 @@ Text* Text::get(size_t hash, const char* key) {
 
     // search for text using precomputed hash
     auto& map = hashed_text;
-    auto bc = map.bucket_count();
+    const auto bc = map.bucket_count();
     if (bc) {
         const auto& hash_fn = map.hash_function();
-        auto chash = !(bc & (bc - 1)) ? hash & (bc - 1) :
+        const auto chash = !(bc & (bc - 1)) ? hash & (bc - 1) :
             (hash < bc ? hash : hash % bc);
         for (auto it = map.begin(chash); it != map.end(chash); ++it) {
             if (hash == hash_fn(it->first) && it->first == key) {
@@ -429,13 +429,13 @@ Text* Text::get(size_t hash, const char* key) {
 }
 
 Text* Text::get(const char* str, const char* font, Uint32 textColor, Uint32 outlineColor) {
-    auto h = hash(str, font, textColor, outlineColor);
+    const auto h = hash(str, font, textColor, outlineColor);
     return get(h.first, h.second);
 }
 
 void Text::dumpCache() {
     printlog("[Text Cache]: dumping...");
-    for (auto text : hashed_text) {
+    for (const auto text : hashed_text) {
         //printlog("%s", text.second->getName());
         delete text.second;
     }

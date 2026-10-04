@@ -34,7 +34,7 @@ ParticleEmitterHit_t* getParticleEmitterHitProps(Uint32 emitterUid, Entity* hite
     if ( static_cast<Sint32>(hitentity->getUID()) >= 0 )
     {
         auto& emitterHit = particleTimerEmitterHitEntities[emitterUid];
-        auto find = emitterHit.find(hitentity->getUID());
+        const auto find = emitterHit.find(hitentity->getUID());
         if ( find != emitterHit.end() )
         {
             return &find->second;
@@ -137,7 +137,7 @@ bool spellEffectDominate(Entity& my, spellElement_t& element, Entity& caster, En
         || (hitstats->type == INCUBUS && !strncmp(hitstats->name, "inner demon", strlen("inner demon")))
         )
     {
-        Uint32 color = makeColorRGB(255, 0, 0);
+        const Uint32 color = makeColorRGB(255, 0, 0);
         if ( parent )
         {
             messagePlayerColor(parent->skill[2], MESSAGE_COMBAT, color, Language::get(2429));
@@ -149,16 +149,16 @@ bool spellEffectDominate(Entity& my, spellElement_t& element, Entity& caster, En
     if ( caster.behavior == &actPlayer )
     {
         int numDominated = 0;
-        for ( node_t* node = stats[caster.skill[2]]->FOLLOWERS.first; node != nullptr; node = node->next )
+        for (const node_t* node = stats[caster.skill[2]]->FOLLOWERS.first; node != nullptr; node = node->next )
         {
-            Entity* follower = nullptr;
+            const Entity* follower = nullptr;
             if ( static_cast<Uint32*>((node)->element) )
             {
                 follower = uidToEntity(*static_cast<Uint32*>((node)->element));
             }
             if ( follower )
             {
-                Stat* followerStats = follower->getStats();
+                const Stat* followerStats = follower->getStats();
                 if ( followerStats && followerStats->getAttribute("DOMINATED_CREATURE") != "" )
                 {
                     ++numDominated;
@@ -166,7 +166,7 @@ bool spellEffectDominate(Entity& my, spellElement_t& element, Entity& caster, En
             }
         }
 
-        int maxDominate = getSpellDamageFromID(SPELL_DOMINATE, &caster, nullptr, &caster, my.actmagicSpellbookBonus / 100.f);
+        const int maxDominate = getSpellDamageFromID(SPELL_DOMINATE, &caster, nullptr, &caster, my.actmagicSpellbookBonus / 100.f);
         if ( numDominated >= maxDominate )
         {
             messagePlayerColor(caster.isEntityPlayer(), MESSAGE_COMBAT, makeColorRGB(255, 0, 0), Language::get(6962));
@@ -178,11 +178,11 @@ bool spellEffectDominate(Entity& my, spellElement_t& element, Entity& caster, En
     playSoundEntity(hit.entity, 174, 64); //TODO: Dominate spell sound effect.
 
     //Make the monster a follower.
-    bool dominated = forceFollower(caster, *hit.entity);
+    const bool dominated = forceFollower(caster, *hit.entity);
 
     if ( parent && dominated )
     {
-        Uint32 color = makeColorRGB(0, 255, 0);
+        const Uint32 color = makeColorRGB(0, 255, 0);
         if ( parent->behavior == &actPlayer )
         {
             messagePlayerMonsterEvent(parent->skill[2], color, *hitstats, Language::get(2428), Language::get(2427), MSG_COMBAT);
@@ -215,11 +215,11 @@ bool spellEffectDominate(Entity& my, spellElement_t& element, Entity& caster, En
         if ( monsterChangesColorWhenAlly(hitstats) )
         {
             int bodypart = 0;
-            for ( node_t* node = (hit.entity)->children.first; node != nullptr; node = node->next )
+            for (const node_t* node = (hit.entity)->children.first; node != nullptr; node = node->next )
             {
                 if ( bodypart >= LIMB_HUMANOID_TORSO )
                 {
-                    auto tmp = static_cast<Entity*>(node->element);
+                    const auto tmp = static_cast<Entity*>(node->element);
                     if ( tmp )
                     {
                         tmp->flags[USERFLAG2] = true;
@@ -231,7 +231,7 @@ bool spellEffectDominate(Entity& my, spellElement_t& element, Entity& caster, En
         }
 
         caster.drainMP(hitstats->HP); //Drain additional MP equal to health of monster.
-        Stat* casterStats = caster.getStats();
+        const Stat* casterStats = caster.getStats();
         if ( casterStats && casterStats->HP <= 0 )
         {
             // uh oh..
@@ -320,8 +320,8 @@ void spellEffectAcid(Entity& my, spellElement_t& element, Entity* parent, int da
                 dmgGib = DMG_WEAKEST;
             }
 
-            int oldHP = hitstats->HP;
-            Sint32 preResistanceDamage = damage;
+            const int oldHP = hitstats->HP;
+            const Sint32 preResistanceDamage = damage;
             damage *= damageMultiplier;
             if ( !hasgoggles )
             {
@@ -339,7 +339,7 @@ void spellEffectAcid(Entity& my, spellElement_t& element, Entity* parent, int da
                 parent->killedByMonsterObituary(hit.entity, true);
             }
 
-            int previousDuration = hitstats->EFFECTS_TIMERS[EFF_POISONED];
+            const int previousDuration = hitstats->EFFECTS_TIMERS[EFF_POISONED];
             int duration = element.duration;
             duration = convertResistancePointsToMagicValue(duration, resistance);
             bool recentlyHitBySameSpell = false;
@@ -369,7 +369,7 @@ void spellEffectAcid(Entity& my, spellElement_t& element, Entity* parent, int da
             // hit messages
             if ( parent )
             {
-                Uint32 color = makeColorRGB(0, 255, 0);
+                const Uint32 color = makeColorRGB(0, 255, 0);
                 if ( parent->behavior == &actPlayer )
                 {
                     if ( !recentlyHitBySameSpell )
@@ -397,7 +397,7 @@ void spellEffectAcid(Entity& my, spellElement_t& element, Entity* parent, int da
                 spawnBloodVialOnMonsterDeath(hit.entity, hitstats, parent);
             }
 
-            Uint32 color = makeColorRGB(255, 0, 0);
+            const Uint32 color = makeColorRGB(255, 0, 0);
 
             int player = -1;
             if ( hit.entity->behavior == &actPlayer )
@@ -526,9 +526,9 @@ void spellEffectPoison(Entity& my, spellElement_t& element, Entity* parent, int 
                 dmgGib = DMG_WEAKEST;
             }
 
-            Sint32 preResistanceDamage = damage;
+            const Sint32 preResistanceDamage = damage;
             damage *= damageMultiplier;
-            Sint32 oldHP = hitstats->HP;
+            const Sint32 oldHP = hitstats->HP;
             hit.entity->modHP(-damage);
 
             magicOnEntityHit(parent, &my, hit.entity, hitstats, preResistanceDamage, damage, oldHP, SPELL_POISON);
@@ -559,7 +559,7 @@ void spellEffectPoison(Entity& my, spellElement_t& element, Entity* parent, int 
             // hit messages
             if ( parent )
             {
-                Uint32 color = makeColorRGB(0, 255, 0);
+                const Uint32 color = makeColorRGB(0, 255, 0);
                 if ( parent->behavior == &actPlayer )
                 {
                     messagePlayerMonsterEvent(parent->skill[2], color, *hitstats, Language::get(3427), Language::get(3426), MSG_COMBAT);
@@ -584,7 +584,7 @@ void spellEffectPoison(Entity& my, spellElement_t& element, Entity* parent, int 
                 spawnBloodVialOnMonsterDeath(hit.entity, hitstats, parent);
             }
 
-            Uint32 color = makeColorRGB(255, 0, 0);
+            const Uint32 color = makeColorRGB(255, 0, 0);
 
             int player = -1;
             if ( hit.entity->behavior == &actPlayer )
@@ -675,7 +675,7 @@ bool spellEffectFear(Entity* my, spellElement_t& element, Entity* forceParent, E
             // no effect.
             if ( parent )
             {
-                Uint32 color = makeColorRGB(255, 0, 0);
+                const Uint32 color = makeColorRGB(255, 0, 0);
                 if ( parent->behavior == &actPlayer )
                 {
                     messagePlayerMonsterEvent(parent->skill[2], color, *hitstats, Language::get(2905), Language::get(2906), MSG_COMBAT);
@@ -687,14 +687,14 @@ bool spellEffectFear(Entity* my, spellElement_t& element, Entity* forceParent, E
         // hit messages
         if ( parent )
         {
-            Uint32 color = makeColorRGB(0, 255, 0);
+            const Uint32 color = makeColorRGB(0, 255, 0);
             if ( parent->behavior == &actPlayer )
             {
                 messagePlayerMonsterEvent(parent->skill[2], color, *hitstats, Language::get(3434), Language::get(3435), MSG_COMBAT);
             }
         }
 
-        Uint32 color = makeColorRGB(255, 0, 0);
+        const Uint32 color = makeColorRGB(255, 0, 0);
 
         int player = -1;
         if ( target->behavior == &actPlayer )
@@ -737,7 +737,7 @@ void spellEffectSprayWeb(Entity& my, spellElement_t& element, Entity* parent, in
             {
                 spawnParticles = false;
             }
-            int previousDuration = hitstats->EFFECTS_TIMERS[EFF_WEBBED];
+            const int previousDuration = hitstats->EFFECTS_TIMERS[EFF_WEBBED];
             int duration = 400;
             duration = convertResistancePointsToMagicValue(duration, resistance);
             if ( hit.entity->setEffect(EFF_WEBBED, true, duration, true) ) // 8 seconds.
@@ -763,7 +763,7 @@ void spellEffectSprayWeb(Entity& my, spellElement_t& element, Entity* parent, in
                 // no effect.
                 if ( parent )
                 {
-                    Uint32 color = makeColorRGB(255, 0, 0);
+                    const Uint32 color = makeColorRGB(255, 0, 0);
                     if ( parent->behavior == &actPlayer )
                     {
                         messagePlayerMonsterEvent(parent->skill[2], color, *hitstats, Language::get(2905), Language::get(2906), MSG_COMBAT);
@@ -775,7 +775,7 @@ void spellEffectSprayWeb(Entity& my, spellElement_t& element, Entity* parent, in
             // hit messages
             if ( parent )
             {
-                Uint32 color = makeColorRGB(0, 255, 0);
+                const Uint32 color = makeColorRGB(0, 255, 0);
                 if ( parent->behavior == &actPlayer )
                 {
                     if ( abs(duration - previousDuration) > 10 ) // message if not recently webbed
@@ -785,7 +785,7 @@ void spellEffectSprayWeb(Entity& my, spellElement_t& element, Entity* parent, in
                 }
             }
 
-            Uint32 color = makeColorRGB(255, 0, 0);
+            const Uint32 color = makeColorRGB(255, 0, 0);
 
             int player = -1;
             if ( hit.entity->behavior == &actPlayer )
@@ -1002,7 +1002,7 @@ void spellEffectDrainSoul(Entity& my, spellElement_t& element, Entity* parent, i
             }
 
             DamageGib dmgGib = DMG_DEFAULT;
-            real_t damageMultiplier = Entity::getDamageTableMultiplier(hit.entity, *hitstats, DAMAGE_TABLE_MAGIC, &resistance);
+            const real_t damageMultiplier = Entity::getDamageTableMultiplier(hit.entity, *hitstats, DAMAGE_TABLE_MAGIC, &resistance);
             if ( damageMultiplier <= 0.75 )
             {
                 dmgGib = DMG_WEAKEST;
@@ -1024,12 +1024,12 @@ void spellEffectDrainSoul(Entity& my, spellElement_t& element, Entity* parent, i
                 dmgGib = DMG_WEAKEST;
             }
 
-            Sint32 preResistanceDamage = damage;
+            const Sint32 preResistanceDamage = damage;
             damage *= damageMultiplier;
 
             if ( parent )
             {
-                Stat* casterStats = parent->getStats();
+                const Stat* casterStats = parent->getStats();
                 if ( casterStats && casterStats->type == LICH_ICE )
                 {
                     damage *= 2;
@@ -1038,7 +1038,7 @@ void spellEffectDrainSoul(Entity& my, spellElement_t& element, Entity* parent, i
 
             int damageHP = hitstats->HP;
             int damageMP = hitstats->MP;
-            Sint32 oldHP = hitstats->HP;
+            const Sint32 oldHP = hitstats->HP;
             hit.entity->modHP(-damage);
 
             magicOnEntityHit(parent, &my, hit.entity, hitstats, preResistanceDamage, damage, oldHP, SPELL_DRAIN_SOUL);
@@ -1140,7 +1140,7 @@ void spellEffectDrainSoul(Entity& my, spellElement_t& element, Entity* parent, i
             bool forceFurnitureDamage = false;
             if ( parent )
             {
-                Stat* casterStats = parent->getStats();
+                const Stat* casterStats = parent->getStats();
                 if ( casterStats && casterStats->type == SHOPKEEPER )
                 {
                     forceFurnitureDamage = true;
@@ -1181,12 +1181,12 @@ spell_t* spellEffectVampiricAura(Entity* caster, spell_t* spell)
         return nullptr;
     }
     //Also refactor the duration determining code.
-    node_t* node = spell->elements.first;
+    const node_t* node = spell->elements.first;
     if ( !node )
     {
         return nullptr;
     }
-    auto element = static_cast<spellElement_t*>(node->element);
+    const auto element = static_cast<spellElement_t*>(node->element);
     if ( !element )
     {
         return nullptr;
@@ -1199,13 +1199,13 @@ spell_t* spellEffectVampiricAura(Entity* caster, spell_t* spell)
 
     node_t* spellnode = list_AddNodeLast(&myStats->magic_effects);
     spellnode->element = copySpell(spell); //We need to save the spell since this is a channeled spell.
-    auto channeled_spell = static_cast<spell_t*>(spellnode->element);
+    const auto channeled_spell = static_cast<spell_t*>(spellnode->element);
     channeled_spell->magic_effects_node = spellnode;
     spellnode->size = sizeof(spell_t);
     static_cast<spell_t*>(spellnode->element)->caster = caster->getUID();
     spellnode->deconstructor = &spellDeconstructor;
-    
-    int duration = element->duration; // duration in ticks.
+
+    const int duration = element->duration; // duration in ticks.
     channeled_spell->channel_duration = duration; //Tell the spell how long it's supposed to last so that it knows what to reset its timer to.
     caster->setEffect(EFF_VAMPIRICAURA, true, duration, true);
     for ( int i = 0; i < MAXPLAYERS; ++i )
@@ -1213,7 +1213,7 @@ spell_t* spellEffectVampiricAura(Entity* caster, spell_t* spell)
         if ( players[i] && caster && (caster == players[i]->entity) )
         {
             serverUpdateEffects(i);
-            Uint32 color = makeColorRGB(0, 255, 0);
+            const Uint32 color = makeColorRGB(0, 255, 0);
             messagePlayerColor(i, MESSAGE_COMBAT, color, Language::get(2477));
             playSoundPlayer(i, 403, 32);
         }
@@ -1339,12 +1339,12 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
                 player = hit.entity->skill[2];
             }
 
-            int difficulty = getCharmMonsterDifficulty(*hit.entity, *hitstats);
+            const int difficulty = getCharmMonsterDifficulty(*hit.entity, *hitstats);
 
             int chance = 80;
             chance -= difficulty * 30;
             bool allowStealFollowers = false;
-            Stat* casterStats = nullptr;
+            const Stat* casterStats = nullptr;
             int currentCharmedFollowerCount = 0;
             if ( parent )
             {
@@ -1385,17 +1385,17 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
                     else if ( parent->behavior == &actPlayer )
                     {
                         // search followers for charmed.
-                        for ( node_t* node = casterStats->FOLLOWERS.first; node != nullptr; node = node->next )
+                        for (const node_t* node = casterStats->FOLLOWERS.first; node != nullptr; node = node->next )
                         {
-                            auto c = static_cast<Uint32*>(node->element);
-                            Entity* follower = nullptr;
+                            const auto c = static_cast<Uint32*>(node->element);
+                            const Entity* follower = nullptr;
                             if ( c )
                             {
                                 follower = uidToEntity(*c);
                             }
                             if ( follower )
                             {
-                                if ( Stat* followerStats = follower->getStats() )
+                                if (const Stat* followerStats = follower->getStats() )
                                 {
                                     if ( followerStats->monsterIsCharmed == 1 )
                                     {
@@ -1504,7 +1504,7 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
                             // this is my leader, ignore
                             doPacify = true;
                         }
-                        if ( Stat* whoToFollowStats = whoToFollow->getStats() )
+                        if (const Stat* whoToFollowStats = whoToFollow->getStats() )
                         {
                             if ( whoToFollowStats->leader_uid == parent->getUID() )
                             {
@@ -1550,11 +1550,11 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
                     if ( monsterChangesColorWhenAlly(hitstats) )
                     {
                         int bodypart = 0;
-                        for ( node_t* node = (hit.entity)->children.first; node != nullptr; node = node->next )
+                        for (const node_t* node = (hit.entity)->children.first; node != nullptr; node = node->next )
                         {
                             if ( bodypart >= LIMB_HUMANOID_TORSO )
                             {
-                                auto tmp = static_cast<Entity*>(node->element);
+                                const auto tmp = static_cast<Entity*>(node->element);
                                 if ( tmp )
                                 {
                                     tmp->flags[USERFLAG2] = true;
@@ -1631,9 +1631,9 @@ void spellEffectCharmMonster(Entity& my, spellElement_t& element, Entity* parent
                     {
                         // reverses shop keeper grudges.
                         hit.entity->monsterReleaseAttackTarget();
-                        for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
+                        for (const node_t* node = map.creatures->first; node != nullptr; node = node->next )
                         {
-                            auto entity = static_cast<Entity*>(node->element);
+                            const auto entity = static_cast<Entity*>(node->element);
                             if ( !entity ) { continue; }
                             if ( entity->behavior == &actMonster && entity != hit.entity )
                             {
@@ -2498,7 +2498,7 @@ bool spellEffectTeleportPull(Entity* my, spellElement_t& element, Entity* parent
                     if ( MFLAG_DISABLETELEPORT )
                     {
                         // can't teleport here.
-                        Uint32 color = makeColorRGB(255, 0, 255);
+                        const Uint32 color = makeColorRGB(255, 0, 255);
                         messagePlayerColor(target->skill[2], MESSAGE_STATUS, color, Language::get(2381));
                         if ( parent->behavior == &actPlayer )
                         {
@@ -2511,7 +2511,7 @@ bool spellEffectTeleportPull(Entity* my, spellElement_t& element, Entity* parent
                 {
                     if ( parent->behavior == &actPlayer )
                     {
-                        Uint32 color = makeColorRGB(255, 0, 0);
+                        const Uint32 color = makeColorRGB(255, 0, 0);
                         if ( hitstats )
                         {
                             messagePlayerMonsterEvent(parent->skill[2], color, *hitstats, Language::get(2905), Language::get(2906), MSG_COMBAT);
@@ -2523,7 +2523,7 @@ bool spellEffectTeleportPull(Entity* my, spellElement_t& element, Entity* parent
                 // try find a teleport location in front of the caster.
                 int tx = static_cast<int>(std::floor(parent->x + 32 * cos(parent->yaw))) >> 4;
                 int ty = static_cast<int>(std::floor(parent->y + 32 * sin(parent->yaw))) >> 4;
-                int dist = 2;
+                const int dist = 2;
                 bool foundLocation = false;
                 int numlocations = 0;
                 std::vector<std::pair<int, int>> goodspots;
@@ -2531,14 +2531,14 @@ bool spellEffectTeleportPull(Entity* my, spellElement_t& element, Entity* parent
                 if ( !checkObstacle((tx << 4) + 8, (ty << 4) + 8, target, nullptr) ) // try find directly infront of caster.
                 {
                     Entity* ohitentity = hit.entity;
-                    real_t ox = target->x;
-                    real_t oy = target->y;
+                    const real_t ox = target->x;
+                    const real_t oy = target->y;
                     target->x = (tx << 4) + 8;
                     target->y = (ty << 4) + 8;
                     TileEntityList.updateEntity(*target); // important - lineTrace needs the TileEntityListUpdated.
 
                     // pretend the target is in the supposed spawn locations and try linetrace from each position.
-                    real_t tangent = atan2(target->y - parent->y, target->x - parent->x);
+                    const real_t tangent = atan2(target->y - parent->y, target->x - parent->x);
                     lineTraceTarget(parent, parent->x, parent->y, tangent, 92, 0, true, target);
                     if ( hit.entity == target )
                     {
@@ -2561,14 +2561,14 @@ bool spellEffectTeleportPull(Entity* my, spellElement_t& element, Entity* parent
                             if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, target, nullptr) )
                             {
                                 Entity* ohitentity = hit.entity;
-                                real_t ox = target->x;
-                                real_t oy = target->y;
+                                const real_t ox = target->x;
+                                const real_t oy = target->y;
                                 target->x = (ix << 4) + 8;
                                 target->y = (iy << 4) + 8;
                                 TileEntityList.updateEntity(*target); // important - lineTrace needs the TileEntityListUpdated.
 
                                 // pretend the target is in the supposed spawn locations and try linetrace from each position.
-                                real_t tangent = atan2(target->y - parent->y, target->x - parent->x);
+                                const real_t tangent = atan2(target->y - parent->y, target->x - parent->x);
                                 lineTraceTarget(parent, parent->x, parent->y, tangent, 92, 0, false, target);
                                 if ( hit.entity == target )
                                 {
@@ -2596,13 +2596,13 @@ bool spellEffectTeleportPull(Entity* my, spellElement_t& element, Entity* parent
 
                     if ( !spotsWithLineOfSight.empty() )
                     {
-                        std::pair<int, int> tmpPair = spotsWithLineOfSight[local_rng.rand() % spotsWithLineOfSight.size()];
+                        const std::pair<int, int> tmpPair = spotsWithLineOfSight[local_rng.rand() % spotsWithLineOfSight.size()];
                         tx = tmpPair.first;
                         ty = tmpPair.second;
                     }
                     else if ( !goodspots.empty() )
                     {
-                        std::pair<int, int> tmpPair = goodspots[local_rng.rand() % goodspots.size()];
+                        const std::pair<int, int> tmpPair = goodspots[local_rng.rand() % goodspots.size()];
                         tx = tmpPair.first;
                         ty = tmpPair.second;
                     }
@@ -2638,7 +2638,7 @@ bool spellEffectTeleportPull(Entity* my, spellElement_t& element, Entity* parent
                 }
 
                 // set a coundown to spawn particles on the monster.
-                Entity* spellTimer = createParticleTimer(target, 40, 593);
+                const Entity* spellTimer = createParticleTimer(target, 40, 593);
                 spellTimer->particleTimerCountdownAction = PARTICLE_TIMER_ACTION_SHOOT_PARTICLES;
                 spellTimer->particleTimerCountdownSprite = 593;
                 spellTimer->particleTimerTarget = static_cast<Sint32>(parent->getUID()); // get the target to teleport around.
@@ -2736,7 +2736,7 @@ void spellEffectShadowTag(Entity& my, spellElement_t& element, Entity* parent, i
             // hit messages
             if ( parent )
             {
-                Uint32 color = makeColorRGB(0, 255, 0);
+                const Uint32 color = makeColorRGB(0, 255, 0);
                 if ( parent->behavior == &actPlayer )
                 {
                     messagePlayerMonsterEvent(parent->skill[2], color, *hitstats, Language::get(3463), Language::get(3464), MSG_COMBAT);
@@ -2753,7 +2753,7 @@ void spellEffectShadowTag(Entity& my, spellElement_t& element, Entity* parent, i
               updateEnemyBar(parent, hit.entity, hitstats->name, hitstats->HP, hitstats->MAXHP);
          }*/
 
-            Uint32 color = makeColorRGB(255, 0, 0);
+            const Uint32 color = makeColorRGB(255, 0, 0);
             int player = -1;
             if ( hit.entity->behavior == &actPlayer )
             {
@@ -2800,7 +2800,7 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
                 if ( parent && parent->behavior == &actPlayer )
                 {
                     // unable to taunt!
-                    Uint32 color = makeColorRGB(255, 255, 255);
+                    const Uint32 color = makeColorRGB(255, 255, 255);
                     messagePlayerMonsterEvent(parent->skill[2], color, *hitstats, Language::get(3472), Language::get(3473), MSG_COMBAT);
                 }
                 return false;
@@ -2811,7 +2811,7 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
                 if ( parent && parent->behavior == &actPlayer )
                 {
                     // already exorcised!
-                    Uint32 color = makeColorRGB(255, 255, 255);
+                    const Uint32 color = makeColorRGB(255, 255, 255);
                     messagePlayerMonsterEvent(parent->skill[2], color, *hitstats, Language::get(3735), Language::get(3736), MSG_COMBAT);
                 }
                 return false;
@@ -2822,7 +2822,7 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
                 // try find a summon location around the entity.
                 int tx = static_cast<int>(std::floor(target->x)) >> 4;
                 int ty = static_cast<int>(std::floor(target->y)) >> 4;
-                int dist = 3;
+                const int dist = 3;
                 int numlocations = 0;
                 std::vector<std::pair<int, int>> goodspots;
                 for ( int iy = std::max(1, ty - dist); iy < std::min(ty + dist, static_cast<int>(map.height)); ++iy )
@@ -2832,14 +2832,14 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
                         if ( !checkObstacle((ix << 4) + 8, (iy << 4) + 8, target, nullptr) )
                         {
                             Entity* ohitentity = hit.entity;
-                            real_t ox = parent->x;
-                            real_t oy = parent->y;
+                            const real_t ox = parent->x;
+                            const real_t oy = parent->y;
                             parent->x = (ix << 4) + 8;
                             parent->y = (iy << 4) + 8;
                             TileEntityList.updateEntity(*parent); // important - lineTrace needs the TileEntityListUpdated.
 
                             // pretend the parent is in the supposed spawn locations and try linetrace from each position.
-                            real_t tangent = atan2(parent->y - target->y, parent->x - target->x);
+                            const real_t tangent = atan2(parent->y - target->y, parent->x - target->x);
                             lineTraceTarget(target, target->x, target->y, tangent, 64, 0, false, parent);
                             if ( hit.entity == parent )
                             {
@@ -2863,7 +2863,7 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
                     }
                     return false;
                 }
-                std::pair<int, int> tmpPair = goodspots[local_rng.rand() % goodspots.size()];
+                const std::pair<int, int> tmpPair = goodspots[local_rng.rand() % goodspots.size()];
                 tx = tmpPair.first;
                 ty = tmpPair.second;
 
@@ -2901,11 +2901,11 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
                         if ( monsterChangesColorWhenAlly(monsterStats) )
                         {
                             int bodypart = 0;
-                            for ( node_t* node = (monster)->children.first; node != nullptr; node = node->next )
+                            for (const node_t* node = (monster)->children.first; node != nullptr; node = node->next )
                             {
                                 if ( bodypart >= LIMB_HUMANOID_TORSO )
                                 {
-                                    auto tmp = static_cast<Entity*>(node->element);
+                                    const auto tmp = static_cast<Entity*>(node->element);
                                     if ( tmp )
                                     {
                                         tmp->flags[USERFLAG2] = true;
@@ -2921,7 +2921,7 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
                     {
                         if ( parent->behavior == &actPlayer )
                         {
-                            Uint32 color = makeColorRGB(255, 255, 0);
+                            const Uint32 color = makeColorRGB(255, 255, 0);
                             messagePlayerColor(parent->skill[2], MESSAGE_STATUS, color, Language::get(621));
                         }
                         parent->modHP(-(parentStats->MAXHP / 10));
@@ -2940,7 +2940,7 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
                     hitstats->monsterDemonHasBeenExorcised++;
 
                     // hit messages
-                    Uint32 color = makeColorRGB(0, 255, 0);
+                    const Uint32 color = makeColorRGB(0, 255, 0);
                     if ( parent->behavior == &actPlayer )
                     {
                         messagePlayerMonsterEvent(parent->skill[2], color, *hitstats, Language::get(3469), Language::get(3470), MSG_COMBAT);
@@ -2948,7 +2948,7 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
                 }
             }
 
-            Uint32 color = makeColorRGB(255, 0, 0);
+            const Uint32 color = makeColorRGB(255, 0, 0);
             int player = -1;
             if ( target->behavior == &actPlayer )
             {
@@ -2958,7 +2958,7 @@ bool spellEffectDemonIllusion(Entity& my, spellElement_t& element, Entity* paren
                     messagePlayerColor(player, MESSAGE_COMBAT, color, Language::get(3468));
                     if ( hitstats->monsterDemonHasBeenExorcised == 3 )
                     {
-                        Uint32 color = makeColorRGB(0, 255, 0);
+                        const Uint32 color = makeColorRGB(0, 255, 0);
                         messagePlayerColor(player, MESSAGE_COMBAT, color, Language::get(3737));
                     }
                 }
@@ -2982,7 +2982,7 @@ Entity* spellEffectHologram(Entity& caster, spellElement_t& element, real_t x, r
         // try find a summon location around the entity.
         int tx = static_cast<int>(std::floor(x)) >> 4;
         int ty = static_cast<int>(std::floor(y)) >> 4;
-        int dist = 1;
+        const int dist = 1;
         std::vector<std::pair<int, int>> goodspots;
         for ( int iy = std::max(1, ty - dist); iy < std::min(ty + dist, static_cast<int>(map.height)); ++iy )
         {
@@ -3006,8 +3006,8 @@ Entity* spellEffectHologram(Entity& caster, spellElement_t& element, real_t x, r
             }
             while ( !monster && goodspots.size() )
             {
-                int pick = local_rng.rand() % goodspots.size();
-                std::pair<int, int> tmpPair = goodspots[pick];
+                const int pick = local_rng.rand() % goodspots.size();
+                const std::pair<int, int> tmpPair = goodspots[pick];
                 tx = tmpPair.first;
                 ty = tmpPair.second;
                 goodspots.erase(goodspots.begin() + pick);
@@ -3041,7 +3041,7 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
         // try find a summon location around the entity.
         int tx = static_cast<int>(std::floor(x)) >> 4;
         int ty = static_cast<int>(std::floor(y)) >> 4;
-        int dist = 1;
+        const int dist = 1;
         std::vector<std::pair<int, int>> goodspots;
         for ( int iy = std::max(1, ty - dist); iy < std::min(ty + dist, static_cast<int>(map.height)); ++iy )
         {
@@ -3065,8 +3065,8 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
             }
             while ( !monster && goodspots.size() )
             {
-                int pick = local_rng.rand() % goodspots.size();
-                std::pair<int, int> tmpPair = goodspots[pick];
+                const int pick = local_rng.rand() % goodspots.size();
+                const std::pair<int, int> tmpPair = goodspots[pick];
                 tx = tmpPair.first;
                 ty = tmpPair.second;
                 goodspots.erase(goodspots.begin() + pick);
@@ -3086,7 +3086,7 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
                 {
                     if ( &element == &spellElementMap[SPELL_SPIRIT_WEAPON] )
                     {
-                        int duration = getSpellEffectDurationFromID(SPELL_SPIRIT_WEAPON, &caster, nullptr, &caster);
+                        const int duration = getSpellEffectDurationFromID(SPELL_SPIRIT_WEAPON, &caster, nullptr, &caster);
                         monsterStats->setAttribute("spirit_weapon", std::to_string(duration));
                         monsterStats->MISC_FLAGS[STAT_FLAG_MONSTER_DISABLE_HC_SCALING] = 1;
                         monster->setEffect(EFF_ROOTED, true, -1, false);
@@ -3126,16 +3126,16 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
                         const real_t lookDist = 40.0;
                         real_t dist = lookDist;
                         Entity* newTarget = nullptr;
-                        for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
+                        for (const node_t* node = map.creatures->first; node != nullptr; node = node->next )
                         {
-                            auto target = static_cast<Entity*>(node->element);
+                            const auto target = static_cast<Entity*>(node->element);
                             if ( target->behavior == &actMonster && monster->checkEnemy(target) )
                             {
-                                real_t oldDist = dist;
+                                const real_t oldDist = dist;
                                 dist = sqrt(pow(monster->x - target->x, 2) + pow(monster->y - target->y, 2));
                                 if ( dist < lookDist && dist <= oldDist )
                                 {
-                                    double tangent = atan2(target->y - monster->y, target->x - monster->x);
+                                    const double tangent = atan2(target->y - monster->y, target->x - monster->x);
                                     lineTrace(monster, monster->x, monster->y, tangent, lookDist, 0, false);
                                     if ( hit.entity == target )
                                     {
@@ -3157,7 +3157,7 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
                     }
                     else if ( &element == &spellElementMap[SPELL_ADORCISM] )
                     {
-                        int duration = getSpellEffectDurationFromID(SPELL_ADORCISM, &caster, nullptr, &caster);
+                        const int duration = getSpellEffectDurationFromID(SPELL_ADORCISM, &caster, nullptr, &caster);
                         monsterStats->setAttribute("adorcised_weapon", std::to_string(duration));
                         monsterStats->MISC_FLAGS[STAT_FLAG_MONSTER_DISABLE_HC_SCALING] = 1;
                         if ( itemToAdorcise )
@@ -3221,11 +3221,11 @@ Entity* spellEffectAdorcise(Entity& caster, spellElement_t& element, real_t x, r
                         if ( monsterChangesColorWhenAlly(monsterStats) )
                         {
                             int bodypart = 0;
-                            for ( node_t* node = (monster)->children.first; node != nullptr; node = node->next )
+                            for (const node_t* node = (monster)->children.first; node != nullptr; node = node->next )
                             {
                                 if ( bodypart >= LIMB_HUMANOID_TORSO )
                                 {
-                                    auto tmp = static_cast<Entity*>(node->element);
+                                    const auto tmp = static_cast<Entity*>(node->element);
                                     if ( tmp )
                                     {
                                         tmp->flags[USERFLAG2] = true;
@@ -3250,7 +3250,7 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
         // try find a summon location around the entity.
         int tx = static_cast<int>(std::floor(x)) >> 4;
         int ty = static_cast<int>(std::floor(y)) >> 4;
-        int dist = 1;
+        const int dist = 1;
         std::vector<std::pair<int, int>> goodspots;
         for ( int iy = std::max(1, ty - dist); iy < std::min(ty + dist, static_cast<int>(map.height)); ++iy )
         {
@@ -3268,15 +3268,15 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
         }
         else
         {
-            Monster type = &element == &spellElementMap[SPELL_FIRE_SPRITE] ? MOTH_SMALL : FLAME_ELEMENTAL;
+            const Monster type = &element == &spellElementMap[SPELL_FIRE_SPRITE] ? MOTH_SMALL : FLAME_ELEMENTAL;
             if ( !checkObstacle((tx << 4) + 8, (ty << 4) + 8, &caster, nullptr, true, true, false, false) )
             {
                 monster = summonMonster(type, tx * 16.0 + 8, ty * 16.0 + 8, true);
             }
             while ( !monster && goodspots.size() )
             {
-                int pick = local_rng.rand() % goodspots.size();
-                std::pair<int, int> tmpPair = goodspots[pick];
+                const int pick = local_rng.rand() % goodspots.size();
+                const std::pair<int, int> tmpPair = goodspots[pick];
                 tx = tmpPair.first;
                 ty = tmpPair.second;
                 goodspots.erase(goodspots.begin() + pick);
@@ -3315,7 +3315,7 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
                 {
                     if ( &element == &spellElementMap[SPELL_FIRE_SPRITE] )
                     {
-                        int duration = getSpellEffectDurationSecondaryFromID(SPELL_FIRE_SPRITE, &caster, nullptr, &caster);
+                        const int duration = getSpellEffectDurationSecondaryFromID(SPELL_FIRE_SPRITE, &caster, nullptr, &caster);
                         monsterStats->setAttribute("fire_sprite", std::to_string(duration));
                         monsterStats->monsterNoDropItems = 1;
                         monsterStats->MISC_FLAGS[STAT_FLAG_MONSTER_DISABLE_HC_SCALING] = 1;
@@ -3324,7 +3324,7 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
                         strcpy(monsterStats->name, MonsterData_t::getSpecialNPCName(*monsterStats).c_str());
 
                         int lvl = getSpellDamageFromID(SPELL_FIRE_SPRITE, &caster, nullptr, &caster);
-                        int maxlvl = getSpellDamageSecondaryFromID(SPELL_FIRE_SPRITE, &caster, nullptr, &caster);
+                        const int maxlvl = getSpellDamageSecondaryFromID(SPELL_FIRE_SPRITE, &caster, nullptr, &caster);
                         lvl = std::min(lvl, maxlvl);
                         monsterStats->LVL = lvl;
 
@@ -3343,13 +3343,13 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
                     }
                     else if ( &element == &spellElementMap[SPELL_FLAME_ELEMENTAL] )
                     {
-                        int duration = getSpellEffectDurationSecondaryFromID(SPELL_FLAME_ELEMENTAL, &caster, nullptr, &caster);
+                        const int duration = getSpellEffectDurationSecondaryFromID(SPELL_FLAME_ELEMENTAL, &caster, nullptr, &caster);
                         monsterStats->setAttribute("flame_elemental", std::to_string(duration));
                         monsterStats->monsterNoDropItems = 1;
                         monsterStats->MISC_FLAGS[STAT_FLAG_MONSTER_DISABLE_HC_SCALING] = 1;
 
                         int lvl = getSpellDamageFromID(SPELL_FLAME_ELEMENTAL, &caster, nullptr, &caster);
-                        int maxlvl = getSpellDamageSecondaryFromID(SPELL_FLAME_ELEMENTAL, &caster, nullptr, &caster);
+                        const int maxlvl = getSpellDamageSecondaryFromID(SPELL_FLAME_ELEMENTAL, &caster, nullptr, &caster);
                         lvl = std::min(lvl, maxlvl);
                         monsterStats->LVL = lvl;
 
@@ -3374,11 +3374,11 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
                         if ( monsterChangesColorWhenAlly(monsterStats) )
                         {
                             int bodypart = 0;
-                            for ( node_t* node = (monster)->children.first; node != nullptr; node = node->next )
+                            for (const node_t* node = (monster)->children.first; node != nullptr; node = node->next )
                             {
                                 if ( bodypart >= LIMB_HUMANOID_TORSO )
                                 {
-                                    auto tmp = static_cast<Entity*>(node->element);
+                                    const auto tmp = static_cast<Entity*>(node->element);
                                     if ( tmp )
                                     {
                                         tmp->flags[USERFLAG2] = true;
@@ -3399,7 +3399,7 @@ Entity* spellEffectFlameSprite(Entity& caster, spellElement_t& element, real_t x
 bool Entity::spellEffectPreserveItem(Item* item)
 {
     if ( !item ) { return false; }
-    if ( Stat* myStats = getStats() )
+    if (const Stat* myStats = getStats() )
     {
         if ( behavior != &actPlayer )
         {
@@ -3494,13 +3494,13 @@ int thaumSpellArmorProc(Entity* my, Stat& myStats, bool checkEffectActiveOnly, E
     {
         if ( player >= 0 )
         {
-            int result = myStats.getEffectActive(effectID);
+            const int result = myStats.getEffectActive(effectID);
 
             if ( !checkEffectActiveOnly )
             {
                 if ( my )
                 {
-                    int baseMinValue = (effectID == EFF_GUARD_SPIRIT) ? 1 : 3;
+                    const int baseMinValue = (effectID == EFF_GUARD_SPIRIT) ? 1 : 3;
                     //int minValue = std::max(baseMinValue, getSpellDamageFromID(spellID, my, nullptr, my));
                     //minValue = std::min(minValue, getSpellEffectDurationSecondaryFromID(spellID, my, nullptr, my));
                     my->setEffect(effectID, static_cast<Uint8>(std::max(baseMinValue, myStats.getEffectActive(effectID) - 1)),
@@ -3539,7 +3539,7 @@ int thaumSpellArmorProc(Entity* my, Stat& myStats, bool checkEffectActiveOnly, E
 bool Entity::pinpointDamageProc(Entity* attacker, int damage)
 {
     if ( multiplayer == CLIENT || !attacker ) { return false; }
-    if ( Stat* myStats = getStats() )
+    if (const Stat* myStats = getStats() )
     {
         if ( myStats->HP == 0 ) { return false; }
         if ( !(attacker->behavior == &actPlayer || (attacker->behavior == &actMonster && attacker->monsterAllyGetPlayerLeader())) )
@@ -3553,12 +3553,12 @@ bool Entity::pinpointDamageProc(Entity* attacker, int damage)
             {
                 // find particle to update
                 bool found = false;
-                auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 1);
-                for ( auto it : entLists )
+                const auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 1);
+                for (const auto it : entLists )
                 {
-                    for ( node_t* node = it->first; node != nullptr && !found; node = node->next )
+                    for (const node_t* node = it->first; node != nullptr && !found; node = node->next )
                     {
-                        if (auto entity = static_cast<Entity*>(node->element) )
+                        if (const auto entity = static_cast<Entity*>(node->element) )
                         {
                             if ( entity->behavior == &actParticleAestheticOrbit
                                 && entity->parent == this->getUID()
@@ -3566,7 +3566,7 @@ bool Entity::pinpointDamageProc(Entity* attacker, int damage)
                                 && entity->actmagicNoLight == 0 )
                             {
                                 Entity* caster = uidToEntity(entity->skill[3]);
-                                real_t damageMult = getSpellDamageSecondaryFromID(SPELL_PINPOINT, caster, caster ? caster->getStats() : nullptr,
+                                const real_t damageMult = getSpellDamageSecondaryFromID(SPELL_PINPOINT, caster, caster ? caster->getStats() : nullptr,
                                     entity, entity->actmagicSpellbookBonus / 100.0) / 100.0;
                                 entity->skill[4] += std::max(0, (damage)) * damageMult;
                                 found = true;
@@ -3577,7 +3577,7 @@ bool Entity::pinpointDamageProc(Entity* attacker, int damage)
                                 && entity->parent == this->getUID()
                                 && entity->skill[0] >= 0 )
                             {
-                                Uint32 casterUid = static_cast<Uint32>(entity->skill[2]);
+                                const Uint32 casterUid = static_cast<Uint32>(entity->skill[2]);
                                 Entity* caster = uidToEntity(casterUid);
 
                                 for ( int i = 0; i < 3; ++i )
@@ -3597,7 +3597,7 @@ bool Entity::pinpointDamageProc(Entity* attacker, int damage)
                                     if ( i == 0 )
                                     {
                                         fx1->actmagicSpellbookBonus = entity->actmagicSpellbookBonus;
-                                        real_t damageMult = getSpellDamageSecondaryFromID(SPELL_PINPOINT, caster, caster ? caster->getStats() : nullptr,
+                                        const real_t damageMult = getSpellDamageSecondaryFromID(SPELL_PINPOINT, caster, caster ? caster->getStats() : nullptr,
                                             entity, entity->actmagicSpellbookBonus / 100.0) / 100.0;
                                         fx1->skill[4] += std::max(0, (damage)) * damageMult;
                                         fx1->actmagicFromSpellbook = entity->actmagicFromSpellbook;
@@ -3632,17 +3632,17 @@ bool Entity::pinpointDamageProc(Entity* attacker, int damage)
 bool Entity::defyFleshProc(Entity* attacker)
 {
     if ( multiplayer == CLIENT ) { return false; }
-    if ( Stat* myStats = getStats() )
+    if (const Stat* myStats = getStats() )
     {
         if ( myStats->getEffectActive(EFF_DEFY_FLESH) )
         {
             // find particle to update
-            auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 1);
-            for ( auto it : entLists )
+            const auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 1);
+            for (const auto it : entLists )
             {
-                for ( node_t* node = it->first; node != nullptr; node = node->next )
+                for (const node_t* node = it->first; node != nullptr; node = node->next )
                 {
-                    if (auto entity = static_cast<Entity*>(node->element) )
+                    if (const auto entity = static_cast<Entity*>(node->element) )
                     {
                         if ( entity->behavior == &actParticleAestheticOrbit 
                             && entity->parent == this->getUID()
@@ -3696,7 +3696,7 @@ bool Entity::mistFormDodge(bool checkEffectActiveOnly, Entity* attacker)
             {
                 if ( spell_t* spell = getActiveMagicEffect(SPELL_MIST_FORM) )
                 {
-                    int chance = getSpellEffectDurationSecondaryFromID(SPELL_MIST_FORM, this, nullptr, this);
+                    const int chance = getSpellEffectDurationSecondaryFromID(SPELL_MIST_FORM, this, nullptr, this);
                     if ( local_rng.rand() % 100 < chance )
                     {
                         int cost = getSpellDamageFromID(SPELL_MIST_FORM, this, nullptr, this);
@@ -3821,7 +3821,7 @@ bool applyGenericMagicDamage(Entity* caster, Entity* hitentity, Entity& damageSo
             {
                 if ( alertTarget )
                 {
-                    bool oldPassable = caster->flags[PASSABLE];
+                    const bool oldPassable = caster->flags[PASSABLE];
                     if ( spellID == SPELL_EARTH_ELEMENTAL && caster->behavior == &actMonster
                         && caster->getMonsterTypeFromSprite() == EARTH_ELEMENTAL )
                     {
@@ -3857,9 +3857,9 @@ bool applyGenericMagicDamage(Entity* caster, Entity* hitentity, Entity& damageSo
         }
 
         playSoundEntity(hitentity, 28, 128);
-        int oldHP = targetStats->HP;
+        const int oldHP = targetStats->HP;
 
-        Sint32 preResistanceDamage = damage;
+        const Sint32 preResistanceDamage = damage;
         damage *= damageMultiplier;
 
         if ( spellID == SPELL_ICE_WAVE )
@@ -3970,7 +3970,7 @@ bool applyGenericMagicDamage(Entity* caster, Entity* hitentity, Entity& damageSo
                 {
                     strength = 5;
                 }
-                int player = hitentity->skill[2];
+                const int player = hitentity->skill[2];
                 // entity took damage, shake screen.
                 if ( multiplayer == SERVER && player > 0 )
                 {
@@ -4014,14 +4014,14 @@ bool applyGenericMagicDamage(Entity* caster, Entity* hitentity, Entity& damageSo
 
 Entity* spellEffectDemesneDoor(Entity& caster, Entity& target)
 {
-    auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(&target, 1);
-    int mapx = target.x / 16;
-    int mapy = target.y / 16;
-    for ( auto it : entLists )
+    const auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(&target, 1);
+    const int mapx = target.x / 16;
+    const int mapy = target.y / 16;
+    for (const auto it : entLists )
     {
-        for ( node_t* node = it->first; node != nullptr; node = node->next )
+        for (const node_t* node = it->first; node != nullptr; node = node->next )
         {
-            if (auto entity = static_cast<Entity*>(node->element) )
+            if (const auto entity = static_cast<Entity*>(node->element) )
             {
                 if ( static_cast<int>(entity->x / 16) == mapx && static_cast<int>(entity->y / 16) == mapy )
                 {
@@ -4080,7 +4080,7 @@ int getSpellDamageFromID(int spellID, Entity* parent, Stat* parentStats, Entity*
     int damage = 0;
     spellElement_t* element = nullptr;
     int skillID = NUMPROFICIENCIES;
-    if ( auto spell = getSpellFromID(spellID) )
+    if (const auto spell = getSpellFromID(spellID) )
     {
         skillID = spell->skillID;
         if ( spell->elements.first )
@@ -4131,7 +4131,7 @@ int getSpellDamageSecondaryFromID(int spellID, Entity* parent, Stat* parentStats
     int damage = 0;
     spellElement_t* element = nullptr;
     int skillID = NUMPROFICIENCIES;
-    if ( auto spell = getSpellFromID(spellID) )
+    if (const auto spell = getSpellFromID(spellID) )
     {
         skillID = spell->skillID;
         if ( spell->elements.first )
@@ -4178,8 +4178,8 @@ int getSpellDamageSecondaryFromID(int spellID, Entity* parent, Stat* parentStats
 int getSpellEffectDurationFromID(int spellID, Entity* parent, Stat* parentStats, Entity* magicSourceParticle, real_t addSpellBonus)
 {
     int duration = 0;
-    spellElement_t* element = nullptr;
-    if ( auto spell = getSpellFromID(spellID) )
+    const spellElement_t* element = nullptr;
+    if (const auto spell = getSpellFromID(spellID) )
     {
         if ( spell->elements.first )
         {
@@ -4206,7 +4206,7 @@ int getSpellEffectDurationSecondaryFromID(int spellID, Entity* parent, Stat* par
 {
     int duration = 0;
     spellElement_t* element = nullptr;
-    if ( auto spell = getSpellFromID(spellID) )
+    if (const auto spell = getSpellFromID(spellID) )
     {
         if ( spell->elements.first )
         {
@@ -4232,7 +4232,7 @@ int getSpellEffectDurationSecondaryFromID(int spellID, Entity* parent, Stat* par
 real_t getSpellPropertyFromID(spell_t::SpellBasePropertiesFloat prop, int spellID, Entity* parent, Stat* parentStats, Entity* magicSourceParticle, real_t addSpellBonus)
 {
     spellElement_t* element = nullptr;
-    spell_t* spell = nullptr;
+    const spell_t* spell = nullptr;
     real_t result = 1.0;
     if ( spell = getSpellFromID(spellID) )
     {
@@ -4271,7 +4271,7 @@ real_t getSpellPropertyFromID(spell_t::SpellBasePropertiesFloat prop, int spellI
         else if ( prop == spell_t::SpellBasePropertiesFloat::SPELLPROP_MODIFIED_FOCI_CAST_TIME )
         {
             result = spell->cast_time;
-            real_t modifier = 1.0;// +spell->cast_time_mult;
+            const real_t modifier = 1.0;// +spell->cast_time_mult;
             result *= modifier;
         }
         else if ( prop == spell_t::SpellBasePropertiesFloat::SPELLPROP_MODIFIED_SPELL_CAST_TIME )
@@ -4312,7 +4312,7 @@ real_t getSpellPropertyFromID(spell_t::SpellBasePropertiesFloat prop, int spellI
                         bonus += 1.0;
                     }
                 }
-                real_t modifier = (statGetDEX(myStats, parent) * (1.0 + std::max(0.0, bonus)) * spell->cast_time_mult) / 100.0;
+                const real_t modifier = (statGetDEX(myStats, parent) * (1.0 + std::max(0.0, bonus)) * spell->cast_time_mult) / 100.0;
                 result += -modifier;
                 if ( bonus < -0.05 )
                 {
@@ -4365,8 +4365,8 @@ real_t getSpellPropertyFromID(spell_t::SpellBasePropertiesFloat prop, int spellI
                         }
                     }
                 }
-                real_t bonus = (getBonusFromCasterOfSpellElement(parent, myStats, element, spellID, spell->skillID));
-                real_t modifier = (statGetPER(myStats, parent) * (1.0 + std::max(0.0, bonus)) * spell->distance_mult);
+                const real_t bonus = (getBonusFromCasterOfSpellElement(parent, myStats, element, spellID, spell->skillID));
+                const real_t modifier = (statGetPER(myStats, parent) * (1.0 + std::max(0.0, bonus)) * spell->distance_mult);
                 real_t maxDist = 96.0;
                 if ( equipmentModifier > 0.01 )
                 {
@@ -4396,7 +4396,7 @@ real_t getSpellPropertyFromID(spell_t::SpellBasePropertiesFloat prop, int spellI
 int getSpellPropertyFromID(spell_t::SpellBasePropertiesInt prop, int spellID, Entity* parent, Stat* parentStats, Entity* magicSourceParticle, real_t addSpellBonus)
 {
     spellElement_t* element = nullptr;
-    spell_t* spell = nullptr;
+    const spell_t* spell = nullptr;
     int result = 1.0;
     if ( spell = getSpellFromID(spellID) )
     {
@@ -4413,7 +4413,7 @@ int getSpellPropertyFromID(spell_t::SpellBasePropertiesInt prop, int spellID, En
             }
         }
 
-        Stat* myStats = parentStats;
+        const Stat* myStats = parentStats;
         if ( !myStats && parent )
         {
             myStats = parent->getStats();
@@ -4451,8 +4451,8 @@ int getSpellPropertyFromID(spell_t::SpellBasePropertiesInt prop, int spellID, En
         else if ( prop == spell_t::SpellBasePropertiesInt::SPELLPROP_MODIFIED_RADIUS )
         {
             result = spell->radius;
-            real_t radiusScale = 0.0;
-            real_t modifier = 1.0 + spell->radius_mult * radiusScale;
+            const real_t radiusScale = 0.0;
+            const real_t modifier = 1.0 + spell->radius_mult * radiusScale;
             result *= modifier;
         }
     }
@@ -4464,7 +4464,7 @@ int getSpellFromSummonedEntityForSpellEvent(Entity* summon)
     if ( !summon ) { return SPELL_NONE; }
     if ( summon->behavior != &actMonster ) { return SPELL_NONE; }
 
-    Stat* destStats = summon->getStats();
+    const Stat* destStats = summon->getStats();
     if ( !destStats ) { return SPELL_NONE; }
 
     if ( !(summon->monsterAllyGetPlayerLeader() 

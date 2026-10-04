@@ -32,7 +32,7 @@
 void initClassStats(const int classnum, void* myStats)
 {
     if ( !myStats ) { return; }
-    auto stat = static_cast<Stat*>(myStats);
+    const auto stat = static_cast<Stat*>(myStats);
     // CLASS LOADOUTS
     // barbarian
     if ( classnum == CLASS_BARBARIAN )
@@ -636,7 +636,7 @@ void initClassStats(const int classnum, void* myStats)
     {
         if ( gameModeManager.currentSession.challengeRun.customBaseStats )
         {
-            auto& s = gameModeManager.currentSession.challengeRun.baseStats;
+            const auto& s = gameModeManager.currentSession.challengeRun.baseStats;
             stat->HP = s->HP;
             stat->MAXHP = s->MAXHP;
             stat->MP = s->MP;
@@ -660,7 +660,7 @@ void initClassStats(const int classnum, void* myStats)
         }
         if ( gameModeManager.currentSession.challengeRun.customAddStats )
         {
-            auto& s = gameModeManager.currentSession.challengeRun.addStats;
+            const auto& s = gameModeManager.currentSession.challengeRun.addStats;
             stat->HP += s->HP;
             stat->MAXHP += s->MAXHP;
             stat->MP += s->MP;
@@ -3706,7 +3706,7 @@ void initShapeshiftHotbar(int player)
     auto& hotbar_alternate = hotbar_t.slotsAlternate();
 
     hotbar_t.swapHotbarOnShapeshift = stats[player]->type;
-    auto* newHotbar = &hotbar_alternate[Player::Hotbar_t::HOTBAR_DEFAULT]; // the monster's special hotbar.
+    const auto* newHotbar = &hotbar_alternate[Player::Hotbar_t::HOTBAR_DEFAULT]; // the monster's special hotbar.
     spell_t* newSpell = players[player]->magic.selected_spell_alternate[Player::Hotbar_t::HOTBAR_DEFAULT];
     bool shapeshiftHotbarInit = false;
     if ( hotbar_t.swapHotbarOnShapeshift > 0 )
@@ -3748,9 +3748,9 @@ void initShapeshiftHotbar(int player)
     }
 
     // find "shapeshift" only spells, add em to view.
-    for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item && item->type == SPELL_ITEM )
         {
             spell_t* spell = getSpellFromItem(player, item, true);
@@ -3791,9 +3791,9 @@ void initShapeshiftHotbar(int player)
                         {
                             for ( int x = 0; x < Player::Inventory_t::MAX_SPELLS_X; x++ )
                             {
-                                for ( node_t* node2 = stats[player]->inventory.first; node2 != nullptr; node2 = node2->next )
+                                for (const node_t* node2 = stats[player]->inventory.first; node2 != nullptr; node2 = node2->next )
                                 {
-                                    auto tempItem = static_cast<Item*>(node2->element);
+                                    const auto tempItem = static_cast<Item*>(node2->element);
                                     if ( tempItem == item )
                                     {
                                         continue;
@@ -3939,14 +3939,14 @@ void deinitShapeshiftHotbar(int player)
         players[player]->magic.selected_spell_last_appearance = -1;
     }
 
-    for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item )
         {
             if ( item->type == SPELL_ITEM && item->appearance >= 1000 )
             {
-                spell_t* spell = getSpellFromItem(player, item, true);
+                const spell_t* spell = getSpellFromItem(player, item, true);
                 if ( spell && client_classes[player] == CLASS_SHAMAN )
                 {
                     // move shapeshift spells out of inventory. 
@@ -3998,7 +3998,7 @@ bool playerUnlockedShamanSpell(const int player, Item* const item)
         return false;
     }
 
-    spell_t* spell = getSpellFromItem(player, item, false);
+    const spell_t* spell = getSpellFromItem(player, item, false);
     int levelRequirement = 0;
     if ( spell && client_classes[player] == CLASS_SHAMAN )
     {

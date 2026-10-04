@@ -3543,7 +3543,7 @@ spell_t* createSimpleSpell(int spellID, int difficulty, int mana, int base_mana,
     std::string elementName = internal_name;
     if ( elementName.find("element_") == std::string::npos )
     {
-        auto find = elementName.find("spell_");
+        const auto find = elementName.find("spell_");
         if ( find != std::string::npos )
         {
             elementName.insert(find + strlen("spell_"), "element_");

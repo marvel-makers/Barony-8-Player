@@ -479,11 +479,11 @@ int isCharacterValidFromDLC(int player, int characterClass, int race, int appear
     {
         return INVALID_CHARACTER;
     }
-    auto oldAppearance = stats[player]->stat_appearance;
-    auto oldRace = stats[player]->playerRace;
+    const auto oldAppearance = stats[player]->stat_appearance;
+    const auto oldRace = stats[player]->playerRace;
     stats[player]->stat_appearance = appearance;
     stats[player]->playerRace = race;
-    auto result = isCharacterValidFromDLC(*stats[player], characterClass);
+    const auto result = isCharacterValidFromDLC(*stats[player], characterClass);
     stats[player]->stat_appearance = oldAppearance;
     stats[player]->playerRace = oldRace;
     return result;
@@ -9768,10 +9768,10 @@ void doEndgameOnDisconnect()
 void doEndgame(bool saveHighscore, bool onServerDisconnect) {
     int c, x;
     bool endTutorial = false;
-    bool localScores = gameModeManager.allowsHiscores();
+    const bool localScores = gameModeManager.allowsHiscores();
     bool onlineScores = gameModeManager.allowsGlobalHiscores();
-    bool allowedSavegames = gameModeManager.allowsSaves();
-    bool customRun = gameModeManager.getMode() == GameModeManager_t::GAME_MODE_CUSTOM_RUN;
+    const bool allowedSavegames = gameModeManager.allowsSaves();
+    const bool customRun = gameModeManager.getMode() == GameModeManager_t::GAME_MODE_CUSTOM_RUN;
     if ( gameModeManager.getMode() == GameModeManager_t::GAME_MODE_TUTORIAL )
     {
         victory = 0;
@@ -9824,9 +9824,9 @@ void doEndgame(bool saveHighscore, bool onServerDisconnect) {
             {
                 if ( players[c]->isLocalPlayer() )
                 {
-                    for ( node_t* node = stats[c]->FOLLOWERS.first; node != nullptr; node = node->next )
+                    for (const node_t* node = stats[c]->FOLLOWERS.first; node != nullptr; node = node->next )
                     {
-                        Entity* follower = nullptr;
+                        const Entity* follower = nullptr;
                         if ( static_cast<Uint32*>(node->element) )
                         {
                             follower = uidToEntity(*static_cast<Uint32*>(node->element));
@@ -9844,7 +9844,7 @@ void doEndgame(bool saveHighscore, bool onServerDisconnect) {
         }
     }
 
-    bool died = stats[clientnum] && stats[clientnum]->HP <= 0;
+    const bool died = stats[clientnum] && stats[clientnum]->HP <= 0;
     Compendium_t::Events_t::onEndgameEvent(clientnum, endTutorial, saveHighscore, died);
 
     // make a highscore!
@@ -10521,7 +10521,7 @@ void doEndgameCitadel() {
 }
 
 void doEndgameClassicAndExtraMidGame() {
-    int movieType = introstage - 11;
+    const int movieType = introstage - 11;
     for ( int i = 0; i < 8; ++i )
     {
         if ( i != movieType )
@@ -10597,7 +10597,7 @@ void doEndgameClassicAndExtraMidGame() {
 }
 
 void doEndgameExpansion() {
-    int movieType = introstage - 11;
+    const int movieType = introstage - 11;
     for ( int i = 0; i < 8; ++i )
     {
         if ( i != movieType )
@@ -10810,14 +10810,14 @@ void openGameoverWindow()
 
 int getNumDisplays()
 {
-    int numdisplays = SDL_GetNumVideoDisplays();
+    const int numdisplays = SDL_GetNumVideoDisplays();
     printlog("display count: %d.\n", numdisplays);
     return numdisplays;
 }
 
 void getResolutionList(int device_id, std::list<resolution>& resolutions)
 {
-    int nummodes = SDL_GetNumDisplayModes(device_id);
+    const int nummodes = SDL_GetNumDisplayModes(device_id);
     printlog("display mode count: %d.\n", nummodes);
 
     SDL_DisplayMode mode;
@@ -10863,12 +10863,12 @@ void buttonAchievementsUp(button_t* my)
 
 void buttonAchievementsDown(button_t* my)
 {
-    int num_achievements = Compendium_t::achievements.size();
+    const int num_achievements = Compendium_t::achievements.size();
     if ( num_achievements == 0 )
     {
         return;
     }
-    int max_pages = num_achievements / 6 + ((num_achievements % 6) ? 1 : 0);
+    const int max_pages = num_achievements / 6 + ((num_achievements % 6) ? 1 : 0);
     achievements_window_page = std::min(max_pages, achievements_window_page + 1);
 }
 
@@ -11427,10 +11427,10 @@ void buttonOpenSteamLeaderboards(button_t* my)
 // handles slider
 void doSlider(int x, int y, int dots, int minvalue, int maxvalue, int increment, int* var, SDL_Surface* slider_font, int slider_font_char_width)
 {
-    Sint32 mousex = inputs.getMouse(clientnum, Inputs::MouseInputs::X);
+    const Sint32 mousex = inputs.getMouse(clientnum, Inputs::MouseInputs::X);
     Sint32 mousey = inputs.getMouse(clientnum, Inputs::MouseInputs::Y);
-    Sint32 omousex = inputs.getMouse(clientnum, Inputs::MouseInputs::OX);
-    Sint32 omousey = inputs.getMouse(clientnum, Inputs::MouseInputs::OY);
+    const Sint32 omousex = inputs.getMouse(clientnum, Inputs::MouseInputs::OX);
+    const Sint32 omousey = inputs.getMouse(clientnum, Inputs::MouseInputs::OY);
 
     // build bar
     strcpy(tempstr, "| ");
@@ -11442,8 +11442,8 @@ void doSlider(int x, int y, int dots, int minvalue, int maxvalue, int increment,
     printTextFormatted(slider_font, x, y, tempstr, *var);
 
     // control
-    int range = maxvalue - minvalue;
-    int sliderLength = ((strlen(tempstr) - 4) * (slider_font->w / slider_font_char_width));
+    const int range = maxvalue - minvalue;
+    const int sliderLength = ((strlen(tempstr) - 4) * (slider_font->w / slider_font_char_width));
     if ( inputs.bMouseLeft(clientnum) )
     {
         if ( omousex >= x && omousex < x + sliderLength + (slider_font->w / slider_font_char_width) )
@@ -11471,10 +11471,10 @@ void doSlider(int x, int y, int dots, int minvalue, int maxvalue, int increment,
 // handles slider (float)
 void doSliderF(int x, int y, int dots, real_t minvalue, real_t maxvalue, real_t increment, real_t* var)
 {
-    Sint32 mousex = inputs.getMouse(clientnum, Inputs::MouseInputs::X);
+    const Sint32 mousex = inputs.getMouse(clientnum, Inputs::MouseInputs::X);
     Sint32 mousey = inputs.getMouse(clientnum, Inputs::MouseInputs::Y);
-    Sint32 omousex = inputs.getMouse(clientnum, Inputs::MouseInputs::OX);
-    Sint32 omousey = inputs.getMouse(clientnum, Inputs::MouseInputs::OY);
+    const Sint32 omousex = inputs.getMouse(clientnum, Inputs::MouseInputs::OX);
+    const Sint32 omousey = inputs.getMouse(clientnum, Inputs::MouseInputs::OY);
 
     // build bar
     strcpy(tempstr, "| ");
@@ -11486,8 +11486,8 @@ void doSliderF(int x, int y, int dots, real_t minvalue, real_t maxvalue, real_t 
     printTextFormatted(SLIDERFONT, x, y, tempstr, *var);
 
     // control
-    real_t range = maxvalue - minvalue;
-    int sliderLength = ((strlen(tempstr) - 6) * (SLIDERFONT->w / 16));
+    const real_t range = maxvalue - minvalue;
+    const int sliderLength = ((strlen(tempstr) - 6) * (SLIDERFONT->w / 16));
     if ( inputs.bMouseLeft(clientnum) )
     {
         if ( omousex >= x && omousex < x + sliderLength + (SLIDERFONT->w / 16) )
@@ -11631,8 +11631,8 @@ void buttonOpenCharacterCreationWindow(button_t* my)
     button->focused = 1;
     button->key = SDLK_ESCAPE;
     button->joykey = joyimpulses[INJOY_MENU_CANCEL];
-    int button_back_x = button->x;
-    int button_back_width = button->sizex;
+    const int button_back_x = button->x;
+    const int button_back_width = button->sizex;
 
     // Random Character ...
     button = newButton();
@@ -11779,11 +11779,11 @@ bool replayLastCharacter(const int index, int multiplayer)
         return false;
     }
 
-    auto& lastClass = LastCreatedCharacterSettings.characterClass[savedCharacterIndex];
-    auto& lastSex = LastCreatedCharacterSettings.characterSex[savedCharacterIndex];
-    auto& lastRace = LastCreatedCharacterSettings.characterRace[savedCharacterIndex];
-    auto& lastAppearance = LastCreatedCharacterSettings.characterAppearance[savedCharacterIndex];
-    auto& lastName = LastCreatedCharacterSettings.characterName[savedCharacterIndex];
+    const auto& lastClass = LastCreatedCharacterSettings.characterClass[savedCharacterIndex];
+    const auto& lastSex = LastCreatedCharacterSettings.characterSex[savedCharacterIndex];
+    const auto& lastRace = LastCreatedCharacterSettings.characterRace[savedCharacterIndex];
+    const auto& lastAppearance = LastCreatedCharacterSettings.characterAppearance[savedCharacterIndex];
+    const auto& lastName = LastCreatedCharacterSettings.characterName[savedCharacterIndex];
 
     if ( lastClass >= 0 && lastSex >= 0 && lastRace >= 0 && lastAppearance >= 0 && lastName != "" )
     {
@@ -11829,7 +11829,7 @@ bool replayLastCharacter(const int index, int multiplayer)
         stats[index]->clearStats();
         initClass(index);
 
-        auto name = lastName.c_str();
+        const auto name = lastName.c_str();
         size_t len = strlen(name);
         len = std::min(sizeof(Stat::name) - 1, len);
         memcpy(stats[index]->name, name, len);
@@ -11892,7 +11892,7 @@ void buttonGamemodsOpenDirectory(button_t* my)
     {
         std::list<std::string>::const_iterator it = currentDirectoryFiles.begin();
         std::advance(it, std::max(gamemods_window_scroll + gamemods_window_fileSelect - 1, 0));
-        std::string directoryName = *it;
+        const std::string directoryName = *it;
 
         if ( directoryName.compare("..") == 0 || directoryName.compare(".") == 0 )
         {
@@ -13295,7 +13295,7 @@ size_t serialHash(const std::string& input)
     }
     int i = 0;
     size_t hash = 0;
-    for ( auto it : input )
+    for (const auto it : input )
     {
         if ( it == '\0' || it == '\n' )
         {

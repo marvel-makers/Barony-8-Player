@@ -11,9 +11,9 @@ NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bo
     }
     else
     {
-        Uint32 clientms = SDLNet_Read32(&net_packet->data[57]);
-        Uint32 clientlsg = SDLNet_Read32(&net_packet->data[61]);
-        Uint32 clientlobbyKey = (net_packet->len > 65) ? SDLNet_Read32(&net_packet->data[65]) : 0;
+        const Uint32 clientms = SDLNet_Read32(&net_packet->data[57]);
+        const Uint32 clientlsg = SDLNet_Read32(&net_packet->data[61]);
+        const Uint32 clientlobbyKey = (net_packet->len > 65) ? SDLNet_Read32(&net_packet->data[65]) : 0;
         if ( net_packet->data[56] == 0 )
         {
             // client will enter any player spot
@@ -86,7 +86,7 @@ NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bo
         stringCopy(stats[c]->name, (const char*)net_packet->data + 4, sizeof(Stat::name), 32);
         client_classes[c] = static_cast<int>(SDLNet_Read32(&net_packet->data[36]));
         stats[c]->sex = static_cast<sex_t>(static_cast<int>(SDLNet_Read32(&net_packet->data[40])));
-        Uint32 raceAndAppearance = SDLNet_Read32(&net_packet->data[44]);
+        const Uint32 raceAndAppearance = SDLNet_Read32(&net_packet->data[44]);
         stats[c]->stat_appearance = (raceAndAppearance & 0xFF00) >> 8;
         stats[c]->playerRace = (raceAndAppearance & 0xFF);
         net_clients[c - 1].host = net_packet->address.host;
@@ -165,7 +165,7 @@ NetworkingLobbyJoinRequestResult lobbyPlayerJoinRequest(int& outResult, const bo
                 constexpr int num_slots = sizeof(player_slots) / sizeof(player_slots[0]);
 
                 for (int j = 0; j < num_slots; ++j) {
-                    auto slot = player_slots[j];
+                    const auto slot = player_slots[j];
                     if (slot) {
                         SDLNet_Write16(static_cast<Uint16>(slot->type), net_packet->data + 8 + x * chunk_size + 6 + 32 + j * 6);
                         SDLNet_Write32(slot->appearance, net_packet->data + 8 + x * chunk_size + 6 + 32 + j * 6 + 2);

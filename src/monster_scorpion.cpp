@@ -103,7 +103,7 @@ void initScorpion(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
             // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -200,7 +200,7 @@ void scorpionAnimate(Entity* my, double dist)
     // set invisibility //TODO: isInvisible()?
     if ( multiplayer != CLIENT )
     {
-        Stat* myStats = my->getStats();
+        const Stat* myStats = my->getStats();
         if ( myStats->getEffectActive(EFF_INVISIBLE) )
         {
             my->flags[INVISIBLE] = true;

@@ -72,9 +72,9 @@ bool boulderCheckIfBlockedExit(Entity* my)
         return true;
     }
     // check if this blocked the exit.
-    for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+    for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
     {
-        auto ladder = static_cast<Entity*>(node->element);
+        const auto ladder = static_cast<Entity*>(node->element);
         if ( ladder && (ladder->behavior == &actLadder || ladder->behavior == &actPortal) )
         {
             //if ( ladder->behavior == &actPortal && (ladder->portalNotSecret == 0) )
@@ -248,7 +248,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
 
                 if ( entity->behavior == &actPlayer )
                 {
-                    Uint32 color = makeColorRGB(255, 0, 0);
+                    const Uint32 color = makeColorRGB(255, 0, 0);
                     messagePlayerColor(entity->skill[2], MESSAGE_STATUS, color, Language::get(455));
                     if ( players[entity->skill[2]]->isLocalPlayer() )
                     {
@@ -290,10 +290,10 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
                     damage = my->boulderShatterEarthDamage;
                 }
 
-                int trapResist = entity->getEntityBonusTrapResist();
+                const int trapResist = entity->getEntityBonusTrapResist();
                 if ( trapResist != 0 )
                 {
-                    real_t mult = std::max(0.0, 1.0 - (trapResist / 100.0));
+                    const real_t mult = std::max(0.0, 1.0 - (trapResist / 100.0));
                     damage *= mult;
                 }
 
@@ -308,14 +308,14 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
                 }
                 else if ( stats->helmet )
                 {
-                    bool shapeshifted = (entity->behavior == &actPlayer && entity->effectShapeshift != NOTHING);
+                    const bool shapeshifted = (entity->behavior == &actPlayer && entity->effectShapeshift != NOTHING);
 
                     if ( !shapeshifted 
                         && (stats->helmet->type == HELM_MINING || stats->helmet->type == HAT_TOPHAT) )
                     {
                         if ( stats->helmet->type == HAT_TOPHAT )
                         {
-                            bool cursedItemIsBuff = shouldInvertEquipmentBeatitude(stats);
+                            const bool cursedItemIsBuff = shouldInvertEquipmentBeatitude(stats);
                             if ( stats->helmet->beatitude >= 0 || cursedItemIsBuff )
                             {
                                 if ( stats->HP <= damage )
@@ -333,7 +333,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
                         else if ( stats->helmet->type == HELM_MINING )
                         {
                             real_t mult = 0.5;
-                            bool cursedItemIsBuff = shouldInvertEquipmentBeatitude(stats);
+                            const bool cursedItemIsBuff = shouldInvertEquipmentBeatitude(stats);
                             if ( stats->helmet->beatitude >= 0 || cursedItemIsBuff )
                             {
                                 mult -= 0.25 * abs(stats->helmet->beatitude);
@@ -367,7 +367,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
 
                         if ( entity->behavior == &actPlayer )
                         {
-                            int player = entity->skill[2];
+                            const int player = entity->skill[2];
                             if ( stats->helmet->status > BROKEN )
                             {
                                 messagePlayer(player, MESSAGE_EQUIPMENT, Language::get(681), stats->helmet->getName());
@@ -392,7 +392,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
                     }
                 }
 
-                Sint32 oldHP = stats->HP;
+                const Sint32 oldHP = stats->HP;
                 if ( my->sprite == BOULDER_LAVA_SPRITE )
                 {
                     entity->modHP(-damage);
@@ -501,13 +501,13 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
                         }
                         else
                         {
-                            int spellCost = getCostOfSpell(&spell_summon, entity);
+                            const int spellCost = getCostOfSpell(&spell_summon, entity);
                             int numSummonedAllies = 0;
                             int firstManaToRefund = 0;
                             int secondManaToRefund = 0;
-                            for ( node_t* node = stats->FOLLOWERS.first; node != nullptr; node = node->next )
+                            for (const node_t* node = stats->FOLLOWERS.first; node != nullptr; node = node->next )
                             {
-                                auto c = static_cast<Uint32*>(node->element);
+                                const auto c = static_cast<Uint32*>(node->element);
                                 Entity* mySummon = nullptr;
                                 if ( c )
                                 {
@@ -515,10 +515,10 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
                                 }
                                 if ( mySummon && mySummon->monsterAllySummonRank != 0 )
                                 {
-                                    Stat* mySummonStats = mySummon->getStats();
+                                    const Stat* mySummonStats = mySummon->getStats();
                                     if ( mySummonStats && mySummonStats->type == SKELETON )
                                     {
-                                        int mp = (mySummonStats->MAXMP * (mySummonStats->HP / static_cast<float>(mySummonStats->MAXHP)));
+                                        const int mp = (mySummonStats->MAXMP * (mySummonStats->HP / static_cast<float>(mySummonStats->MAXHP)));
                                         if ( numSummonedAllies == 0 )
                                         {
                                             firstManaToRefund += std::min(spellCost, static_cast<int>((mp / static_cast<float>(mySummonStats->MAXMP)) * spellCost)); // MP to restore
@@ -541,7 +541,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
                                 secondManaToRefund /= 2;
                             }
 
-                            int manaTotal = stats->MP + firstManaToRefund + secondManaToRefund;
+                            const int manaTotal = stats->MP + firstManaToRefund + secondManaToRefund;
                             if ( manaTotal >= 75 )
                             {
                                 lifeSaving = true;
@@ -592,13 +592,13 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
                         entity->skill[15] = false;       // identified
                     }
 
-                    double ox = my->x;
-                    double oy = my->y;
+                    const double ox = my->x;
+                    const double oy = my->y;
 
                     boulderLavaOrArcaneOnDestroy(my, my->sprite, entity);
 
                     auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
-                    Uint32 monsterSpawnSeed = rng.getU32();
+                    const Uint32 monsterSpawnSeed = rng.getU32();
 
                     // destroy the boulder
                     playSoundEntity(my, 67, 128);
@@ -621,7 +621,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
                             monster->seedEntityRNG(monsterSpawnSeed);
                             for ( int c = 0; c < MAXPLAYERS; c++ )
                             {
-                                Uint32 color = makeColorRGB(255, 128, 0);
+                                const Uint32 color = makeColorRGB(255, 128, 0);
                                 messagePlayerColor(c, MESSAGE_HINT, color, Language::get(406));
                             }
                         }
@@ -649,7 +649,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity, bool ignoreInsideEntit
                         if ( stats->type == GYROBOT )
                         {
                             Compendium_t::Events_t::eventUpdate(entity->monsterAllyIndex, Compendium_t::CPDM_GYROBOT_BOULDERS, TOOL_GYROBOT, 1);
-                            real_t tangent = atan2(leader->y - entity->y, leader->x - entity->x);
+                            const real_t tangent = atan2(leader->y - entity->y, leader->x - entity->x);
                             Entity* ohitentity = hit.entity;
                             lineTraceTarget(entity, entity->x, entity->y, tangent, 1024, 0, false, leader);
                             if ( hit.entity == leader )
@@ -786,9 +786,9 @@ void actBoulder(Entity* my)
     my->flags[UPDATENEEDED] = true;
 
     bool noground = false;
-    int x = std::min<int>(std::max(0, static_cast<int>(my->x / 16)), map.width);
-    int y = std::min<int>(std::max(0, static_cast<int>(my->y / 16)), map.height);
-    Uint32 index = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
+    const int x = std::min<int>(std::max(0, static_cast<int>(my->x / 16)), map.width);
+    const int y = std::min<int>(std::max(0, static_cast<int>(my->y / 16)), map.height);
+    const Uint32 index = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
     if ( !map.tiles[index] || swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]] )
     {
         if ( (swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]]) 
@@ -898,10 +898,10 @@ void actBoulder(Entity* my)
                 std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
                 for (auto it = entLists.begin(); it != entLists.end(); ++it )
                 {
-                    list_t* currentList = *it;
-                    for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+                    const list_t* currentList = *it;
+                    for (const node_t* node = currentList->first; node != nullptr; node = node->next )
                     {
-                        auto entity = static_cast<Entity*>(node->element);
+                        const auto entity = static_cast<Entity*>(node->element);
                         if ( entity == my )
                         {
                             continue;
@@ -990,7 +990,7 @@ void actBoulder(Entity* my)
         {
             my->x += my->vel_x;
             my->y += my->vel_y;
-            double dist = sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2));
+            const double dist = sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2));
             my->pitch += dist * .06;
             my->roll = PI / 2;
         }
@@ -1037,14 +1037,14 @@ void actBoulder(Entity* my)
         //int x = std::min<int>(std::max<int>(0, (my->x + my->vel_x * 8) / 16), map.width - 1);
         //int y = std::min<int>(std::max<int>(0, (my->y + my->vel_y * 8) / 16), map.height - 1);
 
-        real_t clipDist = clipMove(&my->x, &my->y, my->vel_x, my->vel_y, my);
-        double dist = sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2));
+        const real_t clipDist = clipMove(&my->x, &my->y, my->vel_x, my->vel_y, my);
+        const double dist = sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2));
         if ( clipDist != dist && !hit.entity/*map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height]*/ )
         {
             playSoundEntity(my, 181, 128);
             BOULDER_STOPPED = 1;
             TileEntityList.updateEntity(*my);
-            bool foundPathToExit = boulderCheckIfBlockedExit(my);
+            const bool foundPathToExit = boulderCheckIfBlockedExit(my);
             
             if ( !foundPathToExit )
             {
@@ -1073,7 +1073,7 @@ void actBoulder(Entity* my)
 
                 for ( int c = 0; c < MAXPLAYERS; ++c )
                 {
-                    Uint32 color = makeColorRGB(255, 0, 255);
+                    const Uint32 color = makeColorRGB(255, 0, 255);
                     if ( !client_disconnected[c] )
                     {
                         messagePlayerColor(c, MESSAGE_HINT, color, Language::get(3401));
@@ -1104,15 +1104,15 @@ void actBoulder(Entity* my)
                 std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
                 for (auto it = entLists.begin(); it != entLists.end(); ++it )
                 {
-                    list_t* currentList = *it;
-                    for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+                    const list_t* currentList = *it;
+                    for (const node_t* node = currentList->first; node != nullptr; node = node->next )
                     {
-                        auto entity = static_cast<Entity*>(node->element);
+                        const auto entity = static_cast<Entity*>(node->element);
                         if ( entity == my )
                         {
                             continue;
                         }
-                        bool wasStopped = (BOULDER_STOPPED == 1);
+                        const bool wasStopped = (BOULDER_STOPPED == 1);
                         if ( clipDist != dist )
                         {
                             if ( hit.entity )
@@ -1134,7 +1134,7 @@ void actBoulder(Entity* my)
                         if ( BOULDER_STOPPED == 1 && !wasStopped )
                         {
                             TileEntityList.updateEntity(*my);
-                            bool foundPathToExit = boulderCheckIfBlockedExit(my);
+                            const bool foundPathToExit = boulderCheckIfBlockedExit(my);
 
                             if ( !foundPathToExit )
                             {
@@ -1168,7 +1168,7 @@ void actBoulder(Entity* my)
 
                                 for ( int c = 0; c < MAXPLAYERS; ++c )
                                 {
-                                    Uint32 color = makeColorRGB(255, 0, 255);
+                                    const Uint32 color = makeColorRGB(255, 0, 255);
                                     if ( !client_disconnected[c] )
                                     {
                                         messagePlayerColor(c, MESSAGE_HINT, color, Language::get(3401));
@@ -1200,8 +1200,8 @@ void actBoulder(Entity* my)
         if ( !BOULDER_ROLLING )
         {
             BOULDER_PLAYERPUSHED = -1;
-            int playerTelekinesis = BOULDER_TELEKINESIS_PULL - 1;
-            int playerKineticPush = BOULDER_TELEKINESIS_PUSH - 1;
+            const int playerTelekinesis = BOULDER_TELEKINESIS_PULL - 1;
+            const int playerKineticPush = BOULDER_TELEKINESIS_PUSH - 1;
 
             for (int i = 0; i < MAXPLAYERS; i++)
             {
@@ -1382,10 +1382,10 @@ void actBoulder(Entity* my)
             }
             else
             {
-                real_t clipDist = clipMove(&my->x, &my->y, my->vel_x, my->vel_y, my);
+                const real_t clipDist = clipMove(&my->x, &my->y, my->vel_x, my->vel_y, my);
                 /*my->x += my->vel_x;
               my->y += my->vel_y;*/
-                double dist = sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2));
+                const double dist = sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2));
                 if ( clipDist > 0.001 )
                 {
                     my->pitch += dist * .06;
@@ -1610,7 +1610,7 @@ void actBoulder(Entity* my)
                         blood->parent = my->getUID();
                         blood->sizex = 2;
                         blood->sizey = 2;
-                        int randomScale = local_rng.rand() % 10;
+                        const int randomScale = local_rng.rand() % 10;
                         blood->scalex = (100 - randomScale) / 100.f;
                         blood->scaley = blood->scalex;
                         blood->yaw = (local_rng.rand() % 360) * PI / 180.0;
@@ -1655,8 +1655,8 @@ void actBoulderTrapHole(Entity* my)
     if ( my->z > -11.0 && my->z < -10 )
     {
         // in ceiling, delete self if ceiling no longer exists
-        int x = static_cast<int>(my->x) >> 4;
-        int y = static_cast<int>(my->y) >> 4;
+        const int x = static_cast<int>(my->x) >> 4;
+        const int y = static_cast<int>(my->y) >> 4;
         if ( !map.tiles[(MAP_LAYERS - 1) + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
         {
             list_RemoveNode(my->mynode);
@@ -1755,10 +1755,10 @@ void actBoulderTrap(Entity* my)
                     {
                         if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
                         {
-                            list_t* trapdoors = TileEntityList.getTileList(x, y);
-                            for ( node_t* trapNode = trapdoors->first; trapNode != nullptr; trapNode = trapNode->next )
+                            const list_t* trapdoors = TileEntityList.getTileList(x, y);
+                            for (const node_t* trapNode = trapdoors->first; trapNode != nullptr; trapNode = trapNode->next )
                             {
-                                auto trapEntity = static_cast<Entity*>(trapNode->element);
+                                const auto trapEntity = static_cast<Entity*>(trapNode->element);
                                 if ( trapEntity && trapEntity->sprite == 252 && trapEntity->z <= -10 )
                                 {
                                     foundTrapdoor = c;
@@ -1892,8 +1892,8 @@ void actBoulderTrapEast(Entity* my)
             my->boulderTrapFired = 1;
 
             c = 0; // direction
-            int x = static_cast<int>(my->x) >> 4;
-            int y = static_cast<int>(my->y) >> 4;
+            const int x = static_cast<int>(my->x) >> 4;
+            const int y = static_cast<int>(my->y) >> 4;
             if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
             {
                 Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder
@@ -2011,8 +2011,8 @@ void actBoulderTrapSouth(Entity* my)
             my->boulderTrapFired = 1;
 
             c = 1; // direction
-            int x = static_cast<int>(my->x) >> 4;
-            int y = static_cast<int>(my->y) >> 4;
+            const int x = static_cast<int>(my->x) >> 4;
+            const int y = static_cast<int>(my->y) >> 4;
             if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
             {
                 Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder
@@ -2130,8 +2130,8 @@ void actBoulderTrapWest(Entity* my)
             my->boulderTrapFired = 1;
 
             c = 2; // direction
-            int x = static_cast<int>(my->x) >> 4;
-            int y = static_cast<int>(my->y) >> 4;
+            const int x = static_cast<int>(my->x) >> 4;
+            const int y = static_cast<int>(my->y) >> 4;
             if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
             {
                 Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder
@@ -2249,8 +2249,8 @@ void actBoulderTrapNorth(Entity* my)
             my->boulderTrapFired = 1;
 
             c = 3; // direction
-            int x = static_cast<int>(my->x) >> 4;
-            int y = static_cast<int>(my->y) >> 4;
+            const int x = static_cast<int>(my->x) >> 4;
+            const int y = static_cast<int>(my->y) >> 4;
             if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
             {
                 Entity* entity = newEntity(getBoulderSpriteForMap(), 1, map.entities, nullptr); // boulder
@@ -2301,13 +2301,13 @@ void boulderSokobanOnDestroy(bool pushedOffLedge)
 
     int goldToDestroy = 5 + local_rng.rand() % 4; // 5-8 bags destroy
     bool bouldersAround = false;
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
 
     if ( !pushedOffLedge ) // destroy some gold
     {
-        for ( node_t* node = map.entities->first; node != nullptr; )
+        for (const node_t* node = map.entities->first; node != nullptr; )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             node = node->next;
             if ( entity )
             {
@@ -2323,9 +2323,9 @@ void boulderSokobanOnDestroy(bool pushedOffLedge)
         }
     }
 
-    for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+    for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
     {
-        auto entity = static_cast<Entity*>(node->element);
+        const auto entity = static_cast<Entity*>(node->element);
         if ( entity )
         {
             if ( !bouldersAround && entity->behavior == &actBoulder )
@@ -2342,7 +2342,7 @@ void boulderSokobanOnDestroy(bool pushedOffLedge)
         Entity* sokobanItemReward = nullptr;
         for ( node = map.entities->first; node != nullptr; node = node->next )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             if ( entity )
             {
                 if ( entity->behavior == &actGoldBag && entity->goldSokoban == 1 )
@@ -2372,7 +2372,7 @@ void boulderSokobanOnDestroy(bool pushedOffLedge)
                 Compendium_t::Events_t::eventUpdateWorld(c, Compendium_t::CPDM_SOKOBAN_SOLVES, "sokoban", 1);
                 Compendium_t::Events_t::eventUpdateWorld(c, Compendium_t::CPDM_SOKOBAN_FASTEST_SOLVE, "sokoban", playerAliveTicks);
             }
-            Uint32 color = makeColorRGB(255, 128, 0);
+            const Uint32 color = makeColorRGB(255, 128, 0);
             if ( goldCount >= 39 )
             {
                 playSoundPlayer(c, 393, 128);

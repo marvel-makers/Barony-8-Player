@@ -16,7 +16,7 @@ void Shader::init(const char* name) {
 
 void Shader::destroy() {
     if (program) {
-        for (auto shader: shaders) {
+        for (const auto shader: shaders) {
             if (shader) {
                 GL_CHECK_ERR(glDetachShader(program, shader));
                 GL_CHECK_ERR(glDeleteShader(shader));
@@ -47,7 +47,7 @@ void Shader::unbind() {
 }
 
 int Shader::uniform(const char* name) {
-    auto find = uniforms.find(name);
+    const auto find = uniforms.find(name);
     if (find == uniforms.end()) {
         int handle = GL_CHECK_ERR_RET(glGetUniformLocation(program, name));
         if (handle == -1) {
@@ -81,8 +81,8 @@ bool Shader::compile(const char* source, size_t len, Shader::Type type) {
     const char version[] = "#version 150 core\n";
     const char* sources[2] = {version, source};
     const int lens[2] = {static_cast<int>(sizeof(version)) - 1, static_cast<int>(len)};
-    
-    auto shader = GL_CHECK_ERR_RET(glCreateShader(glType));
+
+    const auto shader = GL_CHECK_ERR_RET(glCreateShader(glType));
     GL_CHECK_ERR(glShaderSource(shader, 2, sources, lens));
     GL_CHECK_ERR(glCompileShader(shader));
 

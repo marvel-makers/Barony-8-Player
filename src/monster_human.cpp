@@ -50,13 +50,13 @@ void initHuman(Entity* my, Stat* myStats)
 
             my->createPathBoundariesNPC();
 
-            bool isDefaultStats = isMonsterStatsDefault(*myStats);
+            const bool isDefaultStats = isMonsterStatsDefault(*myStats);
 
             // apply random stat increases if set in stat_shared.cpp or editor
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // special human variant (named or Zap Brigadier), do not generate any other items
             int specialMonsterVariant = 0;
@@ -380,7 +380,7 @@ void initHuman(Entity* my, Stat* myStats)
             //max limit of 6 custom items per entity.
 
             // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             if ( specialMonsterVariant == 0 && isDefaultStats )
             {
@@ -1060,7 +1060,7 @@ void humanMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
 
         // levitation
-        bool levitating = isLevitating(myStats);
+        const bool levitating = isLevitating(myStats);
         if ( levitating )
         {
             my->z -= 1; // floating
@@ -1449,10 +1449,10 @@ void humanMoveBodyparts(Entity* my, Stat* myStats, double dist)
                     }
                 }
 
-                node_t* tempNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
+                const node_t* tempNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
                 if ( tempNode )
                 {
-                    auto weapon = static_cast<Entity*>(tempNode->element);
+                    const auto weapon = static_cast<Entity*>(tempNode->element);
                     if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState != MONSTER_STATE_ATTACK) )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -1551,10 +1551,10 @@ void humanMoveBodyparts(Entity* my, Stat* myStats, double dist)
                     }
                 }
 
-                node_t* tempNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
+                const node_t* tempNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
                 if ( tempNode )
                 {
-                    auto shield = static_cast<Entity*>(tempNode->element);
+                    const auto shield = static_cast<Entity*>(tempNode->element);
                     if ( shield->flags[INVISIBLE] && (my->monsterState != MONSTER_STATE_ATTACK) )
                     {
                         // if shield invisible and I'm not attacking, relax arm.
@@ -1903,10 +1903,10 @@ void humanMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
+    const node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;
@@ -1928,7 +1928,7 @@ void humanMoveBodyparts(Entity* my, Stat* myStats, double dist)
 
 bool Entity::humanCanWieldItem(const Item& item) const
 {
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( !myStats )
     {
         return false;
@@ -1999,7 +1999,7 @@ void Entity::humanSetLimbsClient(int bodypart)
         }
     }
 
-    node_t* limbNode = list_Node(&this->children, bodypart);
+    const node_t* limbNode = list_Node(&this->children, bodypart);
     Entity* limb = nullptr;
     if ( limbNode )
     {

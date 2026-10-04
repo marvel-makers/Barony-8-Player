@@ -7,10 +7,10 @@ const char* Font::defaultFont = "lang/en.ttf#24";
 
 Font::Font(const char* _name) {
     name = _name;
-    size_t index = name.find('#');
+    const size_t index = name.find('#');
     std::string path;
     if (index != std::string::npos) {
-        size_t nindex = name.find('#', index + 1);
+        const size_t nindex = name.find('#', index + 1);
         path = name.substr(0, index);
         if (nindex != std::string::npos) {
             pointSize = std::stoi(name.substr(index + 1, nindex));
@@ -23,7 +23,7 @@ Font::Font(const char* _name) {
     }
     if ( PHYSFS_getRealDir(path.c_str()) )
     {
-        std::string realPath = PHYSFS_getRealDir(path.c_str());
+        const std::string realPath = PHYSFS_getRealDir(path.c_str());
         path.insert(0, PHYSFS_getDirSeparator());
         path.insert(0, realPath);
     }
@@ -55,7 +55,7 @@ int Font::sizeText(const char* str, int* out_w, int* out_h) const {
         *out_h = 0;
     }
     if (font && str) {
-        int result = TTF_SizeUTF8(font, str, out_w, out_h);
+        const int result = TTF_SizeUTF8(font, str, out_w, out_h);
         if (out_w) {
             *out_w += outlineSize * 2;
         }
@@ -88,7 +88,7 @@ Font* Font::get(const char* name) {
         return nullptr;
     }
     Font* font = nullptr;
-    auto search = hashed_fonts.find(name);
+    const auto search = hashed_fonts.find(name);
     if (search == hashed_fonts.end()) {
         // NOTE: We have no idea how to size this data because TTF_Font is opaque!!
         if (hashed_fonts.size() > FONT_BUDGET) {
@@ -103,7 +103,7 @@ Font* Font::get(const char* name) {
 }
 
 void Font::dumpCache() {
-    for (auto font : hashed_fonts) {
+    for (const auto font : hashed_fonts) {
         delete font.second;
     }
     hashed_fonts.clear();

@@ -70,7 +70,7 @@ void initMonsterG(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // boss variants
 
@@ -91,7 +91,7 @@ void initMonsterG(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
             // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -569,7 +569,7 @@ void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
         my->focalz -= 0.25;
     }*/
 
-    bool debugModel = monsterDebugModels(my, &dist);
+    const bool debugModel = monsterDebugModels(my, &dist);
 
     // set invisibility //TODO: isInvisible()?
     if ( multiplayer != CLIENT )
@@ -667,7 +667,7 @@ void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
 
     Entity* shieldarm = nullptr;
     Entity* helmet = nullptr;
-    Entity* torso = nullptr;
+    const Entity* torso = nullptr;
 
     //Move bodyparts
     for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++)
@@ -709,9 +709,9 @@ void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
                     if ( my->monsterAttack == MONSTER_POSE_RANGED_WINDUP3
                         || my->monsterAttack == MONSTER_POSE_SPECIAL_WINDUP1 )
                     {
-                        Entity* rightbody = nullptr;
+                        const Entity* rightbody = nullptr;
                         // set rightbody to left leg.
-                        node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
+                        const node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
                         if ( rightbodyNode )
                         {
                             rightbody = static_cast<Entity*>(rightbodyNode->element);
@@ -766,7 +766,7 @@ void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
                         {
                             if ( my->monsterAttackTime == 1 )
                             {
-                                int spellID = SPELL_SPEED;
+                                const int spellID = SPELL_SPEED;
                                 if ( my->monsterSpecialState == MONSTER_G_SPECIAL_CAST1 )
                                 {
                                     castSpell(my->getUID(), getSpellFromID(spellID), true, false);
@@ -790,9 +790,9 @@ void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
                         {
                             if ( limbAnimateToLimit(weaponarm, ANIMATE_PITCH, -0.25, 7 * PI / 4, false, 0.0) )
                             {
-                                Entity* rightbody = nullptr;
+                                const Entity* rightbody = nullptr;
                                 // set rightbody to left leg.
-                                node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
+                                const node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
                                 if ( rightbodyNode )
                                 {
                                     rightbody = static_cast<Entity*>(rightbodyNode->element);
@@ -1026,11 +1026,11 @@ void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
                     }
                 }
 
-                node_t* weaponNode = list_Node(&my->children, 7);
+                const node_t* weaponNode = list_Node(&my->children, 7);
                 bool bentArm = false;
                 if ( weaponNode )
                 {
-                    auto weapon = static_cast<Entity*>(weaponNode->element);
+                    const auto weapon = static_cast<Entity*>(weaponNode->element);
                     if ( my->monsterArmbended || (weapon->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT) )
                     {
                         entity->focalx = limbs[GREMLIN][4][0]; // 0
@@ -1122,10 +1122,10 @@ void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 }
 
                 shieldarm = entity;
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT )
                     {
                         entity->focalx = limbs[GREMLIN][5][0]; // 0
@@ -1480,10 +1480,10 @@ void monsterGMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, 8);
+    const node_t* shieldNode = list_Node(&my->children, 8);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;
@@ -1599,7 +1599,7 @@ void Entity::monsterGChooseWeapon(const Entity* target, double dist)
     //Switch to a thrown weapon or a ranged weapon
     if ( dist < 80.0 )
     {
-        int tiles = dist / 16;
+        const int tiles = dist / 16;
         //First search the inventory for a THROWN weapon.
         node_t* weaponNode = nullptr;
         int roll = 10;
@@ -1610,7 +1610,7 @@ void Entity::monsterGChooseWeapon(const Entity* target, double dist)
         if ( monsterSpecialTimer == 0 && (ticks % 10 == 0) && monsterAttack == 0
             && local_rng.rand() % roll == 0 )
         {
-            Stat* targetStats = target ? target->getStats() : nullptr;
+            const Stat* targetStats = target ? target->getStats() : nullptr;
             if ( (dist > STRIKERANGE) || (targetStats && targetStats->getEffectActive(EFF_MAGIC_GREASE)) )
             {
                 if ( (targetStats && targetStats->getEffectActive(EFF_MAGIC_GREASE)) )

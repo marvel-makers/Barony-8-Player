@@ -47,7 +47,7 @@ void Player::BookGUI_t::createBookGUI()
     frame->setOwner(player.playernum);
     frame->setInheritParentFrameOpacity(false);
 
-    auto fade = bookFrame->addImage(
+    const auto fade = bookFrame->addImage(
         SDL_Rect{ 0, 0, bookFrame->getSize().w, bookFrame->getSize().h }, 
         0, "images/system/white.png", "fade img");
     Uint8 r, g, b, a;
@@ -61,16 +61,16 @@ void Player::BookGUI_t::createBookGUI()
     const int promptWidth = 60;
     const int height = 306;
     bookBackground->setSize(SDL_Rect{ frame->getSize().x, frame->getSize().y, width, height + promptHeight * 2});
-    auto bgImg = bookBackground->addImage(SDL_Rect{ 0, promptHeight, width, height }, 0xFFFFFFFF,
+    const auto bgImg = bookBackground->addImage(SDL_Rect{ 0, promptHeight, width, height }, 0xFFFFFFFF,
         "images/ui/Books/Book_00.png", "book img");
 
-    auto prevPage = bookBackground->addFrame("prev page mouse boundary");
+    const auto prevPage = bookBackground->addFrame("prev page mouse boundary");
     prevPage->setSize(SDL_Rect{ 0, bgImg->pos.y, width / 2, height });
-    auto nextPage = bookBackground->addFrame("next page mouse boundary");
+    const auto nextPage = bookBackground->addFrame("next page mouse boundary");
     nextPage->setSize(SDL_Rect{ width / 2, bgImg->pos.y, width, height });
 
-    std::string promptFont = "fonts/pixel_maz.ttf#32#2";
-    auto promptBack = bookBackground->addField("prompt back txt", 16);
+    const std::string promptFont = "fonts/pixel_maz.ttf#32#2";
+    const auto promptBack = bookBackground->addField("prompt back txt", 16);
     promptBack->setSize(SDL_Rect{ bgImg->pos.x + bgImg->pos.w - promptWidth - 16, // lower right corner
         bgImg->pos.y + bgImg->pos.h, promptWidth, promptHeight });
     promptBack->setFont(promptFont.c_str());
@@ -79,11 +79,11 @@ void Player::BookGUI_t::createBookGUI()
     promptBack->setText(Language::get(4053));
     promptBack->setColor(makeColor(201, 162, 100, 255));
 
-    auto promptBackImg = bookBackground->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
+    const auto promptBackImg = bookBackground->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
         "", "prompt back img");
     promptBackImg->disabled = true;
-    
-    auto promptNextPage = bookBackground->addField("prompt next txt", 16);
+
+    const auto promptNextPage = bookBackground->addField("prompt next txt", 16);
     promptNextPage->setSize(SDL_Rect{ bgImg->pos.x + bgImg->pos.w - promptWidth - 16, // upper right corner
         0, promptWidth, promptHeight });
     promptNextPage->setFont(promptFont.c_str());
@@ -92,11 +92,11 @@ void Player::BookGUI_t::createBookGUI()
     promptNextPage->setText(Language::get(4054));
     promptNextPage->setColor(makeColor(201, 162, 100, 255));
 
-    auto promptNextPageImg = bookBackground->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF,
+    const auto promptNextPageImg = bookBackground->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF,
         "", "prompt next img");
     promptNextPageImg->disabled = true;
 
-    auto promptPrevPage = bookBackground->addField("prompt prev txt", 16);
+    const auto promptPrevPage = bookBackground->addField("prompt prev txt", 16);
     promptPrevPage->setSize(SDL_Rect{ 16, // upper left corner
         0, promptWidth, promptHeight });
     promptPrevPage->setFont(promptFont.c_str());
@@ -105,11 +105,11 @@ void Player::BookGUI_t::createBookGUI()
     promptPrevPage->setText(Language::get(4055));
     promptPrevPage->setColor(makeColor(201, 162, 100, 255));
 
-    auto promptPrevPageImg = bookBackground->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF,
+    const auto promptPrevPageImg = bookBackground->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF,
         "", "prompt prev img");
     promptPrevPageImg->disabled = true;
 
-    std::string bookFont = "fonts/pixel_maz.ttf#32";
+    const std::string bookFont = "fonts/pixel_maz.ttf#32";
     Field* bookLeftColumnText = bookBackground->addField("left column text", 1024);
     bookLeftColumnText->setText("Nothing");
     const int pageWidth = BOOK_PAGE_WIDTH;
@@ -551,7 +551,7 @@ void Player::BookGUI_t::openBook(int index, Item* item)
     }
     if ( !hasreadbook )
     {
-        auto bookName = static_cast<char*>(malloc(sizeof(char) * (strlen(openBookName.c_str()) + 1)));
+        const auto bookName = static_cast<char*>(malloc(sizeof(char) * (strlen(openBookName.c_str()) + 1)));
         strcpy(bookName, openBookName.c_str());
 
         node = list_AddNodeFirst(&booksRead);
@@ -606,7 +606,7 @@ void Player::SignGUI_t::openSign(std::string name, Uint32 uid)
     signName = name;
     signUID = uid;
 
-    if ( Entity* entity = uidToEntity(uid) )
+    if (const Entity* entity = uidToEntity(uid) )
     {
         signWorldCoordX = entity->x;
         signWorldCoordY = entity->y;
@@ -621,7 +621,7 @@ void Player::SignGUI_t::openSign(std::string name, Uint32 uid)
 
 void Player::SignGUI_t::closeSignGUI()
 {
-    bool wasOpen = bSignOpen;
+    const bool wasOpen = bSignOpen;
 #ifdef USE_THEORA_VIDEO
     VideoManager[player.playernum].stop();
 #endif
@@ -662,7 +662,7 @@ void Player::SignGUI_t::createSignGUI()
     frame->setOwner(player.playernum);
     frame->setInheritParentFrameOpacity(false);
 
-    auto fade = frame->addImage(
+    const auto fade = frame->addImage(
         SDL_Rect{ 0, 0, frame->getSize().w, frame->getSize().h },
         0, "images/system/white.png", "fade img");
     Uint8 r, g, b, a;
@@ -678,11 +678,11 @@ void Player::SignGUI_t::createSignGUI()
     const int promptWidth = 60;
     const int height = 282;
     signBackground->setSize(SDL_Rect{ frame->getSize().x, frame->getSize().y, width, height + promptHeight * 2 });
-    auto bgImg = signBackground->addImage(SDL_Rect{ 0, promptHeight, width, height }, 0xFFFFFFFF,
+    const auto bgImg = signBackground->addImage(SDL_Rect{ 0, promptHeight, width, height }, 0xFFFFFFFF,
         "#*images/ui/Signs/UI_Sign_Window_00.png", "sign img");
 
-    std::string promptFont = "fonts/pixel_maz.ttf#32#2";
-    auto promptBack = signBackground->addField("prompt back txt", 16);
+    const std::string promptFont = "fonts/pixel_maz.ttf#32#2";
+    const auto promptBack = signBackground->addField("prompt back txt", 16);
     promptBack->setSize(SDL_Rect{ bgImg->pos.x + bgImg->pos.w - promptWidth - 16, // lower right corner
         bgImg->pos.y + bgImg->pos.h, promptWidth, promptHeight });
     promptBack->setFont(promptFont.c_str());
@@ -691,11 +691,11 @@ void Player::SignGUI_t::createSignGUI()
     promptBack->setText(Language::get(4053));
     promptBack->setColor(makeColor(201, 162, 100, 255));
 
-    auto promptBackImg = signBackground->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF,
+    const auto promptBackImg = signBackground->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF,
         "", "prompt back img");
     promptBackImg->disabled = true;
 
-    std::string signFont = "fonts/pixel_maz_multiline.ttf#16#2";
+    const std::string signFont = "fonts/pixel_maz_multiline.ttf#16#2";
     for ( int i = 1; i <= 10; ++i )
     {
         char fieldBuf[32] = "";
@@ -724,7 +724,7 @@ void Player::SignGUI_t::createSignGUI()
     videoFrame->setSize(SDL_Rect{ 0, 0, signBackground->getSize().w, signBackground->getSize().h });
     auto videoImg = videoFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "video bg");
     videoFrame->setInheritParentFrameOpacity(false);
-    auto videoEmbed = videoFrame->addFrame("video");
+    const auto videoEmbed = videoFrame->addFrame("video");
     videoEmbed->setSize(SDL_Rect{ 0, 0, 0, 0 });
 #ifdef USE_THEORA_VIDEO
     videoEmbed->setDrawCallback([](const Widget& widget, SDL_Rect rect) {

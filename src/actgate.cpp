@@ -182,10 +182,10 @@ void Entity::actGate()
         }
         for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
         {
-            list_t* currentList = *it;
-            for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+            const list_t* currentList = *it;
+            for (const node_t* node = currentList->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( entity == this || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost)
                     || entity->behavior == &actDoorFrame || entity->behavior == &::actGate )
                 {

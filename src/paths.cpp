@@ -107,8 +107,8 @@ public:
     static GateNode_t defaultGate;
     GateNode_t& getGate(int x, int y)
     {
-        Uint32 key = x + 10000 * y;
-        auto find = gateNodes.find(key);
+        const Uint32 key = x + 10000 * y;
+        const auto find = gateNodes.find(key);
         if ( find == gateNodes.end() )
         {
             return defaultGate;
@@ -117,7 +117,7 @@ public:
     }
     void addGate(int x, int y, int zone1, int zone2, Uint32 uid, int direction)
     {
-        Uint32 key = x + 10000 * y;
+        const Uint32 key = x + 10000 * y;
         gateNodes[key] = GateNode_t(x, y, zone1, zone2, uid, direction);
     }
     bool isConnected(int start, int end)
@@ -172,18 +172,18 @@ public:
 
             for ( auto& pair : gateNodes )
             {
-                auto& gate = pair.second;
+                const auto& gate = pair.second;
                 // check the physical gate status
                 if ( (gate.zone1 == zone && gate.zone2 == index)
                     || (gate.zone2 == zone && gate.zone1 == index) )
                 {
-                    list_t* list = checkTileForEntity(gate.x, gate.y);
+                    const list_t* list = checkTileForEntity(gate.x, gate.y);
                     bool isImpassable = false;
                     if ( list )
                     {
-                        for ( node_t* node = list->first; node != nullptr; node = node->next )
+                        for (const node_t* node = list->first; node != nullptr; node = node->next )
                         {
-                            auto entity = static_cast<Entity*>(node->element);
+                            const auto entity = static_cast<Entity*>(node->element);
                             if ( entity )
                             {
                                 if ( entity->behavior == &actGate )
@@ -238,7 +238,7 @@ public:
 
         while ( !frontier.empty() )
         {
-            int current = frontier.front();
+            const int current = frontier.front();
             frontier.pop();
             if ( current == end )
             {
@@ -302,7 +302,7 @@ void updateGatePath(Entity& entity)
 
 Uint32 heuristic(int x1, int y1, int x2, int y2)
 {
-    Uint32 h = (abs(x2 - x1) + abs(y2 - y1)) * STRAIGHTCOST;
+    const Uint32 h = (abs(x2 - x1) + abs(y2 - y1)) * STRAIGHTCOST;
     return h;
 }
 
@@ -328,9 +328,9 @@ int pathCheckObstacle(int x, int y, Entity* my, Entity* target)
     }
 
     // entities not passable during this stage normally, hell generation makes entry gates passable
-    for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+    for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
     {
-        auto entity = static_cast<Entity*>(node->element);
+        const auto entity = static_cast<Entity*>(node->element);
         if (entity == my || entity == target)
         {
             continue;
@@ -346,7 +346,7 @@ int pathCheckObstacle(int x, int y, Entity* my, Entity* target)
                 auto find = EditorEntityData_t::colliderData.find(entity->colliderDamageTypes);
                 if ( find != EditorEntityData_t::colliderData.end() )
                 {
-                    auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[find->second.damageCalculationType];
+                    const auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[find->second.damageCalculationType];
                     if ( !colliderDmgType.allowNPCPathing )
                     {
                         return 1;
@@ -979,7 +979,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
 {
     bool obstacle = true;
 
-    int index = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
+    const int index = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
     if ( !map.tiles[OBSTACLELAYER + index] && map.tiles[index] 
         && !(swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]]) )
     {
@@ -991,12 +991,12 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
     }
     if ( obstacle == false )
     {
-        list_t* list = checkTileForEntity(x, y);
+        const list_t* list = checkTileForEntity(x, y);
         if ( list )
         {
-            for ( node_t* node = list->first; node != nullptr; node = node->next )
+            for (const node_t* node = list->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( entity )
                 {
                     if ( isPathObstacle(entity) )
@@ -1038,13 +1038,13 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
                         if ( !pathMap[v + (u + 1)*map.height] )
                         {
                             bool foundObstacle = false;
-                            bool foundWallModifier = false;
-                            list_t* list = checkTileForEntity(u + 1, v);
+                            const bool foundWallModifier = false;
+                            const list_t* list = checkTileForEntity(u + 1, v);
                             if ( list )
                             {
-                                for ( node_t* node = list->first; node != nullptr; node = node->next )
+                                for (const node_t* node = list->first; node != nullptr; node = node->next )
                                 {
-                                    auto entity = static_cast<Entity*>(node->element);
+                                    const auto entity = static_cast<Entity*>(node->element);
                                     if ( entity )
                                     {
                                         if ( isPathObstacle(entity) )
@@ -1069,7 +1069,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
                             }
                             if ( !foundWallModifier && !foundObstacle )
                             {
-                                int index = v * MAP_LAYERS + (u + 1) * MAP_LAYERS * map.height;
+                                const int index = v * MAP_LAYERS + (u + 1) * MAP_LAYERS * map.height;
                                 if ( !map.tiles[OBSTACLELAYER + index] && (pathMap == pathMapFlying 
                                     || (map.tiles[index] && !(swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]]) )) )
                                 {
@@ -1084,13 +1084,13 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
                         if ( !pathMap[v + (u - 1)*map.height] )
                         {
                             bool foundObstacle = false;
-                            bool foundWallModifier = false;
-                            list_t* list = checkTileForEntity(u - 1, v);
+                            const bool foundWallModifier = false;
+                            const list_t* list = checkTileForEntity(u - 1, v);
                             if ( list )
                             {
-                                for ( node_t* node = list->first; node != nullptr; node = node->next )
+                                for (const node_t* node = list->first; node != nullptr; node = node->next )
                                 {
-                                    auto entity = static_cast<Entity*>(node->element);
+                                    const auto entity = static_cast<Entity*>(node->element);
                                     if ( entity )
                                     {
                                         if ( isPathObstacle(entity) )
@@ -1115,7 +1115,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
                             }
                             if ( !foundWallModifier && !foundObstacle )
                             {
-                                int index = v * MAP_LAYERS + (u - 1) * MAP_LAYERS * map.height;
+                                const int index = v * MAP_LAYERS + (u - 1) * MAP_LAYERS * map.height;
                                 if ( !map.tiles[OBSTACLELAYER + index] && (pathMap == pathMapFlying 
                                     || (map.tiles[index] && !(swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]])) ) )
                                 {
@@ -1130,13 +1130,13 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
                         if ( !pathMap[(v + 1) + u * map.height] )
                         {
                             bool foundObstacle = false;
-                            bool foundWallModifier = false;
-                            list_t* list = checkTileForEntity(u, v + 1);
+                            const bool foundWallModifier = false;
+                            const list_t* list = checkTileForEntity(u, v + 1);
                             if ( list )
                             {
-                                for ( node_t* node = list->first; node != nullptr; node = node->next )
+                                for (const node_t* node = list->first; node != nullptr; node = node->next )
                                 {
-                                    auto entity = static_cast<Entity*>(node->element);
+                                    const auto entity = static_cast<Entity*>(node->element);
                                     if ( entity )
                                     {
                                         if ( isPathObstacle(entity) )
@@ -1161,7 +1161,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
                             }
                             if ( !foundWallModifier && !foundObstacle )
                             {
-                                int index = (v + 1) * MAP_LAYERS + u * MAP_LAYERS * map.height;
+                                const int index = (v + 1) * MAP_LAYERS + u * MAP_LAYERS * map.height;
                                 if ( !map.tiles[OBSTACLELAYER + index] && (pathMap == pathMapFlying 
                                     || (map.tiles[index] && !(swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]])) ) )
                                 {
@@ -1176,13 +1176,13 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
                         if ( !pathMap[(v - 1) + u * map.height] )
                         {
                             bool foundObstacle = false;
-                            bool foundWallModifier = false;
-                            list_t* list = checkTileForEntity(u, v - 1);
+                            const bool foundWallModifier = false;
+                            const list_t* list = checkTileForEntity(u, v - 1);
                             if ( list )
                             {
-                                for ( node_t* node = list->first; node != nullptr; node = node->next )
+                                for (const node_t* node = list->first; node != nullptr; node = node->next )
                                 {
-                                    auto entity = static_cast<Entity*>(node->element);
+                                    const auto entity = static_cast<Entity*>(node->element);
                                     if ( entity )
                                     {
                                         if ( isPathObstacle(entity) )
@@ -1207,7 +1207,7 @@ void fillPathMap(int* pathMap, int x, int y, int zone)
                             }
                             if ( !foundWallModifier && !foundObstacle )
                             {
-                                int index = (v - 1) * MAP_LAYERS + u * MAP_LAYERS * map.height;
+                                const int index = (v - 1) * MAP_LAYERS + u * MAP_LAYERS * map.height;
                                 if ( !map.tiles[OBSTACLELAYER + index] && (pathMap == pathMapFlying 
                                     || (map.tiles[index] && !(swimmingtiles[map.tiles[index]] || lavatiles[map.tiles[index]]) )) )
                                 {
@@ -1308,7 +1308,7 @@ void GateGraph::buildGraph(const int parentMapType)
 {
     mapSubzones = static_cast<int*>(calloc(map.width * map.height, sizeof(int)));
 
-    int* parentMap = nullptr;
+    const int* parentMap = nullptr;
     this->parentMapType = parentMapType;
     if ( parentMapType == GateGraph::GATE_GRAPH_GROUNDED )
     {
@@ -1336,7 +1336,7 @@ void GateGraph::buildGraph(const int parentMapType)
     {
         for ( int x = 0; x < map.width; x++ )
         {
-            int zone = parentMap[y + x * map.height];
+            const int zone = parentMap[y + x * map.height];
             if ( zone > 0 && !mapSubzones[y + x * map.height] )
             {
                 fillPathMap(x, y);
@@ -1344,18 +1344,18 @@ void GateGraph::buildGraph(const int parentMapType)
         }
     }
 
-    for ( node_t* entityNode = map.entities->first; entityNode != nullptr; entityNode = entityNode->next )
+    for (const node_t* entityNode = map.entities->first; entityNode != nullptr; entityNode = entityNode->next )
     {
-        auto entity = static_cast<Entity*>(entityNode->element);
+        const auto entity = static_cast<Entity*>(entityNode->element);
         if ( entity->behavior == &actGate )
         {
-            int ix = (static_cast<int>(entity->x) >> 4);
-            int iy = (static_cast<int>(entity->y) >> 4);
-            real_t angle = normaliseAngle2PI(entity->yaw);
+            const int ix = (static_cast<int>(entity->x) >> 4);
+            const int iy = (static_cast<int>(entity->y) >> 4);
+            const real_t angle = normaliseAngle2PI(entity->yaw);
             if ( limbAngleWithinRange(angle, .05, PI / 2) || limbAngleWithinRange(angle, .05, 3 * PI / 2) )
             {
-                int zone1 = mapSubzones[(iy - 1) + ix * map.height];
-                int zone2 = mapSubzones[(iy + 1) + ix * map.height];
+                const int zone1 = mapSubzones[(iy - 1) + ix * map.height];
+                const int zone2 = mapSubzones[(iy + 1) + ix * map.height];
                 int& middleZone = mapSubzones[iy + ix * map.height];
                 middleZone = zone1 + (zone2 * 10000);
                 addGate(ix, iy, zone1, zone2, entity->getUID(), DIR_NORTHSOUTH);
@@ -1364,8 +1364,8 @@ void GateGraph::buildGraph(const int parentMapType)
             }
             else
             {
-                int zone1 = mapSubzones[iy + (ix - 1) * map.height];
-                int zone2 = mapSubzones[iy + (ix + 1) * map.height];
+                const int zone1 = mapSubzones[iy + (ix - 1) * map.height];
+                const int zone2 = mapSubzones[iy + (ix + 1) * map.height];
                 int& middleZone = mapSubzones[iy + ix * map.height];
                 middleZone = zone1 + (zone2 * 10000);
                 addGate(ix, iy, zone1, zone2, entity->getUID(), DIR_EASTWEST);
@@ -1374,7 +1374,7 @@ void GateGraph::buildGraph(const int parentMapType)
             }
         }
     }
-    for ( auto& pair : gateNodes )
+    for (const auto& pair : gateNodes )
     {
         addEdge(pair.second.zone1, pair.second.zone2);
     }
@@ -1405,7 +1405,7 @@ void GateGraph::buildGraph(const int parentMapType)
 
 void GateGraph::fillPathMap(int x, int y)
 {
-    int* parentMap = nullptr;
+    const int* parentMap = nullptr;
     if ( parentMapType == GateGraph::GATE_GRAPH_GROUNDED )
     {
         parentMap = pathMapGrounded;
@@ -1415,12 +1415,12 @@ void GateGraph::fillPathMap(int x, int y)
         parentMap = pathMapFlying;
     }
 
-    list_t* list = checkTileForEntity(x, y);
+    const list_t* list = checkTileForEntity(x, y);
     if ( list )
     {
-        for ( node_t* node = list->first; node != nullptr; node = node->next )
+        for (const node_t* node = list->first; node != nullptr; node = node->next )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             if ( entity )
             {
                 if ( entity->behavior == &actGate )
@@ -1449,12 +1449,12 @@ void GateGraph::fillPathMap(int x, int y)
                         if ( !mapSubzones[v + (u + 1)*map.height] )
                         {
                             bool foundObstacle = false;
-                            list_t* list = checkTileForEntity(u + 1, v);
+                            const list_t* list = checkTileForEntity(u + 1, v);
                             if ( list )
                             {
-                                for ( node_t* node = list->first; node != nullptr; node = node->next )
+                                for (const node_t* node = list->first; node != nullptr; node = node->next )
                                 {
-                                    auto entity = static_cast<Entity*>(node->element);
+                                    const auto entity = static_cast<Entity*>(node->element);
                                     if ( entity )
                                     {
                                         if ( entity->behavior == &actGate )
@@ -1480,12 +1480,12 @@ void GateGraph::fillPathMap(int x, int y)
                         if ( !mapSubzones[v + (u - 1)*map.height] )
                         {
                             bool foundObstacle = false;
-                            list_t* list = checkTileForEntity(u - 1, v);
+                            const list_t* list = checkTileForEntity(u - 1, v);
                             if ( list )
                             {
-                                for ( node_t* node = list->first; node != nullptr; node = node->next )
+                                for (const node_t* node = list->first; node != nullptr; node = node->next )
                                 {
-                                    auto entity = static_cast<Entity*>(node->element);
+                                    const auto entity = static_cast<Entity*>(node->element);
                                     if ( entity )
                                     {
                                         if ( entity->behavior == &actGate )
@@ -1511,12 +1511,12 @@ void GateGraph::fillPathMap(int x, int y)
                         if ( !mapSubzones[(v + 1) + u * map.height] )
                         {
                             bool foundObstacle = false;
-                            list_t* list = checkTileForEntity(u, v + 1);
+                            const list_t* list = checkTileForEntity(u, v + 1);
                             if ( list )
                             {
-                                for ( node_t* node = list->first; node != nullptr; node = node->next )
+                                for (const node_t* node = list->first; node != nullptr; node = node->next )
                                 {
-                                    auto entity = static_cast<Entity*>(node->element);
+                                    const auto entity = static_cast<Entity*>(node->element);
                                     if ( entity )
                                     {
                                         if ( entity->behavior == &actGate )
@@ -1542,12 +1542,12 @@ void GateGraph::fillPathMap(int x, int y)
                         if ( !mapSubzones[(v - 1) + u * map.height] )
                         {
                             bool foundObstacle = false;
-                            list_t* list = checkTileForEntity(u, v - 1);
+                            const list_t* list = checkTileForEntity(u, v - 1);
                             if ( list )
                             {
-                                for ( node_t* node = list->first; node != nullptr; node = node->next )
+                                for (const node_t* node = list->first; node != nullptr; node = node->next )
                                 {
-                                    auto entity = static_cast<Entity*>(node->element);
+                                    const auto entity = static_cast<Entity*>(node->element);
                                     if ( entity )
                                     {
                                         if ( entity->behavior == &actGate )
@@ -1625,8 +1625,8 @@ void GateGraph::debugPaths()
 
 bool GateGraph::generatePath(Entity* my, int x1, int y1, int x2, int y2)
 {
-    int srcZone = mapSubzones[y1 + x1 * map.height];
-    int destZone = mapSubzones[y2 + x2 * map.height];
+    const int srcZone = mapSubzones[y1 + x1 * map.height];
+    const int destZone = mapSubzones[y2 + x2 * map.height];
     if ( srcZone < numSubzones && destZone < numSubzones )
     {
         if ( srcZone == destZone ) { return true; }
@@ -1658,7 +1658,7 @@ bool GateGraph::generatePath(Entity* my, int x1, int y1, int x2, int y2)
         std::vector<int> destZonesToTest;
         if ( srcZone >= numSubzones )
         {
-            GateNode_t& srcGate = getGate(x1, y1);
+            const GateNode_t& srcGate = getGate(x1, y1);
             if ( srcGate.zone1 != -1 )
             {
                 srcZonesToTest.push_back(std::min(srcGate.zone1, srcGate.zone2));
@@ -1671,7 +1671,7 @@ bool GateGraph::generatePath(Entity* my, int x1, int y1, int x2, int y2)
         }
         if ( destZone >= numSubzones )
         {
-            GateNode_t& destGate = getGate(x2, y2);
+            const GateNode_t& destGate = getGate(x2, y2);
             if ( destGate.zone1 != -1 )
             {
                 destZonesToTest.push_back(std::min(destGate.zone1, destGate.zone2));
@@ -1696,7 +1696,7 @@ bool GateGraph::generatePath(Entity* my, int x1, int y1, int x2, int y2)
         };
         OnGateDir standingOnGateDirection = NONE;
         Entity* standingOnGateEntity = nullptr;
-        auto& gate = getGate(static_cast<int>(my->x / 16), static_cast<int>(my->y / 16));
+        const auto& gate = getGate(static_cast<int>(my->x / 16), static_cast<int>(my->y / 16));
         if ( gate.zone1 != -1 && gate.x == x1 && gate.y == y1 )
         {
             // we're standing on a gate, matching the start coordinates of path
@@ -1772,8 +1772,8 @@ bool GateGraph::generatePath(Entity* my, int x1, int y1, int x2, int y2)
                     }
                     uniqueZones.insert(x);
                     continue; 
-                } 
-                int x3 = std::min(x, y);
+                }
+                const int x3 = std::min(x, y);
                 int y3 = std::max(x, y);
                 if ( visited.find(x3 + y3 * 10000) == visited.end() )
                 {

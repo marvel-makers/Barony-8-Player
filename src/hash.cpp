@@ -27,7 +27,7 @@ unsigned long djb2Hash(char* str)
 
 void ttfTextHash_deconstructor(void* data)
 {
-    auto hashedVal = static_cast<ttfTextHash_t*>(data);
+    const auto hashedVal = static_cast<ttfTextHash_t*>(data);
     SDL_FreeSurface(hashedVal->surf);
     free(hashedVal->str);
     free(data);
@@ -36,12 +36,12 @@ void ttfTextHash_deconstructor(void* data)
 SDL_Surface* ttfTextHashRetrieve(list_t* buckets, char* str, TTF_Font* font, bool outline)
 {
     // retrieve bucket
-    list_t* list = &buckets[djb2Hash(str) % HASH_SIZE];
+    const list_t* list = &buckets[djb2Hash(str) % HASH_SIZE];
 
     // find data in bucket (linear search)
-    for ( node_t* node = list->first; node != nullptr; node = node->next )
+    for (const node_t* node = list->first; node != nullptr; node = node->next )
     {
-        auto hashedVal = static_cast<ttfTextHash_t*>(node->element);
+        const auto hashedVal = static_cast<ttfTextHash_t*>(node->element);
         if ( !strcmp(hashedVal->str, str) && hashedVal->font == font && hashedVal->outline == outline )
         {
             return hashedVal->surf;

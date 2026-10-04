@@ -625,7 +625,7 @@ void printlog(const char* str, ...)
     // print to the log
     if ( newstr[strlen(newstr) - 1] != '\n' )
     {
-        int c = static_cast<int>(strlen(newstr));
+        const int c = static_cast<int>(strlen(newstr));
         newstr[c] = '\n';
         newstr[c + 1] = 0;
     }
@@ -763,13 +763,13 @@ time_t getTime() {
 }
 
 char* getTimeFormatted(time_t t, char* buf, size_t size) {
-    struct tm* tm = localtime(&t);
+    const struct tm* tm = localtime(&t);
     strftime(buf, size, "%H-%M-%S", tm);
     return buf;
 }
 
 char* getTimeAndDateFormatted(time_t t, char* buf, size_t size) {
-    struct tm* tm = localtime(&t);
+    const struct tm* tm = localtime(&t);
     strftime(buf, size, "%Y-%m-%d %H-%M-%S", tm);
     return buf;
 }

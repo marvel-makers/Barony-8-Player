@@ -70,7 +70,7 @@ Sint32 Stat::getModifiedProficiency(int skill) const
         return 0;
     }
 
-    Sint32 base = std::min(100, std::max(0, PROFICIENCIES[skill]));
+    const Sint32 base = std::min(100, std::max(0, PROFICIENCIES[skill]));
     Sint32 equipmentBonus = 0;
 
     bool cursedItemIsBuff = false;
@@ -229,7 +229,7 @@ Sint32 Stat::getThaumProficiencySpellStatBonus(int whichStat, Sint32 currentBonu
     {
         if ( getEffectActive(EFF_COUNSEL) )
         {
-            real_t ratio = std::max(0.0, 0.1 * ((getEffectActive(EFF_COUNSEL) & 0xF) - 1));
+            const real_t ratio = std::max(0.0, 0.1 * ((getEffectActive(EFF_COUNSEL) & 0xF) - 1));
             bonus = (std::max(2 + (getEffectActive(EFF_COUNSEL) & 0xF), static_cast<int>(currentBonus * ratio)));
         }
     }
@@ -237,7 +237,7 @@ Sint32 Stat::getThaumProficiencySpellStatBonus(int whichStat, Sint32 currentBonu
     {
         if ( getEffectActive(EFF_NIMBLENESS) )
         {
-            real_t ratio = std::max(0.0, 0.1 * ((getEffectActive(EFF_NIMBLENESS) & 0xF) - 1));
+            const real_t ratio = std::max(0.0, 0.1 * ((getEffectActive(EFF_NIMBLENESS) & 0xF) - 1));
             bonus = (std::max(2 + (getEffectActive(EFF_NIMBLENESS) & 0xF), static_cast<int>(currentBonus * ratio)));
         }
     }
@@ -245,7 +245,7 @@ Sint32 Stat::getThaumProficiencySpellStatBonus(int whichStat, Sint32 currentBonu
     {
         if ( getEffectActive(EFF_GREATER_MIGHT) )
         {
-            real_t ratio = std::max(0.0, 0.1 * ((getEffectActive(EFF_GREATER_MIGHT) & 0xF) - 1));
+            const real_t ratio = std::max(0.0, 0.1 * ((getEffectActive(EFF_GREATER_MIGHT) & 0xF) - 1));
             bonus = (std::max(2 + (getEffectActive(EFF_GREATER_MIGHT) & 0xF), static_cast<int>(currentBonus * ratio)));
         }
     }
@@ -253,7 +253,7 @@ Sint32 Stat::getThaumProficiencySpellStatBonus(int whichStat, Sint32 currentBonu
     {
         if ( getEffectActive(EFF_STURDINESS) )
         {
-            real_t ratio = std::max(0.0, 0.1 * ((getEffectActive(EFF_STURDINESS) & 0xF) - 1));
+            const real_t ratio = std::max(0.0, 0.1 * ((getEffectActive(EFF_STURDINESS) & 0xF) - 1));
             bonus = (std::max(2 + (getEffectActive(EFF_STURDINESS) & 0xF), static_cast<int>(currentBonus * ratio)));
         }
     }
@@ -387,9 +387,9 @@ Stat::~Stat()
     node_t* spellnode = this->magic_effects.first;
     while (spellnode)
     {
-        node_t* oldnode = spellnode;
+        const node_t* oldnode = spellnode;
         spellnode = spellnode->next;
-        auto spell = static_cast<spell_t*>(oldnode->element);
+        const auto spell = static_cast<spell_t*>(oldnode->element);
         spell->magic_effects_node = nullptr;
     }
     list_FreeAll(&this->magic_effects);
@@ -632,7 +632,7 @@ Stat* Stat::copyStats()
 
     // create new stat, using the type (HUMAN, SKELETON) as a reference.
     // this is handled in stat_shared.cpp by adding 1000 to the type.
-    auto newStat = new Stat(this->type + 1000);
+    const auto newStat = new Stat(this->type + 1000);
 
     newStat->type = this->type;
     newStat->sex = this->sex;
@@ -699,7 +699,7 @@ Stat* Stat::copyStats()
     list_Copy(&newStat->inventory, &this->inventory);
     for (node = newStat->inventory.first; node != nullptr; node = node->next)
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         item->node = node;
     }
     newStat->void_chest_inventory.first = nullptr;
@@ -707,7 +707,7 @@ Stat* Stat::copyStats()
     list_Copy(&newStat->void_chest_inventory, &this->void_chest_inventory);
     for ( node = newStat->void_chest_inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         item->node = node;
     }
 
@@ -715,7 +715,7 @@ Stat* Stat::copyStats()
     {
         if (this->helmet->node)
         {
-            node_t* node = list_Node(&newStat->inventory, list_Index(this->helmet->node));
+            const node_t* node = list_Node(&newStat->inventory, list_Index(this->helmet->node));
             newStat->helmet = static_cast<Item*>(node->element);
         }
         else
@@ -732,7 +732,7 @@ Stat* Stat::copyStats()
     {
         if (this->breastplate->node)
         {
-            node_t* node = list_Node(&newStat->inventory, list_Index(this->breastplate->node));
+            const node_t* node = list_Node(&newStat->inventory, list_Index(this->breastplate->node));
             newStat->breastplate = static_cast<Item*>(node->element);
         }
         else
@@ -749,7 +749,7 @@ Stat* Stat::copyStats()
     {
         if (this->gloves->node)
         {
-            node_t* node = list_Node(&newStat->inventory, list_Index(this->gloves->node));
+            const node_t* node = list_Node(&newStat->inventory, list_Index(this->gloves->node));
             newStat->gloves = static_cast<Item*>(node->element);
         }
         else
@@ -766,7 +766,7 @@ Stat* Stat::copyStats()
     {
         if (this->shoes->node)
         {
-            node_t* node = list_Node(&newStat->inventory, list_Index(this->shoes->node));
+            const node_t* node = list_Node(&newStat->inventory, list_Index(this->shoes->node));
             newStat->shoes = static_cast<Item*>(node->element);
         }
         else
@@ -783,7 +783,7 @@ Stat* Stat::copyStats()
     {
         if (this->shield->node)
         {
-            node_t* node = list_Node(&newStat->inventory, list_Index(this->shield->node));
+            const node_t* node = list_Node(&newStat->inventory, list_Index(this->shield->node));
             newStat->shield = static_cast<Item*>(node->element);
         }
         else
@@ -800,7 +800,7 @@ Stat* Stat::copyStats()
     {
         if (this->weapon->node)
         {
-            node_t* node = list_Node(&newStat->inventory, list_Index(this->weapon->node));
+            const node_t* node = list_Node(&newStat->inventory, list_Index(this->weapon->node));
             newStat->weapon = static_cast<Item*>(node->element);
         }
         else
@@ -817,7 +817,7 @@ Stat* Stat::copyStats()
     {
         if (this->cloak->node)
         {
-            node_t* node = list_Node(&newStat->inventory, list_Index(this->cloak->node));
+            const node_t* node = list_Node(&newStat->inventory, list_Index(this->cloak->node));
             newStat->cloak = static_cast<Item*>(node->element);
         }
         else
@@ -834,7 +834,7 @@ Stat* Stat::copyStats()
     {
         if (this->amulet->node)
         {
-            node_t* node = list_Node(&newStat->inventory, list_Index(this->amulet->node));
+            const node_t* node = list_Node(&newStat->inventory, list_Index(this->amulet->node));
             newStat->amulet = static_cast<Item*>(node->element);
         }
         else
@@ -851,7 +851,7 @@ Stat* Stat::copyStats()
     {
         if (this->ring->node)
         {
-            node_t* node = list_Node(&newStat->inventory, list_Index(this->ring->node));
+            const node_t* node = list_Node(&newStat->inventory, list_Index(this->ring->node));
             newStat->ring = static_cast<Item*>(node->element);
         }
         else
@@ -868,7 +868,7 @@ Stat* Stat::copyStats()
     {
         if (this->mask->node)
         {
-            node_t* node = list_Node(&newStat->inventory, list_Index(this->mask->node));
+            const node_t* node = list_Node(&newStat->inventory, list_Index(this->mask->node));
             newStat->mask = static_cast<Item*>(node->element);
         }
         else
@@ -951,7 +951,7 @@ int Stat::pickRandomEquippedItemToDegradeOnHit(Item** returnItem, bool excludeWe
         // exclude mask
         mask = nullptr;
     }
-    int result = pickRandomEquippedItem(returnItem, excludeWeapon, excludeShield, excludeArmor, excludeJewelry);
+    const int result = pickRandomEquippedItem(returnItem, excludeWeapon, excludeShield, excludeArmor, excludeJewelry);
     mask = maskItem;
     return result;
 }
@@ -1037,7 +1037,7 @@ int Stat::pickRandomEquippedItem(Item** returnItem, bool excludeWeapon, bool exc
         return -1;
     }
 
-    int roll = local_rng.rand() % numEquippedItems;
+    const int roll = local_rng.rand() % numEquippedItems;
 
     switch ( equipNum[roll] )
     {
@@ -1127,7 +1127,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
     this->LVL = src.LVL;
 
     this->GOLD = src.GOLD;
-    bool oldIntro = intro;
+    const bool oldIntro = intro;
     if ( player >= 0 && players[player]->isLocalPlayer() )
     {
         intro = true;
@@ -1453,9 +1453,9 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
         this->mask = nullptr;
     }
 
-    for ( node_t* node = src.inventory.first; node; node = node->next )
+    for (const node_t* node = src.inventory.first; node; node = node->next )
     {
-        auto invItem = static_cast<Item*>(node->element);
+        const auto invItem = static_cast<Item*>(node->element);
         if ( invItem )
         {
             if ( player >= 0 )
@@ -1488,7 +1488,7 @@ void Stat::copyNPCStatsAndInventoryFrom(Stat& src)
 
 int Stat::getActiveShieldBonus(bool checkShield, bool excludeSkill, Item* shieldItem, bool checkNonShieldBonus) const
 {
-    Item* item = shieldItem;
+    const Item* item = shieldItem;
     if ( !item )
     {
         if ( !checkShield )
@@ -1628,7 +1628,7 @@ int Stat::numShillelaghDebuffsActive(Entity* my)
     {
         ++result;
     }
-    for ( auto eff : effs )
+    for (const auto eff : effs )
     {
         if ( getEffectActive(eff) )
         {
@@ -1707,7 +1707,7 @@ void Stat::addItemToLootingBag(const int player, const real_t x, const real_t y,
         return;
     }
 
-    Uint32 lootingBagKey = getLootingBagKey(player);
+    const Uint32 lootingBagKey = getLootingBagKey(player);
     if ( player_lootbags.find(lootingBagKey) == player_lootbags.end() )
     {
         player_lootbags[lootingBagKey].spawn_x = x;
@@ -1766,14 +1766,14 @@ bool Stat::emptyLootingBag(const int player, Uint32 key)
             messagePlayer(player, MESSAGE_INTERACTION | MESSAGE_INVENTORY, Language::get(4332));
             if ( !stats[i]->player_lootbags[key].looted )
             {
-                for ( auto& item_loot : stats[i]->player_lootbags[key].items )
+                for (const auto& item_loot : stats[i]->player_lootbags[key].items )
                 {
                     //dropItemMonster(&item, players[i]->entity, stats[i], item.count);
                     Item* item2 = newItem(item_loot.type, item_loot.status, 
                         item_loot.beatitude, item_loot.count, item_loot.appearance, item_loot.identified, nullptr);
                     if ( item2 )
                     {
-                        int pickedUpCount = item2->count;
+                        const int pickedUpCount = item2->count;
                         Item* item = itemPickup(player, item2);
                         if ( item )
                         {
@@ -1781,7 +1781,7 @@ bool Stat::emptyLootingBag(const int player, Uint32 key)
                             {
                                 // item is the new inventory stack for server, free the picked up items
                                 free(item2);
-                                int oldcount = item->count;
+                                const int oldcount = item->count;
                                 item->count = pickedUpCount;
                                 //messagePlayer(i, MESSAGE_INTERACTION | MESSAGE_INVENTORY, Language::get(504), item->description());
                                 item->count = oldcount;
@@ -1800,7 +1800,7 @@ bool Stat::emptyLootingBag(const int player, Uint32 key)
                     }
                     stats[i]->player_lootbags[key].looted = true;
                 }
-                int owner = (key & 0xF);
+                const int owner = (key & 0xF);
                 if ( owner == player )
                 {
                     Compendium_t::Events_t::eventUpdate(player, Compendium_t::CPDM_DEATHBOX_OPEN_OWN, TOOL_PLAYER_LOOT_BAG, 1);
@@ -2172,7 +2172,7 @@ int Stat::getMaxAttackCharge(Stat* myStats)
     int charge = MAXCHARGE;
     if ( myStats && myStats->getEffectActive(EFF_ENSEMBLE_FLUTE) )
     {
-        real_t mult = (100.0 - myStats->getEnsembleEffectBonus(ENSEMBLE_FLUTE_TIER)) / 100.0;
+        const real_t mult = (100.0 - myStats->getEnsembleEffectBonus(ENSEMBLE_FLUTE_TIER)) / 100.0;
         charge *= mult;
     }
     return std::max(5, charge); // failsafe min 5
@@ -2204,7 +2204,7 @@ void Stat::MonsterRangedAccuracy::incrementAccuracy()
 }
 void Stat::MonsterRangedAccuracy::modifyProjectile(Entity& my, Entity& projectile)
 {
-    Stat* myStats = my.getStats();
+    const Stat* myStats = my.getStats();
     if ( !myStats ) { return; }
     if ( myStats->type == LICH
         || myStats->type == LICH_FIRE
@@ -2213,11 +2213,11 @@ void Stat::MonsterRangedAccuracy::modifyProjectile(Entity& my, Entity& projectil
     {
         return;
     }
-    int accuracy = this->accuracy;
+    const int accuracy = this->accuracy;
     if ( accuracy == 0 ) { return; }
     if ( Entity* target = uidToEntity(this->lastTarget) )
     {
-        real_t velocity = sqrt(pow(projectile.vel_x, 2) + pow(projectile.vel_y, 2));
+        const real_t velocity = sqrt(pow(projectile.vel_x, 2) + pow(projectile.vel_y, 2));
 
         if ( velocity > 0.01 )
         {

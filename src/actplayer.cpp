@@ -101,7 +101,7 @@ void Player::Ghost_t::handleGhostCameraBobbing(bool useRefreshRateDelta)
         return;
     }
 
-    int playernum = player.playernum;
+    const int playernum = player.playernum;
 
     double refreshRateDelta = 1.0;
     if ( useRefreshRateDelta && fps > 0.0 )
@@ -109,7 +109,7 @@ void Player::Ghost_t::handleGhostCameraBobbing(bool useRefreshRateDelta)
         refreshRateDelta *= TICKS_PER_SECOND / static_cast<real_t>(fpsLimit);
     }
 
-    Input& input = Input::inputs[playernum];
+    const Input& input = Input::inputs[playernum];
     static ConsoleVariable<float> cvar_ghostBob("/ghost_bob", 0.25);
     static ConsoleVariable<float> cvar_ghostBobSpeed("/ghost_bob_speed", 4.0);
 
@@ -175,7 +175,7 @@ void Player::Ghost_t::handleGhostCameraBobbing(bool useRefreshRateDelta)
             GHOSTCAM_BOBMOVE = 0.0;
         }
 
-        real_t bobSpeed = *cvar_ghostBob;
+        const real_t bobSpeed = *cvar_ghostBob;
         GHOSTCAM_BOB = -bobSpeed + bobSpeed * sin((PI / 2) + GHOSTCAM_BOBMOVE * refreshRateDelta * 2 * PI);
     }
     else
@@ -190,7 +190,7 @@ void Player::Ghost_t::handleGhostMovement(const bool useRefreshRateDelta)
 {
     if ( !my ) { return; }
 
-    Input& input = Input::inputs[player.playernum];
+    const Input& input = Input::inputs[player.playernum];
 
     double refreshRateDelta = 1.0;
     if ( useRefreshRateDelta && fps > 0.0 )
@@ -199,7 +199,7 @@ void Player::Ghost_t::handleGhostMovement(const bool useRefreshRateDelta)
     }
 
     // calculate movement forces
-    bool allowMovement = isControllable() && playerAllowedMovement(player.playernum);
+    const bool allowMovement = isControllable() && playerAllowedMovement(player.playernum);
     static ConsoleVariable<float> cvar_ghostSpeed("/ghost_speed", 1.5);
     static ConsoleVariable<float> cvar_ghostDrag("/ghost_drag", 0.95);
     real_t drag = *cvar_ghostDrag;
@@ -211,7 +211,7 @@ void Player::Ghost_t::handleGhostMovement(const bool useRefreshRateDelta)
         float y_force = 0;
 
         {
-            double backpedalMultiplier = 0.25;
+            const double backpedalMultiplier = 0.25;
 
             if ( !inputs.hasController(player.playernum) )
             {
@@ -237,16 +237,16 @@ void Player::Ghost_t::handleGhostMovement(const bool useRefreshRateDelta)
         real_t speedFactor = *cvar_ghostSpeed;
 
         int speedMult = 1;
-        bool isSpirit = isSpiritGhost();
+        const bool isSpirit = isSpiritGhost();
         if ( !isSpirit )
         {
             speedMult += GHOSTCAM_SNEAKING;
         }
         else
         {
-            if ( node_t* node = list_Node(&my->children, 2) )
+            if (const node_t* node = list_Node(&my->children, 2) )
             {
-                if (auto entity = static_cast<Entity*>(node->element) )
+                if (const auto entity = static_cast<Entity*>(node->element) )
                 {
                     if ( Entity::getMonsterTypeFromSprite(entity->sprite) == DUCK_SMALL )
                     {
@@ -333,7 +333,7 @@ bool Player::Ghost_t::handleQuickTurn(bool useRefreshRateDelta)
 
     if ( abs(quickTurnRotation) > 0.001 )
     {
-        int dir = ((quickTurnRotation > 0) ? 1 : -1);
+        const int dir = ((quickTurnRotation > 0) ? 1 : -1);
         if ( my->ticks - quickTurnStartTicks < 15 )
         {
             int turnspeed = 1;
@@ -502,7 +502,7 @@ void Player::Ghost_t::handleAttack()
         --errorFlashTeleportTicks;
     }
 
-    bool spiritGhost = isSpiritGhost();
+    const bool spiritGhost = isSpiritGhost();
 
     Input& input = Input::inputs[player.playernum];
     bool attack = false;
@@ -661,7 +661,7 @@ void Player::Ghost_t::handleAttack()
             entity->flags[UPDATENEEDED] = false;
             entity->flags[OVERDRAW] = true;
             entity->lightBonus = vec4(0.2f, 0.2f, 0.2f, 0.f);
-            real_t scale = 0.15f;
+            const real_t scale = 0.15f;
             entity->scalex = scale;
             entity->scaley = scale;
             entity->scalez = scale;
@@ -727,9 +727,9 @@ void Player::Ghost_t::handleAttack()
 
         if ( castingSpellAnimation == GHOST_SPELL_TELEPORT )
         {
-            float x = 6;
-            float y = 0.1;
-            float z = 5.5;
+            const float x = 6;
+            const float y = 0.1;
+            const float z = 5.5;
             // boosty boost
             for ( int i = 0; i < 3 && castingHeldDuration == 1; ++i )
             {
@@ -776,7 +776,7 @@ void Player::Ghost_t::handleAttack()
                 entity->flags[UPDATENEEDED] = false;
                 entity->flags[OVERDRAW] = true;
                 entity->lightBonus = vec4(0.2f, 0.2f, 0.2f, 0.f);
-                real_t scale = 0.15f;
+                const real_t scale = 0.15f;
                 entity->scalex = scale;
                 entity->scaley = scale;
                 entity->scalez = scale;
@@ -807,13 +807,13 @@ void Player::Ghost_t::handleAttack()
         }
         else if ( castingSpellAnimation == GHOST_SPELL_BOLT )
         {
-            float x = 6;
-            float y = 0.1;
-            float z = 1.5;
+            const float x = 6;
+            const float y = 0.1;
+            const float z = 1.5;
             // boosty boost
             for ( int i = 1; i < 3; ++i )
             {
-                Uint32 animTick = castingHeldDuration >= castLoopDuration ? castLoopDuration : castingHeldDuration;
+                const Uint32 animTick = castingHeldDuration >= castLoopDuration ? castLoopDuration : castingHeldDuration;
 
                 Entity* entity = newEntity(1243, 1, map.entities, nullptr); //Particle entity.
                 entity->x = x - 0.01 * (5 + local_rng.rand() % 11);
@@ -1666,8 +1666,8 @@ Entity* Player::Ghost_t::respawn()
         net_packet->data[4] = player.playernum;
         net_packet->data[5] = currentlevel;
 
-        int x = (spawnX);
-        int y = (spawnY);
+        const int x = (spawnX);
+        const int y = (spawnY);
         SDLNet_Write16(static_cast<Sint16>(x), &net_packet->data[6]);
         SDLNet_Write16(static_cast<Sint16>(y), &net_packet->data[8]);
         net_packet->data[10] = secretlevel;
@@ -1688,7 +1688,7 @@ void actPlayerXP(Entity* my)
         return;
     }
 
-    auto& bounceFloor = my->fskill[0];
+    const auto& bounceFloor = my->fskill[0];
     auto& hover = my->fskill[1];
     auto& bounceAmount = my->fskill[2];
     auto& hoverAmount = my->fskill[3];
@@ -1753,7 +1753,7 @@ void spawnPlayerXP(real_t x, real_t y, int player, int xpAmount)
     std::set<int> goodspots;
     std::set<int> okspots;
 
-    int sprite = 211; // Player::Ghost_t::getSpriteForPlayer(player);
+    const int sprite = 211; // Player::Ghost_t::getSpriteForPlayer(player);
     Entity* entity = newEntity(sprite, 1, map.entities, nullptr); //Ghost entity.
     entity->flags[PASSABLE] = true;
     //entity->flags[INVISIBLE] = true;
@@ -1771,8 +1771,8 @@ void spawnPlayerXP(real_t x, real_t y, int player, int xpAmount)
     {
         for ( int iy = -1; iy <= 1; ++iy )
         {
-            int checkx = static_cast<int>(x / 16) + ix;
-            int checky = static_cast<int>(y / 16) + iy;
+            const int checkx = static_cast<int>(x / 16) + ix;
+            const int checky = static_cast<int>(y / 16) + iy;
             if ( checkx >= 0 && checkx < map.width && checky >= 0 && checky < map.height )
             {
                 if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )
@@ -1787,8 +1787,8 @@ void spawnPlayerXP(real_t x, real_t y, int player, int xpAmount)
         }
     }
 
-    int checkx = static_cast<int>(x / 16);
-    int checky = static_cast<int>(y / 16);
+    const int checkx = static_cast<int>(x / 16);
+    const int checky = static_cast<int>(y / 16);
     int destx = 0;
     int desty = 0;
     bool foundspot = false;
@@ -1800,9 +1800,9 @@ void spawnPlayerXP(real_t x, real_t y, int player, int xpAmount)
     }
     else if ( goodspots.size() )
     {
-        int pick = local_rng.rand() % goodspots.size();
+        const int pick = local_rng.rand() % goodspots.size();
         int index = -1;
-        for ( auto spot : goodspots )
+        for (const auto spot : goodspots )
         {
             ++index;
             if ( pick == index )
@@ -1825,9 +1825,9 @@ void spawnPlayerXP(real_t x, real_t y, int player, int xpAmount)
         }
         else if ( okspots.size() )
         {
-            int pick = local_rng.rand() % okspots.size();
+            const int pick = local_rng.rand() % okspots.size();
             int index = -1;
-            for ( auto spot : okspots )
+            for (const auto spot : okspots )
             {
                 ++index;
                 if ( pick == index )
@@ -1860,7 +1860,7 @@ Entity* Player::Ghost_t::spawnGhost()
 
     if ( multiplayer != CLIENT )
     {
-        int sprite = Player::Ghost_t::getSpriteForPlayer(player.playernum);
+        const int sprite = Player::Ghost_t::getSpriteForPlayer(player.playernum);
         Entity* entity = newEntity(sprite, 1, map.entities, nullptr); //Ghost entity.
         entity->x = spawnX * 16.0 + 8;
         entity->y = spawnY * 16.0 + 8;
@@ -1894,8 +1894,8 @@ Entity* Player::Ghost_t::spawnGhost()
         net_packet->data[4] = player.playernum;
         net_packet->data[5] = currentlevel;
 
-        int x = (spawnX);
-        int y = (spawnY);
+        const int x = (spawnX);
+        const int y = (spawnY);
         SDLNet_Write16(static_cast<Sint16>(x), &net_packet->data[6]);
         SDLNet_Write16(static_cast<Sint16>(y), &net_packet->data[8]);
         net_packet->data[10] = secretlevel;
@@ -1911,7 +1911,7 @@ void Player::Ghost_t::handleGhostCameraUpdate(const bool useRefreshRateDelta)
 {
     if ( !my ) { return; }
 
-    bool controllable = isControllable();
+    const bool controllable = isControllable();
 
     real_t mousex_relative = mousexrel;
     real_t mousey_relative = mouseyrel;
@@ -1959,7 +1959,7 @@ void Player::Ghost_t::handleGhostCameraUpdate(const bool useRefreshRateDelta)
                 - Input::inputs[player.playernum].analog("Turn Left")) * .05 * refreshRateDelta;
         }
     }
-    bool shootmode = player.shootmode;
+    const bool shootmode = player.shootmode;
 
     if ( handleQuickTurn(useRefreshRateDelta) )
     {
@@ -2151,7 +2151,7 @@ int Player::Ghost_t::getSpriteForPlayer(const int player)
 
 void actDeathGhostLimb(Entity* my)
 {
-    int playernum = GHOSTCAM_PLAYERNUM;
+    const int playernum = GHOSTCAM_PLAYERNUM;
     if ( playernum < 0 || playernum >= MAXPLAYERS )
     {
         return;
@@ -2200,7 +2200,7 @@ void Player::Ghost_t::setActive(bool active)
 {
     if ( my )
     {
-        Uint32 deactivated = (active ? 0 : 1);
+        const Uint32 deactivated = (active ? 0 : 1);
         if ( deactivated != GHOSTCAM_DEACTIVATED )
         {
             GHOSTCAM_DEACTIVATED = deactivated;
@@ -3004,7 +3004,7 @@ void actDeathGhost(Entity* my)
 
 void actProjectSpiritCam(Entity* my)
 {
-    auto entityTarget = uidToEntity(DEATHCAM_PLAYERTARGET);
+    const auto entityTarget = uidToEntity(DEATHCAM_PLAYERTARGET);
     if ( !entityTarget ||
         !(stats[DEATHCAM_PLAYERNUM]->getEffectActive(EFF_PROJECT_SPIRIT) && players[DEATHCAM_PLAYERNUM]->entity
             && players[DEATHCAM_PLAYERNUM]->entity->skill[3] == 2) )
@@ -3040,7 +3040,7 @@ void actProjectSpiritCam(Entity* my)
         DEATHCAM_IDLEROTATEDIRYAW = (local_rng.rand() % 2 == 0) ? 1 : -1;
     }
 
-    bool shootmode = players[DEATHCAM_PLAYERNUM]->shootmode;
+    const bool shootmode = players[DEATHCAM_PLAYERNUM]->shootmode;
     if ( shootmode && !gamePaused )
     {
         if ( smoothmouse )
@@ -3208,8 +3208,8 @@ void actProjectSpiritCam(Entity* my)
     real_t camx = my->x / 16.f;
     real_t camy = my->y / 16.f;
     real_t camz = my->z * 2.f;
-    real_t camang = my->yaw;
-    real_t camvang = my->pitch;
+    const real_t camang = my->yaw;
+    const real_t camvang = my->pitch;
 
     camx -= cos(my->yaw) * cos(my->pitch) * 1.5;
     camy -= sin(my->yaw) * cos(my->pitch) * 1.5;
@@ -3333,7 +3333,7 @@ void actDeathCam(Entity* my)
         }
     }
 
-    bool shootmode = players[DEATHCAM_PLAYERNUM]->shootmode;
+    const bool shootmode = players[DEATHCAM_PLAYERNUM]->shootmode;
     if ( shootmode && !gamePaused && !(players[DEATHCAM_PLAYERNUM]->ghost.isActive()
         || (players[DEATHCAM_PLAYERNUM]->entity && players[DEATHCAM_PLAYERNUM]->entity->playerCreatedDeathCam == 0)) )
     {
@@ -3491,7 +3491,7 @@ void actDeathCam(Entity* my)
 
     if (DEATHCAM_PLAYERTARGET >= 0)
     {
-        if ( auto entity = Player::getPlayerInteractEntity(DEATHCAM_PLAYERTARGET) )
+        if (const auto entity = Player::getPlayerInteractEntity(DEATHCAM_PLAYERTARGET) )
         {
             my->x = entity->x;
             my->y = entity->y;
@@ -3514,8 +3514,8 @@ void actDeathCam(Entity* my)
     real_t camx = my->x / 16.f;
     real_t camy = my->y / 16.f;
     real_t camz = my->z * 2.f;
-    real_t camang = my->yaw;
-    real_t camvang = my->pitch;
+    const real_t camang = my->yaw;
+    const real_t camvang = my->pitch;
 
     camx -= cos(my->yaw) * cos(my->pitch) * 1.5;
     camy -= sin(my->yaw) * cos(my->pitch) * 1.5;
@@ -3597,7 +3597,7 @@ bool Player::PlayerMovement_t::isPlayerSwimming()
         return false;
     }
 
-    Entity* my = players[player.playernum]->entity;
+    const Entity* my = players[player.playernum]->entity;
 
     // swimming
     bool waterwalkingboots = false;
@@ -3609,11 +3609,11 @@ bool Player::PlayerMovement_t::isPlayerSwimming()
         }
     }
     bool swimming = false;
-    bool levitating = isLevitating(stats[PLAYER_NUM]);
+    const bool levitating = isLevitating(stats[PLAYER_NUM]);
     if ( !levitating && !waterwalkingboots && !noclip /*&& !skillCapstoneUnlocked(PLAYER_NUM, PRO_LEGACY_SWIMMING)*/ )
     {
-        int x = std::min(std::max<unsigned int>(0, floor(my->x / 16)), map.width - 1);
-        int y = std::min(std::max<unsigned int>(0, floor(my->y / 16)), map.height - 1);
+        const int x = std::min(std::max<unsigned int>(0, floor(my->x / 16)), map.width - 1);
+        const int y = std::min(std::max<unsigned int>(0, floor(my->y / 16)), map.height - 1);
         if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]]
             || lavatiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
         {
@@ -3643,7 +3643,7 @@ bool Player::PlayerMovement_t::handleQuickTurn(bool useRefreshRateDelta)
 
     if ( abs(quickTurnRotation) > 0.001 )
     {
-        int dir = ((quickTurnRotation > 0) ? 1 : -1);
+        const int dir = ((quickTurnRotation > 0) ? 1 : -1);
         if ( my->ticks - quickTurnStartTicks < 15 )
         {
             int turnspeed = 1;
@@ -3773,7 +3773,7 @@ void Player::PlayerMovement_t::handlePlayerCameraUpdate(bool useRefreshRateDelta
     }
 
     Entity* my = players[player.playernum]->entity;
-    int playernum = player.playernum;
+    const int playernum = player.playernum;
 
     real_t mousex_relative = mousexrel;
     real_t mousey_relative = mouseyrel;
@@ -3825,7 +3825,7 @@ void Player::PlayerMovement_t::handlePlayerCameraUpdate(bool useRefreshRateDelta
             my->yaw += (Input::inputs[playernum].analog("Turn Left") - Input::inputs[playernum].analog("Turn Right")) * .05 * refreshRateDelta;
         }
     }
-    bool shootmode = players[PLAYER_NUM]->shootmode;
+    const bool shootmode = players[PLAYER_NUM]->shootmode;
 
     if ( handleQuickTurn(useRefreshRateDelta) )
     {
@@ -4054,9 +4054,9 @@ void Player::PlayerMovement_t::handlePlayerCameraBobbing(bool useRefreshRateDelt
     }
 
     Entity* my = players[player.playernum]->entity;
-    int playernum = player.playernum;
+    const int playernum = player.playernum;
 
-    bool swimming = isPlayerSwimming();
+    const bool swimming = isPlayerSwimming();
 
     double refreshRateDelta = 1.0;
     if ( useRefreshRateDelta && fps > 0.0 )
@@ -4064,7 +4064,7 @@ void Player::PlayerMovement_t::handlePlayerCameraBobbing(bool useRefreshRateDelt
         refreshRateDelta *= TICKS_PER_SECOND / static_cast<real_t>(fpsLimit);
     }
 
-    Input& input = Input::inputs[playernum];
+    const Input& input = Input::inputs[playernum];
 
     // camera bobbing
     if ( bobbing )
@@ -4167,7 +4167,7 @@ void Player::PlayerMovement_t::handlePlayerCameraBobbing(bool useRefreshRateDelt
             && !gamePaused
             && !swimming && inputs.hasController(PLAYER_NUM) && abs(inputs.getController(PLAYER_NUM)->getLeftXPercentForPlayerMovement(player.playernum)) > 0.001 )
         {
-            auto controller = inputs.getController(PLAYER_NUM);
+            const auto controller = inputs.getController(PLAYER_NUM);
             if ( (controller->getLeftXPercentForPlayerMovement(player.playernum) > 0.001 && controller->getLeftYPercentForPlayerMovement(player.playernum) >= 0.0)
                 || (controller->getLeftXPercentForPlayerMovement(player.playernum) < -0.001 && controller->getLeftYPercentForPlayerMovement(player.playernum) < -0.001 ) )
             {
@@ -4283,9 +4283,9 @@ real_t Player::PlayerMovement_t::getMaximumSpeed()
 int Player::PlayerMovement_t::getCharacterEquippedWeight()
 {
     int weight = 0;
-    for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item != nullptr && player.paperDoll.isItemOnDoll(*item) )
         {
             if ( item->type >= 0 && item->type < NUMITEMS )
@@ -4300,9 +4300,9 @@ int Player::PlayerMovement_t::getCharacterEquippedWeight()
 int Player::PlayerMovement_t::getCharacterWeight()
 {
     int weight = 0;
-    for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item != nullptr)
         {
             if ( item->type >= 0 && item->type < NUMITEMS )
@@ -4342,8 +4342,8 @@ real_t Player::PlayerMovement_t::getWeightRatio(int weight, Sint32 STR)
 {
     real_t weightratio_zero = (1000 - weight) / static_cast<double>(1000);
     weightratio_zero = fmin(fmax(0, weightratio_zero), 1);
-    real_t curveExponentFactor = 2.0;
-    int curveYoffset = 1;
+    const real_t curveExponentFactor = 2.0;
+    const int curveYoffset = 1;
     weightratio_zero = -pow(1.0 - weightratio_zero, curveExponentFactor) + curveYoffset;
 
     real_t weightratio = (1000 + STR * 100 - weight) / static_cast<double>(1000 + STR * 100);
@@ -4407,7 +4407,7 @@ real_t Player::PlayerMovement_t::getSpeedFactor(real_t weightratio, Sint32 DEX)
     }
     if ( stats[player.playernum]->type == SALAMANDER && stats[player.playernum]->getEffectActive(EFF_SALAMANDER_HEART) )
     {
-        if ( Uint8 effectStrength = stats[player.playernum]->getEffectActive(EFF_SALAMANDER_HEART) )
+        if (const Uint8 effectStrength = stats[player.playernum]->getEffectActive(EFF_SALAMANDER_HEART) )
         {
             if ( effectStrength == 2 )
             {
@@ -4415,7 +4415,7 @@ real_t Player::PlayerMovement_t::getSpeedFactor(real_t weightratio, Sint32 DEX)
             }
             else
             {
-                real_t ratioLimit = 0.5;
+                const real_t ratioLimit = 0.5;
                 if ( effectStrength == 4 )
                 {
                     speedFactor *= ratioLimit;
@@ -4432,25 +4432,25 @@ real_t Player::PlayerMovement_t::getSpeedFactor(real_t weightratio, Sint32 DEX)
         && !stats[player.playernum]->helmet
         && stats[player.playernum]->getEffectActive(EFF_GROWTH) > 1 )
     {
-        int bonus = std::min(3, stats[player.playernum]->getEffectActive(EFF_GROWTH) - 1);
+        const int bonus = std::min(3, stats[player.playernum]->getEffectActive(EFF_GROWTH) - 1);
         speedFactor *= 1.0 - (bonus * 0.10);
     }
     if ( stats[player.playernum]->type == DRYAD
         && !stats[player.playernum]->helmet
         && stats[player.playernum]->getEffectActive(EFF_GROWTH) > 1 )
     {
-        int bonus = std::min(3, stats[player.playernum]->getEffectActive(EFF_GROWTH) - 1);
+        const int bonus = std::min(3, stats[player.playernum]->getEffectActive(EFF_GROWTH) - 1);
         speedFactor *= 1.0 - (bonus * 0.05);
     }
 
     if ( stats[player.playernum]->getEffectActive(EFF_NIMBLENESS) )
     {
-        real_t bonus = 0.025 * (stats[player.playernum]->getEffectActive(EFF_NIMBLENESS) & 0xF);
+        const real_t bonus = 0.025 * (stats[player.playernum]->getEffectActive(EFF_NIMBLENESS) & 0xF);
         speedFactor *= 1.0 + bonus;
         speedFactor = std::min(speedFactor, maxSpeed);
     }
 
-    if ( int effectStrength = player.mechanics.getBreakableCounterTier() )
+    if (const int effectStrength = player.mechanics.getBreakableCounterTier() )
     {
         speedFactor *= 1.0 + effectStrength * 0.05;
         speedFactor = std::min(speedFactor, maxSpeed);
@@ -4461,9 +4461,9 @@ real_t Player::PlayerMovement_t::getSpeedFactor(real_t weightratio, Sint32 DEX)
         speedFactor *= 1.0 - 0.1 * std::min(5, (stats[player.playernum]->getEffectActive(EFF_MAXIMISE) & 0xF));
     }
 
-    for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item != nullptr)
         {
             if ( item->type == TOOL_PLAYER_LOOT_BAG )
@@ -4496,7 +4496,7 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
 
     Entity* my = players[player.playernum]->entity;
 
-    Input& input = Input::inputs[player.playernum];
+    const Input& input = Input::inputs[player.playernum];
 
     double refreshRateDelta = 1.0;
     if ( useRefreshRateDelta && fps > 0.0 )
@@ -4511,8 +4511,8 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
     // calculate movement forces
 
     bool allowMovement = my->isMobile() && playerAllowedMovement(player.playernum);
-    bool pacified = stats[PLAYER_NUM]->getEffectActive(EFF_PACIFY) > 0;
-    bool rooted = stats[PLAYER_NUM]->getEffectActive(EFF_ROOTED) > 0;
+    const bool pacified = stats[PLAYER_NUM]->getEffectActive(EFF_PACIFY) > 0;
+    const bool rooted = stats[PLAYER_NUM]->getEffectActive(EFF_ROOTED) > 0;
     if ( rooted )
     {
         allowMovement = false;
@@ -4585,7 +4585,7 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
         {75,  1}
     };
     real_t speedFactorMult = 1.0;
-    auto find = dragToSpeedFactor.find(static_cast<int>(100 * movementDrag));
+    const auto find = dragToSpeedFactor.find(static_cast<int>(100 * movementDrag));
     if ( find != dragToSpeedFactor.end() )
     {
         speedFactorMult = 1 / find->second;
@@ -4699,11 +4699,11 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
         static ConsoleVariable<bool> cvar_debugspeedfactor("/player_showspeedfactor", false);
         if ( *cvar_debugspeedfactor && ticks % 50 == 0 )
         {
-            Sint32 STR = statGetSTR(stats[PLAYER_NUM], players[PLAYER_NUM]->entity);
+            const Sint32 STR = statGetSTR(stats[PLAYER_NUM], players[PLAYER_NUM]->entity);
             real_t weightratioOld = (1000 + STR * 100 - weight) / static_cast<double>(1000 + STR * 100);
             weightratioOld = fmin(fmax(0, weightratioOld), 1);
-            real_t maxSpeed = getMaximumSpeed();
-            Sint32 DEX = statGetDEX(stats[PLAYER_NUM], players[PLAYER_NUM]->entity);
+            const real_t maxSpeed = getMaximumSpeed();
+            const Sint32 DEX = statGetDEX(stats[PLAYER_NUM], players[PLAYER_NUM]->entity);
             real_t speedFactorOld = std::min((DEX * 0.1 + 15.5) * weightratioOld, maxSpeed);
             if ( DEX <= 5 )
             {
@@ -4782,17 +4782,17 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
         if ( stats[PLAYER_NUM]->defending && !stats[PLAYER_NUM]->sneaking
             && stats[PLAYER_NUM]->shield && itemTypeIsFoci(stats[PLAYER_NUM]->shield->type) )
         {
-            if ( int spellID = getSpellIDFromFoci(stats[PLAYER_NUM]->shield->type) )
+            if (const int spellID = getSpellIDFromFoci(stats[PLAYER_NUM]->shield->type) )
             {
-                if ( auto spell = getSpellFromID(spellID) )
+                if (const auto spell = getSpellFromID(spellID) )
                 {
-                    real_t modifier = std::min(100, stats[PLAYER_NUM]->getModifiedProficiency(spell->skillID)) / 100.f;
+                    const real_t modifier = std::min(100, stats[PLAYER_NUM]->getModifiedProficiency(spell->skillID)) / 100.f;
                     defendPenalty *= std::max(0.0, 1.0 - modifier);
                 }
             }
         }
 
-        real_t defendSpeed = (1.0 + defendPenalty);
+        const real_t defendSpeed = (1.0 + defendPenalty);
         PLAYER_VELX += y_force * cos(my->yaw) * .045 * speedFactor / (defendSpeed);
         PLAYER_VELY += y_force * sin(my->yaw) * .045 * speedFactor / (defendSpeed);
         PLAYER_VELX += x_force * cos(my->yaw + PI / 2) * .0225 * speedFactor / (defendSpeed);
@@ -4804,7 +4804,7 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
 
     PLAYER_VELX *= pow(movementDrag, refreshRateDelta);
     PLAYER_VELY *= pow(movementDrag, refreshRateDelta);
-    real_t magnitude = sqrt(pow(PLAYER_VELX, 2) + pow(PLAYER_VELY, 2));
+    const real_t magnitude = sqrt(pow(PLAYER_VELX, 2) + pow(PLAYER_VELY, 2));
     const real_t magnitudeMax = 5.0;
     if ( magnitude > magnitudeMax )
     {
@@ -4830,7 +4830,7 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
             {
                 if ( !rooted )
                 {
-                    double tangent = atan2(my->y - players[i]->entity->y, my->x - players[i]->entity->x);
+                    const double tangent = atan2(my->y - players[i]->entity->y, my->x - players[i]->entity->x);
                     PLAYER_VELX += cos(tangent) * 0.075 * refreshRateDelta;
                     PLAYER_VELY += sin(tangent) * 0.075 * refreshRateDelta;
                 }
@@ -4847,7 +4847,7 @@ void Player::PlayerMovement_t::handlePlayerMovement(bool useRefreshRateDelta)
             amuletwaterbreathing = true;
         }
     }
-    bool swimming = isPlayerSwimming();
+    const bool swimming = isPlayerSwimming();
     if ( swimming && !amuletwaterbreathing )
     {
         //PLAYER_VELX *= (/*((stats[PLAYER_NUM]->getModifiedProficiency(PRO_LEGACY_SWIMMING) / 100.f) * 50.f) +*/ 50) / 100.f;
@@ -4894,8 +4894,8 @@ void Player::PlayerMovement_t::handlePlayerCameraPosition(bool useRefreshRateDel
 
     Entity* my = players[player.playernum]->entity;
 
-    int playerRace = my->getMonsterTypeFromSprite();
-    bool swimming = isPlayerSwimming();
+    const int playerRace = my->getMonsterTypeFromSprite();
+    const bool swimming = isPlayerSwimming();
 
     double refreshRateDelta = 1.0;
     if ( useRefreshRateDelta && fps > 0.0 )
@@ -4974,10 +4974,10 @@ void Player::PlayerMovement_t::handlePlayerCameraPosition(bool useRefreshRateDel
             cameraSetpointZ -= Player::PlayerMovement_t::minimiseMaximiseCameraZ * (stats[PLAYER_NUM]->getEffectActive(EFF_MAXIMISE) & 0xF);
         }
 
-        real_t diff = abs(PLAYER_CAMERAZ_ACCEL - cameraSetpointZ);
+        const real_t diff = abs(PLAYER_CAMERAZ_ACCEL - cameraSetpointZ);
         if ( diff > 0.01 && abs(my->creatureHoverZ) < 0.01 )
         {
-            real_t rateChange = std::min(2.0, std::max(0.3, diff * 0.5)) * refreshRateDelta;
+            const real_t rateChange = std::min(2.0, std::max(0.3, diff * 0.5)) * refreshRateDelta;
 
             if ( cameraSetpointZ >= 0.f )
             {
@@ -5036,7 +5036,7 @@ void Player::PlayerMovement_t::handlePlayerCameraPosition(bool useRefreshRateDel
 
 void statueCycleItem(Item& item, bool dirForward)
 {
-    int cat = items[item.type].item_slot;
+    const int cat = items[item.type].item_slot;
     item.appearance = local_rng.rand();
     if ( dirForward )
     {
@@ -5076,9 +5076,9 @@ void followerDebugEquipment(int player)
     Entity* follower = nullptr;
     if ( *cvar_followerdebugequipment && (svFlags & SV_FLAG_CHEATS) )
     {
-        for ( node_t* node = stats[player]->FOLLOWERS.first; node != nullptr; node = node->next )
+        for (const node_t* node = stats[player]->FOLLOWERS.first; node != nullptr; node = node->next )
         {
-            auto c = static_cast<Uint32*>(node->element);
+            const auto c = static_cast<Uint32*>(node->element);
             if ( c )
             {
                 follower = uidToEntity(*c);
@@ -5093,7 +5093,7 @@ void followerDebugEquipment(int player)
         follower->setEffect(EFF_STUNNED, true, 50, false);
 
         follower->flags[USERFLAG2] = false;
-        for ( auto bodypart : follower->bodyparts )
+        for (const auto bodypart : follower->bodyparts )
         {
             bodypart->flags[USERFLAG2] = false;
         }
@@ -5343,13 +5343,13 @@ void doStatueEditor(int player)
     if ( !StatueManager.activeEditing ) { return; }
     if ( player != clientnum ) { return; }
 
-    Sint32 mouseX = inputs.getMouse(player, Inputs::OX);
-    Sint32 mouseY = inputs.getMouse(player, Inputs::OY);
-    bool shootmode = players[player]->shootmode;
+    const Sint32 mouseX = inputs.getMouse(player, Inputs::OX);
+    const Sint32 mouseY = inputs.getMouse(player, Inputs::OY);
+    const bool shootmode = players[player]->shootmode;
 
     if ( ticks % 5 == 0 )
     {
-        Entity* underMouse = nullptr;
+        const Entity* underMouse = nullptr;
         Uint32 uidnum = 0;
         if ( !shootmode )
         {
@@ -5383,7 +5383,7 @@ void doStatueEditor(int player)
     }
 
 
-    if ( Entity* playerEntity = uidToEntity(StatueManager.editingPlayerUid) )
+    if (const Entity* playerEntity = uidToEntity(StatueManager.editingPlayerUid) )
     {
         playerEntity->highlightForUI = 0.0;
         if ( StatueManager.drawGreyscale )
@@ -5394,7 +5394,7 @@ void doStatueEditor(int player)
         {
             playerEntity->grayscaleGLRender = 0.0;
         }
-        for ( auto& bodypart : playerEntity->bodyparts )
+        for (const auto& bodypart : playerEntity->bodyparts )
         {
             bodypart->highlightForUI = 0.0;
             if ( StatueManager.drawGreyscale )
@@ -5807,7 +5807,7 @@ int playerHeadSprite(Monster race, sex_t sex, int appearance, int frame, int pla
     else if ( race == SALAMANDER ) {
         if ( player >= 0 && player < MAXPLAYERS )
         {
-            Uint8 effectStrength = stats[player]->getEffectActive(EFF_SALAMANDER_HEART);
+            const Uint8 effectStrength = stats[player]->getEffectActive(EFF_SALAMANDER_HEART);
             if ( effectStrength == 1 || effectStrength == 2 )
             {
                 return sex == FEMALE ? 2017 : 2016;
@@ -5939,7 +5939,7 @@ void playerDebugTests(Entity* my)
         bool killingDone = true;
         for ( auto node = map.entities->first; node; node = node->next )
         {
-            if (auto entity = static_cast<Entity*>(node->element) )
+            if (const auto entity = static_cast<Entity*>(node->element) )
             {
                 if ( entity->behavior == &actMonster )
                 {
@@ -5947,7 +5947,7 @@ void playerDebugTests(Entity* my)
                     {
                         messagePlayer(0, MESSAGE_DEBUG, "Kill mon: %d", entity->getMonsterTypeFromSprite());
                         entity->setHP(0);
-                        Sint32 oldXP = stats[0]->EXP;
+                        const Sint32 oldXP = stats[0]->EXP;
                         if ( *cvar_test_xp == 3 || *cvar_test_xp == 5 )
                         {
                             if ( local_rng.rand() % 4 > 0 )
@@ -6002,8 +6002,8 @@ void playerDebugTests(Entity* my)
                             if ( local_rng.rand() % 2 == 0 )
                             {
                                 // spawn slime
-                                int ox = entity->x / 16;
-                                int oy = entity->y / 16;
+                                const int ox = entity->x / 16;
+                                const int oy = entity->y / 16;
                                 Entity* monster = summonMonster(SLIME, ox * 16 + 8, oy * 16 + 8);
                                 if ( monster )
                                 {
@@ -6017,7 +6017,7 @@ void playerDebugTests(Entity* my)
                         {
                             Entity* oldSelected = selectedEntity[0];
                             selectedEntity[0] = entity;
-                            bool oldInRange = inrange[0];
+                            const bool oldInRange = inrange[0];
                             inrange[0] = true;
                             actSink(entity);
                             inrange[0] = oldInRange;
@@ -6033,7 +6033,7 @@ void playerDebugTests(Entity* my)
                     {
                         Entity* oldSelected = selectedEntity[0];
                         selectedEntity[0] = entity;
-                        bool oldInRange = inrange[0];
+                        const bool oldInRange = inrange[0];
                         inrange[0] = true;
                         actFountain(entity);
                         inrange[0] = oldInRange;
@@ -14667,12 +14667,12 @@ void Entity::playerShakeGrowthHelmet()
     if ( multiplayer == CLIENT ) { return; }
     if ( behavior == &actPlayer )
     {
-        Stat* myStats = getStats();
+        const Stat* myStats = getStats();
         if ( myStats && (myStats->type == MYCONID || myStats->type == DRYAD) && !myStats->helmet && myStats->getEffectActive(EFF_GROWTH) > 1 )
         {
-            if ( node_t* node = list_Node(&children, 9) )
+            if (const node_t* node = list_Node(&children, 9) )
             {
-                if (auto entity = static_cast<Entity*>(node->element) )
+                if (const auto entity = static_cast<Entity*>(node->element) )
                 {
                     entity->skill[1] = 1;
                     serverUpdateEntitySkill(entity, 1);
@@ -14747,7 +14747,7 @@ void actPlayerLimb(Entity* my)
     {
         if ( my->skill[4] == 1 ) // shields
         {
-            real_t modulus = fmod(parent->mistformGLRender, 1.0);
+            const real_t modulus = fmod(parent->mistformGLRender, 1.0);
             if ( modulus >= 0.05 && modulus < 0.15 ) // force shield
             {
                 my->mistformGLRender = 0.5;
@@ -14883,9 +14883,9 @@ void actPlayerLimb(Entity* my)
 
 void Entity::playerLevelEntrySpeechSecond()
 {
-    int timeDiff = playerAliveTime - 300;
-    int orangeSpeechVolume = 128;
-    int blueSpeechVolume = 112;
+    const int timeDiff = playerAliveTime - 300;
+    const int orangeSpeechVolume = 128;
+    const int blueSpeechVolume = 112;
     if ( timeDiff > 0 && playerLevelEntrySpeech > 0 && !secretlevel )
     {
         switch ( currentlevel )
@@ -15791,7 +15791,7 @@ bool playerRequiresBloodToSustain(int player)
 
 void playerAnimateRat(Entity* my)
 {
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
     int bodypart = 0;
     for ( bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++ )
     {
@@ -15850,7 +15850,7 @@ void playerAnimateRat(Entity* my)
             }
             continue;
         }
-        auto entity = static_cast<Entity*>(node->element);
+        const auto entity = static_cast<Entity*>(node->element);
         entity->x = my->x;
         entity->y = my->y;
         entity->z = my->z;
@@ -15924,11 +15924,11 @@ void playerAnimateRat(Entity* my)
 
 void playerAnimateSpider(Entity* my)
 {
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
     int bodypart = 0;
     for ( bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++ )
     {
-        auto entity = static_cast<Entity*>(node->element);
+        const auto entity = static_cast<Entity*>(node->element);
         if ( bodypart == 0 )
         {
             // hudweapon case
@@ -15966,7 +15966,7 @@ void playerAnimateSpider(Entity* my)
             }
             continue;
         }
-        Entity* previous = nullptr; // previous part
+        const Entity* previous = nullptr; // previous part
         if ( bodypart > 12 )
         {
             previous = static_cast<Entity*>(node->prev->element);
@@ -16079,7 +16079,7 @@ void playerAnimateSpider(Entity* my)
 
                 circleAmount *= scaleDown;
 
-                real_t circleTime = 20.0;
+                const real_t circleTime = 20.0;
                 entity->pitch = circleAmount * cos(2 * PI * (PLAYER_ATTACKTIME / circleTime));
                 entity->pitch -= scaleDown * (PI / 2) * std::min(1.0, (PLAYER_ATTACKTIME / static_cast<real_t>(5)));
 

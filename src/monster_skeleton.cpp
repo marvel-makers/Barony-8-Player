@@ -60,7 +60,7 @@ void initSkeleton(Entity* my, Stat* myStats)
 
             if ( my->monsterAllySummonRank != 0 )
             {
-                int rank = std::min(my->monsterAllySummonRank, 7);
+                const int rank = std::min(my->monsterAllySummonRank, 7);
                 bool secondarySummon = true;
                 if ( MonsterData_t::nameMatchesSpecialNPCName(*myStats, "skeleton knight") )
                 {
@@ -73,7 +73,7 @@ void initSkeleton(Entity* my, Stat* myStats)
                 Entity* leader = uidToEntity(myStats->leader_uid);
                 if ( leader )
                 {
-                    Stat* leaderStats = leader->getStats();
+                    const Stat* leaderStats = leader->getStats();
                     if ( leaderStats )
                     {
                         if ( !secondarySummon )
@@ -231,7 +231,7 @@ void initSkeleton(Entity* my, Stat* myStats)
                 setRandomMonsterStats(myStats, rng);
 
                 // generate 6 items max, less if there are any forced items from boss variants
-                int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+                const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
                 // boss variants
                 const bool boss =
@@ -299,7 +299,7 @@ void initSkeleton(Entity* my, Stat* myStats)
                 int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
                                                              // count any inventory items set to default in edtior
-                int defaultItems = countDefaultItems(myStats);
+                const int defaultItems = countDefaultItems(myStats);
 
                 my->setHardcoreStats(*myStats);
 
@@ -614,7 +614,7 @@ void initSkeleton(Entity* my, Stat* myStats)
 
 void actSkeletonLimb(Entity* my)
 {
-    Entity* parent = uidToEntity(my->skill[2]);
+    const Entity* parent = uidToEntity(my->skill[2]);
 
     if ( parent && parent->behavior == &actMonster )
     {
@@ -655,7 +655,7 @@ void skeletonDie(Entity* my)
         Entity* leader = uidToEntity(myStats->leader_uid);
         if ( leader )
         {
-            Stat* leaderStats = leader->getStats();
+            const Stat* leaderStats = leader->getStats();
             if ( leaderStats )
             {
                 // refund mana to caster.
@@ -861,7 +861,7 @@ void skeletonMoveBodyparts(Entity* my, Stat* myStats, double dist)
         {
             if ( my->parent != 0 )
             {
-                Entity* parent = uidToEntity(my->parent);
+                const Entity* parent = uidToEntity(my->parent);
                 if ( !parent )
                 {
                     my->setHP(0);
@@ -1114,10 +1114,10 @@ void skeletonMoveBodyparts(Entity* my, Stat* myStats, double dist)
                     }
                 }
 
-                node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
+                const node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
                 if ( weaponNode )
                 {
-                    auto weapon = static_cast<Entity*>(weaponNode->element);
+                    const auto weapon = static_cast<Entity*>(weaponNode->element);
                     if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterAttack == 0 ) )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -1212,10 +1212,10 @@ void skeletonMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 }
 
                 shieldarm = entity;
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] )
                     {
                         // if shield invisible, relax arm.
@@ -1571,10 +1571,10 @@ void skeletonMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
+    const node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;

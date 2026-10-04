@@ -442,10 +442,10 @@ void SteamServerClientWrapper::OnLobbyMemberUpdate(LobbyChatUpdate_t* pCallback)
         }
         else
         {
-            uint64 currentLobbyID = (static_cast<CSteamID*>(currentLobby))->ConvertToUint64();
+            const uint64 currentLobbyID = (static_cast<CSteamID*>(currentLobby))->ConvertToUint64();
             if ( pCallback->m_ulSteamIDLobby == currentLobbyID )
             {
-                int numLobbyMembers = SteamMatchmaking()->GetNumLobbyMembers(currentLobbyID);
+                const int numLobbyMembers = SteamMatchmaking()->GetNumLobbyMembers(currentLobbyID);
                 printlog("[STEAM Lobbies]: Info: OnLobbyMemberUpdate received, %d players", numLobbyMembers);
                 EResult userStatus = EResult::k_EResultFail;
                 for ( int lobbyMember = 0; lobbyMember < numLobbyMembers; ++lobbyMember )
@@ -486,10 +486,10 @@ void SteamServerClientWrapper::OnLobbyMemberUpdate(LobbyChatUpdate_t* pCallback)
                     }
                 }
 
-                int numInLobby = SteamMatchmaking()->GetNumLobbyMembers(*static_cast<CSteamID*>(currentLobby));
+                const int numInLobby = SteamMatchmaking()->GetNumLobbyMembers(*static_cast<CSteamID*>(currentLobby));
                 for ( int i = 0; i < numInLobby; ++i )
                 {
-                    CSteamID memberID = SteamMatchmaking()->GetLobbyMemberByIndex(*static_cast<CSteamID*>(currentLobby), i);
+                    const CSteamID memberID = SteamMatchmaking()->GetLobbyMemberByIndex(*static_cast<CSteamID*>(currentLobby), i);
                     SteamFriends()->SetPlayedWith(memberID);
                 }
             }
@@ -700,7 +700,7 @@ void SteamServerClientWrapper::m_SteamCallResultEncryptedAppTicket_Set(SteamAPIC
 SteamAPICall_t cpp_SteamMatchmaking_RequestAppTicket()
 {
     char someData[] = "data";
-    SteamAPICall_t m_SteamCallResultEncryptedAppTicket = SteamUser()->RequestEncryptedAppTicket(someData, sizeof(someData));
+    const SteamAPICall_t m_SteamCallResultEncryptedAppTicket = SteamUser()->RequestEncryptedAppTicket(someData, sizeof(someData));
     steam_server_client_wrapper->m_SteamCallResultEncryptedAppTicket_Set(m_SteamCallResultEncryptedAppTicket);
     return m_SteamCallResultEncryptedAppTicket;
 }
@@ -715,24 +715,24 @@ SteamAPICall_t cpp_SteamMatchmaking_RequestLobbyList(const char* roomkey)
     }
     SteamMatchmaking()->AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter::k_ELobbyDistanceFilterWorldwide);
     SteamMatchmaking()->AddRequestLobbyListNearValueFilter("lobbyCreationTime", SteamUtils()->GetServerRealTime());
-    auto realtime = SteamUtils()->GetServerRealTime();
+    const auto realtime = SteamUtils()->GetServerRealTime();
     SteamMatchmaking()->AddRequestLobbyListNumericalFilter("lobbyModifiedTime",
         realtime - 8, k_ELobbyComparisonEqualToOrGreaterThan);
-    SteamAPICall_t m_SteamCallResultLobbyMatchList = SteamMatchmaking()->RequestLobbyList();
+    const SteamAPICall_t m_SteamCallResultLobbyMatchList = SteamMatchmaking()->RequestLobbyList();
     steam_server_client_wrapper->m_SteamCallResultLobbyMatchList_Set(m_SteamCallResultLobbyMatchList);
     return m_SteamCallResultLobbyMatchList;
 }
 
 SteamAPICall_t cpp_SteamMatchmaking_JoinLobby(CSteamID steamIDLobby)
 {
-    SteamAPICall_t steamAPICall = SteamMatchmaking()->JoinLobby(steamIDLobby);
+    const SteamAPICall_t steamAPICall = SteamMatchmaking()->JoinLobby(steamIDLobby);
     steam_server_client_wrapper->m_SteamCallResultLobbyEntered_Set(steamAPICall);
     return steamAPICall;
 }
 
 SteamAPICall_t cpp_SteamMatchmaking_CreateLobby(ELobbyType eLobbyType, int cMaxMembers)
 {
-    auto old_lobby = static_cast<CSteamID*>(currentLobby);
+    const auto old_lobby = static_cast<CSteamID*>(currentLobby);
     if ( old_lobby )
     {
         SteamMatchmaking()->LeaveLobby(*old_lobby);
@@ -740,7 +740,7 @@ SteamAPICall_t cpp_SteamMatchmaking_CreateLobby(ELobbyType eLobbyType, int cMaxM
         currentLobby = nullptr;
     }
     steamAwaitingLobbyCreation = true;
-    SteamAPICall_t steamAPICall = SteamMatchmaking()->CreateLobby(eLobbyType, cMaxMembers);
+    const SteamAPICall_t steamAPICall = SteamMatchmaking()->CreateLobby(eLobbyType, cMaxMembers);
     steam_server_client_wrapper->m_SteamCallResultLobbyCreated_Set(steamAPICall);
     return steamAPICall;
 }
@@ -760,7 +760,7 @@ void cpp_SteamServerClientWrapper_Destroy()
 void SteamServerClientWrapper::GetNumberOfCurrentPlayers()
 {
     //printlog("Getting Number of Current Players\n");
-    SteamAPICall_t hSteamAPICall = SteamUserStats()->GetNumberOfCurrentPlayers();
+    const SteamAPICall_t hSteamAPICall = SteamUserStats()->GetNumberOfCurrentPlayers();
     m_NumberOfCurrentPlayersCallResult.Set(hSteamAPICall, this, &SteamServerClientWrapper::OnGetNumberOfCurrentPlayers);
 }
 
@@ -793,7 +793,7 @@ void SteamServerClientWrapper::OnGetNumberOfCurrentPlayers(NumberOfCurrentPlayer
 bool achievementUnlocked(const char* achName)
 {
     // check internal achievement record
-    auto find = Compendium_t::achievements.find(achName);
+    const auto find = Compendium_t::achievements.find(achName);
     if ( find == Compendium_t::achievements.end() )
     {
         return false;
@@ -873,7 +873,7 @@ void steamAchievement(const char* achName)
 #endif
 
 #endif
-        auto find = Compendium_t::achievements.find(achName);
+        const auto find = Compendium_t::achievements.find(achName);
         if ( find != Compendium_t::achievements.end() )
         {
             find->second.unlocked = true;
@@ -1010,7 +1010,7 @@ void steamStatisticUpdate(int statisticNum, ESteamStatTypes type, int value)
     {
         case STEAM_STAT_INT:
         {
-            int oldValue = g_SteamStats[statisticNum].m_iValue;
+            const int oldValue = g_SteamStats[statisticNum].m_iValue;
             g_SteamStats[statisticNum].m_iValue += value;
             switch ( statisticNum )
             {
@@ -1413,7 +1413,7 @@ void steamIndicateStatisticProgress(int statisticNum, ESteamStatTypes type)
         return;
     }
 
-    int iVal = g_SteamStats[statisticNum].m_iValue;
+    const int iVal = g_SteamStats[statisticNum].m_iValue;
     float fVal = g_SteamStats[statisticNum].m_flValue;
     if ( type == STEAM_STAT_INT )
     {

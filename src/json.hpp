@@ -178,7 +178,7 @@ public:
     template<typename T>
     static bool writeObject(const char * filename, EFileFormat format, T & v) {
         using std::placeholders::_1;
-        SerializationFunc serialize = std::bind(&T::serialize, &v, _1);
+        const SerializationFunc serialize = std::bind(&T::serialize, &v, _1);
         return writeObjectInternal(filename, format, serialize);
     }
 
@@ -188,7 +188,7 @@ public:
     template<typename T>
     static bool readObject(const char * filename, T & v) {
         using std::placeholders::_1;
-        SerializationFunc serialize = std::bind(&T::serialize, &v, _1);
+        const SerializationFunc serialize = std::bind(&T::serialize, &v, _1);
         return readObjectInternal(filename, serialize);
     }
 

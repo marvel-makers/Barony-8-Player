@@ -369,12 +369,12 @@ bool Player::Inventory_t::Appraisal_t::appraisalPossible(Item* item)
 
     if ( stats[player.playernum]->getModifiedProficiency(PRO_APPRAISAL) < 100 )
     {
-        int value = item->type == GEM_GLASS ? 1000 : item->getGoldValue();
+        const int value = item->type == GEM_GLASS ? 1000 : item->getGoldValue();
 
-        int skillLVL = stats[player.playernum]->getModifiedProficiency(PRO_APPRAISAL)
+        const int skillLVL = stats[player.playernum]->getModifiedProficiency(PRO_APPRAISAL)
             + statGetPER(stats[player.playernum], player.entity) * Player::Inventory_t::Appraisal_t::perStatMult;
 
-        for ( auto& table : appraisal_tables )
+        for (const auto& table : appraisal_tables )
         {
             if ( skillLVL >= table.skillLVL )
             {
@@ -539,7 +539,7 @@ void Player::Inventory_t::Appraisal_t::appraiseItem(Item* item)
             bool itemOnPaperDoll = false;
             if ( player.paperDoll.enabled && itemIsEquipped(oldItemToUpdate, player.playernum) )
             {
-                auto slotType = player.paperDoll.getSlotForItem(*oldItemToUpdate);
+                const auto slotType = player.paperDoll.getSlotForItem(*oldItemToUpdate);
                 if ( slotType != Player::PaperDoll_t::SLOT_MAX )
                 {
                     itemOnPaperDoll = true;
@@ -553,9 +553,9 @@ void Player::Inventory_t::Appraisal_t::appraiseItem(Item* item)
                 player.paperDoll.getCoordinatesFromSlotType(player.paperDoll.getSlotForItem(*oldItemToUpdate), itemx, itemy);
             }
 
-            if ( auto slotFrame = player.inventoryUI.getItemSlotFrame(oldItemToUpdate, itemx, itemy) )
+            if (const auto slotFrame = player.inventoryUI.getItemSlotFrame(oldItemToUpdate, itemx, itemy) )
             {
-                if ( auto appraisalFrame = slotFrame->findFrame("appraisal frame") )
+                if (const auto appraisalFrame = slotFrame->findFrame("appraisal frame") )
                 {
                     appraisalFrame->setDisabled(true);
                 }
@@ -584,7 +584,7 @@ int Player::Inventory_t::Appraisal_t::fastTimeAppraisal = 10 * TICKS_PER_SECOND;
 int Player::Inventory_t::Appraisal_t::perStatMult = 3;
 void Player::Inventory_t::Appraisal_t::readFromFile()
 {
-    std::string filename = "data/appraisal_tables.json";
+    const std::string filename = "data/appraisal_tables.json";
     if ( !PHYSFS_getRealDir(filename.c_str()) )
     {
         printlog("[JSON]: Error: Could not locate json file %s", filename.c_str());
@@ -603,7 +603,7 @@ void Player::Inventory_t::Appraisal_t::readFromFile()
     }
 
     static char buf[32000];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -640,9 +640,9 @@ void Player::Inventory_t::Appraisal_t::readFromFile()
 
     for ( auto itr = d["appraisal_tables"].Begin(); itr != d["appraisal_tables"].End(); ++itr )
     {
-        int skill = (*itr)["skill"].GetInt();
-        int gold_value_limit = (*itr)["gold_value_limit"].GetInt();
-        int fast_time_gold = (*itr)["fast_time_gold"].GetInt();
+        const int skill = (*itr)["skill"].GetInt();
+        const int gold_value_limit = (*itr)["gold_value_limit"].GetInt();
+        const int fast_time_gold = (*itr)["fast_time_gold"].GetInt();
 
         appraisal_tables.push_back(AppraisalBreakpoint_t());
         auto& table = appraisal_tables.back();
@@ -659,13 +659,13 @@ int Player::Inventory_t::Appraisal_t::getAppraisalTime(Item* item)
 
     //if ( item->type != GEM_GLASS )
     {
-        int skillLVL = stats[player.playernum]->getModifiedProficiency(PRO_APPRAISAL)
+        const int skillLVL = stats[player.playernum]->getModifiedProficiency(PRO_APPRAISAL)
             + statGetPER(stats[player.playernum], player.entity) * Player::Inventory_t::Appraisal_t::perStatMult;
-        int value = item->type == GEM_GLASS ? 1000 : item->getGoldValue();
+        const int value = item->type == GEM_GLASS ? 1000 : item->getGoldValue();
 
         bool fast_time = false;
 
-        for ( auto& table : appraisal_tables )
+        for (const auto& table : appraisal_tables )
         {
             if ( skillLVL >= table.skillLVL )
             {
@@ -677,7 +677,7 @@ int Player::Inventory_t::Appraisal_t::getAppraisalTime(Item* item)
         appraisal_time = Player::Inventory_t::Appraisal_t::fastTimeAppraisal;
         if ( !fast_time )
         {
-            for ( auto& pair : appraisal_time_points )
+            for (const auto& pair : appraisal_time_points )
             {
                 if ( value >= pair.first )
                 {
@@ -687,16 +687,16 @@ int Player::Inventory_t::Appraisal_t::getAppraisalTime(Item* item)
             }
         }
 
-        Category cat = itemCategory(item);
+        const Category cat = itemCategory(item);
         if ( cat == FOOD || cat == SCROLL || cat == POTION )
         {
-            real_t ratio = std::max(0.2, 1.0 + (-skillLVL) / 100.0);
+            const real_t ratio = std::max(0.2, 1.0 + (-skillLVL) / 100.0);
             appraisal_time = std::max(static_cast<real_t>(Player::Inventory_t::Appraisal_t::fastTimeAppraisal) * ratio, appraisal_time * ratio);
             appraisal_time = std::max(2 * TICKS_PER_SECOND, appraisal_time);
         }
         else if ( skillLVL >= 50 )
         {
-            real_t ratio = std::max(0.2, 0.5 + (100 - skillLVL) / 100.0);
+            const real_t ratio = std::max(0.2, 0.5 + (100 - skillLVL) / 100.0);
             appraisal_time = std::max(static_cast<real_t>(Player::Inventory_t::Appraisal_t::fastTimeAppraisal) * ratio, appraisal_time * ratio);
             appraisal_time = std::max(2 * TICKS_PER_SECOND, appraisal_time);
         }

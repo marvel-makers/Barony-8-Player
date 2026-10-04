@@ -71,7 +71,7 @@ bool executeItemMenuOption0ForPaperDoll(const int player, Item* item, bool dropp
         return false;
     }
 
-    int oldGUI = players[player]->gui_mode;
+    const int oldGUI = players[player]->gui_mode;
     players[player]->gui_mode = GUI_MODE_INVENTORY; // this makes sure we don't try sell the item or something
 
     if ( droppingAndUnequipping )
@@ -121,10 +121,10 @@ bool executeItemMenuOption0ForInventoryItem(const int player, Item* item) // ret
     //  return false;
     //}
 
-    int oldGUI = players[player]->gui_mode;
+    const int oldGUI = players[player]->gui_mode;
     players[player]->gui_mode = GUI_MODE_INVENTORY; // this makes sure we don't try sell the item or something
 
-    bool isSelectedItem = inputs.getUIInteraction(player)->selectedItem == item;
+    const bool isSelectedItem = inputs.getUIInteraction(player)->selectedItem == item;
     players[player]->inventoryUI.activateItemContextMenuOption(item, ItemContextMenuPrompts::PROMPT_UNEQUIP);
 
     players[player]->gui_mode = oldGUI;
@@ -617,7 +617,7 @@ const char* itemUseString(int player, const Item& item)
 
 Player::PaperDoll_t::PaperDollSlotType getPaperDollSlotFromItemType(Item& item)
 {
-    auto slotName = items[item.type].item_slot;
+    const auto slotName = items[item.type].item_slot;
     Player::PaperDoll_t::PaperDollSlotType dollSlot = Player::PaperDoll_t::PaperDollSlotType::SLOT_MAX;
     switch ( slotName )
     {
@@ -880,12 +880,12 @@ void Player::PaperDoll_t::selectPaperDollCoordinatesFromSlotType(Player::PaperDo
 
 bool moveInPaperDoll(int player, Player::PaperDoll_t::PaperDollSlotType paperDollSlot, int currentx, int currenty, int diffx, int diffy, int& xout, int& yout)
 {
-    auto& inventoryUI = players[player]->inventoryUI;
+    const auto& inventoryUI = players[player]->inventoryUI;
 
     int x = xout;
     int y = yout;
 
-    bool movingFromInventory = currenty >= 0;
+    const bool movingFromInventory = currenty >= 0;
 
     if ( inventoryUI.bCompactView )
     {
@@ -1143,10 +1143,10 @@ bool moveInPaperDoll(int player, Player::PaperDoll_t::PaperDollSlotType paperDol
 // only called by handleInventoryMovement in player.cpp
 void select_chest_slot(int player, int currentx, int currenty, int diffx, int diffy)
 {
-    int x = currentx + diffx;
+    const int x = currentx + diffx;
     int y = currenty + diffy;
 
-    int lowestItemY = players[player]->inventoryUI.chestGUI.getNumItemsToDisplayVertical() - 1;
+    const int lowestItemY = players[player]->inventoryUI.chestGUI.getNumItemsToDisplayVertical() - 1;
     if ( y < 0 )
     {
         y = lowestItemY;
@@ -1174,10 +1174,10 @@ void select_chest_slot(int player, int currentx, int currenty, int diffx, int di
 // only called by handleInventoryMovement in player.cpp
 void select_shop_slot(int player, int currentx, int currenty, int diffx, int diffy)
 {
-    int x = currentx + diffx;
+    const int x = currentx + diffx;
     int y = currenty + diffy;
 
-    int lowestItemY = players[player]->shopGUI.MAX_SHOP_Y - 1;
+    const int lowestItemY = players[player]->shopGUI.MAX_SHOP_Y - 1;
     if ( y < 0 )
     {
         y = lowestItemY;
@@ -1209,7 +1209,7 @@ void select_tinkering_slot(int player, int currentx, int currenty, int diffx, in
     int y = currenty + diffy;
 
     auto& tinkerGUI = GenericGUI[player].tinkerGUI;
-    int lowestItemY = tinkerGUI.MAX_TINKER_Y - 1;
+    const int lowestItemY = tinkerGUI.MAX_TINKER_Y - 1;
     if ( y < 0 )
     {
         y = lowestItemY;
@@ -1242,7 +1242,7 @@ void select_feather_slot(int player, int currentx, int currenty, int diffx, int 
         return;
     }
 
-    int lowestItemY = featherGUI.MAX_FEATHER_Y - 1;
+    const int lowestItemY = featherGUI.MAX_FEATHER_Y - 1;
     if ( y < 0 )
     {
         y = lowestItemY;
@@ -1274,7 +1274,7 @@ void select_assistshrine_slot(int player, int currentx, int currenty, int diffx,
     int lowestItemY = 0;
     if ( assistShrineGUI.currentView == GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_CLASSES )
     {
-        for ( auto& pair : assistShrineGUI.classSlots )
+        for (const auto& pair : assistShrineGUI.classSlots )
         {
             lowestItemY = std::max(lowestItemY, pair.first / 100);
         }
@@ -1370,7 +1370,7 @@ void select_assistshrine_slot(int player, int currentx, int currenty, int diffx,
             {
                 if ( diffy > 0 )
                 {
-                    auto slotFrame = assistShrineGUI.getAssistShrineSlotFrame(x, currenty + 1);
+                    const auto slotFrame = assistShrineGUI.getAssistShrineSlotFrame(x, currenty + 1);
                     if ( slotFrame && !slotFrame->isDisabled() )
                     {
                         y = currenty + 1;
@@ -1384,7 +1384,7 @@ void select_assistshrine_slot(int player, int currentx, int currenty, int diffx,
                         while ( x > 0 )
                         {
                             --x;
-                            auto slotFrame = assistShrineGUI.getAssistShrineSlotFrame(x, currenty + 1);
+                            const auto slotFrame = assistShrineGUI.getAssistShrineSlotFrame(x, currenty + 1);
                             if ( slotFrame && !slotFrame->isDisabled() )
                             {
                                 y = currenty + 1;
@@ -1401,7 +1401,7 @@ void select_assistshrine_slot(int player, int currentx, int currenty, int diffx,
                 }
                 else
                 {
-                    auto slotFrame = assistShrineGUI.getAssistShrineSlotFrame(x, currenty - 1);
+                    const auto slotFrame = assistShrineGUI.getAssistShrineSlotFrame(x, currenty - 1);
                     if ( slotFrame && !slotFrame->isDisabled() )
                     {
                         y = currenty - 1;
@@ -1416,7 +1416,7 @@ void select_assistshrine_slot(int player, int currentx, int currenty, int diffx,
             {
                 if ( diffx > 0 )
                 {
-                    auto slotFrame = assistShrineGUI.getAssistShrineSlotFrame(currentx + 1, y);
+                    const auto slotFrame = assistShrineGUI.getAssistShrineSlotFrame(currentx + 1, y);
                     if ( slotFrame && !slotFrame->isDisabled() )
                     {
                         x = currentx + 1;
@@ -1428,7 +1428,7 @@ void select_assistshrine_slot(int player, int currentx, int currenty, int diffx,
                 }
                 else
                 {
-                    auto slotFrame = assistShrineGUI.getAssistShrineSlotFrame(currentx - 1, y);
+                    const auto slotFrame = assistShrineGUI.getAssistShrineSlotFrame(currentx - 1, y);
                     if ( slotFrame && !slotFrame->isDisabled() )
                     {
                         x = currentx - 1;
@@ -1443,7 +1443,7 @@ void select_assistshrine_slot(int player, int currentx, int currenty, int diffx,
             x = std::min(std::max(0, x), assistShrineGUI.MAX_ASSISTSHRINE_X - 1);
             y = std::min(std::max(0, y), lowestItemY);
 
-            Frame* slotFrame = assistShrineGUI.getAssistShrineSlotFrame(x, y);
+            const Frame* slotFrame = assistShrineGUI.getAssistShrineSlotFrame(x, y);
             if ( !slotFrame || slotFrame->isDisabled() )
             {
                 // dest slot not valid, reset to current
@@ -1727,9 +1727,9 @@ void select_spell_slot(int player, int currentx, int currenty, int diffx, int di
     }
 
     int lowestItemY = players[player]->inventoryUI.spellPanel.getNumSpellsToDisplayVertical() - 1;
-    for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( !item ) { continue; }
         if ( itemCategory(item) != SPELL_CAT ) { continue; }
 
@@ -1750,7 +1750,7 @@ void select_spell_slot(int player, int currentx, int currenty, int diffx, int di
 // only called by handleInventoryMovement in player.cpp
 void select_inventory_slot(int player, int currentx, int currenty, int diffx, int diffy)
 {
-    auto& selectedItem = inputs.getUIInteraction(player)->selectedItem;
+    const auto& selectedItem = inputs.getUIInteraction(player)->selectedItem;
     auto& inventoryUI = players[player]->inventoryUI;
     auto paperDollSlot = Player::PaperDoll_t::PaperDollSlotType::SLOT_MAX;
 
@@ -1776,7 +1776,7 @@ void select_inventory_slot(int player, int currentx, int currenty, int diffx, in
 
     if ( selectedItem )
     {
-        auto selectedItemDollSlot = getPaperDollSlotFromItemType(*selectedItem);
+        const auto selectedItemDollSlot = getPaperDollSlotFromItemType(*selectedItem);
         if ( selectedItemDollSlot != Player::PaperDoll_t::PaperDollSlotType::SLOT_MAX )
         {
             if ( currenty < 0 ) // moving from doll
@@ -1952,7 +1952,7 @@ void select_inventory_slot(int player, int currentx, int currenty, int diffx, in
                     bool skipPaperDollSelection = false;
                     if ( players[player]->inventoryUI.isItemFromChest(selectedItem) )
                     {
-                        for ( auto& slot : players[player]->paperDoll.dollSlots )
+                        for (const auto& slot : players[player]->paperDoll.dollSlots )
                         {
                             if ( slot.slotType == selectedItemDollSlot && slot.item != 0 )
                             {
@@ -2004,7 +2004,7 @@ void select_inventory_slot(int player, int currentx, int currenty, int diffx, in
     {
         paperDollSlot = players[player]->paperDoll.paperDollSlotFromCoordinates(x, y);
     }
-    bool doPaperDollMovement = (paperDollSlot != Player::PaperDoll_t::PaperDollSlotType::SLOT_MAX);
+    const bool doPaperDollMovement = (paperDollSlot != Player::PaperDoll_t::PaperDollSlotType::SLOT_MAX);
 
     if ( doPaperDollMovement )
     {
@@ -2217,7 +2217,7 @@ void select_inventory_slot(int player, int currentx, int currenty, int diffx, in
 
     if ( inventoryUI.selectedSlotInPaperDoll() )
     {
-        auto oldSlot = players[player]->paperDoll.paperDollSlotFromCoordinates(inventoryUI.getSelectedSlotX(), inventoryUI.getSelectedSlotY());
+        const auto oldSlot = players[player]->paperDoll.paperDollSlotFromCoordinates(inventoryUI.getSelectedSlotX(), inventoryUI.getSelectedSlotY());
         if ( !inventoryUI.bCompactView )
         {
             if ( oldSlot >= Player::PaperDoll_t::PaperDollSlotType::SLOT_HELM )
@@ -2290,7 +2290,7 @@ std::string getItemSpritePath(const int player, Item& item)
     }
     else
     {
-        node_t* imagePathsNode = nullptr;
+        const node_t* imagePathsNode = nullptr;
         if ( item.type == TOOL_PLAYER_LOOT_BAG )
         {
             const int playerOwner = item.getLootBagPlayer();
@@ -2310,7 +2310,7 @@ std::string getItemSpritePath(const int player, Item& item)
         }
         else if ( itemCategory(&item) == SPELLBOOK || itemCategory(&item) == TOME_SPELL )
         {
-            int variation = getItemVariationFromSpellbookOrTome(item);
+            const int variation = getItemVariationFromSpellbookOrTome(item);
             if ( variation >= 0 && variation < items[item.type].variations )
             {
                 imagePathsNode = list_Node(&items[item.type].images, variation);
@@ -2326,7 +2326,7 @@ std::string getItemSpritePath(const int player, Item& item)
         }
         if ( imagePathsNode )
         {
-            auto imagePath = static_cast<string_t*>(imagePathsNode->element);
+            const auto imagePath = static_cast<string_t*>(imagePathsNode->element);
             return imagePath->data;
         }
     }
@@ -2339,7 +2339,7 @@ Item* takeItemFromChest(int player, Item* item, int amount, Item* addToSpecificI
     {
         return nullptr;
     }
-    list_t* chest_inventory = nullptr;
+    const list_t* chest_inventory = nullptr;
     if ( multiplayer == CLIENT )
     {
         chest_inventory = &chestInv[player];
@@ -2385,7 +2385,7 @@ bool dragDropStackChestItems(const int player, Item*& selectedItem, Item* tempIt
     {
         return false;
     }
-    list_t* chest_inventory = nullptr;
+    const list_t* chest_inventory = nullptr;
     if ( multiplayer == CLIENT )
     {
         chest_inventory = &chestInv[player];
@@ -2408,7 +2408,7 @@ bool dragDropStackChestItems(const int player, Item*& selectedItem, Item* tempIt
     {
         int selectedItemQty = 0;
         int destItemQty = 0;
-        auto stackingResult = getItemStackingBehavior(player, selectedItem, tempItem, selectedItemQty, destItemQty);
+        const auto stackingResult = getItemStackingBehavior(player, selectedItem, tempItem, selectedItemQty, destItemQty);
         if ( stackingResult.resultType == ITEM_ADDED_ENTIRELY_TO_DESTINATION_STACK )
         {
             // items have stacked entirely
@@ -2416,7 +2416,7 @@ bool dragDropStackChestItems(const int player, Item*& selectedItem, Item* tempIt
             if ( itemCopyToTake )
             {
                 assert(selectedItem == nullptr);
-                if ( Item* chestItem = openedChest[player]->addItemToChest(itemCopyToTake, false, tempItem) )
+                if (const Item* chestItem = openedChest[player]->addItemToChest(itemCopyToTake, false, tempItem) )
                 {
                     assert(chestItem == tempItem);
                     assert(chestItem->count == destItemQty);
@@ -2435,13 +2435,13 @@ bool dragDropStackChestItems(const int player, Item*& selectedItem, Item* tempIt
         }
         else if ( stackingResult.resultType == ITEM_ADDED_PARTIALLY_TO_DESTINATION_STACK )
         {
-            int qtyToTake = selectedItem->count - selectedItemQty;
-            int oldQty = selectedItem->count;
+            const int qtyToTake = selectedItem->count - selectedItemQty;
+            const int oldQty = selectedItem->count;
             Item* itemCopyToTake = openedChest[player]->getItemFromChest(selectedItem, qtyToTake);
             assert(selectedItem && selectedItem->count == selectedItemQty);
             assert(itemCopyToTake);
 
-            if ( Item* chestItem = openedChest[player]->addItemToChest(itemCopyToTake, false, tempItem) )
+            if (const Item* chestItem = openedChest[player]->addItemToChest(itemCopyToTake, false, tempItem) )
             {
                 assert(chestItem != itemCopyToTake);
                 selectedItem->x = oldx;
@@ -2487,11 +2487,11 @@ bool dragDropStackInventoryItems(const int player, Item*& selectedItem, Item* te
     {
         int selectedItemQty = 0;
         int destItemQty = 0;
-        auto stackingResult = getItemStackingBehavior(player, selectedItem, tempItem, selectedItemQty, destItemQty);
+        const auto stackingResult = getItemStackingBehavior(player, selectedItem, tempItem, selectedItemQty, destItemQty);
         if ( stackingResult.resultType == ITEM_ADDED_ENTIRELY_TO_DESTINATION_STACK )
         {
             // items have stacked entirely
-            Item* pickedUp = itemPickup(player, selectedItem, tempItem, false);
+            const Item* pickedUp = itemPickup(player, selectedItem, tempItem, false);
             if ( !pickedUp )
             {
                 messagePlayer(0, MESSAGE_DEBUG, "ERROR STACKING ITEM");
@@ -2511,10 +2511,10 @@ bool dragDropStackInventoryItems(const int player, Item*& selectedItem, Item* te
         }
         else if ( stackingResult.resultType == ITEM_ADDED_PARTIALLY_TO_DESTINATION_STACK )
         {
-            int qtyToTake = selectedItem->count - selectedItemQty;
-            int oldQty = selectedItem->count;
+            const int qtyToTake = selectedItem->count - selectedItemQty;
+            const int oldQty = selectedItem->count;
             selectedItem->count = qtyToTake;
-            Item* pickedUp = itemPickup(player, selectedItem, tempItem, false);
+            const Item* pickedUp = itemPickup(player, selectedItem, tempItem, false);
             if ( pickedUp )
             {
                 selectedItem->count = selectedItemQty;
@@ -4269,7 +4269,7 @@ void Player::Inventory_t::cycleInventoryTab()
             || player.GUI.activeModule == Player::GUI_t::MODULE_SHOP )
         {
             player.GUI.activateModule(Player::GUI_t::MODULE_SPELLS);
-            if ( auto selectedItem = inputs.getUIInteraction(player.playernum)->selectedItem )
+            if (const auto selectedItem = inputs.getUIInteraction(player.playernum)->selectedItem )
             {
                 player.inventoryUI.selectSpell(selectedItem->x, selectedItem->y);
             }
@@ -4376,7 +4376,7 @@ std::string getBindingNameForMissingTooltipPrompts(int index)
 
 int getContextMenuOptionOrder(const int player, ItemContextMenuPrompts prompt)
 {
-    std::string bindingName = getContextMenuOptionBindingName(player, prompt);
+    const std::string bindingName = getContextMenuOptionBindingName(player, prompt);
     if ( bindingName == "MenuAlt1" )
     {
         return 2;
@@ -7990,9 +7990,9 @@ int Player::Inventory_t::getKeyAmountForWallLock(Entity& entity) const
 
     if ( key == WOODEN_SHIELD ) { return num; }
 
-    for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
     {
-        auto tempItem = static_cast<Item*>(node->element);
+        const auto tempItem = static_cast<Item*>(node->element);
         if ( !tempItem ) { continue; }
         if ( tempItem->type == key )
         {
@@ -8037,9 +8037,9 @@ Item* Player::Inventory_t::hasKeyForWallLock(Entity& entity) const
 
     if ( key == WOODEN_SHIELD ) { return nullptr; }
 
-    for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
     {
-        auto tempItem = static_cast<Item*>(node->element);
+        const auto tempItem = static_cast<Item*>(node->element);
         if ( !tempItem ) { continue; }
         if ( tempItem->type == key )
         {
@@ -8090,7 +8090,7 @@ bool Player::Inventory_t::guiAllowDropItems(Item* itemToDrop) const
 
 bool Player::Inventory_t::paperDollContextMenuActive()
 {
-    bool inventoryControlActive = player.bControlEnabled
+    const bool inventoryControlActive = player.bControlEnabled
         && !gamePaused
         && !player.usingCommand();
     return inventoryControlActive 
@@ -11139,8 +11139,8 @@ void Player::PaperDoll_t::warpMouseToMostRecentReturnedInventoryItem()
     {
         return;
     }
-    Uint32 uid = returningItemsToInventory[returningItemsToInventory.size() - 1]; // get last item and select it's new position
-    Item* item = uidToItem(uid);
+    const Uint32 uid = returningItemsToInventory[returningItemsToInventory.size() - 1]; // get last item and select it's new position
+    const Item* item = uidToItem(uid);
     if ( item && !isItemOnDoll(*item) )
     {
         if ( item->x >= 0 && item->x < player.inventoryUI.getSizeX()
@@ -11170,7 +11170,7 @@ void Player::PaperDoll_t::updateSlots()
             continue;
         }
 
-        Item* equippedItem = nullptr;
+        const Item* equippedItem = nullptr;
 
         switch ( slot.slotType )
         {
@@ -11386,7 +11386,7 @@ std::vector<ItemContextMenuPrompts> getContextTooltipOptionsForItem(const int pl
     {
         options = getContextMenuOptionsForItem(player, item);
         options.push_back(ItemContextMenuPrompts::PROMPT_GRAB); // additional prompt here for non-right click menu
-        auto findAppraise = std::find(options.begin(), options.end(), ItemContextMenuPrompts::PROMPT_APPRAISE);
+        const auto findAppraise = std::find(options.begin(), options.end(), ItemContextMenuPrompts::PROMPT_APPRAISE);
         if ( findAppraise != options.end() )
         {
             options.erase(findAppraise);
@@ -11419,7 +11419,7 @@ std::vector<ItemContextMenuPrompts> getContextTooltipOptionsForItem(const int pl
     {
         options = getContextMenuOptionsForItem(player, item);
         options.push_back(ItemContextMenuPrompts::PROMPT_GRAB); // additional prompt here for non-right click menu
-        auto findAppraise = std::find(options.begin(), options.end(), ItemContextMenuPrompts::PROMPT_APPRAISE);
+        const auto findAppraise = std::find(options.begin(), options.end(), ItemContextMenuPrompts::PROMPT_APPRAISE);
         if ( findAppraise != options.end() )
         {
             options.erase(findAppraise);
@@ -11480,7 +11480,7 @@ std::vector<ItemContextMenuPrompts> getContextMenuOptionsForItem(const int playe
 
     if ( itemCategory(item) == POTION )
     {
-        bool is_potion_bad = isPotionBad(*item);
+        const bool is_potion_bad = isPotionBad(*item);
         if ( is_potion_bad )
         {
             options.push_back(PROMPT_EQUIP);
@@ -11735,7 +11735,7 @@ std::vector<ItemContextMenuPrompts> getContextMenuOptionsForItem(const int playe
     {
         optionsMap[getContextMenuOptionBindingName(player, *it)] += 1;
     }
-    for ( auto& pair : optionsMap )
+    for (const auto& pair : optionsMap )
     {
         if ( players[player]->inventoryUI.useItemDropdownOnGamepad != Player::Inventory_t::GAMEPAD_DROPDOWN_COMPACT )
         {
@@ -11750,7 +11750,7 @@ std::vector<ItemContextMenuPrompts> getContextMenuOptionsForItem(const int playe
 // filters out items excluded by auto_hotbar_categories
 bool autoAddHotbarFilter(const Item& item)
 {
-    Category cat = itemCategory(&item);
+    const Category cat = itemCategory(&item);
     for ( int i = 0; i < NUM_HOTBAR_CATEGORIES; ++i )
     {
         if ( auto_hotbar_categories[i] )
@@ -11878,12 +11878,12 @@ bool autoAddHotbarFilter(const Item& item)
 
 void quickStackItems(int player)
 {
-    for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
     {
-        auto itemToStack = static_cast<Item*>(node->element);
+        const auto itemToStack = static_cast<Item*>(node->element);
         if ( itemToStack && itemToStack->shouldItemStack(player) )
         {
-            for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+            for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
             {
                 auto item2 = static_cast<Item*>(node->element);
                 // if items are the same, check to see if they should stack
@@ -11919,9 +11919,9 @@ void autosortInventory(int player, bool sortPaperDoll)
         autosortPairs.push_back(std::make_pair(autosort_inventory_categories[i], i));
     }
 
-    for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item )
         {
             if ( sortPaperDoll )
@@ -11943,11 +11943,11 @@ void autosortInventory(int player, bool sortPaperDoll)
     // iterate and sort from highest to lowest priority, 1 to 9
     for (auto it = autosortPairs.rbegin(); it != autosortPairs.rend(); ++it )
     {
-        std::pair<int, int> tmpPair = *it;
+        const std::pair<int, int> tmpPair = *it;
         if ( tmpPair.first > 0 )
         {
             //messagePlayer(0, "priority %d, category: %d", tmpPair.first, tmpPair.second);
-            bool invertSortDirection = true;
+            const bool invertSortDirection = true;
             switch ( tmpPair.second )
             {
                 case 0: // weapons
@@ -11998,11 +11998,11 @@ void autosortInventory(int player, bool sortPaperDoll)
     // iterate and sort from lowest to highest priority, -9 to -1
     for (auto it = autosortPairs.begin(); it != autosortPairs.end(); ++it )
     {
-        std::pair<int, int> tmpPair = *it;
+        const std::pair<int, int> tmpPair = *it;
         if ( tmpPair.first < 0 )
         {
             //messagePlayer(0, "priority %d, category: %d", tmpPair.first, tmpPair.second);
-            bool invertSortDirection = false;
+            const bool invertSortDirection = false;
             switch ( tmpPair.second )
             {
                 case 0: // weapons
@@ -12057,7 +12057,7 @@ void autosortInventory(int player, bool sortPaperDoll)
 bool Player::Inventory_t::moveItemToFreeInventorySlot(Item* item)
 {
     bool notfree = false;
-    bool is_spell = itemCategory(item) == SPELL_CAT;
+    const bool is_spell = itemCategory(item) == SPELL_CAT;
     bool foundaspot = false;
 
     if ( is_spell )
@@ -12068,9 +12068,9 @@ bool Player::Inventory_t::moveItemToFreeInventorySlot(Item* item)
         {
             for ( x = 0; x < Player::Inventory_t::MAX_SPELLS_X; x++ )
             {
-                for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
+                for (const node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
                 {
-                    auto tempItem = static_cast<Item*>(node->element);
+                    const auto tempItem = static_cast<Item*>(node->element);
                     if ( tempItem == item )
                     {
                         continue;
@@ -12143,9 +12143,9 @@ bool Player::Inventory_t::moveItemToFreeInventorySlot(Item* item)
         {
             for ( y = 0; y < sort_y; y++ )
             {
-                for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
+                for (const node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
                 {
-                    auto tempItem = static_cast<Item*>(node->element);
+                    const auto tempItem = static_cast<Item*>(node->element);
                     if ( tempItem == item )
                     {
                         continue;
@@ -12200,9 +12200,9 @@ bool Player::Inventory_t::moveItemToFreeInventorySlot(Item* item)
             {
                 for ( y = DEFAULT_INVENTORY_SIZEY; y < getSizeY(); y++ )
                 {
-                    for ( node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
+                    for (const node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next )
                     {
-                        auto tempItem = static_cast<Item*>(node->element);
+                        const auto tempItem = static_cast<Item*>(node->element);
                         if ( tempItem == item )
                         {
                             continue;
@@ -12260,11 +12260,11 @@ bool Player::Inventory_t::moveItemToFreeInventorySlot(Item* item)
 
 void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
 {
-    auto cat = static_cast<Category>(categoryInt);
+    const auto cat = static_cast<Category>(categoryInt);
 
     std::map<int, std::vector<Item*>> itemsToSort;
     std::vector<int> itemTypeSortOrder;
-    for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
     {
         auto itemBeingSorted = static_cast<Item*>(node->element);
         if ( itemBeingSorted && (itemBeingSorted->x == -1 || itemBeingSorted->x == Player::PaperDoll_t::ITEM_RETURN_TO_INVENTORY_COORDINATE) )
@@ -12324,8 +12324,8 @@ void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
                 int x, y;
                 bool notfree = false, foundaspot = false;
 
-                bool is_spell = false;
-                int inventory_y = std::min(players[player]->inventoryUI.getSizeY(), players[player]->inventoryUI.DEFAULT_INVENTORY_SIZEY); // only sort y values of 2-3, if extra row don't auto sort into it.
+                const bool is_spell = false;
+                const int inventory_y = std::min(players[player]->inventoryUI.getSizeY(), players[player]->inventoryUI.DEFAULT_INVENTORY_SIZEY); // only sort y values of 2-3, if extra row don't auto sort into it.
 
                 if ( sortRightToLeft )
                 {
@@ -12339,10 +12339,10 @@ void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
                 {
                     for ( y = 0; y < inventory_y; y++ )
                     {
-                        node_t* node2 = nullptr;
+                        const node_t* node2 = nullptr;
                         for ( node2 = stats[player]->inventory.first; node2 != nullptr; node2 = node2->next )
                         {
-                            auto tempItem = static_cast<Item*>(node2->element);
+                            const auto tempItem = static_cast<Item*>(node2->element);
                             if ( tempItem == itemBeingSorted )
                             {
                                 continue;
@@ -12403,10 +12403,10 @@ void sortInventoryItemsOfType(int player, int categoryInt, bool sortRightToLeft)
                     {
                         for ( y = players[player]->inventoryUI.DEFAULT_INVENTORY_SIZEY; y < players[player]->inventoryUI.getSizeY(); y++ )
                         {
-                            node_t* node2 = nullptr;
+                            const node_t* node2 = nullptr;
                             for ( node2 = stats[player]->inventory.first; node2 != nullptr; node2 = node2->next )
                             {
-                                auto tempItem = static_cast<Item*>(node2->element);
+                                const auto tempItem = static_cast<Item*>(node2->element);
                                 if ( tempItem == itemBeingSorted )
                                 {
                                     continue;
@@ -12460,21 +12460,21 @@ bool mouseInsidePlayerInventory(const int player)
     if ( players[player]->inventoryUI.frame
         && !players[player]->inventoryUI.frame->isDisabled() )
     {
-        if ( auto invSlots = players[player]->inventoryUI.frame->findFrame("inventory slots") )
+        if (const auto invSlots = players[player]->inventoryUI.frame->findFrame("inventory slots") )
         {
             if ( !invSlots->isDisabled() && invSlots->capturesMouse() )
             {
                 return true;
             }
         }
-        if ( auto dollSlots = players[player]->inventoryUI.frame->findFrame("paperdoll slots") )
+        if (const auto dollSlots = players[player]->inventoryUI.frame->findFrame("paperdoll slots") )
         {
             if ( !dollSlots->isDisabled() && dollSlots->capturesMouse() )
             {
                 return true;
             }
         }
-        if ( auto backpackSlots = players[player]->inventoryUI.frame->findFrame("backpack slots") )
+        if (const auto backpackSlots = players[player]->inventoryUI.frame->findFrame("backpack slots") )
         {
             if ( !backpackSlots->isDisabled() && backpackSlots->capturesMouse() )
             {
@@ -12492,7 +12492,7 @@ bool mouseInsidePlayerHotbar(const int player)
     {
         for ( int num = 0; num < NUM_HOTBAR_SLOTS; ++num )
         {
-            if ( auto slotFrame = players[player]->hotbar.getHotbarSlotFrame(num) )
+            if (const auto slotFrame = players[player]->hotbar.getHotbarSlotFrame(num) )
             {
                 if ( !slotFrame->isDisabled() && slotFrame->capturesMouse() )
                 {
@@ -12514,9 +12514,9 @@ bool playerLearnedSpellbook(int player, Item* current_item)
     {
         return false;
     }
-    for ( node_t* node = stats[player]->inventory.first; node && current_item->identified; node = node->next )
+    for (const node_t* node = stats[player]->inventory.first; node && current_item->identified; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( !item )
         {
             continue;
@@ -12531,7 +12531,7 @@ bool playerLearnedSpellbook(int player, Item* current_item)
             // special shaman racial spells, don't count this as being learnt
             continue;
         }
-        spell_t *spell = getSpellFromItem(player, item, false); //Do not free or delete this.
+        const spell_t *spell = getSpellFromItem(player, item, false); //Do not free or delete this.
         if ( !spell )
         {
             continue;

@@ -139,7 +139,7 @@ void actDoor(Entity* my)
                 {
                     if ( Player::getPlayerInteractEntity(i) && inrange[i])
                     {
-                        Entity* playerEntity = Player::getPlayerInteractEntity(i);
+                        const Entity* playerEntity = Player::getPlayerInteractEntity(i);
                         if ( !my->doorLocked )   // door unlocked
                         {
                             if ( !my->doorDir && !my->doorStatus )
@@ -232,16 +232,16 @@ void actDoor(Entity* my)
             {
                 entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
             }
-            real_t oldmyx = my->x;
-            real_t oldmyy = my->y;
+            const real_t oldmyx = my->x;
+            const real_t oldmyy = my->y;
             my->x = (static_cast<int>(my->x) >> 4) * 16.0 + 8.0; // door positioning isn't centred on tile so adjust
             my->y = (static_cast<int>(my->y) >> 4) * 16.0 + 8.0;
             for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
             {
-                list_t* currentList = *it;
-                for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+                const list_t* currentList = *it;
+                for (const node_t* node = currentList->first; node != nullptr; node = node->next )
                 {
-                    auto entity = static_cast<Entity*>(node->element);
+                    const auto entity = static_cast<Entity*>(node->element);
                     if ( entity == my || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost) 
                         || entity->behavior == &actDoorFrame )
                     {
@@ -251,8 +251,8 @@ void actDoor(Entity* my)
                     bool insideEntity = false;
                     if ( entity->behavior == &actDoor || entity->behavior == &actIronDoor )
                     {
-                        real_t oldx = entity->x;
-                        real_t oldy = entity->y;
+                        const real_t oldx = entity->x;
+                        const real_t oldy = entity->y;
                         entity->x = (static_cast<int>(entity->x) >> 4) * 16.0 + 8.0; // door positioning isn't centred on tile so adjust
                         entity->y = (static_cast<int>(entity->y) >> 4) * 16.0 + 8.0;
                         insideEntity = entityInsideEntity(my, entity);
@@ -519,7 +519,7 @@ void Entity::actIronDoor()
                 {
                     if ( Player::getPlayerInteractEntity(i) && inrange[i] )
                     {
-                        Entity* playerEntity = Player::getPlayerInteractEntity(i);
+                        const Entity* playerEntity = Player::getPlayerInteractEntity(i);
                         if ( !doorLocked )   // door unlocked
                         {
                             if ( !doorDir && !doorStatus )
@@ -622,16 +622,16 @@ void Entity::actIronDoor()
             {
                 entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 2);
             }
-            real_t oldmyx = x;
-            real_t oldmyy = y;
+            const real_t oldmyx = x;
+            const real_t oldmyy = y;
             x = (static_cast<int>(x) >> 4) * 16.0 + 8.0; // door positioning isn't centred on tile so adjust
             y = (static_cast<int>(y) >> 4) * 16.0 + 8.0;
             for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
             {
-                list_t* currentList = *it;
-                for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+                const list_t* currentList = *it;
+                for (const node_t* node = currentList->first; node != nullptr; node = node->next )
                 {
-                    auto entity = static_cast<Entity*>(node->element);
+                    const auto entity = static_cast<Entity*>(node->element);
                     if ( entity == this || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost)
                         || entity->behavior == &actDoorFrame )
                     {
@@ -641,8 +641,8 @@ void Entity::actIronDoor()
                     bool insideEntity = false;
                     if ( entity->behavior == &actDoor || entity->behavior == &::actIronDoor )
                     {
-                        real_t oldx = entity->x;
-                        real_t oldy = entity->y;
+                        const real_t oldx = entity->x;
+                        const real_t oldy = entity->y;
                         entity->x = (static_cast<int>(entity->x) >> 4) * 16.0 + 8.0; // door positioning isn't centred on tile so adjust
                         entity->y = (static_cast<int>(entity->y) >> 4) * 16.0 + 8.0;
                         insideEntity = entityInsideEntity(this, entity);

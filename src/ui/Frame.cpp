@@ -381,11 +381,11 @@ void Frame::postdraw() {
 #endif
 
 void Frame::draw() const {
-    auto _actualSize = allowScrolling ? actualSize : SDL_Rect{0, 0, size.w, size.h};
+    const auto _actualSize = allowScrolling ? actualSize : SDL_Rect{0, 0, size.w, size.h};
     std::vector<const Widget*> selectedWidgets;
     std::vector<const Widget*> searchParents;
     findSelectedWidgets(selectedWidgets);
-    for (auto widget : selectedWidgets) {
+    for (const auto widget : selectedWidgets) {
         if (widget) {
             searchParents.push_back(widget->findSearchRoot());
         } else {
@@ -403,7 +403,7 @@ void Frame::drawPost(SDL_Rect _size, SDL_Rect _actualSize,
         return;
 
     // warning: overloading member variable!
-    SDL_Rect actualSize = allowScrolling ? this->actualSize : SDL_Rect{0, 0, size.w, size.h};
+    const SDL_Rect actualSize = allowScrolling ? this->actualSize : SDL_Rect{0, 0, size.w, size.h};
 
     _size.x += std::max(0, size.x - _actualSize.x);
     _size.y += std::max(0, size.y - _actualSize.y);
@@ -428,16 +428,16 @@ void Frame::drawPost(SDL_Rect _size, SDL_Rect _actualSize,
         scroll.y -= size.y - _actualSize.y;
     }
 
-    for (auto field : fields) {
+    for (const auto field : fields) {
         field->drawPost(_size, scroll, selectedWidgets, searchParents);
     }
-    for (auto button : buttons) {
+    for (const auto button : buttons) {
         button->drawPost(_size, scroll, selectedWidgets, searchParents);
     }
-    for (auto slider : sliders) {
+    for (const auto slider : sliders) {
         slider->drawPost(_size, scroll, selectedWidgets, searchParents);
     }
-    for ( auto frame : frames ) {
+    for (const auto frame : frames ) {
         frame->drawPost(_size, scroll, selectedWidgets, searchParents);
     }
 
@@ -461,9 +461,9 @@ void frameDrawBlitSurface(const Frame* frame, SDL_Rect _size, SDL_Surface* surf,
     if (!surf || !tex || !frame) {
         return;
     }
-    
-    int owner = frame->getOwner();
-    auto pos = SDL_Rect{ _size.x, _size.y, surf->w, surf->h };
+
+    const int owner = frame->getOwner();
+    const auto pos = SDL_Rect{ _size.x, _size.y, surf->w, surf->h };
     SDL_Rect dest;
     dest.x = std::max(_size.x, pos.x);
     dest.y = std::max(_size.y, pos.y);
@@ -999,7 +999,7 @@ void Frame::draw(SDL_Rect _size, SDL_Rect _actualSize, const std::vector<const W
 }
 
 Frame::result_t Frame::process() {
-    result_t result = process(size, allowScrolling ? actualSize : SDL_Rect{0, 0, size.w, size.h}, true);
+    const result_t result = process(size, allowScrolling ? actualSize : SDL_Rect{0, 0, size.w, size.h}, true);
 
     tooltip = nullptr;
     if (result.tooltip && result.tooltip[0] != '\0') {
@@ -1716,7 +1716,7 @@ void Frame::processField(const SDL_Rect& _size, Field& field, Widget*& destWidge
         destWidget = field.handleInput();
     }
 
-    Field::result_t fieldResult = field.process(_size, actualSize, result.usable);
+    const Field::result_t fieldResult = field.process(_size, actualSize, result.usable);
     if (result.usable && fieldResult.highlighted) {
         result.highlightTime = fieldResult.highlightTime;
         result.tooltip = fieldResult.tooltip;
@@ -1748,7 +1748,7 @@ void Frame::processButton(const SDL_Rect& _size, Button& button, Widget*& destWi
         destWidget = button.handleInput();
     }
 
-    Button::result_t buttonResult = button.process(_size, actualSize, result.usable);
+    const Button::result_t buttonResult = button.process(_size, actualSize, result.usable);
     if (result.usable && buttonResult.highlighted) {
         result.highlightTime = buttonResult.highlightTime;
         result.tooltip = buttonResult.tooltip;
@@ -1775,7 +1775,7 @@ void Frame::processSlider(const SDL_Rect& _size, Slider& slider, Widget*& destWi
         result.usable = slider.control() ? result.usable : false;
     }
 
-    Slider::result_t sliderResult = slider.process(_size, actualSize, result.usable);
+    const Slider::result_t sliderResult = slider.process(_size, actualSize, result.usable);
     if (result.usable && sliderResult.highlighted) {
         result.highlightTime = sliderResult.highlightTime;
         result.tooltip = sliderResult.tooltip;
@@ -1806,7 +1806,7 @@ void Frame::postprocess() {
     }
     if (!dontTickChildren) {
         for (int c = 0; c < frames.size(); ++c) {
-            auto frame = frames[c];
+            const auto frame = frames[c];
             if (!frame->disabled && !frame->toBeDeleted) {
                 frame->postprocess();
             }
@@ -1836,7 +1836,7 @@ void Frame::postprocess() {
     
     // delete any widgets marked for removal
     for (int c = 0; c < frames.size(); ++c) {
-        auto frame = frames[c];
+        const auto frame = frames[c];
         if (frame->isToBeDeleted()) {
             frames.erase(frames.begin() + c);
             delete frame;
@@ -1844,7 +1844,7 @@ void Frame::postprocess() {
         }
     }
     for (int c = 0; c < fields.size(); ++c) {
-        auto field = fields[c];
+        const auto field = fields[c];
         if (field->isToBeDeleted()) {
             fields.erase(fields.begin() + c);
             delete field;
@@ -1852,7 +1852,7 @@ void Frame::postprocess() {
         }
     }
     for (int c = 0; c < buttons.size(); ++c) {
-        auto button = buttons[c];
+        const auto button = buttons[c];
         if (button->isToBeDeleted()) {
             buttons.erase(buttons.begin() + c);
             delete button;
@@ -1860,7 +1860,7 @@ void Frame::postprocess() {
         }
     }
     for (int c = 0; c < sliders.size(); ++c) {
-        auto slider = sliders[c];
+        const auto slider = sliders[c];
         if (slider->isToBeDeleted()) {
             sliders.erase(sliders.begin() + c);
             delete slider;
@@ -1874,13 +1874,13 @@ Frame* Frame::addFrame(const char* name) {
 }
 
 Button* Frame::addButton(const char* name) {
-    auto button = new Button(*this);
+    const auto button = new Button(*this);
     button->setName(name);
     return button;
 }
 
 Field* Frame::addField(const char* name, const int len) {
-    auto field = new Field(*this, len);
+    const auto field = new Field(*this, len);
     field->setName(name);
     return field;
 }
@@ -1889,7 +1889,7 @@ Frame::image_t* Frame::addImage(const SDL_Rect pos, const Uint32 color, const ch
     if (!image || !name) {
         return nullptr;
     }
-    auto imageObj = new image_t();
+    const auto imageObj = new image_t();
     imageObj->pos = pos;
     imageObj->color = color;
     imageObj->name = name;
@@ -1902,14 +1902,14 @@ Slider* Frame::addSlider(const char* name) {
     if (!name) {
         return nullptr;
     }
-    auto slider = new Slider(*this);
+    const auto slider = new Slider(*this);
     slider->setName(name);
     sliders.push_back(slider);
     return slider;
 }
 
 Frame::entry_t* Frame::addEntry(const char* name, bool resizeFrame) {
-    auto entry = new entry_t(*this);
+    const auto entry = new entry_t(*this);
     entry->name = name;
     entry->color = 0xffffffff;
     list.push_back(entry);
@@ -1923,7 +1923,7 @@ Frame::entry_t* Frame::addEntry(const char* name, bool resizeFrame) {
 
 void Frame::clear() {
     // delete widgets
-    for (auto widget : widgets) {
+    for (const auto widget : widgets) {
         widget->removeSelf();
     }
 
@@ -1950,10 +1950,10 @@ void Frame::clearEntries() {
 }
 
 bool Frame::remove(const char* name) {
-    bool result = Widget::remove(name);
+    const bool result = Widget::remove(name);
     if (!result) {
         for (int i = 0; i < images.size(); ++i) {
-            image_t* image = images[i];
+            const image_t* image = images[i];
             if (strcmp(image->name.c_str(), name) == 0) {
                 delete image;
                 images.erase(images.begin() + i);
@@ -1966,7 +1966,7 @@ bool Frame::remove(const char* name) {
 
 bool Frame::removeEntry(const char* name, bool resizeFrame) {
     for (int i = 0; i < list.size(); ++i) {
-        entry_t* entry = list[i];
+        const entry_t* entry = list[i];
         if (entry->name == name) {
             if (selection == i) {
                 --selection;
@@ -1989,7 +1989,7 @@ Frame* Frame::findFrame(const char* name, const FrameSearchType frameSearchType)
     if ( frameSearchType == FRAME_SEARCH_DEPTH_FIRST )
     {
         ++numFindFrameCalls;
-        for (auto frame : frames) {
+        for (const auto frame : frames) {
             if (frame->toBeDeleted) {
                 continue;
             }
@@ -2021,7 +2021,7 @@ Frame* Frame::findFrame(const char* name, const FrameSearchType frameSearchType)
 
         while ( !q.empty() )
         {
-            auto subFrame = q.front();
+            const auto subFrame = q.front();
             q.pop();
             ++numFindFrameCalls;
             ++localNumberOfCalls;
@@ -2055,7 +2055,7 @@ Frame* Frame::findFrame(const char* name, const FrameSearchType frameSearchType)
 }
 
 Button* Frame::findButton(const char* name) {
-    for (auto button : buttons) {
+    for (const auto button : buttons) {
         if ( button->isToBeDeleted() )
         {
             continue;
@@ -2068,7 +2068,7 @@ Button* Frame::findButton(const char* name) {
 }
 
 Field* Frame::findField(const char* name) {
-    for (auto field : fields) {
+    for (const auto field : fields) {
         if (strcmp(field->getName(), name) == 0) {
             return field;
         }
@@ -2077,7 +2077,7 @@ Field* Frame::findField(const char* name) {
 }
 
 Frame::image_t* Frame::findImage(const char* name) {
-    for (auto image : images) {
+    for (const auto image : images) {
         if (image->name == name) {
             return image;
         }
@@ -2086,7 +2086,7 @@ Frame::image_t* Frame::findImage(const char* name) {
 }
 
 Frame::entry_t* Frame::findEntry(const char* name) {
-    for (auto entry : list) {
+    for (const auto entry : list) {
         if (entry->name == name) {
             return entry;
         }
@@ -2095,7 +2095,7 @@ Frame::entry_t* Frame::findEntry(const char* name) {
 }
 
 Slider* Frame::findSlider(const char* name) {
-    for (auto slider : sliders) {
+    for (const auto slider : sliders) {
         if (strcmp(slider->getName(), name) == 0) {
             return slider;
         }
@@ -2106,7 +2106,7 @@ Slider* Frame::findSlider(const char* name) {
 void Frame::resizeForEntries() {
     int entrySize = this->entrySize;
     if (entrySize <= 0) {
-        Font* _font = Font::get(font.c_str());
+        const Font* _font = Font::get(font.c_str());
         if (_font == nullptr) {
             entrySize = 20;
         } else {
@@ -2122,16 +2122,16 @@ SDL_Rect Frame::getRelativeMousePositionImpl(SDL_Rect& _size, SDL_Rect& _actualS
 #ifdef EDITOR
     return SDL_Rect{0, 0, 0, 0};
 #else
-    Sint32 _mousex = (inputs.getMouse(owner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
-    Sint32 _mousey = (inputs.getMouse(owner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
-    Sint32 _omousex = (inputs.getMouse(owner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
-    Sint32 _omousey = (inputs.getMouse(owner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
-    Sint32 mousex = realtime ? _mousex : _omousex;
-    Sint32 mousey = realtime ? _mousey : _omousey;
+    const Sint32 _mousex = (inputs.getMouse(owner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+    const Sint32 _mousey = (inputs.getMouse(owner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+    const Sint32 _omousex = (inputs.getMouse(owner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+    const Sint32 _omousey = (inputs.getMouse(owner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+    const Sint32 mousex = realtime ? _mousex : _omousex;
+    const Sint32 mousey = realtime ? _mousey : _omousey;
 
     if (parent) {
-        auto pframe = static_cast<Frame*>(parent);
-        auto presult = pframe->getRelativeMousePositionImpl(_size, _actualSize, realtime);
+        const auto pframe = static_cast<Frame*>(parent);
+        const auto presult = pframe->getRelativeMousePositionImpl(_size, _actualSize, realtime);
         if (presult.w > 0 && presult.h > 0) {
             _size.x = _size.x + std::max(0, size.x - _actualSize.x);
             _size.y = _size.y + std::max(0, size.y - _actualSize.y);
@@ -2173,7 +2173,7 @@ SDL_Rect Frame::getRelativeMousePosition(bool realtime) const {
 
 bool Frame::capturesMouseImpl(SDL_Rect& _size, SDL_Rect& _actualSize, bool realtime) const {
     if (parent) {
-        auto pframe = static_cast<Frame*>(parent);
+        const auto pframe = static_cast<Frame*>(parent);
         if (pframe->capturesMouseImpl(_size, _actualSize, realtime)) {
             _size.x = _size.x + std::max(0, size.x - _actualSize.x);
             _size.y = _size.y + std::max(0, size.y - _actualSize.y);
@@ -2197,10 +2197,10 @@ bool Frame::capturesMouseImpl(SDL_Rect& _size, SDL_Rect& _actualSize, bool realt
                 Sint32 omousex = (::omousex / (float)xres) * (float)Frame::virtualScreenX;
                 Sint32 omousey = (::omousey / (float)yres) * (float)Frame::virtualScreenY;
 #else
-                Sint32 mousex = (inputs.getMouse(owner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
-                Sint32 mousey = (inputs.getMouse(owner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
-                Sint32 omousex = (inputs.getMouse(owner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
-                Sint32 omousey = (inputs.getMouse(owner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+                const Sint32 mousex = (inputs.getMouse(owner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+                const Sint32 mousey = (inputs.getMouse(owner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+                const Sint32 omousex = (inputs.getMouse(owner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+                const Sint32 omousey = (inputs.getMouse(owner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 #endif
                 if (realtime && rectContainsPoint(_size, mousex, mousey)) {
                     return true;
@@ -2235,7 +2235,7 @@ bool Frame::capturesMouse() const {
 void Frame::warpMouseToFrame(const int player, Uint32 flags) const
 {
 #ifndef EDITOR
-    SDL_Rect _size = getAbsoluteSize();
+    const SDL_Rect _size = getAbsoluteSize();
     inputs.warpMouse(player,
         (_size.x + _size.w / 2) * (static_cast<float>(xres) / static_cast<float>(Frame::virtualScreenX)),
         (_size.y + _size.h / 2) * (static_cast<float>(yres) / static_cast<float>(Frame::virtualScreenY)),
@@ -2248,7 +2248,7 @@ SDL_Rect Frame::getAbsoluteSize() const
     SDL_Rect _size{ size.x, size.y, size.w, size.h };
     auto _parent = this->parent;
     while ( _parent ) {
-        auto pframe = static_cast<Frame*>(_parent);
+        const auto pframe = static_cast<Frame*>(_parent);
         _size.x += pframe->size.x - pframe->actualSize.x;
         _size.y += pframe->size.y - pframe->actualSize.y;
         _parent = pframe->parent;
@@ -2268,22 +2268,22 @@ void Frame::deselect() {
     Widget::deselect();
     activated = false;
     activation = nullptr;
-    for (auto frame : frames) {
+    for (const auto frame : frames) {
         if (frame->getOwner() == owner) {
             frame->deselect();
         }
     }
-    for (auto button : buttons) {
+    for (const auto button : buttons) {
         if (button->getOwner() == owner) {
             button->deselect();
         }
     }
-    for (auto field : fields) {
+    for (const auto field : fields) {
         if (field->getOwner() == owner) {
             field->deselect();
         }
     }
-    for (auto slider : sliders) {
+    for (const auto slider : sliders) {
         if (slider->getOwner() == owner) {
             slider->deselect();
         }
@@ -2301,7 +2301,7 @@ void Frame::activate() {
             selection = 0;
         }
         scrollToSelection();
-        auto entry = list[selection];
+        const auto entry = list[selection];
         if (entry->selected) {
             (*entry->selected)(*entry);
         }
@@ -2337,7 +2337,7 @@ void Frame::scrollToSelection(bool scroll_to_top) {
     }
     int entrySize = this->entrySize;
     if (entrySize <= 0) {
-        Font* _font = Font::get(font.c_str());
+        const Font* _font = Font::get(font.c_str());
         if (_font == nullptr) {
             entrySize = 20;
         } else {
@@ -2389,7 +2389,7 @@ void createTestUI() {
         bt->setTooltip("Close window");
         bt->setCallback([](Button& bt){
             Widget* w = bt.getParent();
-            auto frame = static_cast<Frame*>(w);
+            const auto frame = static_cast<Frame*>(w);
             frame->removeSelf();
         });
     }
@@ -2548,7 +2548,7 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
                 if ( image->outline )
                 {
                     real_t outlineGlowEffect = 0.0;
-                    Uint32 halfInterval = imageGlowInterval / 2;
+                    const Uint32 halfInterval = imageGlowInterval / 2;
                     if ( ::ticks % imageGlowInterval > halfInterval )
                     {
                         outlineGlowEffect = (halfInterval - ((::ticks % imageGlowInterval) - halfInterval)) / static_cast<real_t>(imageGlowInterval);
@@ -2560,7 +2560,7 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
                     outlineGlowEffect = (outlineGlowEffect * .5) + .5;
                     Uint8 r2, g2, b2, a2;
                     getColor(image->outlineColor, &r2, &g2, &b2, &a2);
-                    Uint32 alpha = static_cast<Uint8>(255.0 * ((static_cast<real_t>(a) / 255.0) * (a2 / 255.0) * outlineGlowEffect));
+                    const Uint32 alpha = static_cast<Uint8>(255.0 * ((static_cast<real_t>(a) / 255.0) * (a2 / 255.0) * outlineGlowEffect));
                     if ( alpha > 0 )
                     {
                         /*drawImageOutline(const_cast<Image*>(actualImage), src, scaledDest,
@@ -2570,7 +2570,7 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
                 }
                 else
                 {
-                    Frame* f = nullptr;
+                    const Frame* f = nullptr;
                     if ( !image->noBlitParent )
                     {
                         f = const_cast<Frame*>(this)->findParentToBlitTo();
@@ -2580,7 +2580,7 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
                         if ( !f->bBlitDirty ) {
                             return;
                         }
-                        auto srcSurf = const_cast<SDL_Surface*>(actualImage->getSurf());
+                        const auto srcSurf = const_cast<SDL_Surface*>(actualImage->getSurf());
                         scaledDest.x -= f->getAbsoluteSize().x;
                         scaledDest.y -= f->getAbsoluteSize().y;
                         SDL_SetSurfaceColorMod(srcSurf, r, g, b);
@@ -2607,7 +2607,7 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
             if ( image->outline )
             {
                 real_t outlineGlowEffect = 0.0;
-                Uint32 halfInterval = imageGlowInterval / 2;
+                const Uint32 halfInterval = imageGlowInterval / 2;
                 if ( ::ticks % imageGlowInterval > halfInterval )
                 {
                     outlineGlowEffect = (halfInterval - ((::ticks % imageGlowInterval) - halfInterval)) / static_cast<real_t>(imageGlowInterval);
@@ -2619,7 +2619,7 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
                 outlineGlowEffect = (outlineGlowEffect * .5) + .5;
                 Uint8 r2, g2, b2, a2;
                 getColor(image->outlineColor, &r2, &g2, &b2, &a2);
-                Uint32 alpha = static_cast<Uint8>(static_cast<real_t>(a2) * outlineGlowEffect);
+                const Uint32 alpha = static_cast<Uint8>(static_cast<real_t>(a2) * outlineGlowEffect);
                 if ( alpha > 0 )
                 {
                     /*drawImageOutline(const_cast<Image*>(actualImage), src, scaledDest,
@@ -2629,7 +2629,7 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
             }
             else
             {
-                Frame* f = nullptr;
+                const Frame* f = nullptr;
                 if ( !image->noBlitParent )
                 {
                     f = const_cast<Frame*>(this)->findParentToBlitTo();
@@ -2639,7 +2639,7 @@ void Frame::drawImage(const image_t* image, const SDL_Rect& _size, const SDL_Rec
                     if ( !f->bBlitDirty ) {
                         return;
                     }
-                    auto srcSurf = const_cast<SDL_Surface*>(actualImage->getSurf());
+                    const auto srcSurf = const_cast<SDL_Surface*>(actualImage->getSurf());
                     scaledDest.x -= f->getAbsoluteSize().x;
                     scaledDest.y -= f->getAbsoluteSize().y;
                     //SDL_SetSurfaceAlphaMod(srcSurf, 255);
@@ -2676,7 +2676,7 @@ void Frame::syncScroll() {
         return;
     }
     for (auto target : syncScrollTargets) {
-        auto frame = fparent->findFrame(target.c_str());
+        const auto frame = fparent->findFrame(target.c_str());
         if (frame) {
             auto _size = frame->getActualSize();
             _size.x = actualSize.x;
@@ -2755,7 +2755,7 @@ void Frame::setBlitChildren(bool _doBlit)
 
         while ( !q.empty() )
         {
-            auto subFrame = q.front();
+            const auto subFrame = q.front();
             q.pop();
             if ( subFrame == nullptr )
             {
@@ -2806,7 +2806,7 @@ void Frame::setBlitChildren(bool _doBlit)
 
         while ( !q.empty() )
         {
-            auto subFrame = q.front();
+            const auto subFrame = q.front();
             q.pop();
             if ( subFrame == nullptr )
             {
@@ -2834,9 +2834,9 @@ void Frame::scrollParent() {
     {
         return;
     }
-    auto fparent = static_cast<Frame*>(parent);
+    const auto fparent = static_cast<Frame*>(parent);
     auto fActualSize = fparent->getActualSize();
-    auto fSize = fparent->getSize();
+    const auto fSize = fparent->getSize();
 
     const auto y = std::max(0, size.y + scrollParentOffset.y);
     const auto h = size.h + scrollParentOffset.h;

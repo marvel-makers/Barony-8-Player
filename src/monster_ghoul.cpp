@@ -148,7 +148,7 @@ void initGhoul(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats);
 
             // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -312,7 +312,7 @@ void ghoulMoveBodyparts(Entity* my, Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;
-    Entity* rightbody = nullptr;
+    const Entity* rightbody = nullptr;
     int bodypart;
 
     // set invisibility //TODO: isInvisible()?
@@ -513,7 +513,7 @@ void ghoulMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 {
                      //vertical chop
                      //get leftarm from bodypart 6 element if ready to attack
-                    auto leftarm = static_cast<Entity*>(node->next->element);
+                    const auto leftarm = static_cast<Entity*>(node->next->element);
                     if ( my->monsterAttack == 1 || my->monsterAttack == MONSTER_POSE_MELEE_WINDUP1 )
                     {
                         if ( leftarm != nullptr )

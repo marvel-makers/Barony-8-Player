@@ -53,7 +53,7 @@ void initRevenantSkull(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -133,7 +133,7 @@ void initAdorcisedWeapon(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -151,7 +151,7 @@ void initAdorcisedWeapon(Entity* my, Stat* myStats)
 
             if ( myStats->weapon == nullptr && myStats->EDITOR_ITEMS[ITEM_SLOT_WEAPON] == 1 )
             {
-                int pick = rng.rand() % 8;
+                const int pick = rng.rand() % 8;
                 switch ( pick )
                 {
                 case 0:
@@ -230,7 +230,7 @@ void initFlameElemental(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -321,12 +321,12 @@ void actFlameElementalLimb(Entity* my)
 
 void revenantSkullDie(Entity* my)
 {
-    real_t gibx = my->x;
-    real_t giby = my->y;
-    real_t gibz = my->z;
-    real_t gibYaw = my->yaw;
+    const real_t gibx = my->x;
+    const real_t giby = my->y;
+    const real_t gibz = my->z;
+    const real_t gibYaw = my->yaw;
 
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
     int bodypart = 0;
     for ( bodypart = 0, node = my->children.first; node != nullptr; node = node->next, ++bodypart )
     {
@@ -335,7 +335,7 @@ void revenantSkullDie(Entity* my)
             continue;
         }
 
-        if (auto entity = static_cast<Entity*>(node->element) )
+        if (const auto entity = static_cast<Entity*>(node->element) )
         {
             real_t gibx = entity->x;
             real_t giby = entity->y;
@@ -384,14 +384,14 @@ void adorcisedWeaponDie(Entity* my)
 
 void flameElementalDie(Entity* my)
 {
-    Stat* myStats = my->getStats();
+    const Stat* myStats = my->getStats();
 
     if ( myStats && myStats->MP > 0 )
     {
         int damage = myStats->LVL;
         Entity* caster = uidToEntity(myStats->leader_uid);
         damage += getSpellDamageFromID(SPELL_FIREBALL, caster, nullptr, caster);
-        real_t radius = getSpellEffectDurationFromID(SPELL_FLAME_ELEMENTAL, caster, nullptr, caster);
+        const real_t radius = getSpellEffectDurationFromID(SPELL_FLAME_ELEMENTAL, caster, nullptr, caster);
         createSpellExplosionArea(SPELL_FIREBALL, caster, my->x, my->y, 0.0, radius, damage, my);
     }
 
@@ -427,7 +427,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
     my->sizex = 4;
     my->sizey = 4;
 
-    Monster monsterType = my->sprite == 1804 ? FLAME_ELEMENTAL : (my->sprite == 1797 ? MONSTER_ADORCISED_WEAPON : REVENANT_SKULL);
+    const Monster monsterType = my->sprite == 1804 ? FLAME_ELEMENTAL : (my->sprite == 1797 ? MONSTER_ADORCISED_WEAPON : REVENANT_SKULL);
 
     my->focalx = limbs[monsterType][0][0];
     my->focaly = limbs[monsterType][0][1];
@@ -449,7 +449,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
             {
                 if ( my->parent != 0 )
                 {
-                    Entity* parent = uidToEntity(my->parent);
+                    const Entity* parent = uidToEntity(my->parent);
                     if ( !parent )
                     {
                         my->setHP(0);
@@ -490,7 +490,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                 {
                     if ( my->parent != 0 )
                     {
-                        Entity* parent = uidToEntity(my->parent);
+                        const Entity* parent = uidToEntity(my->parent);
                         if ( !parent )
                         {
                             my->setHP(0);
@@ -545,7 +545,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
         }
     }
 
-    bool adorcisedWeapon = monsterType == MONSTER_ADORCISED_WEAPON;
+    const bool adorcisedWeapon = monsterType == MONSTER_ADORCISED_WEAPON;
     bool poke = false;
 
     Entity* body = nullptr;
@@ -758,7 +758,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                 || MONSTER_ATTACK == 1
                 || MONSTER_ATTACK == MONSTER_POSE_MAGIC_CAST1 )
             {
-                int delay = (MONSTER_ATTACK == MONSTER_POSE_MAGIC_CAST1 || MONSTER_ATTACK == MONSTER_POSE_MAGIC_WINDUP1) ? 25 : 0;
+                const int delay = (MONSTER_ATTACK == MONSTER_POSE_MAGIC_CAST1 || MONSTER_ATTACK == MONSTER_POSE_MAGIC_WINDUP1) ? 25 : 0;
                 if ( MONSTER_ATTACKTIME == 0 )
                 {
                     entity->fskill[0] = basePitchSetpoint;
@@ -810,8 +810,8 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                                     // knockback to lunge forward
                                     if ( my->setEffect(EFF_KNOCKBACK, true, 25, false) )
                                     {
-                                        real_t pushbackMultiplier = 1.5;
-                                        real_t tangent = my->yaw;
+                                        const real_t pushbackMultiplier = 1.5;
+                                        const real_t tangent = my->yaw;
                                         my->vel_x = cos(tangent) * pushbackMultiplier;
                                         my->vel_y = sin(tangent) * pushbackMultiplier;
                                         my->monsterKnockbackVelocity = 0.025;
@@ -820,7 +820,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
 
                                         if ( multiplayer != CLIENT )
                                         {
-                                            Entity* spellTimer = createParticleTimer(my, 25, -1);
+                                            const Entity* spellTimer = createParticleTimer(my, 25, -1);
                                             spellTimer->particleTimerCountdownAction = PARTICLE_TIMER_ACTION_SPIRIT_WEAPON_ATTACK;
 
                                             playSoundEntity(my, 23 + local_rng.rand() % 5, 128); // whoosh noise
@@ -834,7 +834,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                         {
                             if ( entity->skill[1] == 0 )
                             {
-                                real_t speed = limbs[monsterType][13][2];
+                                const real_t speed = limbs[monsterType][13][2];
                                 real_t setpoint = (limbs[monsterType][14][2] * PI / 180.0);
                                 if ( limbAngleWithinRange(entity->fskill[0], -speed, setpoint) )
                                 {
@@ -849,7 +849,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                             }
                             else
                             {
-                                real_t speed = limbs[monsterType][13][1];
+                                const real_t speed = limbs[monsterType][13][1];
                                 entity->fskill[0] += speed;
                                 entity->fskill[0] = std::min(entity->fskill[0], basePitchSetpoint);
                             }
@@ -863,8 +863,8 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                                 static ConsoleVariable<float> cvar_revenant_pokespd2("/revenant_pokespd2", -0.25);
                                 if ( entity->skill[1] == 0 )
                                 {
-                                    real_t speed = *cvar_revenant_pokespd;
-                                    real_t setpoint = (*cvar_revenant_pokeset * PI / 180.0);
+                                    const real_t speed = *cvar_revenant_pokespd;
+                                    const real_t setpoint = (*cvar_revenant_pokeset * PI / 180.0);
                                     if ( limbAngleWithinRange(entity->fskill[0], -speed, setpoint) )
                                     {
                                         entity->fskill[0] = setpoint;
@@ -877,7 +877,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                                 }
                                 else
                                 {
-                                    real_t speed = *cvar_revenant_pokespd2;
+                                    const real_t speed = *cvar_revenant_pokespd2;
                                     if ( limbAngleWithinRange(entity->fskill[0], speed, basePitchSetpoint) )
                                     {
                                         entity->fskill[0] = basePitchSetpoint;
@@ -892,7 +892,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                             {
                                 if ( entity->skill[1] == 0 )
                                 {
-                                    real_t speed = limbs[monsterType][3][2];
+                                    const real_t speed = limbs[monsterType][3][2];
                                     real_t setpoint = (limbs[monsterType][4][2] * PI / 180.0);
                                     if ( limbAngleWithinRange(entity->fskill[0], -speed, setpoint) )
                                     {
@@ -907,7 +907,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                                 }
                                 else
                                 {
-                                    real_t speed = limbs[monsterType][3][1];
+                                    const real_t speed = limbs[monsterType][3][1];
                                     entity->fskill[0] += speed;
                                     entity->fskill[0] = std::min(entity->fskill[0], basePitchSetpoint);
                                 }
@@ -918,7 +918,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                     {
                         if ( !adorcisedWeapon )
                         {
-                            real_t speed = limbs[monsterType][13][0];
+                            const real_t speed = limbs[monsterType][13][0];
                             real_t setpoint = (limbs[monsterType][14][1] * PI / 180.0);
                             entity->fskill[0] -= speed;
                             if ( setpoint >= 0 )
@@ -936,8 +936,8 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                             {
                                 static ConsoleVariable<float> cvar_revenant_pokeset1("/revenant_pokeset1", 110.0);
                                 static ConsoleVariable<float> cvar_revenant_pokespd1("/revenant_pokespd1", -0.25);
-                                real_t speed = *cvar_revenant_pokespd1;
-                                real_t setpoint = (*cvar_revenant_pokeset1 * PI / 180.0);
+                                const real_t speed = *cvar_revenant_pokespd1;
+                                const real_t setpoint = (*cvar_revenant_pokeset1 * PI / 180.0);
                                 if ( limbAngleWithinRange(entity->fskill[0], -speed, setpoint) )
                                 {
                                     entity->fskill[0] = setpoint;
@@ -949,7 +949,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                             }
                             else
                             {
-                                real_t speed = limbs[monsterType][3][0];
+                                const real_t speed = limbs[monsterType][3][0];
                                 real_t setpoint = (limbs[monsterType][4][1] * PI / 180.0);
                                 entity->fskill[0] -= speed;
                                 if ( setpoint >= 0 )
@@ -1063,8 +1063,8 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
 
                 if ( SKULL_CIRCLES > 0 )
                 {
-                    real_t prev = SKULL_CIRCLE_ANIM;
-                    real_t mult = MONSTER_ATTACK == MONSTER_POSE_MAGIC_WINDUP1 ? 5.0 : 1.0;
+                    const real_t prev = SKULL_CIRCLE_ANIM;
+                    const real_t mult = MONSTER_ATTACK == MONSTER_POSE_MAGIC_WINDUP1 ? 5.0 : 1.0;
                     SKULL_CIRCLE_ANIM += limbs[monsterType][8][2] * mult;
                     SKULL_CIRCLE_SCALE += limbs[monsterType][8][1] * mult;
                     SKULL_CIRCLE_SCALE = std::min(1.0, SKULL_CIRCLE_SCALE);
@@ -1118,7 +1118,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                 SKULL_FLOAT_X = limbs[monsterType][10][0] * sin(entity->fskill[1] * limbs[monsterType][11][0]) * cos(entity->yaw + PI / 2);
                 SKULL_FLOAT_Y = limbs[monsterType][10][1] * sin(entity->fskill[1] * limbs[monsterType][11][1]) * sin(entity->yaw + PI / 2);
                 SKULL_FLOAT_Z = limbs[monsterType][10][2] * sin(entity->fskill[1] * limbs[monsterType][11][2]);
-                real_t floatAtkZ = SKULL_FLOAT_ATK < 0 ? 2 * sin(SKULL_FLOAT_ATK * PI / 8) : 0.5 * sin(SKULL_FLOAT_ATK * PI / 8);
+                const real_t floatAtkZ = SKULL_FLOAT_ATK < 0 ? 2 * sin(SKULL_FLOAT_ATK * PI / 8) : 0.5 * sin(SKULL_FLOAT_ATK * PI / 8);
                 SKULL_FLOAT_Z += floatAtkZ;
 
                 SKULL_FLOAT_X += SKULL_FLOAT_ATK * cos(entity->yaw);
@@ -1143,7 +1143,7 @@ void revenantSkullAnimate(Entity* my, Stat* myStats, double dist)
                     {
                         SKULL_BOB_ANIM += limbs[monsterType][9][0];
 
-                        real_t scale = SKULL_BOBS * 0.5;
+                        const real_t scale = SKULL_BOBS * 0.5;
 
                         SKULL_FLOAT_Z += scale * sin(PI / 4) - scale * sin(SKULL_BOB_ANIM * 2 * PI + PI / 4);
 
@@ -1298,7 +1298,7 @@ void initHologram(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -1370,7 +1370,7 @@ void hologramAnimate(Entity* my, Stat* myStats, double dist)
     }
 
     int bodypart = 0;
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
     std::vector<Entity*> myLimbs;
     for ( bodypart = 0, node = my->children.first; node != nullptr; node = node->next, ++bodypart )
     {
@@ -1397,11 +1397,11 @@ void hologramAnimate(Entity* my, Stat* myStats, double dist)
         }
         std::vector<Entity*> limbsCopy;
         limbsCopy.push_back(hologramParent);
-        
-        int listSize = list_Size(&hologramParent->children);
+
+        const int listSize = list_Size(&hologramParent->children);
         for ( int i = LIMB_HUMANOID_TORSO + parentOffset; i < listSize; ++i )
         {
-            if ( node_t* nodeCopy = list_Node(&hologramParent->children, i) )
+            if (const node_t* nodeCopy = list_Node(&hologramParent->children, i) )
             {
                 if (auto limb = static_cast<Entity*>(nodeCopy->element) )
                 {
@@ -1412,7 +1412,7 @@ void hologramAnimate(Entity* my, Stat* myStats, double dist)
 
         int index = -1;
         Entity* firstLimb = nullptr;
-        for ( auto entity : myLimbs )
+        for (const auto entity : myLimbs )
         {
             ++index;
             if ( index == 0 )
@@ -1422,7 +1422,7 @@ void hologramAnimate(Entity* my, Stat* myStats, double dist)
             }
             if ( index < limbsCopy.size() )
             {
-                Entity* limb = limbsCopy.at(index);
+                const Entity* limb = limbsCopy.at(index);
                 entity->sprite = limb->sprite;
                 entity->flags[INVISIBLE] = limb->flags[INVISIBLE];
                 entity->flags[INVISIBLE_DITHER] = limb->flags[INVISIBLE_DITHER];
@@ -1439,7 +1439,7 @@ void hologramAnimate(Entity* my, Stat* myStats, double dist)
                     real_t x = (hologramParent->x - limb->x);
                     real_t y = (hologramParent->y - limb->y);
                     real_t tangent = atan2(y, x);
-                    real_t length = sqrt(x * x + y * y);
+                    const real_t length = sqrt(x * x + y * y);
                     tangent += firstLimb->fskill[0];
                     x = length * cos(tangent);
                     y = length * sin(tangent);
@@ -1498,7 +1498,7 @@ void actEarthElementalDeathGib(Entity* my)
 void earthElementalDie(Entity* my)
 {
     int index = -1;
-    for ( auto bodypart : my->bodyparts )
+    for (const auto bodypart : my->bodyparts )
     {
         ++index;
         if ( index == 1 ) // eyes
@@ -1577,7 +1577,7 @@ void initEarthElemental(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -1604,7 +1604,7 @@ void initEarthElemental(Entity* my, Stat* myStats)
                 myStats->CON = 5 + myStats->LVL; // 10-25
                 myStats->PER = 5 + myStats->LVL / 4; // 6-10
 
-                if ( Entity* leader = my->monsterAllyGetPlayerLeader() )
+                if (const Entity* leader = my->monsterAllyGetPlayerLeader() )
                 {
                     serverUpdateAllyStat(leader->skill[2], my->getUID(), myStats->LVL, myStats->HP, myStats->MAXHP, myStats->type);
                 }
@@ -2001,7 +2001,7 @@ void earthElementalAnimate(Entity* my, Stat* myStats, double dist)
                     EARTH_LIMB_FSKILL_YAW = 0.0;
                     if ( multiplayer != CLIENT )
                     {
-                        Entity* spellTimer = createParticleTimer(my, 35, -1);
+                        const Entity* spellTimer = createParticleTimer(my, 35, -1);
                         spellTimer->particleTimerCountdownAction = PARTICLE_TIMER_ACTION_EARTH_ELEMENTAL_ROLL;
                     }
                 }
@@ -2261,7 +2261,7 @@ void earthElementalAnimate(Entity* my, Stat* myStats, double dist)
                 EARTH_FLOAT_X = 0.0;
                 EARTH_FLOAT_Y = 0.0;
 
-                real_t targetZ = 8.0;
+                const real_t targetZ = 8.0;
                 real_t startZ = 64.0;
                 EARTH_FLOAT_Z = (targetZ - startZ) + EARTH_SPAWN_ANIM;
                 if ( EARTH_SPAWN_STATE == 0 )
@@ -2327,12 +2327,12 @@ void earthElementalAnimate(Entity* my, Stat* myStats, double dist)
                 entity->y += EARTH_SPAWN_ANIM * 2.0 * sin(my->yaw);
                 if ( EARTH_LIMB_FSKILL_ROLL > PI )
                 {
-                    real_t diff = std::max(0.05, (2 * PI - EARTH_LIMB_FSKILL_ROLL) / 10);
+                    const real_t diff = std::max(0.05, (2 * PI - EARTH_LIMB_FSKILL_ROLL) / 10);
                     EARTH_LIMB_FSKILL_ROLL = std::min(2 * PI, EARTH_LIMB_FSKILL_ROLL + diff);
                 }
                 else
                 {
-                    real_t diff = std::max(0.05, (EARTH_LIMB_FSKILL_ROLL) / 10);
+                    const real_t diff = std::max(0.05, (EARTH_LIMB_FSKILL_ROLL) / 10);
                     EARTH_LIMB_FSKILL_ROLL = std::max(0.0, EARTH_LIMB_FSKILL_ROLL - diff);
                 }
 
@@ -2347,16 +2347,16 @@ void earthElementalAnimate(Entity* my, Stat* myStats, double dist)
                 }
                 if ( EARTH_LIMB_FSKILL_PITCH > PI )
                 {
-                    real_t diff = std::max(0.05, (2 * PI - EARTH_LIMB_FSKILL_PITCH) / 10);
+                    const real_t diff = std::max(0.05, (2 * PI - EARTH_LIMB_FSKILL_PITCH) / 10);
                     EARTH_LIMB_FSKILL_PITCH = std::min(2 * PI, EARTH_LIMB_FSKILL_PITCH + diff);
                 }
                 else
                 {
-                    real_t diff = std::max(0.05, (EARTH_LIMB_FSKILL_PITCH) / 10);
+                    const real_t diff = std::max(0.05, (EARTH_LIMB_FSKILL_PITCH) / 10);
                     EARTH_LIMB_FSKILL_PITCH = std::max(0.0, EARTH_LIMB_FSKILL_PITCH - diff);
                 }
 
-                real_t spawnRate = std::max(0.0, (1.0 - EARTH_SPAWN_ANIM));
+                const real_t spawnRate = std::max(0.0, (1.0 - EARTH_SPAWN_ANIM));
 
                 real_t zAngle = EARTH_FLOAT_ANIM * limbs[EARTH_ELEMENTAL][11][2];
                 zAngle = fmod(zAngle, 2 * PI);
@@ -2462,7 +2462,7 @@ void earthElementalAnimate(Entity* my, Stat* myStats, double dist)
                 {
                     zAngle += 2 * PI;
                 }
-                real_t zMag = 0.5 * sin(zAngle);
+                const real_t zMag = 0.5 * sin(zAngle);
                 entity->z -= zMag;
 
                 if ( MONSTER_ATTACK == MONSTER_POSE_MELEE_WINDUP1 || MONSTER_ATTACK == MONSTER_POSE_EARTH_ELEMENTAL_ROLL )

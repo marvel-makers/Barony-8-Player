@@ -443,7 +443,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
         x = (x - xmin) * unitX + rect.x;
         y = (y - ymin) * unitY + rect.y;
 
-        auto imgGet = Image::get("*images/ui/HUD/death_skull.png");
+        const auto imgGet = Image::get("*images/ui/HUD/death_skull.png");
 
         const real_t sx = unitX * (getMinimapZoom() / 100.0) * size;
         const real_t sy = unitY * (getMinimapZoom() / 100.0) * size;
@@ -473,7 +473,7 @@ void drawMinimap(const int player, SDL_Rect rect, bool drawingSharedMap)
         x = (x - xmin) * unitX + rect.x;
         y = (y - ymin) * unitY + rect.y;
 
-        auto imgGet = Image::get("*images/ui/HUD/death_skull1.png");
+        const auto imgGet = Image::get("*images/ui/HUD/death_skull1.png");
 
         const real_t sx = unitX * (getMinimapZoom() / 100.0) * size;
         const real_t sy = unitY * (getMinimapZoom() / 100.0) * size;
@@ -1267,7 +1267,7 @@ void minimapPingAdd(const int srcPlayer, const int destPlayer, MinimapPing newPi
         int numPlayerPings = 0;
         for (auto it = minimapPings[destPlayer].begin(); it != minimapPings[destPlayer].end();)
         {
-            MinimapPing ping = *it;
+            const MinimapPing ping = *it;
             if ( ping.player == newPing.player && !newPing.radiusPing && newPing.pingType == MinimapPing::PING_DEFAULT )
             {
                 ++numPlayerPings;
@@ -1304,9 +1304,9 @@ static ConsoleVariable<float> cvar_shrine_reveal_steps("/shrine_reveal_steps", 8
 void shrineDaedalusRevealMap(Entity& my)
 {
     Entity* exitEntity = nullptr;
-    for ( node_t* node = map.entities->first; node; node = node->next )
+    for (const node_t* node = map.entities->first; node; node = node->next )
     {
-        auto entity = static_cast<Entity*>(node->element);
+        const auto entity = static_cast<Entity*>(node->element);
         if ( !entity ) { continue; }
 
         if ( (entity->behavior == &actLadder && strcmp(map.name, "Hell"))
@@ -1332,7 +1332,7 @@ void shrineDaedalusRevealMap(Entity& my)
 
     minimapHighlights.clear();
 
-    real_t tangent = atan2(exitEntity->y - my.y, exitEntity->x - my.x);
+    const real_t tangent = atan2(exitEntity->y - my.y, exitEntity->x - my.x);
 
     if ( Entity* lightball = newEntity(1482, 1, map.entities, nullptr) )
     {
@@ -1359,7 +1359,7 @@ void shrineDaedalusRevealMap(Entity& my)
         lightball->setUID(-3);
     }
 
-    real_t dist = entityDist(&my, exitEntity);
+    const real_t dist = entityDist(&my, exitEntity);
     std::set<int> visited;
     real_t d = 0.0;
     std::vector<int> checkCoords;
@@ -1382,10 +1382,10 @@ void shrineDaedalusRevealMap(Entity& my)
             checkCoords.push_back(static_cast<int>(tx) + 10000 * static_cast<int>(ty));
         }
 
-        for ( auto coord : checkCoords )
+        for (const auto coord : checkCoords )
         {
-            int x = coord % 10000;
-            int y = coord / 10000;
+            const int x = coord % 10000;
+            const int y = coord / 10000;
             if ( x >= 0 && y >= 0 && x < map.width && y < map.height )
             {
                 if ( visited.find(x + 10000 * y) == visited.end() )

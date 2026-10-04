@@ -50,7 +50,7 @@ void initCockatrice(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // boss variants
 
@@ -68,7 +68,7 @@ void initCockatrice(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
                                                          // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -123,7 +123,7 @@ void initCockatrice(Entity* my, Stat* myStats)
                             minValue = 100;
                             maxValue = 100;
                         }
-                        ItemType itemType = itemTypeWithinGoldValue(Category::POTION, minValue, maxValue, rng);
+                        const ItemType itemType = itemTypeWithinGoldValue(Category::POTION, minValue, maxValue, rng);
                         newItem(itemType, static_cast<Status>(1 + rng.rand() % 4), -1 + rng.rand() % 3, 1, rng.rand(), false, &myStats->inventory);
                         // reset values for next loop.
                         minValue = 70;
@@ -311,9 +311,9 @@ void cockatriceMoveBodyparts(Entity* my, Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;
-    Entity* leftbody = nullptr;
-    Entity* leftarm = nullptr;
-    Entity* rightarm = nullptr;
+    const Entity* leftbody = nullptr;
+    const Entity* leftarm = nullptr;
+    const Entity* rightarm = nullptr;
     int bodypart = 0;
     int limbSpeedMultiplier = 1;
 

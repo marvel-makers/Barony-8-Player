@@ -60,7 +60,7 @@ void initMimic(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -165,7 +165,7 @@ void initMiniMimic(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -1055,7 +1055,7 @@ bool Entity::disturbMimic(Entity* touched, bool takenDamage, bool doMessage)
         return false;
     }
 
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( myStats && takenDamage )
     {
         const int damageThreshold = 5;
@@ -1085,7 +1085,7 @@ bool Entity::disturbMimic(Entity* touched, bool takenDamage, bool doMessage)
         {
             // longer stun
             int duration = TICKS_PER_SECOND;
-            int mimicLvl = currentlevel / 5;
+            const int mimicLvl = currentlevel / 5;
             duration -= mimicLvl * 10;
             duration = std::max(duration, 20);
             setEffect(EFF_STUNNED, true, duration, false);
@@ -1156,8 +1156,8 @@ void Entity::mimicSetStats(Stat* myStats)
     myStats->LVL = 10;
     myStats->DEX = 0;
     myStats->PER = 5;
-    
-    int level = std::max(currentlevel, 0) / LENGTH_OF_LEVEL_REGION;
+
+    const int level = std::max(currentlevel, 0) / LENGTH_OF_LEVEL_REGION;
     myStats->LVL += 5 * level;
     myStats->STR += 3 * level;
     myStats->CON += 4 * level;
@@ -1204,7 +1204,7 @@ void MimicGenerator::init()
             }
             else
             {
-                auto chosen = mimic_rng.rand() % 2 == 0 ? res1 : res2;
+                const auto chosen = mimic_rng.rand() % 2 == 0 ? res1 : res2;
                 floors.insert(i + chosen);
             }
         }

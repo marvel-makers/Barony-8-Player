@@ -52,7 +52,7 @@ void initBugbear(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -64,7 +64,7 @@ void initBugbear(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
             // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -103,7 +103,7 @@ void initBugbear(Entity* my, Stat* myStats)
             {
                 if ( myStats->leader_uid != 0 ) // minion
                 {
-                    if ( Entity* leader = uidToEntity(myStats->leader_uid) )
+                    if (const Entity* leader = uidToEntity(myStats->leader_uid) )
                     {
                         if ( leader->hasRangedWeapon() || rng.rand() % 2 == 0 )
                         {
@@ -146,7 +146,7 @@ void initBugbear(Entity* my, Stat* myStats)
             {
                 if ( myStats->leader_uid != 0 ) // minion
                 {
-                    if ( Entity* leader = uidToEntity(myStats->leader_uid) )
+                    if (const Entity* leader = uidToEntity(myStats->leader_uid) )
                     {
                         if ( !leader->hasRangedWeapon() && rng.rand() % 4 == 0 )
                         {
@@ -344,7 +344,7 @@ void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;
-    Entity* rightbody = nullptr;
+    const Entity* rightbody = nullptr;
     int bodypart;
 
     my->focalx = limbs[BUGBEAR][0][0];
@@ -486,8 +486,8 @@ void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 rightbody = static_cast<Entity*>(node->next->element);
             }
 
-            node_t* shieldNode = list_Node(&my->children, 8);
-            Entity* shield = nullptr;
+            const node_t* shieldNode = list_Node(&my->children, 8);
+            const Entity* shield = nullptr;
             if ( shieldNode )
             {
                 shield = static_cast<Entity*>(shieldNode->element);
@@ -506,7 +506,7 @@ void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
                         entity->skill[1] = 0;
                     }
 
-                    real_t shieldSetpoint = 2 * PI / 4;
+                    const real_t shieldSetpoint = 2 * PI / 4;
                     if ( MONSTER_SHIELDYAW < shieldSetpoint )
                     {
                         MONSTER_SHIELDYAW += 0.1;
@@ -768,10 +768,10 @@ void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 entity->y += 3.5 * sin(my->yaw + PI / 2) - 1 * sin(my->yaw);
                 entity->z += .1;
 
-                node_t* weaponNode = list_Node(&my->children, 7);
+                const node_t* weaponNode = list_Node(&my->children, 7);
                 if ( weaponNode )
                 {
-                    auto weapon = static_cast<Entity*>(weaponNode->element);
+                    const auto weapon = static_cast<Entity*>(weaponNode->element);
                     if ( my->monsterState != MONSTER_STATE_ATTACK && my->monsterAttack == 0 )
                     {
                         if ( weapon )
@@ -833,10 +833,10 @@ void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 entity->x -= 3.5 * cos(my->yaw + PI / 2) + 1 * cos(my->yaw);
                 entity->y -= 3.5 * sin(my->yaw + PI / 2) + 1 * sin(my->yaw);
                 entity->z += .1;
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT )
                     {
                         // relax arm
@@ -1144,10 +1144,10 @@ void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, 8);
+    const node_t* shieldNode = list_Node(&my->children, 8);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= 2 * PI / 6;
@@ -1171,7 +1171,7 @@ void bugbearMoveBodyparts(Entity* my, Stat* myStats, double dist)
 
 void Entity::bugbearChooseWeapon(const Entity* target, double dist)
 {
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( !myStats )
     {
         return;
@@ -1200,7 +1200,7 @@ void Entity::bugbearChooseWeapon(const Entity* target, double dist)
         && (ticks % 10 == 0)
         && (dist < STRIKERANGE * 2 || hasRangedWeapon()) )
     {
-        Stat* targetStats = target->getStats();
+        const Stat* targetStats = target->getStats();
         if ( !targetStats )
         {
             return;
@@ -1227,7 +1227,7 @@ void Entity::bugbearChooseWeapon(const Entity* target, double dist)
 
         if ( specialRoll < requiredRoll )
         {
-            Entity* leader = nullptr;
+            const Entity* leader = nullptr;
             if ( myStats->leader_uid != 0 )
             {
                 leader = uidToEntity(myStats->leader_uid);
@@ -1268,7 +1268,7 @@ void Entity::bugbearChooseWeapon(const Entity* target, double dist)
 
 void Entity::setBugbearStrafeDir(bool forceDirection)
 {
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( !myStats ) { return; }
     if ( myStats->type != BUGBEAR )
     {
@@ -1294,8 +1294,8 @@ void Entity::setBugbearStrafeDir(bool forceDirection)
         dirs.push_back(0);
     }
     std::set<int> gooddirs;
-    real_t ox = x;
-    real_t oy = y;
+    const real_t ox = x;
+    const real_t oy = y;
 
     Entity* target = monsterTarget != 0 ? uidToEntity(monsterTarget) : nullptr;
 
@@ -1317,7 +1317,7 @@ void Entity::setBugbearStrafeDir(bool forceDirection)
                 target->flags[PASSABLE] = true;
             }
             Entity* ohitentity = hit.entity;
-            bool clear = barony_clear(x, y, this);
+            const bool clear = barony_clear(x, y, this);
             hit.entity = ohitentity;
             if ( target )
             {
@@ -1346,11 +1346,11 @@ void Entity::setBugbearStrafeDir(bool forceDirection)
                     // check LOS of leader to their target
                     if ( target )
                     {
-                        real_t tangent2 = atan2(target->y - leader->y, target->x - leader->x);
+                        const real_t tangent2 = atan2(target->y - leader->y, target->x - leader->x);
                         // trace the tangent see if we would intersect it
                         Entity* ohitentity = hit.entity;
                         real_t dist = lineTraceTarget(leader, leader->x, leader->y, tangent2, 128.0, 0, false, this);
-                        bool inTheWay = hit.entity == this;
+                        const bool inTheWay = hit.entity == this;
                         hit.entity = ohitentity;
                         if ( inTheWay )
                         {
@@ -1377,7 +1377,7 @@ void Entity::setBugbearStrafeDir(bool forceDirection)
             }
         }
         auto it = gooddirs.begin();
-        int pick = local_rng.rand() % gooddirs.size();
+        const int pick = local_rng.rand() % gooddirs.size();
         for ( int i = 0; i < pick; ++i )
         {
             ++it;

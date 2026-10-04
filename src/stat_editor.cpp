@@ -34,7 +34,7 @@ Stat* Stat::copyStats()
 
     // create new stat, using the type (HUMAN, SKELETON) as a reference.
     // this is handled in stat_shared.cpp by adding 1000 to the type.
-    auto newStat = new Stat(this->type + 1000);
+    const auto newStat = new Stat(this->type + 1000);
 
     newStat->type = this->type;
     newStat->sex = this->sex;

@@ -39,7 +39,7 @@ public:
             return 0U;
         }
         size_t readSize = 0U;
-        size_t end = std::min(this->size(), pos + size * count);
+        const size_t end = std::min(this->size(), pos + size * count);
         auto buf = static_cast<uint8_t*>(buffer);
         for (size_t c = pos; c < end; ++c) {
             *buf = data[c]; ++buf;
@@ -86,7 +86,7 @@ private:
         assert(fp);
         if (mode == FileMode::READ) {
             (void)fseek(fp, 0, SEEK_END);
-            size_t end = ftell(fp);
+            const size_t end = ftell(fp);
             (void)fseek(fp, 0, SEEK_SET);
             data.resize(end);
             size_t c = 0;
@@ -95,7 +95,7 @@ private:
                 if (!result) {
                     // failed to read, try to read just a chunk
                     constexpr size_t chunk_size = 1024;
-                    size_t chunk = std::min(end - c, chunk_size);
+                    const size_t chunk = std::min(end - c, chunk_size);
                     printlog("[FILES] failed to read %llu bytes from '%s', trying %llu bytes instead", end - c, path, chunk);
                     result = fread(data.data(), sizeof(uint8_t), chunk, fp);
                     assert(result);
@@ -115,13 +115,13 @@ private:
         assert(fp);
         if (mode == FileMode::WRITE) {
             size_t c = 0u;
-            size_t end = size();
+            const size_t end = size();
             for (; c < end;) {
                 size_t result = fwrite(data.data(), sizeof(uint8_t), end - c, fp);
                 if (!result) {
                     // failed to write, try to write just a chunk
                     constexpr size_t chunk_size = 1024;
-                    size_t chunk = std::min(end - c, chunk_size);
+                    const size_t chunk = std::min(end - c, chunk_size);
                     printlog("[FILES] failed to write %llu bytes to '%s', trying %llu bytes instead", end - c, path.c_str(), chunk);
                     result = fwrite(data.data(), sizeof(uint8_t), chunk, fp);
                     assert(result);
@@ -130,7 +130,7 @@ private:
             }
             assert(c == end);
         }
-        int result = fclose(fp);
+        const int result = fclose(fp);
         assert(result == 0);
     }
 

@@ -104,13 +104,13 @@ void Item::applySkeletonKey(int player, Entity& entity)
             {
                 if ( entity.behavior == &actIronDoor )
                 {
-                    Uint32 color = makeColorRGB(255, 255, 255);
+                    const Uint32 color = makeColorRGB(255, 255, 255);
                     playSoundEntity(&entity, 92, 64);
                     messagePlayerColor(player, MESSAGE_INTERACTION, color, Language::get(6403)); // disabled.
                 }
                 else
                 {
-                    Uint32 color = makeColorRGB(255, 0, 255);
+                    const Uint32 color = makeColorRGB(255, 0, 255);
                     playSoundEntity(&entity, 92, 64);
                     messagePlayerColor(player, MESSAGE_INTERACTION, color, Language::get(3101)); // disabled.
                 }
@@ -136,7 +136,7 @@ void Item::applySkeletonKey(int player, Entity& entity)
         {
             if ( entity.doorDisableLockpicks == 1 && entity.behavior == &actIronDoor )
             {
-                Uint32 color = makeColorRGB(255, 255, 255);
+                const Uint32 color = makeColorRGB(255, 255, 255);
                 playSoundEntity(&entity, 92, 64);
                 messagePlayerColor(player, MESSAGE_INTERACTION, color, Language::get(6403)); // disabled.
             }
@@ -158,7 +158,7 @@ void Item::applySkeletonKey(int player, Entity& entity)
     }
     else if ( entity.behavior == &actMonster && entity.getMonsterTypeFromSprite() == MIMIC )
     {
-        if ( Stat* myStats = entity.getStats() )
+        if (const Stat* myStats = entity.getStats() )
         {
             if ( entity.isInertMimic() )
             {
@@ -221,7 +221,7 @@ void Item::applySkeletonKey(int player, Entity& entity)
     entitiesUnlockedFirstTime.first = currentlevel;
     if ( interacted )
     {
-        auto find = entitiesUnlockedFirstTime.second.find(entity.getUID());
+        const auto find = entitiesUnlockedFirstTime.second.find(entity.getUID());
         if ( find == entitiesUnlockedFirstTime.second.end() )
         {
             if ( rollDegrade )
@@ -269,10 +269,10 @@ void Item::applySkeletonKey(int player, Entity& entity)
 
 void Item::applyLockpick(int player, Entity& entity)
 {
-    bool capstoneUnlocked = (stats[player]->getModifiedProficiency(PRO_LOCKPICKING) >= CAPSTONE_LOCKPICKING_UNLOCK);
+    const bool capstoneUnlocked = (stats[player]->getModifiedProficiency(PRO_LOCKPICKING) >= CAPSTONE_LOCKPICKING_UNLOCK);
     if ( entity.behavior == &actBomb )
     {
-        Entity* gyrobotUsing = nullptr;
+        const Entity* gyrobotUsing = nullptr;
         if ( entity.isInteractWithMonster() )
         {
             Entity* monsterInteracting = uidToEntity(entity.interactedByMonster);
@@ -352,10 +352,10 @@ void Item::applyLockpick(int player, Entity& entity)
             // 20 skill is 4-5 damage
             // 60 skill is 6-11 damage
             // 100 skill is 8-17 damage
-            int lockpickDamageToChest = 3 + stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 20
+            const int lockpickDamageToChest = 3 + stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 20
                 + local_rng.rand() % std::max(1, stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 10);
             entity.chestLockpickHealth = std::max(0, entity.chestLockpickHealth - lockpickDamageToChest);
-            bool unlockedFromLockpickHealth = (entity.chestLockpickHealth == 0);
+            const bool unlockedFromLockpickHealth = (entity.chestLockpickHealth == 0);
 
             if ( capstoneUnlocked || stats[player]->getModifiedProficiency(PRO_LOCKPICKING) > local_rng.rand() % 200
                 || unlockedFromLockpickHealth )
@@ -373,7 +373,7 @@ void Item::applyLockpick(int player, Entity& entity)
                     }
                     else
                     {
-                        int goldAmount = CAPSTONE_LOCKPICKING_CHEST_GOLD_AMOUNT;
+                        const int goldAmount = CAPSTONE_LOCKPICKING_CHEST_GOLD_AMOUNT;
                         stats[player]->GOLD += goldAmount;
                         messagePlayerColor(player, MESSAGE_INVENTORY, uint32ColorGreen, Language::get(4088), goldAmount);
                     }
@@ -398,8 +398,8 @@ void Item::applyLockpick(int player, Entity& entity)
                     // based on tinkering skill, add some bonus scrap materials inside chest. (50-150%)
                     if ( (50 + 10 * (stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 10)) > local_rng.rand() % 100 )
                     {
-                        int metalscrap = 5 + local_rng.rand() % 6;
-                        int magicscrap = 5 + local_rng.rand() % 11;
+                        const int metalscrap = 5 + local_rng.rand() % 6;
+                        const int magicscrap = 5 + local_rng.rand() % 11;
                         {
                             list_t* inventory = entity.getChestInventoryList();
                             if ( inventory )
@@ -493,22 +493,22 @@ void Item::applyLockpick(int player, Entity& entity)
             // 20 skill is 4-5 damage
             // 60 skill is 6-11 damage
             // 100 skill is 8-17 damage
-            int lockpickDamageToDoor = 3 + stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 20
+            const int lockpickDamageToDoor = 3 + stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 20
                 + local_rng.rand() % std::max(1, stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 10);
             entity.doorLockpickHealth = std::max(0, entity.doorLockpickHealth - lockpickDamageToDoor);
-            bool unlockedFromLockpickHealth = (entity.doorLockpickHealth == 0);
+            const bool unlockedFromLockpickHealth = (entity.doorLockpickHealth == 0);
 
             if ( entity.doorDisableLockpicks == 1 )
             {
                 if ( entity.behavior == &actIronDoor )
                 {
-                    Uint32 color = makeColorRGB(255, 255, 255);
+                    const Uint32 color = makeColorRGB(255, 255, 255);
                     playSoundEntity(&entity, 92, 64);
                     messagePlayerColor(player, MESSAGE_INTERACTION, color, Language::get(6403)); // disabled.
                 }
                 else
                 {
-                    Uint32 color = makeColorRGB(255, 0, 255);
+                    const Uint32 color = makeColorRGB(255, 0, 255);
                     playSoundEntity(&entity, 92, 64);
                     messagePlayerColor(player, MESSAGE_INTERACTION, color, Language::get(3101)); // disabled.
                 }
@@ -656,11 +656,11 @@ void Item::applyLockpick(int player, Entity& entity)
             // 20 skill is 4-5 damage
             // 60 skill is 6-11 damage
             // 100 skill is 8-17 damage
-            bool wasLocked = entity.wallLockPickHealth > 0;
-            int lockpickDamageToLock = 3 + stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 20
+            const bool wasLocked = entity.wallLockPickHealth > 0;
+            const int lockpickDamageToLock = 3 + stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 20
                 + local_rng.rand() % std::max(1, stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 10);
 
-            int skillLVL = stats[player]->getModifiedProficiency(PRO_LOCKPICKING) + statGetPER(stats[player], players[player]->entity);
+            const int skillLVL = stats[player]->getModifiedProficiency(PRO_LOCKPICKING) + statGetPER(stats[player], players[player]->entity);
             if ( wasLocked && (skillLVL < entity.wallLockPickable) )
             {
                 // unable to lockpick
@@ -670,7 +670,7 @@ void Item::applyLockpick(int player, Entity& entity)
             else
             {
                 entity.wallLockPickHealth = std::max(0, entity.wallLockPickHealth - lockpickDamageToLock);
-                bool unlockedFromLockpickHealth = (entity.wallLockPickHealth == 0);
+                const bool unlockedFromLockpickHealth = (entity.wallLockPickHealth == 0);
 
                 if ( capstoneUnlocked
                     || stats[player]->getModifiedProficiency(PRO_LOCKPICKING) > local_rng.rand() % 200
@@ -734,7 +734,7 @@ void Item::applyLockpick(int player, Entity& entity)
                     bool tryDegradeLockpick = true;
                     if ( !entity.wallLockPreventLockpickExploit )
                     {
-                        int skillIncreaseMinimum = std::min(100, std::max(0, entity.wallLockPickable + 20));
+                        const int skillIncreaseMinimum = std::min(100, std::max(0, entity.wallLockPickable + 20));
                         if ( stats[player]->getProficiency(PRO_LOCKPICKING) < skillIncreaseMinimum )
                         {
                             if ( local_rng.rand() % 10 == 0 )
@@ -798,7 +798,7 @@ void Item::applyLockpick(int player, Entity& entity)
         {
             if ( entity.wallLockPower == 1 )
             {
-                int skillLVL = stats[player]->getModifiedProficiency(PRO_LOCKPICKING) + statGetPER(stats[player], players[player]->entity);
+                const int skillLVL = stats[player]->getModifiedProficiency(PRO_LOCKPICKING) + statGetPER(stats[player], players[player]->entity);
                 if ( skillLVL < entity.wallLockPickable )
                 {
                     // unable to lockpick
@@ -848,13 +848,13 @@ void Item::applyLockpick(int player, Entity& entity)
             if ( players[player] && players[player]->entity )
             {
                 // calculate facing direction from player, < PI is facing away from player
-                real_t yawDiff = entity.yawDifferenceFromEntity(players[player]->entity);
+                const real_t yawDiff = entity.yawDifferenceFromEntity(players[player]->entity);
                 if ( yawDiff < PI )
                 {
                     auto& rng = entity.entity_rng ? *entity.entity_rng : local_rng;
 
                     messagePlayer(player, MESSAGE_INTERACTION, Language::get(2524), getName(), getMonsterLocalizedName(myStats->type).c_str());
-                    int chance = stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 20 + 1;
+                    const int chance = stats[player]->getModifiedProficiency(PRO_LOCKPICKING) / 20 + 1;
                     if ( stats[player]->getModifiedProficiency(PRO_LOCKPICKING) >= 60 || (local_rng.rand() % chance > 0) )
                     {
                         // 100% >= 60 lockpicking. 40 = 66%, 20 = 50%, 0 = 0%
@@ -892,7 +892,7 @@ void Item::applyLockpick(int player, Entity& entity)
                                 qtyMagicScrap += 3 + rng.rand() % 4; // 11-19 total
                             }
                         }
-                        Item* item = newItem(TOOL_METAL_SCRAP, DECREPIT, 0, qtyMetalScrap, 0, true, &myStats->inventory);
+                        const Item* item = newItem(TOOL_METAL_SCRAP, DECREPIT, 0, qtyMetalScrap, 0, true, &myStats->inventory);
                         item = newItem(TOOL_MAGIC_SCRAP, DECREPIT, 0, qtyMagicScrap, 0, true, &myStats->inventory);
                         serverUpdatePlayerGameplayStats(player, STATISTICS_BOMB_SQUAD, 1);
                         players[player]->entity->awardXP(&entity, true, true);
@@ -1108,7 +1108,7 @@ void Item::applyEmptyPotion(int player, Entity& entity)
         Item* item = stats[player]->weapon;
         consumeItem(item, player);
 
-        int skillLVL = 2; // 0 to 5
+        const int skillLVL = 2; // 0 to 5
         /*if ( stats[player] )
      {
           int skillLVL = stats[player]->PROFICIENCIES[PRO_ALCHEMY] / 20;
@@ -1270,7 +1270,7 @@ void Item::applyEmptyPotion(int player, Entity& entity)
                 {
                     Entity* oldSelected = client_selected[player];
                     client_selected[player] = &entity;
-                    bool oldInRange = inrange[player];
+                    const bool oldInRange = inrange[player];
                     inrange[player] = true;
                     entity.skill[8] = 1; // disables polymorph being washed away.
                     actSink(&entity);
@@ -1282,7 +1282,7 @@ void Item::applyEmptyPotion(int player, Entity& entity)
                 {
                     Entity* oldSelected = selectedEntity[player];
                     selectedEntity[player] = &entity;
-                    bool oldInRange = inrange[player];
+                    const bool oldInRange = inrange[player];
                     inrange[player] = true;
                     entity.skill[8] = 1; // disables polymorph being washed away.
                     actSink(&entity);
@@ -1295,7 +1295,7 @@ void Item::applyEmptyPotion(int player, Entity& entity)
             {
                 --entity.skill[0];
                 // Randomly choose second usage stats.
-                int effect = rng.rand() % 10; //4 possible effects.
+                const int effect = rng.rand() % 10; //4 possible effects.
                 switch ( effect )
                 {
                     case 0:
@@ -1388,8 +1388,8 @@ void Item::applyEmptyPotion(int player, Entity& entity)
                 for ( int j = 0; j < potionDropQuantity; ++j )
                 {
                     std::pair<int, int> generatedPotion = fountainGeneratePotionDrop(rng);
-                    auto type = static_cast<ItemType>(generatedPotion.first);
-                    int appearance = generatedPotion.second;
+                    const auto type = static_cast<ItemType>(generatedPotion.first);
+                    const int appearance = generatedPotion.second;
                     Item* item = newItem(type, EXCELLENT, 0, 1, appearance, false, nullptr);
                     if ( Entity* dropped = dropItemMonster(item, &entity, nullptr) )
                     {
@@ -1417,7 +1417,7 @@ void Item::applyEmptyPotion(int player, Entity& entity)
         }
         else if ( skillLVL < 2 || (skillLVL >= 2 && rng.rand() % (skillLVL) == 0 ) )
         {
-            bool oldInRange = inrange[player];
+            const bool oldInRange = inrange[player];
             inrange[player] = true;
             if ( player > 0 && !splitscreen )
             {
@@ -1490,9 +1490,9 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
             {
                 auto& trapProps = monsterTrapIgnoreEntities[entity->getUID()];
                 trapProps.parent = entity->parent;
-                for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
+                for (const node_t* node = map.creatures->first; node != nullptr; node = node->next )
                 {
-                    auto creature = static_cast<Entity*>(node->element);
+                    const auto creature = static_cast<Entity*>(node->element);
                     if ( creature && parent->checkFriend(creature) )
                     {
                         trapProps.ignoreEntities.insert(creature->getUID());
@@ -1527,7 +1527,7 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
             entity->x = thrown->x;
             entity->y = thrown->y;
             entity->z = std::min(4.0, thrown->z);
-            int height = 1;
+            const int height = 1;
             switch ( dir )
             {
                 case BOMB_EAST:
@@ -1641,9 +1641,9 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
             {
                 auto& trapProps = monsterTrapIgnoreEntities[entity->getUID()];
                 trapProps.parent = entity->parent;
-                for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
+                for (const node_t* node = map.creatures->first; node != nullptr; node = node->next )
                 {
-                    auto creature = static_cast<Entity*>(node->element);
+                    const auto creature = static_cast<Entity*>(node->element);
                     if ( creature && parent->checkFriend(creature) )
                     {
                         trapProps.ignoreEntities.insert(creature->getUID());
@@ -1859,9 +1859,9 @@ void Item::applyBomb(Entity* parent, ItemType type, ItemBombPlacement placement,
             {
                 auto& trapProps = monsterTrapIgnoreEntities[entity->getUID()];
                 trapProps.parent = entity->parent;
-                for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
+                for (const node_t* node = map.creatures->first; node != nullptr; node = node->next )
                 {
-                    auto creature = static_cast<Entity*>(node->element);
+                    const auto creature = static_cast<Entity*>(node->element);
                     if ( creature && parent->checkFriend(creature) )
                     {
                         trapProps.ignoreEntities.insert(creature->getUID());
@@ -1907,8 +1907,8 @@ void Item::applyDuck(Uint32 parentUid, real_t x, real_t y, Entity* hitentity, bo
                 {
                     for ( int j = -1; j <= 1; ++j )
                     {
-                        int ix = static_cast<int>(x / 16);
-                        int iy = static_cast<int>(y / 16);
+                        const int ix = static_cast<int>(x / 16);
+                        const int iy = static_cast<int>(y / 16);
                         if ( entityInsideTile(testEntity, ix + i, iy + j, OBSTACLELAYER) ) // check not clipping in surrounding walls
                         {
                             tryExactLocation = false;
@@ -1987,7 +1987,7 @@ void Item::applyDuck(Uint32 parentUid, real_t x, real_t y, Entity* hitentity, bo
             {
                 playSoundPos(summon->x, summon->y, 789 + local_rng.rand() % 5, 128);
             }
-            int appearance = std::max(0, static_cast<int>(this->appearance % items[TOOL_DUCK].variations));
+            const int appearance = std::max(0, static_cast<int>(this->appearance % items[TOOL_DUCK].variations));
             summonedStats->setAttribute("duck_type", std::to_string(appearance));
             if ( onLevelRespawn )
             {
@@ -2008,7 +2008,7 @@ void Item::applyDuck(Uint32 parentUid, real_t x, real_t y, Entity* hitentity, bo
             summonedStats->setAttribute("duck_bless", std::to_string(beatitude));
             summonedStats->setAttribute("skip_obituary", "1");
             summonedStats->MISC_FLAGS[STAT_FLAG_MONSTER_DISABLE_HC_SCALING] = 1;
-            int playerOwner = this->getDuckPlayer();
+            const int playerOwner = this->getDuckPlayer();
             if ( playerOwner >= 0 && playerOwner < MAXPLAYERS )
             {
                 summonedStats->leader_uid = achievementObserver.playerUids[playerOwner];

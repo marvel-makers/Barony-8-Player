@@ -110,7 +110,7 @@ void actBeartrap(Entity* my)
 
     // launch beartrap
     Entity* parent = uidToEntity(my->parent);
-    for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
+    for (const node_t* node = map.creatures->first; node != nullptr; node = node->next )
     {
         auto entity = static_cast<Entity*>(node->element);
         if ( my->parent == entity->getUID() )
@@ -159,9 +159,9 @@ void actBeartrap(Entity* my)
                         {
                             if ( stats[parent->skill[2]]->helmet && stats[parent->skill[2]]->helmet->type == PUNISHER_HOOD )
                             {
-                                int mpAmount = parent->modMP(1 + local_rng.rand() % 2);
+                                const int mpAmount = parent->modMP(1 + local_rng.rand() % 2);
                                 parent->playerInsectoidIncrementHungerToMP(mpAmount);
-                                Uint32 color = makeColorRGB(0, 255, 0);
+                                const Uint32 color = makeColorRGB(0, 255, 0);
                                 parent->setEffect(EFF_MP_REGEN, true, std::max(stats[parent->skill[2]]->EFFECTS_TIMERS[EFF_MP_REGEN], 10 * TICKS_PER_SECOND), false);
                                 if ( parent->behavior == &actPlayer )
                                 {
@@ -172,13 +172,13 @@ void actBeartrap(Entity* my)
                             }
                         }
                     }
-                    int damage = 10 + 3 * (BEARTRAP_STATUS + BEARTRAP_BEATITUDE);
+                    const int damage = 10 + 3 * (BEARTRAP_STATUS + BEARTRAP_BEATITUDE);
                     if ( parent )
                     {
                         stat->bleedInflictedBy = static_cast<Sint32>(parent->getUID());
                         //damage += trapperStat->PROFICIENCIES[PRO_LOCKPICKING] / 20;
                     }
-                    int oldHP = stat->HP;
+                    const int oldHP = stat->HP;
                     //messagePlayer(0, "dmg: %d", damage);
                     entity->modHP(-damage);
                     //// alert the monster! DOES NOT WORK DURING PARALYZE.
@@ -214,8 +214,8 @@ void actBeartrap(Entity* my)
                     }
                     if ( entity->behavior == &actPlayer )
                     {
-                        int player = entity->skill[2];
-                        Uint32 color = makeColorRGB(255, 0, 0);
+                        const int player = entity->skill[2];
+                        const Uint32 color = makeColorRGB(255, 0, 0);
                         messagePlayerColor(player, MESSAGE_STATUS, color, Language::get(454));
                         if ( !players[player]->isLocalPlayer() )
                         {
@@ -239,7 +239,7 @@ void actBeartrap(Entity* my)
                     }
                     else if ( parent && parent->behavior == &actPlayer )
                     {
-                        int player = parent->skill[2];
+                        const int player = parent->skill[2];
                         if ( player >= 0 )
                         {
                             if ( oldHP > 0 )
@@ -349,7 +349,7 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
     }
     Entity* parent = uidToEntity(my->parent);
     Stat* stat = triggered->getStats();
-    Stat* parentStats = nullptr;
+    const Stat* parentStats = nullptr;
     if ( parent )
     {
         parentStats = parent->getStats();
@@ -392,7 +392,7 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
         doVertical = true;
     }
 
-    int oldHP = stat->HP;
+    const int oldHP = stat->HP;
     if ( stat )
     {
         damage *= Entity::getDamageTableMultiplier(triggered, *stat, DAMAGE_TABLE_MAGIC); // reduce/increase by magic table.
@@ -408,7 +408,7 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
     }
 
     // stumbled into the trap!
-    Uint32 color = makeColorRGB(0, 255, 0);
+    const Uint32 color = makeColorRGB(0, 255, 0);
     if ( parent && parent->behavior == &actPlayer && triggered != parent )
     {
         if ( !hitByAOE )
@@ -422,8 +422,8 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
     }
     if ( triggered->behavior == &actPlayer )
     {
-        int player = triggered->skill[2];
-        Uint32 color = makeColorRGB(255, 0, 0);
+        const int player = triggered->skill[2];
+        const Uint32 color = makeColorRGB(255, 0, 0);
         // you stumbled into the trap!
         if ( !hitByAOE )
         {
@@ -456,14 +456,14 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
             // no effect.
             if ( parent && parent->behavior == &actPlayer )
             {
-                Uint32 color = makeColorRGB(255, 0, 0);
+                const Uint32 color = makeColorRGB(255, 0, 0);
                 messagePlayerMonsterEvent(parent->skill[2], color, *triggered->getStats(), Language::get(3603), Language::get(3604), MSG_COMBAT);
             }
             return;
         }
         std::vector<Entity*> goodspots;
         bool teleported = false;
-        for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+        for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
         {
             auto entity = static_cast<Entity*>(node->element);
             if ( entity && entity != my && entity->behavior == &actBomb )
@@ -510,13 +510,13 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
                 // whisked away!
                 if ( triggered != parent )
                 {
-                    Uint32 color = makeColorRGB(0, 255, 0);
+                    const Uint32 color = makeColorRGB(0, 255, 0);
                     messagePlayerMonsterEvent(parent->skill[2], color, *triggered->getStats(), Language::get(3601), Language::get(3602), MSG_COMBAT);
                 }
             }
             if ( triggered->behavior == &actPlayer )
             {
-                Uint32 color = makeColorRGB(255, 255, 255);
+                const Uint32 color = makeColorRGB(255, 255, 255);
                 messagePlayerColor(triggered->skill[2], MESSAGE_STATUS, color, Language::get(3611));
                 achievementObserver.playerAchievements[triggered->skill[2]].checkPathBetweenObjects(triggered, my, AchievementObserver::BARONY_ACH_WONDERFUL_TOYS);
             }
@@ -533,7 +533,7 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
         {
             if ( parent && parent->behavior == &actPlayer && triggered != parent )
             {
-                Uint32 color = makeColorRGB(255, 0, 0);
+                const Uint32 color = makeColorRGB(255, 0, 0);
                 messagePlayerMonsterEvent(parent->skill[2], color, *triggered->getStats(), Language::get(3615), Language::get(3616), MSG_COMBAT);
             }
         }
@@ -549,12 +549,12 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
             spell->y = triggered->y;
             if ( !doVertical )
             {
-                real_t speed = 1.f;
+                const real_t speed = 1.f;
                 real_t ticksToHit = (entityDistance / speed);
                 /*real_t predictx = triggered->x + (triggered->vel_x * ticksToHit);
                 real_t predicty = triggered->y + (triggered->vel_y * ticksToHit);
               double tangent = atan2(predicty - my->y, predictx - my->x);*/
-                double tangent = atan2(triggered->y - my->y, triggered->x - my->x);
+                const double tangent = atan2(triggered->y - my->y, triggered->x - my->x);
                 spell->yaw = tangent;
                 spell->vel_x = speed * cos(spell->yaw);
                 spell->vel_y = speed * sin(spell->yaw);
@@ -563,11 +563,11 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
             {
                 spell->x = my->x;
                 spell->y = my->y;
-                real_t speed = 3.f;
-                real_t ticksToHit = (entityDistance / speed);
-                real_t predictx = triggered->x + (triggered->vel_x * ticksToHit);
-                real_t predicty = triggered->y + (triggered->vel_y * ticksToHit);
-                double tangent = atan2(predicty - my->y, predictx - my->x);
+                const real_t speed = 3.f;
+                const real_t ticksToHit = (entityDistance / speed);
+                const real_t predictx = triggered->x + (triggered->vel_x * ticksToHit);
+                const real_t predicty = triggered->y + (triggered->vel_y * ticksToHit);
+                const double tangent = atan2(predicty - my->y, predictx - my->x);
                 spell->yaw = tangent;
                 spell->vel_z = -2.f;
                 spell->vel_x = speed * cos(spell->yaw);
@@ -625,7 +625,7 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
 
     if ( triggered->behavior == &actPlayer )
     {
-        int player = triggered->skill[2];
+        const int player = triggered->skill[2];
         
         if ( players[player]->isLocalPlayer() )
         {
@@ -645,10 +645,10 @@ void bombDoEffect(Entity* my, Entity* triggered, real_t entityDistance, bool spa
     }
     if ( parent && parent != triggered && parent->behavior == &actPlayer )
     {
-        int player = parent->skill[2];
+        const int player = parent->skill[2];
         if ( player >= 0 )
         {
-            double tangent = atan2(parent->y - my->y, parent->x - my->x);
+            const double tangent = atan2(parent->y - my->y, parent->x - my->x);
             lineTraceTarget(my, my->x, my->y, tangent, 128, 0, false, parent);
             if ( hit.entity != parent )
             {
@@ -807,7 +807,7 @@ void actBomb(Entity* my)
 
     if ( my->isInteractWithMonster() )
     {
-        Entity* monsterInteracting = uidToEntity(my->interactedByMonster);
+        const Entity* monsterInteracting = uidToEntity(my->interactedByMonster);
         if ( monsterInteracting && monsterInteracting->getMonsterTypeFromSprite() == GYROBOT )
         {
             if ( monsterInteracting->monsterAllyGetPlayerLeader() )
@@ -840,8 +840,8 @@ void actBomb(Entity* my)
     std::vector<Entity*> entitiesWithinRadius;
     for (auto it = entLists.begin(); it != entLists.end(); ++it )
     {
-        list_t* currentList = *it;
-        for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+        const list_t* currentList = *it;
+        for (const node_t* node = currentList->first; node != nullptr; node = node->next )
         {
             entitiesWithinRadius.push_back(static_cast<Entity*>(node->element));
         }
@@ -1027,7 +1027,7 @@ void actBomb(Entity* my)
         }
         if ( entity->behavior == &actMonster || entity->behavior == &actPlayer )
         {
-            Stat* stat = entity->getStats();
+            const Stat* stat = entity->getStats();
             if ( stat )
             {
                 Entity* parent = uidToEntity(my->parent);
@@ -1092,8 +1092,8 @@ void actBomb(Entity* my)
                 }
                 else
                 {
-                    real_t oldx = my->x;
-                    real_t oldy = my->y;
+                    const real_t oldx = my->x;
+                    const real_t oldy = my->y;
                     // pretend the bomb is in the center of the tile it's facing.
                     switch ( BOMB_DIRECTION )
                     {
@@ -1218,8 +1218,8 @@ bool Entity::entityCheckIfTriggeredWallButton()
 
     bool foundButton = false;
 
-    real_t height_limit_low = (behavior == &actThrown) ? 5.0 : 4.0;
-    real_t height_limit_high = -8.0;
+    const real_t height_limit_low = (behavior == &actThrown) ? 5.0 : 4.0;
+    const real_t height_limit_high = -8.0;
 
     // check for wall buttons
     if ( z < height_limit_low && z > height_limit_high )
@@ -1227,22 +1227,22 @@ bool Entity::entityCheckIfTriggeredWallButton()
         std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 1);
         for (auto it = entLists.begin(); it != entLists.end(); ++it )
         {
-            list_t* currentList = *it;
-            for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+            const list_t* currentList = *it;
+            for (const node_t* node = currentList->first; node != nullptr; node = node->next )
             {
-                if (auto entity = static_cast<Entity*>(node->element) )
+                if (const auto entity = static_cast<Entity*>(node->element) )
                 {
                     if ( entity->behavior == &::actWallButton )
                     {
-                        Sint32 tmpsizex = sizex;
-                        Sint32 tmpsizey = sizey;
+                        const Sint32 tmpsizex = sizex;
+                        const Sint32 tmpsizey = sizey;
                         sizex = std::max(sizex, 2);
                         sizey = std::max(sizey, 2);
                         if ( entityInsideEntity(this, entity) )
                         {
                             entity->wallLockPlayerInteracting = MAXPLAYERS + 1;
                             foundButton = true;
-                            if ( Entity* parent = uidToEntity(this->parent) )
+                            if (const Entity* parent = uidToEntity(this->parent) )
                             {
                                 if ( parent->behavior == &actPlayer )
                                 {
@@ -1275,10 +1275,10 @@ bool Entity::entityCheckIfTriggeredBomb(bool triggerBomb)
     std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(this, 2);
     for (auto it = entLists.begin(); it != entLists.end(); ++it )
     {
-        list_t* currentList = *it;
-        for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+        const list_t* currentList = *it;
+        for (const node_t* node = currentList->first; node != nullptr; node = node->next )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             if ( entity && entity->behavior == &actBomb && entity->skill[24] == 0 )
             {
                 if ( entityInsideEntity(this, entity) )
@@ -1344,8 +1344,8 @@ void actDecoyBox(Entity* my)
         // find other decoys (so monsters don't wiggle back and forth.)
         for (auto it = entLists.begin(); it != entLists.end(); ++it )
         {
-            list_t* currentList = *it;
-            for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+            const list_t* currentList = *it;
+            for (const node_t* node = currentList->first; node != nullptr; node = node->next )
             {
                 auto entity = static_cast<Entity*>(node->element);
                 if ( entity && entity->behavior == &actDecoyBox && entity != my )
@@ -1362,17 +1362,17 @@ void actDecoyBox(Entity* my)
         int lured = 0;
         for (auto it = entLists.begin(); it != entLists.end(); ++it )
         {
-            list_t* currentList = *it;
-            for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+            const list_t* currentList = *it;
+            for (const node_t* node = currentList->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( parent && entity && entity->behavior == &actMonster
                     && parent->checkEnemy(entity) && entity->isMobile() )
                 {
                     if ( (entity->monsterState == MONSTER_STATE_WAIT || entity->monsterTarget == 0) 
                         || (entityDist(entity,my) < 2 * TOUCHRANGE && static_cast<Uint32>(entity->monsterLastDistractedByNoisemaker) != my->getUID()) )
                     {
-                        Stat* myStats = entity->getStats();
+                        const Stat* myStats = entity->getStats();
                         if ( !entity->isBossMonster() && !entity->monsterIsTinkeringCreation()
                             && myStats && !uidToEntity(myStats->leader_uid) )
                         {
@@ -1408,7 +1408,7 @@ void actDecoyBox(Entity* my)
                                     detected = false; // skip the message.
 
                                     // can I see the noisemaker next to me?
-                                    real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
+                                    const real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
                                     lineTraceTarget(my, my->x, my->y, tangent, 32.0, 0, false, entity);
                                     if ( hit.entity == entity )
                                     {
@@ -1454,7 +1454,7 @@ void actDecoyBox(Entity* my)
                                     detected = false; // skip the message.
 
                                     // can I see the noisemaker next to me?
-                                    real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
+                                    const real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
                                     lineTraceTarget(my, my->x, my->y, tangent, 32.0, 0, false, entity);
                                     if ( hit.entity == entity )
                                     {
@@ -1478,10 +1478,10 @@ void actDecoyBox(Entity* my)
                                 if ( parent->behavior == &actPlayer && stats[parent->skill[2]] )
                                 {
                                     // see if we have a gyrobot follower to tell us what's goin on
-                                    for ( node_t* tmpNode = stats[parent->skill[2]]->FOLLOWERS.first; tmpNode != nullptr; tmpNode = tmpNode->next )
+                                    for (const node_t* tmpNode = stats[parent->skill[2]]->FOLLOWERS.first; tmpNode != nullptr; tmpNode = tmpNode->next )
                                     {
-                                        auto c = static_cast<Uint32*>(tmpNode->element);
-                                        Entity* gyrobot = uidToEntity(*c);
+                                        const auto c = static_cast<Uint32*>(tmpNode->element);
+                                        const Entity* gyrobot = uidToEntity(*c);
                                         if ( gyrobot && gyrobot->getRace() == GYROBOT )
                                         {
                                             if ( entity->getEntityShowOnMapDuration() == 0
@@ -1529,8 +1529,8 @@ void actDecoyBox(Entity* my)
     if ( my->ticks > TICKS_PER_SECOND * 7 )
     {
         // stop working.
-        bool decoyBreak = (local_rng.rand() % 5 == 0);
-        Entity* parent = uidToEntity(my->parent);
+        const bool decoyBreak = (local_rng.rand() % 5 == 0);
+        const Entity* parent = uidToEntity(my->parent);
         playSoundEntity(my, 485 + local_rng.rand() % 3, 192);
         if ( !decoyBreak )
         {
@@ -1585,7 +1585,7 @@ void actDecoyBox(Entity* my)
 
 void actDecoyBoxCrank(Entity* my)
 {
-    Entity* parent = uidToEntity(my->parent);
+    const Entity* parent = uidToEntity(my->parent);
     if ( !parent )
     {
         list_RemoveNode(my->mynode);

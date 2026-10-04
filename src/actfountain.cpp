@@ -240,8 +240,8 @@ void actFountain(Entity* my)
                         for ( int j = 0; j < potionDropQuantity; ++j )
                         {
                             std::pair<int, int> generatedPotion = fountainGeneratePotionDrop(rng);
-                            auto type = static_cast<ItemType>(generatedPotion.first);
-                            int appearance = generatedPotion.second;
+                            const auto type = static_cast<ItemType>(generatedPotion.first);
+                            const int appearance = generatedPotion.second;
                             Item* item = newItem(type, EXCELLENT, 0, 1, appearance, false, nullptr);
                             if ( Entity* dropped = dropItemMonster(item, my, nullptr) )
                             {
@@ -261,7 +261,7 @@ void actFountain(Entity* my)
                             playSoundEntity(players[i]->entity, 52, 64);
 
                             //Spawn succubus.
-                            Uint32 color = makeColorRGB(255, 128, 0);
+                            const Uint32 color = makeColorRGB(255, 128, 0);
                             Entity* spawnedMonster = nullptr;
 
                             if ( !strncmp(map.name, "Underworld", 10) )
@@ -378,7 +378,7 @@ void actFountain(Entity* my)
                                 players[i]->entity->setObituary(Language::get(1533));
                                 stats[i]->killer = KilledBy::FOUNTAIN;
 
-                                Uint32 color = makeColorRGB(255, 0, 0);
+                                const Uint32 color = makeColorRGB(255, 0, 0);
                                 messagePlayerColor(i, MESSAGE_STATUS, color, Language::get(3183));
                                 if ( i >= 0 && players[i]->isLocalPlayer() )
                                 {
@@ -412,7 +412,7 @@ void actFountain(Entity* my)
                             // bless all equipment
                             playSoundEntity(players[i]->entity, 52, 64);
                             //playSoundEntity(players[i]->entity, 167, 64);
-                            Uint32 textcolor = makeColorRGB(0, 255, 255);
+                            const Uint32 textcolor = makeColorRGB(0, 255, 255);
                             messagePlayerColor(i, MESSAGE_STATUS, textcolor, Language::get(471));
                             messagePlayerColor(i, MESSAGE_STATUS, textcolor, Language::get(473));
                             bool stuckOnYouSuccess = false;
@@ -535,7 +535,7 @@ void actFountain(Entity* my)
                             // bless one piece of equipment
                             playSoundEntity(players[i]->entity, 52, 64);
                             //playSoundEntity(players[i]->entity, 167, 64);
-                            Uint32 textcolor = makeColorRGB(0, 255, 255);
+                            const Uint32 textcolor = makeColorRGB(0, 255, 255);
                             messagePlayerColor(i, MESSAGE_STATUS, textcolor, Language::get(471));
                             //Choose only one piece of equipment to bless.
 
@@ -592,7 +592,7 @@ void actFountain(Entity* my)
                                 messagePlayerColor(i, MESSAGE_STATUS, textcolor, Language::get(2592)); //"The fountain blesses a piece of equipment"
                                 Compendium_t::Events_t::eventUpdateWorld(i, Compendium_t::CPDM_FOUNTAIN_BLESS, "fountain", 1);
                                 //Randomly choose a piece of equipment.
-                                std::pair<Item*, Uint32> chosen = items[rng.rand()%items.size()];
+                                const std::pair<Item*, Uint32> chosen = items[rng.rand()%items.size()];
                                 if ( chosen.first->beatitude == 0 )
                                 {
                                     if ( stats[i]->type == SUCCUBUS )

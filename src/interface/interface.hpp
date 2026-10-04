@@ -153,7 +153,7 @@ public:
         EnemyHPDetails() {};
         EnemyHPDetails(Uint32 uid, Sint32 HP, Sint32 maxHP, Sint32 oldHP, const char* name, bool isLowPriority)
         {
-            if ( Entity* entity = uidToEntity(uid) )
+            if (const Entity* entity = uidToEntity(uid) )
             {
                 if ( entity->behavior != &actMonster && entity->behavior != actPlayer )
                 {

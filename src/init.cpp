@@ -692,7 +692,7 @@ int initApp(char const * const title, int fullscreen)
                 else
                 {
                     printlog("copying model 0 for %d as a fallback\n", c);
-                    auto model = static_cast<voxel_t*>(malloc(sizeof(voxel_t)));
+                    const auto model = static_cast<voxel_t*>(malloc(sizeof(voxel_t)));
                     model->sizex = models[0]->sizex;
                     model->sizey = models[0]->sizey;
                     model->sizez = models[0]->sizez;
@@ -718,7 +718,7 @@ int initApp(char const * const title, int fullscreen)
         updateLoadingScreen(60);
 
 #ifndef EDITOR
-        int soundStatus = loadSoundResources(60, 20); // start at 60% loading, progress to 80%
+        const int soundStatus = loadSoundResources(60, 20); // start at 60% loading, progress to 80%
         if ( 0 != soundStatus )
         {
             loading_done = true;
@@ -737,7 +737,7 @@ int initApp(char const * const title, int fullscreen)
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
-    int result = loading_task.get();
+    const int result = loading_task.get();
     if (result == 0)
     {
         generateVBOs(0, nummodels);
@@ -794,7 +794,7 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
     std::string langFilepath;
     if ( PHYSFS_isInit() && PHYSFS_getRealDir(filename) != nullptr && !forceLoadBaseDirectory )
     {
-        std::string langRealDir = PHYSFS_getRealDir(filename);
+        const std::string langRealDir = PHYSFS_getRealDir(filename);
         langFilepath = langRealDir + PHYSFS_getDirSeparator() + filename;
     }
     else
@@ -838,7 +838,7 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
     std::string fontFilepath;
     if ( PHYSFS_isInit() && PHYSFS_getRealDir(fontName) != nullptr)
     {
-        std::string fontRealDir = PHYSFS_getRealDir(fontName);
+        const std::string fontRealDir = PHYSFS_getRealDir(fontName);
         fontFilepath = fontRealDir + PHYSFS_getDirSeparator() + fontName;
     }
     else
@@ -851,7 +851,7 @@ int Language::loadLanguage(char const * const lang, bool forceLoadBaseDirectory)
         strncpy(fontName, "lang/en.ttf", 63);
         if ( PHYSFS_isInit() && PHYSFS_getRealDir(fontName) != nullptr)
         {
-            std::string fontRealDir = PHYSFS_getRealDir(fontName);
+            const std::string fontRealDir = PHYSFS_getRealDir(fontName);
             fontFilepath = fontRealDir + PHYSFS_getDirSeparator() + fontName;
         }
         else
@@ -1005,7 +1005,7 @@ int Language::reloadLanguage()
 {
     if ( PHYSFS_isInit() && PHYSFS_getRealDir("lang/en.txt") != nullptr)
     {
-        std::string langRealDir = PHYSFS_getRealDir("lang/en.txt");
+        const std::string langRealDir = PHYSFS_getRealDir("lang/en.txt");
         if ( langRealDir != BASE_DATA_DIR )
         {
             loadLanguage("en", true); // force load the base directory first, then modded paths later.
@@ -1050,7 +1050,7 @@ void readTilesJson()
 
 
     char buf[1024];
-    int count = static_cast<int>(fp->read(buf, sizeof(buf[0]), sizeof(buf)));
+    const int count = static_cast<int>(fp->read(buf, sizeof(buf[0]), sizeof(buf)));
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -1481,7 +1481,7 @@ static void positionAndLimitWindow(int& x, int& y, int& w, int& h)
         SDL_GetDisplayBounds(i, &displayBounds.back());
     }
     if (display_id >= 0 && display_id < displays) {
-        auto& bound = displayBounds[display_id];
+        const auto& bound = displayBounds[display_id];
         if (fullscreen) {
             x = bound.x;
             y = bound.y;
@@ -1701,7 +1701,7 @@ bool changeVideoMode(int new_xres, int new_yres)
     Frame::fboDestroy();
 
     // set video mode
-    int result = initVideo();
+    const int result = initVideo();
     if ( !result )
     {
 #if defined(APPLE) && !defined(EDITOR)

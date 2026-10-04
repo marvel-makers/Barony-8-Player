@@ -640,7 +640,7 @@ void handleButtons(void)
     node_t* nextnode;
 
     // handle buttons
-    for ( node_t* node = button_l.first; node != nullptr; node = nextnode )
+    for (const node_t* node = button_l.first; node != nullptr; node = nextnode )
     {
         nextnode = node->next;
         button_t* button = static_cast<button_t*>(node->element);
@@ -653,8 +653,8 @@ void handleButtons(void)
         {
             continue;    // invisible buttons are not processed
         }
-        int w = strlen(button->label) * 8;
-        int h = 8;
+        const int w = strlen(button->label) * 8;
+        const int h = 8;
         if ( subwindow && !button->focused )
         {
             // unfocused buttons do not work when a subwindow is active
@@ -763,7 +763,7 @@ bool handleEvents(void)
 {
     // calculate app rate
     t = SDL_GetTicks();
-    real_t timesync = t - ot;
+    const real_t timesync = t - ot;
     ot = t;
 
     // do timer
@@ -1027,7 +1027,7 @@ void editFill(int x, int y, int layer, int type)
         return;
     }
 
-    int fillspot = map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height];
+    const int fillspot = map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height];
     map.tiles[layer + y * MAP_LAYERS + x * MAP_LAYERS * map.height] = type + numtiles;
 
     while ( repeat )
@@ -1123,7 +1123,7 @@ void makeUndo()
     }
 
     // copy all the current map data
-    auto undomap = static_cast<map_t*>(malloc(sizeof(map_t)));
+    const auto undomap = static_cast<map_t*>(malloc(sizeof(map_t)));
     strcpy(undomap->author, map.author);
     strcpy(undomap->name, map.name);
     undomap->skybox = map.skybox;
@@ -1192,7 +1192,7 @@ void undo()
     }
     map.tiles.clear();
     free(camera.vismap);
-    auto undomap = static_cast<map_t*>(undospot->element);
+    const auto undomap = static_cast<map_t*>(undospot->element);
     map.width = undomap->width;
     map.height = undomap->height;
     map.tiles = static_cast<Sint32*>(malloc(sizeof(Sint32) * map.width * map.height * MAP_LAYERS));
@@ -1200,7 +1200,7 @@ void undo()
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
     memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
     list_FreeAll(map.entities);
-    for ( node_t* node = undomap->entities->first; node != nullptr; node = node->next )
+    for (const node_t* node = undomap->entities->first; node != nullptr; node = node->next )
     {
         Entity* entity = newEntity(static_cast<Entity*>(node->element)->sprite, 1, map.entities, nullptr);
 
@@ -1226,7 +1226,7 @@ void redo()
     selectedEntity[0] = nullptr;
     map.tiles.clear();
     free(camera.vismap);
-    auto undomap = static_cast<map_t*>(redospot->element);
+    const auto undomap = static_cast<map_t*>(redospot->element);
     map.width = undomap->width;
     map.height = undomap->height;
     map.tiles = static_cast<Sint32*>(malloc(sizeof(Sint32) * map.width * map.height * MAP_LAYERS));
@@ -1234,7 +1234,7 @@ void redo()
     memset(camera.vismap, 0, sizeof(bool) * map.height * map.width);
     memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAP_LAYERS);
     list_FreeAll(map.entities);
-    for ( node_t* node = undomap->entities->first; node != nullptr; node = node->next )
+    for (const node_t* node = undomap->entities->first; node != nullptr; node = node->next )
     {
         Entity* entity = newEntity(static_cast<Entity*>(node->element)->sprite, 1, map.entities, nullptr);
 
@@ -1277,7 +1277,7 @@ void processCommandLine(int argc, char** argv)
                 else if ( !strncmp(argv[c], "-xres=", 6) )
                 {
                     char buf[32];
-                    size_t len = std::min(sizeof(buf), strlen(argv[c] + 6));
+                    const size_t len = std::min(sizeof(buf), strlen(argv[c] + 6));
                     strncpy(buf, argv[c] + 6, len);
                     buf[len] = '\0';
                     xres = atoi(buf);
@@ -1285,7 +1285,7 @@ void processCommandLine(int argc, char** argv)
                 else if ( !strncmp(argv[c], "-yres=", 6) )
                 {
                     char buf[32];
-                    size_t len = std::min(sizeof(buf), strlen(argv[c] + 6));
+                    const size_t len = std::min(sizeof(buf), strlen(argv[c] + 6));
                     strncpy(buf, argv[c] + 6, len);
                     buf[len] = '\0';
                     yres = atoi(buf);
@@ -10324,9 +10324,9 @@ int main(int argc, char** argv)
 
 void propertyPageTextAndInput(int numProperties, int width)
 {
-    int pad_x1 = subx1 + 8;
-    int spacing = 36;
-    int pad_x2 = width;
+    const int pad_x1 = subx1 + 8;
+    const int spacing = 36;
+    const int pad_x2 = width;
 
     // Cycle properties with TAB.
     if ( keystatus[SDLK_TAB] )
@@ -10377,7 +10377,7 @@ void reselectEntityGroup()
     groupedEntities.clear();
     node_t* nextnode = nullptr;
     Entity* entity = nullptr;
-    for ( node_t* node = map.entities->first; node != nullptr; node = nextnode )
+    for (const node_t* node = map.entities->first; node != nullptr; node = nextnode )
     {
         nextnode = node->next;
         entity = static_cast<Entity*>(node->element);

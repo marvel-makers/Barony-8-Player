@@ -263,8 +263,8 @@ struct MessageZoneSettings_t
 
     MessageSettings_t::Layout_t& getLayout(const int player, const Player::MessageZone_t::ChatAlignment_t _alignment)
     {
-        bool compact = players[player]->bUseCompactGUIHeight();
-        auto layout = compact
+        const bool compact = players[player]->bUseCompactGUIHeight();
+        const auto layout = compact
                           ? MessageSettings_t::LayoutType_t::LAYOUT_COMPACT
                           : MessageSettings_t::LayoutType_t::LAYOUT_DEFAULT;
         if (players[player]->hotbar.useHotbarFaceMenu)
@@ -385,7 +385,7 @@ void drawClockwiseSquareMesh(const char* texture, float lerp, SDL_Rect rect, Uin
 void capitalizeString(std::string& str)
 {
     if (str.size() < 1) { return; }
-    char letter = str[0];
+    const char letter = str[0];
     if (letter >= 'a' && letter <= 'z')
     {
         str[0] = toupper(letter);
@@ -458,7 +458,7 @@ std::string EnemyBarSettings_t::getEnemyBarSpriteName(Entity* entity)
 
     if (entity->behavior == &actPlayer || entity->behavior == &actMonster)
     {
-        int type = entity->getMonsterTypeFromSprite();
+        const int type = entity->getMonsterTypeFromSprite();
         if (type < NUMMONSTERS && type >= 0)
         {
             if (type == MIMIC)
@@ -525,9 +525,9 @@ void Player::GUI_t::imageSetWidthHeight9x9(Frame* container, const std::vector<s
 {
     for (auto& img : imgNames)
     {
-        if (auto i = container->findImage(img.c_str()))
+        if (const auto i = container->findImage(img.c_str()))
         {
-            if (auto imgGet = Image::get(i->path.c_str()))
+            if (const auto imgGet = Image::get(i->path.c_str()))
             {
                 i->pos.w = static_cast<int>(imgGet->getWidth());
                 i->pos.h = static_cast<int>(imgGet->getHeight());
@@ -542,35 +542,35 @@ void Player::GUI_t::imageResizeToContainer9x9(Frame* container, SDL_Rect dimensi
 {
     assert(imgNames.size() == 9);
     // adjust inner background image elements
-    auto tl = container->findImage(imgNames[TOP_LEFT].c_str());
+    const auto tl = container->findImage(imgNames[TOP_LEFT].c_str());
     tl->pos.x = dimensionsToFill.x;
     tl->pos.y = dimensionsToFill.y;
-    auto tr = container->findImage(imgNames[TOP_RIGHT].c_str());
+    const auto tr = container->findImage(imgNames[TOP_RIGHT].c_str());
     tr->pos.x = dimensionsToFill.w - tr->pos.w;
     tr->pos.y = dimensionsToFill.y;
-    auto tm = container->findImage(imgNames[TOP].c_str());
+    const auto tm = container->findImage(imgNames[TOP].c_str());
     tm->pos.x = tl->pos.x + tl->pos.w;
     tm->pos.y = dimensionsToFill.y;
     tm->pos.w = dimensionsToFill.w - tr->pos.w - tl->pos.w;
-    auto bl = container->findImage(imgNames[BOTTOM_LEFT].c_str());
+    const auto bl = container->findImage(imgNames[BOTTOM_LEFT].c_str());
     bl->pos.x = dimensionsToFill.x;
     bl->pos.y = dimensionsToFill.h - bl->pos.h;
-    auto br = container->findImage(imgNames[BOTTOM_RIGHT].c_str());
+    const auto br = container->findImage(imgNames[BOTTOM_RIGHT].c_str());
     br->pos.x = dimensionsToFill.w - br->pos.w;
     br->pos.y = bl->pos.y;
-    auto bm = container->findImage(imgNames[BOTTOM].c_str());
+    const auto bm = container->findImage(imgNames[BOTTOM].c_str());
     bm->pos.x = bl->pos.x + bl->pos.w;
     bm->pos.w = dimensionsToFill.w - bl->pos.w - br->pos.w;
     bm->pos.y = bl->pos.y;
-    auto ml = container->findImage(imgNames[MIDDLE_LEFT].c_str());
+    const auto ml = container->findImage(imgNames[MIDDLE_LEFT].c_str());
     ml->pos.x = dimensionsToFill.x;
     ml->pos.y = tl->pos.y + tl->pos.h;
     ml->pos.h = dimensionsToFill.h - dimensionsToFill.y - bl->pos.h - tl->pos.h;
-    auto mr = container->findImage(imgNames[MIDDLE_RIGHT].c_str());
+    const auto mr = container->findImage(imgNames[MIDDLE_RIGHT].c_str());
     mr->pos.x = dimensionsToFill.w - mr->pos.w;
     mr->pos.y = ml->pos.y;
     mr->pos.h = ml->pos.h;
-    auto mm = container->findImage(imgNames[MIDDLE].c_str());
+    const auto mm = container->findImage(imgNames[MIDDLE].c_str());
     mm->pos.x = ml->pos.x + ml->pos.w;
     mm->pos.y = ml->pos.y;
     mm->pos.w = dimensionsToFill.w - ml->pos.w - mr->pos.w;
@@ -804,14 +804,14 @@ void createHPMPBars(const int player)
         hud_t.hpFrame = hud_t.hudFrame->addFrame("hp bar");
         hud_t.hpFrame->setHollow(true);
 
-        SDL_Rect pos{barStartX, hpBarStartY, barWidth, barTotalHeight};
+        const SDL_Rect pos{barStartX, hpBarStartY, barWidth, barTotalHeight};
         hud_t.hpFrame->setSize(pos);
 
-        auto fadeFrame = hud_t.hpFrame->addFrame("hp fade frame");
+        const auto fadeFrame = hud_t.hpFrame->addFrame("hp fade frame");
         fadeFrame->setSize(SDL_Rect{0, 0, barWidth, barTotalHeight});
         fadeFrame->setInheritParentFrameOpacity(false);
 
-        auto foregroundFrame = hud_t.hpFrame->addFrame("hp foreground frame");
+        const auto foregroundFrame = hud_t.hpFrame->addFrame("hp foreground frame");
         foregroundFrame->setSize(SDL_Rect{0, 0, barWidth, barTotalHeight});
 
 
@@ -822,7 +822,7 @@ void createHPMPBars(const int player)
         auto fadeProgressBase = fadeFrame->addImage(SDL_Rect{54, 6, 6, progressBarHeight}, 0xFFFFFFFF,
                                                     "*#images/ui/HUD/hpmpbars/HUD_Bars_HPMidFade_00.png",
                                                     "hp img fade bot");
-        auto fadeProgress = fadeFrame->addImage(SDL_Rect{60, 6, barWidth - 60 - 8, progressBarHeight}, 0xFFFFFFFF,
+        const auto fadeProgress = fadeFrame->addImage(SDL_Rect{60, 6, barWidth - 60 - 8, progressBarHeight}, 0xFFFFFFFF,
                                                 "*#images/ui/HUD/hpmpbars/HUD_Bars_HPMidFade_00.png", "hp img fade");
         auto fadeProgressEndCap = fadeFrame->addImage(SDL_Rect{
                                                           fadeProgress->pos.x + fadeProgress->pos.w, 6, 8,
@@ -831,7 +831,7 @@ void createHPMPBars(const int player)
                                                       "*#images/ui/HUD/hpmpbars/HUD_Bars_HPEndFade_00.png",
                                                       "hp img fade endcap");
 
-        auto numbase = foregroundFrame->addImage(SDL_Rect{0, 4, 48, 26}, 0xFFFFFFFF,
+        const auto numbase = foregroundFrame->addImage(SDL_Rect{0, 4, 48, 26}, 0xFFFFFFFF,
                                                  "*#images/ui/HUD/hpmpbars/HUD_Bars_HPNumBase_00.png", "hp img value");
         auto div = foregroundFrame->addImage(SDL_Rect{46, 0, 8, 34}, 0xFFFFFFFF,
                                              "*#images/ui/HUD/hpmpbars/HUD_Bars_Separator_00.png", "hp img div");
@@ -839,7 +839,7 @@ void createHPMPBars(const int player)
         auto currentProgressBase = foregroundFrame->addImage(SDL_Rect{54, 6, 6, progressBarHeight}, 0xFFFFFFFF,
                                                              "*#images/ui/HUD/hpmpbars/HUD_Bars_HPBot_00.png",
                                                              "hp img progress bot");
-        auto currentProgress = foregroundFrame->addImage(SDL_Rect{60, 6, barWidth - 60 - 8, progressBarHeight},
+        const auto currentProgress = foregroundFrame->addImage(SDL_Rect{60, 6, barWidth - 60 - 8, progressBarHeight},
                                                          0xFFFFFFFF,
                                                          "*#images/ui/HUD/hpmpbars/HUD_Bars_HPMid_00.png",
                                                          "hp img progress");
@@ -849,7 +849,7 @@ void createHPMPBars(const int player)
                                                                }, 0xFFFFFFFF,
                                                                "*#images/ui/HUD/hpmpbars/HUD_Bars_HPEnd_00.png",
                                                                "hp img progress endcap");
-        auto currentProgressEndCapFlash = foregroundFrame->addImage(SDL_Rect{
+        const auto currentProgressEndCapFlash = foregroundFrame->addImage(SDL_Rect{
                                                                         currentProgress->pos.x + currentProgress->pos.w
                                                                         - 14,
                                                                         6, 22, progressBarHeight
@@ -863,21 +863,21 @@ void createHPMPBars(const int player)
                                                 0xFFFFFFFF,
                                                 "*#images/ui/HUD/hpmpbars/HUD_Bars_EndCap_00.png", "hp img endcap");
 
-        auto div25Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
+        const auto div25Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
                                                       "*#images/ui/HUD/hpmpbars/HUD_Bars_Divider_01.png",
                                                       "hp img div 25pc");
         div25Percent->disabled = true;
-        auto div50Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
+        const auto div50Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
                                                       "*#images/ui/HUD/hpmpbars/HUD_Bars_Divider_01.png",
                                                       "hp img div 50pc");
         div50Percent->disabled = true;
-        auto div75Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
+        const auto div75Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
                                                       "*#images/ui/HUD/hpmpbars/HUD_Bars_Divider_01.png",
                                                       "hp img div 75pc");
         div75Percent->disabled = true;
 
-        auto font = "fonts/pixel_maz.ttf#32#2";
-        auto hptext = foregroundFrame->addField("hp text", 16);
+        const auto font = "fonts/pixel_maz.ttf#32#2";
+        const auto hptext = foregroundFrame->addField("hp text", 16);
         hptext->setText("0");
         hptext->setSize(numbase->pos);
         hptext->setFont(font);
@@ -891,14 +891,14 @@ void createHPMPBars(const int player)
         hud_t.mpFrame = hud_t.hudFrame->addFrame("mp bar");
         hud_t.mpFrame->setHollow(true);
 
-        SDL_Rect pos{barStartX, mpBarStartY, barWidth, barTotalHeight};
+        const SDL_Rect pos{barStartX, mpBarStartY, barWidth, barTotalHeight};
         hud_t.mpFrame->setSize(pos);
 
-        auto fadeFrame = hud_t.mpFrame->addFrame("mp fade frame");
+        const auto fadeFrame = hud_t.mpFrame->addFrame("mp fade frame");
         fadeFrame->setSize(SDL_Rect{0, 0, barWidth, barTotalHeight});
         fadeFrame->setInheritParentFrameOpacity(false);
 
-        auto foregroundFrame = hud_t.mpFrame->addFrame("mp foreground frame");
+        const auto foregroundFrame = hud_t.mpFrame->addFrame("mp foreground frame");
         foregroundFrame->setSize(SDL_Rect{0, 0, barWidth, barTotalHeight});
 
 
@@ -909,7 +909,7 @@ void createHPMPBars(const int player)
         auto fadeProgressBase = fadeFrame->addImage(SDL_Rect{54, 6, 6, progressBarHeight}, 0xFFFFFFFF,
                                                     "*#images/ui/HUD/hpmpbars/HUD_Bars_MPMidFade_00.png",
                                                     "mp img fade bot");
-        auto fadeProgress = fadeFrame->addImage(SDL_Rect{60, 6, barWidth - 60 - 8, progressBarHeight}, 0xFFFFFFFF,
+        const auto fadeProgress = fadeFrame->addImage(SDL_Rect{60, 6, barWidth - 60 - 8, progressBarHeight}, 0xFFFFFFFF,
                                                 "*#images/ui/HUD/hpmpbars/HUD_Bars_MPMidFade_00.png", "mp img fade");
         auto fadeProgressEndCap = fadeFrame->addImage(SDL_Rect{
                                                           fadeProgress->pos.x + fadeProgress->pos.w, 6, 8,
@@ -918,7 +918,7 @@ void createHPMPBars(const int player)
                                                       "*#images/ui/HUD/hpmpbars/HUD_Bars_MPEndFade_00.png",
                                                       "mp img fade endcap");
 
-        auto numbase = foregroundFrame->addImage(SDL_Rect{0, 4, 48, 26}, 0xFFFFFFFF,
+        const auto numbase = foregroundFrame->addImage(SDL_Rect{0, 4, 48, 26}, 0xFFFFFFFF,
                                                  "*#images/ui/HUD/hpmpbars/HUD_Bars_MPNumBase_00.png", "mp img value");
         auto div = foregroundFrame->addImage(SDL_Rect{46, 0, 8, 34}, 0xFFFFFFFF,
                                              "*#images/ui/HUD/hpmpbars/HUD_Bars_Separator_00.png", "mp img div");
@@ -926,7 +926,7 @@ void createHPMPBars(const int player)
         auto currentProgressBase = foregroundFrame->addImage(SDL_Rect{54, 6, 6, progressBarHeight}, 0xFFFFFFFF,
                                                              "*#images/ui/HUD/hpmpbars/HUD_Bars_MPBot_00.png",
                                                              "mp img progress bot");
-        auto currentProgress = foregroundFrame->addImage(SDL_Rect{60, 6, barWidth - 60 - 8, progressBarHeight},
+        const auto currentProgress = foregroundFrame->addImage(SDL_Rect{60, 6, barWidth - 60 - 8, progressBarHeight},
                                                          0xFFFFFFFF,
                                                          "*#images/ui/HUD/hpmpbars/HUD_Bars_MPMid_00.png",
                                                          "mp img progress");
@@ -936,7 +936,7 @@ void createHPMPBars(const int player)
                                                                }, 0xFFFFFFFF,
                                                                "*#images/ui/HUD/hpmpbars/HUD_Bars_MPEnd_00.png",
                                                                "mp img progress endcap");
-        auto currentProgressEndCapFlash = foregroundFrame->addImage(SDL_Rect{
+        const auto currentProgressEndCapFlash = foregroundFrame->addImage(SDL_Rect{
                                                                         currentProgress->pos.x + currentProgress->pos.w
                                                                         - 14,
                                                                         6, 22, progressBarHeight
@@ -950,21 +950,21 @@ void createHPMPBars(const int player)
                                                 0xFFFFFFFF,
                                                 "*#images/ui/HUD/hpmpbars/HUD_Bars_EndCap_00.png", "mp img endcap");
 
-        auto div25Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
+        const auto div25Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
                                                       "*#images/ui/HUD/hpmpbars/HUD_Bars_Divider_01.png",
                                                       "mp img div 25pc");
         div25Percent->disabled = true;
-        auto div50Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
+        const auto div50Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
                                                       "*#images/ui/HUD/hpmpbars/HUD_Bars_Divider_01.png",
                                                       "mp img div 50pc");
         div50Percent->disabled = true;
-        auto div75Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
+        const auto div75Percent = foregroundFrame->addImage(SDL_Rect{0, 8, 2, 18}, 0xFFFFFFFF,
                                                       "*#images/ui/HUD/hpmpbars/HUD_Bars_Divider_01.png",
                                                       "mp img div 75pc");
         div75Percent->disabled = true;
 
-        auto font = "fonts/pixel_maz.ttf#32#2";
-        auto mptext = foregroundFrame->addField("mp text", 16);
+        const auto font = "fonts/pixel_maz.ttf#32#2";
+        const auto mptext = foregroundFrame->addField("mp text", 16);
         mptext->setText("0");
         mptext->setSize(numbase->pos);
         mptext->setFont(font);
@@ -978,7 +978,7 @@ void createAllyFollowerFrame(const int player)
 {
     auto& hud_t = players[player]->hud;
 
-    auto frame = hud_t.hudFrame->addFrame("follower status");
+    const auto frame = hud_t.hudFrame->addFrame("follower status");
     hud_t.allyFollowerFrame = frame;
     frame->setHollow(true);
     frame->setSize(SDL_Rect{0, 0, 300, 0});
@@ -986,12 +986,12 @@ void createAllyFollowerFrame(const int player)
     frame->setScrollBarsEnabled(false);
     frame->setAllowScrollBinds(false);
 
-    auto selector = frame->addImage(SDL_Rect{0, 0, 8, 8}, 0xFFFFFFFF, "*#images/ui/HUD/allies/HUD_Ally_Arrow_00.png",
+    const auto selector = frame->addImage(SDL_Rect{0, 0, 8, 8}, 0xFFFFFFFF, "*#images/ui/HUD/allies/HUD_Ally_Arrow_00.png",
                                     "selector");
     selector->disabled = true;
     selector->ontop = true;
 
-    auto glyphFrame = hud_t.hudFrame->addFrame("follower glyphs");
+    const auto glyphFrame = hud_t.hudFrame->addFrame("follower glyphs");
     hud_t.allyFollowerGlyphFrame = glyphFrame;
     glyphFrame->setHollow(true);
     glyphFrame->setSize(SDL_Rect{0, 0, 300, 0});
@@ -1008,11 +1008,11 @@ void createAllyFollowerFrame(const int player)
         commandText->setOntop(true);
         commandText->setDisabled(true);*/
 
-        auto glyphCommand = glyphFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "glyph command");
+        const auto glyphCommand = glyphFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "glyph command");
         glyphCommand->disabled = true;
         glyphCommand->ontop = true;
 
-        auto imgCommand = glyphFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
+        const auto imgCommand = glyphFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
                                                "*#images/ui/HUD/allies/HUD_Ally_Circle_00.png", "img command");
         imgCommand->disabled = true;
         imgCommand->ontop = true;
@@ -1027,11 +1027,11 @@ void createAllyFollowerFrame(const int player)
         repeatText->setOntop(true);
         repeatText->setDisabled(true);*/
 
-        auto glyphRepeat = glyphFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "glyph repeat");
+        const auto glyphRepeat = glyphFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "glyph repeat");
         glyphRepeat->disabled = true;
         glyphRepeat->ontop = true;
 
-        auto imgRepeat = glyphFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
+        const auto imgRepeat = glyphFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
                                               "*#images/ui/HUD/allies/HUD_Ally_Repeat_00.png", "img repeat");
         imgRepeat->disabled = true;
         imgRepeat->ontop = true;
@@ -1042,7 +1042,7 @@ void createCalloutPromptFrame(const int player)
 {
     auto& hud_t = players[player]->hud;
 
-    auto frame = hud_t.hudFrame->addFrame("callout prompts");
+    const auto frame = hud_t.hudFrame->addFrame("callout prompts");
     hud_t.calloutPromptFrame = frame;
     frame->setHollow(true);
     frame->setSize(SDL_Rect{0, 0, 300, 0});
@@ -1050,12 +1050,12 @@ void createCalloutPromptFrame(const int player)
     frame->setScrollBarsEnabled(false);
     frame->setAllowScrollBinds(false);
 
-    auto glyph = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "glyph");
+    const auto glyph = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "glyph");
     glyph->disabled = true;
-    auto icon = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "icon");
+    const auto icon = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "icon");
     icon->disabled = true;
 
-    auto text = frame->addField("prompt", 64);
+    const auto text = frame->addField("prompt", 64);
     text->setFont(smallfont_outline);
     text->setHJustify(Field::justify_t::LEFT);
     text->setVJustify(Field::justify_t::TOP);
@@ -1074,18 +1074,18 @@ Frame* createVoicePromptFrame(const int player, Frame* baseFrame)
     }
     auto& hud_t = players[player]->hud;
 
-    auto frame = baseFrame->addFrame("voice prompts");
+    const auto frame = baseFrame->addFrame("voice prompts");
     frame->setHollow(true);
     frame->setSize(SDL_Rect{0, 0, 300, 0});
     frame->setDisabled(true);
     frame->setScrollBarsEnabled(false);
     frame->setAllowScrollBinds(false);
 
-    auto glyph = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "glyph");
+    const auto glyph = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "glyph");
     glyph->disabled = true;
-    auto icon = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "icon");
+    const auto icon = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "icon");
     icon->disabled = true;
-    auto icon2 = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "icon2");
+    const auto icon2 = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "icon2");
     icon2->disabled = true;
     return frame;
 }
@@ -1095,8 +1095,8 @@ const int kPlayerBarsEntryFrameWidth = 214;
 
 void updateCalloutPromptFrame(const int player)
 {
-    auto& hud_t = players[player]->hud;
-    auto frame = hud_t.calloutPromptFrame;
+    const auto& hud_t = players[player]->hud;
+    const auto frame = hud_t.calloutPromptFrame;
     if (!frame)
     {
         return;
@@ -1155,9 +1155,9 @@ void updateCalloutPromptFrame(const int player)
     framePos.h = 50;
     frame->setSize(framePos);
 
-    auto glyph = frame->findImage("glyph");
-    auto glyphPathUnpressed = Input::inputs[player].getGlyphPathForBinding("Call Out", false);
-    auto glyphPathPressed = Input::inputs[player].getGlyphPathForBinding("Call Out", true);
+    const auto glyph = frame->findImage("glyph");
+    const auto glyphPathUnpressed = Input::inputs[player].getGlyphPathForBinding("Call Out", false);
+    const auto glyphPathPressed = Input::inputs[player].getGlyphPathForBinding("Call Out", true);
     glyph->disabled = true;
 
     const int nominalGlyphHeight = 26;
@@ -1166,12 +1166,12 @@ void updateCalloutPromptFrame(const int player)
     if (ticks % 50 < 25 && (CalloutMenu[player].calloutMenuIsOpen() && CalloutMenu[player].selectMoveTo))
     {
         glyph->path = glyphPathPressed;
-        if (auto imgGet = Image::get(glyph->path.c_str()))
+        if (const auto imgGet = Image::get(glyph->path.c_str()))
         {
             glyph->disabled = false;
-            SDL_Rect glyphPos{0, 8, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
+            const SDL_Rect glyphPos{0, 8, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
             glyph->pos = glyphPos;
-            if (auto imgGetUnpressed = Image::get(glyphPathUnpressed.c_str()))
+            if (const auto imgGetUnpressed = Image::get(glyphPathUnpressed.c_str()))
             {
                 unpressedHeight = imgGetUnpressed->getHeight();
                 unpressedY = glyph->pos.y;
@@ -1191,10 +1191,10 @@ void updateCalloutPromptFrame(const int player)
     else
     {
         glyph->path = glyphPathUnpressed;
-        if (auto imgGet = Image::get(glyph->path.c_str()))
+        if (const auto imgGet = Image::get(glyph->path.c_str()))
         {
             glyph->disabled = false;
-            SDL_Rect glyphPos{0, 8, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
+            const SDL_Rect glyphPos{0, 8, static_cast<int>(imgGet->getWidth()), static_cast<int>(imgGet->getHeight())};
             glyph->pos = glyphPos;
             unpressedHeight = glyph->pos.h;
             unpressedY = glyph->pos.y;
@@ -1206,9 +1206,9 @@ void updateCalloutPromptFrame(const int player)
         }
     }
 
-    int glyphAlignY = unpressedY + (unpressedHeight - nominalGlyphHeight) / 2;
+    const int glyphAlignY = unpressedY + (unpressedHeight - nominalGlyphHeight) / 2;
 
-    auto icon = frame->findImage("icon");
+    const auto icon = frame->findImage("icon");
     icon->disabled = true;
     static ConsoleVariable<bool> cvar_callout_prompt_wheel("/callout_prompt_wheel", false);
     if (!glyph->disabled)
@@ -1222,7 +1222,7 @@ void updateCalloutPromptFrame(const int player)
         {
             icon->path = "*images/ui/HUD/HUD_Ally_Callout_00.png";
         }
-        if (auto imgGet = Image::get(icon->path.c_str()))
+        if (const auto imgGet = Image::get(icon->path.c_str()))
         {
             icon->disabled = false;
             icon->pos.w = imgGet->getWidth();
@@ -1236,7 +1236,7 @@ void updateCalloutPromptFrame(const int player)
         }
     }
 
-    auto text = frame->findField("prompt");
+    const auto text = frame->findField("prompt");
     text->setDisabled(true);
     static ConsoleVariable<bool> cvar_callout_prompt_text("/callout_prompt_text", false);
     if (!icon->disabled && *cvar_callout_prompt_text)
@@ -1256,12 +1256,12 @@ void updateCalloutPromptFrame(const int player)
 void updateVoicePromptFrame(const int player, Frame* baseFrame, Frame* allyFrame)
 {
     auto& hud_t = players[player]->hud;
-    auto frame = baseFrame;
+    const auto frame = baseFrame;
     if (!frame)
     {
         return;
     }
-    auto allyPlayerFrame = allyFrame;
+    const auto allyPlayerFrame = allyFrame;
     if (!allyPlayerFrame)
     {
         frame->setDisabled(true);
@@ -1452,18 +1452,18 @@ void createAllyFollowerTitleFrame(const int player)
 {
     auto& hud_t = players[player]->hud;
 
-    auto frame = hud_t.hudFrame->addFrame("follower title status");
+    const auto frame = hud_t.hudFrame->addFrame("follower title status");
     hud_t.allyFollowerTitleFrame = frame;
     frame->setHollow(true);
     frame->setSize(SDL_Rect{0, 0, 300, 0});
     frame->setDisabled(true);
 
-    auto selector = frame->addImage(SDL_Rect{0, 0, 8, 8}, 0xFFFFFFFF, "*#images/ui/HUD/allies/HUD_Ally_Arrow_00.png",
+    const auto selector = frame->addImage(SDL_Rect{0, 0, 8, 8}, 0xFFFFFFFF, "*#images/ui/HUD/allies/HUD_Ally_Arrow_00.png",
                                     "selector");
     selector->disabled = true;
     selector->ontop = true;
 
-    auto glyphSelector = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "glyph selector");
+    const auto glyphSelector = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "glyph selector");
     glyphSelector->disabled = true;
     glyphSelector->ontop = true;
 }
@@ -1472,7 +1472,7 @@ Frame* createAllyPlayerFrame(const int player, Frame* baseFrame)
 {
     auto& hud_t = players[player]->hud;
 
-    auto frame = baseFrame->addFrame("player status");
+    const auto frame = baseFrame->addFrame("player status");
     if (baseFrame == hud_t.hudFrame)
     {
         hud_t.allyPlayerFrame = frame;
@@ -1492,7 +1492,7 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
 {
     auto& hud_t = players[player]->hud;
 
-    auto entry = baseFrame->addFrame("entry");
+    const auto entry = baseFrame->addFrame("entry");
     const int allyPlayerEntryHeight = 40;
     entry->setSize(SDL_Rect{0, 0, kPlayerBarsEntryFrameWidth, allyPlayerEntryHeight});
     entry->setHollow(true);
@@ -1506,7 +1506,7 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
                            "portrait img");
     }
 
-    std::string font = "fonts/pixel_maz.ttf#32#2";
+    const std::string font = "fonts/pixel_maz.ttf#32#2";
     {
         Field* name = entry->addField("name", 128);
         name->setFont(font.c_str());
@@ -1548,7 +1548,7 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
         SDL_Rect hpFramePos = hpFrame->getSize();
         hpFrame->setHollow(true);
 
-        auto mid = hpFrame->addImage(SDL_Rect{6, 2, 40, 12}, 0xFFFFFFFF,
+        const auto mid = hpFrame->addImage(SDL_Rect{6, 2, 40, 12}, 0xFFFFFFFF,
                                      "*#images/ui/HUD/allies/HUD_HPBar_Mid_00.png", "hp img mid");
         auto endCap = hpFrame->addImage(SDL_Rect{mid->pos.x + mid->pos.w, 0, 6, 16}, 0xFFFFFFFF,
                                         "*#images/ui/HUD/allies/HUD_HPBar_End_00.png", "hp img endcap");
@@ -1562,12 +1562,12 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
                                                 "*#images/ui/HUD/allies/HUD_HPBar_Fill_End_00.png",
                                                 "hp img progress endcap");
 
-        auto progressEndcapDamaged = hpFrame->addImage(SDL_Rect{6, 4, 18, 8}, 0xFFFFFFFF,
+        const auto progressEndcapDamaged = hpFrame->addImage(SDL_Rect{6, 4, 18, 8}, 0xFFFFFFFF,
                                                        "*#images/ui/HUD/allies/HUD_HPBar_Fill_End_Damaged.png",
                                                        "hp img progress damaged");
         progressEndcapDamaged->disabled = true;
 
-        auto progressEndCapFlash = hpFrame->addImage(SDL_Rect{
+        const auto progressEndCapFlash = hpFrame->addImage(SDL_Rect{
                                                          0, 4, 18, 8
                                                      }, 0xFFFFFFFF,
                                                      "*#images/ui/HUD/allies/HUD_HPBar_Fill_End_00.png",
@@ -1588,7 +1588,7 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
         SDL_Rect mpFramePos = mpFrame->getSize();
         mpFrame->setHollow(true);
 
-        auto mid = mpFrame->addImage(SDL_Rect{2, 0, 40, 6}, 0xFFFFFFFF,
+        const auto mid = mpFrame->addImage(SDL_Rect{2, 0, 40, 6}, 0xFFFFFFFF,
                                      "*#images/ui/HUD/allies/HUD_MPBar_Mid_00.png", "mp img mid");
         auto endCap = mpFrame->addImage(SDL_Rect{mid->pos.x + mid->pos.w, 0, 4, 6}, 0xFFFFFFFF,
                                         "*#images/ui/HUD/allies/HUD_MPBar_End_00.png", "mp img endcap");
@@ -1602,12 +1602,12 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
                                                 "*#images/ui/HUD/allies/HUD_MPBar_Fill_End_00.png",
                                                 "mp img progress endcap");
 
-        auto progressEndcapDamaged = mpFrame->addImage(SDL_Rect{0, 0, 8, 4}, 0xFFFFFFFF,
+        const auto progressEndcapDamaged = mpFrame->addImage(SDL_Rect{0, 0, 8, 4}, 0xFFFFFFFF,
                                                        "*#images/ui/HUD/allies/HUD_MPBar_Fill_End_Damaged.png",
                                                        "mp img progress damaged");
         progressEndcapDamaged->disabled = true;
 
-        auto progressEndCapFlash = mpFrame->addImage(SDL_Rect{
+        const auto progressEndCapFlash = mpFrame->addImage(SDL_Rect{
                                                          0, 0, 8, 4
                                                      }, 0xFFFFFFFF,
                                                      "*#images/ui/HUD/allies/HUD_MPBar_Fill_End_00.png",
@@ -1628,10 +1628,10 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
                 return;
             }
 
-            auto value = PingNetworkStatus[player].displayMillisImmediate;
+            const auto value = PingNetworkStatus[player].displayMillisImmediate;
             const int divideInterval = 25;
-            Image* img = nullptr;
-            Image* warningImg = nullptr;
+            const Image* img = nullptr;
+            const Image* warningImg = nullptr;
             if (value > 0)
             {
                 if (value < PingNetworkStatus_t::pingLimitGreen)
@@ -1694,7 +1694,7 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
 
             if (stats[player]->MISC_FLAGS[STAT_FLAG_ASSISTANCE_PLAYER_PTS] > 0)
             {
-                if (auto img = Image::get("#*images/ui/HUD/statusfx/assistance.png"))
+                if (const auto img = Image::get("#*images/ui/HUD/statusfx/assistance.png"))
                 {
                     pos.y += 2;
                     pos.x -= 4;
@@ -1704,7 +1704,7 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
                     img->drawColor(nullptr, pos, SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY},
                                    makeColor(255, 255, 255, 255 * (frame->getOpacity() / 100.0)));
 
-                    if (auto text = Text::get(
+                    if (const auto text = Text::get(
                         std::to_string(stats[player]->MISC_FLAGS[STAT_FLAG_ASSISTANCE_PLAYER_PTS]).c_str(),
                         "fonts/pixel_maz_multiline.ttf#16#2", 0xFFFFFFFF, 0))
                     {
@@ -1724,7 +1724,7 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
                 }
             }
 
-            int prevy = pos.y;
+            const int prevy = pos.y;
             if (img)
             {
                 pos.w = img->getWidth();
@@ -1745,7 +1745,7 @@ Frame* createAllyPlayerEntry(const int player, Frame* baseFrame)
                     pos.y = frame->getSize().y + 9;
                     char buf[32];
                     snprintf(buf, sizeof(buf), "%dMS", PingNetworkStatus[player].displayMillis);
-                    if (auto textGet = Text::get(buf, smallfont_outline,
+                    if (const auto textGet = Text::get(buf, smallfont_outline,
                                                  makeColor(134, 159, 165, 255), makeColor(0, 0, 0, 255)))
                     {
                         textGet->drawColor(SDL_Rect{0, 0, 0, 0}, SDL_Rect{pos.x, pos.y, 0, 0},
@@ -1834,7 +1834,7 @@ Frame* createAllyFollowerEntry(const int player, Frame* baseFrame)
 {
     auto& hud_t = players[player]->hud;
 
-    auto entry = baseFrame->addFrame("entry");
+    const auto entry = baseFrame->addFrame("entry");
     const int allyFollowerEntryHeight = 40;
     entry->setSize(SDL_Rect{0, 0, 300, allyFollowerEntryHeight});
     entry->setHollow(true);
@@ -1845,7 +1845,7 @@ Frame* createAllyFollowerEntry(const int player, Frame* baseFrame)
         auto bgImg = entry->addImage(SDL_Rect{0, 0, 0, 0}, makeColor(255, 255, 255, 255),
                                      "*images/ui/HUD/allies/HUD_Ally_TitleBG_Left_00.png", "bg img left");
         bgImg->disabled = true;
-        if (auto imgGet = Image::get(bgImg->path.c_str()))
+        if (const auto imgGet = Image::get(bgImg->path.c_str()))
         {
             bgImg->pos.w = imgGet->getWidth();
             bgImg->pos.h = imgGet->getHeight();
@@ -1854,7 +1854,7 @@ Frame* createAllyFollowerEntry(const int player, Frame* baseFrame)
         bgImg = entry->addImage(SDL_Rect{0, 0, 0, 0}, makeColor(255, 255, 255, 255),
                                 "*images/ui/HUD/allies/HUD_Ally_TitleBG_Mid_00.png", "bg img mid");
         bgImg->disabled = true;
-        if (auto imgGet = Image::get(bgImg->path.c_str()))
+        if (const auto imgGet = Image::get(bgImg->path.c_str()))
         {
             bgImg->pos.w = imgGet->getWidth();
             bgImg->pos.h = imgGet->getHeight();
@@ -1863,7 +1863,7 @@ Frame* createAllyFollowerEntry(const int player, Frame* baseFrame)
         bgImg = entry->addImage(SDL_Rect{0, 0, 0, 0}, makeColor(255, 255, 255, 255),
                                 "*images/ui/HUD/allies/HUD_Ally_TitleBG_Right_00.png", "bg img right");
         bgImg->disabled = true;
-        if (auto imgGet = Image::get(bgImg->path.c_str()))
+        if (const auto imgGet = Image::get(bgImg->path.c_str()))
         {
             bgImg->pos.w = imgGet->getWidth();
             bgImg->pos.h = imgGet->getHeight();
@@ -1878,7 +1878,7 @@ Frame* createAllyFollowerEntry(const int player, Frame* baseFrame)
                            "portrait img");
     }
 
-    std::string font = "fonts/pixel_maz.ttf#32#2";
+    const std::string font = "fonts/pixel_maz.ttf#32#2";
     {
         Field* name = entry->addField("name", 128);
         name->setFont(font.c_str());
@@ -1920,7 +1920,7 @@ Frame* createAllyFollowerEntry(const int player, Frame* baseFrame)
         SDL_Rect hpFramePos = hpFrame->getSize();
         hpFrame->setHollow(true);
 
-        auto mid = hpFrame->addImage(SDL_Rect{6, 2, 40, 12}, 0xFFFFFFFF,
+        const auto mid = hpFrame->addImage(SDL_Rect{6, 2, 40, 12}, 0xFFFFFFFF,
                                      "*#images/ui/HUD/allies/HUD_HPBar_Mid_00.png", "hp img mid");
         auto endCap = hpFrame->addImage(SDL_Rect{mid->pos.x + mid->pos.w, 0, 6, 16}, 0xFFFFFFFF,
                                         "*#images/ui/HUD/allies/HUD_HPBar_End_00.png", "hp img endcap");
@@ -1934,12 +1934,12 @@ Frame* createAllyFollowerEntry(const int player, Frame* baseFrame)
                                                 "*#images/ui/HUD/allies/HUD_HPBar_Fill_End_00.png",
                                                 "hp img progress endcap");
 
-        auto progressEndcapDamaged = hpFrame->addImage(SDL_Rect{6, 4, 18, 8}, 0xFFFFFFFF,
+        const auto progressEndcapDamaged = hpFrame->addImage(SDL_Rect{6, 4, 18, 8}, 0xFFFFFFFF,
                                                        "*#images/ui/HUD/allies/HUD_HPBar_Fill_End_Damaged.png",
                                                        "hp img progress damaged");
         progressEndcapDamaged->disabled = true;
 
-        auto progressEndCapFlash = hpFrame->addImage(SDL_Rect{
+        const auto progressEndCapFlash = hpFrame->addImage(SDL_Rect{
                                                          0, 4, 18, 8
                                                      }, 0xFFFFFFFF,
                                                      "*#images/ui/HUD/allies/HUD_HPBar_Fill_End_00.png",
@@ -2064,7 +2064,7 @@ bool Player::HUD_t::FollowerDisplay_t::getCompactMode(const int playernum)
 
 Frame* getAllyBarTitleFrameEntry(const int player)
 {
-    auto& hud_t = players[player]->hud;
+    const auto& hud_t = players[player]->hud;
     Frame* entry = hud_t.allyFollowerTitleFrame->findFrame("entry");
     if (!entry)
     {
@@ -4502,7 +4502,7 @@ void updateAllyPlayerFrame(const int player, Frame* baseFrame)
     int activeBars = 0;
     for (auto it = hud_t.playerBars.begin(); it != hud_t.playerBars.end();)
     {
-        int playernum = it->first;
+        const int playernum = it->first;
         if (playernum >= 0 && playernum < MAXPLAYERS
             && client_disconnected[playernum])
         {
@@ -4524,7 +4524,7 @@ void updateAllyPlayerFrame(const int player, Frame* baseFrame)
 
 void createEnemyBar(const int player, Frame*& frame)
 {
-    auto& hud_t = players[player]->hud;
+    const auto& hud_t = players[player]->hud;
     frame = hud_t.hudFrame->addFrame("enemy bar");
     frame->setHollow(true);
     frame->setInheritParentFrameOpacity(false);
@@ -4533,17 +4533,17 @@ void createEnemyBar(const int player, Frame*& frame)
     const int barStartY = (hud_t.hudFrame->getSize().h - hud_t.ENEMYBAR_FRAME_START_Y - 100);
     const int barWidth = hud_t.ENEMYBAR_FRAME_WIDTH;
 
-    SDL_Rect pos{(hud_t.hudFrame->getSize().w / 2) - barWidth / 2 - 6, barStartY, barWidth, barTotalHeight};
+    const SDL_Rect pos{(hud_t.hudFrame->getSize().w / 2) - barWidth / 2 - 6, barStartY, barWidth, barTotalHeight};
     frame->setSize(pos);
 
-    auto bg = frame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_Back_Body_01.png", "base img");
+    const auto bg = frame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_Back_Body_01.png", "base img");
     bg->pos.x = 6;
     bg->pos.h = 34;
     bg->pos.y = 4;
     bg->pos.w = 548;
     bg->color = makeColor(255, 255, 255, 255);
 
-    auto bgEndCap = frame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_Back_Cap_01.png",
+    const auto bgEndCap = frame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_Back_Cap_01.png",
                                     "base img endcap");
     bgEndCap->pos.x = bg->pos.x + bg->pos.w;
     bgEndCap->pos.h = bg->pos.h;
@@ -4551,17 +4551,17 @@ void createEnemyBar(const int player, Frame*& frame)
     bgEndCap->pos.w = 8;
     bgEndCap->color = bg->color;
 
-    auto dmgFrame = frame->addFrame("bar dmg frame");
+    const auto dmgFrame = frame->addFrame("bar dmg frame");
     dmgFrame->setSize(SDL_Rect{bg->pos.x, bg->pos.y, bg->pos.w + bgEndCap->pos.w, 34});
     dmgFrame->setInheritParentFrameOpacity(false);
-    auto dmg = dmgFrame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_DMG_Body_01.png", "dmg img");
+    const auto dmg = dmgFrame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_DMG_Body_01.png", "dmg img");
     dmg->pos.x = 0;
     dmg->pos.h = bg->pos.h;
     dmg->pos.y = 0;
     dmg->pos.w = 548 / 2 + 100;
     dmg->color = makeColor(255, 255, 255, 255);
 
-    auto dmgEndCap = dmgFrame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_DMG_Cap_01.png",
+    const auto dmgEndCap = dmgFrame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_DMG_Cap_01.png",
                                         "dmg img endcap");
     dmgEndCap->pos.x = dmg->pos.w;
     dmgEndCap->pos.h = dmg->pos.h;
@@ -4578,27 +4578,27 @@ void createEnemyBar(const int player, Frame*& frame)
         bubbles->pos.w = img->getWidth();
     }*/
 
-    auto progressFrame = frame->addFrame("bar progress frame");
+    const auto progressFrame = frame->addFrame("bar progress frame");
     progressFrame->setSize(SDL_Rect{bg->pos.x, bg->pos.y + 2, bg->pos.w + bgEndCap->pos.w, 30});
     progressFrame->setOpacity(100.0);
-    auto fg = progressFrame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_Fill_Body_00.png",
+    const auto fg = progressFrame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_Fill_Body_00.png",
                                       "progress img");
     fg->pos.x = 0;
     fg->pos.h = bg->pos.h - 4;
     fg->pos.y = 0;
     fg->pos.w = 548;
 
-    auto fgEndCap = progressFrame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_Fill_Cap_00.png",
+    const auto fgEndCap = progressFrame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_Fill_Cap_00.png",
                                             "progress img endcap");
     fgEndCap->pos.x = fg->pos.x + fg->pos.w;
     fgEndCap->pos.h = fg->pos.h;
     fgEndCap->pos.y = 0;
-    if (auto img = Image::get(fgEndCap->path.c_str()))
+    if (const auto img = Image::get(fgEndCap->path.c_str()))
     {
         fgEndCap->pos.w = img->getWidth();
     }
 
-    auto skullFrame = frame->addFrame("skull frame");
+    const auto skullFrame = frame->addFrame("skull frame");
     skullFrame->setSize(SDL_Rect{0, 0, 24, 44});
     auto skull = skullFrame->addImage(skullFrame->getSize(), 0xFFFFFFFF,
                                       "*#images/ui/HUD/enemybar/HUD_EnemyHP_Face4_00.png", "skull 0 img");
@@ -4609,9 +4609,9 @@ void createEnemyBar(const int player, Frame*& frame)
     skull = skullFrame->addImage(skullFrame->getSize(), 0xFFFFFFFF, "*#images/ui/HUD/enemybar/HUD_EnemyHP_Face1_00.png",
                                  "skull 100 img");
 
-    std::string font = "fonts/pixel_maz.ttf#32#2";
-    Uint32 color = makeColor(235, 191, 140, 255);
-    auto enemyName = frame->addField("enemy name txt", 128);
+    const std::string font = "fonts/pixel_maz.ttf#32#2";
+    const Uint32 color = makeColor(235, 191, 140, 255);
+    const auto enemyName = frame->addField("enemy name txt", 128);
     enemyName->setSize(SDL_Rect{0, 0, frame->getSize().w, frame->getSize().h});
     enemyName->setFont(font.c_str());
     enemyName->setColor(color);
@@ -4620,7 +4620,7 @@ void createEnemyBar(const int player, Frame*& frame)
     enemyName->setText("");
     enemyName->setOntop(true);
 
-    auto dmgText = hud_t.hudFrame->addField("enemy dmg txt", 128);
+    const auto dmgText = hud_t.hudFrame->addField("enemy dmg txt", 128);
     dmgText->setSize(SDL_Rect{0, 0, 0, 0});
     dmgText->setFont("fonts/pixel_maz.ttf#32#2");
     dmgText->setColor(color);
@@ -4699,11 +4699,11 @@ void createXPBar(const int player)
     const int xpBarStartY = (hud_t.hudFrame->getSize().h) - hud_t.XP_FRAME_START_Y;
     const int xpBarWidth = hud_t.XP_FRAME_WIDTH;
     const int xpBarTotalHeight = hud_t.XP_FRAME_HEIGHT;
-    SDL_Rect pos{(hud_t.hudFrame->getSize().w / 2) - xpBarWidth / 2, xpBarStartY, xpBarWidth, xpBarTotalHeight};
+    const SDL_Rect pos{(hud_t.hudFrame->getSize().w / 2) - xpBarWidth / 2, xpBarStartY, xpBarWidth, xpBarTotalHeight};
     hud_t.xpFrame->setSize(pos);
 
     //auto bg = hud_t.xpFrame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/xpbar/HUD_Bars_Base_00.png", "xp img base");
-    auto bg = hud_t.xpFrame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/xpbar/HUD_Exp_Surround_01.png", "xp img base");
+    const auto bg = hud_t.xpFrame->addImage(pos, 0xFFFFFFFF, "*#images/ui/HUD/xpbar/HUD_Exp_Surround_01.png", "xp img base");
     bg->pos.x = 0;
     bg->pos.h = 26;
     bg->pos.y = 4;
@@ -4714,7 +4714,7 @@ void createXPBar(const int player)
     const int progressBarHeight = 22;
     /*auto xpProgress = hud_t.xpFrame->addImage(SDL_Rect{ 0, 6, 1, progressBarHeight }, 0xFFFFFFFF,
         "*#images/ui/HUD/xpbar/HUD_Bars_ExpMid_00.png", "xp img progress");*/
-    auto progressClipFrame = hud_t.xpFrame->addFrame("xp progress clipping frame");
+    const auto progressClipFrame = hud_t.xpFrame->addFrame("xp progress clipping frame");
     progressClipFrame->setSize(SDL_Rect{0, 6, 1, progressBarHeight});
 
     std::string bodyPath = "*#images/ui/HUD/xpbar/HUD_Exp_SandBody2_";
@@ -4746,17 +4746,17 @@ void createXPBar(const int player)
 
     const int endCapWidth = 26;
     SDL_Rect endCapPos{0, 0, endCapWidth, xpBarTotalHeight};
-    auto endCapLeft = hud_t.xpFrame->addImage(endCapPos, 0xFFFFFFFF, "*#images/ui/HUD/xpbar/HUD_Bars_ExpCap1_00.png",
+    const auto endCapLeft = hud_t.xpFrame->addImage(endCapPos, 0xFFFFFFFF, "*#images/ui/HUD/xpbar/HUD_Bars_ExpCap1_00.png",
                                               "xp img endcap left");
     endCapLeft->ontop = true;
     endCapPos.x = pos.w - endCapPos.w;
-    auto endCapRight = hud_t.xpFrame->addImage(endCapPos, 0xFFFFFFFF, "*#images/ui/HUD/xpbar/HUD_Bars_ExpCap2_00.png",
+    const auto endCapRight = hud_t.xpFrame->addImage(endCapPos, 0xFFFFFFFF, "*#images/ui/HUD/xpbar/HUD_Bars_ExpCap2_00.png",
                                                "xp img endcap right");
     endCapRight->ontop = true;
 
     const int textWidth = 120;
-    auto font = "fonts/pixel_maz.ttf#32#2";
-    auto textStatic = hud_t.xpFrame->addField("xp text static", 16);
+    const auto font = "fonts/pixel_maz.ttf#32#2";
+    const auto textStatic = hud_t.xpFrame->addField("xp text static", 16);
     textStatic->setText(Language::get(6106));
     textStatic->setOntop(true);
     textStatic->setSize(SDL_Rect{pos.w / 2 - 4, 0, textWidth, pos.h}); // x - 4 to center the slash
@@ -4765,7 +4765,7 @@ void createXPBar(const int player)
     textStatic->setHJustify(Field::justify_t::RIGHT);
     textStatic->setColor(makeColor(255, 255, 255, 255));
 
-    auto text = hud_t.xpFrame->addField("xp text current", 16);
+    const auto text = hud_t.xpFrame->addField("xp text current", 16);
     text->setText("0");
     text->setOntop(true);
     text->setSize(SDL_Rect{pos.w / 2 - (4 * 2) - textWidth, 0, textWidth, pos.h}); // x - 4 to center the slash
@@ -4774,7 +4774,7 @@ void createXPBar(const int player)
     text->setHJustify(Field::justify_t::RIGHT);
     text->setColor(makeColor(255, 255, 255, 255));
 
-    auto textLevel = hud_t.xpFrame->addField("xp text lvl", 64);
+    const auto textLevel = hud_t.xpFrame->addField("xp text lvl", 64);
     textLevel->setText("");
     textLevel->setOntop(true);
     textLevel->setDisabled(true);
@@ -4784,7 +4784,7 @@ void createXPBar(const int player)
     textLevel->setHJustify(Field::justify_t::LEFT);
     textLevel->setColor(makeColor(255, 255, 255, 255));
 
-    auto textClass = hud_t.xpFrame->addField("xp text class", 64);
+    const auto textClass = hud_t.xpFrame->addField("xp text class", 64);
     textClass->setText("");
     textClass->setOntop(true);
     textClass->setDisabled(true);
@@ -4803,15 +4803,15 @@ void createHotbar(const int player)
         return;
     }
     Uint32 color = makeColor(255, 255, 255, hotbarSlotOpacity);
-    SDL_Rect slotPos{0, 0, hotbar_t.getSlotSize(), hotbar_t.getSlotSize()};
-    std::array<int, NUM_HOTBAR_SLOTS> slotCreationOrder = {
+    const SDL_Rect slotPos{0, 0, hotbar_t.getSlotSize(), hotbar_t.getSlotSize()};
+    const std::array<int, NUM_HOTBAR_SLOTS> slotCreationOrder = {
         0, 2, 3, 5, 6, 8, 9, 1, 4, 7
     };
-    for (auto& i : slotCreationOrder)
+    for (const auto& i : slotCreationOrder)
     {
         char slotname[32];
         snprintf(slotname, sizeof(slotname), "hotbar slot %d", i);
-        auto slot = hotbar_t.hotbarFrame->addFrame(slotname);
+        const auto slot = hotbar_t.hotbarFrame->addFrame(slotname);
         slot->setSize(slotPos);
         slot->addImage(slotPos, color, "*#images/ui/HUD/hotbar/HUD_Quickbar_Slot_Box_02.png", "slot img");
         hotbar_t.hotbarSlotFrames[i] = slot;
@@ -4819,18 +4819,18 @@ void createHotbar(const int player)
         char glyphname[32];
         snprintf(glyphname, sizeof(glyphname), "hotbar glyph %d", i);
         auto path = Input::getGlyphPathForInput("ButtonA", false, Input::getControllerType(player));
-        auto glyph = hotbar_t.hotbarFrame->addImage(slotPos, 0xFFFFFFFF, path.c_str(), glyphname);
+        const auto glyph = hotbar_t.hotbarFrame->addImage(slotPos, 0xFFFFFFFF, path.c_str(), glyphname);
         glyph->disabled = true;
     }
 
-    auto font = "fonts/pixel_maz.ttf#32#2";
+    const auto font = "fonts/pixel_maz.ttf#32#2";
 
     for (int i = 0; i < NUM_HOTBAR_SLOTS; ++i)
     {
-        auto slot = hotbar_t.getHotbarSlotFrame(i);
+        const auto slot = hotbar_t.getHotbarSlotFrame(i);
         assert(slot);
 
-        auto itemSlot = slot->addFrame("hotbar slot item");
+        const auto itemSlot = slot->addFrame("hotbar slot item");
         SDL_Rect itemSlotTempSize = slot->getSize();
         itemSlotTempSize.w -= 4;
         itemSlotTempSize.h -= 4;
@@ -4847,7 +4847,7 @@ void createHotbar(const int player)
         {
             snprintf(numStr, sizeof(numStr), "%d", i + 1);
         }
-        auto text = slot->addField("slot num text", 32);
+        const auto text = slot->addField("slot num text", 32);
         text->setText(numStr);
         text->setSize(SDL_Rect{0, -4, slotPos.w, slotPos.h});
         text->setFont(font);
@@ -4856,12 +4856,12 @@ void createHotbar(const int player)
         text->setOntop(true);
     }
 
-    auto highlightFrame = hotbar_t.hotbarFrame->addFrame("hotbar highlight");
+    const auto highlightFrame = hotbar_t.hotbarFrame->addFrame("hotbar highlight");
     highlightFrame->setSize(slotPos);
     highlightFrame->addImage(slotPos, color, "*#images/ui/HUD/hotbar/HUD_Quickbar_Slot_HighlightBox_02.png",
                              "highlight img");
 
-    auto itemSlot = highlightFrame->addFrame("hotbar slot item");
+    const auto itemSlot = highlightFrame->addFrame("hotbar slot item");
     SDL_Rect itemSlotTempSize = slotPos;
     itemSlotTempSize.w -= 4;
     itemSlotTempSize.h -= 4;
@@ -4870,7 +4870,7 @@ void createHotbar(const int player)
     itemSlot->setSize(highlightFrame->getSize());
 
     {
-        auto oldSelectedFrame = hotbar_t.hotbarFrame->addFrame("hotbar old selected item");
+        const auto oldSelectedFrame = hotbar_t.hotbarFrame->addFrame("hotbar old selected item");
         SDL_Rect oldSelectedFramePos = slotPos;
         oldSelectedFramePos.w -= 2;
         oldSelectedFramePos.h -= 2;
@@ -4878,16 +4878,16 @@ void createHotbar(const int player)
         oldSelectedFrame->setDisabled(true);
 
         const int itemSpriteSize = players[oldSelectedFrame->getOwner()]->inventoryUI.getItemSpriteSize();
-        SDL_Rect itemSpriteBorder{5, 5, itemSpriteSize, itemSpriteSize};
+        const SDL_Rect itemSpriteBorder{5, 5, itemSpriteSize, itemSpriteSize};
 
         color = makeColor(0, 255, 255, 255);
-        auto oldImg = oldSelectedFrame->addImage(itemSpriteBorder,
+        const auto oldImg = oldSelectedFrame->addImage(itemSpriteBorder,
                                                  makeColor(255, 255, 255, 128), "", "hotbar old selected item");
         oldImg->disabled = true;
         oldSelectedFrame->addImage(SDL_Rect{0, 0, oldSelectedFrame->getSize().w, oldSelectedFrame->getSize().h},
                                    color, "*images/system/hotbar_slot.png", "hotbar old selected highlight");
 
-        auto oldCursorFrame = hotbar_t.hotbarFrame->addFrame("hotbar old item cursor");
+        const auto oldCursorFrame = hotbar_t.hotbarFrame->addFrame("hotbar old item cursor");
         oldCursorFrame->setSize(SDL_Rect{0, 0, oldSelectedFramePos.w + 16, oldSelectedFramePos.h + 16});
         oldCursorFrame->setDisabled(true);
         color = makeColor(255, 255, 255, oldSelectedCursorOpacity);
@@ -4900,7 +4900,7 @@ void createHotbar(const int player)
         oldCursorFrame->addImage(SDL_Rect{0, 0, 14, 14},
                                  color, "*#images/ui/Inventory/SelectorGrey_BR.png", "hotbar old cursor bottomright");
 
-        auto cursorFrame = hotbar_t.hotbarFrame->addFrame("shootmode selected item cursor");
+        const auto cursorFrame = hotbar_t.hotbarFrame->addFrame("shootmode selected item cursor");
         cursorFrame->setSize(SDL_Rect{0, 0, oldSelectedFramePos.w + 16, oldSelectedFramePos.h + 16});
         cursorFrame->setDisabled(true);
         color = makeColor(255, 255, 255, selectedCursorOpacity);
@@ -4914,18 +4914,18 @@ void createHotbar(const int player)
                               color, "*#images/ui/Inventory/Selector_BR.png", "shootmode selected cursor bottomright");
     }
 
-    auto cancelPromptTxt = hotbar_t.hotbarFrame->addField("hotbar cancel prompt", 32);
+    const auto cancelPromptTxt = hotbar_t.hotbarFrame->addField("hotbar cancel prompt", 32);
     cancelPromptTxt->setText(Language::get(3063));
     cancelPromptTxt->setSize(SDL_Rect{0, 0, 100, 24});
     cancelPromptTxt->setDisabled(true);
     cancelPromptTxt->setFont(font);
     cancelPromptTxt->setVJustify(Field::justify_t::TOP);
     cancelPromptTxt->setHJustify(Field::justify_t::LEFT);
-    auto cancelPromptGlyph = hotbar_t.hotbarFrame->addImage(SDL_Rect{0, 0, 0, 0},
+    const auto cancelPromptGlyph = hotbar_t.hotbarFrame->addImage(SDL_Rect{0, 0, 0, 0},
                                                             0xFFFFFFFF, "", "hotbar cancel glyph");
     cancelPromptGlyph->disabled = true;
 
-    auto text = highlightFrame->addField("slot num text", 32);
+    const auto text = highlightFrame->addField("slot num text", 32);
     text->setText("");
     text->setSize(SDL_Rect{0, -4, slotPos.w, slotPos.h});
     text->setFont(font);
@@ -4946,8 +4946,8 @@ void createUINavigation(const int player)
     uiNavFrame->setDisabled(true);
     {
         const int glyphSize = 32;
-        auto buttonFont = "fonts/pixel_maz.ttf#32#2";
-        auto magicButton = uiNavFrame->addButton("magic button");
+        const auto buttonFont = "fonts/pixel_maz.ttf#32#2";
+        const auto magicButton = uiNavFrame->addButton("magic button");
         magicButton->setText(Language::get(4115));
         magicButton->setFont(buttonFont);
         magicButton->setBackground("*#images/ui/HUD/HUD_Button_Base_Small_00.png");
@@ -4986,7 +4986,7 @@ void createUINavigation(const int player)
                                                      0xFFFFFFFF, "images/system/white.png",
                                                      "magic button glyph")->disabled = true;
 
-        auto statusButton = uiNavFrame->addButton("status button");
+        const auto statusButton = uiNavFrame->addButton("status button");
         statusButton->setText(Language::get(4118));
         statusButton->setFont(buttonFont);
         statusButton->setBackground("*#images/ui/HUD/HUD_Button_Base_Small_00.png");
@@ -5025,7 +5025,7 @@ void createUINavigation(const int player)
                                                       0xFFFFFFFF, "images/system/white.png",
                                                       "status button glyph")->disabled = true;
 
-        auto itemsButton = uiNavFrame->addButton("items button");
+        const auto itemsButton = uiNavFrame->addButton("items button");
         itemsButton->setText(Language::get(4116));
         itemsButton->setFont(buttonFont);
         itemsButton->setBackground("*#images/ui/HUD/HUD_Button_Base_Small_00.png");
@@ -5066,7 +5066,7 @@ void createUINavigation(const int player)
                                                      0xFFFFFFFF, "images/system/white.png",
                                                      "items button glyph")->disabled = true;
 
-        auto skillsButton = uiNavFrame->addButton("skills button");
+        const auto skillsButton = uiNavFrame->addButton("skills button");
         skillsButton->setText(Language::get(4117));
         skillsButton->setFont(buttonFont);
         skillsButton->setBackground("*#images/ui/HUD/HUD_Button_Base_Small_00.png");
@@ -5090,52 +5090,52 @@ void createUINavigation(const int player)
     }
     {
         const int glyphSize = 32;
-        auto navFont = "fonts/pixel_maz.ttf#32#2";
-        auto leftBumperNavigationTxt = uiNavFrame->addField("left bumper txt", 64);
+        const auto navFont = "fonts/pixel_maz.ttf#32#2";
+        const auto leftBumperNavigationTxt = uiNavFrame->addField("left bumper txt", 64);
         leftBumperNavigationTxt->setFont(navFont);
         leftBumperNavigationTxt->setHJustify(Field::justify_t::RIGHT);
         leftBumperNavigationTxt->setVJustify(Field::justify_t::CENTER);
         leftBumperNavigationTxt->setDisabled(true);
 
-        auto leftBumperNavigationImg = uiNavFrame->addImage(SDL_Rect{0, 0, glyphSize, glyphSize},
+        const auto leftBumperNavigationImg = uiNavFrame->addImage(SDL_Rect{0, 0, glyphSize, glyphSize},
                                                             0xFFFFFFFF, "images/system/white.png", "left bumper img");
         leftBumperNavigationImg->disabled = true;
 
-        auto rightBumperNavigationTxt = uiNavFrame->addField("right bumper txt", 64);
+        const auto rightBumperNavigationTxt = uiNavFrame->addField("right bumper txt", 64);
         rightBumperNavigationTxt->setFont(navFont);
         rightBumperNavigationTxt->setVJustify(Field::justify_t::CENTER);
         rightBumperNavigationTxt->setHJustify(Field::justify_t::LEFT);
 
-        auto rightBumperNavigationImg = uiNavFrame->addImage(SDL_Rect{0, 0, glyphSize, glyphSize},
+        const auto rightBumperNavigationImg = uiNavFrame->addImage(SDL_Rect{0, 0, glyphSize, glyphSize},
                                                              0xFFFFFFFF, "images/system/white.png", "right bumper img");
         rightBumperNavigationImg->disabled = true;
 
-        auto leftTriggerNavigationTxt = uiNavFrame->addField("left trigger txt", 64);
+        const auto leftTriggerNavigationTxt = uiNavFrame->addField("left trigger txt", 64);
         leftTriggerNavigationTxt->setFont(navFont);
         leftTriggerNavigationTxt->setHJustify(Field::justify_t::RIGHT);
         leftTriggerNavigationTxt->setVJustify(Field::justify_t::CENTER);
         leftTriggerNavigationTxt->setDisabled(true);
 
-        auto leftTriggerNavigationImg = uiNavFrame->addImage(SDL_Rect{0, 0, glyphSize, glyphSize},
+        const auto leftTriggerNavigationImg = uiNavFrame->addImage(SDL_Rect{0, 0, glyphSize, glyphSize},
                                                              0xFFFFFFFF, "images/system/white.png", "left trigger img");
         leftTriggerNavigationImg->disabled = true;
 
-        auto rightTriggerNavigationTxt = uiNavFrame->addField("right trigger txt", 64);
+        const auto rightTriggerNavigationTxt = uiNavFrame->addField("right trigger txt", 64);
         rightTriggerNavigationTxt->setFont(navFont);
         rightTriggerNavigationTxt->setVJustify(Field::justify_t::CENTER);
         rightTriggerNavigationTxt->setHJustify(Field::justify_t::LEFT);
 
-        auto rightTriggerNavigationImg = uiNavFrame->addImage(SDL_Rect{0, 0, glyphSize, glyphSize},
+        const auto rightTriggerNavigationImg = uiNavFrame->addImage(SDL_Rect{0, 0, glyphSize, glyphSize},
                                                               0xFFFFFFFF, "images/system/white.png",
                                                               "right trigger img");
         rightTriggerNavigationImg->disabled = true;
 
-        auto additionalNavigationTxt = uiNavFrame->addField("additional txt", 64);
+        const auto additionalNavigationTxt = uiNavFrame->addField("additional txt", 64);
         additionalNavigationTxt->setFont(navFont);
         additionalNavigationTxt->setVJustify(Field::justify_t::CENTER);
         additionalNavigationTxt->setHJustify(Field::justify_t::LEFT);
 
-        auto additionalNavigationImg = uiNavFrame->addImage(SDL_Rect{0, 0, glyphSize, glyphSize},
+        const auto additionalNavigationImg = uiNavFrame->addImage(SDL_Rect{0, 0, glyphSize, glyphSize},
                                                             0xFFFFFFFF, "images/system/white.png", "additional img");
         additionalNavigationImg->disabled = true;
     }
@@ -5983,7 +5983,7 @@ bool StatusEffectQueue_t::insertEffect(int effectID, int spellID)
                 return false;
             }
         }
-        for (auto& q : effectQueue)
+        for (const auto& q : effectQueue)
         {
             if (effectID == q.effect)
             {
@@ -6016,7 +6016,7 @@ std::string StatusEffectQueue_t::StatusEffectDefinitions_t::getEffectImgPath(
         {
             return entry.imgPathVariations[std::min(variation, static_cast<int>(entry.imgPathVariations.size()) - 1)];
         }
-        node_t* spellImageNode = nullptr;
+        const node_t* spellImageNode = nullptr;
         int spellID = entry.useSpellIDForImg;
         if (variation >= 0)
         {
@@ -6029,7 +6029,7 @@ std::string StatusEffectQueue_t::StatusEffectDefinitions_t::getEffectImgPath(
         }
         if (spellImageNode)
         {
-            auto string = static_cast<string_t*>(spellImageNode->element);
+            const auto string = static_cast<string_t*>(spellImageNode->element);
             if (string)
             {
                 return string->data;
@@ -6081,15 +6081,15 @@ const real_t kStatusEffectQueueAnimSpeedMult = 4.0;
 void StatusEffectQueueEntry_t::animate()
 {
     const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-    real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateX)) / (5.0 / kStatusEffectQueueAnimSpeedMult);
-    real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - animateY)) / (5.0 / kStatusEffectQueueAnimSpeedMult);
+    const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateX)) / (5.0 / kStatusEffectQueueAnimSpeedMult);
+    const real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - animateY)) / (5.0 / kStatusEffectQueueAnimSpeedMult);
     animateX += setpointDiffX;
     animateY += setpointDiffY;
     animateX = std::min(1.0, animateX);
     animateY = std::min(1.0, animateY);
 
-    int destX = animateSetpointX - animateStartX;
-    int destY = animateSetpointY - animateStartY;
+    const int destX = animateSetpointX - animateStartX;
+    const int destY = animateSetpointY - animateStartY;
 
     pos.x = animateStartX + destX * animateX;
     pos.y = animateStartY + destY * animateY;
@@ -6410,10 +6410,10 @@ int StatusEffectQueueEntry_t::getEffectSpriteNormalWidth()
 
     if (effect >= StatusEffectQueue_t::kSpellEffectOffset)
     {
-        int effectID = effect - StatusEffectQueue_t::kSpellEffectOffset;
+        const int effectID = effect - StatusEffectQueue_t::kSpellEffectOffset;
         if (StatusEffectQueue_t::StatusEffectDefinitions_t::sustainedSpellDefinitionExists(effectID))
         {
-            auto& definition = StatusEffectQueue_t::StatusEffectDefinitions_t::getSustainedSpell(effectID);
+            const auto& definition = StatusEffectQueue_t::StatusEffectDefinitions_t::getSustainedSpell(effectID);
             if (definition.useSpellIDForImg >= 0 || definition.useSpellIDForImgVariations.size() > 0)
             {
                 return *cvar_statusfx_spell_size;
@@ -6422,7 +6422,7 @@ int StatusEffectQueueEntry_t::getEffectSpriteNormalWidth()
     }
     else if (StatusEffectQueue_t::StatusEffectDefinitions_t::effectDefinitionExists(effect))
     {
-        auto& definition = StatusEffectQueue_t::StatusEffectDefinitions_t::getEffect(effect);
+        const auto& definition = StatusEffectQueue_t::StatusEffectDefinitions_t::getEffect(effect);
         if (definition.useSpellIDForImg >= 0 || definition.useSpellIDForImgVariations.size() > 0)
         {
             return *cvar_statusfx_spell_size;
@@ -6444,10 +6444,10 @@ int StatusEffectQueueEntry_t::getEffectSpriteNormalHeight()
     }
     if (effect >= StatusEffectQueue_t::kSpellEffectOffset)
     {
-        int effectID = effect - StatusEffectQueue_t::kSpellEffectOffset;
+        const int effectID = effect - StatusEffectQueue_t::kSpellEffectOffset;
         if (StatusEffectQueue_t::StatusEffectDefinitions_t::sustainedSpellDefinitionExists(effectID))
         {
-            auto& definition = StatusEffectQueue_t::StatusEffectDefinitions_t::getSustainedSpell(effectID);
+            const auto& definition = StatusEffectQueue_t::StatusEffectDefinitions_t::getSustainedSpell(effectID);
             if (definition.useSpellIDForImg >= 0 || definition.useSpellIDForImgVariations.size() > 0)
             {
                 return *cvar_statusfx_spell_size;
@@ -6456,7 +6456,7 @@ int StatusEffectQueueEntry_t::getEffectSpriteNormalHeight()
     }
     else if (StatusEffectQueue_t::StatusEffectDefinitions_t::effectDefinitionExists(effect))
     {
-        auto& definition = StatusEffectQueue_t::StatusEffectDefinitions_t::getEffect(effect);
+        const auto& definition = StatusEffectQueue_t::StatusEffectDefinitions_t::getEffect(effect);
         if (definition.useSpellIDForImg >= 0 || definition.useSpellIDForImgVariations.size() > 0)
         {
             return *cvar_statusfx_spell_size;
@@ -6588,10 +6588,10 @@ void StatusEffectQueueEntry_t::animateNotification(int player)
     }
 
     const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-    real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateX)) / (animspeed);
-    real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - animateY)) / (animspeed);
-    real_t setpointDiffW = fpsScale * std::max(.1, (1.0 - animateW)) / (animspeed);
-    real_t setpointDiffH = fpsScale * std::max(.1, (1.0 - animateH)) / (animspeed);
+    const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateX)) / (animspeed);
+    const real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - animateY)) / (animspeed);
+    const real_t setpointDiffW = fpsScale * std::max(.1, (1.0 - animateW)) / (animspeed);
+    const real_t setpointDiffH = fpsScale * std::max(.1, (1.0 - animateH)) / (animspeed);
     animateX += setpointDiffX;
     animateY += setpointDiffY;
     animateX = std::min(1.0, animateX);
@@ -6601,10 +6601,10 @@ void StatusEffectQueueEntry_t::animateNotification(int player)
     animateW = std::min(1.0, animateW);
     animateH = std::min(1.0, animateH);
 
-    int destX = animateSetpointX - animateStartX;
-    int destY = animateSetpointY - animateStartY;
-    int destW = animateSetpointW - animateStartW;
-    int destH = animateSetpointH - animateStartH;
+    const int destX = animateSetpointX - animateStartX;
+    const int destY = animateSetpointY - animateStartY;
+    const int destW = animateSetpointW - animateStartW;
+    const int destH = animateSetpointH - animateStartH;
 
     pos.x = animateStartX + destX * animateX;
     pos.y = animateStartY + destY * animateY;
@@ -7636,27 +7636,27 @@ void createStatusEffectQueue(const int player)
     {
         return;
     }
-    auto& hud_t = players[player]->hud;
+    const auto& hud_t = players[player]->hud;
     statusEffectQueue.statusEffectFrame = hud_t.hudFrame->addFrame("status effects");
     statusEffectQueue.statusEffectFrame->setHollow(true);
     statusEffectQueue.statusEffectFrame->setBorder(0);
     statusEffectQueue.statusEffectFrame->setOwner(player);
     statusEffectQueue.statusEffectFrame->setSize(SDL_Rect{0, 0, 0, 0});
 
-    auto automatonHungerFrame = statusEffectQueue.statusEffectFrame->addFrame("automaton hunger notification");
+    const auto automatonHungerFrame = statusEffectQueue.statusEffectFrame->addFrame("automaton hunger notification");
     automatonHungerFrame->setHollow(true);
     automatonHungerFrame->setDisabled(true);
     automatonHungerFrame->setSize(SDL_Rect{0, 0, 64, 64});
     auto automaton_flame_img = automatonHungerFrame->addImage(SDL_Rect{0, 0, 64, 64}, 0xFFFFFFFF,
                                                               "images/system/Hunger_boiler_fire.png", "flame");
 
-    auto notif_frame = statusEffectQueue.statusEffectFrame->addFrame("notification frame");
+    const auto notif_frame = statusEffectQueue.statusEffectFrame->addFrame("notification frame");
     notif_frame->setHollow(true);
     notif_frame->setDisabled(true);
     notif_frame->setSize(SDL_Rect{0, 0, 0, 0});
-    auto notif = notif_frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "images/system/white.png", "notification img");
+    const auto notif = notif_frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "images/system/white.png", "notification img");
     notif->disabled = true;
-    auto notif_txt = notif_frame->addField("notification txt", 128);
+    const auto notif_txt = notif_frame->addField("notification txt", 128);
     //notif_txt->setFont("fonts/pixel_maz_multiline.ttf#16#2");
     notif_txt->setFont("fonts/pixelmix.ttf#16#2");
     notif_txt->setText("");
@@ -7665,7 +7665,7 @@ void createStatusEffectQueue(const int player)
     notif_txt->setVJustify(Field::justify_t::CENTER);
     notif_txt->setHJustify(Field::justify_t::CENTER);
 
-    auto innerFrame = statusEffectQueue.statusEffectFrame->addFrame("effects");
+    const auto innerFrame = statusEffectQueue.statusEffectFrame->addFrame("effects");
     innerFrame->setHollow(true);
     innerFrame->setDrawCallback([](const Widget& widget, SDL_Rect pos)
     {
@@ -7711,7 +7711,7 @@ void StatusEffectQueue_t::createStatusEffectTooltip()
     tooltipFrame->setSize(SDL_Rect{0, 0, 0, 0});
 
     {
-        Uint32 color = makeColor(255, 255, 255, 255);
+        const Uint32 color = makeColor(255, 255, 255, 255);
         tooltipFrame->addImage(SDL_Rect{0, 0, 6, 6},
                                color, "*#images/ui/CharSheet/HUD_CharSheet_Tooltip_TL_Blue_00.png",
                                Player::GUI_t::tooltipEffectBackgroundImages[Player::GUI_t::TOP_LEFT].c_str());
@@ -7741,14 +7741,14 @@ void StatusEffectQueue_t::createStatusEffectTooltip()
                                Player::GUI_t::tooltipEffectBackgroundImages[Player::GUI_t::BOTTOM].c_str());
         Player::GUI_t::imageSetWidthHeight9x9(tooltipFrame, Player::GUI_t::tooltipEffectBackgroundImages);
 
-        auto heading_txt = tooltipFrame->addField("heading txt", 128);
+        const auto heading_txt = tooltipFrame->addField("heading txt", 128);
         heading_txt->setFont("fonts/pixel_maz_multiline.ttf#16#2");
         heading_txt->setText("");
         heading_txt->setColor(makeColor(255, 255, 255, 255));
         heading_txt->setVJustify(Field::justify_t::CENTER);
         heading_txt->setHJustify(Field::justify_t::LEFT);
 
-        auto desc_txt = tooltipFrame->addField("desc txt", 1024);
+        const auto desc_txt = tooltipFrame->addField("desc txt", 1024);
         desc_txt->setFont("fonts/pixel_maz_multiline.ttf#16#2");
         desc_txt->setText("");
         desc_txt->setColor(makeColor(0, 192, 255, 255));
@@ -7764,7 +7764,7 @@ void Player::HUD_t::updateStatusEffectTooltip()
 
 void Player::HUD_t::closeStatusFxWindow()
 {
-    bool wasActive = statusFxFocusedWindowActive;
+    const bool wasActive = statusFxFocusedWindowActive;
     statusFxFocusedWindowActive = false;
 
     StatusEffectQueue[player.playernum].focusedWindowAnim = 0.0;
@@ -8206,7 +8206,7 @@ void StatusEffectQueue_t::animateStatusEffectTooltip(bool showTooltip)
     {
         return;
     }
-    auto tooltipFrame = statusEffectTooltipFrame;
+    const auto tooltipFrame = statusEffectTooltipFrame;
     if (static_cast<int>(tooltipFrame->getOpacity()) != tooltipOpacitySetpoint)
     {
         const real_t fpsScale = getFPSScale(144.0);
@@ -8220,8 +8220,8 @@ void StatusEffectQueue_t::animateStatusEffectTooltip(bool showTooltip)
             {
                 if (ticks - tooltipDeselectedTick > 5)
                 {
-                    real_t factor = 10.0;
-                    real_t setpointDiff = fpsScale * std::max(.05, (tooltipOpacityAnimate)) / (factor);
+                    const real_t factor = 10.0;
+                    const real_t setpointDiff = fpsScale * std::max(.05, (tooltipOpacityAnimate)) / (factor);
                     tooltipOpacityAnimate -= setpointDiff;
                     tooltipOpacityAnimate = std::max(0.0, tooltipOpacityAnimate);
                 }
@@ -8229,7 +8229,7 @@ void StatusEffectQueue_t::animateStatusEffectTooltip(bool showTooltip)
         }
         else
         {
-            real_t setpointDiff = fpsScale * std::max(.05, (1.0 - tooltipOpacityAnimate)) / (1);
+            const real_t setpointDiff = fpsScale * std::max(.05, (1.0 - tooltipOpacityAnimate)) / (1);
             tooltipOpacityAnimate += setpointDiff;
             tooltipOpacityAnimate = std::min(1.0, tooltipOpacityAnimate);
         }
@@ -8947,7 +8947,7 @@ void StatusEffectQueue_t::handleNavigation(std::map<int, StatusEffectQueueEntry_
         maxx.push_back(0);
         minx.push_back(32);
     }
-    for (auto& slot : grid)
+    for (const auto& slot : grid)
     {
         int x = slot.first % 10000;
         int y = slot.first / 10000;
@@ -8964,10 +8964,10 @@ void StatusEffectQueue_t::handleNavigation(std::map<int, StatusEffectQueueEntry_
         q.navigation.clear();
     }
 
-    for (auto& slot : grid)
+    for (const auto& slot : grid)
     {
         int x = slot.first % 10000;
-        int y = slot.first / 10000;
+        const int y = slot.first / 10000;
 
         if (slot.second->index == static_cast<size_t>(selectedElement))
         {
@@ -8976,54 +8976,54 @@ void StatusEffectQueue_t::handleNavigation(std::map<int, StatusEffectQueueEntry_
 
         if (grid.find((x + 1) + y * 10000) != grid.end())
         {
-            auto dest = grid[(x + 1) + y * 10000];
+            const auto dest = grid[(x + 1) + y * 10000];
             slot.second->navigation[StatusEffectQueueEntry_t::Dir_t::RIGHT] = dest->index;
         }
         else
         {
             if (hungerEffectInEffectQueue)
             {
-                auto dest = grid[0 + 0 * 10000];
+                const auto dest = grid[0 + 0 * 10000];
                 slot.second->navigation[StatusEffectQueueEntry_t::Dir_t::RIGHT] = dest->index;
             }
             else
             {
-                auto dest = grid[(minx[y]) + y * 10000];
+                const auto dest = grid[(minx[y]) + y * 10000];
                 slot.second->navigation[StatusEffectQueueEntry_t::Dir_t::RIGHT] = dest->index;
             }
         }
         if (grid.find((x - 1) + y * 10000) != grid.end())
         {
-            auto dest = grid[(x - 1) + y * 10000];
+            const auto dest = grid[(x - 1) + y * 10000];
             slot.second->navigation[StatusEffectQueueEntry_t::Dir_t::LEFT] = dest->index;
         }
         else
         {
             if (hungerEffectInEffectQueue && !(x == 0 && y == 0))
             {
-                auto dest = grid[0 + 0 * 10000];
+                const auto dest = grid[0 + 0 * 10000];
                 slot.second->navigation[StatusEffectQueueEntry_t::Dir_t::LEFT] = dest->index;
             }
             else
             {
-                auto dest = grid[maxx[y] + y * 10000];
+                const auto dest = grid[maxx[y] + y * 10000];
                 slot.second->navigation[StatusEffectQueueEntry_t::Dir_t::LEFT] = dest->index;
             }
         }
         if (grid.find(x + (y + 1) * 10000) != grid.end())
         {
-            auto dest = grid[x + (y + 1) * 10000];
+            const auto dest = grid[x + (y + 1) * 10000];
             slot.second->navigation[StatusEffectQueueEntry_t::Dir_t::UP] = dest->index;
         }
         else
         {
-            int destx = std::min(std::max(x, minx[0]), maxx[0]);
-            auto dest = grid[destx + (0) * 10000];
+            const int destx = std::min(std::max(x, minx[0]), maxx[0]);
+            const auto dest = grid[destx + (0) * 10000];
             slot.second->navigation[StatusEffectQueueEntry_t::Dir_t::UP] = dest->index;
         }
         if (grid.find(x + (y - 1) * 10000) != grid.end())
         {
-            auto dest = grid[x + (y - 1) * 10000];
+            const auto dest = grid[x + (y - 1) * 10000];
             slot.second->navigation[StatusEffectQueueEntry_t::Dir_t::DOWN] = dest->index;
         }
         else
@@ -9033,7 +9033,7 @@ void StatusEffectQueue_t::handleNavigation(std::map<int, StatusEffectQueueEntry_
             {
                 if (grid.find(x + (desty) * 10000) != grid.end())
                 {
-                    auto dest = grid[x + (desty) * 10000];
+                    const auto dest = grid[x + (desty) * 10000];
                     slot.second->navigation[StatusEffectQueueEntry_t::Dir_t::DOWN] = dest->index;
                     break;
                 }
@@ -9044,7 +9044,7 @@ void StatusEffectQueue_t::handleNavigation(std::map<int, StatusEffectQueueEntry_
 
     if (selectedEntry && inputDirection != StatusEffectQueueEntry_t::Dir_t::NONE)
     {
-        auto findIndex = selectedEntry->navigation.find(inputDirection);
+        const auto findIndex = selectedEntry->navigation.find(inputDirection);
         if (findIndex != selectedEntry->navigation.end())
         {
             selectedElement = (*findIndex).second;
@@ -9052,7 +9052,7 @@ void StatusEffectQueue_t::handleNavigation(std::map<int, StatusEffectQueueEntry_
         }
     }
 
-    auto innerFrame = statusEffectFrame->findFrame("effects");
+    const auto innerFrame = statusEffectFrame->findFrame("effects");
     auto& frameImages = innerFrame->getImages();
     auto frameImagesIterator = frameImages.begin();
     for (auto it = effectQueue.rbegin(); it != effectQueue.rend();)
@@ -9070,13 +9070,13 @@ void StatusEffectQueue_t::handleNavigation(std::map<int, StatusEffectQueueEntry_
             SDL_Rect size = statusEffectFrame->getAbsoluteSize();
 
             SDL_Rect frameImgPos = frameImg->pos;
-            bool oldDisabled = frameImg->disabled;
+            const bool oldDisabled = frameImg->disabled;
             updateEntryImage(q, frameImg);
             frameImg->disabled = oldDisabled;
             frameImgPos.x = q.animateSetpointX;
             frameImgPos.y = q.animateSetpointY;
 
-            int mouseDetectionPadding = frameImg->pos.w == 36 ? 0 : 2;
+            const int mouseDetectionPadding = frameImg->pos.w == 36 ? 0 : 2;
             size.x += frameImgPos.x - (mouseDetectionPadding);
             size.y += frameImgPos.y - (mouseDetectionPadding);
             size.w = frameImgPos.w + (mouseDetectionPadding * 2);
@@ -10371,7 +10371,7 @@ void StatusEffectQueue_t::updateEntryImage(StatusEffectQueueEntry_t& entry, Fram
         }
         else if (entry.effect == kEffectWealth)
         {
-            int variation = std::max(0, std::min(3, static_cast<int>(entry.customVariable) - 1));
+            const int variation = std::max(0, std::min(3, static_cast<int>(entry.customVariable) - 1));
             img->path = StatusEffectDefinitions_t::getEffectImgPath(StatusEffectDefinitions_t::getEffect(entry.effect),
                                                                     variation);
         }
@@ -10379,7 +10379,7 @@ void StatusEffectQueue_t::updateEntryImage(StatusEffectQueueEntry_t& entry, Fram
         {
             if (entry.effect >= kSpellEffectOffset)
             {
-                int effectID = entry.effect - kSpellEffectOffset;
+                const int effectID = entry.effect - kSpellEffectOffset;
                 if (StatusEffectDefinitions_t::sustainedSpellDefinitionExists(effectID))
                 {
                     img->path = StatusEffectDefinitions_t::getEffectImgPath(
@@ -10388,7 +10388,7 @@ void StatusEffectQueue_t::updateEntryImage(StatusEffectQueueEntry_t& entry, Fram
             }
             else
             {
-                int effectID = entry.effect;
+                const int effectID = entry.effect;
                 if (StatusEffectDefinitions_t::effectDefinitionExists(effectID))
                 {
                     int variation = -1;
@@ -10475,7 +10475,7 @@ void updateStatusEffectQueue(const int player)
     {
         return;
     }
-    auto& hud_t = players[player]->hud;
+    const auto& hud_t = players[player]->hud;
     SDL_Rect mainFramePos{0, 0, players[player]->camera_virtualWidth(), players[player]->camera_virtualHeight() / 2};
     mainFramePos.x = hud_t.hpFrame->getSize().x;
     mainFramePos.y = hud_t.hpFrame->getSize().y - mainFramePos.h;
@@ -10486,7 +10486,7 @@ void updateStatusEffectQueue(const int player)
         mainFramePos.y -= 8 * statusEffectQueue.focusedWindowAnim;
     }
     statusEffectFrame->setSize(mainFramePos);
-    auto innerFrame = statusEffectFrame->findFrame("effects");
+    const auto innerFrame = statusEffectFrame->findFrame("effects");
     innerFrame->setSize(SDL_Rect{0, 0, statusEffectFrame->getSize().w, statusEffectFrame->getSize().h});
 
     const int hungerEffectID = ((stats[player] && stats[player]->type == AUTOMATON)
@@ -10551,7 +10551,7 @@ void updateStatusEffectQueue(const int player)
             hungerStateToSet = HUNGER_HUNGRY;
         }
         StatusEffectQueueEntry_t* entry = nullptr;
-        StatusEffectQueueEntry_t* notif = nullptr;
+        const StatusEffectQueueEntry_t* notif = nullptr;
 
 
         for (auto& q : statusEffectQueue.effectQueue)
@@ -10648,7 +10648,7 @@ void updateStatusEffectQueue(const int player)
                 hungerStateToSet = HUNGER_CRITICAL;
             }
             StatusEffectQueueEntry_t* entry = nullptr;
-            StatusEffectQueueEntry_t* notif = nullptr;
+            const StatusEffectQueueEntry_t* notif = nullptr;
 
             for (auto& q : statusEffectQueue.effectQueue)
             {
@@ -10735,13 +10735,13 @@ void Player::Inventory_t::updateInventoryMiscTooltip()
     }
     if (!miscTooltipFrame)
     {
-        auto tooltipFrame = frame->addFrame("misc tooltip");
+        const auto tooltipFrame = frame->addFrame("misc tooltip");
         miscTooltipFrame = tooltipFrame;
         tooltipFrame->setSize(SDL_Rect{212, 0, 200, 200});
         tooltipFrame->setHollow(true);
         tooltipFrame->setInheritParentFrameOpacity(false);
         tooltipFrame->setDisabled(true);
-        Uint32 color = makeColor(255, 255, 255, 255);
+        const Uint32 color = makeColor(255, 255, 255, 255);
         tooltipFrame->addImage(SDL_Rect{0, 0, 6, 6},
                                color, "*#images/ui/CharSheet/HUD_CharSheet_Tooltip_TL_00.png",
                                Player::GUI_t::tooltipEffectBackgroundImages[Player::GUI_t::TOP_LEFT].c_str());
@@ -10772,13 +10772,13 @@ void Player::Inventory_t::updateInventoryMiscTooltip()
         Player::GUI_t::imageSetWidthHeight9x9(tooltipFrame, Player::GUI_t::tooltipEffectBackgroundImages);
         Player::GUI_t::imageResizeToContainer9x9(tooltipFrame, SDL_Rect{0, 0, 200, 200},
                                                  Player::GUI_t::tooltipEffectBackgroundImages);
-        auto txt = tooltipFrame->addField("tooltip text", 1024);
-        auto tooltipFont = "fonts/pixel_maz_multiline.ttf#16#2";
+        const auto txt = tooltipFrame->addField("tooltip text", 1024);
+        const auto tooltipFont = "fonts/pixel_maz_multiline.ttf#16#2";
         txt->setFont(tooltipFont);
         txt->setColor(makeColor(188, 154, 114, 255));
     }
 
-    auto tooltipFrame = miscTooltipFrame;
+    const auto tooltipFrame = miscTooltipFrame;
     if (tooltipFrame->isDisabled())
     {
         miscTooltipOpacitySetpoint = 0;
@@ -10792,15 +10792,15 @@ void Player::Inventory_t::updateInventoryMiscTooltip()
         {
             if (ticks - miscTooltipDeselectedTick > 5)
             {
-                real_t factor = 10.0;
-                real_t setpointDiff = fpsScale * std::max(.05, (miscTooltipOpacityAnimate)) / (factor);
+                const real_t factor = 10.0;
+                const real_t setpointDiff = fpsScale * std::max(.05, (miscTooltipOpacityAnimate)) / (factor);
                 miscTooltipOpacityAnimate -= setpointDiff;
                 miscTooltipOpacityAnimate = std::max(0.0, miscTooltipOpacityAnimate);
             }
         }
         else
         {
-            real_t setpointDiff = fpsScale * std::max(.05, (1.0 - miscTooltipOpacityAnimate)) / (1);
+            const real_t setpointDiff = fpsScale * std::max(.05, (1.0 - miscTooltipOpacityAnimate)) / (1);
             miscTooltipOpacityAnimate += setpointDiff;
             miscTooltipOpacityAnimate = std::min(1.0, miscTooltipOpacityAnimate);
         }
@@ -10811,7 +10811,7 @@ void Player::Inventory_t::updateInventoryMiscTooltip()
         tooltipFrame->setOpacity(miscTooltipOpacitySetpoint);
     }
 
-    Button* autosortBtn = nullptr;
+    const Button* autosortBtn = nullptr;
     if (player.shootmode)
     {
         miscTooltipOpacitySetpoint = 0;
@@ -10837,8 +10837,8 @@ void Player::Inventory_t::updateInventoryMiscTooltip()
     tooltipFrame->setOpacity(100.0);
     miscTooltipDeselectedTick = ticks;
 
-    Uint32 defaultColor = hudColors.characterSheetNeutral;
-    auto txt = tooltipFrame->findField("tooltip text");
+    const Uint32 defaultColor = hudColors.characterSheetNeutral;
+    const auto txt = tooltipFrame->findField("tooltip text");
     txt->setColor(defaultColor);
 
     if (true)
@@ -10872,10 +10872,10 @@ void Player::Inventory_t::updateInventoryMiscTooltip()
 
         auto txtPos = SDL_Rect{padx, pady1, maxWidth - padx * 2, 80};
         txt->setSize(txtPos);
-        Font* actualFont = Font::get(txt->getFont());
-        int txtHeight = txt->getNumTextLines() * actualFont->height(true);
+        const Font* actualFont = Font::get(txt->getFont());
+        const int txtHeight = txt->getNumTextLines() * actualFont->height(true);
         txtPos.h = txtHeight + padyMid;
-        auto txtGet = Text::get(txt->getLongestLine().c_str(), txt->getFont(),
+        const auto txtGet = Text::get(txt->getLongestLine().c_str(), txt->getFont(),
                                 txt->getTextColor(), txt->getOutlineColor());
         txtPos.w = txtGet->getWidth();
         txt->setSize(txtPos);
@@ -10889,11 +10889,11 @@ void Player::Inventory_t::updateInventoryMiscTooltip()
         }
 
         int tooltipCoordX = 0;
-        PanelJustify_t justify = paperDollPanelJustify;
-        auto inventoryBgFrame = playerInventoryFrames[player.playernum].inventoryBgFrame;
+        const PanelJustify_t justify = paperDollPanelJustify;
+        const auto inventoryBgFrame = playerInventoryFrames[player.playernum].inventoryBgFrame;
         if (!bCompactView)
         {
-            Frame::image_t* invBaseImg = invBaseImg = playerInventoryFrames[player.playernum].defaultInvImg;
+            const Frame::image_t* invBaseImg = invBaseImg = playerInventoryFrames[player.playernum].defaultInvImg;
 
             if (justify == PANEL_JUSTIFY_LEFT)
             {
@@ -10909,7 +10909,7 @@ void Player::Inventory_t::updateInventoryMiscTooltip()
         }
         else
         {
-            Frame::image_t* compactImg = compactImg = playerInventoryFrames[player.playernum].compactCharImg;
+            const Frame::image_t* compactImg = compactImg = playerInventoryFrames[player.playernum].compactCharImg;
             if (justify == PANEL_JUSTIFY_LEFT)
             {
                 tooltipCoordX = inventoryBgFrame->getSize().x + 8;
@@ -10941,76 +10941,76 @@ void createWorldTooltipPrompts(const int player)
     worldTooltipFrame->setSize(SDL_Rect{0, 0, 0, 0});
     worldTooltipFrame->setDisabled(true);
 
-    auto promptFont = "fonts/pixel_maz_multiline.ttf#16#2";
+    const auto promptFont = "fonts/pixel_maz_multiline.ttf#16#2";
 
-    Uint32 iconColor = makeColor(255, 255, 255, Player::HUD_t::actionPromptIconOpacity);
+    const Uint32 iconColor = makeColor(255, 255, 255, Player::HUD_t::actionPromptIconOpacity);
     Uint32 iconBackingColor = makeColor(255, 255, 255, Player::HUD_t::actionPromptIconBackingOpacity);
 
-    auto text = worldTooltipFrame->addField("prompt text", 256);
+    const auto text = worldTooltipFrame->addField("prompt text", 256);
     text->setFont(promptFont);
     text->setText("");
     text->setDisabled(true);
     text->setSize(SDL_Rect{0, 0, 0, 0});
 
-    auto text2 = worldTooltipFrame->addField("prompt cycle text", 256);
+    const auto text2 = worldTooltipFrame->addField("prompt cycle text", 256);
     text2->setFont(promptFont);
     text2->setText("");
     text2->setDisabled(true);
     text2->setSize(SDL_Rect{0, 0, 0, 0});
 
-    auto text3 = worldTooltipFrame->addField("prompt callout text", 256);
+    const auto text3 = worldTooltipFrame->addField("prompt callout text", 256);
     text3->setFont(promptFont);
     text3->setText("");
     text3->setDisabled(true);
     text3->setSize(SDL_Rect{0, 0, 0, 0});
 
     const int iconSize = 24;
-    SDL_Rect iconPos{0, 0, iconSize, iconSize};
+    const SDL_Rect iconPos{0, 0, iconSize, iconSize};
 
-    auto icon = worldTooltipFrame->addImage(iconPos,
+    const auto icon = worldTooltipFrame->addImage(iconPos,
                                             iconColor, "images/system/white.png", "icon img");
     icon->disabled = true;
 
-    auto glyph = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
+    const auto glyph = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
                                              0xFFFFFFFF, "images/system/white.png", "glyph img");
     glyph->disabled = true;
 
-    auto glyphAdditional = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
+    const auto glyphAdditional = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
                                                        0xFFFFFFFF, "images/system/white.png", "glyph img 2");
     glyphAdditional->disabled = true;
 
-    auto glyphAdditional2 = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
+    const auto glyphAdditional2 = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
                                                         0xFFFFFFFF, "images/system/white.png", "glyph img 3");
     glyphAdditional2->disabled = true;
 
-    auto glyphAdditional3 = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
+    const auto glyphAdditional3 = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
                                                         0xFFFFFFFF, "images/system/white.png", "glyph img 4");
     glyphAdditional3->disabled = true;
 
     {
-        auto glyphSpellTarget = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
+        const auto glyphSpellTarget = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
                                                             0xFFFFFFFF, "images/system/white.png", "glyph img spell");
         glyphSpellTarget->disabled = true;
-        auto glyphSpellCancel = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
+        const auto glyphSpellCancel = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
                                                             0xFFFFFFFF, "images/system/white.png",
                                                             "glyph img spell cancel");
         glyphSpellCancel->disabled = true;
-        auto iconSpellTarget = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
+        const auto iconSpellTarget = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
                                                            0xFFFFFFFF, "images/system/white.png", "spell icon img");
         iconSpellTarget->disabled = true;
-        auto textSpellTarget = worldTooltipFrame->addField("prompt spell target text", 256);
+        const auto textSpellTarget = worldTooltipFrame->addField("prompt spell target text", 256);
         textSpellTarget->setFont(promptFont);
         textSpellTarget->setText("");
         textSpellTarget->setDisabled(true);
         textSpellTarget->setSize(SDL_Rect{0, 0, 0, 0});
-        auto textSpellCancelTarget = worldTooltipFrame->addField("prompt spell cancel text", 256);
+        const auto textSpellCancelTarget = worldTooltipFrame->addField("prompt spell cancel text", 256);
         textSpellCancelTarget->setFont(promptFont);
         textSpellCancelTarget->setText("");
         textSpellCancelTarget->setDisabled(true);
         textSpellCancelTarget->setSize(SDL_Rect{0, 0, 0, 0});
     }
 
-    auto cursor = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
+    const auto cursor = worldTooltipFrame->addImage(SDL_Rect{0, 0, 0, 0},
                                               0xFFFFFFFF, "images/system/white.png", "cursor img");
     cursor->disabled = true;
 }
@@ -12287,25 +12287,25 @@ void createActionPrompts(const int player)
     const int maxHeight = std::max(iconSize, iconBackingSize);
     const int promptHeight = maxHeight + glyphSize; // vertical space for prompts
 
-    SDL_Rect iconPos{
+    const SDL_Rect iconPos{
         maxWidth / 2 - iconSize / 2 - 1,
         promptHeight - maxHeight / 2 - iconSize / 2 - 1,
         iconSize,
         iconSize
     };
-    SDL_Rect iconBackingPos{
+    const SDL_Rect iconBackingPos{
         maxWidth / 2 - iconBackingSize / 2,
         promptHeight - maxHeight / 2 - iconBackingSize / 2,
         iconBackingSize,
         iconBackingSize
     };
 
-    auto promptFont = "fonts/pixel_maz_multiline.ttf#16#2";
+    const auto promptFont = "fonts/pixel_maz_multiline.ttf#16#2";
 
-    Uint32 iconColor = makeColor(255, 255, 255, Player::HUD_t::actionPromptIconOpacity);
-    Uint32 iconBackingColor = makeColor(255, 255, 255, Player::HUD_t::actionPromptIconBackingOpacity);
+    const Uint32 iconColor = makeColor(255, 255, 255, Player::HUD_t::actionPromptIconOpacity);
+    const Uint32 iconBackingColor = makeColor(255, 255, 255, Player::HUD_t::actionPromptIconBackingOpacity);
 
-    auto mainHand = actionPromptFrame->addFrame("action mainhand");
+    const auto mainHand = actionPromptFrame->addFrame("action mainhand");
     mainHand->setSize(SDL_Rect{400, 400, maxWidth, promptHeight});
     mainHand->addImage(iconBackingPos,
                        iconBackingColor, actionPromptBackingIconPath00.c_str(), "action img backing");
@@ -12314,12 +12314,12 @@ void createActionPrompts(const int player)
     Frame::image_t* glyph = actionPromptFrame->addImage(SDL_Rect{0, 0, mainHand->getSize().w, glyphSize},
                                                         0xFFFFFFFF, "images/system/white.png", "action mainhand glyph");
     glyph->ontop = true;
-    auto mainHandText = actionPromptFrame->addField("action mainhand text", 64);
+    const auto mainHandText = actionPromptFrame->addField("action mainhand text", 64);
     mainHandText->setFont(promptFont);
     mainHandText->setText(Language::get(5963));
     mainHandText->setHJustify(Field::justify_t::CENTER);
 
-    auto offHand = actionPromptFrame->addFrame("action offhand");
+    const auto offHand = actionPromptFrame->addFrame("action offhand");
     offHand->setSize(SDL_Rect{440, 400, maxWidth, promptHeight});
     offHand->addImage(iconBackingPos,
                       iconBackingColor, actionPromptBackingIconPath00.c_str(), "action img backing");
@@ -12328,12 +12328,12 @@ void createActionPrompts(const int player)
     glyph = actionPromptFrame->addImage(SDL_Rect{0, 0, mainHand->getSize().w, glyphSize},
                                         0xFFFFFFFF, "images/system/white.png", "action offhand glyph");
     glyph->ontop = true;
-    auto offHandText = actionPromptFrame->addField("action offhand text", 64);
+    const auto offHandText = actionPromptFrame->addField("action offhand text", 64);
     offHandText->setFont(promptFont);
     offHandText->setText(Language::get(5964));
     offHandText->setHJustify(Field::justify_t::CENTER);
 
-    auto magic = actionPromptFrame->addFrame("action magic");
+    const auto magic = actionPromptFrame->addFrame("action magic");
     magic->setSize(SDL_Rect{480, 400, maxWidth, promptHeight});
     magic->addImage(iconBackingPos,
                     iconBackingColor, actionPromptBackingIconPath00.c_str(), "action img backing");
@@ -12342,12 +12342,12 @@ void createActionPrompts(const int player)
     glyph = actionPromptFrame->addImage(SDL_Rect{0, 0, mainHand->getSize().w, glyphSize},
                                         0xFFFFFFFF, "images/system/white.png", "action magic glyph");
     glyph->ontop = true;
-    auto magicText = actionPromptFrame->addField("action magic text", 64);
+    const auto magicText = actionPromptFrame->addField("action magic text", 64);
     magicText->setFont(promptFont);
     magicText->setText(Language::get(5965));
     magicText->setHJustify(Field::justify_t::CENTER);
 
-    auto sneak = actionPromptFrame->addFrame("action sneak");
+    const auto sneak = actionPromptFrame->addFrame("action sneak");
     sneak->setSize(SDL_Rect{480, 400, maxWidth, promptHeight});
     sneak->addImage(iconBackingPos,
                     iconBackingColor, actionPromptBackingIconPath00.c_str(), "action img backing");
@@ -12356,7 +12356,7 @@ void createActionPrompts(const int player)
     glyph = actionPromptFrame->addImage(SDL_Rect{0, 0, mainHand->getSize().w, glyphSize},
                                         0xFFFFFFFF, "images/system/white.png", "action sneak glyph");
     glyph->ontop = true;
-    auto sneakText = actionPromptFrame->addField("action sneak text", 64);
+    const auto sneakText = actionPromptFrame->addField("action sneak text", 64);
     sneakText->setFont(promptFont);
     sneakText->setText(Language::get(5964));
     sneakText->setHJustify(Field::justify_t::CENTER);
@@ -12366,7 +12366,7 @@ void drawActionPromptCooldownCallback(const Widget& widget, SDL_Rect rect)
 {
     const int player = widget.getOwner();
 
-    auto parent = static_cast<const Frame*>(widget.getParent());
+    const auto parent = static_cast<const Frame*>(widget.getParent());
     {
         SDL_Rect drawRect = rect;
         drawRect.x += 22;
@@ -12983,7 +12983,7 @@ void createGameTimerFrame(const int player)
     hud_t.gameTimerFrame->setDisabled(true);
     hud_t.gameTimerFrame->setSize(SDL_Rect{0, 0, 142, 24});
 
-    auto txt = hud_t.gameTimerFrame->addField("timer txt", 64);
+    const auto txt = hud_t.gameTimerFrame->addField("timer txt", 64);
     txt->setText("00:00:00");
     txt->setSize(SDL_Rect{0, 0, hud_t.gameTimerFrame->getSize().w, hud_t.gameTimerFrame->getSize().h});
     txt->setFont("fonts/pixel_maz_multiline.ttf#16#2");
@@ -12991,7 +12991,7 @@ void createGameTimerFrame(const int player)
     txt->setHJustify(Field::justify_t::LEFT);
     txt->setColor(makeColor(255, 255, 255, 255));
 
-    auto seed = hud_t.gameTimerFrame->addField("seed txt", 64);
+    const auto seed = hud_t.gameTimerFrame->addField("seed txt", 64);
     seed->setText("");
     seed->setSize(SDL_Rect{0, 0, hud_t.gameTimerFrame->getSize().w, hud_t.gameTimerFrame->getSize().h});
     seed->setFont("fonts/pixel_maz_multiline.ttf#16#2");
@@ -13013,7 +13013,7 @@ void createMapPromptFrame(const int player)
                                                    0xFFFFFFFF, "*#images/ui/MapAndLog/HUD_MapPromptBase_00.png",
                                                    "prompt bg");
 
-    auto imgPromptFrame = hud_t.mapPromptFrame->addFrame("img prompt frame");
+    const auto imgPromptFrame = hud_t.mapPromptFrame->addFrame("img prompt frame");
     imgPromptFrame->setHollow(true);
 
     auto scaleImg = imgPromptFrame->addImage(SDL_Rect{0, 0, 24, 24},
@@ -13029,7 +13029,7 @@ void createMapPromptFrame(const int player)
 
 static void checkControllerState(int player)
 {
-    auto& controllerFrame = players[player]->hud.controllerFrame;
+    const auto& controllerFrame = players[player]->hud.controllerFrame;
     assert(controllerFrame);
     if (multiplayer != SINGLE)
     {
@@ -13037,7 +13037,7 @@ static void checkControllerState(int player)
     }
     if (inputs.getPlayerIDAllowedKeyboard() != player)
     {
-        auto controller = inputs.getController(player);
+        const auto controller = inputs.getController(player);
         if (!controller || (controller && !controller->isActive()))
         {
             if (controllerFrame->isHollow())
@@ -13118,12 +13118,12 @@ void HUDDrawGameEndHint(const int player, SDL_Rect rect)
                 rect.y += players[player]->hud.xpFrame->getSize().y;
                 rect.y += players[player]->hud.xpFrame->getSize().h;
             }
-            if (auto textGet = Text::get(Language::get(6052), smallfont_outline, makeColorRGB(255, 255, 255), 0))
+            if (const auto textGet = Text::get(Language::get(6052), smallfont_outline, makeColorRGB(255, 255, 255), 0))
             {
                 Uint8 r, g, b, a;
                 getColor(hudColors.characterSheetRed, &r, &g, &b, nullptr);
-                real_t opacity = 0.5 + .4 * (1.0 * cos(players[player]->hud.animDeadPrompt * 2 * PI) + 1.0);
-                Uint32 color = makeColor(r, g, b, std::max(0.25, std::min(opacity, 1.0)) * 255);
+                const real_t opacity = 0.5 + .4 * (1.0 * cos(players[player]->hud.animDeadPrompt * 2 * PI) + 1.0);
+                const Uint32 color = makeColor(r, g, b, std::max(0.25, std::min(opacity, 1.0)) * 255);
                 rect.x -= textGet->getWidth() / 2;
                 textGet->drawColor(SDL_Rect{0, 0, 0, 0}, SDL_Rect{rect.x, rect.y, 0, 0},
                                    SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY},
@@ -13185,10 +13185,10 @@ void Player::HUD_t::processHUD()
         minotaurSharedDisplay->setOwner(player.playernum);
         minotaurSharedDisplay->setDisabled(true);
         minotaurSharedDisplay->setInheritParentFrameOpacity(false);
-        auto img = minotaurSharedDisplay->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
+        const auto img = minotaurSharedDisplay->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
                                                    "*images/ui/HUD/HUD_Minotaur_00.png",
                                                    "mino img");
-        if (auto imgGet = Image::get(img->path.c_str()))
+        if (const auto imgGet = Image::get(img->path.c_str()))
         {
             img->pos.w = imgGet->getWidth();
             img->pos.h = imgGet->getHeight();
@@ -13203,9 +13203,9 @@ void Player::HUD_t::processHUD()
         minotaurDisplay->setOwner(player.playernum);
         minotaurDisplay->setDisabled(true);
         minotaurDisplay->setInheritParentFrameOpacity(false);
-        auto img = minotaurDisplay->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "*images/ui/HUD/HUD_Minotaur_00.png",
+        const auto img = minotaurDisplay->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "*images/ui/HUD/HUD_Minotaur_00.png",
                                              "mino img");
-        if (auto imgGet = Image::get(img->path.c_str()))
+        if (const auto imgGet = Image::get(img->path.c_str()))
         {
             img->pos.w = imgGet->getWidth();
             img->pos.h = imgGet->getHeight();
@@ -13231,14 +13231,14 @@ void Player::HUD_t::processHUD()
                 players[player]->camera_virtualWidth(),
                 players[player]->camera_virtualHeight()
             };
-            auto frame = static_cast<Frame*>(&widget);
+            const auto frame = static_cast<Frame*>(&widget);
             assert(frame);
-            auto image = frame->findImage("controller");
+            const auto image = frame->findImage("controller");
             assert(image);
             image->pos.x = (hudSize.w - image->pos.w) / 2;
             image->pos.y = (hudSize.h - image->pos.h) / 2;
             image->disabled = disabled;
-            auto field = frame->findField("label");
+            const auto field = frame->findField("label");
             assert(field);
             field->setSize(image->pos);
             field->setInvisible(disabled);
@@ -13251,7 +13251,7 @@ void Player::HUD_t::processHUD()
             "dimmer");
 
         const char* path = Input::getControllerGlyph(player.playernum);
-        auto image = Image::get(path);
+        const auto image = Image::get(path);
         const int w = image->getWidth();
         const int h = image->getHeight();
         const int x = (hudSize.w - w) / 2;
@@ -13264,7 +13264,7 @@ void Player::HUD_t::processHUD()
         char fmt[16];
         snprintf(fmt, sizeof(fmt), Language::get(5477), player.playernum + 1);
 
-        auto field = controllerFrame->addField("label", 16);
+        const auto field = controllerFrame->addField("label", 16);
         field->setSize(SDL_Rect{x, y, w, h});
         field->setJustify(Field::justify_t::CENTER);
         field->setText(fmt);
@@ -13423,12 +13423,12 @@ void Player::MessageZone_t::createChatbox()
         messages->setInheritParentFrameOpacity(false);
 
         static auto bigfont = "fonts/pixelmix.ttf#16#2";
-        SDL_Rect entryPos{0, 0, messages->getSize().w, messages->getSize().h};
+        const SDL_Rect entryPos{0, 0, messages->getSize().w, messages->getSize().h};
         for (int i = 0; i < MESSAGE_MAX_ENTRIES; ++i)
         {
             char msgName[32];
             snprintf(msgName, sizeof(msgName), "message %d", i);
-            auto entry = messages->addField(msgName, ADD_MESSAGE_BUFFER_LENGTH);
+            const auto entry = messages->addField(msgName, ADD_MESSAGE_BUFFER_LENGTH);
             entry->setFont(bigfont);
             entry->setSize(entryPos);
             entry->setDisabled(true);
@@ -13568,14 +13568,14 @@ void Player::MessageZone_t::processChatbox()
 
     messageBoxFrame->setOpacity(*cvar_message_fade_min + (100.0 - *cvar_message_fade_min) * animFade);
 
-    bool pushPaddingX = !player.shootmode
+    const bool pushPaddingX = !player.shootmode
         && actualAlignment != ALIGN_CENTER_BOTTOM
         && (player.gui_mode == GUI_MODE_INVENTORY || player.gui_mode == GUI_MODE_SHOP)
         && ((playercount == 1
                 && player.inventoryUI.getSizeY() > player.inventoryUI.DEFAULT_INVENTORY_SIZEY) ||
             (playercount == 2 && !*MainMenu::vertical_splitscreen));
 
-    auto& messageLayoutSetting = messageZoneSettings.getLayout(player.playernum, actualAlignment);
+    const auto& messageLayoutSetting = messageZoneSettings.getLayout(player.playernum, actualAlignment);
     MESSAGE_MAX_ENTRIES = messageLayoutSetting.maxMessages;
 
     const int leftAlignedPaddingX = pushPaddingX ? 240 : 8;
@@ -13599,7 +13599,7 @@ void Player::MessageZone_t::processChatbox()
     int topAlignedPaddingY = 8;
     if (player.hud.allyPlayerFrame && actualAlignment == ALIGN_LEFT_TOP && !splitscreen)
     {
-        SDL_Rect allyPlayerPos = player.hud.allyPlayerFrame->getSize();
+        const SDL_Rect allyPlayerPos = player.hud.allyPlayerFrame->getSize();
         if (!player.hud.allyPlayerFrame->isDisabled() && allyPlayerPos.h > 0)
         {
             topAlignedPaddingY = 4 + allyPlayerPos.y + allyPlayerPos.h;
@@ -13607,20 +13607,20 @@ void Player::MessageZone_t::processChatbox()
     }
     if (player.hud.xpFrame && actualAlignment == ALIGN_LEFT_TOP)
     {
-        SDL_Rect xpFramePos = player.hud.xpFrame->getSize();
+        const SDL_Rect xpFramePos = player.hud.xpFrame->getSize();
         topAlignedPaddingY = std::max(topAlignedPaddingY, 4 + std::max(xpFramePos.y, 0) + xpFramePos.h);
         if (!(player.bUseCompactGUIHeight() && player.bUseCompactGUIWidth()))
         {
             topAlignedPaddingY += 4;
         }
     }
-    SDL_Rect messageboxTopAlignedPos{
+    const SDL_Rect messageboxTopAlignedPos{
         topAlignedPaddingX,
         topAlignedPaddingY,
         player.camera_virtualWidth() - topAlignedPaddingX * 2,
         player.camera_virtualHeight() - topAlignedPaddingY
     };
-    SDL_Rect messageboxLeftAlignedPos{
+    const SDL_Rect messageboxLeftAlignedPos{
         leftAlignedPaddingX,
         0,
         player.camera_virtualWidth() - leftAlignedPaddingX * 2,
@@ -13628,13 +13628,13 @@ void Player::MessageZone_t::processChatbox()
     };
 
 
-    SDL_Rect messageBoxSize = bottomAlignedMessages ? messageboxLeftAlignedPos : messageboxTopAlignedPos;
+    const SDL_Rect messageBoxSize = bottomAlignedMessages ? messageboxLeftAlignedPos : messageboxTopAlignedPos;
 
     for (int i = 0; i < MESSAGE_MAX_ENTRIES; ++i)
     {
         char msgName[32];
         snprintf(msgName, sizeof(msgName), "message %d", i);
-        if (auto entry = messageBoxFrame->findField(msgName))
+        if (const auto entry = messageBoxFrame->findField(msgName))
         {
             entry->setDisabled(true);
 
@@ -13659,23 +13659,23 @@ void Player::MessageZone_t::processChatbox()
     int currentline = 0;
 
     auto it = notification_messages.begin();
-    auto end = notification_messages.end();
+    const auto end = notification_messages.end();
     auto rit = notification_messages.rbegin();
-    auto rend = notification_messages.rend();
-    int textLinePadding = useBigFont ? 0 : -4;
+    const auto rend = notification_messages.rend();
+    const int textLinePadding = useBigFont ? 0 : -4;
     for (; messageDrawDescending ? rit != rend : it != end; ++it, ++rit)
     {
-        Message* current = messageDrawDescending ? *rit : *it;
+        const Message* current = messageDrawDescending ? *rit : *it;
         if (currentline >= MESSAGE_MAX_ENTRIES)
         {
             break;
         }
 
-        Uint32 color = (current->text->color & 0x00ffffff) | (static_cast<Uint32>(current->alpha) << 24);
+        const Uint32 color = (current->text->color & 0x00ffffff) | (static_cast<Uint32>(current->alpha) << 24);
 
         char msgName[32];
         snprintf(msgName, sizeof(msgName), "message %d", index);
-        if (auto entry = messageBoxFrame->findField(msgName))
+        if (const auto entry = messageBoxFrame->findField(msgName))
         {
             entry->setDisabled(false);
             entry->setColor(color);
@@ -13688,14 +13688,14 @@ void Player::MessageZone_t::processChatbox()
             entry->setFont(useBigFont ? bigfont : smallfont);
             entry->setPaddingPerLine(useBigFont ? 0 : *cvar_log_multiline_pady);
             Font* fontGet = Font::get(entry->getFont());
-            Text* textGet = entry->getTextObject();
+            const Text* textGet = entry->getTextObject();
 
             int w = textGet->getWidth();
             int h = textGet->getHeight() * (current->text->lines + textLinePadding);
             int textHeight = h;
             if (!useBigFont)
             {
-                int h2 = std::max(*cvar_log_lineheight_min + 2,
+                const int h2 = std::max(*cvar_log_lineheight_min + 2,
                                   (static_cast<int>(textGet->getHeight()) + textLinePadding) * textGet->getNumTextLines() +
                                   textLinePadding);
                 textHeight = h2;
@@ -13824,10 +13824,10 @@ static Frame* createMinimap(int player)
         }
 
         widget.setInvisible(*shareMinimap && playercount > 2);
-        auto player = widget.getOwner();
+        const auto player = widget.getOwner();
         auto& input = Input::inputs[player];
         auto& minimap = players[player]->minimap;
-        bool reducedSize = playercount > 2 /*|| (playercount == 2 && *MainMenu::vertical_splitscreen)*/;
+        const bool reducedSize = playercount > 2 /*|| (playercount == 2 && *MainMenu::vertical_splitscreen)*/;
 
         minimap.bExpandPromptEnabled = true;
         minimap.bScalePromptEnabled = false;
@@ -13912,11 +13912,11 @@ static Frame* createMinimap(int player)
             }
         }
 
-        real_t factor0 = 1.0 - sin(scale_ang);
-        real_t factor1 = sin(scale_ang);
+        const real_t factor0 = 1.0 - sin(scale_ang);
+        const real_t factor1 = sin(scale_ang);
         //real_t scale_small = std::min(reducedSize ? 25.0 : 50.0, minimap.real_scale);
         //real_t scale_big = std::min(reducedSize ? 75.0 : 100.0, minimap.real_scale);
-        real_t scale_small = 50.0;
+        const real_t scale_small = 50.0;
         real_t scale_big = Player::Minimap_t::fullBigScale;
         int maxSize = Player::Minimap_t::fullSize;
         static ConsoleVariable<int> cvar_minimap_compact_offset_y("/minimap_compact_offset_y", 44);
@@ -13934,14 +13934,14 @@ static Frame* createMinimap(int player)
         }
 
         {
-            real_t scale = factor0 * scale_small;
+            const real_t scale = factor0 * scale_small;
             players[player]->minimap.minimapPos.w = static_cast<int>((scale / 100.0) * maxSize);
             players[player]->minimap.minimapPos.h = static_cast<int>((scale / 100.0) * maxSize);
         }
 
         scale = factor0 * scale_small + factor1 * scale_big;
 
-        Frame* parent = players[player]->hud.hudFrame;
+        const Frame* parent = players[player]->hud.hudFrame;
 
         int mapHeightOffset = 0;
         if (players[player]->hud.mapPromptFrame && !players[player]->hud.mapPromptFrame->isDisabled())
@@ -13958,12 +13958,12 @@ static Frame* createMinimap(int player)
         mapHeightOffset += players[player]->hud.offsetHUDAboveHotbarHeight;
 
         const int scaledSize = static_cast<int>((scale / 100.0) * maxSize);
-        int x = factor0 * (parent->getSize().w - scaledSize) +
+        const int x = factor0 * (parent->getSize().w - scaledSize) +
             factor1 * (parent->getSize().w - scaledSize) / 2;
-        int y = factor0 * (parent->getSize().h - scaledSize - mapHeightOffset) +
+        const int y = factor0 * (parent->getSize().h - scaledSize - mapHeightOffset) +
             factor1 * (parent->getSize().h - scaledSize - mapBigOffsetY) / 2;
 
-        auto frame = static_cast<Frame*>(&widget);
+        const auto frame = static_cast<Frame*>(&widget);
         frame->setSize(SDL_Rect{x, y, static_cast<int>(scaledSize), static_cast<int>(scaledSize)});
         players[player]->minimap.minimapPos.x = x;
         players[player]->minimap.minimapPos.y = y;
@@ -13982,7 +13982,7 @@ static Frame* createMinimap(int player)
 
 void openMinimap(int player)
 {
-    Frame* minimap = players[player]->hud.minimapFrame;
+    const Frame* minimap = players[player]->hud.minimapFrame;
     if (minimap)
     {
         players[player]->minimap.big = (players[player]->minimap.big == false);
@@ -14091,7 +14091,7 @@ void openMapWindow(int player)
     }
 
     players[player]->GUI.previousModule = players[player]->GUI.activeModule;
-    bool bOldShootmode = players[player]->shootmode;
+    const bool bOldShootmode = players[player]->shootmode;
     if (players[player]->shootmode)
     {
         players[player]->openStatusScreen(GUI_MODE_NONE,
@@ -14158,8 +14158,8 @@ void openMapWindow(int player)
             yoffset = *cvar_map_splitscreen_2p_wide_offset_y;
         }
     }
-    int w = std::min(_w, _h);
-    int h = std::min(_w, _h);
+    const int w = std::min(_w, _h);
+    const int h = std::min(_w, _h);
     frame = parent->addFrame("minimap_window");
     frame->setOwner(player);
     frame->setSize(SDL_Rect{(size.w - w) / 2, (size.h - h) / 2 - yoffset, w, h});
@@ -14171,7 +14171,7 @@ void openMapWindow(int player)
     frame->setTickCallback([](Widget& widget)
     {
         const int player = widget.getOwner();
-        auto frame = static_cast<Frame*>(&widget);
+        const auto frame = static_cast<Frame*>(&widget);
         if (players[player]->shootmode)
         {
             players[player]->minimap.mapWindow = nullptr;
@@ -14196,31 +14196,31 @@ void openMapWindow(int player)
             0xffffffff,
             "*#images/ui/MapAndLog/Hover_TR00.png",
             "TR");
-        auto L = frame->addImage(
+        const auto L = frame->addImage(
             SDL_Rect{0, 32, 4, h - 48},
             0xffffffff,
             "*#images/ui/MapAndLog/Hover_L00.png",
             "L");
         L->ontop = true;
-        auto R = frame->addImage(
+        const auto R = frame->addImage(
             SDL_Rect{w - 4, 32, 4, h - 48},
             0xffffffff,
             "*#images/ui/MapAndLog/Hover_R00.png",
             "R");
         R->ontop = true;
-        auto BL = frame->addImage(
+        const auto BL = frame->addImage(
             SDL_Rect{0, h - 16, 16, 16},
             0xffffffff,
             "*#images/ui/MapAndLog/Hover_BL00.png",
             "BL");
         BL->ontop = true;
-        auto B = frame->addImage(
+        const auto B = frame->addImage(
             SDL_Rect{16, h - 4, w - 32, 4},
             0xffffffff,
             "*#images/ui/MapAndLog/Hover_B00.png",
             "B");
         B->ontop = true;
-        auto BR = frame->addImage(
+        const auto BR = frame->addImage(
             SDL_Rect{w - 16, h - 16, 16, 16},
             0xffffffff,
             "*#images/ui/MapAndLog/Hover_BR00.png",
@@ -14228,7 +14228,7 @@ void openMapWindow(int player)
         BR->ontop = true;
     }
 
-    auto container = frame->addFrame("container");
+    const auto container = frame->addFrame("container");
     container->setSize(SDL_Rect{0, 32, w, h - 32});
     container->setBorderColor(makeColor(51, 33, 26, 255));
     //container->setBorder(2);
@@ -14236,7 +14236,7 @@ void openMapWindow(int player)
     container->setColor(0);
 
     const int map_size = std::min(w - 32, h - 64);
-    auto minimap = container->addFrame("minimap");
+    const auto minimap = container->addFrame("minimap");
     minimap->setSize(SDL_Rect{(w - map_size) / 2, (h - 32 - map_size) / 2, map_size, map_size});
     minimap->setColor(0);
     minimap->setBorder(0);
@@ -14260,7 +14260,7 @@ void openMapWindow(int player)
 
     minimap->setDrawCallback([](const Widget& widget, SDL_Rect rect)
     {
-        int player = widget.getOwner();
+        const int player = widget.getOwner();
         if (::minimapFrame && !::minimapFrame->isInvisible())
         {
             drawMinimap(0, rect, true); // use the same texture
@@ -14271,8 +14271,8 @@ void openMapWindow(int player)
         }
         if (!inputs.getVirtualMouse(player)->draw_cursor)
         {
-            auto& cursor = minimap_cursor[player];
-            auto image = Image::get("*#images/ui/MapAndLog/cursor.png");
+            const auto& cursor = minimap_cursor[player];
+            const auto image = Image::get("*#images/ui/MapAndLog/cursor.png");
             SDL_Rect pos;
             pos.x = cursor.x - image->getWidth() / 2 + rect.x;
             pos.y = cursor.y - image->getHeight() / 2 + rect.y;
@@ -14282,8 +14282,8 @@ void openMapWindow(int player)
         }
         else
         {
-            auto frame = ((Frame*)(widget.getParent()))->getParent();
-            if (Button* button = frame->findButton("close"))
+            const auto frame = ((Frame*)(widget.getParent()))->getParent();
+            if (const Button* button = frame->findButton("close"))
             {
                 if (button->isHighlighted())
                 {
@@ -14306,22 +14306,22 @@ void openMapWindow(int player)
 
     minimap->setTickCallback([](Widget& widget)
     {
-        int player = widget.getOwner();
+        const int player = widget.getOwner();
         auto& input = Input::inputs[player];
-        auto minimap = static_cast<Frame*>(&widget);
+        const auto minimap = static_cast<Frame*>(&widget);
 
-        auto frame = static_cast<Frame*>(widget.getParent())->getParent();
+        const auto frame = static_cast<Frame*>(widget.getParent())->getParent();
         if (Frame::image_t* closeGlyph = frame->findImage("close glyph"))
         {
             closeGlyph->disabled = true;
             if (inputs.hasController(player) && !inputs.getVirtualMouse(player)->draw_cursor)
             {
                 Button* closeBtn = frame->findButton("close");
-                SDL_Rect closeBtnPos = closeBtn->getSize();
+                const SDL_Rect closeBtnPos = closeBtn->getSize();
                 closeBtn->setSize(closeBtnPos);
 
                 closeGlyph->path = Input::inputs[player].getGlyphPathForBinding("MinimapClose");
-                if (auto imgGet = Image::get(closeGlyph->path.c_str()))
+                if (const auto imgGet = Image::get(closeGlyph->path.c_str()))
                 {
                     closeGlyph->pos.w = imgGet->getWidth();
                     closeGlyph->pos.h = imgGet->getHeight();
@@ -14341,8 +14341,8 @@ void openMapWindow(int player)
         // gamepad moves cursor with right stick
         auto& cursor = minimap_cursor[player];
         const real_t fpsScale = getFPSScale(60.0); // ported from 60Hz
-        float leftright = (input.analog("MinimapRight") - input.analog("MinimapLeft"));
-        float updown = (input.analog("MinimapDown") - input.analog("MinimapUp"));
+        const float leftright = (input.analog("MinimapRight") - input.analog("MinimapLeft"));
+        const float updown = (input.analog("MinimapDown") - input.analog("MinimapUp"));
         cursor.x += (leftright) * (*speed * fpsScale);
         cursor.y += (updown) * (*speed * fpsScale);
         cursor.x = std::min(std::max(static_cast<real_t>(0), cursor.x), static_cast<real_t>(minimap->getSize().w));
@@ -14377,7 +14377,7 @@ void openMapWindow(int player)
         {
             if (input.consumeBinaryToggle("MinimapPing"))
             {
-                auto mouse_position = inputs.getVirtualMouse(player)->draw_cursor
+                const auto mouse_position = inputs.getVirtualMouse(player)->draw_cursor
                                           ? minimap->getRelativeMousePosition(false)
                                           : SDL_Rect{
                                               static_cast<int>(cursor.x), static_cast<int>(cursor.y), minimap->getSize().w, minimap->getSize().h
@@ -14393,7 +14393,7 @@ void openMapWindow(int player)
                     const int y = (mouse_position.y * size) / mouse_position.h - ydiff;
                     if (x >= 0 && y >= 0 && x < map.width && y < map.height)
                     {
-                        MinimapPing newPing(ticks, player, x, y);
+                        const MinimapPing newPing(ticks, player, x, y);
                         sendMinimapPing(player, newPing.x, newPing.y);
 
                         // can also issue move commands via minimap
@@ -14423,19 +14423,19 @@ void openMapWindow(int player)
         }
     });
 
-    auto label = frame->addField("label", 64);
+    const auto label = frame->addField("label", 64);
     label->setSize(SDL_Rect{16, 0, w - 40, 32});
     label->setHJustify(Field::justify_t::LEFT);
     label->setVJustify(Field::justify_t::CENTER);
     label->setFont(bigfont_outline);
     label->setText(Language::get(5966));
 
-    auto closeGlyph = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
+    const auto closeGlyph = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
                                       "", "close glyph");
     closeGlyph->disabled = true;
     closeGlyph->ontop = true;
 
-    auto close_button = frame->addButton("close");
+    const auto close_button = frame->addButton("close");
     close_button->setSize(SDL_Rect{frame->getSize().w - 30, 4, 26, 26});
     close_button->setColor(makeColor(255, 255, 255, 255));
     close_button->setHighlightColor(makeColor(255, 255, 255, 255));
@@ -14453,7 +14453,7 @@ void openMapWindow(int player)
     {
         const int player = button.getOwner();
         players[player]->minimap.mapWindow = nullptr;
-        auto parent = static_cast<Frame*>(button.getParent());
+        const auto parent = static_cast<Frame*>(button.getParent());
         parent->removeSelf();
         if (players[player]->gui_mode == GUI_MODE_NONE)
         {
@@ -14471,7 +14471,7 @@ static ConsoleCommand ccmd_log_clear("/log_clear", "Clears log history",
 
 void addMessageToLogWindow(int player, string_t* string)
 {
-    auto& frame = players[player]->messageZone.logWindow;
+    const auto& frame = players[player]->messageZone.logWindow;
     if (!frame || !string)
     {
         return;
@@ -14480,9 +14480,9 @@ void addMessageToLogWindow(int player, string_t* string)
     const int w = frame->getSize().w;
     const int h = frame->getSize().h;
 
-    auto subframe = frame->findFrame("subframe");
+    const auto subframe = frame->findFrame("subframe");
     assert(subframe);
-    auto subframe_size = subframe->getActualSize();
+    const auto subframe_size = subframe->getActualSize();
     int y = subframe_size.h;
     if (y != 4)
     {
@@ -14508,7 +14508,7 @@ void addMessageToLogWindow(int player, string_t* string)
                                                     "fonts/pixel_maz.ttf#32#2");
 
     const bool bCompactWidth = players[player]->bUseCompactGUIWidth();
-    auto field = subframe->addField("field", size + 1);
+    const auto field = subframe->addField("field", size + 1);
     int text_h = 0;
     int text_w = 0;
     int textHeight = 0;
@@ -14519,7 +14519,7 @@ void addMessageToLogWindow(int player, string_t* string)
         field->addWordToHighlight(0, makeColorRGB(166, 166, 166));
         field->setText(buf);
         field->setPaddingPerLine(*cvar_log_multiline_pady);
-        if (auto text = field->getTextObject())
+        if (const auto text = field->getTextObject())
         {
             textHeight = std::max(*cvar_log_lineheight_min, static_cast<int>(text->getHeight())) * static_cast<int>(string->lines) + 2;
             text_h = textHeight + *cvar_log_lineheight_offset;
@@ -14537,7 +14537,7 @@ void addMessageToLogWindow(int player, string_t* string)
         field->addWordToHighlight(3, makeColorRGB(166, 166, 166));
         field->setText(buf);
         field->setPaddingPerLine(*cvar_log_multiline_pady);
-        if (auto text = field->getTextObject())
+        if (const auto text = field->getTextObject())
         {
             textHeight = std::max(*cvar_log_lineheight_min, static_cast<int>(text->getHeight())) * static_cast<int>(string->lines) + 2;
             text_h = textHeight + *cvar_log_lineheight_offset;
@@ -14953,13 +14953,13 @@ void openLogWindow(int player)
             0xffffffff,
             "*#images/ui/MapAndLog/Hover_TR00.png",
             "TR");
-        auto L = frame->addImage(
+        const auto L = frame->addImage(
             SDL_Rect{0, 32, 4, h - 64},
             0xffffffff,
             "*#images/ui/MapAndLog/Hover_L00.png",
             "L");
         L->ontop = true;
-        auto R = frame->addImage(
+        const auto R = frame->addImage(
             SDL_Rect{w - 4, 32, 4, h - 64},
             0xffffffff,
             "*#images/ui/MapAndLog/Hover_R00.png",
@@ -14982,7 +14982,7 @@ void openLogWindow(int player)
             "BR");
     }
 
-    auto subframe = frame->addFrame("subframe");
+    const auto subframe = frame->addFrame("subframe");
     subframe->setScrollWithLeftControls(false);
     subframe->setSize(SDL_Rect{0, 32, w, h - 64});
     subframe->setActualSize(SDL_Rect{0, 0, w, 4});
@@ -14995,26 +14995,26 @@ void openLogWindow(int player)
 
     for (auto node = messages.first; node != nullptr; node = node->next)
     {
-        auto string = static_cast<string_t*>(node->element);
+        const auto string = static_cast<string_t*>(node->element);
         if (string->player == player)
         {
             addMessageToLogWindow(player, string);
         }
     }
 
-    auto label = frame->addField("label", 64);
+    const auto label = frame->addField("label", 64);
     label->setSize(SDL_Rect{16, 0, w - 40, 32});
     label->setHJustify(Field::justify_t::LEFT);
     label->setVJustify(Field::justify_t::CENTER);
     label->setFont(bigfont_outline);
     label->setText(Language::get(5967));
 
-    auto closeGlyph = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
+    const auto closeGlyph = frame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
                                       "", "close glyph");
     closeGlyph->disabled = true;
     closeGlyph->ontop = true;
 
-    auto close_button = frame->addButton("close");
+    const auto close_button = frame->addButton("close");
     close_button->setSize(SDL_Rect{frame->getSize().w - 30, 4, 26, 26});
     close_button->setColor(makeColor(255, 255, 255, 255));
     close_button->setHighlightColor(makeColor(255, 255, 255, 255));
@@ -15032,7 +15032,7 @@ void openLogWindow(int player)
     {
         const int player = button.getOwner();
         players[player]->messageZone.logWindow = nullptr;
-        auto parent = static_cast<Frame*>(button.getParent());
+        const auto parent = static_cast<Frame*>(button.getParent());
         parent->removeSelf();
         if (players[player]->gui_mode == GUI_MODE_NONE)
         {
@@ -15046,7 +15046,7 @@ void openLogWindow(int player)
     });
     close_button->setDrawCallback([](const Widget& widget, SDL_Rect rect)
     {
-        auto button = (Button*)(&widget);
+        const auto button = (Button*)(&widget);
         const int player = button->getOwner();
         if (inputs.getVirtualMouse(player)->draw_cursor)
         {
@@ -15068,14 +15068,14 @@ void openLogWindow(int player)
         }
     });
 
-    auto help_left = frame->addField("help_left", 128);
+    const auto help_left = frame->addField("help_left", 128);
     help_left->setSize(SDL_Rect{0, h - 32, w, 32});
     help_left->setHJustify(Field::justify_t::LEFT);
     help_left->setVJustify(Field::justify_t::CENTER);
     help_left->setFont(smallfont_outline);
     help_left->setDisabled(true);
 
-    auto help_left_div = frame->addField("help_left_div", 32);
+    const auto help_left_div = frame->addField("help_left_div", 32);
     help_left_div->setSize(SDL_Rect{0, h - 32, w, 32});
     help_left_div->setHJustify(Field::justify_t::LEFT);
     help_left_div->setVJustify(Field::justify_t::CENTER);
@@ -15088,14 +15088,14 @@ void openLogWindow(int player)
     frame->addImage(SDL_Rect{0, 0, 0, 0}, 0,
                     "images/system/white.png", "LogEnd");
 
-    auto help_center = frame->addField("help_center", 128);
+    const auto help_center = frame->addField("help_center", 128);
     help_center->setSize(SDL_Rect{0, h - 32, w, 32});
     help_center->setHJustify(Field::justify_t::LEFT);
     help_center->setVJustify(Field::justify_t::CENTER);
     help_center->setFont(smallfont_outline);
     help_center->setDisabled(true);
 
-    auto help_center_div = frame->addField("help_center_div", 32);
+    const auto help_center_div = frame->addField("help_center_div", 32);
     help_center_div->setSize(SDL_Rect{0, h - 32, w, 32});
     help_center_div->setHJustify(Field::justify_t::LEFT);
     help_center_div->setVJustify(Field::justify_t::CENTER);
@@ -15108,14 +15108,14 @@ void openLogWindow(int player)
     frame->addImage(SDL_Rect{0, 0, 0, 0}, 0,
                     "images/system/white.png", "LogPageDown");
 
-    auto help_right = frame->addField("help_right", 128);
+    const auto help_right = frame->addField("help_right", 128);
     help_right->setSize(SDL_Rect{0, h - 32, w - 4, 32});
     help_right->setHJustify(Field::justify_t::RIGHT);
     help_right->setVJustify(Field::justify_t::CENTER);
     help_right->setFont(smallfont_outline);
     help_right->setDisabled(true);
 
-    auto help_right_div = frame->addField("help_right_div", 32);
+    const auto help_right_div = frame->addField("help_right_div", 32);
     help_right_div->setSize(SDL_Rect{0, h - 32, w, 32});
     help_right_div->setHJustify(Field::justify_t::LEFT);
     help_right_div->setVJustify(Field::justify_t::CENTER);
@@ -15152,7 +15152,7 @@ void Player::CharacterSheet_t::loadCharacterSheetJSON()
         else
         {
             char buf[65536];
-            int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
+            const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
             buf[count] = '\0';
             rapidjson::StringStream is(buf);
             FileIO::close(fp);
@@ -15274,14 +15274,14 @@ void Player::CharacterSheet_t::createCharacterSheet()
             buttonFrame->setSize(buttonFramePos);
             buttonFrame->setDrawCallback([](const Widget& widget, SDL_Rect pos)
             {
-                auto frame = (Frame*)(&widget);
-                std::vector<const char*> buttons = {
+                const auto frame = (Frame*)(&widget);
+                const std::vector<const char*> buttons = {
                     "map button",
                     "log button"
                 };
-                for (auto button : buttons)
+                for (const auto button : buttons)
                 {
-                    if (auto b = frame->findButton(button))
+                    if (const auto b = frame->findButton(button))
                     {
                         if (players[frame->getOwner()]->characterSheet.sheetDisplayType == CHARSHEET_DISPLAY_NORMAL)
                         {
@@ -15359,9 +15359,9 @@ void Player::CharacterSheet_t::createCharacterSheet()
             timerFrame->setSize(SDL_Rect{leftAlignX + 36, 90, 142, 26});
             timerFrame->setDrawCallback([](const Widget& widget, SDL_Rect pos)
             {
-                auto frame = (Frame*)(&widget);
-                auto timerToggleImg = frame->findImage("timer icon img");
-                auto timerSelector = frame->findButton("timer selector");
+                const auto frame = (Frame*)(&widget);
+                const auto timerToggleImg = frame->findImage("timer icon img");
+                const auto timerSelector = frame->findButton("timer selector");
                 if (timerToggleImg && timerSelector)
                 {
                     if (!players[frame->getOwner()]->characterSheet.showGameTimerAlways)
@@ -16370,7 +16370,7 @@ void Player::CharacterSheet_t::createCharacterSheet()
 
 void Player::GUIDropdown_t::activateSelection(const std::string& name, const int option)
 {
-    auto& dropdown = allDropDowns[name];
+    const auto& dropdown = allDropDowns[name];
     if (dropdown.options[option].action == "no_action")
     {
         messagePlayer(player.playernum, MESSAGE_DEBUG, "[Dropdowns]: Warning, no action for %s : option %d",
@@ -16490,7 +16490,7 @@ bool Player::GUIDropdown_t::getDropDownAlignRight(const std::string& name)
     {
         if (player.inventoryUI.bCompactView)
         {
-            Item* item = uidToItem(dropDownItem);
+            const Item* item = uidToItem(dropDownItem);
             if (item && player.paperDoll.isItemOnDoll(*item))
             {
                 if (player.inventoryUI.paperDollPanelJustify == PanelJustify_t::PANEL_JUSTIFY_RIGHT)
@@ -17497,7 +17497,7 @@ void Player::GUIDropdown_t::open(const std::string name)
         dropDownX = (inputs.getMouse(player.playernum, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX) + (
             getDropDownAlignRight(name) ? 8 : -8);
         dropDownY = (inputs.getMouse(player.playernum, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
-        if (auto interactMenuTop = dropdownFrame->findImage("interact top background"))
+        if (const auto interactMenuTop = dropdownFrame->findImage("interact top background"))
         {
             // 10px is slot half height, minus the top interact text height
             // mouse will be situated halfway in first menu option
@@ -17515,21 +17515,21 @@ void Player::GUIDropdown_t::open(const std::string name)
     dropDownOptionSelected = 0;
     if (allDropDowns[name].defaultOption > 0 && allDropDowns[name].options.size() > allDropDowns[name].defaultOption)
     {
-        if (auto txt = dropdownFrame->findField("interact option 1"))
+        if (const auto txt = dropdownFrame->findField("interact option 1"))
         {
             dropDownY -= txt->getSize().h;
             dropDownOptionSelected = allDropDowns[name].defaultOption;
         }
     }
-    if (auto highlightImageMid = dropdownFrame->findImage("interact selected highlight mid"))
+    if (const auto highlightImageMid = dropdownFrame->findImage("interact selected highlight mid"))
     {
         highlightImageMid->disabled = true;
     }
-    if (auto highlightImageLeft = dropdownFrame->findImage("interact selected highlight left"))
+    if (const auto highlightImageLeft = dropdownFrame->findImage("interact selected highlight left"))
     {
         highlightImageLeft->disabled = true;
     }
-    if (auto highlightImageRight = dropdownFrame->findImage("interact selected highlight right"))
+    if (const auto highlightImageRight = dropdownFrame->findImage("interact selected highlight right"))
     {
         highlightImageRight->disabled = true;
     }
@@ -17556,7 +17556,7 @@ void Player::GUIDropdown_t::create(const std::string name)
         dropdownBlockClickFrame = nullptr;
     }
 
-    auto& dropDown = allDropDowns[name];
+    const auto& dropDown = allDropDowns[name];
 
     char dropdownBlockClickName[64] = "";
     snprintf(dropdownBlockClickName, sizeof(dropdownBlockClickName), "player dropdown block click %d",
@@ -17578,7 +17578,7 @@ void Player::GUIDropdown_t::create(const std::string name)
     dropdownFrame->setDisabled(true);
     dropdownFrame->setInheritParentFrameOpacity(false);
 
-    Uint32 color = makeColor(255, 255, 255, 255);
+    const Uint32 color = makeColor(255, 255, 255, 255);
     const int topBackgroundHeight = 30;
     const int optionHeight = 20;
 
@@ -17592,11 +17592,11 @@ void Player::GUIDropdown_t::create(const std::string name)
     dropdownFrame->addImage(SDL_Rect{24, 30, 0, 12},
                             color, "*#images/ui/Inventory/tooltips/HoverItemMenu_C03.png",
                             "interact middle background");
-    auto ml = dropdownFrame->addImage(SDL_Rect{0, 30, 24, 12},
+    const auto ml = dropdownFrame->addImage(SDL_Rect{0, 30, 24, 12},
                                       color, "*#images/ui/Inventory/tooltips/HoverItemMenu_L03.png",
                                       "interact middle left");
     ml->tiled = true;
-    auto mr = dropdownFrame->addImage(SDL_Rect{0, 30, 24, 12},
+    const auto mr = dropdownFrame->addImage(SDL_Rect{0, 30, 24, 12},
                                       color, "*#images/ui/Inventory/tooltips/HoverItemMenu_R03.png",
                                       "interact middle right");
     mr->tiled = true;
@@ -17609,7 +17609,7 @@ void Player::GUIDropdown_t::create(const std::string name)
     dropdownFrame->addImage(SDL_Rect{0, 96, 24, 14},
                             color, "*#images/ui/Inventory/tooltips/HoverItemMenu_BR03.png", "interact bottom right");
 
-    auto selectmid = dropdownFrame->addImage(SDL_Rect{6, optionHeight - 16, interactWidth, 22},
+    const auto selectmid = dropdownFrame->addImage(SDL_Rect{6, optionHeight - 16, interactWidth, 22},
                                              hudColors.itemContextMenuOptionSelectedImg,
                                              "*#images/ui/Inventory/tooltips/HoverItemMenu_SelectBack_M03.png",
                                              "interact selected highlight mid");
@@ -17623,7 +17623,7 @@ void Player::GUIDropdown_t::create(const std::string name)
                             "*#images/ui/Inventory/tooltips/HoverItemMenu_SelectBack_R03.png",
                             "interact selected highlight right");
 
-    auto interactFont = "fonts/pixel_maz.ttf#32#2";
+    const auto interactFont = "fonts/pixel_maz.ttf#32#2";
 
     auto interactText = dropdownFrame->addField("interact text", 32);
     interactText->setText(dropDown.title.c_str());
@@ -17639,14 +17639,14 @@ void Player::GUIDropdown_t::create(const std::string name)
     const int textWidth = 80;
     const int textHeight = glyphSize + 8;
 
-    Uint32 textColor = hudColors.itemContextMenuOptionText;
+    const Uint32 textColor = hudColors.itemContextMenuOptionText;
     SDL_Rect prevGlyphPos;
 
     for (int i = 1; i <= dropDown.options.size(); ++i)
     {
         char glyphname[32] = "";
         snprintf(glyphname, sizeof(glyphname), "glyph %d", i);
-        Frame::image_t* interactGlyph = nullptr;
+        const Frame::image_t* interactGlyph = nullptr;
         if (i == 1)
         {
             interactGlyph = dropdownFrame->addImage(
@@ -17694,8 +17694,8 @@ void Player::CharacterSheet_t::selectElement(SheetElements element, bool usingMo
     selectedElement = element;
 
     Frame* elementFrame = nullptr;
-    Frame::image_t* img = nullptr;
-    Field* elementField = nullptr;
+    const Frame::image_t* img = nullptr;
+    const Field* elementField = nullptr;
     Button* elementButton = nullptr;
     bool selectedAButton = false;
     switch (element)
@@ -17944,22 +17944,22 @@ void Player::CharacterSheet_t::selectElement(SheetElements element, bool usingMo
 
 void Player::CharacterSheet_t::updateGameTimer()
 {
-    auto characterInfoFrame = sheetFrame->findFrame("character info");
-    auto timerFrame = sheetFrame->findFrame("game timer");
-    auto timerText = timerFrame->findField("timer text");
+    const auto characterInfoFrame = sheetFrame->findFrame("character info");
+    const auto timerFrame = sheetFrame->findFrame("game timer");
+    const auto timerText = timerFrame->findField("timer text");
     char buf[32];
 
-    Uint32 sec = (completionTime / TICKS_PER_SECOND) % 60;
-    Uint32 min = ((completionTime / TICKS_PER_SECOND) / 60) % 60;
-    Uint32 hour = (((completionTime / TICKS_PER_SECOND) / 60) / 60) % 24;
-    Uint32 day = ((completionTime / TICKS_PER_SECOND) / 60) / 60 / 24;
+    const Uint32 sec = (completionTime / TICKS_PER_SECOND) % 60;
+    const Uint32 min = ((completionTime / TICKS_PER_SECOND) / 60) % 60;
+    const Uint32 hour = (((completionTime / TICKS_PER_SECOND) / 60) / 60) % 24;
+    const Uint32 day = ((completionTime / TICKS_PER_SECOND) / 60) / 60 / 24;
     snprintf(buf, sizeof(buf), "%02d:%02d:%02d:%02d", day, hour, min, sec);
     timerText->setText(buf);
 
     bool enableTooltips = !player.GUI.isDropdownActive() && !player.GUI.dropdownMenu.bClosedThisTick && inputs.
         getVirtualMouse(player.playernum)->draw_cursor;
 
-    bool bCompactView = player.bUseCompactGUIHeight();
+    const bool bCompactView = player.bUseCompactGUIHeight();
     if (bCompactView)
     {
         enableTooltips = false;
@@ -18426,7 +18426,7 @@ real_t getDisplayedHPRegen(Entity* my, Stat& myStats, Uint32* outColor, char buf
         {
             if (outColor)
             {
-                real_t regenWithoutItems = (static_cast<real_t>(Entity::getHealthRegenInterval(my,
+                const real_t regenWithoutItems = (static_cast<real_t>(Entity::getHealthRegenInterval(my,
                     myStats, true, true)) / TICKS_PER_SECOND);
                 if (regen < (regenWithoutItems - 0.001))
                 {
@@ -18442,7 +18442,7 @@ real_t getDisplayedHPRegen(Entity* my, Stat& myStats, Uint32* outColor, char buf
 
     if (regen > 0.01)
     {
-        real_t nominalRegen = HEAL_TIME / TICKS_PER_SECOND;
+        const real_t nominalRegen = HEAL_TIME / TICKS_PER_SECOND;
         regen = nominalRegen / regen;
     }
     if (buf)
@@ -18535,10 +18535,10 @@ real_t getDisplayedMPRegen(Entity* my, Stat& myStats, Uint32* outColor, char buf
         }
         else
         {
-            int baseRegen = static_cast<real_t>(getBaseManaRegen(my, myStats));
-            real_t regenPerMinute = 60 * TICKS_PER_SECOND / static_cast<real_t>(baseRegen);
+            const int baseRegen = static_cast<real_t>(getBaseManaRegen(my, myStats));
+            const real_t regenPerMinute = 60 * TICKS_PER_SECOND / static_cast<real_t>(baseRegen);
             const int regenTicks = TICKS_PER_SECOND * 60 / regenPerMinute;
-            real_t compareRegen = regenTicks / static_cast<real_t>(TICKS_PER_SECOND);
+            const real_t compareRegen = regenTicks / static_cast<real_t>(TICKS_PER_SECOND);
             if (regen < (compareRegen - 0.001))
             {
                 if (outColor)
@@ -18582,7 +18582,7 @@ real_t getDisplayedMPRegen(Entity* my, Stat& myStats, Uint32* outColor, char buf
     {
         if (regen > 0.01 || regen < -0.01)
         {
-            real_t nominalRegen = MAGIC_REGEN_TIME / TICKS_PER_SECOND;
+            const real_t nominalRegen = MAGIC_REGEN_TIME / TICKS_PER_SECOND;
             regen = nominalRegen / regen;
         }
     }
@@ -23046,18 +23046,18 @@ void Player::CharacterSheet_t::updateCharacterInfo()
 
 void Player::CharacterSheet_t::updateStats()
 {
-    auto characterInfoFrame = sheetFrame->findFrame("character info");
+    const auto characterInfoFrame = sheetFrame->findFrame("character info");
     assert(characterInfoFrame);
-    auto characterInnerFrame = characterInfoFrame->findFrame("character info inner frame");
+    const auto characterInnerFrame = characterInfoFrame->findFrame("character info inner frame");
     assert(characterInnerFrame);
-    auto statsFrame = sheetFrame->findFrame("stats");
+    const auto statsFrame = sheetFrame->findFrame("stats");
     assert(statsFrame);
 
-    auto statsPos = statsFrame->getSize();
+    const auto statsPos = statsFrame->getSize();
     //statsPos.x = sheetFrame->getSize().w - statsPos.w;
     statsFrame->setSize(statsPos);
 
-    auto statsInnerFrame = statsFrame->findFrame("stats inner frame");
+    const auto statsInnerFrame = statsFrame->findFrame("stats inner frame");
     assert(statsInnerFrame);
 
     const int rightAlignPosX = 0;
@@ -23086,7 +23086,7 @@ void Player::CharacterSheet_t::updateStats()
         enableTooltips = false;
     }
     char buf[32] = "";
-    if (auto field = statsInnerFrame->findField("str text stat"))
+    if (const auto field = statsInnerFrame->findField("str text stat"))
     {
         snprintf(buf, sizeof(buf), "%d", stats[player.playernum]->STR);
         if (strcmp(buf, field->getText()))
@@ -23096,8 +23096,8 @@ void Player::CharacterSheet_t::updateStats()
         }
         field->setColor(hudColors.characterSheetNeutral);
 
-        Sint32 modifiedStat = statGetSTR(stats[player.playernum], players[player.playernum]->entity);
-        if (auto modifiedField = statsInnerFrame->findField("str text modified"))
+        const Sint32 modifiedStat = statGetSTR(stats[player.playernum], players[player.playernum]->entity);
+        if (const auto modifiedField = statsInnerFrame->findField("str text modified"))
         {
             modifiedField->setColor(hudColors.characterSheetNeutral);
             modifiedField->setDisabled(true);
@@ -23122,7 +23122,7 @@ void Player::CharacterSheet_t::updateStats()
         {
             SDL_Rect tooltipPos = statsFrame->getSize();
             tooltipPos.y += statsInnerFrame->getSize().y;
-            Player::PanelJustify_t tooltipJustify = panelJustify;
+            const Player::PanelJustify_t tooltipJustify = panelJustify;
             if (panelJustify == PANEL_JUSTIFY_LEFT)
             {
                 tooltipPos.x += tooltipPos.w;
@@ -23130,7 +23130,7 @@ void Player::CharacterSheet_t::updateStats()
             updateCharacterSheetTooltip(selectedElement, tooltipPos, tooltipJustify);
         }
     }
-    if (auto field = statsInnerFrame->findField("dex text stat"))
+    if (const auto field = statsInnerFrame->findField("dex text stat"))
     {
         snprintf(buf, sizeof(buf), "%d", stats[player.playernum]->DEX);
         if (strcmp(buf, field->getText()))
@@ -23140,8 +23140,8 @@ void Player::CharacterSheet_t::updateStats()
         }
         field->setColor(hudColors.characterSheetNeutral);
 
-        Sint32 modifiedStat = statGetDEX(stats[player.playernum], players[player.playernum]->entity);
-        if (auto modifiedField = statsInnerFrame->findField("dex text modified"))
+        const Sint32 modifiedStat = statGetDEX(stats[player.playernum], players[player.playernum]->entity);
+        if (const auto modifiedField = statsInnerFrame->findField("dex text modified"))
         {
             modifiedField->setColor(hudColors.characterSheetNeutral);
             modifiedField->setDisabled(true);
@@ -23166,7 +23166,7 @@ void Player::CharacterSheet_t::updateStats()
         {
             SDL_Rect tooltipPos = statsFrame->getSize();
             tooltipPos.y += statsInnerFrame->getSize().y;
-            Player::PanelJustify_t tooltipJustify = panelJustify;
+            const Player::PanelJustify_t tooltipJustify = panelJustify;
             if (panelJustify == PANEL_JUSTIFY_LEFT)
             {
                 tooltipPos.x += tooltipPos.w;
@@ -23174,7 +23174,7 @@ void Player::CharacterSheet_t::updateStats()
             updateCharacterSheetTooltip(selectedElement, tooltipPos, tooltipJustify);
         }
     }
-    if (auto field = statsInnerFrame->findField("con text stat"))
+    if (const auto field = statsInnerFrame->findField("con text stat"))
     {
         snprintf(buf, sizeof(buf), "%d", stats[player.playernum]->CON);
         if (strcmp(buf, field->getText()))
@@ -23184,8 +23184,8 @@ void Player::CharacterSheet_t::updateStats()
         }
         field->setColor(hudColors.characterSheetNeutral);
 
-        Sint32 modifiedStat = statGetCON(stats[player.playernum], players[player.playernum]->entity);
-        if (auto modifiedField = statsInnerFrame->findField("con text modified"))
+        const Sint32 modifiedStat = statGetCON(stats[player.playernum], players[player.playernum]->entity);
+        if (const auto modifiedField = statsInnerFrame->findField("con text modified"))
         {
             modifiedField->setColor(hudColors.characterSheetNeutral);
             modifiedField->setDisabled(true);
@@ -23210,7 +23210,7 @@ void Player::CharacterSheet_t::updateStats()
         {
             SDL_Rect tooltipPos = statsFrame->getSize();
             tooltipPos.y += statsInnerFrame->getSize().y;
-            Player::PanelJustify_t tooltipJustify = panelJustify;
+            const Player::PanelJustify_t tooltipJustify = panelJustify;
             if (panelJustify == PANEL_JUSTIFY_LEFT)
             {
                 tooltipPos.x += tooltipPos.w;
@@ -23218,7 +23218,7 @@ void Player::CharacterSheet_t::updateStats()
             updateCharacterSheetTooltip(selectedElement, tooltipPos, tooltipJustify);
         }
     }
-    if (auto field = statsInnerFrame->findField("int text stat"))
+    if (const auto field = statsInnerFrame->findField("int text stat"))
     {
         snprintf(buf, sizeof(buf), "%d", stats[player.playernum]->INT);
         if (strcmp(buf, field->getText()))
@@ -23228,8 +23228,8 @@ void Player::CharacterSheet_t::updateStats()
         }
         field->setColor(hudColors.characterSheetNeutral);
 
-        Sint32 modifiedStat = statGetINT(stats[player.playernum], players[player.playernum]->entity);
-        if (auto modifiedField = statsInnerFrame->findField("int text modified"))
+        const Sint32 modifiedStat = statGetINT(stats[player.playernum], players[player.playernum]->entity);
+        if (const auto modifiedField = statsInnerFrame->findField("int text modified"))
         {
             modifiedField->setColor(hudColors.characterSheetNeutral);
             modifiedField->setDisabled(true);
@@ -23254,7 +23254,7 @@ void Player::CharacterSheet_t::updateStats()
         {
             SDL_Rect tooltipPos = statsFrame->getSize();
             tooltipPos.y += statsInnerFrame->getSize().y;
-            Player::PanelJustify_t tooltipJustify = panelJustify;
+            const Player::PanelJustify_t tooltipJustify = panelJustify;
             if (panelJustify == PANEL_JUSTIFY_LEFT)
             {
                 tooltipPos.x += tooltipPos.w;
@@ -23262,7 +23262,7 @@ void Player::CharacterSheet_t::updateStats()
             updateCharacterSheetTooltip(selectedElement, tooltipPos, tooltipJustify);
         }
     }
-    if (auto field = statsInnerFrame->findField("per text stat"))
+    if (const auto field = statsInnerFrame->findField("per text stat"))
     {
         snprintf(buf, sizeof(buf), "%d", stats[player.playernum]->PER);
         if (strcmp(buf, field->getText()))
@@ -23272,8 +23272,8 @@ void Player::CharacterSheet_t::updateStats()
         }
         field->setColor(hudColors.characterSheetNeutral);
 
-        Sint32 modifiedStat = statGetPER(stats[player.playernum], players[player.playernum]->entity);
-        if (auto modifiedField = statsInnerFrame->findField("per text modified"))
+        const Sint32 modifiedStat = statGetPER(stats[player.playernum], players[player.playernum]->entity);
+        if (const auto modifiedField = statsInnerFrame->findField("per text modified"))
         {
             modifiedField->setColor(hudColors.characterSheetNeutral);
             modifiedField->setDisabled(true);
@@ -23298,7 +23298,7 @@ void Player::CharacterSheet_t::updateStats()
         {
             SDL_Rect tooltipPos = statsFrame->getSize();
             tooltipPos.y += statsInnerFrame->getSize().y;
-            Player::PanelJustify_t tooltipJustify = panelJustify;
+            const Player::PanelJustify_t tooltipJustify = panelJustify;
             if (panelJustify == PANEL_JUSTIFY_LEFT)
             {
                 tooltipPos.x += tooltipPos.w;
@@ -23306,7 +23306,7 @@ void Player::CharacterSheet_t::updateStats()
             updateCharacterSheetTooltip(selectedElement, tooltipPos, tooltipJustify);
         }
     }
-    if (auto field = statsInnerFrame->findField("chr text stat"))
+    if (const auto field = statsInnerFrame->findField("chr text stat"))
     {
         snprintf(buf, sizeof(buf), "%d", stats[player.playernum]->CHR);
         if (strcmp(buf, field->getText()))
@@ -23316,8 +23316,8 @@ void Player::CharacterSheet_t::updateStats()
         }
         field->setColor(hudColors.characterSheetNeutral);
 
-        Sint32 modifiedStat = statGetCHR(stats[player.playernum], players[player.playernum]->entity);
-        if (auto modifiedField = statsInnerFrame->findField("chr text modified"))
+        const Sint32 modifiedStat = statGetCHR(stats[player.playernum], players[player.playernum]->entity);
+        if (const auto modifiedField = statsInnerFrame->findField("chr text modified"))
         {
             modifiedField->setColor(hudColors.characterSheetNeutral);
             modifiedField->setDisabled(true);
@@ -23342,7 +23342,7 @@ void Player::CharacterSheet_t::updateStats()
         {
             SDL_Rect tooltipPos = statsFrame->getSize();
             tooltipPos.y += statsInnerFrame->getSize().y;
-            Player::PanelJustify_t tooltipJustify = panelJustify;
+            const Player::PanelJustify_t tooltipJustify = panelJustify;
             if (panelJustify == PANEL_JUSTIFY_LEFT)
             {
                 tooltipPos.x += tooltipPos.w;
@@ -23650,8 +23650,8 @@ void Player::Inventory_t::Appraisal_t::updateAppraisalAnim()
         animAppraisal = 0.0;
         return;
     }*/
-    real_t fpsScale = getFPSScale(60.0);
-    real_t scale = PI / 40;
+    const real_t fpsScale = getFPSScale(60.0);
+    const real_t scale = PI / 40;
     animAppraisal += fpsScale * (scale);
     if (animAppraisal >= 4 * PI)
     {
@@ -23677,7 +23677,7 @@ void Player::Inventory_t::Appraisal_t::updateAppraisalAnim()
     }
 
     spellLearnAnim = 1.0;
-    int interval = 2 * TICKS_PER_SECOND;
+    const int interval = 2 * TICKS_PER_SECOND;
     if (ticks % (2 * interval) <= interval)
     {
         spellLearnAnim = 1.0 - 0.25 * std::max(0.0, sin((ticks % interval) * PI / static_cast<real_t>(interval)));
@@ -23686,7 +23686,7 @@ void Player::Inventory_t::Appraisal_t::updateAppraisalAnim()
 
 void drawClockwiseSquareMesh(const char* texture, float lerp, SDL_Rect rect, Uint32 color)
 {
-    auto image = Image::get(texture);
+    const auto image = Image::get(texture);
     image->drawClockwise(lerp, nullptr, rect,
                          SDL_Rect{0, 0, Frame::virtualScreenX, Frame::virtualScreenY}, color);
 }
@@ -23694,13 +23694,13 @@ void drawClockwiseSquareMesh(const char* texture, float lerp, SDL_Rect rect, Uin
 void drawUnidentifiedItemEffectHotbarCallback(const Widget& widget, SDL_Rect rect)
 {
     const int player = widget.getOwner();
-    auto& appraisal = players[player]->inventoryUI.appraisal;
+    const auto& appraisal = players[player]->inventoryUI.appraisal;
     if (appraisal.animStartTick == ticks)
     {
         return;
     }
 
-    auto parent = static_cast<const Frame*>(widget.getParent());
+    const auto parent = static_cast<const Frame*>(widget.getParent());
     {
         SDL_Rect drawRect = rect;
         drawRect.x += 4;
@@ -23732,7 +23732,7 @@ void drawUnidentifiedItemEffectHotbarCallback(const Widget& widget, SDL_Rect rec
 
     auto drawMesh = [](real_t x, real_t y, real_t size, SDL_Rect rect, Uint32 color)
     {
-        auto image = Image::get("images/ui/Inventory/Appraisal_Icon.png");
+        const auto image = Image::get("images/ui/Inventory/Appraisal_Icon.png");
         const real_t sx = rect.w * size;
         const real_t sy = rect.h * size;
         image->drawColor(nullptr, SDL_Rect{static_cast<int>(x), static_cast<int>(y), static_cast<int>(sx), static_cast<int>(sy)},
@@ -23743,9 +23743,9 @@ void drawUnidentifiedItemEffectHotbarCallback(const Widget& widget, SDL_Rect rec
         SDL_Rect drawRect = rect;
         drawRect.x += 4 + (rect.w - 6) / 2 - imgSize / 2;
         drawRect.y += 4 + (rect.h - 6) / 2 - imgSize / 2;
-        int offsetSize = 7;
-        int offsetx = offsetSize * cos(std::min(4 * PI, appraisal.animAppraisal));
-        int offsety = offsetSize * sin(std::min(4 * PI, appraisal.animAppraisal));
+        const int offsetSize = 7;
+        const int offsetx = offsetSize * cos(std::min(4 * PI, appraisal.animAppraisal));
+        const int offsety = offsetSize * sin(std::min(4 * PI, appraisal.animAppraisal));
 
         drawRect.w = imgSize;
         drawRect.h = imgSize;
@@ -23763,13 +23763,13 @@ void drawUnidentifiedItemEffectHotbarCallback(const Widget& widget, SDL_Rect rec
 void drawUnidentifiedItemEffectCallback(const Widget& widget, SDL_Rect rect)
 {
     const int player = widget.getOwner();
-    auto& appraisal = players[player]->inventoryUI.appraisal;
+    const auto& appraisal = players[player]->inventoryUI.appraisal;
     if (appraisal.animStartTick == ticks)
     {
         return;
     }
 
-    auto parent = static_cast<const Frame*>(widget.getParent());
+    const auto parent = static_cast<const Frame*>(widget.getParent());
     {
         SDL_Rect drawRect = rect;
         drawRect.x += 2;
@@ -23800,7 +23800,7 @@ void drawUnidentifiedItemEffectCallback(const Widget& widget, SDL_Rect rect)
 
     auto drawMesh = [](real_t x, real_t y, real_t size, SDL_Rect rect, Uint32 color)
     {
-        auto image = Image::get("images/ui/Inventory/Appraisal_Icon.png");
+        const auto image = Image::get("images/ui/Inventory/Appraisal_Icon.png");
         const real_t sx = rect.w * size;
         const real_t sy = rect.h * size;
         image->drawColor(nullptr, SDL_Rect{static_cast<int>(x), static_cast<int>(y), static_cast<int>(sx), static_cast<int>(sy)},
@@ -23811,9 +23811,9 @@ void drawUnidentifiedItemEffectCallback(const Widget& widget, SDL_Rect rect)
         SDL_Rect drawRect = rect;
         drawRect.x += 4 + (rect.w - 6) / 2 - imgSize / 2;
         drawRect.y += 4 + (rect.h - 6) / 2 - imgSize / 2;
-        int offsetSize = 7;
-        int offsetx = offsetSize * cos(std::min(4 * PI, appraisal.animAppraisal));
-        int offsety = offsetSize * sin(std::min(4 * PI, appraisal.animAppraisal));
+        const int offsetSize = 7;
+        const int offsetx = offsetSize * cos(std::min(4 * PI, appraisal.animAppraisal));
+        const int offsety = offsetSize * sin(std::min(4 * PI, appraisal.animAppraisal));
 
         drawRect.w = imgSize;
         drawRect.h = imgSize;
@@ -23831,22 +23831,22 @@ void drawUnidentifiedItemEffectCallback(const Widget& widget, SDL_Rect rect)
 void createPlayerInventorySlotFrameElements(Frame* slotFrame)
 {
     const auto slotSize = SDL_Rect{0, 0, slotFrame->getSize().w, slotFrame->getSize().h};
-    auto coloredBackgroundPos = SDL_Rect{slotSize.x + 2, slotSize.y + 2, slotSize.w - 2, slotSize.h - 2};
+    const auto coloredBackgroundPos = SDL_Rect{slotSize.x + 2, slotSize.y + 2, slotSize.w - 2, slotSize.h - 2};
 
-    auto beatitudeFrame = slotFrame->addFrame("beatitude status frame"); // covers unidentified status as well
+    const auto beatitudeFrame = slotFrame->addFrame("beatitude status frame"); // covers unidentified status as well
     beatitudeFrame->setSize(slotSize);
     beatitudeFrame->setHollow(true);
     beatitudeFrame->setDisabled(true);
     beatitudeFrame->addImage(coloredBackgroundPos, 0xFFFFFFFF, "images/system/white.png", "beatitude status bg");
 
-    auto brokenStatusFrame = slotFrame->addFrame("broken status frame");
+    const auto brokenStatusFrame = slotFrame->addFrame("broken status frame");
     brokenStatusFrame->setSize(slotSize);
     brokenStatusFrame->setHollow(true);
     brokenStatusFrame->setDisabled(true);
     brokenStatusFrame->addImage(coloredBackgroundPos, makeColor(160, 160, 160, 64), "images/system/white.png",
                                 "broken status bg");
 
-    auto itemSpriteFrame = slotFrame->addFrame("item sprite frame");
+    const auto itemSpriteFrame = slotFrame->addFrame("item sprite frame");
 
     // cut off the slot 2px borders
     SDL_Rect itemSpriteBorder = {
@@ -23866,27 +23866,27 @@ void createPlayerInventorySlotFrameElements(Frame* slotFrame)
     });
     itemSpriteFrame->setHollow(true);
     itemSpriteFrame->setDisabled(true);
-    SDL_Rect imgPos{0, 0, itemSpriteFrame->getSize().w, itemSpriteFrame->getSize().h};
-    auto img = itemSpriteFrame->addImage(imgPos, 0xFFFFFFFF, "images/system/white.png", "item sprite img");
+    const SDL_Rect imgPos{0, 0, itemSpriteFrame->getSize().w, itemSpriteFrame->getSize().h};
+    const auto img = itemSpriteFrame->addImage(imgPos, 0xFFFFFFFF, "images/system/white.png", "item sprite img");
     img->outline = false;
     img->outlineColor = 0;
-    auto iconLabelBgImg = itemSpriteFrame->addImage(SDL_Rect{0, 0, 16, 16}, 0xFFFFFFFF,
+    const auto iconLabelBgImg = itemSpriteFrame->addImage(SDL_Rect{0, 0, 16, 16}, 0xFFFFFFFF,
                                                     "images/ui/Inventory/Icon_Label_Backing_00.png",
                                                     "icon label bg img");
     iconLabelBgImg->disabled = true;
 
-    auto iconLabelImg = itemSpriteFrame->addImage(SDL_Rect{0, 0, 16, 16}, 0xFFFFFFFF,
+    const auto iconLabelImg = itemSpriteFrame->addImage(SDL_Rect{0, 0, 16, 16}, 0xFFFFFFFF,
                                                   "", "icon label img");
     iconLabelImg->disabled = true;
 
-    auto unusableFrame = slotFrame->addFrame("unusable item frame");
+    const auto unusableFrame = slotFrame->addFrame("unusable item frame");
     unusableFrame->setSize(slotSize);
     unusableFrame->setHollow(true);
     unusableFrame->setDisabled(true);
     unusableFrame->addImage(coloredBackgroundPos, makeColor(64, 64, 64, 144), "images/system/white.png",
                             "unusable item bg");
 
-    auto appraisalFrame = slotFrame->addFrame("appraisal frame");
+    const auto appraisalFrame = slotFrame->addFrame("appraisal frame");
     appraisalFrame->setSize(slotSize);
     appraisalFrame->setHollow(true);
     appraisalFrame->setDisabled(true);
@@ -23894,7 +23894,7 @@ void createPlayerInventorySlotFrameElements(Frame* slotFrame)
                              "images/ui/Inventory/tooltips/ExclamationAnim00.png", "new notif img");
 
     static auto qtyfont = "fonts/pixel_maz.ttf#32#2";
-    auto quantityFrame = slotFrame->addFrame("quantity frame");
+    const auto quantityFrame = slotFrame->addFrame("quantity frame");
     quantityFrame->setSize(slotSize);
     quantityFrame->setHollow(true);
     Field* qtyText = quantityFrame->addField("quantity text", 32);
@@ -23905,13 +23905,13 @@ void createPlayerInventorySlotFrameElements(Frame* slotFrame)
     qtyText->setText("10");
     qtyText->setSize(SDL_Rect{0, 6, quantityFrame->getSize().w, quantityFrame->getSize().h});
 
-    auto equippedIconFrame = slotFrame->addFrame("equipped icon frame");
+    const auto equippedIconFrame = slotFrame->addFrame("equipped icon frame");
     equippedIconFrame->setSize(slotSize);
     equippedIconFrame->setHollow(true);
-    SDL_Rect equippedImgPos = {2, slotSize.h - 18, 18, 18};
+    const SDL_Rect equippedImgPos = {2, slotSize.h - 18, 18, 18};
     equippedIconFrame->addImage(equippedImgPos, 0xFFFFFFFF, "images/system/Equipped.png", "equipped icon img");
 
-    auto brokenIconFrame = slotFrame->addFrame("broken icon frame");
+    const auto brokenIconFrame = slotFrame->addFrame("broken icon frame");
     brokenIconFrame->setSize(slotSize);
     brokenIconFrame->setHollow(true);
     brokenIconFrame->addImage(equippedImgPos, 0xFFFFFFFF, "images/system/Broken.png", "broken icon img");
@@ -23932,7 +23932,7 @@ void resetInventorySlotFrames(const int player)
 
     if (players[player]->inventoryUI.frame)
     {
-        for (auto& pair : players[player]->inventoryUI.slotFrames)
+        for (const auto& pair : players[player]->inventoryUI.slotFrames)
         {
             if (pair.second) { pair.second->setDisabled(true); }
         }
@@ -23951,7 +23951,7 @@ void resetInventorySlotFrames(const int player)
 
     if (players[player]->inventoryUI.spellFrame)
     {
-        for (auto& pair : players[player]->inventoryUI.spellSlotFrames)
+        for (const auto& pair : players[player]->inventoryUI.spellSlotFrames)
         {
             if (pair.second) { pair.second->setDisabled(true); }
         }
@@ -23970,7 +23970,7 @@ void resetInventorySlotFrames(const int player)
 
     if (players[player]->inventoryUI.chestFrame)
     {
-        for (auto& pair : players[player]->inventoryUI.chestSlotFrames)
+        for (const auto& pair : players[player]->inventoryUI.chestSlotFrames)
         {
             if (pair.second) { pair.second->setDisabled(true); }
         }
@@ -23989,7 +23989,7 @@ void resetInventorySlotFrames(const int player)
 
     if (players[player]->shopGUI.shopFrame)
     {
-        for (auto& pair : players[player]->shopGUI.shopSlotFrames)
+        for (const auto& pair : players[player]->shopGUI.shopSlotFrames)
         {
             if (pair.second) { pair.second->setDisabled(true); }
         }
@@ -24010,7 +24010,7 @@ bool getSlotFrameXYFromMousePos(const int player, int& outx, int& outy, bool spe
         {
             for (int y = 0; y < Player::Inventory_t::MAX_CHEST_Y; ++y)
             {
-                auto slotFrame = players[player]->inventoryUI.getChestSlotFrame(x, y);
+                const auto slotFrame = players[player]->inventoryUI.getChestSlotFrame(x, y);
                 if (!slotFrame)
                 {
                     continue;
@@ -24037,7 +24037,7 @@ bool getSlotFrameXYFromMousePos(const int player, int& outx, int& outy, bool spe
         {
             for (int y = Player::Inventory_t::DOLL_ROW_1; y < players[player]->inventoryUI.getSizeY(); ++y)
             {
-                auto slotFrame = players[player]->inventoryUI.getInventorySlotFrame(x, y);
+                const auto slotFrame = players[player]->inventoryUI.getInventorySlotFrame(x, y);
                 if (!slotFrame)
                 {
                     continue;
@@ -24059,7 +24059,7 @@ bool getSlotFrameXYFromMousePos(const int player, int& outx, int& outy, bool spe
         {
             for (int y = 0; y < Player::Inventory_t::MAX_SPELLS_Y; ++y)
             {
-                auto slotFrame = players[player]->inventoryUI.getSpellSlotFrame(x, y);
+                const auto slotFrame = players[player]->inventoryUI.getSpellSlotFrame(x, y);
                 if (!slotFrame)
                 {
                     continue;
@@ -24111,9 +24111,9 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         return;
     }
 
-    auto item = static_cast<Item*>(itemPtr);
+    const auto item = static_cast<Item*>(itemPtr);
 
-    int player = slotFrame->getOwner();
+    const int player = slotFrame->getOwner();
 
     bool hiddenItemInGUI = false;
     if (item->itemSpecialShopConsumable)
@@ -24126,10 +24126,10 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
 
     slotFrame->setDisabled(false);
 
-    auto& frames = slotFrame->getFrames();
+    const auto& frames = slotFrame->getFrames();
 
-    auto spriteImageFrame = frames[SLOTFRAME_ITEMSPRITE_FRAME]; // slotFrame->findFrame("item sprite frame");
-    auto spriteImage = spriteImageFrame->getImages()[SLOTFRAME_ITEMSPRITE_IMG];
+    const auto spriteImageFrame = frames[SLOTFRAME_ITEMSPRITE_FRAME]; // slotFrame->findFrame("item sprite frame");
+    const auto spriteImage = spriteImageFrame->getImages()[SLOTFRAME_ITEMSPRITE_IMG];
     // [spriteImageFrame->findImage("item sprite img");
 
     if (hiddenItemInGUI)
@@ -24146,7 +24146,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         disableBackgrounds = true;
     }
 
-    int* slotType = nullptr;
+    const int* slotType = nullptr;
     if (slotFrame->getUserData())
     {
         slotType = static_cast<int*>(slotFrame->getUserData());
@@ -24158,7 +24158,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
     }
 
     bool isHotbarIcon = false;
-    bool alchemyResultIcon = &GenericGUI[player].alchemyGUI.alchemyResultPotion == item;
+    const bool alchemyResultIcon = &GenericGUI[player].alchemyGUI.alchemyResultPotion == item;
     if (spriteImage->path != "")
     {
         spriteImageFrame->setDisabled(false);
@@ -24184,10 +24184,10 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
             spriteImage->color = 0xFFFFFFFF;
             if (tryDimHotbarSlot)
             {
-                std::string hotbarSlotParentStr = slotFrame->getParent()->getName();
+                const std::string hotbarSlotParentStr = slotFrame->getParent()->getName();
                 if (hotbarSlotParentStr.find("hotbar slot ") != std::string::npos)
                 {
-                    int num = stoi(hotbarSlotParentStr.substr(strlen("hotbar slot ")));
+                    const int num = stoi(hotbarSlotParentStr.substr(strlen("hotbar slot ")));
                     if (hotbar_t.faceMenuButtonHeld != hotbar_t.getFaceMenuGroupForSlot(num))
                     {
                         // fade this icon
@@ -24200,7 +24200,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         {
             spriteImage->color = 0xFFFFFFFF;
         }
-        if (auto iconLabelImg = spriteImageFrame->getImages()[SLOTFRAME_ITEMSPRITE_LABEL_IMG]
+        if (const auto iconLabelImg = spriteImageFrame->getImages()[SLOTFRAME_ITEMSPRITE_LABEL_IMG]
             /*spriteImageFrame->findImage("icon label img")*/)
         {
             iconLabelImg->path = ItemTooltips.getIconLabel(*item);
@@ -24220,7 +24220,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
                 }
             }
             iconLabelImg->color = spriteImage->color;
-            if (auto iconLabelBgImg = spriteImageFrame->getImages()[SLOTFRAME_ITEMSPRITE_LABELBG_IMG]
+            if (const auto iconLabelBgImg = spriteImageFrame->getImages()[SLOTFRAME_ITEMSPRITE_LABELBG_IMG]
                 /*spriteImageFrame->findImage("icon label bg img")*/)
             {
                 iconLabelBgImg->pos.w = 24;
@@ -24251,7 +24251,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         }
     }
 
-    if (auto qtyFrame = frames[SLOTFRAME_QTY_FRAME]/*slotFrame->findFrame("quantity frame")*/)
+    if (const auto qtyFrame = frames[SLOTFRAME_QTY_FRAME]/*slotFrame->findFrame("quantity frame")*/)
     {
         qtyFrame->setDisabled(true);
         bool drawQty = (item->count > 1) ? true : false;
@@ -24298,7 +24298,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
             {
                 int selectedItemQty;
                 int destItemQty;
-                auto result = getItemStackingBehavior(player, selectedItem, item, selectedItemQty, destItemQty);
+                const auto result = getItemStackingBehavior(player, selectedItem, item, selectedItemQty, destItemQty);
                 if (result.resultType == ITEM_ADDED_ENTIRELY_TO_DESTINATION_STACK
                     || result.resultType == ITEM_ADDED_PARTIALLY_TO_DESTINATION_STACK)
                 {
@@ -24311,7 +24311,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         if (drawQty)
         {
             qtyFrame->setDisabled(false);
-            if (auto qtyText = qtyFrame->getFields()[SLOTFRAME_QTY_TEXT]/*qtyFrame->findField("quantity text")*/)
+            if (const auto qtyText = qtyFrame->getFields()[SLOTFRAME_QTY_TEXT]/*qtyFrame->findField("quantity text")*/)
             {
                 char qtybuf[32] = "";
                 if (stackable)
@@ -24345,11 +24345,11 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
                 if (spell_t* spell = getSpellFromItem(player, item, true))
                 {
                     qtyFrame->setDisabled(false);
-                    if (auto qtyText = qtyFrame->getFields()[SLOTFRAME_QTY_TEXT]
+                    if (const auto qtyText = qtyFrame->getFields()[SLOTFRAME_QTY_TEXT]
                         /*qtyFrame->findField("quantity text")*/)
                     {
                         char qtybuf[32] = "";
-                        int cost = getGoldCostOfSpell(spell, player);
+                        const int cost = getGoldCostOfSpell(spell, player);
                         if (cost > stats[player]->GOLD)
                         {
                             qtyColor = hudColors.characterSheetRed;
@@ -24366,13 +24366,13 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         }
     }
 
-    if (auto beatitudeFrame = frames[SLOTFRAME_BEATITUDE_FRAME]/*slotFrame->findFrame("beatitude status frame")*/)
+    if (const auto beatitudeFrame = frames[SLOTFRAME_BEATITUDE_FRAME]/*slotFrame->findFrame("beatitude status frame")*/)
     {
         beatitudeFrame->setDisabled(true);
         //spriteImage->outline = false;
         if (!disableBackgrounds)
         {
-            if (auto beatitudeImg = beatitudeFrame->getImages()[SLOTFRAME_BEATITUDE_IMG]
+            if (const auto beatitudeImg = beatitudeFrame->getImages()[SLOTFRAME_BEATITUDE_IMG]
                 /*beatitudeFrame->findImage("beatitude status bg")*/)
             {
                 if (!item->identified)
@@ -24479,7 +24479,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         }
     }
 
-    if (auto brokenStatusFrame = frames[SLOTFRAME_BROKEN_STATUS_FRAME]/*slotFrame->findFrame("broken status frame")*/)
+    if (const auto brokenStatusFrame = frames[SLOTFRAME_BROKEN_STATUS_FRAME]/*slotFrame->findFrame("broken status frame")*/)
     {
         brokenStatusFrame->setDisabled(true);
         if (!disableBackgrounds)
@@ -24495,7 +24495,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
                 else
                 {
                     brokenStatusFrame->setDisabled(false);
-                    auto brokenStatusImg = brokenStatusFrame->getImages()[SLOTFRAME_BROKEN_STATUS_IMG];
+                    const auto brokenStatusImg = brokenStatusFrame->getImages()[SLOTFRAME_BROKEN_STATUS_IMG];
                     /*brokenStatusFrame->findImage("broken status bg");*/
                     if (isHotbarIcon || (slotFrame->getUserData() && *slotType == GAMEUI_FRAMEDATA_WORLDTOOLTIP_ITEM))
                     {
@@ -24510,7 +24510,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         }
     }
 
-    if (auto unusableFrame = frames[SLOTFRAME_UNUSABLE_ITEM_FRAME]/*slotFrame->findFrame("unusable item frame")*/)
+    if (const auto unusableFrame = frames[SLOTFRAME_UNUSABLE_ITEM_FRAME]/*slotFrame->findFrame("unusable item frame")*/)
     {
         bool greyedOut = forceUnusable || hiddenItemInGUI;
         unusableFrame->setDisabled(true);
@@ -24560,7 +24560,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         {
             int selectedItemQty;
             int destItemQty;
-            auto result = getItemStackingBehavior(player, item, stats[player]->weapon, selectedItemQty, destItemQty);
+            const auto result = getItemStackingBehavior(player, item, stats[player]->weapon, selectedItemQty, destItemQty);
             if (result.resultType == ITEM_ADDED_ENTIRELY_TO_DESTINATION_STACK
                 || result.resultType == ITEM_ADDED_PARTIALLY_TO_DESTINATION_STACK)
             {
@@ -24570,7 +24570,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
     }
     else
     {
-        spell_t* spell = getSpellFromItem(player, item, true);
+        const spell_t* spell = getSpellFromItem(player, item, true);
         if (players[player]->magic.selectedSpell() == spell
             && (players[player]->magic.selected_spell_last_appearance == item->appearance || players[player]->magic.
                 selected_spell_last_appearance == -1))
@@ -24579,7 +24579,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         }
     }
 
-    if (auto equippedIconFrame = frames[SLOTFRAME_EQUIPPED_FRAME]/*slotFrame->findFrame("equipped icon frame")*/)
+    if (const auto equippedIconFrame = frames[SLOTFRAME_EQUIPPED_FRAME]/*slotFrame->findFrame("equipped icon frame")*/)
     {
         equippedIconFrame->setDisabled(true);
         if (equipped && (!disableBackgrounds || (slotType && (*slotType == GAMEUI_FRAMEDATA_ANIMATING_ITEM))))
@@ -24587,7 +24587,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
             equippedIconFrame->setDisabled(false);
         }
     }
-    if (auto brokenIconFrame = frames[SLOTFRAME_BROKEN_ICON_FRAME]/*slotFrame->findFrame("broken icon frame")*/)
+    if (const auto brokenIconFrame = frames[SLOTFRAME_BROKEN_ICON_FRAME]/*slotFrame->findFrame("broken icon frame")*/)
     {
         brokenIconFrame->setDisabled(true);
         if (broken && (!disableBackgrounds || (slotType && (*slotType == GAMEUI_FRAMEDATA_ALCHEMY_RECIPE_SLOT))))
@@ -24596,7 +24596,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         }
     }
 
-    if (auto appraisalFrame = frames[SLOTFRAME_APPRAISAL_FRAME]/*slotFrame->findFrame("appraisal frame")*/)
+    if (const auto appraisalFrame = frames[SLOTFRAME_APPRAISAL_FRAME]/*slotFrame->findFrame("appraisal frame")*/)
     {
         appraisalFrame->setDisabled(true);
         appraisalFrame->setDrawCallback(nullptr);
@@ -24632,7 +24632,7 @@ void updateSlotFrameFromItem(Frame* slotFrame, void* itemPtr, bool forceUnusable
         }
         if (!appraisalFrame->isDisabled())
         {
-            auto img = appraisalFrame->getImages()[SLOTFRAME_APPRAISAL_NOTIF_IMG];
+            const auto img = appraisalFrame->getImages()[SLOTFRAME_APPRAISAL_NOTIF_IMG];
             /*appraisalFrame->findImage("new notif img");*/
             img->disabled = true;
             if (!item->identified)
@@ -25436,9 +25436,9 @@ void drawItemPreview(Entity* item, SDL_Rect pos, real_t offsetyaw, bool dark)
     if (item->sprite < 0) { return; }
 
     static int fov = 50;
-    bool sprite = item->flags[SPRITE];
+    const bool sprite = item->flags[SPRITE];
 
-    std::vector<Entity>* limbsArray = nullptr;
+    const std::vector<Entity>* limbsArray = nullptr;
     Compendium_t::CompendiumView_t* camera = &CompendiumEntries.defaultCamera;
     std::string lookup = "items_single";
     if (item->flags[SPRITE] && item->skill[10] == SPELL_ITEM)
@@ -25601,7 +25601,7 @@ void drawItemPreview(Entity* item, SDL_Rect pos, real_t offsetyaw, bool dark)
     }
 
     view_t& view = monsterPortraitView;
-    auto ofov = ::fov;
+    const auto ofov = ::fov;
     ::fov = fov;
 
     const real_t rotation = camera->rotate + (sprite ? (PI / 2) : 0.0);
@@ -25623,13 +25623,13 @@ void drawItemPreview(Entity* item, SDL_Rect pos, real_t offsetyaw, bool dark)
     view.winh = pos.h;
     GL_CHECK_ERR(glClear(GL_DEPTH_BUFFER_BIT));
     glBeginCamera(&view, false, map);
-    bool b = item->flags[BRIGHT];
+    const bool b = item->flags[BRIGHT];
     if (!dark) { item->flags[BRIGHT] = true; }
     if (!item->flags[INVISIBLE])
     {
         if (item->flags[SPRITE] && item->skill[10] == SPELL_ITEM)
         {
-            ItemType tmpItem = Compendium_t::compendiumItem.type;
+            const ItemType tmpItem = Compendium_t::compendiumItem.type;
             Compendium_t::compendiumItem.type = SPELL_ITEM;
             glDrawSpriteFromImage(&view, item,
                                   ItemTooltips.getSpellIconPath(clientnum, Compendium_t::compendiumItem,
@@ -25659,8 +25659,8 @@ void drawSpritesPreview(std::string name, std::string modelsPath, SDL_Rect pos, 
     static int fov = 50;
 
     bool sprite = false;
-    Compendium_t::CompendiumCodex_t::Codex_t* codexEntry = nullptr;
-    auto find = CompendiumEntries.codex.find(name);
+    const Compendium_t::CompendiumCodex_t::Codex_t* codexEntry = nullptr;
+    const auto find = CompendiumEntries.codex.find(name);
     if (find != CompendiumEntries.codex.end())
     {
         codexEntry = &find->second;
@@ -25673,7 +25673,7 @@ void drawSpritesPreview(std::string name, std::string modelsPath, SDL_Rect pos, 
     }
 
     std::vector<Entity>* limbsArray = nullptr;
-    Entity* object = nullptr;
+    const Entity* object = nullptr;
     Compendium_t::CompendiumView_t* camera = &CompendiumEntries.defaultCamera;
 
     if (CompendiumEntries.compendiumObjectLimbs.find(modelsPath) != CompendiumEntries.compendiumObjectLimbs.end())
@@ -25775,7 +25775,7 @@ void drawSpritesPreview(std::string name, std::string modelsPath, SDL_Rect pos, 
     }
 
     view_t& view = monsterPortraitView;
-    auto ofov = ::fov;
+    const auto ofov = ::fov;
     ::fov = fov;
 
     const real_t rotation = camera->rotate + (sprite ? (PI / 2) : 0.0);
@@ -25801,7 +25801,7 @@ void drawSpritesPreview(std::string name, std::string modelsPath, SDL_Rect pos, 
     size_t index = 0;
     for (auto& e : *limbsArray)
     {
-        bool b = e.flags[BRIGHT];
+        const bool b = e.flags[BRIGHT];
         if (!dark) { e.flags[BRIGHT] = true; }
         if (!e.flags[INVISIBLE])
         {
@@ -25847,7 +25847,7 @@ void glDrawWorldTile(view_t* camera, int mode, map_t& map)
         return;
     }
 
-    float getLightAtModifier = 1.f;
+    const float getLightAtModifier = 1.f;
 
     // bind core shader
     auto& shader = worldShader;
@@ -25898,7 +25898,7 @@ Entity* createDrawObjectCustomParticle(Entity* parentent, int sprite, real_t sca
     }
     Entity* entity = newEntity(sprite, 1, &parentent->children, nullptr); //Particle entity.
 
-    int size = 50 / spreadReduce;
+    const int size = 50 / spreadReduce;
     entity->x = parentent->x + (local_rng.rand() % size - size / 2) / 20.f;
     entity->y = parentent->y + (local_rng.rand() % size - size / 2) / 20.f;
     entity->z = parentent->z + (local_rng.rand() % size - size / 2) / 20.f;
@@ -26034,8 +26034,8 @@ void actObjectPreviewArrow(Entity* my)
 void actObjectPreviewBoulder(Entity* my)
 {
     bool noground = false;
-    int x = std::min<int>(std::max(0, static_cast<int>(my->x / 16)), CompendiumEntries.compendiumMap.width);
-    int y = std::min<int>(std::max(0, static_cast<int>(my->y / 16)), CompendiumEntries.compendiumMap.height);
+    const int x = std::min<int>(std::max(0, static_cast<int>(my->x / 16)), CompendiumEntries.compendiumMap.width);
+    const int y = std::min<int>(std::max(0, static_cast<int>(my->y / 16)), CompendiumEntries.compendiumMap.height);
     if (x >= CompendiumEntries.compendiumMap.width || y >= CompendiumEntries.compendiumMap.height)
     {
         noground = true;
@@ -26083,7 +26083,7 @@ void actObjectPreviewBoulder(Entity* my)
         {
             my->x += my->vel_x;
             my->y += my->vel_y;
-            double dist = sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2));
+            const double dist = sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2));
             my->pitch += dist * .06;
             my->roll = PI / 2;
         }
@@ -26116,14 +26116,14 @@ void actObjectPreviewBoulder(Entity* my)
             my->vel_y = -maxSpeed;
         }
 
-        real_t ox = my->x;
-        real_t oy = my->y;
+        const real_t ox = my->x;
+        const real_t oy = my->y;
         my->x += my->vel_x;
         my->y += my->vel_y;
         my->x = std::min(my->x, static_cast<real_t>(CompendiumEntries.compendiumMap.width) * 16.0 + 8.0);
         my->y = std::min(my->y, static_cast<real_t>(CompendiumEntries.compendiumMap.height) * 16.0 + 8.0);
 
-        double dist = sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2));
+        const double dist = sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2));
         if (my->x != (ox + my->vel_x) || my->y != (oy + my->vel_y))
         {
             BOULDER_STOPPED = 1;
@@ -26649,9 +26649,9 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
         view.z = playerEntity->z * 2;
         if (playerEntity->behavior == &actDeathGhostLimb)
         {
-            if (auto node = list_Node(&playerEntity->children, 2))
+            if (const auto node = list_Node(&playerEntity->children, 2))
             {
-                if (auto entity = static_cast<Entity*>(node->element))
+                if (const auto entity = static_cast<Entity*>(node->element))
                 {
                     view.z = entity->z * 2;
                 }
@@ -26659,7 +26659,7 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
         }
         else if (playerEntity->behavior == &actPlayer)
         {
-            real_t nominalHeight = 0.0;
+            const real_t nominalHeight = 0.0;
             view.z = std::min(nominalHeight, view.z);
         }
 
@@ -26680,10 +26680,10 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
         if (!playerEntity->flags[INVISIBLE] || (playerEntity->flags[INVISIBLE] && playerEntity->flags[
             INVISIBLE_DITHER]))
         {
-            bool b = playerEntity->flags[BRIGHT];
+            const bool b = playerEntity->flags[BRIGHT];
             if (!dark) { playerEntity->flags[BRIGHT] = true; }
 
-            int oldDither = playerEntity->dithering[&view].value;
+            const int oldDither = playerEntity->dithering[&view].value;
             if ((playerEntity->flags[INVISIBLE] && playerEntity->flags[INVISIBLE_DITHER]))
             {
                 playerEntity->dithering[&view].value = ditherVal;
@@ -26696,7 +26696,7 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
         int c = 0;
         if (multiplayer != CLIENT)
         {
-            for (node_t* node = playerEntity->children.first; node != nullptr; node = node->next)
+            for (const node_t* node = playerEntity->children.first; node != nullptr; node = node->next)
             {
                 if (playerEntity->behavior == &actPlayer)
                 {
@@ -26714,13 +26714,13 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
                         continue;
                     }
                 }
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if (!entity->flags[INVISIBLE] || (entity->flags[INVISIBLE] && entity->flags[INVISIBLE_DITHER]))
                 {
-                    bool b = entity->flags[BRIGHT];
+                    const bool b = entity->flags[BRIGHT];
                     if (!dark) { entity->flags[BRIGHT] = true; }
 
-                    int oldDither = entity->dithering[&view].value;
+                    const int oldDither = entity->dithering[&view].value;
                     if (entity->ditheringOverride >= 0)
                     {
                         entity->dithering[&view].value = entity->ditheringOverride;
@@ -26738,19 +26738,19 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
             }
             if (playerEntity->behavior == &actPlayer)
             {
-                for (node_t* node = map.entities->first; node != nullptr; node = node->next)
+                for (const node_t* node = map.entities->first; node != nullptr; node = node->next)
                 {
-                    auto entity = static_cast<Entity*>(node->element);
+                    const auto entity = static_cast<Entity*>(node->element);
                     if (static_cast<Sint32>(entity->getUID()) == -4) // torch sprites
                     {
                         if ((entity->skill[1] - 1) != player)
                         {
                             continue;
                         }
-                        bool b = entity->flags[BRIGHT];
+                        const bool b = entity->flags[BRIGHT];
                         if (!dark) { entity->flags[BRIGHT] = true; }
 
-                        int oldDither = entity->dithering[&view].value;
+                        const int oldDither = entity->dithering[&view].value;
                         if (entity->flags[INVISIBLE] && entity->flags[INVISIBLE_DITHER])
                         {
                             entity->dithering[&view].value = ditherVal;
@@ -26765,9 +26765,9 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
         }
         else
         {
-            for (node_t* node = map.entities->first; node != nullptr; node = node->next)
+            for (const node_t* node = map.entities->first; node != nullptr; node = node->next)
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if (playerEntity->behavior == &actPlayer)
                 {
                     if ((entity->behavior == &actPlayerLimb && entity->skill[2] == player
@@ -26781,10 +26781,10 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
                             {
                                 continue;
                             }
-                            bool b = entity->flags[BRIGHT];
+                            const bool b = entity->flags[BRIGHT];
                             if (!dark) { entity->flags[BRIGHT] = true; }
 
-                            int oldDither = entity->dithering[&view].value;
+                            const int oldDither = entity->dithering[&view].value;
                             if (entity->flags[INVISIBLE] && entity->flags[INVISIBLE_DITHER])
                             {
                                 entity->dithering[&view].value = ditherVal;
@@ -26797,10 +26797,10 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
                         }
                         else
                         {
-                            bool b = entity->flags[BRIGHT];
+                            const bool b = entity->flags[BRIGHT];
                             if (!dark) { entity->flags[BRIGHT] = true; }
 
-                            int oldDither = entity->dithering[&view].value;
+                            const int oldDither = entity->dithering[&view].value;
                             if (entity->ditheringOverride >= 0)
                             {
                                 entity->dithering[&view].value = entity->ditheringOverride;
@@ -26822,10 +26822,10 @@ void drawCharacterPreview(const int player, SDL_Rect pos, int fov, real_t offset
                     if (entity->behavior == &actDeathGhostLimb && entity->skill[2] == player
                         && (!entity->flags[INVISIBLE] || (entity->flags[INVISIBLE] && entity->flags[INVISIBLE_DITHER])))
                     {
-                        bool b = entity->flags[BRIGHT];
+                        const bool b = entity->flags[BRIGHT];
                         if (!dark) { entity->flags[BRIGHT] = true; }
 
-                        int oldDither = entity->dithering[&view].value;
+                        const int oldDither = entity->dithering[&view].value;
                         if (entity->flags[INVISIBLE] && entity->flags[INVISIBLE_DITHER])
                         {
                             entity->dithering[&view].value = ditherVal;
@@ -28617,7 +28617,7 @@ void createPlayerSpellList(const int player)
     frame->setOwner(player);
     frame->setInheritParentFrameOpacity(false);
 
-    SDL_Rect basePos{0, 0, 210, kSpellListHeight};
+    const SDL_Rect basePos{0, 0, 210, kSpellListHeight};
     const int inventorySlotSize = players[player]->inventoryUI.getSlotSize();
 
     players[player]->inventoryUI.spellSlotFrames.clear();
@@ -28626,9 +28626,9 @@ void createPlayerSpellList(const int player)
     const int baseSlotOffsetY = 36;
     const int baseGridOffsetY = kSpellListGridY;
 
-    SDL_Rect invSlotsPos{basePos.x + 4, basePos.y + 4, basePos.w, 242};
+    const SDL_Rect invSlotsPos{basePos.x + 4, basePos.y + 4, basePos.w, 242};
     {
-        int numGrids = (players[player]->inventoryUI.MAX_SPELLS_Y / players[player]->inventoryUI.spellPanel.
+        const int numGrids = (players[player]->inventoryUI.MAX_SPELLS_Y / players[player]->inventoryUI.spellPanel.
             kNumSpellsToDisplayVertical) + 1;
 
         const auto spellSlotsFrame = frame->addFrame("spell slots");
@@ -28637,7 +28637,7 @@ void createPlayerSpellList(const int player)
         spellSlotsFrame->setHollow(true);
         spellSlotsFrame->setAllowScrollBinds(false);
 
-        auto gridImg = spellSlotsFrame->addImage(SDL_Rect{baseSlotOffsetX, baseGridOffsetY, 162, 242 * numGrids},
+        const auto gridImg = spellSlotsFrame->addImage(SDL_Rect{baseSlotOffsetX, baseGridOffsetY, 162, 242 * numGrids},
                                                  0xFFFFFFFF, "*images/ui/Inventory/HUD_Magic_ScrollGrid.png",
                                                  "grid img");
         gridImg->tiled = true;
@@ -28656,9 +28656,9 @@ void createPlayerSpellList(const int player)
                 char slotname[32] = "";
                 snprintf(slotname, sizeof(slotname), "spell %d %d", x, y);
 
-                auto slotFrame = spellSlotsFrame->addFrame(slotname);
+                const auto slotFrame = spellSlotsFrame->addFrame(slotname);
                 players[player]->inventoryUI.spellSlotFrames[x + y * 1000] = slotFrame;
-                SDL_Rect slotPos{currentSlotPos.x, currentSlotPos.y, inventorySlotSize, inventorySlotSize};
+                const SDL_Rect slotPos{currentSlotPos.x, currentSlotPos.y, inventorySlotSize, inventorySlotSize};
                 slotFrame->setSize(slotPos);
 
                 createPlayerInventorySlotFrameElements(slotFrame);
@@ -28667,21 +28667,21 @@ void createPlayerSpellList(const int player)
     }
 
     {
-        auto bgFrame = frame->addFrame("spell base");
+        const auto bgFrame = frame->addFrame("spell base");
         bgFrame->setSize(basePos);
         bgFrame->setHollow(true);
         const auto bgSize = bgFrame->getSize();
-        auto bg = bgFrame->addImage(SDL_Rect{0, 0, 210, kSpellListHeight},
+        const auto bg = bgFrame->addImage(SDL_Rect{0, 0, 210, kSpellListHeight},
                                     makeColor(255, 255, 255, 255),
                                     "*#images/ui/Inventory/HUD_Magic_Base.png", "spell base img");
         playerInventoryFrames[player].spellBaseImg = bg;
 
-        auto slider = bgFrame->addSlider("spell slider");
+        const auto slider = bgFrame->addSlider("spell slider");
         slider->setBorder(16);
         slider->setMinValue(0);
         slider->setMaxValue(100);
         slider->setValue(0);
-        SDL_Rect sliderPos{basePos.w - 26, 50, 20, 192};
+        const SDL_Rect sliderPos{basePos.w - 26, 50, 20, 192};
         slider->setRailSize(sliderPos);
         slider->setHandleSize(SDL_Rect{0, 0, 20, 28});
         slider->setOrientation(Slider::SLIDER_VERTICAL);
@@ -28695,19 +28695,19 @@ void createPlayerSpellList(const int player)
         slider->setHideSelectors(true);
         slider->setMenuConfirmControlType(0);
 
-        auto sliderCapTop = bgFrame->addImage(SDL_Rect{sliderPos.x + 2, sliderPos.y, 16, 16},
+        const auto sliderCapTop = bgFrame->addImage(SDL_Rect{sliderPos.x + 2, sliderPos.y, 16, 16},
                                               makeColor(255, 255, 255, 255),
                                               "*#images/ui/Sliders/HUD_Magic_Slider_SettingTop_01.png",
                                               "spell slider top");
         sliderCapTop->ontop = true;
-        auto sliderCapBot = bgFrame->addImage(SDL_Rect{sliderPos.x + 2, sliderPos.y + sliderPos.h - 16, 16, 16},
+        const auto sliderCapBot = bgFrame->addImage(SDL_Rect{sliderPos.x + 2, sliderPos.y + sliderPos.h - 16, 16, 16},
                                               makeColor(255, 255, 255, 255),
                                               "*#images/ui/Sliders/HUD_Magic_Slider_SettingBot_01.png",
                                               "spell slider bot");
         sliderCapBot->ontop = true;
 
-        auto font = "fonts/pixel_maz.ttf#32#2";
-        auto titleText = bgFrame->addField("title txt", 64);
+        const auto font = "fonts/pixel_maz.ttf#32#2";
+        const auto titleText = bgFrame->addField("title txt", 64);
         titleText->setFont(font);
         titleText->setText(Language::get(5958));
         titleText->setHJustify(Field::justify_t::CENTER);
@@ -28715,12 +28715,12 @@ void createPlayerSpellList(const int player)
         titleText->setSize(SDL_Rect{56, 12, 96, 24});
         titleText->setColor(makeColor(236, 175, 28, 255));
 
-        auto filterTooltipFrame = bgFrame->addFrame("filter frame");
+        const auto filterTooltipFrame = bgFrame->addFrame("filter frame");
         filterTooltipFrame->setSize(SDL_Rect{0, bg->pos.h - 50, bg->pos.w, 50});
         filterTooltipFrame->setHollow(true);
         filterTooltipFrame->setInheritParentFrameOpacity(false);
 
-        auto filterText = filterTooltipFrame->addField("filter txt", 64);
+        const auto filterText = filterTooltipFrame->addField("filter txt", 64);
         filterText->setFont(smallfont_outline);
         filterText->setText(Language::get(6842));
         filterText->setHJustify(Field::justify_t::CENTER);
@@ -28729,13 +28729,13 @@ void createPlayerSpellList(const int player)
         filterText->setColor(makeColor(236, 175, 28, 255));
         filterText->setDisabled(true);
 
-        auto filterTooltipImg = filterTooltipFrame->addImage(
+        const auto filterTooltipImg = filterTooltipFrame->addImage(
             SDL_Rect{filterTooltipFrame->getSize().w / 2 - 154 / 2, filterTooltipFrame->getSize().h - 50, 154, 50},
             makeColor(255, 255, 255, 128),
             "*#images/ui/Inventory/HUD_Magic_Filter_Tooltip.png", "spell filter tooltip img");
         filterTooltipImg->disabled = true;
 
-        auto closeBtn = bgFrame->addButton("close spell button");
+        const auto closeBtn = bgFrame->addButton("close spell button");
         SDL_Rect closeBtnPos;
         closeBtnPos.x = 180;
         closeBtnPos.y = 6;
@@ -28777,7 +28777,7 @@ void createPlayerSpellList(const int player)
             makeColor(255, 255, 255, 255),
             "*#images/ui/Inventory/HUD_Magic_Casting_BG_01.png", "spell skill bg");*/
 
-        auto filterBtn = bgFrame->addButton("spell filter button");
+        const auto filterBtn = bgFrame->addButton("spell filter button");
         SDL_Rect filterBtnPos;
         filterBtnPos.x = 14;
         filterBtnPos.y = 6;
@@ -28819,17 +28819,17 @@ void createPlayerSpellList(const int player)
             }
         });
 
-        auto skillIcon = bgFrame->addImage(SDL_Rect{filterBtnPos.x + 4, filterBtnPos.y + 4, 24, 24},
+        const auto skillIcon = bgFrame->addImage(SDL_Rect{filterBtnPos.x + 4, filterBtnPos.y + 4, 24, 24},
                                            makeColor(255, 255, 255, 255),
                                            "", "spell skill icon");
         skillIcon->ontop = true;
 
-        auto closeGlyph = bgFrame->addImage(SDL_Rect{0, 0, 24, 24},
+        const auto closeGlyph = bgFrame->addImage(SDL_Rect{0, 0, 24, 24},
                                             makeColor(255, 255, 255, 255),
                                             "", "close spell glyph");
         closeGlyph->disabled = true;
 
-        auto filterGlyph = bgFrame->addImage(SDL_Rect{0, 0, 24, 24},
+        const auto filterGlyph = bgFrame->addImage(SDL_Rect{0, 0, 24, 24},
                                              makeColor(255, 255, 255, 255),
                                              "", "filter spell glyph");
         filterGlyph->disabled = true;
@@ -28865,7 +28865,7 @@ bool takeAllChestGUIAction(const int player)
         return false;
     }
 
-    list_t* chest_inventory = nullptr;
+    const list_t* chest_inventory = nullptr;
     if (multiplayer == CLIENT)
     {
         chest_inventory = &chestInv[player];
@@ -28881,7 +28881,7 @@ bool takeAllChestGUIAction(const int player)
     }
 
     std::vector<std::pair<int, Item*>> chestSlotOrder;
-    for (node_t* node = chest_inventory->first; node != nullptr; node = node->next)
+    for (const node_t* node = chest_inventory->first; node != nullptr; node = node->next)
     {
         auto item2 = static_cast<Item*>(node->element);
         if (item2)
@@ -28890,10 +28890,10 @@ bool takeAllChestGUIAction(const int player)
             chestSlotOrder.push_back(std::make_pair(key, item2));
         }
     }
-    int numItems = static_cast<int>(chestSlotOrder.size());
+    const int numItems = static_cast<int>(chestSlotOrder.size());
     std::sort(chestSlotOrder.begin(), chestSlotOrder.end()); // sort ascending by position, left to right, then down
     int pickedUpItems = 0;
-    for (auto& keyValue : chestSlotOrder)
+    for (const auto& keyValue : chestSlotOrder)
     {
         Item* item = keyValue.second;
         bool tryAddToInventory = true;
@@ -28907,14 +28907,14 @@ bool takeAllChestGUIAction(const int player)
             }
             int oldItemQty = 0;
             int destItemQty = 0;
-            bool oldIdentify = item->identified;
+            const bool oldIdentify = item->identified;
             if (skillCapstoneUnlocked(player, PRO_APPRAISAL))
             {
                 item->identified = true;
             }
-            auto result = getItemStackingBehavior(player, item, nullptr, oldItemQty, destItemQty);
+            const auto result = getItemStackingBehavior(player, item, nullptr, oldItemQty, destItemQty);
             item->identified = oldIdentify;
-            int amountToPlace = item->count - oldItemQty;
+            const int amountToPlace = item->count - oldItemQty;
             assert(amountToPlace > 0);
             if (amountToPlace <= 0)
             {
@@ -29027,14 +29027,14 @@ void createChestGUI(const int player)
     frame->setOwner(player);
     frame->setInheritParentFrameOpacity(false);
 
-    SDL_Rect basePos{0, 0, 194, 130};
+    const SDL_Rect basePos{0, 0, 194, 130};
     {
-        auto bgFrame = frame->addFrame("chest base");
+        const auto bgFrame = frame->addFrame("chest base");
         playerInventoryFrames[player].chestBgFrame = bgFrame;
         bgFrame->setSize(basePos);
         bgFrame->setHollow(false);
         const auto bgSize = bgFrame->getSize();
-        auto bg = bgFrame->addImage(SDL_Rect{6, 0, 182, 172},
+        const auto bg = bgFrame->addImage(SDL_Rect{6, 0, 182, 172},
                                     makeColor(255, 255, 255, 255),
                                     "*#images/ui/Inventory/chests/Chest_Main_00.png", "chest base img");
         playerInventoryFrames[player].chestBaseImg = bg;
@@ -29062,8 +29062,8 @@ void createChestGUI(const int player)
         //slider->setHideSelectors(true);
         //slider->setMenuConfirmControlType(0);
 
-        auto font = "fonts/pixel_maz.ttf#32#2";
-        auto titleText = bgFrame->addField("title txt", 64);
+        const auto font = "fonts/pixel_maz.ttf#32#2";
+        const auto titleText = bgFrame->addField("title txt", 64);
         titleText->setFont(font);
         titleText->setText(Language::get(5959));
         titleText->setHJustify(Field::justify_t::CENTER);
@@ -29071,7 +29071,7 @@ void createChestGUI(const int player)
         titleText->setSize(SDL_Rect{basePos.x + 4, 0, 162, 32});
         titleText->setColor(makeColor(188, 154, 114, 255));
 
-        auto closeBtn = bgFrame->addButton("close chest button");
+        const auto closeBtn = bgFrame->addButton("close chest button");
         SDL_Rect closeBtnPos = titleText->getSize();
         closeBtnPos.x = closeBtnPos.x + closeBtnPos.w - 98;
         closeBtnPos.w = 26;
@@ -29094,7 +29094,7 @@ void createChestGUI(const int player)
             closeChestGUIAction(button.getOwner());
         });
 
-        auto grabAllBtn = bgFrame->addButton("grab all button");
+        const auto grabAllBtn = bgFrame->addButton("grab all button");
         SDL_Rect grabBtnPos = titleText->getSize();
         grabBtnPos.x = closeBtnPos.x + closeBtnPos.w - 86;
         grabBtnPos.w = 86;
@@ -29118,10 +29118,10 @@ void createChestGUI(const int player)
             Player::soundActivate();
         });
 
-        std::string promptFont = "fonts/pixel_maz.ttf#32#2";
+        const std::string promptFont = "fonts/pixel_maz.ttf#32#2";
         const int promptWidth = 60;
         const int promptHeight = 27;
-        auto promptBack = bgFrame->addField("prompt back txt", 16);
+        const auto promptBack = bgFrame->addField("prompt back txt", 16);
         promptBack->setSize(SDL_Rect{0, 0, promptWidth, promptHeight});
         promptBack->setFont(promptFont.c_str());
         promptBack->setHJustify(Field::justify_t::RIGHT);
@@ -29130,11 +29130,11 @@ void createChestGUI(const int player)
         //promptBack->setOntop(true);
         promptBack->setColor(makeColor(201, 162, 100, 255));
 
-        auto promptBackImg = bgFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
+        const auto promptBackImg = bgFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF,
                                                "", "prompt back img");
         promptBackImg->disabled = true;
 
-        auto promptGrabAll = bgFrame->addField("prompt grab txt", 16);
+        const auto promptGrabAll = bgFrame->addField("prompt grab txt", 16);
         promptGrabAll->setSize(SDL_Rect{0, 0, promptWidth, promptHeight});
         promptGrabAll->setFont(promptFont.c_str());
         promptGrabAll->setHJustify(Field::justify_t::RIGHT);
@@ -29156,11 +29156,11 @@ void createChestGUI(const int player)
     const int baseSlotOffsetY = 0;
 
     const int gridHeight = 120 + 2; // 120px is grid img, plus 2px to tile the image for bottom border.
-    SDL_Rect invSlotsPos{
+    const SDL_Rect invSlotsPos{
         basePos.x + chestBaseImgBorderWidth, basePos.y + 4 + chestBaseImgBorderTopHeight, basePos.w, gridHeight
     };
     {
-        int numGrids = (players[player]->inventoryUI.MAX_CHEST_Y / players[player]->inventoryUI.chestGUI.
+        const int numGrids = (players[player]->inventoryUI.MAX_CHEST_Y / players[player]->inventoryUI.chestGUI.
             kNumItemsToDisplayVertical) + 1;
 
         const auto chestSlotsFrame = frame->addFrame("chest slots");
@@ -29170,7 +29170,7 @@ void createChestGUI(const int player)
         chestSlotsFrame->setAllowScrollBinds(false);
         playerInventoryFrames[player].chestFrameSlots = chestSlotsFrame;
 
-        auto gridImg = chestSlotsFrame->addImage(SDL_Rect{baseSlotOffsetX, baseSlotOffsetY, 162, gridHeight * numGrids},
+        const auto gridImg = chestSlotsFrame->addImage(SDL_Rect{baseSlotOffsetX, baseSlotOffsetY, 162, gridHeight * numGrids},
                                                  makeColor(255, 255, 255, 32),
                                                  "*#images/ui/Inventory/HUD_Chest4x3_ScrollGrid.png", "grid img");
         gridImg->tiled = true;
@@ -29189,9 +29189,9 @@ void createChestGUI(const int player)
                 char slotname[32] = "";
                 snprintf(slotname, sizeof(slotname), "chest %d %d", x, y);
 
-                auto slotFrame = chestSlotsFrame->addFrame(slotname);
+                const auto slotFrame = chestSlotsFrame->addFrame(slotname);
                 players[player]->inventoryUI.chestSlotFrames[x + y * 100] = slotFrame;
-                SDL_Rect slotPos{currentSlotPos.x, currentSlotPos.y, inventorySlotSize, inventorySlotSize};
+                const SDL_Rect slotPos{currentSlotPos.x, currentSlotPos.y, inventorySlotSize, inventorySlotSize};
                 slotFrame->setSize(slotPos);
 
                 createPlayerInventorySlotFrameElements(slotFrame);
@@ -29764,8 +29764,8 @@ void createPlayerInventory(const int player)
             charFrame->setSize(charSize);
             charFrame->setTickCallback([](Widget& widget)
             {
-                auto frame = static_cast<Frame*>(&widget);
-                int player = widget.getOwner();
+                const auto frame = static_cast<Frame*>(&widget);
+                const int player = widget.getOwner();
                 auto& scrollInertia = players[player]->paperDoll.portraitRotationInertia;
                 auto& scrollPercent = players[player]->paperDoll.portraitRotationPercent;
                 auto& portraitYaw = players[player]->paperDoll.portraitYaw;
@@ -29823,7 +29823,7 @@ void createPlayerInventory(const int player)
                     if (Input::inputs[player].analog("InventoryCharacterRotateRight"))
                     {
                         scrollInertia = 0.0;
-                        real_t delta = Input::inputs[player].analog("InventoryCharacterRotateRight");
+                        const real_t delta = Input::inputs[player].analog("InventoryCharacterRotateRight");
                         scrollPercent = (scrollPercent + .05 * (getFPSScale(60.0)) * delta);
                         while (scrollPercent >= 1.0)
                         {
@@ -29833,7 +29833,7 @@ void createPlayerInventory(const int player)
                     else if (Input::inputs[player].analog("InventoryCharacterRotateLeft"))
                     {
                         scrollInertia = 0.0;
-                        real_t delta = Input::inputs[player].analog("InventoryCharacterRotateLeft");
+                        const real_t delta = Input::inputs[player].analog("InventoryCharacterRotateLeft");
                         scrollPercent = scrollPercent - .05 * (getFPSScale(60.0)) * delta;
                         while (scrollPercent < 0.0)
                         {
@@ -30645,7 +30645,7 @@ void Player::Inventory_t::activateItemContextMenuOption(Item* item, ItemContextM
     }
     if (prompt == PROMPT_APPRAISE)
     {
-        int prevAppraisedManual = players[player]->inventoryUI.appraisal.manual_appraised_item;
+        const int prevAppraisedManual = players[player]->inventoryUI.appraisal.manual_appraised_item;
         players[player]->inventoryUI.appraisal.appraiseItem(item);
         if (players[player]->inventoryUI.appraisal.current_item == item->uid)
         {
@@ -30689,18 +30689,18 @@ void Player::Inventory_t::activateItemContextMenuOption(Item* item, ItemContextM
                     }
                     int oldItemQty = 0;
                     int destItemQty = 0;
-                    int oldQty = item->count;
+                    const int oldQty = item->count;
                     item->count = 1;
-                    bool oldIdentify = item->identified;
+                    const bool oldIdentify = item->identified;
                     if (skillCapstoneUnlocked(player, PRO_APPRAISAL))
                     {
                         item->identified = true;
                     }
-                    auto result = getItemStackingBehavior(player, item, nullptr, oldItemQty, destItemQty);
+                    const auto result = getItemStackingBehavior(player, item, nullptr, oldItemQty, destItemQty);
                     item->identified = oldIdentify;
                     item->count = oldQty;
 
-                    int amountToPlace = 1;
+                    const int amountToPlace = 1;
                     switch (result.resultType)
                     {
                     case ITEM_ADDED_ENTIRELY_TO_DESTINATION_STACK:
@@ -30730,7 +30730,7 @@ void Player::Inventory_t::activateItemContextMenuOption(Item* item, ItemContextM
                             }
 
                             // operation success, can finish here.
-                            int amountToPlace = 1;
+                            const int amountToPlace = 1;
                             Item* inventoryItem = takeItemFromChest(player, item, amountToPlace, nullptr, true);
                             tryAddToInventory = false;
                             if (oldQty == 1)
@@ -30757,14 +30757,14 @@ void Player::Inventory_t::activateItemContextMenuOption(Item* item, ItemContextM
                     }
                     int oldItemQty = 0;
                     int destItemQty = 0;
-                    bool oldIdentify = item->identified;
+                    const bool oldIdentify = item->identified;
                     if (skillCapstoneUnlocked(player, PRO_APPRAISAL))
                     {
                         item->identified = true;
                     }
-                    auto result = getItemStackingBehavior(player, item, nullptr, oldItemQty, destItemQty);
+                    const auto result = getItemStackingBehavior(player, item, nullptr, oldItemQty, destItemQty);
                     item->identified = oldIdentify;
-                    int amountToPlace = item->count - oldItemQty;
+                    const int amountToPlace = item->count - oldItemQty;
                     assert(amountToPlace > 0);
                     if (amountToPlace <= 0)
                     {
@@ -30857,12 +30857,12 @@ void Player::Inventory_t::activateItemContextMenuOption(Item* item, ItemContextM
                         }
                         int oldItemQty = 0;
                         int destItemQty = 0;
-                        int oldQty = item->count;
+                        const int oldQty = item->count;
                         item->count = 1;
-                        auto result = getItemStackingBehaviorIntoChest(player, item, nullptr, oldItemQty, destItemQty);
+                        const auto result = getItemStackingBehaviorIntoChest(player, item, nullptr, oldItemQty, destItemQty);
                         item->count = oldQty;
 
-                        int amountToPlace = 1;
+                        const int amountToPlace = 1;
                         switch (result.resultType)
                         {
                         case ITEM_ADDED_ENTIRELY_TO_DESTINATION_STACK:
@@ -30893,7 +30893,7 @@ void Player::Inventory_t::activateItemContextMenuOption(Item* item, ItemContextM
                                 }
 
                                 // operation success, can finish here.
-                                int amountToPlace = 1;
+                                const int amountToPlace = 1;
                                 Item* itemInChest = openedChest[player]->addItemToChestFromInventory(
                                     player, item, amountToPlace, true, nullptr);
                                 tryAddToChest = false;
@@ -30921,8 +30921,8 @@ void Player::Inventory_t::activateItemContextMenuOption(Item* item, ItemContextM
                         }
                         int oldItemQty = 0;
                         int destItemQty = 0;
-                        auto result = getItemStackingBehaviorIntoChest(player, item, nullptr, oldItemQty, destItemQty);
-                        int amountToPlace = item->count - oldItemQty;
+                        const auto result = getItemStackingBehaviorIntoChest(player, item, nullptr, oldItemQty, destItemQty);
+                        const int amountToPlace = item->count - oldItemQty;
                         assert(amountToPlace > 0);
                         if (amountToPlace <= 0)
                         {
@@ -30968,7 +30968,7 @@ void Player::Inventory_t::activateItemContextMenuOption(Item* item, ItemContextM
                                     playSoundPlayer(player, 90, 64);
                                     break;
                                 }
-                                Item* itemInChest = openedChest[player]->addItemToChestFromInventory(
+                                const Item* itemInChest = openedChest[player]->addItemToChestFromInventory(
                                     player, item, amountToPlace, true, nullptr);
                                 if (!itemInChest)
                                 {
@@ -31283,7 +31283,7 @@ void Player::Hotbar_t::updateSelectedSlotAnimation(int destx, int desty, int wid
 {
     if (hotbarFrame)
     {
-        if (auto selectedSlotCursor = hotbarFrame->findFrame("shootmode selected item cursor"))
+        if (const auto selectedSlotCursor = hotbarFrame->findFrame("shootmode selected item cursor"))
         {
             if (usingMouse)
             {
@@ -31327,7 +31327,7 @@ void Player::Inventory_t::updateSelectedItemAnimation()
 
     if (frame)
     {
-        if (auto selectedSlotFrame = frame->findFrame("inventory selected item"))
+        if (const auto selectedSlotFrame = frame->findFrame("inventory selected item"))
         {
             selectedSlotFrame->setDisabled(true);
         }
@@ -31340,8 +31340,8 @@ void Player::Inventory_t::updateSelectedItemAnimation()
     if (inputs.getUIInteraction(player.playernum)->selectedItem)
     {
         const real_t fpsScale = getFPSScale(144.0);
-        real_t setpointDiffX = fpsScale * std::max(.05, (1.0 - selectedItemAnimate.animateX)) / (5);
-        real_t setpointDiffY = fpsScale * std::max(.05, (1.0 - selectedItemAnimate.animateY)) / (5);
+        const real_t setpointDiffX = fpsScale * std::max(.05, (1.0 - selectedItemAnimate.animateX)) / (5);
+        const real_t setpointDiffY = fpsScale * std::max(.05, (1.0 - selectedItemAnimate.animateY)) / (5);
         selectedItemAnimate.animateX += setpointDiffX;
         selectedItemAnimate.animateY += setpointDiffY;
         selectedItemAnimate.animateX = std::min(1.0, selectedItemAnimate.animateX);
@@ -31358,7 +31358,7 @@ void Player::Inventory_t::updateInventoryItemTooltip(Frame* parentFrame)
 {
     Frame* tooltipContainerFrame = nullptr;
     Frame* frameMain = nullptr;
-    Frame* frameInventory = nullptr;
+    const Frame* frameInventory = nullptr;
     Frame* titleOnlyFrame = nullptr;
     Frame* frameTooltipPrompt = nullptr;
     if (parentFrame)
@@ -31407,13 +31407,13 @@ void Player::Inventory_t::updateInventoryItemTooltip(Frame* parentFrame)
         const real_t fpsScale = getFPSScale(144.0);
         if (tooltipDisplay.opacitySetpoint == 0)
         {
-            real_t setpointDiff = fpsScale * std::max(.05, (tooltipDisplay.opacityAnimate)) / (5);
+            const real_t setpointDiff = fpsScale * std::max(.05, (tooltipDisplay.opacityAnimate)) / (5);
             tooltipDisplay.opacityAnimate -= setpointDiff;
             tooltipDisplay.opacityAnimate = std::max(0.0, tooltipDisplay.opacityAnimate);
         }
         else
         {
-            real_t setpointDiff = fpsScale * std::max(.05, (1.0 - tooltipDisplay.opacityAnimate)) / (1);
+            const real_t setpointDiff = fpsScale * std::max(.05, (1.0 - tooltipDisplay.opacityAnimate)) / (1);
             tooltipDisplay.opacityAnimate += setpointDiff;
             tooltipDisplay.opacityAnimate = std::min(1.0, tooltipDisplay.opacityAnimate);
         }
@@ -31429,13 +31429,13 @@ void Player::Inventory_t::updateInventoryItemTooltip(Frame* parentFrame)
         const real_t fpsScale = getFPSScale(144.0);
         if (tooltipDisplay.titleOnlyOpacitySetpoint == 0)
         {
-            real_t setpointDiff = fpsScale * std::max(.05, (tooltipDisplay.titleOnlyOpacityAnimate)) / (5);
+            const real_t setpointDiff = fpsScale * std::max(.05, (tooltipDisplay.titleOnlyOpacityAnimate)) / (5);
             tooltipDisplay.titleOnlyOpacityAnimate -= setpointDiff;
             tooltipDisplay.titleOnlyOpacityAnimate = std::max(0.0, tooltipDisplay.titleOnlyOpacityAnimate);
         }
         else
         {
-            real_t setpointDiff = fpsScale * std::max(.05, (1.0 - tooltipDisplay.titleOnlyOpacityAnimate)) / (1);
+            const real_t setpointDiff = fpsScale * std::max(.05, (1.0 - tooltipDisplay.titleOnlyOpacityAnimate)) / (1);
             tooltipDisplay.titleOnlyOpacityAnimate += setpointDiff;
             tooltipDisplay.titleOnlyOpacityAnimate = std::min(1.0, tooltipDisplay.titleOnlyOpacityAnimate);
         }
@@ -31469,7 +31469,7 @@ void Player::Inventory_t::updateInventoryItemTooltip(Frame* parentFrame)
             tooltipDisplay.expandAnimate += 2 * fpsScale / 100.0;
             tooltipDisplay.expandAnimate = std::min(1.0, tooltipDisplay.expandAnimate);
         }
-        double t = tooltipDisplay.expandAnimate;
+        const double t = tooltipDisplay.expandAnimate;
         tooltipDisplay.expandCurrent = t * t * (3.0f - 2.0f * t); // bezier from 0 to width as t (0-1);
     }
     else
@@ -31690,7 +31690,7 @@ void Player::Inventory_t::updateCursor()
         }
         else if (cursor.queuedModule == Player::GUI_t::MODULE_SHOP)
         {
-            auto& shopGUI = player.shopGUI;
+            const auto& shopGUI = player.shopGUI;
             if (!shopGUI.shopFrame
                 || shopGUI.shopFrame->isDisabled()
                 || player.inventory_mode != INVENTORY_MODE_ITEM
@@ -31707,7 +31707,7 @@ void Player::Inventory_t::updateCursor()
         }
         else if (cursor.queuedModule == Player::GUI_t::MODULE_TINKERING)
         {
-            auto& tinkerGUI = GenericGUI[player.playernum].tinkerGUI;
+            const auto& tinkerGUI = GenericGUI[player.playernum].tinkerGUI;
             if (!tinkerGUI.tinkerGUIHasBeenCreated()
                 || tinkerGUI.tinkerFrame->isDisabled()
                 || !tinkerGUI.isConstructMenuActive())
@@ -31728,7 +31728,7 @@ void Player::Inventory_t::updateCursor()
         }
         else if (cursor.queuedModule == Player::GUI_t::MODULE_ALCHEMY)
         {
-            auto& alchemyGUI = GenericGUI[player.playernum].alchemyGUI;
+            const auto& alchemyGUI = GenericGUI[player.playernum].alchemyGUI;
             if (!alchemyGUI.alchemyGUIHasBeenCreated()
                 || alchemyGUI.alchFrame->isDisabled())
             {
@@ -31743,7 +31743,7 @@ void Player::Inventory_t::updateCursor()
         }
         else if (cursor.queuedModule == Player::GUI_t::MODULE_MAILBOX)
         {
-            auto& mailboxGUI = GenericGUI[player.playernum].mailboxGUI;
+            const auto& mailboxGUI = GenericGUI[player.playernum].mailboxGUI;
             if (!mailboxGUI.mailGUIHasBeenCreated()
                 || mailboxGUI.mailFrame->isDisabled())
             {
@@ -31788,7 +31788,7 @@ void Player::Inventory_t::updateCursor()
         }
         else if (cursor.queuedModule == Player::GUI_t::MODULE_FEATHER)
         {
-            auto& featherGUI = GenericGUI[player.playernum].featherGUI;
+            const auto& featherGUI = GenericGUI[player.playernum].featherGUI;
             if (!featherGUI.featherGUIHasBeenCreated()
                 || featherGUI.featherFrame->isDisabled())
             {
@@ -31835,18 +31835,18 @@ void Player::Inventory_t::updateCursor()
         cursor.queuedModule = Player::GUI_t::MODULE_NONE;
     }
 
-    if (auto oldSelectedSlotCursor = frame->findFrame("inventory old item cursor"))
+    if (const auto oldSelectedSlotCursor = frame->findFrame("inventory old item cursor"))
     {
-        if (auto oldSelectedFrame = frame->findFrame("inventory old selected item"))
+        if (const auto oldSelectedFrame = frame->findFrame("inventory old selected item"))
         {
             oldSelectedSlotCursor->setDisabled(oldSelectedFrame->isDisabled());
 
             if (player.hotbar.hotbarFrame)
             {
-                if (auto highlight = oldSelectedFrame->findImage("inventory old selected highlight"))
+                if (const auto highlight = oldSelectedFrame->findImage("inventory old selected highlight"))
                 {
                     highlight->disabled = false;
-                    if (auto oldHotbarSelectedFrame = player.hotbar.hotbarFrame->findFrame("hotbar old selected item"))
+                    if (const auto oldHotbarSelectedFrame = player.hotbar.hotbarFrame->findFrame("hotbar old selected item"))
                     {
                         if (!oldHotbarSelectedFrame->isDisabled())
                         {
@@ -31864,27 +31864,27 @@ void Player::Inventory_t::updateCursor()
                 cursorSize.y = (oldSelectedFrame->getSize().y - 1) - cursor.cursorToSlotOffset;
                 oldSelectedSlotCursor->setSize(cursorSize);
 
-                int offset = 8; // ((ticks - cursor.lastUpdateTick) % 50 < 25) ? largeOffset : smallOffset;
+                const int offset = 8; // ((ticks - cursor.lastUpdateTick) % 50 < 25) ? largeOffset : smallOffset;
 
                 Uint8 r, g, b, a;
-                if (auto tl = oldSelectedSlotCursor->findImage("inventory old cursor topleft"))
+                if (const auto tl = oldSelectedSlotCursor->findImage("inventory old cursor topleft"))
                 {
                     tl->pos = SDL_Rect{offset, offset, tl->pos.w, tl->pos.h};
                     getColor(tl->color, &r, &g, &b, &a);
                     a = oldSelectedCursorOpacity;
                     tl->color = makeColor(r, g, b, a);
                 }
-                if (auto tr = oldSelectedSlotCursor->findImage("inventory old cursor topright"))
+                if (const auto tr = oldSelectedSlotCursor->findImage("inventory old cursor topright"))
                 {
                     tr->pos = SDL_Rect{-offset + cursorSize.w - tr->pos.w, offset, tr->pos.w, tr->pos.h};
                     tr->color = makeColor(r, g, b, a);
                 }
-                if (auto bl = oldSelectedSlotCursor->findImage("inventory old cursor bottomleft"))
+                if (const auto bl = oldSelectedSlotCursor->findImage("inventory old cursor bottomleft"))
                 {
                     bl->pos = SDL_Rect{offset, -offset + cursorSize.h - bl->pos.h, bl->pos.w, bl->pos.h};
                     bl->color = makeColor(r, g, b, a);
                 }
-                if (auto br = oldSelectedSlotCursor->findImage("inventory old cursor bottomright"))
+                if (const auto br = oldSelectedSlotCursor->findImage("inventory old cursor bottomright"))
                 {
                     br->pos = SDL_Rect{
                         -offset + cursorSize.w - br->pos.w, -offset + cursorSize.h - br->pos.h, br->pos.w, br->pos.h
@@ -31897,7 +31897,7 @@ void Player::Inventory_t::updateCursor()
 
     if (selectedItemCursorFrame)
     {
-        SDL_Rect cursorSize = selectedItemCursorFrame->getSize();
+        const SDL_Rect cursorSize = selectedItemCursorFrame->getSize();
 
         const int smallOffset = 2;
         const int largeOffset = 4;
@@ -31919,24 +31919,24 @@ void Player::Inventory_t::updateCursor()
         }
 
         Uint8 r, g, b, a;
-        if (auto tl = selectedItemCursorFrame->findImage("inventory selected cursor topleft"))
+        if (const auto tl = selectedItemCursorFrame->findImage("inventory selected cursor topleft"))
         {
             tl->pos = SDL_Rect{offset, offset, tl->pos.w, tl->pos.h};
             getColor(tl->color, &r, &g, &b, &a);
             a = selectedCursorOpacity;
             tl->color = makeColor(r, g, b, a);
         }
-        if (auto tr = selectedItemCursorFrame->findImage("inventory selected cursor topright"))
+        if (const auto tr = selectedItemCursorFrame->findImage("inventory selected cursor topright"))
         {
             tr->pos = SDL_Rect{-offset + cursorSize.w - tr->pos.w, offset, tr->pos.w, tr->pos.h};
             tr->color = makeColor(r, g, b, a);
         }
-        if (auto bl = selectedItemCursorFrame->findImage("inventory selected cursor bottomleft"))
+        if (const auto bl = selectedItemCursorFrame->findImage("inventory selected cursor bottomleft"))
         {
             bl->pos = SDL_Rect{offset, -offset + cursorSize.h - bl->pos.h, bl->pos.w, bl->pos.h};
             bl->color = makeColor(r, g, b, a);
         }
-        if (auto br = selectedItemCursorFrame->findImage("inventory selected cursor bottomright"))
+        if (const auto br = selectedItemCursorFrame->findImage("inventory selected cursor bottomright"))
         {
             br->pos = SDL_Rect{
                 -offset + cursorSize.w - br->pos.w, -offset + cursorSize.h - br->pos.h, br->pos.w, br->pos.h
@@ -31950,15 +31950,15 @@ void Player::Inventory_t::updateCursor()
             || cursor.animateSetpointY - offsetPosition != currentPos.y)
         {
             const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-            real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - cursor.animateX)) / (2.5);
-            real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - cursor.animateY)) / (2.5);
+            const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - cursor.animateX)) / (2.5);
+            const real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - cursor.animateY)) / (2.5);
             cursor.animateX += setpointDiffX;
             cursor.animateY += setpointDiffY;
             cursor.animateX = std::min(1.0, cursor.animateX);
             cursor.animateY = std::min(1.0, cursor.animateY);
 
-            int destX = cursor.animateSetpointX - cursor.animateStartX - offsetPosition;
-            int destY = cursor.animateSetpointY - cursor.animateStartY - offsetPosition;
+            const int destX = cursor.animateSetpointX - cursor.animateStartX - offsetPosition;
+            const int destY = cursor.animateSetpointY - cursor.animateStartY - offsetPosition;
 
             currentPos.x = cursor.animateStartX + destX * cursor.animateX;
             currentPos.y = cursor.animateStartY + destY * cursor.animateY;
@@ -31972,7 +31972,7 @@ void Player::HUD_t::updateCursorAnimation(int destx, int desty, int width, int h
 {
     if (cursorFrame)
     {
-        if (auto hudCursor = cursorFrame->findFrame("hud cursor"))
+        if (const auto hudCursor = cursorFrame->findFrame("hud cursor"))
         {
             if (usingMouse)
             {
@@ -31999,7 +31999,7 @@ void Player::HUD_t::updateCursorAnimation(int destx, int desty, int width, int h
                 || cursor.animateSetpointW != width + 2 * (cursor.cursorToSlotOffset + 1)
                 || cursor.animateSetpointH != height + 2 * (cursor.cursorToSlotOffset + 1))
             {
-                SDL_Rect size = hudCursor->getSize();
+                const SDL_Rect size = hudCursor->getSize();
                 cursor.animateStartX = size.x;
                 cursor.animateStartY = size.y;
                 cursor.animateStartW = size.w;
@@ -32033,10 +32033,10 @@ void Player::HUD_t::updateCursor()
         cursorFrame->setBorder(0);
         cursorFrame->setOwner(player.playernum);
 
-        auto cursor = cursorFrame->addFrame("hud cursor");
+        const auto cursor = cursorFrame->addFrame("hud cursor");
         cursor->setHollow(true);
         cursor->setSize(SDL_Rect{0, 0, 0, 0});
-        Uint32 color = makeColor(255, 255, 255, selectedCursorOpacity);
+        const Uint32 color = makeColor(255, 255, 255, selectedCursorOpacity);
         cursor->addImage(SDL_Rect{0, 0, 14, 14},
                          color, "*#images/ui/Inventory/Selector_TL.png", "hud cursor topleft");
         cursor->addImage(SDL_Rect{0, 0, 14, 14},
@@ -32067,9 +32067,9 @@ void Player::HUD_t::updateCursor()
         cursorFrame->setDisabled(false);
     }
 
-    if (auto hudCursor = cursorFrame->findFrame("hud cursor"))
+    if (const auto hudCursor = cursorFrame->findFrame("hud cursor"))
     {
-        SDL_Rect cursorSize = hudCursor->getSize();
+        const SDL_Rect cursorSize = hudCursor->getSize();
         const int smallOffset = 2;
         const int largeOffset = 4;
 
@@ -32089,24 +32089,24 @@ void Player::HUD_t::updateCursor()
         }
 
         Uint8 r, g, b, a;
-        if (auto tl = hudCursor->findImage("hud cursor topleft"))
+        if (const auto tl = hudCursor->findImage("hud cursor topleft"))
         {
             tl->pos = SDL_Rect{offset, offset, tl->pos.w, tl->pos.h};
             getColor(tl->color, &r, &g, &b, &a);
             a = selectedCursorOpacity;
             tl->color = makeColor(r, g, b, a);
         }
-        if (auto tr = hudCursor->findImage("hud cursor topright"))
+        if (const auto tr = hudCursor->findImage("hud cursor topright"))
         {
             tr->pos = SDL_Rect{-offset + cursorSize.w - tr->pos.w, offset, tr->pos.w, tr->pos.h};
             tr->color = makeColor(r, g, b, a);
         }
-        if (auto bl = hudCursor->findImage("hud cursor bottomleft"))
+        if (const auto bl = hudCursor->findImage("hud cursor bottomleft"))
         {
             bl->pos = SDL_Rect{offset, -offset + cursorSize.h - bl->pos.h, bl->pos.w, bl->pos.h};
             bl->color = makeColor(r, g, b, a);
         }
-        if (auto br = hudCursor->findImage("hud cursor bottomright"))
+        if (const auto br = hudCursor->findImage("hud cursor bottomright"))
         {
             br->pos = SDL_Rect{
                 -offset + cursorSize.w - br->pos.w, -offset + cursorSize.h - br->pos.h, br->pos.w, br->pos.h
@@ -32122,10 +32122,10 @@ void Player::HUD_t::updateCursor()
             || cursor.animateSetpointH != currentPos.h)
         {
             const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-            real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - cursor.animateX)) / (2.5);
-            real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - cursor.animateY)) / (2.5);
-            real_t setpointDiffW = fpsScale * std::max(.1, (1.0 - cursor.animateW)) / (2.5);
-            real_t setpointDiffH = fpsScale * std::max(.1, (1.0 - cursor.animateH)) / (2.5);
+            const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - cursor.animateX)) / (2.5);
+            const real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - cursor.animateY)) / (2.5);
+            const real_t setpointDiffW = fpsScale * std::max(.1, (1.0 - cursor.animateW)) / (2.5);
+            const real_t setpointDiffH = fpsScale * std::max(.1, (1.0 - cursor.animateH)) / (2.5);
             cursor.animateX += setpointDiffX;
             cursor.animateY += setpointDiffY;
             cursor.animateX = std::min(1.0, cursor.animateX);
@@ -32135,10 +32135,10 @@ void Player::HUD_t::updateCursor()
             cursor.animateW = std::min(1.0, cursor.animateW);
             cursor.animateH = std::min(1.0, cursor.animateH);
 
-            int destX = cursor.animateSetpointX - cursor.animateStartX - offsetPosition;
-            int destY = cursor.animateSetpointY - cursor.animateStartY - offsetPosition;
-            int destW = cursor.animateSetpointW - cursor.animateStartW;
-            int destH = cursor.animateSetpointH - cursor.animateStartH;
+            const int destX = cursor.animateSetpointX - cursor.animateStartX - offsetPosition;
+            const int destY = cursor.animateSetpointY - cursor.animateStartY - offsetPosition;
+            const int destW = cursor.animateSetpointW - cursor.animateStartW;
+            const int destH = cursor.animateSetpointH - cursor.animateStartH;
 
             currentPos.x = cursor.animateStartX + destX * cursor.animateX;
             currentPos.y = cursor.animateStartY + destY * cursor.animateY;
@@ -32161,9 +32161,9 @@ void Player::Hotbar_t::updateCursor()
         return;
     }
 
-    if (auto oldSelectedSlotCursor = hotbarFrame->findFrame("hotbar old item cursor"))
+    if (const auto oldSelectedSlotCursor = hotbarFrame->findFrame("hotbar old item cursor"))
     {
-        if (auto oldSelectedFrame = hotbarFrame->findFrame("hotbar old selected item"))
+        if (const auto oldSelectedFrame = hotbarFrame->findFrame("hotbar old selected item"))
         {
             oldSelectedSlotCursor->setDisabled(oldSelectedFrame->isDisabled());
 
@@ -32174,28 +32174,28 @@ void Player::Hotbar_t::updateCursor()
                 cursorSize.y = (oldSelectedFrame->getSize().y - 1) - shootmodeCursor.cursorToSlotOffset;
                 oldSelectedSlotCursor->setSize(cursorSize);
 
-                int offset = 8;
+                const int offset = 8;
                 // ((ticks - shootmodeCursor.lastUpdateTick) % TICKS_PER_SECOND < 25) ? largeOffset : smallOffset;
 
                 Uint8 r, g, b, a;
-                if (auto tl = oldSelectedSlotCursor->findImage("hotbar old cursor topleft"))
+                if (const auto tl = oldSelectedSlotCursor->findImage("hotbar old cursor topleft"))
                 {
                     tl->pos = SDL_Rect{offset, offset, tl->pos.w, tl->pos.h};
                     getColor(tl->color, &r, &g, &b, &a);
                     a = oldSelectedCursorOpacity;
                     tl->color = makeColor(r, g, b, a);
                 }
-                if (auto tr = oldSelectedSlotCursor->findImage("hotbar old cursor topright"))
+                if (const auto tr = oldSelectedSlotCursor->findImage("hotbar old cursor topright"))
                 {
                     tr->pos = SDL_Rect{-offset + cursorSize.w - tr->pos.w, offset, tr->pos.w, tr->pos.h};
                     tr->color = makeColor(r, g, b, a);
                 }
-                if (auto bl = oldSelectedSlotCursor->findImage("hotbar old cursor bottomleft"))
+                if (const auto bl = oldSelectedSlotCursor->findImage("hotbar old cursor bottomleft"))
                 {
                     bl->pos = SDL_Rect{offset, -offset + cursorSize.h - bl->pos.h, bl->pos.w, bl->pos.h};
                     bl->color = makeColor(r, g, b, a);
                 }
-                if (auto br = oldSelectedSlotCursor->findImage("hotbar old cursor bottomright"))
+                if (const auto br = oldSelectedSlotCursor->findImage("hotbar old cursor bottomright"))
                 {
                     br->pos = SDL_Rect{
                         -offset + cursorSize.w - br->pos.w, -offset + cursorSize.h - br->pos.h, br->pos.w, br->pos.h
@@ -32206,9 +32206,9 @@ void Player::Hotbar_t::updateCursor()
         }
     }
 
-    if (auto selectedSlotCursor = hotbarFrame->findFrame("shootmode selected item cursor"))
+    if (const auto selectedSlotCursor = hotbarFrame->findFrame("shootmode selected item cursor"))
     {
-        SDL_Rect cursorSize = selectedSlotCursor->getSize();
+        const SDL_Rect cursorSize = selectedSlotCursor->getSize();
 
         const int smallOffset = 2;
         const int largeOffset = 4;
@@ -32229,24 +32229,24 @@ void Player::Hotbar_t::updateCursor()
         }
 
         Uint8 r, g, b, a;
-        if (auto tl = selectedSlotCursor->findImage("shootmode selected cursor topleft"))
+        if (const auto tl = selectedSlotCursor->findImage("shootmode selected cursor topleft"))
         {
             tl->pos = SDL_Rect{offset, offset, tl->pos.w, tl->pos.h};
             getColor(tl->color, &r, &g, &b, &a);
             a = selectedCursorOpacity;
             tl->color = makeColor(r, g, b, a);
         }
-        if (auto tr = selectedSlotCursor->findImage("shootmode selected cursor topright"))
+        if (const auto tr = selectedSlotCursor->findImage("shootmode selected cursor topright"))
         {
             tr->pos = SDL_Rect{-offset + cursorSize.w - tr->pos.w, offset, tr->pos.w, tr->pos.h};
             tr->color = makeColor(r, g, b, a);
         }
-        if (auto bl = selectedSlotCursor->findImage("shootmode selected cursor bottomleft"))
+        if (const auto bl = selectedSlotCursor->findImage("shootmode selected cursor bottomleft"))
         {
             bl->pos = SDL_Rect{offset, -offset + cursorSize.h - bl->pos.h, bl->pos.w, bl->pos.h};
             bl->color = makeColor(r, g, b, a);
         }
-        if (auto br = selectedSlotCursor->findImage("shootmode selected cursor bottomright"))
+        if (const auto br = selectedSlotCursor->findImage("shootmode selected cursor bottomright"))
         {
             br->pos = SDL_Rect{
                 -offset + cursorSize.w - br->pos.w, -offset + cursorSize.h - br->pos.h, br->pos.w, br->pos.h
@@ -32261,15 +32261,15 @@ void Player::Hotbar_t::updateCursor()
         {
             auto& cursor = shootmodeCursor;
             const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-            real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - cursor.animateX)) / (2.5);
-            real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - cursor.animateY)) / (2.5);
+            const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - cursor.animateX)) / (2.5);
+            const real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - cursor.animateY)) / (2.5);
             cursor.animateX += setpointDiffX;
             cursor.animateY += setpointDiffY;
             cursor.animateX = std::min(1.0, cursor.animateX);
             cursor.animateY = std::min(1.0, cursor.animateY);
 
-            int destX = cursor.animateSetpointX - cursor.animateStartX - offsetPosition;
-            int destY = cursor.animateSetpointY - cursor.animateStartY - offsetPosition;
+            const int destX = cursor.animateSetpointX - cursor.animateStartX - offsetPosition;
+            const int destY = cursor.animateSetpointY - cursor.animateStartY - offsetPosition;
 
             currentPos.x = cursor.animateStartX + destX * cursor.animateX;
             currentPos.y = cursor.animateStartY + destY * cursor.animateY;
@@ -32307,7 +32307,7 @@ void Player::Inventory_t::processInventory()
         players[player.playernum]->camera_virtualHeight()
     });
 
-    bool tooltipWasDisabled = tooltipFrame->isDisabled();
+    const bool tooltipWasDisabled = tooltipFrame->isDisabled();
 
     updateInventory();
 
@@ -32398,10 +32398,10 @@ void Player::HUD_t::updateMinimapPrompts()
         return;
     }
 
-    int maxHeight1 = 0;
+    const int maxHeight1 = 0;
     int maxHeight2 = 0;
-    auto imgPromptFrame = mapPromptFrame->findFrame("img prompt frame");
-    auto scalePrompt = imgPromptFrame->findImage("scale prompt");
+    const auto imgPromptFrame = mapPromptFrame->findFrame("img prompt frame");
+    const auto scalePrompt = imgPromptFrame->findImage("scale prompt");
     scalePrompt->path = Input::inputs[player.playernum].getGlyphPathForBinding("Minimap Scale");
     scalePrompt->disabled = true;
     /*if ( auto imgGet = Image::get(scalePrompt->path.c_str()) )
@@ -32411,7 +32411,7 @@ void Player::HUD_t::updateMinimapPrompts()
         maxHeight1 = std::max(maxHeight1, scalePrompt->pos.h);
         scalePrompt->disabled = false;
     }*/
-    auto scaleImg = imgPromptFrame->findImage("scale img");
+    const auto scaleImg = imgPromptFrame->findImage("scale img");
     scaleImg->disabled = true;
     /*if ( !scalePrompt->disabled )
     {
@@ -32423,21 +32423,21 @@ void Player::HUD_t::updateMinimapPrompts()
             scaleImg->disabled = false;
         }
     }*/
-    auto expandPrompt = imgPromptFrame->findImage("expand prompt");
+    const auto expandPrompt = imgPromptFrame->findImage("expand prompt");
     expandPrompt->disabled = true;
     expandPrompt->path = Input::inputs[player.playernum].getGlyphPathForBinding("Toggle Minimap");
-    if (auto imgGet = Image::get(expandPrompt->path.c_str()))
+    if (const auto imgGet = Image::get(expandPrompt->path.c_str()))
     {
         expandPrompt->pos.w = imgGet->getWidth();
         expandPrompt->pos.h = imgGet->getHeight();
         maxHeight2 = std::max(maxHeight2, expandPrompt->pos.h);
         expandPrompt->disabled = false;
     }
-    auto expandImg = imgPromptFrame->findImage("expand img");
+    const auto expandImg = imgPromptFrame->findImage("expand img");
     expandImg->disabled = true;
     if (!expandPrompt->disabled)
     {
-        if (auto imgGet = Image::get(expandImg->path.c_str()))
+        if (const auto imgGet = Image::get(expandImg->path.c_str()))
         {
             expandImg->pos.w = imgGet->getWidth();
             expandImg->pos.h = imgGet->getHeight();
@@ -32462,13 +32462,13 @@ void Player::HUD_t::updateMinimapPrompts()
         return;
     }
 
-    bool alignHorizontal = !*cvar_minimap_prompt_vertical;
+    const bool alignHorizontal = !*cvar_minimap_prompt_vertical;
     int imgX = -2;
     int index = -1;
     int lowestY = 0;
     int rightX = 0;
 
-    for (auto img : imgs)
+    for (const auto img : imgs)
     {
         ++index;
         if (img->disabled)
@@ -32528,7 +32528,7 @@ void Player::HUD_t::updateMinimapPrompts()
 
     mapPromptFrame->setDisabled(false);
 
-    auto promptBg = mapPromptFrame->findImage("prompt bg");
+    const auto promptBg = mapPromptFrame->findImage("prompt bg");
     promptBg->disabled = true;
 
     SDL_Rect pos = mapPromptFrame->getSize();
@@ -32536,7 +32536,7 @@ void Player::HUD_t::updateMinimapPrompts()
     {
         if (alignHorizontal)
         {
-            if (auto imgGet = Image::get(promptBg->path.c_str()))
+            if (const auto imgGet = Image::get(promptBg->path.c_str()))
             {
                 if (imgs.size() > 2)
                 {
@@ -32644,12 +32644,12 @@ void Player::HUD_t::updateGameTimer()
     timerText->setSize(timerTextPos);
 
     char buf[64] = "";
-    Uint32 sec = (completionTime / TICKS_PER_SECOND) % 60;
-    Uint32 min = ((completionTime / TICKS_PER_SECOND) / 60) % 60;
-    Uint32 hour = (((completionTime / TICKS_PER_SECOND) / 60) / 60) % 24;
-    Uint32 day = ((completionTime / TICKS_PER_SECOND) / 60) / 60 / 24;
+    const Uint32 sec = (completionTime / TICKS_PER_SECOND) % 60;
+    const Uint32 min = ((completionTime / TICKS_PER_SECOND) / 60) % 60;
+    const Uint32 hour = (((completionTime / TICKS_PER_SECOND) / 60) / 60) % 24;
+    const Uint32 day = ((completionTime / TICKS_PER_SECOND) / 60) / 60 / 24;
 
-    auto seed = gameTimerFrame->findField("seed txt");
+    const auto seed = gameTimerFrame->findField("seed txt");
     seed->setDisabled(true);
     if (*cvar_showmapseed)
     {
@@ -32669,7 +32669,7 @@ void Player::HUD_t::updateGameTimer()
 
     if (player.hud.mapPromptFrame && !player.hud.mapPromptFrame->isDisabled())
     {
-        SDL_Rect mapPromptPos = player.hud.mapPromptFrame->getSize();
+        const SDL_Rect mapPromptPos = player.hud.mapPromptFrame->getSize();
         pos.y = mapPromptPos.y + mapPromptPos.h / 2 - pos.h / 2;
         pos.x = mapPromptPos.x - pos.w - 4;
         if (splitscreen && (player.bUseCompactGUIHeight() || player.bUseCompactGUIWidth()))
@@ -33433,8 +33433,8 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
         return nullptr;
     }
 
-    auto baseBg = frame->findImage("base img");
-    auto baseEndCap = frame->findImage("base img endcap");
+    const auto baseBg = frame->findImage("base img");
+    const auto baseEndCap = frame->findImage("base img endcap");
     real_t frameOpacity = frame->getOpacity() / 100.0;
     frameOpacity = 1.0;
     /*if ( EnemyHPDamageBarHandler::bEnemyBarSimpleBlit )
@@ -33442,18 +33442,18 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
         frameOpacity = 1.0;
     }*/
 
-    auto foregroundFrame = frame->findFrame("bar progress frame");
-    auto hpProgress = foregroundFrame->findImage("progress img");
+    const auto foregroundFrame = frame->findFrame("bar progress frame");
+    const auto hpProgress = foregroundFrame->findImage("progress img");
     auto hpProgressEndcap = foregroundFrame->findImage("progress img endcap");
 
-    auto dmgFrame = frame->findFrame("bar dmg frame");
-    auto dmgProgress = dmgFrame->findImage("dmg img");
+    const auto dmgFrame = frame->findFrame("bar dmg frame");
+    const auto dmgProgress = dmgFrame->findImage("dmg img");
     auto dmgEndCap = dmgFrame->findImage("dmg img endcap");
 
-    auto nameField = frame->findField("enemy name txt");
+    const auto nameField = frame->findField("enemy name txt");
 
-    auto skullFrame = frame->findFrame("skull frame");
-    int totalWidth = baseBg->pos.x + baseBg->pos.w + baseEndCap->pos.w;
+    const auto skullFrame = frame->findFrame("skull frame");
+    const int totalWidth = baseBg->pos.x + baseBg->pos.w + baseEndCap->pos.w;
     int totalHeight = frame->getSize().h;
     int statusEffectOffsetY = 0;
 
@@ -33491,9 +33491,9 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
 
     SDL_Surface* sprite = SDL_CreateRGBSurface(0, totalWidth, totalHeight, 32,
                                                0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-    for (auto& img : frame->getImages())
+    for (const auto& img : frame->getImages())
     {
-        auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+        const auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
         Uint8 r, g, b, a;
         getColor(img->color, &r, &g, &b, &a);
         SDL_SetSurfaceAlphaMod(srcSurf, a * frameOpacity);
@@ -33502,9 +33502,9 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
         pos.y += statusEffectOffsetY;
         SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
     }
-    for (auto& img : dmgFrame->getImages())
+    for (const auto& img : dmgFrame->getImages())
     {
-        auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+        const auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
         Uint8 r, g, b, a;
         getColor(img->color, &r, &g, &b, &a);
         if (EnemyHPDamageBarHandler::bEnemyBarSimpleBlit && a < 255) { continue; }
@@ -33516,9 +33516,9 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
         pos.y += statusEffectOffsetY;
         SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
     }
-    for (auto& img : foregroundFrame->getImages())
+    for (const auto& img : foregroundFrame->getImages())
     {
-        auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+        const auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
         Uint8 r, g, b, a;
         getColor(img->color, &r, &g, &b, &a);
         SDL_SetSurfaceAlphaMod(srcSurf, a * frameOpacity);
@@ -33529,9 +33529,9 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
         pos.y += statusEffectOffsetY;
         SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
     }
-    for (auto& img : skullFrame->getImages())
+    for (const auto& img : skullFrame->getImages())
     {
-        auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
+        const auto srcSurf = const_cast<SDL_Surface*>(Image::get(img->path.c_str())->getSurf());
         Uint8 r, g, b, a;
         getColor(img->color, &r, &g, &b, &a);
         if (EnemyHPDamageBarHandler::bEnemyBarSimpleBlit && a < 255) { continue; }
@@ -33542,11 +33542,11 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
         pos.y += statusEffectOffsetY;
         SDL_BlitScaled(srcSurf, nullptr, sprite, &pos);
     }
-    for (auto& txt : frame->getFields())
+    for (const auto& txt : frame->getFields())
     {
-        auto textGet = Text::get(txt->getText(), txt->getFont(),
+        const auto textGet = Text::get(txt->getText(), txt->getFont(),
                                  makeColor(255, 255, 255, 255), makeColor(0, 0, 0, 255));
-        auto txtSurf = const_cast<SDL_Surface*>(textGet->getSurf());
+        const auto txtSurf = const_cast<SDL_Surface*>(textGet->getSurf());
         SDL_Rect pos;
         pos.w = textGet->getWidth();
         pos.h = textGet->getHeight();
@@ -33560,7 +33560,7 @@ SDL_Surface* EnemyHPDamageBarHandler::EnemyHPDetails::blitEnemyBar(const int pla
     }
     if (statusEffectSprite)
     {
-        int status_x = (sprite->w / 2) - (statusEffectSprite->w / 2);
+        const int status_x = (sprite->w / 2) - (statusEffectSprite->w / 2);
         SDL_Rect pos{status_x, 0, statusEffectSprite->w, statusEffectSprite->h};
         SDL_BlitSurface(statusEffectSprite, nullptr, sprite, &pos);
     }
@@ -34964,7 +34964,7 @@ void Player::HUD_t::updateHPBar()
     }
 
     bool bCompactWidth = false;
-    bool bCompactHeight = player.bUseCompactGUIHeight();
+    const bool bCompactHeight = player.bUseCompactGUIHeight();
     if (player.bUseCompactGUIWidth() || (keystatus[SDLK_t] && enableDebugKeys))
     {
         bCompactWidth = true;
@@ -34986,29 +34986,29 @@ void Player::HUD_t::updateHPBar()
     pos.y -= player.hud.offsetHUDAboveHotbarHeight;
     hpFrame->setSize(pos);
 
-    auto hpForegroundFrame = hpFrame->findFrame("hp foreground frame");
+    const auto hpForegroundFrame = hpFrame->findFrame("hp foreground frame");
     {
         auto _pos = hpForegroundFrame->getSize();
         _pos.w = pos.w;
         hpForegroundFrame->setSize(_pos);
     }
-    auto hpBg = hpFrame->findImage("hp img base");
-    auto hpEndcap = hpForegroundFrame->findImage("hp img endcap");
-    auto hpProgressBot = hpForegroundFrame->findImage("hp img progress bot");
-    auto hpProgress = hpForegroundFrame->findImage("hp img progress");
-    auto hpProgressEndCap = hpForegroundFrame->findImage("hp img progress endcap");
-    auto hpFadeFrame = hpFrame->findFrame("hp fade frame");
+    const auto hpBg = hpFrame->findImage("hp img base");
+    const auto hpEndcap = hpForegroundFrame->findImage("hp img endcap");
+    const auto hpProgressBot = hpForegroundFrame->findImage("hp img progress bot");
+    const auto hpProgress = hpForegroundFrame->findImage("hp img progress");
+    const auto hpProgressEndCap = hpForegroundFrame->findImage("hp img progress endcap");
+    const auto hpFadeFrame = hpFrame->findFrame("hp fade frame");
     {
         auto _pos = hpFadeFrame->getSize();
         _pos.w = pos.w;
         hpFadeFrame->setSize(_pos);
     }
-    auto hpFadedBase = hpFadeFrame->findImage("hp img fade bot");
-    auto hpFaded = hpFadeFrame->findImage("hp img fade");
-    auto hpFadedEndCap = hpFadeFrame->findImage("hp img fade endcap");
+    const auto hpFadedBase = hpFadeFrame->findImage("hp img fade bot");
+    const auto hpFaded = hpFadeFrame->findImage("hp img fade");
+    const auto hpFadedEndCap = hpFadeFrame->findImage("hp img fade endcap");
 
     real_t progressWidth = hpFrame->getSize().w - 74;
-    int backgroundWidth = hpFrame->getSize().w - 54;
+    const int backgroundWidth = hpFrame->getSize().w - 54;
 
     // handle bar size changing
     {
@@ -35018,18 +35018,18 @@ void Player::HUD_t::updateHPBar()
         {
             // start at 30%, increase 2.5% every 5 HP past 20 MAXHP
             multiplier = (bCompactWidth ? hpmpbarCompactBasePercentSize : hpmpbarBasePercentSize) / 100.0;
-            real_t widthIntervalPercent = (bCompactWidth
+            const real_t widthIntervalPercent = (bCompactWidth
                                                ? hpmpbarCompactWidthIncreasePercentOnInterval
                                                : hpmpbarWidthIncreasePercentOnInterval) / 100.0;
-            int intervalThreshold = (bCompactWidth
+            const int intervalThreshold = (bCompactWidth
                                          ? hpmpbarCompactIntervalToIncreaseWidth
                                          : hpmpbarIntervalToIncreaseWidth);
-            int baseIntervalStart = (bCompactWidth ? hpmpbarCompactIntervalStartValue : hpmpbarIntervalStartValue);
+            const int baseIntervalStart = (bCompactWidth ? hpmpbarCompactIntervalStartValue : hpmpbarIntervalStartValue);
             multiplier += (widthIntervalPercent * ((std::max(0, stats[player.playernum]->MAXHP - baseIntervalStart) /
                 intervalThreshold)));
         }
 
-        int diff = static_cast<int>(std::max(0.0, progressWidth - progressWidth * multiplier));
+        const int diff = static_cast<int>(std::max(0.0, progressWidth - progressWidth * multiplier));
         // how many pixels the progress bar shrinks
         progressWidth *= multiplier; // scale the progress bars
         hpBg->pos.w = backgroundWidth - diff; // move the background bar by x pixels as above
@@ -35070,8 +35070,8 @@ void Player::HUD_t::updateHPBar()
             HPBar.flashType = FLASH_ON_RECOVERY;
         }*/
 
-        real_t setpointDiff = std::max(0.0, HPBar.animateSetpoint - hpForegroundValue);
-        real_t fpsScale = getFPSScale(144.0);
+        const real_t setpointDiff = std::max(0.0, HPBar.animateSetpoint - hpForegroundValue);
+        const real_t fpsScale = getFPSScale(144.0);
         hpForegroundValue += fpsScale * (setpointDiff / 20.0); // reach it in 20 intervals, scaled to FPS
         hpForegroundValue = std::min(static_cast<real_t>(HPBar.animateSetpoint), hpForegroundValue);
 
@@ -35106,8 +35106,8 @@ void Player::HUD_t::updateHPBar()
     {
         if (ticks - HPBar.animateTicks > 30 /*|| stats[player.playernum]->HP <= 0*/) // fall after x ticks
         {
-            real_t setpointDiff = std::max(0.01, hpFadedValue - HPBar.animateSetpoint);
-            real_t fpsScale = getFPSScale(144.0);
+            const real_t setpointDiff = std::max(0.01, hpFadedValue - HPBar.animateSetpoint);
+            const real_t fpsScale = getFPSScale(144.0);
             hpFadedValue -= fpsScale * (setpointDiff / 20.0); // reach it in 20 intervals, scaled to FPS
             hpFadedValue = std::max(static_cast<real_t>(HPBar.animateSetpoint), hpFadedValue);
         }
@@ -35120,21 +35120,21 @@ void Player::HUD_t::updateHPBar()
     char playerHPText[16];
     snprintf(playerHPText, sizeof(playerHPText), "%d", stats[player.playernum]->HP);
 
-    auto hpText = hpForegroundFrame->findField("hp text");
+    const auto hpText = hpForegroundFrame->findField("hp text");
     hpText->setText(playerHPText);
 
-    real_t foregroundPercent = hpForegroundValue / HPBar.maxValue;
+    const real_t foregroundPercent = hpForegroundValue / HPBar.maxValue;
     hpProgress->pos.w = std::max(1, static_cast<int>((progressWidth) * foregroundPercent));
     hpProgressEndCap->pos.x = hpProgress->pos.x + hpProgress->pos.w;
 
-    real_t fadePercent = hpFadedValue / HPBar.maxValue;
+    const real_t fadePercent = hpFadedValue / HPBar.maxValue;
     hpFaded->pos.w = std::max(1, static_cast<int>((progressWidth) * fadePercent));
     hpFadedEndCap->pos.x = hpFaded->pos.x + hpFaded->pos.w;
     if (hpFaded->pos.w == 1 && stats[player.playernum]->HP <= 0)
     {
         hpFaded->disabled = true;
-        real_t opacity = hpFadeFrame->getOpacity();
-        real_t opacityChange = .5 * getFPSScale(144.0); // change by .05% independant of fps
+        const real_t opacity = hpFadeFrame->getOpacity();
+        const real_t opacityChange = .5 * getFPSScale(144.0); // change by .05% independant of fps
         hpFadeFrame->setOpacity(std::max(0.0, opacity - opacityChange));
 
         // make this element fade out to the left, starting 54px then finally at 40px. @ 40px it's out of shot (6 width + 8 endcap width)
@@ -35168,13 +35168,13 @@ void Player::HUD_t::updateHPBar()
     // dividers
     {
         const int fullBarWidth = hpProgressBot->pos.w + progressWidth + hpEndcap->pos.w / 2;
-        auto div25Percent = hpForegroundFrame->findImage("hp img div 25pc");
+        const auto div25Percent = hpForegroundFrame->findImage("hp img div 25pc");
         div25Percent->disabled = false;
         div25Percent->pos.x = hpProgressBot->pos.x + fullBarWidth * .25 - 2;
-        auto div50Percent = hpForegroundFrame->findImage("hp img div 50pc");
+        const auto div50Percent = hpForegroundFrame->findImage("hp img div 50pc");
         div50Percent->disabled = false;
         div50Percent->pos.x = hpProgressBot->pos.x + fullBarWidth * .5 - 2;
-        auto div75Percent = hpForegroundFrame->findImage("hp img div 75pc");
+        const auto div75Percent = hpForegroundFrame->findImage("hp img div 75pc");
         div75Percent->disabled = false;
         div75Percent->pos.x = hpProgressBot->pos.x + fullBarWidth * .75 - 2;
 
@@ -35196,7 +35196,7 @@ void Player::HUD_t::updateHPBar()
     hpProgress->path = "*#images/ui/HUD/hpmpbars/HUD_Bars_HPMid_00.png";
     hpProgressBot->path = "*#images/ui/HUD/hpmpbars/HUD_Bars_HPBot_00.png";
     hpProgressEndCap->path = "*#images/ui/HUD/hpmpbars/HUD_Bars_HPEnd_00.png";
-    auto hpProgressEndCapFlash = hpForegroundFrame->findImage("hp img progress endcap flash");
+    const auto hpProgressEndCapFlash = hpForegroundFrame->findImage("hp img progress endcap flash");
     hpProgressEndCapFlash->disabled = true;
     const int framesPerAnimation = (HPBar.flashType == FLASH_ON_DAMAGE ? 1 : 2)/* * *cvar_hpanimdebug*/;
     const int numAnimationFrames = (HPBar.flashType == FLASH_ON_DAMAGE ? 20 : 2)/* * *cvar_hpanimdebug*/;
@@ -35270,7 +35270,7 @@ void Player::HUD_t::updateHPBar()
                     Uint8 r, g, b, a;
                     getColor(hpProgressEndCapFlash->color, &r, &g, &b, &a);
                     int decrement = 20;
-                    real_t fpsScale = getFPSScale(60.0);
+                    const real_t fpsScale = getFPSScale(60.0);
                     decrement *= fpsScale;
                     a = std::max(0, static_cast<int>(a) - decrement);
                     hpProgressEndCapFlash->color = makeColor(r, g, b, a);
@@ -35306,7 +35306,7 @@ void Player::HUD_t::updateHPBar()
         if (hpProgressEndCapFlash->pos.x < hpProgressBot->pos.x)
         {
             // adjust end cap flash to clip correctly sliding past end of bar
-            int overflowx = (hpProgressBot->pos.x - hpProgressEndCapFlash->pos.x);
+            const int overflowx = (hpProgressBot->pos.x - hpProgressEndCapFlash->pos.x);
             hpProgressEndCapFlash->section.x = (overflowx);
             hpProgressEndCapFlash->pos.x += overflowx;
             hpProgressEndCapFlash->pos.w -= overflowx;
@@ -36555,7 +36555,7 @@ bool Player::Hotbar_t::warpMouseToHotbar(const int hotbarSlot, Uint32 flags)
     {
         return false;
     }
-    if (auto slotFrame = getHotbarSlotFrame(hotbarSlot))
+    if (const auto slotFrame = getHotbarSlotFrame(hotbarSlot))
     {
         slotFrame->warpMouseToFrame(player.playernum, flags);
         return true;
@@ -36615,13 +36615,13 @@ static void drawConsoleCommandBuffer()
             font = "fonts/pixelmix.ttf#16#2";
         }
     }
-    auto text = Text::get(buf, font, 0xffffffff, makeColor(0, 0, 0, 255));
+    const auto text = Text::get(buf, font, 0xffffffff, makeColor(0, 0, 0, 255));
     const int printx = players[commandPlayer]->camera_virtualx1() + 8;
     int printy = players[commandPlayer]->camera_virtualy2() - 192;
     if (players[commandPlayer]->messageZone.actualAlignment == Player::MessageZone_t::ALIGN_LEFT_BOTTOM
         && players[commandPlayer]->messageZone.chatFrame)
     {
-        if (Frame* messageBoxFrame = players[commandPlayer]->messageZone.chatFrame->findFrame("message box"))
+        if (const Frame* messageBoxFrame = players[commandPlayer]->messageZone.chatFrame->findFrame("message box"))
         {
             printy = messageBoxFrame->getSize().y + messageBoxFrame->getSize().h + 4;
             if (!players[commandPlayer]->messageZone.useBigFont)
@@ -37355,10 +37355,10 @@ void Player::SkillSheet_t::openSkillSheet()
     scrollPercent = 0.0;
     if (skillFrame)
     {
-        auto innerFrame = skillFrame->findFrame("skills frame");
+        const auto innerFrame = skillFrame->findFrame("skills frame");
         innerFrame->setBlitChildren(*cvar_skillsheet_blit);
-        auto skillDescriptionFrame = innerFrame->findFrame("skill desc frame");
-        auto slider = skillDescriptionFrame->findSlider("skill slider");
+        const auto skillDescriptionFrame = innerFrame->findFrame("skill desc frame");
+        const auto slider = skillDescriptionFrame->findSlider("skill slider");
         slider->setValue(0.0);
     }
     resetSkillDisplay();
@@ -40979,7 +40979,7 @@ void Player::Inventory_t::SpellPanel_t::openSpellPanel()
 {
     if (player.inventoryUI.spellFrame)
     {
-        bool wasDisabled = player.inventoryUI.spellFrame->isDisabled();
+        const bool wasDisabled = player.inventoryUI.spellFrame->isDisabled();
         player.inventoryUI.spellFrame->setDisabled(false);
         if (wasDisabled)
         {
@@ -41507,8 +41507,8 @@ bool Player::Inventory_t::SpellPanel_t::isSlotVisible(int x, int y) const
             return false;
         }
     }
-    int lowerY = currentScrollRow;
-    int upperY = currentScrollRow + getNumSpellsToDisplayVertical() - 1;
+    const int lowerY = currentScrollRow;
+    const int upperY = currentScrollRow + getNumSpellsToDisplayVertical() - 1;
 
     if (y >= lowerY && y <= upperY)
     {
@@ -41525,8 +41525,8 @@ bool Player::Inventory_t::SpellPanel_t::isItemVisible(Item* item) const
 
 void Player::Inventory_t::SpellPanel_t::scrollToSlot(int x, int y, bool instantly)
 {
-    int lowerY = currentScrollRow;
-    int upperY = currentScrollRow + getNumSpellsToDisplayVertical() - 1;
+    const int lowerY = currentScrollRow;
+    const int upperY = currentScrollRow + getNumSpellsToDisplayVertical() - 1;
 
     if (y >= lowerY && y <= upperY)
     {
@@ -41535,15 +41535,15 @@ void Player::Inventory_t::SpellPanel_t::scrollToSlot(int x, int y, bool instantl
     }
 
     int lowestItemY = getNumSpellsToDisplayVertical() - 1;
-    for (node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next)
+    for (const node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next)
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if (!item) { continue; }
         if (itemCategory(item) != SPELL_CAT) { continue; }
 
         lowestItemY = std::max(lowestItemY, item->y);
     }
-    int maxScroll = std::max((lowestItemY + 1) - (getNumSpellsToDisplayVertical()), 0) * player.inventoryUI.
+    const int maxScroll = std::max((lowestItemY + 1) - (getNumSpellsToDisplayVertical()), 0) * player.inventoryUI.
         getSlotSize();
 
     int scrollAmount = 0;
@@ -41575,7 +41575,7 @@ void Player::Inventory_t::ChestGUI_t::openChest(bool _voidChest)
 {
     if (player.inventoryUI.chestFrame)
     {
-        bool wasDisabled = player.inventoryUI.chestFrame->isDisabled();
+        const bool wasDisabled = player.inventoryUI.chestFrame->isDisabled();
         player.inventoryUI.chestFrame->setDisabled(false);
         if (wasDisabled)
         {
@@ -41684,7 +41684,7 @@ const bool Player::Inventory_t::isItemFromChest(Item* item) const
         return false;
     }
 
-    list_t* chest_inventory = nullptr;
+    const list_t* chest_inventory = nullptr;
     if (multiplayer == CLIENT)
     {
         chest_inventory = &chestInv[player.playernum];
@@ -42121,8 +42121,8 @@ bool Player::Inventory_t::ChestGUI_t::isSlotVisible(int x, int y) const
             return false;
         }
     }
-    int lowerY = currentScrollRow;
-    int upperY = currentScrollRow + getNumItemsToDisplayVertical() - 1;
+    const int lowerY = currentScrollRow;
+    const int upperY = currentScrollRow + getNumItemsToDisplayVertical() - 1;
 
     if (y >= lowerY && y <= upperY)
     {
@@ -42139,8 +42139,8 @@ bool Player::Inventory_t::ChestGUI_t::isItemVisible(Item* item) const
 
 void Player::Inventory_t::ChestGUI_t::scrollToSlot(int x, int y, bool instantly)
 {
-    int lowerY = currentScrollRow;
-    int upperY = currentScrollRow + getNumItemsToDisplayVertical() - 1;
+    const int lowerY = currentScrollRow;
+    const int upperY = currentScrollRow + getNumItemsToDisplayVertical() - 1;
 
     if (y >= lowerY && y <= upperY)
     {
@@ -42149,15 +42149,15 @@ void Player::Inventory_t::ChestGUI_t::scrollToSlot(int x, int y, bool instantly)
     }
 
     int lowestItemY = getNumItemsToDisplayVertical() - 1;
-    for (node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next)
+    for (const node_t* node = stats[player.playernum]->inventory.first; node != nullptr; node = node->next)
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if (!item) { continue; }
         if (itemCategory(item) != SPELL_CAT) { continue; }
 
         lowestItemY = std::max(lowestItemY, item->y);
     }
-    int maxScroll = std::max((lowestItemY + 1) - (getNumItemsToDisplayVertical()), 0) * player.inventoryUI.
+    const int maxScroll = std::max((lowestItemY + 1) - (getNumItemsToDisplayVertical()), 0) * player.inventoryUI.
         getSlotSize();
 
     int scrollAmount = 0;
@@ -43405,8 +43405,8 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::update()
 
 void Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::updateWorldCoordinates()
 {
-    auto& setting = WorldDialogueSettings_t::settings[dialogueType];
-    Entity* parentEnt = uidToEntity(parent);
+    const auto& setting = WorldDialogueSettings_t::settings[dialogueType];
+    const Entity* parentEnt = uidToEntity(parent);
     if (parentEnt && setting.followEntity)
     {
         if (TimerExperiments::bUseTimerInterpolation && parentEnt->bUseRenderInterpolation)
@@ -43441,13 +43441,13 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::update()
         deactivate();
         return;
     }
-    bool singleDisplayDialogue = (this == &players[player]->worldUI.worldTooltipDialogue.playerDialogue);
+    const bool singleDisplayDialogue = (this == &players[player]->worldUI.worldTooltipDialogue.playerDialogue);
     if (client_disconnected[player])
     {
         active = false;
     }
 
-    Entity* parentEnt = uidToEntity(parent);
+    const Entity* parentEnt = uidToEntity(parent);
     bool expired = false;
     if (!parentEnt)
     {
@@ -43461,12 +43461,12 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::update()
     }
 
 
-    auto& setting = WorldDialogueSettings_t::settings[dialogueType];
+    const auto& setting = WorldDialogueSettings_t::settings[dialogueType];
     updateWorldCoordinates();
 
-    auto& camera = cameras[player];
-    real_t dx = x - camera.x * 16.0;
-    real_t dy = y - camera.y * 16.0;
+    const auto& camera = cameras[player];
+    const real_t dx = x - camera.x * 16.0;
+    const real_t dy = y - camera.y * 16.0;
     if (dx * dx + dy * dy > setting.fadeDist * setting.fadeDist)
     {
         active = false;
@@ -43507,7 +43507,7 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t::update()
     }
     else if (ticks - updatedThisTick > static_cast<Uint32>(setting.textDelay - 1))
     {
-        size_t fullLen = dialogueStrFull.size();
+        const size_t fullLen = dialogueStrFull.size();
         if (dialogueStringLength < fullLen)
         {
             if (dialogueStringLength + 1 == fullLen)
@@ -43582,11 +43582,11 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::createDialogueTooltip(Uint32 uid
         d = &sharedDialogues[uid];
     }
     d->player = player.playernum;
-    Uint32 oldUid = d->parent;
-    real_t oldAlpha = d->alpha;
-    real_t oldAnimZ = d->animZ;
+    const Uint32 oldUid = d->parent;
+    const real_t oldAlpha = d->alpha;
+    const real_t oldAnimZ = d->animZ;
     d->deactivate();
-    Entity* parentEnt = uidToEntity(uid);
+    const Entity* parentEnt = uidToEntity(uid);
     if (!parentEnt)
     {
         return;
@@ -43613,7 +43613,7 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::createDialogueTooltip(Uint32 uid
     d->updatedThisTick = 0;
     d->dialogueType = type;
 
-    auto& setting = WorldDialogueSettings_t::settings[d->dialogueType];
+    const auto& setting = WorldDialogueSettings_t::settings[d->dialogueType];
 
     d->updateWorldCoordinates();
 
@@ -43636,14 +43636,14 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::createDialogueTooltip(Uint32 uid
         d->dialogueField->setFont("fonts/pixel_maz_multiline.ttf#16");
     }
     d->dialogueField->setText(d->dialogueStrFull.c_str());
-    int maxWidth = setting.maxWidth;
+    const int maxWidth = setting.maxWidth;
     d->dialogueField->setSize(SDL_Rect{0, 0, maxWidth, 0});
     d->dialogueField->reflowTextToFit(0);
-    int numLines = d->dialogueField->getNumTextLines();
-    if (Font* actualFont = Font::get(d->dialogueField->getFont()))
+    const int numLines = d->dialogueField->getNumTextLines();
+    if (const Font* actualFont = Font::get(d->dialogueField->getFont()))
     {
-        auto textHeight = numLines * actualFont->height(true) + 16;
-        if (auto textGet = Text::get(d->dialogueField->getLongestLine().c_str(),
+        const auto textHeight = numLines * actualFont->height(true) + 16;
+        if (const auto textGet = Text::get(d->dialogueField->getLongestLine().c_str(),
                                      d->dialogueField->getFont(), d->dialogueField->getTextColor(),
                                      d->dialogueField->getOutlineColor()))
         {
@@ -43667,7 +43667,7 @@ void Player::WorldUI_t::WorldTooltipDialogue_t::createDialogueTooltip(Uint32 uid
         size_t found = d->dialogueStrFull.find('\n');
         if (found != std::string::npos)
         {
-            size_t foundColon = d->dialogueStrFull.find(':');
+            const size_t foundColon = d->dialogueStrFull.find(':');
             if (foundColon != std::string::npos
                 && foundColon < found)
             {
@@ -44118,7 +44118,7 @@ void DamageIndicatorHandler_t::DamageIndicator_t::process()
     {
         return;
     }
-    double tangent = atan2(y / 16 - cameras[player].y, x / 16 - cameras[player].x);
+    const double tangent = atan2(y / 16 - cameras[player].y, x / 16 - cameras[player].x);
     double angle = tangent - cameras[player].ang;
     angle += 3 * PI / 2;
     while (angle >= PI)
@@ -44146,8 +44146,8 @@ void DamageIndicatorHandler_t::DamageIndicator_t::process()
         layout = DamageIndicatorSettings_t::LAYOUT_2P_WIDE;
     }
     size = damageIndicatorSettings.settings[layout].image_size;
-    auto& indicatorDamagePaths = damageIndicatorSettings.indicatorDamageFramePaths;
-    auto& indicatorBlockPaths = damageIndicatorSettings.indicatorBlockedFramePaths;
+    const auto& indicatorDamagePaths = damageIndicatorSettings.indicatorDamageFramePaths;
+    const auto& indicatorBlockPaths = damageIndicatorSettings.indicatorBlockedFramePaths;
     std::string imagePath = hitDealtDamage ? indicatorDamagePaths[0] : indicatorBlockPaths[0];
     if (flashTicks > 0)
     {
@@ -44201,7 +44201,7 @@ void DamageIndicatorHandler_t::DamageIndicator_t::process()
             {
                 imagePath = hitDealtDamage ? indicatorDamagePaths[0] : indicatorBlockPaths[0];
                 int decrement = 20;
-                real_t fpsScale = (getFPSScale(60.0)) / damageIndicatorSettings.fadeSpeed;
+                const real_t fpsScale = (getFPSScale(60.0)) / damageIndicatorSettings.fadeSpeed;
                 decrement *= fpsScale;
                 alpha = std::max(0, static_cast<int>(alpha) - decrement);
             }
@@ -44222,7 +44222,7 @@ void DamageIndicatorHandler_t::DamageIndicator_t::process()
         break;
     }
 
-    if (auto imgGet = Image::get(imagePath.c_str()))
+    if (const auto imgGet = Image::get(imagePath.c_str()))
     {
         SDL_Rect pos;
         pos.x = players[player]->camera_midx();
@@ -44256,30 +44256,30 @@ void createLevelUpFrame(const int player)
     hud_t.levelupFrame->setDisabled(true);
     hud_t.levelupFrame->setOwner(player);
 
-    auto lvlupImg = hud_t.levelupFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "images/ui/HUD/lvluptext.png",
+    const auto lvlupImg = hud_t.levelupFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "images/ui/HUD/lvluptext.png",
                                                  "lvl up img");
     lvlupImg->disabled = true;
 
-    auto statsFrame = hud_t.levelupFrame->addFrame("stats");
+    const auto statsFrame = hud_t.levelupFrame->addFrame("stats");
     statsFrame->setDisabled(true);
     statsFrame->setHollow(true);
     char name[32];
-    std::string font = "fonts/pixelmix.ttf#16#2";
+    const std::string font = "fonts/pixelmix.ttf#16#2";
     for (int i = 0; i < 6; ++i)
     {
         snprintf(name, sizeof(name), "stat %d", i);
-        auto statFrame = statsFrame->addFrame(name);
+        const auto statFrame = statsFrame->addFrame(name);
         statFrame->setDisabled(true);
         statFrame->setHollow(true);
         statFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "stat img");
 
-        auto statCurrentTxt = statFrame->addField("stat current", 32);
+        const auto statCurrentTxt = statFrame->addField("stat current", 32);
         statCurrentTxt->setFont(font.c_str());
         statCurrentTxt->setHJustify(Field::justify_t::RIGHT);
         statCurrentTxt->setVJustify(Field::justify_t::TOP);
         statCurrentTxt->setText("0");
 
-        auto statIncreaseTxt = statFrame->addField("stat increase", 32);
+        const auto statIncreaseTxt = statFrame->addField("stat increase", 32);
         statIncreaseTxt->setFont(font.c_str());
         statIncreaseTxt->setHJustify(Field::justify_t::LEFT);
         statIncreaseTxt->setVJustify(Field::justify_t::TOP);
@@ -44297,7 +44297,7 @@ void LevelUpAnimation_t::addLevelUp(const int currentLvl, const int increaseLvl,
     {
         // stack everything onto the back
         auto& lvlUp = lvlUps.back();
-        for (auto& info : statInfo)
+        for (const auto& info : statInfo)
         {
             for (auto& currentInfo : lvlUp.statUps)
             {
@@ -44313,7 +44313,7 @@ void LevelUpAnimation_t::addLevelUp(const int currentLvl, const int increaseLvl,
     }
     else
     {
-        bool inProgress = !lvlUps.empty();
+        const bool inProgress = !lvlUps.empty();
         lvlUps.push_back(LevelUp_t(currentLvl, increaseLvl));
         auto& lvlUp = lvlUps.back();
         if (inProgress)
@@ -44421,7 +44421,7 @@ bool SkillUpAnimation_t::soundIndexUsedForNotification(const int index)
     }
     else
     {
-        for (auto& skill : Player::SkillSheet_t::skillSheetData.skillEntries)
+        for (const auto& skill : Player::SkillSheet_t::skillSheetData.skillEntries)
         {
             if (index == skill.skillSfx)
             {
@@ -44539,14 +44539,14 @@ void LevelUpAnimation_t::LevelUp_t::StatUp_t::animateNotification(const int play
             const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
             if (ticksActive >= TICKS_PER_SECOND)
             {
-                real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animCurrentStat)) / (2.5 * *cvar_lvlup_animfall);
+                const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animCurrentStat)) / (2.5 * *cvar_lvlup_animfall);
                 animCurrentStat += setpointDiffX;
                 animCurrentStat = std::min(1.0, animCurrentStat);
 
                 if (animCurrentStat >= 1.0)
                 {
                     const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-                    real_t setpointDiffX = fpsScale * 1.0 / (10.0 * *cvar_lvlup_bounce);
+                    const real_t setpointDiffX = fpsScale * 1.0 / (10.0 * *cvar_lvlup_bounce);
                     animIncreaseStat += setpointDiffX;
                     animIncreaseStat = std::min(1.0, animIncreaseStat);
                 }
@@ -44557,7 +44557,7 @@ void LevelUpAnimation_t::LevelUp_t::StatUp_t::animateNotification(const int play
         break;
     }
 
-    real_t oldAngle = animAngle;
+    const real_t oldAngle = animAngle;
     const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
     animAngle += fpsScale * std::max(.1, (1.0 - animAngle)) / (5.0);
     animAngle = std::min(1.0, animAngle);
@@ -44565,10 +44565,10 @@ void LevelUpAnimation_t::LevelUp_t::StatUp_t::animateNotification(const int play
     {
         playSound(*cvar_lvl_ding_sfx, *cvar_lvlup_ding_volume);
     }
-    real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateX)) / (animspeed);
-    real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - animateY)) / (animspeed);
-    real_t setpointDiffW = fpsScale * std::max(.1, (1.0 - animateW)) / (animspeed);
-    real_t setpointDiffH = fpsScale * std::max(.1, (1.0 - animateH)) / (animspeed);
+    const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateX)) / (animspeed);
+    const real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - animateY)) / (animspeed);
+    const real_t setpointDiffW = fpsScale * std::max(.1, (1.0 - animateW)) / (animspeed);
+    const real_t setpointDiffH = fpsScale * std::max(.1, (1.0 - animateH)) / (animspeed);
     animateX += setpointDiffX;
     animateY += setpointDiffY;
     animateX = std::min(1.0, animateX);
@@ -44578,10 +44578,10 @@ void LevelUpAnimation_t::LevelUp_t::StatUp_t::animateNotification(const int play
     animateW = std::min(1.0, animateW);
     animateH = std::min(1.0, animateH);
 
-    int destX = animateSetpointX - animateStartX;
-    int destY = animateSetpointY - animateStartY;
-    int destW = animateSetpointW - animateStartW;
-    int destH = animateSetpointH - animateStartH;
+    const int destX = animateSetpointX - animateStartX;
+    const int destY = animateSetpointY - animateStartY;
+    const int destW = animateSetpointW - animateStartW;
+    const int destH = animateSetpointH - animateStartH;
 
     pos.x = animateStartX + destX * animateX;
     pos.y = animateStartY + destY * animateY;
@@ -44598,10 +44598,10 @@ void LevelUpAnimation_t::LevelUp_t::animateTitle(SDL_Rect basePos)
 
     static ConsoleVariable<int> cvar_lvlup_title_ticks("/lvlup_title_ticks", 15);
     static ConsoleVariable<int> cvar_lvlup_title_fade_ticks("/lvlup_title_fade_ticks", TICKS_PER_SECOND);
-    real_t anim = std::min(1.0, ticksActive / static_cast<real_t>(*cvar_lvlup_title_ticks));
+    const real_t anim = std::min(1.0, ticksActive / static_cast<real_t>(*cvar_lvlup_title_ticks));
     real_t grow = 1.0;
 
-    real_t curvePosition = (LevelUpAnimBreakpoints[anim * (LevelUpAnimBreakpoints.size() - 1)]) / 100.0;
+    const real_t curvePosition = (LevelUpAnimBreakpoints[anim * (LevelUpAnimBreakpoints.size() - 1)]) / 100.0;
 
     //titleAnimatePos.x = basePos.x - anim * (grow) * basePos.w / 2;
     //titleAnimatePos.y = basePos.y - anim * (grow) * basePos.h / 2;
@@ -44999,13 +44999,13 @@ void createSkillUpFrame(const int player)
     hud_t.skillupFrame->setDisabled(true);
     hud_t.skillupFrame->setOwner(player);
 
-    auto skillsFrame = hud_t.skillupFrame->addFrame("skills");
+    const auto skillsFrame = hud_t.skillupFrame->addFrame("skills");
     skillsFrame->setDisabled(true);
     skillsFrame->setHollow(true);
     char name[32];
-    std::string font = "fonts/pixelmix.ttf#16#2";
+    const std::string font = "fonts/pixelmix.ttf#16#2";
 
-    auto skillFrame = skillsFrame->addFrame("skill");
+    const auto skillFrame = skillsFrame->addFrame("skill");
     skillFrame->setDisabled(true);
     skillFrame->setHollow(true);
 
@@ -45015,26 +45015,26 @@ void createSkillUpFrame(const int player)
     skillFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "skill img");
     skillFrame->addImage(SDL_Rect{0, 0, 0, 0}, 0xFFFFFFFF, "", "skill gleam");
 
-    auto skillCurrentTxt = skillFrame->addField("skill current", 32);
+    const auto skillCurrentTxt = skillFrame->addField("skill current", 32);
     skillCurrentTxt->setFont(font.c_str());
     skillCurrentTxt->setHJustify(Field::justify_t::RIGHT);
     skillCurrentTxt->setVJustify(Field::justify_t::TOP);
     skillCurrentTxt->setText("0");
 
-    auto skillCurrentOldTxt = skillFrame->addField("skill current old", 32);
+    const auto skillCurrentOldTxt = skillFrame->addField("skill current old", 32);
     skillCurrentOldTxt->setFont(font.c_str());
     skillCurrentOldTxt->setHJustify(Field::justify_t::RIGHT);
     skillCurrentOldTxt->setVJustify(Field::justify_t::TOP);
     skillCurrentOldTxt->setText("0");
 
-    auto skillIncreaseTxt = skillFrame->addField("skill increase", 32);
+    const auto skillIncreaseTxt = skillFrame->addField("skill increase", 32);
     skillIncreaseTxt->setFont(font.c_str());
     skillIncreaseTxt->setHJustify(Field::justify_t::LEFT);
     skillIncreaseTxt->setVJustify(Field::justify_t::TOP);
     skillIncreaseTxt->setText("0");
 
-    std::string font2 = "fonts/pixel_maz.ttf#32#2";
-    auto skillNameTxt = skillFrame->addField("skill name txt", 64);
+    const std::string font2 = "fonts/pixel_maz.ttf#32#2";
+    const auto skillNameTxt = skillFrame->addField("skill name txt", 64);
     skillNameTxt->setFont(font2.c_str());
     skillNameTxt->setHJustify(Field::justify_t::RIGHT);
     skillNameTxt->setVJustify(Field::justify_t::TOP);
@@ -45093,7 +45093,7 @@ void SkillUpAnimation_t::SkillUp_t::animateNotification(const int player)
         movementAmount = 0;
     }
 
-    bool newtick = ticks != processedOnTick;
+    const bool newtick = ticks != processedOnTick;
     if (newtick)
     {
         processedOnTick = ticks;
@@ -45109,7 +45109,7 @@ void SkillUpAnimation_t::SkillUp_t::animateNotification(const int player)
     const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
     if (notificationState >= STATE_4)
     {
-        real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animBackground)) / (2.5);
+        const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animBackground)) / (2.5);
         animBackground += setpointDiffX;
         animBackground = std::min(1.0, animBackground);
     }
@@ -45205,14 +45205,14 @@ void SkillUpAnimation_t::SkillUp_t::animateNotification(const int player)
         {
             if (ticksActive >= TICKS_PER_SECOND)
             {
-                real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animCurrentStat)) / (2.5 * *
+                const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animCurrentStat)) / (2.5 * *
                     cvar_skillup_animfall);
                 animCurrentStat += setpointDiffX;
                 animCurrentStat = std::min(1.0, animCurrentStat);
 
                 if (animCurrentStat >= 1.0)
                 {
-                    real_t setpointDiffX = fpsScale * 1.0 / (10.0 * *cvar_skillup_bounce);
+                    const real_t setpointDiffX = fpsScale * 1.0 / (10.0 * *cvar_skillup_bounce);
                     animIncreaseStat += setpointDiffX;
                     animIncreaseStat = std::min(1.0, animIncreaseStat);
                 }
@@ -45223,10 +45223,10 @@ void SkillUpAnimation_t::SkillUp_t::animateNotification(const int player)
         break;
     }
 
-    real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateX)) / (animspeed);
-    real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - animateY)) / (animspeed);
-    real_t setpointDiffW = fpsScale * std::max(.1, (1.0 - animateW)) / (animspeed);
-    real_t setpointDiffH = fpsScale * std::max(.1, (1.0 - animateH)) / (animspeed);
+    const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateX)) / (animspeed);
+    const real_t setpointDiffY = fpsScale * std::max(.1, (1.0 - animateY)) / (animspeed);
+    const real_t setpointDiffW = fpsScale * std::max(.1, (1.0 - animateW)) / (animspeed);
+    const real_t setpointDiffH = fpsScale * std::max(.1, (1.0 - animateH)) / (animspeed);
     animateX += setpointDiffX;
     animateY += setpointDiffY;
     animateX = std::min(1.0, animateX);
@@ -45236,10 +45236,10 @@ void SkillUpAnimation_t::SkillUp_t::animateNotification(const int player)
     animateW = std::min(1.0, animateW);
     animateH = std::min(1.0, animateH);
 
-    int destX = animateSetpointX - animateStartX;
-    int destY = animateSetpointY - animateStartY;
-    int destW = animateSetpointW - animateStartW;
-    int destH = animateSetpointH - animateStartH;
+    const int destX = animateSetpointX - animateStartX;
+    const int destY = animateSetpointY - animateStartY;
+    const int destW = animateSetpointW - animateStartW;
+    const int destH = animateSetpointH - animateStartH;
 
     pos.x = animateStartX + destX * animateX;
     pos.y = animateStartY + destY * animateY;
@@ -45256,7 +45256,7 @@ size_t SkillUpAnimation_t::getSkillUpIndexToDisplay()
 {
     size_t index = 0;
     std::priority_queue<std::pair<int, size_t>> priority;
-    for (auto& skillUp : skillUps)
+    for (const auto& skillUp : skillUps)
     {
         if (skillUp.init)
         {
@@ -45327,7 +45327,7 @@ void SkillUpAnimation_t::addSkillUp(const int _numSkill, const int _currentSkill
         {
             continue;
         }
-        int diff = std::max(0, (_currentSkill + _increaseSkill) - (s.currentSkill + s.increaseSkill));
+        const int diff = std::max(0, (_currentSkill + _increaseSkill) - (s.currentSkill + s.increaseSkill));
         if (diff > 0)
         {
             if (s.ticksActive >= TICKS_PER_SECOND)

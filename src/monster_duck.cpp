@@ -28,7 +28,7 @@
 
 void initDuck(Entity* my, Stat* myStats)
 {
-    bool spiritDuck = my && my->behavior == &actDeathGhostLimb;
+    const bool spiritDuck = my && my->behavior == &actDeathGhostLimb;
 
     my->z = 0;
 
@@ -36,7 +36,7 @@ void initDuck(Entity* my, Stat* myStats)
     int appearance = 0;
     if ( myStats && myStats->getAttribute("duck_type") != "" )
     {
-        int duckType = std::stoi(myStats->getAttribute("duck_type"));
+        const int duckType = std::stoi(myStats->getAttribute("duck_type"));
         if ( duckType >= MAXPLAYERS && duckType < 2 * MAXPLAYERS )
         {
             sprite = 2231;
@@ -82,7 +82,7 @@ void initDuck(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -282,10 +282,10 @@ void duckSpawnFeather(int sprite, real_t x, real_t y, real_t z, Entity* my)
     {
         featherSprite = 2314;
     }
-    real_t yawOffset = ((local_rng.rand() % 8) / 4.0) * PI;
+    const real_t yawOffset = ((local_rng.rand() % 8) / 4.0) * PI;
     for ( int i = 0; i < 3; ++i )
     {
-        real_t leafEndZ = z - 7.5;
+        const real_t leafEndZ = z - 7.5;
         Entity* leaf = newEntity(featherSprite, 1, map.entities, nullptr); //Gib entity.
         if ( leaf != nullptr)
         {
@@ -443,8 +443,8 @@ void createWaterSplash(real_t x, real_t y, int lifetime)
 {
     {
         Entity* splash = newEntity(2246, 1, map.entities, nullptr); //Gib entity.
-        real_t centerx = static_cast<int>(x / 16) * 16.0 + 8.0;
-        real_t centery = static_cast<int>(y / 16) * 16.0 + 8.0;
+        const real_t centerx = static_cast<int>(x / 16) * 16.0 + 8.0;
+        const real_t centery = static_cast<int>(y / 16) * 16.0 + 8.0;
         splash->x = std::max(-2.5, std::min(2.5, (x - centerx))) + centerx;
         splash->y = std::max(-2.5, std::min(2.5, (y - centery))) + centery;
         splash->z = 8.75;
@@ -462,7 +462,7 @@ void createWaterSplash(real_t x, real_t y, int lifetime)
         splash->setUID(-3);
     }
 
-    real_t offsetYaw = ((local_rng.rand() % 9) / 8.0) * PI / 4;
+    const real_t offsetYaw = ((local_rng.rand() % 9) / 8.0) * PI / 4;
     for ( int i = 0; i < 4; ++i )
     {
         Entity* splashParticle = newEntity(2248, 1, map.entities, nullptr); //Gib entity.
@@ -537,7 +537,7 @@ bool duckAreaQuck(Entity* my)
                                 //if ( /*(entity->monsterState == MONSTER_STATE_WAIT || entity->monsterTarget == 0) || */
                                 //  (entityDist(target, this) < 2 * TOUCHRANGE /*&& (Uint32)(target->monsterLastDistractedByNoisemaker) != this->getUID()*/) )
                                 {
-                                    real_t tangent = atan2(target->y - my->y, target->x - my->x);
+                                    const real_t tangent = atan2(target->y - my->y, target->x - my->x);
                                     lineTraceTarget(my, my->x, my->y, tangent, 32.0, 0, false, target);
                                     if ( hit.entity == target )
                                     {
@@ -601,9 +601,9 @@ bool duckAreaQuck(Entity* my)
                     target->setEffect(EFF_DISTRACTED_COOLDOWN, true, TICKS_PER_SECOND * 2 + 25, false);
                     if ( my->behavior == &actMonster )
                     {
-                        if ( Stat* myStats = my->getStats() )
+                        if (const Stat* myStats = my->getStats() )
                         {
-                            int owner = achievementObserver.checkUidIsFromPlayer(myStats->leader_uid);
+                            const int owner = achievementObserver.checkUidIsFromPlayer(myStats->leader_uid);
                             if ( owner >= 0 )
                             {
                                 Compendium_t::Events_t::eventUpdate(owner, Compendium_t::CPDM_SPELL_TARGETS, TOOL_DUCK, 1);

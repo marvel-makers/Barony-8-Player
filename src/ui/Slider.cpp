@@ -207,8 +207,8 @@ Slider::result_t Slider::process(SDL_Rect _size, SDL_Rect _actualSize, const boo
     _handleSize.w = std::min(handleSize.w, _size.w - handleSize.x + _actualSize.x) + std::min(0, handleSize.x - _actualSize.x);
     _handleSize.h = std::min(handleSize.h, _size.h - handleSize.y + _actualSize.y) + std::min(0, handleSize.y - _actualSize.y);
 
-    int offX = _size.x + (railSize.x + border) - _actualSize.x;
-    int offY = _size.y + (railSize.y + border) - _actualSize.y;
+    const int offX = _size.x + (railSize.x + border) - _actualSize.x;
+    const int offY = _size.y + (railSize.y + border) - _actualSize.y;
     if (orientation == SLIDER_HORIZONTAL) {
         _size.x = std::max(_size.x, _railSize.x - _handleSize.w / 2 + border);
         _size.y = std::max(_size.y, _railSize.y + _railSize.h / 2 - _handleSize.h / 2);
@@ -241,10 +241,10 @@ Slider::result_t Slider::process(SDL_Rect _size, SDL_Rect _actualSize, const boo
 #else
     const bool clicking = mousestatus[SDL_BUTTON_LEFT];
     const int mouseowner = intro || gamePaused ? inputs.getPlayerIDAllowedKeyboard() : owner;
-    Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
-    Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
-    Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
-    Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+    const Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+    const Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+    const Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+    const Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 #endif
 
 #ifndef EDITOR
@@ -272,7 +272,7 @@ Slider::result_t Slider::process(SDL_Rect _size, SDL_Rect _actualSize, const boo
         if (clicking) {
             select();
             pressed = true;
-            float oldValue = value;
+            const float oldValue = value;
             if (orientation == SLIDER_HORIZONTAL) {
                 value = (static_cast<float>(mousex - offX) / (railSize.w - border * 2)) * (maxValue - minValue) + minValue;
             }
@@ -322,11 +322,11 @@ bool Slider::control() {
             moveNegative = input.binary("MenuUp") || input.binary("AltMenuUp");
         }
         if (movePositive || moveNegative) {
-            Uint32 timeMoved = ticks - moveStartTime;
-            Uint32 lastMove = ticks - lastMoveTime;
-            Uint32 sec = TICKS_PER_SECOND / 2;
-            float inc = movePositive ? 1.f : -1.f;
-            float ovalue = value;
+            const Uint32 timeMoved = ticks - moveStartTime;
+            const Uint32 lastMove = ticks - lastMoveTime;
+            const Uint32 sec = TICKS_PER_SECOND / 2;
+            const float inc = movePositive ? 1.f : -1.f;
+            const float ovalue = value;
             if (timeMoved < sec) {
                 if (lastMove > sec / (10.f * valueSpeed)) {
                     value += inc;
@@ -365,9 +365,9 @@ void Slider::deselect() {
 }
 
 void Slider::scrollParent() {
-    auto fparent = static_cast<Frame*>(parent);
+    const auto fparent = static_cast<Frame*>(parent);
     auto fActualSize = fparent->getActualSize();
-    auto fSize = fparent->getSize();
+    const auto fSize = fparent->getSize();
     if (orientation == SLIDER_HORIZONTAL) {
         if (handleSize.y < fActualSize.y) {
             fActualSize.y = handleSize.y;
@@ -401,9 +401,9 @@ void Slider::scrollParent() {
 SDL_Rect Slider::getAbsoluteSize() const
 {
     SDL_Rect _size{ handleSize.x, handleSize.y, handleSize.w, handleSize.h };
-    auto _parent = static_cast<Frame*>(this->parent);
+    const auto _parent = static_cast<Frame*>(this->parent);
     if ( _parent ) {
-        SDL_Rect absoluteSize = _parent->getAbsoluteSize();
+        const SDL_Rect absoluteSize = _parent->getAbsoluteSize();
         _size.x += std::max(0, absoluteSize.x);
         _size.y += std::max(0, absoluteSize.y);
     }

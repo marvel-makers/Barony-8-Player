@@ -22,7 +22,7 @@ static ConsoleCommand test_rng_seed(
     if (argc < 2) {
         test_rng.seedTime();
     } else {
-        auto seed = strtol(argv[1], nullptr, 10);
+        const auto seed = strtol(argv[1], nullptr, 10);
         test_rng.seedBytes(&seed, sizeof(seed));
     }
     });
@@ -41,7 +41,7 @@ static ConsoleCommand test_rng_u8(
     const int i = argc > 1 ? static_cast<int>(strtol(argv[1], nullptr, 10)) : 100000;
     real_t sum = 0.0;
     for (int c = 0; c < i; ++c) {
-        auto result = test_rng.getU8();
+        const auto result = test_rng.getU8();
         sum += result;
         //messagePlayer(clientnum, MESSAGE_MISC, "%d", (int)result);
     }
@@ -56,7 +56,7 @@ static ConsoleCommand test_rng_i8(
     const int i = argc > 1 ? static_cast<int>(strtol(argv[1], nullptr, 10)) : 100000;
     real_t sum = 0.0;
     for (int c = 0; c < i; ++c) {
-        auto result = test_rng.getI8();
+        const auto result = test_rng.getI8();
         sum += result;
         //messagePlayer(clientnum, MESSAGE_MISC, "%d", (int)result);
     }
@@ -71,7 +71,7 @@ static ConsoleCommand test_rng_f32(
     const int i = argc > 1 ? static_cast<int>(strtol(argv[1], nullptr, 10)) : 100000;
     real_t sum = 0.0;
     for (int c = 0; c < i; ++c) {
-        auto result = test_rng.getF32();
+        const auto result = test_rng.getF32();
         sum += result;
         //messagePlayer(clientnum, MESSAGE_MISC, "%.2f", result);
     }
@@ -86,7 +86,7 @@ static ConsoleCommand test_rng_f64(
     const int i = argc > 1 ? static_cast<int>(strtol(argv[1], nullptr, 10)) : 100000;
     real_t sum = 0.0;
     for (int c = 0; c < i; ++c) {
-        auto result = test_rng.getF64();
+        const auto result = test_rng.getF64();
         sum += result;
         //messagePlayer(clientnum, MESSAGE_MISC, "%.2f", result);
     }
@@ -103,7 +103,7 @@ static ConsoleCommand test_rng_uniform(
     const int i = argc > 3 ? static_cast<int>(strtol(argv[3], nullptr, 10)) : 100000;
     real_t sum = 0.0;
     for (int c = 0; c < i; ++c) {
-        int result = test_rng.uniform(a, b);
+        const int result = test_rng.uniform(a, b);
         sum += result;
         //messagePlayer(clientnum, MESSAGE_MISC, "%d", result);
     }
@@ -127,7 +127,7 @@ static ConsoleCommand test_rng_discrete(
     const int i = static_cast<int>(strtol(argv[argc - 1], nullptr, 10));
     real_t sum = 0.0;
     for (int c = 0; c < i; ++c) {
-        int result = test_rng.discrete(chances.data(), chances.size());
+        const int result = test_rng.discrete(chances.data(), chances.size());
         sum += result;
         //messagePlayer(clientnum, MESSAGE_MISC, "%d", result);
     }
@@ -148,8 +148,8 @@ static ConsoleCommand test_rng_normal(
         ++hist[result];
         //messagePlayer(clientnum, MESSAGE_MISC, "%d", result);
     }
-    for (auto p : hist) {
-        int value = p.second / 200;
+    for (const auto p : hist) {
+        const int value = p.second / 200;
         if (value) {
             std::string s(value, '*');
             messagePlayer(clientnum, MESSAGE_MISC, "%5d %s", p.first, s.c_str());
@@ -182,7 +182,7 @@ size_t BaronyRNG::bytesRead() const {
 }
 
 static inline void swap_byte(uint8_t& a, uint8_t& b) {
-    uint8_t t = a;
+    const uint8_t t = a;
     a = b;
     b = t;
 }
@@ -194,7 +194,7 @@ void BaronyRNG::seedImpl(const void* key, size_t size) {
     }
 
     uint8_t b = 0;
-    auto bytes = static_cast<const uint8_t*>(key);
+    const auto bytes = static_cast<const uint8_t*>(key);
     for (int i = 0; i < 256; ++i) {
         b = b + buf[i] + bytes[i % size];
         swap_byte(buf[i], buf[b]);
@@ -214,7 +214,7 @@ void BaronyRNG::seedBytes(const void* key, size_t size) {
 
 void BaronyRNG::seedTime() {
     // we only want a 32-bit seed
-    uint32_t t = static_cast<uint32_t>(getTime());
+    const uint32_t t = static_cast<uint32_t>(getTime());
     seedImpl(&t, sizeof(t));
 }
 
@@ -239,7 +239,7 @@ void BaronyRNG::getBytes(void* data_, size_t size) {
     if (!seeded) {
         printlog("rng not seeded, seeding by unix time");
         // we only want a 32-bit seed
-        uint32_t t = static_cast<uint32_t>(getTime());
+        const uint32_t t = static_cast<uint32_t>(getTime());
         seedImpl(&t, sizeof(t));
     }
     for (auto data = static_cast<uint8_t*>(data_); size-- > 0; ++data) {
@@ -326,10 +326,10 @@ int BaronyRNG::uniform(int a, int b) {
     if (a == b) {
         return a;
     }
-    int min = std::min(a, b);
-    int max = std::max(a, b);
-    int diff = (max - min) + 1;
-    int choice = getF64() * diff;
+    const int min = std::min(a, b);
+    const int max = std::max(a, b);
+    const int diff = (max - min) + 1;
+    const int choice = getF64() * diff;
     return min + choice;
 }
 

@@ -45,9 +45,9 @@ void actGoldBag(Entity* my)
     {
         if ( multiplayer != CLIENT )
         {
-            for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+            for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( entity->isBoulderSprite() )   // boulder.vox
                 {
                     return;
@@ -192,7 +192,7 @@ void actGoldBag(Entity* my)
 
     // gravity
     bool onground = false;
-    real_t groundheight = my->sprite == 1379 ? 7.75 : 6.25;
+    const real_t groundheight = my->sprite == 1379 ? 7.75 : 6.25;
 
     my->flags[BURNING] = false;
     my->flags[NOCLIP_CREATURES] = true;
@@ -261,7 +261,7 @@ void actGoldBag(Entity* my)
             return;
         }
 
-        double result = clipMove(&my->x, &my->y, my->vel_x, my->vel_y, my);
+        const double result = clipMove(&my->x, &my->y, my->vel_x, my->vel_y, my);
         my->yaw += result * .05;
         if ( result != sqrt(my->vel_x * my->vel_x + my->vel_y * my->vel_y) )
         {

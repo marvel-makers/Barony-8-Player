@@ -776,7 +776,7 @@ int loadConfig(char* filename)
 
     if ( strstr(filename, ".cfg") == nullptr)
     {
-        char* filename2 = filename;
+        const char* filename2 = filename;
         filename = static_cast<char*>(malloc(sizeof(char) * 256));
         strcpy(filename, filename2);
         mallocd = true;
@@ -864,7 +864,7 @@ hotbar_slot_t* getCurrentHotbarUnderMouse(int player, int* outSlotNum)
     {
         for ( Uint32 num = 0; num < NUM_HOTBAR_SLOTS; ++num )
         {
-            if ( auto hotbarSlotFrame = players[player]->hotbar.getHotbarSlotFrame(num) )
+            if (const auto hotbarSlotFrame = players[player]->hotbar.getHotbarSlotFrame(num) )
             {
                 if ( hotbarSlotFrame->capturesMouseInRealtimeCoords() )
                 {
@@ -1281,12 +1281,12 @@ bool Player::GUI_t::warpControllerToModule(bool moveCursorInstantly)
 
 void Player::GUI_t::activateModule(Player::GUI_t::GUIModules module)
 {
-    GUIModules oldModule = activeModule;
+    const GUIModules oldModule = activeModule;
     activeModule = module;
 
     if ( oldModule != activeModule )
     {
-        Frame* hudCursor = nullptr;
+        const Frame* hudCursor = nullptr;
         if ( player.hud.cursorFrame )
         {
             hudCursor = player.hud.cursorFrame->findFrame("hud cursor");
@@ -1348,7 +1348,7 @@ void Player::GUI_t::activateModule(Player::GUI_t::GUIModules module)
                     || oldModule == MODULE_ASSISTSHRINE))
                 || hoveringOverModuleButton() != MODULE_NONE )
             {
-                SDL_Rect size = hudCursor->getSize();
+                const SDL_Rect size = hudCursor->getSize();
                 if ( !player.hud.cursorFrame->isDisabled() )
                 {
                     player.inventoryUI.updateSelectedSlotAnimation(size.x, size.y, size.w, size.h, true);
@@ -1365,7 +1365,7 @@ void Player::openStatusScreen(const int whichGUIMode, const int whichInventoryMo
         return;
     }
 
-    bool oldShootmode = shootmode;
+    const bool oldShootmode = shootmode;
     shootmode = false;
 
     if ( whichGUIMode != GUI_MODE_NONE && whichGUIMode != GUI_MODE_FOLLOWERMENU )
@@ -1388,7 +1388,7 @@ void Player::openStatusScreen(const int whichGUIMode, const int whichInventoryMo
         messageZone.logWindow = nullptr;
     }
 
-    int oldgui = gui_mode;
+    const int oldgui = gui_mode;
     gui_mode = whichGUIMode;
     if ( oldgui == GUI_MODE_NONE && whichGUIMode == GUI_MODE_INVENTORY )
     {
@@ -1400,7 +1400,7 @@ void Player::openStatusScreen(const int whichGUIMode, const int whichInventoryMo
         if ( hud.cursorFrame )
         {
             // center the hud cursor - there is a first time warping of the inventory cursor but we can leave that in
-            auto hudCursor = hud.cursorFrame->findFrame("hud cursor");
+            const auto hudCursor = hud.cursorFrame->findFrame("hud cursor");
             hud.updateCursorAnimation((camera_virtualWidth() / 2), (camera_virtualHeight() / 2),
                 hudCursor->getSize().w, hudCursor->getSize().h, true);
 
@@ -1410,7 +1410,7 @@ void Player::openStatusScreen(const int whichGUIMode, const int whichInventoryMo
         }
     }
 
-    int oldmodule = GUI.activeModule;
+    const int oldmodule = GUI.activeModule;
     GUI.activateModule(static_cast<GUI_t::GUIModules>(whichModule));
     inputs.getUIInteraction(playernum)->selectedItem = nullptr;
     inputs.getUIInteraction(playernum)->selectedItemFromChest = 0;
@@ -1419,7 +1419,7 @@ void Player::openStatusScreen(const int whichGUIMode, const int whichInventoryMo
 
     inventory_mode = whichInventoryMode;
 
-    Uint32 flags = (Inputs::SET_MOUSE | Inputs::SET_CONTROLLER | Inputs::UNSET_RELATIVE_MOUSE);
+    const Uint32 flags = (Inputs::SET_MOUSE | Inputs::SET_CONTROLLER | Inputs::UNSET_RELATIVE_MOUSE);
 
     bool warped = false;
     bool warpMouseToInventorySlot = false;
@@ -1463,7 +1463,7 @@ void Player::openStatusScreen(const int whichGUIMode, const int whichInventoryMo
 
 void Player::closeAllGUIs(CloseGUIShootmode shootmodeAction, CloseGUIIgnore whatToClose)
 {
-    bool oldShootmode = shootmode;
+    const bool oldShootmode = shootmode;
     GenericGUI[playernum].closeGUI();
     if ( whatToClose != CLOSEGUI_DONT_CLOSE_FOLLOWERGUI )
     {
@@ -1529,7 +1529,7 @@ void Player::closeAllGUIs(CloseGUIShootmode shootmodeAction, CloseGUIIgnore what
 
 void FollowerRadialMenu::initfollowerMenuGUICursor(bool openInventory)
 {
-    bool oldshootmode = players[gui_player]->shootmode;
+    const bool oldshootmode = players[gui_player]->shootmode;
     if ( openInventory )
     {
         //players[gui_player]->openStatusScreen(GUI_MODE_INVENTORY, INVENTORY_MODE_ITEM);
@@ -1539,7 +1539,7 @@ void FollowerRadialMenu::initfollowerMenuGUICursor(bool openInventory)
 
     if ( !oldshootmode )
     {
-        Uint32 flags = (Inputs::SET_MOUSE | Inputs::SET_CONTROLLER | Inputs::UNSET_RELATIVE_MOUSE);
+        const Uint32 flags = (Inputs::SET_MOUSE | Inputs::SET_CONTROLLER | Inputs::UNSET_RELATIVE_MOUSE);
         inputs.warpMouse(gui_player, 
             players[gui_player]->camera_x1() + (players[gui_player]->camera_width() / 2),
             players[gui_player]->camera_y1() + (players[gui_player]->camera_height() / 2), flags);
@@ -1588,7 +1588,7 @@ void FollowerRadialMenu::closeFollowerMenuGUI(bool clearRecentEntity)
             //SDL_WarpMouseInWindow(screen, mousex, mousey);
 
             // to verify for splitscreen
-            Uint32 flags = (Inputs::SET_MOUSE | Inputs::SET_CONTROLLER | Inputs::UNSET_RELATIVE_MOUSE);
+            const Uint32 flags = (Inputs::SET_MOUSE | Inputs::SET_CONTROLLER | Inputs::UNSET_RELATIVE_MOUSE);
             inputs.warpMouse(gui_player, partySheetMouseX, partySheetMouseY, flags);
 
         }
@@ -1597,7 +1597,7 @@ void FollowerRadialMenu::closeFollowerMenuGUI(bool clearRecentEntity)
     if ( followerFrame )
     {
         followerFrame->setDisabled(true);
-        for ( auto f : followerFrame->getFrames() )
+        for (const auto f : followerFrame->getFrames() )
         {
             f->removeSelf();
         }
@@ -1650,7 +1650,7 @@ void FollowerRadialMenu::loadFollowerJSON()
         else
         {
             char buf[65536];
-            int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
+            const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
             buf[count] = '\0';
             rapidjson::StringStream is(buf);
             FileIO::close(fp);
@@ -1876,7 +1876,7 @@ bool FollowerRadialMenu::followerGUIHasBeenCreated() const
     {
         if ( !followerFrame->getFrames().empty() )
         {
-            for ( auto f : followerFrame->getFrames() )
+            for (const auto f : followerFrame->getFrames() )
             {
                 if ( !f->isToBeDeleted() )
                 {
@@ -1908,25 +1908,25 @@ void FollowerRadialMenu::createFollowerMenuGUI()
     const int midx = followerFrame->getSize().w / 2;
     const int midy = followerFrame->getSize().h / 2;
 
-    auto bgFrame = followerFrame->addFrame("wheel base");
+    const auto bgFrame = followerFrame->addFrame("wheel base");
     bgFrame->setSize(SDL_Rect{0, 0, followerFrame->getSize().w, followerFrame->getSize().h});
     bgFrame->setHollow(false);
     bgFrame->setDisabled(false);
     bgFrame->setInheritParentFrameOpacity(false);
     bgFrame->setOpacity(0.0);
 
-    auto font = "fonts/pixel_maz_multiline.ttf#16#2";
+    const auto font = "fonts/pixel_maz_multiline.ttf#16#2";
 
     int panelIndex = 0;
     for ( auto& entry : panelEntries )
     {
         if ( panelIndex < PANEL_DIRECTION_END )
         {
-            SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
+            const SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
             char buf[32] = "";
             snprintf(buf, sizeof(buf), "panel %d", panelIndex);
             Frame::image_t* img = bgFrame->addImage(pos, 0xFFFFFFFF, entry.path.c_str(), buf);
-            if ( auto imgGet = Image::get(img->path.c_str()) )
+            if (const auto imgGet = Image::get(img->path.c_str()) )
             {
                 img->pos.w = imgGet->getWidth();
                 img->pos.h = imgGet->getHeight();
@@ -1936,11 +1936,11 @@ void FollowerRadialMenu::createFollowerMenuGUI()
     }
 
     panelIndex = 0;
-    for ( auto& entry : panelEntries )
+    for (const auto& entry : panelEntries )
     {
         if ( panelIndex < PANEL_DIRECTION_END )
         {
-            SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
+            const SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
             char buf[32] = "";
             snprintf(buf, sizeof(buf), "icon %d", panelIndex);
             Frame::image_t* imgIcon = bgFrame->addImage(pos, 0xFFFFFFFF, "", buf);
@@ -1951,19 +1951,19 @@ void FollowerRadialMenu::createFollowerMenuGUI()
 
     {
         // do center panel
-        auto& entry = panelEntries[panelEntries.size() - 1];
-        SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
+        const auto& entry = panelEntries[panelEntries.size() - 1];
+        const SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
         char buf[32] = "";
         snprintf(buf, sizeof(buf), "panel %d", PANEL_DIRECTION_END);
         Frame::image_t* img = bgFrame->addImage(pos, 0xFFFFFFFF, entry.path.c_str(), buf);
-        if ( auto imgGet = Image::get(img->path.c_str()) )
+        if (const auto imgGet = Image::get(img->path.c_str()) )
         {
             img->pos.w = imgGet->getWidth();
             img->pos.h = imgGet->getHeight();
         }
     }
 
-    auto bannerFrame = followerFrame->addFrame("banner frame");
+    const auto bannerFrame = followerFrame->addFrame("banner frame");
     bannerFrame->setSize(SDL_Rect{ 0, 0, 0, 40 });
     bannerFrame->setHollow(false);
     bannerFrame->setDisabled(false);
@@ -1971,7 +1971,7 @@ void FollowerRadialMenu::createFollowerMenuGUI()
     bannerFrame->addImage(SDL_Rect{ 0, 0, 42, 40 }, 0xFFFFFFFF, "#*images/ui/FollowerWheel/banner-cmd_l.png", "banner left");
     bannerFrame->addImage(SDL_Rect{ 0, 0, 42, 40 }, 0xFFFFFFFF, "#*images/ui/FollowerWheel/banner-cmd_r.png", "banner right");
     bannerFrame->addImage(SDL_Rect{ 0, 12, 0, 28 }, 0xFFFFFFFF, "*images/ui/FollowerWheel/banner-cmd_c.png", "banner center");
-    auto bannerText = bannerFrame->addField("banner txt", 128);
+    const auto bannerText = bannerFrame->addField("banner txt", 128);
     bannerText->setFont(font);
     bannerText->setText("");
     bannerText->setHJustify(Field::justify_t::LEFT);
@@ -1979,12 +1979,12 @@ void FollowerRadialMenu::createFollowerMenuGUI()
     bannerText->setSize(SDL_Rect{ 0, 0, 0, 24 });
     bannerText->setTextColor(followerBannerTextColor);
     bannerText->setOutlineColor(makeColor(29, 16, 11, 255));
-    auto bannerGlyph = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "banner glyph");
+    const auto bannerGlyph = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "banner glyph");
     bannerGlyph->disabled = true;
-    auto bannerGlyph2 = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "banner modifier glyph");
+    const auto bannerGlyph2 = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "banner modifier glyph");
     bannerGlyph2->disabled = true;
 
-    auto wheelTitleText = bgFrame->addField("wheel title", 128);
+    const auto wheelTitleText = bgFrame->addField("wheel title", 128);
     wheelTitleText->setFont(font);
     wheelTitleText->setText("");
     wheelTitleText->setHJustify(Field::justify_t::LEFT);
@@ -1993,9 +1993,9 @@ void FollowerRadialMenu::createFollowerMenuGUI()
     wheelTitleText->setTextColor(followerTitleColor);
     wheelTitleText->setOutlineColor(makeColor(29, 16, 11, 255));
 
-    auto wheelSkillImg = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "skill img");
+    const auto wheelSkillImg = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "skill img");
     wheelSkillImg->disabled = true;
-    auto wheelStatImg = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "stat img");
+    const auto wheelStatImg = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "stat img");
     wheelStatImg->disabled = true;
 }
 
@@ -2011,7 +2011,7 @@ void setFollowerBannerTextFormatted(const int player, Field* field, Uint32 color
 
     field->setText(buf);
     field->clearWordsToHighlight();
-    for ( auto v : highlights )
+    for (const auto v : highlights )
     {
         field->addWordToHighlight(v, color);
     }
@@ -2024,10 +2024,10 @@ void setFollowerBannerText(const int player, Field* field, const char* iconName,
     {
         return;
     }
-    auto& textMap = FollowerMenu[player].iconEntries[iconName].text_map[textKey];
+    const auto& textMap = FollowerMenu[player].iconEntries[iconName].text_map[textKey];
     field->setText(textMap.first.c_str());
     field->clearWordsToHighlight();
-    for ( auto v : textMap.second )
+    for (const auto v : textMap.second )
     {
         field->addWordToHighlight(v, color);
     }
@@ -2072,7 +2072,7 @@ std::vector<Entity*> getAllOtherFollowersForSendAllCommand(const int gui_player,
     if ( optionSelected == ALLY_CMD_ATTACK_CONFIRM )
     {
         // only send commands if we're trying to attack
-        Entity* target = uidToEntity(followerToCommand->monsterAllyInteractTarget);
+        const Entity* target = uidToEntity(followerToCommand->monsterAllyInteractTarget);
         if ( target )
         {
             if ( target->behavior != &actMonster && target->behavior != &actPlayer )
@@ -2086,7 +2086,7 @@ std::vector<Entity*> getAllOtherFollowersForSendAllCommand(const int gui_player,
         }
     }
 
-    for ( node_t* node = stats[gui_player]->FOLLOWERS.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[gui_player]->FOLLOWERS.first; node != nullptr; node = node->next )
     {
         Entity* follower2 = nullptr;
         if ( static_cast<Uint32*>(node->element) )
@@ -2097,7 +2097,7 @@ std::vector<Entity*> getAllOtherFollowersForSendAllCommand(const int gui_player,
                 {
                     continue;
                 }
-                auto follower2Type = follower2->getStats()->type;
+                const auto follower2Type = follower2->getStats()->type;
 
                 if ( optionSelected == ALLY_CMD_MOVETO_CONFIRM || optionSelected == ALLY_CMD_FOLLOW 
                     || optionSelected == ALLY_CMD_DEFEND )
@@ -2148,7 +2148,7 @@ std::vector<Entity*> getAllOtherFollowersForSendAllCommand(const int gui_player,
                 {
                     skillLVL2 = SKILL_LEVEL_LEGENDARY;
                 }
-                int disableOption2 = FollowerMenu[gui_player].optionDisabledForCreature(skillLVL2, follower2Type, optionSelected, follower2);
+                const int disableOption2 = FollowerMenu[gui_player].optionDisabledForCreature(skillLVL2, follower2Type, optionSelected, follower2);
                 if ( disableOption2 == 0 )
                 {
                     vec.push_back(follower2);
@@ -4057,7 +4057,7 @@ void FollowerRadialMenu::selectNextFollower()
         return;
     }
 
-    int numFollowers = list_Size(&stats[gui_player]->FOLLOWERS);
+    const int numFollowers = list_Size(&stats[gui_player]->FOLLOWERS);
 
     if ( numFollowers <= 0 )
     {
@@ -4066,7 +4066,7 @@ void FollowerRadialMenu::selectNextFollower()
 
     if ( !recentEntity ) // set first follower to be the selected one.
     {
-        node_t* node = stats[gui_player]->FOLLOWERS.first;
+        const node_t* node = stats[gui_player]->FOLLOWERS.first;
         if ( node )
         {
             Entity* follower = uidToEntity(*static_cast<Uint32*>(node->element));
@@ -4085,11 +4085,11 @@ void FollowerRadialMenu::selectNextFollower()
         return;
     }
 
-    int monstersToDraw = numMonstersToDrawInParty();
+    const int monstersToDraw = numMonstersToDrawInParty();
 
-    node_t* node2 = nullptr;
+    const node_t* node2 = nullptr;
     int i = 0;
-    for ( node_t* node = stats[gui_player]->FOLLOWERS.first; node != nullptr; node = node->next, ++i)
+    for (const node_t* node = stats[gui_player]->FOLLOWERS.first; node != nullptr; node = node->next, ++i)
     {
         Entity* follower = nullptr;
         if ( static_cast<Uint32*>(node->element) )
@@ -4160,14 +4160,14 @@ void FollowerRadialMenu::updateScrollPartySheet()
         return;
     }
 
-    int numFollowers = list_Size(&stats[gui_player]->FOLLOWERS);
+    const int numFollowers = list_Size(&stats[gui_player]->FOLLOWERS);
 
     if ( numFollowers <= 0 )
     {
         return;
     }
 
-    int monstersToDraw = numMonstersToDrawInParty();
+    const int monstersToDraw = numMonstersToDrawInParty();
 
     if ( !recentEntity ) // set first follower to be the selected one.
     {
@@ -4182,9 +4182,9 @@ void FollowerRadialMenu::updateScrollPartySheet()
 
     int i = 0;
 
-    for ( node_t* node = stats[gui_player]->FOLLOWERS.first; node != nullptr; node = node->next, ++i )
+    for (const node_t* node = stats[gui_player]->FOLLOWERS.first; node != nullptr; node = node->next, ++i )
     {
-        Entity* follower = nullptr;
+        const Entity* follower = nullptr;
         if ( static_cast<Uint32*>(node->element) )
         {
             follower = uidToEntity(*static_cast<Uint32*>(node->element));
@@ -4230,7 +4230,7 @@ bool FollowerRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool upda
         return false;
     }
 
-    Stat* followerStats = followerToCommand->getStats();
+    const Stat* followerStats = followerToCommand->getStats();
     if ( !followerStats )
     {
         return false;
@@ -4242,7 +4242,7 @@ bool FollowerRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool upda
 
     bool interactItems = allowedInteractItems(followerStats->type) || allowedInteractFood(followerStats->type);
     bool interactWorld = allowedInteractWorld(followerStats->type);
-    bool tinkeringFollower = isTinkeringFollower(followerStats->type);
+    const bool tinkeringFollower = isTinkeringFollower(followerStats->type);
     int skillLVL = stats[gui_player]->getModifiedProficiency(PRO_LEADERSHIP) + statGetCHR(stats[gui_player], players[gui_player]->entity);
     if ( tinkeringFollower )
     {
@@ -4255,7 +4255,7 @@ bool FollowerRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool upda
 
     if ( followerToCommand )
     {
-        if ( Stat* followerStats = followerToCommand->getStats() )
+        if (const Stat* followerStats = followerToCommand->getStats() )
         {
             if ( followerStats->getEffectActive(EFF_COMMAND) >= 1 && followerStats->getEffectActive(EFF_COMMAND) < MAXPLAYERS + 1 )
             {
@@ -4265,7 +4265,7 @@ bool FollowerRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool upda
         }
     }
 
-    bool enableAttack = (optionDisabledForCreature(skillLVL, followerStats->type, ALLY_CMD_ATTACK_CONFIRM, followerToCommand) == 0);
+    const bool enableAttack = (optionDisabledForCreature(skillLVL, followerStats->type, ALLY_CMD_ATTACK_CONFIRM, followerToCommand) == 0);
     
     if ( !interactItems && !interactWorld && enableAttack )
     {
@@ -4456,7 +4456,7 @@ int FollowerRadialMenu::optionDisabledForCreature(int playerSkillLVL, int monste
             break;
     }
 
-    Stat* followerStats = nullptr;
+    const Stat* followerStats = nullptr;
     if ( follower )
     {
         followerStats = follower->getStats();
@@ -4933,11 +4933,11 @@ bool FollowerRadialMenu::allowedInteractItems(int monsterType)
 
 bool FollowerRadialMenu::attackCommandOnly(int monsterType)
 {
-    bool result = !(allowedInteractItems(monsterType) || allowedInteractWorld(monsterType) || allowedInteractFood(monsterType));
+    const bool result = !(allowedInteractItems(monsterType) || allowedInteractWorld(monsterType) || allowedInteractFood(monsterType));
 
     if ( followerToCommand )
     {
-        if ( Stat* followerStats = followerToCommand->getStats() )
+        if (const Stat* followerStats = followerToCommand->getStats() )
         {
             if ( followerStats->getEffectActive(EFF_COMMAND) >= 1 && followerStats->getEffectActive(EFF_COMMAND) < MAXPLAYERS + 1 )
             {
@@ -5471,7 +5471,7 @@ bool GenericGUIMenu::isItemAlterable(const Item* item)
         {
             if ( item->getGoldValue() > 0 )
             {
-                int value = item->sellValue(-1) / 4;
+                const int value = item->sellValue(-1) / 4;
                 return value > 0;
             }
         }
@@ -5490,7 +5490,7 @@ bool GenericGUIMenu::isItemAlterable(const Item* item)
 
         if ( item->getGoldValue() > 0 )
         {
-            int value = item->sellValue(-1) / 20;
+            const int value = item->sellValue(-1) / 20;
             return value > 0;
         }
         return true;
@@ -5504,7 +5504,7 @@ bool GenericGUIMenu::isItemAlterable(const Item* item)
         {
             if ( item->getGoldValue() > 0 )
             {
-                int value = item->sellValue(-1) / 2;
+                const int value = item->sellValue(-1) / 2;
                 return value > 0;
             }
         }
@@ -5613,7 +5613,7 @@ bool GenericGUIMenu::isItemRepairable(const Item* item, int repairScroll)
     {
         return false;
     }
-    Category cat = itemCategory(item);
+    const Category cat = itemCategory(item);
     if ( repairScroll == SCROLL_CHARGING )
     {
         if ( item->type == ENCHANTED_FEATHER )
@@ -5709,10 +5709,10 @@ bool GenericGUIMenu::isItemRepairable(const Item* item, int repairScroll)
 // Generic GUI Code
 void GenericGUIMenu::rebuildGUIInventory()
 {
-    list_t* player_inventory = &stats[gui_player]->inventory;
+    const list_t* player_inventory = &stats[gui_player]->inventory;
     node_t* node = nullptr;
     Item* item = nullptr;
-    int c = 0;
+    const int c = 0;
 
     if ( guiType == GUI_TYPE_TINKERING )
     {
@@ -5815,9 +5815,9 @@ void GenericGUIMenu::rebuildGUIInventory()
                         && item->x >= 0 && item->x < TinkerGUI_t::MAX_TINKER_X
                         && item->y >= 0 && item->y < TinkerGUI_t::MAX_TINKER_Y )
                     {
-                        if ( auto slotFrame = tinkerGUI.getTinkerSlotFrame(item->x, item->y) )
+                        if (const auto slotFrame = tinkerGUI.getTinkerSlotFrame(item->x, item->y) )
                         {
-                            bool unusable = !tinkeringPlayerCanAffordCraft(item) || (tinkeringPlayerHasSkillLVLToCraft(item) == -1);
+                            const bool unusable = !tinkeringPlayerCanAffordCraft(item) || (tinkeringPlayerHasSkillLVLToCraft(item) == -1);
                             updateSlotFrameFromItem(slotFrame, item, unusable);
                         }
                     }
@@ -5862,7 +5862,7 @@ void GenericGUIMenu::updateGUI()
     //Generic GUI.
     if ( guiActive )
     {
-        auto& player = players[gui_player];
+        const auto& player = players[gui_player];
         if ( !player->isLocalPlayerAlive()
             || stats[gui_player]->HP <= 0
             || player->shootmode )
@@ -6247,7 +6247,7 @@ void GenericGUIMenu::updateGUI()
             //ttfPrintText(font, highlightBtn.x + 4 + charWidth, pos.y - (8 - txtHeight), Language::get(3719));
         }
 
-        list_t* player_inventory = &stats[gui_player]->inventory;
+        const list_t* player_inventory = &stats[gui_player]->inventory;
         if ( guiType == GUI_TYPE_TINKERING )
         {
             player_inventory = &tinkeringTotalItems;
@@ -6283,7 +6283,7 @@ void GenericGUIMenu::updateGUI()
                 {
                     if ( node->element )
                     {
-                        auto item = static_cast<Item*>(node->element);
+                        const auto item = static_cast<Item*>(node->element);
                         itemCounts[item->type] += item->count;
                     }
                 }
@@ -6291,7 +6291,7 @@ void GenericGUIMenu::updateGUI()
                 {
                     if ( node->element )
                     {
-                        auto item = static_cast<Item*>(node->element);
+                        const auto item = static_cast<Item*>(node->element);
                         if ( isNodeTinkeringCraftableItem(item->node) )
                         {
                             // make the displayed items reflect how many you are carrying.
@@ -6551,7 +6551,7 @@ void GenericGUIMenu::identifyItem(Item* item)
             }
         }
     }
-    bool prevIdentified = item->identified;
+    const bool prevIdentified = item->identified;
     item->identified = true;
 
     if ( !prevIdentified )
@@ -6567,8 +6567,8 @@ bool GenericGUIMenu::ItemEffectGUI_t::consumeResourcesForTransmute()
 {
     if ( modeHasCostEffect != COST_EFFECT_NONE && players[parentGUI.gui_player] && players[parentGUI.gui_player]->entity )
     {
-        bool hasGold = costEffectGoldAmount <= 0 || stats[parentGUI.gui_player]->GOLD >= costEffectGoldAmount;
-        bool hasMana = costEffectMPAmount == 0 || (stats[parentGUI.gui_player]->MP >= costEffectMPAmount || stats[parentGUI.gui_player]->type == VAMPIRE);
+        const bool hasGold = costEffectGoldAmount <= 0 || stats[parentGUI.gui_player]->GOLD >= costEffectGoldAmount;
+        const bool hasMana = costEffectMPAmount == 0 || (stats[parentGUI.gui_player]->MP >= costEffectMPAmount || stats[parentGUI.gui_player]->type == VAMPIRE);
         if ( hasGold && hasMana )
         {
             if ( costEffectGoldAmount != 0 )
@@ -6602,12 +6602,12 @@ bool GenericGUIMenu::ItemEffectGUI_t::consumeResourcesForTransmute()
                             cameravars[parentGUI.gui_player].shakey += 10;
                             playSoundPlayer(parentGUI.gui_player, 28, 92);
                         }
-                        Sint32 prevMP = stats[parentGUI.gui_player]->MP;
+                        const Sint32 prevMP = stats[parentGUI.gui_player]->MP;
                         players[parentGUI.gui_player]->entity->drainMP(costEffectMPAmount);
 
                         if ( parentGUI.itemEffectScrollItem && parentGUI.itemEffectScrollItem->type == SPELL_ITEM )
                         {
-                            if ( auto spell = getSpellFromItem(parentGUI.gui_player, parentGUI.itemEffectScrollItem, false) )
+                            if (const auto spell = getSpellFromItem(parentGUI.gui_player, parentGUI.itemEffectScrollItem, false) )
                             {
                                 players[parentGUI.gui_player]->mechanics.baseSpellIncrementMP(
                                     prevMP - stats[parentGUI.gui_player]->MP, spell->skillID);
@@ -6626,7 +6626,7 @@ bool GenericGUIMenu::ItemEffectGUI_t::consumeResourcesForTransmute()
                 Uint16 spellID = 0;
                 if ( parentGUI.itemEffectScrollItem && parentGUI.itemEffectScrollItem->type == SPELL_ITEM )
                 {
-                    if ( auto spell = getSpellFromItem(parentGUI.gui_player, parentGUI.itemEffectScrollItem, false) )
+                    if (const auto spell = getSpellFromItem(parentGUI.gui_player, parentGUI.itemEffectScrollItem, false) )
                     {
                         spellID = spell->ID;
                     }
@@ -6751,7 +6751,7 @@ int GenericGUIMenu::getAlterItemResultAtCycle(Item* item)
 
     auto find = std::find(targetItems.begin(), targetItems.end(), item->type);
     {
-        bool inList = find != targetItems.end();
+        const bool inList = find != targetItems.end();
         if ( !inList )
         {
             find = targetItems.begin();
@@ -6823,10 +6823,10 @@ void GenericGUIMenu::alterItem(Item* item)
         return;
     }
 
-    bool isEquipped = itemIsEquipped(item, gui_player);
+    const bool isEquipped = itemIsEquipped(item, gui_player);
 
-    ItemType prevType = item->type;
-    std::string prevItem = item->getName();
+    const ItemType prevType = item->type;
+    const std::string prevItem = item->getName();
     if ( itemfxGUI.currentMode == ItemEffectGUI_t::ITEMFX_MODE_ALTER_INSTRUMENT )
     {
         int result = getAlterItemResultAtCycle(item);
@@ -6959,9 +6959,9 @@ void GenericGUIMenu::alterItem(Item* item)
         {
             Item* itemToPickup = newItem(newType, SERVICABLE, item->beatitude, 1, item->appearance, true, nullptr);
             Item* pickedUp = itemPickup(gui_player, itemToPickup);
-            int oldCount = item->count;
+            const int oldCount = item->count;
             item->count = 1;
-            std::string desc = itemToPickup->description();
+            const std::string desc = itemToPickup->description();
             messagePlayer(gui_player, MESSAGE_MISC, Language::get(6553), desc.c_str(), item->description());
             item->count = oldCount;
             free(itemToPickup);
@@ -6978,7 +6978,7 @@ void GenericGUIMenu::alterItem(Item* item)
         if ( itemCategory(item) == GEM && item->type != GEM_ROCK && item->type != GEM_LUCK /*&& item->type != GEM_GLASS*/
             && !(item->type == GEM_JEWEL && item->status == EXCELLENT) )
         {
-            int value = item->getGoldValue();
+            const int value = item->getGoldValue();
             Status result = DECREPIT;
             if ( item->type == GEM_JEWEL )
             {
@@ -7012,9 +7012,9 @@ void GenericGUIMenu::alterItem(Item* item)
 
             Item* itemToPickup = newItem(GEM_JEWEL, result, 0, 1, 0, true, nullptr);
             Item* pickedUp = itemPickup(gui_player, itemToPickup);
-            int oldCount = item->count;
+            const int oldCount = item->count;
             item->count = 1;
-            std::string desc = itemToPickup->description();
+            const std::string desc = itemToPickup->description();
             messagePlayer(gui_player, MESSAGE_MISC, Language::get(6553), desc.c_str(), item->description());
             item->count = oldCount;
             free(itemToPickup);
@@ -7032,7 +7032,7 @@ void GenericGUIMenu::alterItem(Item* item)
     }
     else if ( itemfxGUI.currentMode == ItemEffectGUI_t::ITEMFX_MODE_METALLURGY )
     {
-        int oldCount = item->count;
+        const int oldCount = item->count;
         item->count = 1;
         messagePlayer(gui_player, MESSAGE_MISC, Language::get(6554), -itemfxGUI.costEffectGoldAmount, item->description());
         item->count = oldCount;
@@ -7046,7 +7046,7 @@ void GenericGUIMenu::alterItem(Item* item)
     }
     else if ( itemfxGUI.currentMode == ItemEffectGUI_t::ITEMFX_MODE_GEOMANCY )
     {
-        int oldCount = item->count;
+        const int oldCount = item->count;
         item->count = 1;
         messagePlayer(gui_player, MESSAGE_MISC, Language::get(6554), -itemfxGUI.costEffectGoldAmount, item->description());
         item->count = oldCount;
@@ -7060,7 +7060,7 @@ void GenericGUIMenu::alterItem(Item* item)
     }
     else if ( itemfxGUI.currentMode == ItemEffectGUI_t::ITEMFX_MODE_VANDALISE )
     {
-        int oldCount = item->count;
+        const int oldCount = item->count;
         item->count = 1;
         messagePlayer(gui_player, MESSAGE_MISC, Language::get(6724), -itemfxGUI.costEffectGoldAmount, item->description());
         item->count = oldCount;
@@ -7093,9 +7093,9 @@ void GenericGUIMenu::alterItem(Item* item)
 
     std::unordered_set<Uint32> appearancesOfSimilarItems;
     // reroll any other conflicting items
-    for ( node_t* node = stats[gui_player]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[gui_player]->inventory.first; node != nullptr; node = node->next )
     {
-        auto item2 = static_cast<Item*>(node->element);
+        const auto item2 = static_cast<Item*>(node->element);
         if ( item2 && item2 != item && !itemCompare(item, item2, true) )
         {
             // items are the same (incl. appearance!)
@@ -7233,7 +7233,7 @@ void GenericGUIMenu::repairItem(Item* item)
         }
     }
 
-    bool isEquipped = itemIsEquipped(item, gui_player);
+    const bool isEquipped = itemIsEquipped(item, gui_player);
 
     if ( itemEffectItemType == SCROLL_CHARGING )
     {
@@ -7242,7 +7242,7 @@ void GenericGUIMenu::repairItem(Item* item)
             Compendium_t::Events_t::eventUpdate(gui_player, Compendium_t::CPDM_MAGICSTAFF_RECHARGED, item->type, 1);
             if ( item->type == MAGICSTAFF_SCEPTER )
             {
-                int durability = item->appearance % MAGICSTAFF_SCEPTER_CHARGE_MAX;
+                const int durability = item->appearance % MAGICSTAFF_SCEPTER_CHARGE_MAX;
                 int repairAmount = ((MAGICSTAFF_SCEPTER_CHARGE_MAX - 1) - durability);
                 if ( repairAmount > (MAGICSTAFF_SCEPTER_CHARGE_MAX / 2) )
                 {
@@ -7279,7 +7279,7 @@ void GenericGUIMenu::repairItem(Item* item)
         }
         else if ( item->type == ENCHANTED_FEATHER )
         {
-            int durability = item->appearance % ENCHANTED_FEATHER_MAX_DURABILITY;
+            const int durability = item->appearance % ENCHANTED_FEATHER_MAX_DURABILITY;
             int repairAmount = 100 - durability;
             if ( repairAmount > (ENCHANTED_FEATHER_MAX_DURABILITY / 2) )
             {
@@ -7373,11 +7373,11 @@ void GenericGUIMenu::repairItem(Item* item)
 
 void GenericGUIMenu::closeGUI()
 {
-    bool wasOpen = guiActive;
+    const bool wasOpen = guiActive;
     tinkeringFreeLists();
     scribingFreeLists();
     guiActive = false;
-    auto prevGUI = guiType;
+    const auto prevGUI = guiType;
     guiType = GUI_TYPE_NONE;
     basePotion = nullptr;
     secondaryPotion = nullptr;
@@ -7544,9 +7544,9 @@ void GenericGUIMenu::openGUI(int type, Item* effectItem, int effectBeatitude, in
 
     if ( !effectItem && usingSpellID != SPELL_NONE && effectItemType == SPELL_ITEM )
     {
-        for ( node_t* node = stats[gui_player]->inventory.first; node; node = node->next )
+        for (const node_t* node = stats[gui_player]->inventory.first; node; node = node->next )
         {
-            auto item = static_cast<Item*>(node->element);
+            const auto item = static_cast<Item*>(node->element);
             if ( !item )
             {
                 continue;
@@ -7556,7 +7556,7 @@ void GenericGUIMenu::openGUI(int type, Item* effectItem, int effectBeatitude, in
             {
                 continue;
             }
-            spell_t* spell = getSpellFromItem(gui_player, item, false);
+            const spell_t* spell = getSpellFromItem(gui_player, item, false);
             if ( spell && spell->ID == usingSpellID )
             {
                 effectItem = item;
@@ -7885,28 +7885,28 @@ void GenericGUIMenu::openGUI(int type, Entity* shrine)
     // close existing guis
     if ( guiType == GUI_TYPE_ASSIST )
     {
-        Uint32 oldUID = assistShrineGUI.shrineUID;
+        const Uint32 oldUID = assistShrineGUI.shrineUID;
         assistShrineGUI.shrineUID = 0;
         this->closeGUI();
         assistShrineGUI.shrineUID = oldUID;
     }
     else if ( guiType == GUI_TYPE_ALCHEMY )
     {
-        Uint32 oldUID = alembicEntityUid;
+        const Uint32 oldUID = alembicEntityUid;
         alembicEntityUid = 0;
         this->closeGUI();
         alembicEntityUid = oldUID;
     }
     else if ( guiType == GUI_TYPE_TINKERING )
     {
-        Uint32 oldUID = workstationEntityUid;
+        const Uint32 oldUID = workstationEntityUid;
         workstationEntityUid = 0;
         this->closeGUI();
         workstationEntityUid = oldUID;
     }
     else if ( guiType == GUI_TYPE_MAILBOX )
     {
-        Uint32 oldUID = mailboxEntityUid;
+        const Uint32 oldUID = mailboxEntityUid;
         mailboxEntityUid = 0;
         this->closeGUI();
         mailboxEntityUid = oldUID;
@@ -8002,7 +8002,7 @@ void GenericGUIMenu::sendItemToVoid(Item* item)
     }
 
     Item* newitem = newItem(item->type, item->status, item->beatitude, item->count, item->appearance, item->identified, nullptr);
-    if ( Item* insertedItem = Entity::addItemToVoidChest(gui_player, newitem, false, nullptr) )
+    if (const Item* insertedItem = Entity::addItemToVoidChest(gui_player, newitem, false, nullptr) )
     {
         if ( insertedItem != newitem )
         {
@@ -8050,8 +8050,8 @@ void GenericGUIMenu::adorciseItem(Item* item)
 
     if ( players[gui_player]->entity )
     {
-        int x = floor(players[gui_player]->entity->x / 16) * 16 + 8.0 + 16.0 * cos(players[gui_player]->entity->yaw);
-        int y = floor(players[gui_player]->entity->y / 16) * 16 + 8.0 + 16.0 * sin(players[gui_player]->entity->yaw);
+        const int x = floor(players[gui_player]->entity->x / 16) * 16 + 8.0 + 16.0 * cos(players[gui_player]->entity->yaw);
+        const int y = floor(players[gui_player]->entity->y / 16) * 16 + 8.0 + 16.0 * sin(players[gui_player]->entity->yaw);
         if ( multiplayer != CLIENT )
         {
             if ( Entity* monster = spellEffectAdorcise(*players[gui_player]->entity, spellElementMap[SPELL_ADORCISM], 
@@ -8103,19 +8103,19 @@ void GenericGUIMenu::rechargeScepterUsingItem(Item* item)
 
     if ( itemEffectScrollItem && itemEffectScrollItem->type == MAGICSTAFF_SCEPTER )
     {
-        if ( auto spell = getSpellFromItem(gui_player, item, true) )
+        if (const auto spell = getSpellFromItem(gui_player, item, true) )
         {
             messagePlayer(gui_player, MESSAGE_INTERACTION, Language::get(6836), spell->getSpellName());
             messagePlayerColor(gui_player, MESSAGE_INTERACTION, makeColorRGB(0, 255, 0), Language::get(3730), items[itemEffectScrollItem->type].getIdentifiedName());
             playSound(167, 64);
-            int difficulty = 10 + spell->difficulty / 4;
+            const int difficulty = 10 + spell->difficulty / 4;
             node_t* nextnode = nullptr;
             for ( node_t* node = players[gui_player]->magic.spellList.first; node; node = nextnode )
             {
                 nextnode = node->next;
                 if ( node->element )
                 {
-                    auto spell2 = static_cast<spell_t*>(node->element);
+                    const auto spell2 = static_cast<spell_t*>(node->element);
                     if ( spell2 == spell )
                     {
                         if ( spell == players[gui_player]->magic.selectedSpell() )
@@ -8144,8 +8144,8 @@ void GenericGUIMenu::rechargeScepterUsingItem(Item* item)
                 }
             }
             consumeItem(item, gui_player);
-            Uint32 baseAppearance = itemEffectScrollItem->appearance % MAGICSTAFF_SCEPTER_CHARGE_MAX;
-            Uint32 increased = std::min(MAGICSTAFF_SCEPTER_CHARGE_MAX - 1U, baseAppearance + difficulty);
+            const Uint32 baseAppearance = itemEffectScrollItem->appearance % MAGICSTAFF_SCEPTER_CHARGE_MAX;
+            const Uint32 increased = std::min(MAGICSTAFF_SCEPTER_CHARGE_MAX - 1U, baseAppearance + difficulty);
             if ( increased > baseAppearance )
             {
                 itemEffectScrollItem->appearance += (increased - baseAppearance);
@@ -8282,12 +8282,12 @@ bool GenericGUIMenu::executeOnItemClick(Item* item)
             {
                 basePotion = item;
                 // check if secondary potion available.
-                list_t* player_inventory = &stats[gui_player]->inventory;
-                for ( node_t* node = player_inventory->first; node != nullptr; node = node->next )
+                const list_t* player_inventory = &stats[gui_player]->inventory;
+                for (const node_t* node = player_inventory->first; node != nullptr; node = node->next )
                 {
                     if ( node->element )
                     {
-                        auto checkItem = static_cast<Item*>(node->element);
+                        const auto checkItem = static_cast<Item*>(node->element);
                         if ( checkItem && isItemMixable(checkItem) )
                         {
                             return true;
@@ -8583,8 +8583,8 @@ ItemType alchemyCookResult(int player, Item* potion1Item, Item* potion2Item, int
         return result;
     }
 
-    ItemType potion1 = potion1Item->type;
-    ItemType potion2 = potion2Item->type;
+    const ItemType potion1 = potion1Item->type;
+    const ItemType potion2 = potion2Item->type;
 
     if ( (potion1 == TOOL_TOWEL && potion2 == FOOD_RATION)
         || (potion2 == TOOL_TOWEL && potion1 == FOOD_RATION) )
@@ -9029,12 +9029,12 @@ bool alchemyAddRecipe(int player, int basePotion, int secondaryPotion, int resul
     if ( GenericGUI[player].isItemBaseIngredient(secondaryPotion) && GenericGUI[player].isItemSecondaryIngredient(basePotion) )
     {
         // keep the orders consistent, base then secondary
-        int swapBasePotion = basePotion;
+        const int swapBasePotion = basePotion;
         basePotion = secondaryPotion;
         secondaryPotion = swapBasePotion;
     }
-    bool found = false;
-    for ( auto& entry : clientLearnedAlchemyRecipes[player] )
+    const bool found = false;
+    for (const auto& entry : clientLearnedAlchemyRecipes[player] )
     {
         if ( entry.first == result
             && ((entry.second.first == basePotion && entry.second.second == secondaryPotion)
@@ -9059,17 +9059,17 @@ bool alchemyAddRecipe(int player, int basePotion, int secondaryPotion, int resul
             }
             capitalizeString(itemName);
             std::string iconPath = "";
-            node_t* imagePathsNode = nullptr;
+            const node_t* imagePathsNode = nullptr;
             for ( auto it = potionStandardAppearanceMap.begin(); it != potionStandardAppearanceMap.end(); ++it )
             {
                 // loop through to get the standard appearance
                 if ( (*it).first == result )
                 {
-                    Uint32 index = (*it).second % items[result].variations;
+                    const Uint32 index = (*it).second % items[result].variations;
                     imagePathsNode = list_Node(&items[result].images, index);
                     if ( imagePathsNode )
                     {
-                        auto imagePath = static_cast<string_t*>(imagePathsNode->element);
+                        const auto imagePath = static_cast<string_t*>(imagePathsNode->element);
                         iconPath = imagePath->data;
                     }
                 }
@@ -9096,7 +9096,7 @@ void GenericGUIMenu::alchemyCookCombination()
     Status status = SERVICABLE;
     int missingPotion1Count = 0;
     int missingPotion2Count = 0;
-    ItemType result = alchemyCookResult(getPlayer(), basePotion, secondaryPotion, createCount, status, missingPotion1Count, missingPotion2Count);
+    const ItemType result = alchemyCookResult(getPlayer(), basePotion, secondaryPotion, createCount, status, missingPotion1Count, missingPotion2Count);
     if ( result == POTION_EMPTY || alchemyGUI.alchemyMissingIngredientQty(nullptr) )
     {
         return;
@@ -9209,7 +9209,7 @@ void GenericGUIMenu::alchemyCookCombination()
         }
         while ( consume1 > 0 )
         {
-            int prevCount = basePotion->count;
+            const int prevCount = basePotion->count;
             consumeItem(basePotion, gui_player);
             if ( !basePotion || basePotion->count == prevCount )
             {
@@ -9219,7 +9219,7 @@ void GenericGUIMenu::alchemyCookCombination()
         }
         while ( consume2 > 0 )
         {
-            int prevCount = secondaryPotion->count;
+            const int prevCount = secondaryPotion->count;
             consumeItem(secondaryPotion, gui_player);
             if ( !secondaryPotion || secondaryPotion->count == prevCount )
             {
@@ -9232,7 +9232,7 @@ void GenericGUIMenu::alchemyCookCombination()
         {
             std::vector<Item*> torches;
             Item* torchesEquipped;
-            for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != nullptr; invnode = invnode->next )
+            for (const node_t* invnode = stats[gui_player]->inventory.first; invnode != nullptr; invnode = invnode->next )
             {
                 auto item = static_cast<Item*>(invnode->element);
                 if ( item && item->type == TOOL_TORCH )
@@ -9285,7 +9285,7 @@ void GenericGUIMenu::alchemyCookCombination()
             {
                 // if decrementing qty and holding item, then send "equip" for server to update their count of your held item.
                 strcpy((char*)net_packet->data, "COOK");
-                Item* shield = stats[gui_player]->shield;
+                const Item* shield = stats[gui_player]->shield;
                 SDLNet_Write32(shield ? shield->type : TOOL_TORCH, &net_packet->data[4]);
                 SDLNet_Write32(shield ? shield->status : BROKEN, &net_packet->data[8]);
                 SDLNet_Write32(static_cast<Uint32>(shield ? shield->beatitude : 0), &net_packet->data[12]);
@@ -9377,7 +9377,7 @@ void GenericGUIMenu::alchemyCookCombination()
     if ( Item* newPotion = newItem(result, status, blessing, createCount, appearance, true, nullptr) )
     {
         messagePlayer(gui_player, MESSAGE_MISC, Language::get(6771), newPotion->description());
-        Item* pickedUp = itemPickup(gui_player, newPotion);
+        const Item* pickedUp = itemPickup(gui_player, newPotion);
         if ( pickedUp )
         {
             alchemyGUI.potionResultUid = pickedUp->uid;
@@ -9835,7 +9835,7 @@ void GenericGUIMenu::alchemyCombinePotions()
 
     if ( randomResult )
     {
-        std::vector<unsigned int> potionChances =
+        const std::vector<unsigned int> potionChances =
         {
             0,  //POTION_WATER,
             1,  //POTION_BOOZE,
@@ -9970,7 +9970,7 @@ void GenericGUIMenu::alchemyCombinePotions()
         }
     }
 
-    bool knewBothBaseIngredients = true; // always auto ID?
+    const bool knewBothBaseIngredients = true; // always auto ID?
     //if ( clientLearnedAlchemyIngredients[gui_player].find(basePotion->type) 
     //  != clientLearnedAlchemyIngredients[gui_player].end() )
     //{
@@ -9988,7 +9988,7 @@ void GenericGUIMenu::alchemyCombinePotions()
     //  }
     //}
 
-    Item* duplicatedPotion = nullptr;
+    const Item* duplicatedPotion = nullptr;
     bool emptyBottle = false;
     if ( duplicateSucceed )
     {
@@ -10368,7 +10368,7 @@ bool GenericGUIMenu::alchemyLearnRecipe(int type, bool increaseskill, bool notif
             {
                 // new recipe!
                 clientLearnedAlchemyIngredients[gui_player].insert(type);
-                Uint32 color = makeColorRGB(0, 255, 0);
+                const Uint32 color = makeColorRGB(0, 255, 0);
                 if ( notify )
                 {
                     if ( isItemBaseIngredient(type) )
@@ -10390,12 +10390,12 @@ bool GenericGUIMenu::alchemyLearnRecipe(int type, bool increaseskill, bool notif
                     }
                     capitalizeString(itemName);
                     std::string iconPath = "";
-                    node_t* imagePathsNode = nullptr;
-                    Uint32 index = (*it).second % items[type].variations;
+                    const node_t* imagePathsNode = nullptr;
+                    const Uint32 index = (*it).second % items[type].variations;
                     imagePathsNode = list_Node(&items[type].images, index);
                     if ( imagePathsNode )
                     {
-                        auto imagePath = static_cast<string_t*>(imagePathsNode->element);
+                        const auto imagePath = static_cast<string_t*>(imagePathsNode->element);
                         iconPath = imagePath->data;
                     }
                     alchemyGUI.notifications.push_back(std::make_pair(ticks, 
@@ -10516,7 +10516,7 @@ void GenericGUIMenu::alchemyLearnRecipeOnLevelUp(int skill)
     bool learned = false;
     if ( skill > 0 )
     {
-        ItemType potion = POTION_WATER;
+        const ItemType potion = POTION_WATER;
         learned = alchemyLearnRecipe(potion, false);
     }
     
@@ -10529,7 +10529,7 @@ void GenericGUIMenu::alchemyLearnRecipeOnLevelUp(int skill)
     }
     else if ( skill == 40 )
     {
-        ItemType potion = POTION_ACID;
+        const ItemType potion = POTION_ACID;
         learned = alchemyLearnRecipe(potion, false);
     }
     else if ( skill == 60 )
@@ -10542,7 +10542,7 @@ void GenericGUIMenu::alchemyLearnRecipeOnLevelUp(int skill)
 
     if ( !learned && skill % 5 == 0 )
     {
-        ItemType potion = itemLevelCurve(POTION, 0, currentlevel, local_rng);
+        const ItemType potion = itemLevelCurve(POTION, 0, currentlevel, local_rng);
         alchemyLearnRecipe(potion, false);
     }
 }
@@ -10611,7 +10611,7 @@ void GenericGUIMenu::tinkeringCreateCraftableItemList()
         if ( item )
         {
             int skillLVL = 0;
-            int requiredSkill = tinkeringPlayerHasSkillLVLToCraft(item);
+            const int requiredSkill = tinkeringPlayerHasSkillLVLToCraft(item);
             if ( stats[gui_player] && players[gui_player] )
             {
                 skillLVL = (stats[gui_player]->getModifiedProficiency(PRO_LOCKPICKING) + statGetPER(stats[gui_player], players[gui_player]->entity)) / 20; // 0 to 5
@@ -10833,12 +10833,12 @@ bool GenericGUIMenu::tinkeringSalvageItem(Item* item, bool outsideInventory, int
         Item* crafted = newItem(TOOL_METAL_SCRAP, DECREPIT, 0, metal, 0, true, nullptr);
         if ( crafted )
         {
-            Item* pickedUp = itemPickup(player, crafted);
+            const Item* pickedUp = itemPickup(player, crafted);
             if ( !tinkeringBulkSalvage )
             {
                 if ( bonusMetalScrap > 0 )
                 {
-                    Uint32 color = makeColorRGB(0, 255, 0);
+                    const Uint32 color = makeColorRGB(0, 255, 0);
                     messagePlayerColor(player, MESSAGE_INVENTORY, color, Language::get(3665), metal + tinkeringBulkSalvageMetalScrap, items[pickedUp->type].getIdentifiedName());
                     if ( players[player]->isLocalPlayer() )
                     {
@@ -10875,12 +10875,12 @@ bool GenericGUIMenu::tinkeringSalvageItem(Item* item, bool outsideInventory, int
         Item* crafted = newItem(TOOL_MAGIC_SCRAP, DECREPIT, 0, magic, 0, true, nullptr);
         if ( crafted )
         {
-            Item* pickedUp = itemPickup(player, crafted);
+            const Item* pickedUp = itemPickup(player, crafted);
             if ( !tinkeringBulkSalvage )
             {
                 if ( bonusMagicScrap > 0 )
                 {
-                    Uint32 color = makeColorRGB(0, 255, 0);
+                    const Uint32 color = makeColorRGB(0, 255, 0);
                     messagePlayerColor(player, MESSAGE_INVENTORY, color, Language::get(3665), magic + tinkeringBulkSalvageMagicScrap, items[pickedUp->type].getIdentifiedName());
                     if ( players[player]->isLocalPlayer() )
                     {
@@ -11295,9 +11295,9 @@ Uint32 GenericGUIMenu::tinkeringRetrieveLeastScrapStack(int type)
         {
             int lowestCount = 9999;
             Uint32 lowestUid = 0;
-            for ( auto it : tinkeringMetalScrap )
+            for (const auto it : tinkeringMetalScrap )
             {
-                Item* item = uidToItem(it);
+                const Item* item = uidToItem(it);
                 if ( item && item->count > 0 && item->count < lowestCount )
                 {
                     lowestCount = item->count;
@@ -11313,9 +11313,9 @@ Uint32 GenericGUIMenu::tinkeringRetrieveLeastScrapStack(int type)
         {
             int lowestCount = 9999;
             Uint32 lowestUid = 0;
-            for ( auto it : tinkeringMagicScrap )
+            for (const auto it : tinkeringMagicScrap )
             {
-                Item* item = uidToItem(it);
+                const Item* item = uidToItem(it);
                 if ( item && item->count > 0 && item->count < lowestCount )
                 {
                     lowestCount = item->count;
@@ -11335,9 +11335,9 @@ int GenericGUIMenu::tinkeringCountScrapTotal(int type)
     {
         if ( !tinkeringMetalScrap.empty() )
         {
-            for ( auto it : tinkeringMetalScrap )
+            for (const auto it : tinkeringMetalScrap )
             {
-                Item* item = uidToItem(it);
+                const Item* item = uidToItem(it);
                 if ( item )
                 {
                     count += item->count;
@@ -11349,9 +11349,9 @@ int GenericGUIMenu::tinkeringCountScrapTotal(int type)
     {
         if ( !tinkeringMagicScrap.empty() )
         {
-            for ( auto it : tinkeringMagicScrap )
+            for (const auto it : tinkeringMagicScrap )
             {
-                Item* item = uidToItem(it);
+                const Item* item = uidToItem(it);
                 if ( item )
                 {
                     count += item->count;
@@ -12135,7 +12135,7 @@ void getGeneralItemRepairCostWithoutRequirements(const int player, Item* item, i
     GenericGUI[player].tinkeringGetItemValue(item, &metalSalvage, &magicSalvage);
     metal = metalSalvage * 8;
     magic = magicSalvage * 8;
-    int blessingOrCurse = abs(item->beatitude);
+    const int blessingOrCurse = abs(item->beatitude);
     magic += blessingOrCurse * 4;
 
     metal = std::min(99, metal);
@@ -12197,7 +12197,7 @@ bool GenericGUIMenu::tinkeringGetRepairCost(Item* item, int* metal, int* magic)
             *magic = 0;
             if ( item->status < EXCELLENT )
             {
-                int requirement = tinkeringRepairGeneralItemSkillRequirement(item);
+                const int requirement = tinkeringRepairGeneralItemSkillRequirement(item);
                 if ( requirement >= 0 && stats[gui_player]
                     && ((stats[gui_player]->getModifiedProficiency(PRO_LOCKPICKING) + statGetPER(stats[gui_player], players[gui_player]->entity)) >= requirement) )
                 {
@@ -12238,7 +12238,7 @@ int GenericGUIMenu::tinkeringRepairGeneralItemSkillRequirement(Item* item)
     int metal = 0;
     int magic = 0;
     int requirement = 0;
-    int blessing = item->beatitude;
+    const int blessing = item->beatitude;
     item->beatitude = 0;
     tinkeringGetItemValue(item, &metal, &magic);
     item->beatitude = blessing;
@@ -12379,7 +12379,7 @@ bool GenericGUIMenu::tinkeringKitDegradeOnUse(int player)
             return false;
         }
 
-        bool isEquipped = itemIsEquipped(toDegrade, gui_player);
+        const bool isEquipped = itemIsEquipped(toDegrade, gui_player);
         if ( isEquipped && players[player]->entity && players[player]->entity->spellEffectPreserveItem(toDegrade) )
         {
             return false;
@@ -12401,7 +12401,7 @@ bool GenericGUIMenu::tinkeringKitDegradeOnUse(int player)
         if ( multiplayer == CLIENT && isEquipped )
         {
             // the client needs to inform the server that their equipment was damaged.
-            int armornum = 5;
+            const int armornum = 5;
             strcpy((char*)net_packet->data, "REPA");
             net_packet->data[4] = gui_player;
             net_packet->data[5] = armornum;
@@ -12429,9 +12429,9 @@ Item* GenericGUIMenu::tinkeringKitFindInInventory()
             return nullptr;
         }
 
-        for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != nullptr; invnode = invnode->next )
+        for (const node_t* invnode = stats[gui_player]->inventory.first; invnode != nullptr; invnode = invnode->next )
         {
-            auto tinkerItem = static_cast<Item*>(invnode->element);
+            const auto tinkerItem = static_cast<Item*>(invnode->element);
             if ( tinkerItem && tinkerItem->type == TOOL_TINKERING_KIT && tinkerItem->status > BROKEN )
             {
                 return tinkerItem;
@@ -12464,14 +12464,14 @@ bool GenericGUIMenu::tinkeringRepairItem(Item* item)
 
     if ( stats[gui_player] && players[gui_player] )
     {
-        bool isEquipped = itemIsEquipped(item, gui_player);
+        const bool isEquipped = itemIsEquipped(item, gui_player);
 
         if ( item->type == TOOL_SENTRYBOT || item->type == TOOL_SPELLBOT || item->type == TOOL_DUMMYBOT || item->type == TOOL_GYROBOT )
         {
             if ( item->tinkeringBotIsMaxHealth() )
             {
                 // try upgrade item?
-                int craftRequirement = tinkeringPlayerHasSkillLVLToCraft(item);
+                const int craftRequirement = tinkeringPlayerHasSkillLVLToCraft(item);
                 if ( craftRequirement == -1 ) // can't craft, can't upgrade!
                 {
                     //playSound(90, 64);
@@ -12486,7 +12486,7 @@ bool GenericGUIMenu::tinkeringRepairItem(Item* item)
                 }
                 
                 Status newStatus = DECREPIT;
-                auto maxStatus = static_cast<Status>(tinkeringUpgradeMaxStatus(item));
+                const auto maxStatus = static_cast<Status>(tinkeringUpgradeMaxStatus(item));
 
                 if ( maxStatus <= item->status )
                 {
@@ -12590,7 +12590,7 @@ bool GenericGUIMenu::tinkeringRepairItem(Item* item)
             }
             else
             {
-                int craftRequirement = tinkeringPlayerHasSkillLVLToCraft(item);
+                const int craftRequirement = tinkeringPlayerHasSkillLVLToCraft(item);
                 if ( craftRequirement == -1 ) // can't craft, can't repair!
                 {
                     //playSound(90, 64);
@@ -12704,7 +12704,7 @@ bool GenericGUIMenu::tinkeringRepairItem(Item* item)
         else
         {
             // normal items.
-            int craftRequirement = tinkeringPlayerHasSkillLVLToCraft(item);
+            const int craftRequirement = tinkeringPlayerHasSkillLVLToCraft(item);
             if ( craftRequirement == -1 && itemCategory(item) == TOOL ) // can't craft, can't repair!
             {
                 //playSound(90, 64);
@@ -12826,7 +12826,7 @@ int GenericGUIMenu::tinkeringUpgradeMaxStatus(Item* item)
     if ( stats[gui_player] && players[gui_player] )
     {
         skillLVL = (stats[gui_player]->getModifiedProficiency(PRO_LOCKPICKING) + statGetPER(stats[gui_player], players[gui_player]->entity)) / 20; // 0 to 5
-        int craftRequirement = tinkeringPlayerHasSkillLVLToCraft(item);
+        const int craftRequirement = tinkeringPlayerHasSkillLVLToCraft(item);
         if ( skillLVL >= 5 )
         {
             return EXCELLENT;
@@ -13028,12 +13028,12 @@ int GenericGUIMenu::scribingToolDegradeOnUse(Item* itemUsedWith)
         }
     }
 
-    int durability = toDegrade->appearance % ENCHANTED_FEATHER_MAX_DURABILITY;
+    const int durability = toDegrade->appearance % ENCHANTED_FEATHER_MAX_DURABILITY;
     int usageCostMin = 0;
     int usageCostMax = 0;
     scribingGetChargeCost(itemUsedWith, usageCostMin, usageCostMax);
     int usageCost = usageCostMin;
-    int randomValue = usageCostMax - usageCostMin;
+    const int randomValue = usageCostMax - usageCostMin;
     if ( randomValue > 0 )
     {
         usageCost += local_rng.rand() % (randomValue + 1);
@@ -13099,9 +13099,9 @@ Item* GenericGUIMenu::scribingToolFindInInventory()
     }
     else
     {
-        for ( node_t* invnode = stats[gui_player]->inventory.first; invnode != nullptr; invnode = invnode->next )
+        for (const node_t* invnode = stats[gui_player]->inventory.first; invnode != nullptr; invnode = invnode->next )
         {
-            auto scribeItem = static_cast<Item*>(invnode->element);
+            const auto scribeItem = static_cast<Item*>(invnode->element);
             if ( scribeItem && scribeItem->type == ENCHANTED_FEATHER && scribeItem->status > BROKEN )
             {
                 return scribeItem;
@@ -13212,7 +13212,7 @@ bool GenericGUIMenu::scribingWriteItem(Item* item)
             return false;
         }
 
-        int result = scribingToolDegradeOnUse(item);
+        const int result = scribingToolDegradeOnUse(item);
         if ( result == 0 )
         {
             // item broken before completion.
@@ -13254,7 +13254,7 @@ bool GenericGUIMenu::scribingWriteItem(Item* item)
                 }
             }
         }
-        std::string label = item->getScrollLabel();
+        const std::string label = item->getScrollLabel();
         Item* crafted = newItem(item->type, scribingBlankScrollTarget->status, 
             scribingBlankScrollTarget->beatitude, 1, item->appearance, true, nullptr);
         if ( crafted )
@@ -13266,7 +13266,7 @@ bool GenericGUIMenu::scribingWriteItem(Item* item)
             }
             Item* pickedUp = itemPickup(gui_player, crafted);
             //messagePlayerColor(gui_player, uint32ColorGreen, Language::get(3724));
-            int oldcount = pickedUp->count;
+            const int oldcount = pickedUp->count;
             pickedUp->count = 1;
             messagePlayerColor(gui_player, MESSAGE_INVENTORY, uint32ColorGreen, Language::get(3724), pickedUp->description());
             pickedUp->count = oldcount;
@@ -13303,7 +13303,7 @@ bool GenericGUIMenu::scribingWriteItem(Item* item)
         {
             return false;
         }
-        int result = scribingToolDegradeOnUse(item);
+        const int result = scribingToolDegradeOnUse(item);
         if ( result == 0 )
         {
             // item broken before completion.
@@ -13349,7 +13349,7 @@ bool GenericGUIMenu::scribingWriteItem(Item* item)
         Compendium_t::Events_t::eventUpdate(gui_player, Compendium_t::CPDM_FEATHER_SPELLBOOKS, ENCHANTED_FEATHER, 1);
 
         int repairedStatus = std::min(static_cast<Status>(item->status + 1), EXCELLENT);
-        bool isEquipped = itemIsEquipped(item, gui_player);
+        const bool isEquipped = itemIsEquipped(item, gui_player);
         item->status = static_cast<Status>(repairedStatus);
         messagePlayer(gui_player, MESSAGE_MISC, Language::get(3725));
         messagePlayer(gui_player, MESSAGE_INVENTORY, Language::get(872), item->getName());
@@ -13420,9 +13420,9 @@ void EnemyHPDamageBarHandler::cullExpiredHPBars()
             bool expire = true;
             if ( (*it).second.detectMonsterCheckStatus )
             {
-                if ( Entity* parent = uidToEntity((*it).first) )
+                if (const Entity* parent = uidToEntity((*it).first) )
                 {
-                    if ( Stat* stats = parent->getStats() )
+                    if (const Stat* stats = parent->getStats() )
                     {
                         if ( stats->getEffectActive(EFF_DETECT_ENEMY) )
                         {
@@ -13729,7 +13729,7 @@ void EnemyHPDamageBarHandler::EnemyHPDetails::updateWorldCoordinates()
 
             if ( entity->bodyparts.size() > 0 )
             {
-                auto limb = entity->bodyparts[0];
+                const auto limb = entity->bodyparts[0];
                 worldZ += (limb->z - entity->z) / 2; // offset to trunk animation
             }
         }
@@ -13739,7 +13739,7 @@ void EnemyHPDamageBarHandler::EnemyHPDetails::updateWorldCoordinates()
 
 EnemyHPDamageBarHandler::EnemyHPDetails* EnemyHPDamageBarHandler::addEnemyToList(Sint32 HP, Sint32 maxHP, Sint32 oldHP, Uint32 uid, const char* name, bool isLowPriority, DamageGib gibDmgType)
 {
-    auto find = HPBars.find(uid);
+    const auto find = HPBars.find(uid);
     EnemyHPDetails* details = nullptr;
     if ( find != HPBars.end() )
     {
@@ -13765,7 +13765,7 @@ EnemyHPDamageBarHandler::EnemyHPDetails* EnemyHPDamageBarHandler::addEnemyToList
     else
     {
         HPBars.insert(std::make_pair(uid, EnemyHPDetails(uid, HP, maxHP, oldHP, name, isLowPriority)));
-        auto find = HPBars.find(uid);
+        const auto find = HPBars.find(uid);
         details = &(*find).second;
         details->animator.previousSetpoint = details->enemy_oldhp;
         details->animator.backgroundValue = details->enemy_oldhp;
@@ -13803,7 +13803,7 @@ EnemyHPDamageBarHandler::EnemyHPDetails* EnemyHPDamageBarHandler::addEnemyToList
 
     if ( entity && (entity->behavior == &actPlayer || entity->behavior == &actMonster) && multiplayer != CLIENT )
     {
-        if ( Stat* stat = entity->getStats() )
+        if (const Stat* stat = entity->getStats() )
         {
             for ( int i = 0; i < NUMEFFECTS; ++i )
             {
@@ -13862,11 +13862,11 @@ const int GenericGUIMenu::TinkerGUI_t::MAX_TINKER_Y = 4;
 void GenericGUIMenu::TinkerGUI_t::openTinkerMenu()
 {
     const int playernum = parentGUI.getPlayer();
-    auto player = players[playernum];
+    const auto player = players[playernum];
 
     if ( tinkerFrame )
     {
-        bool wasDisabled = tinkerFrame->isDisabled();
+        const bool wasDisabled = tinkerFrame->isDisabled();
         tinkerFrame->setDisabled(false);
         if ( wasDisabled )
         {
@@ -13912,7 +13912,7 @@ void GenericGUIMenu::TinkerGUI_t::closeTinkerMenu()
     animInvalidActionTicks = 0;
     invalidActionType = INVALID_ACTION_NONE;
     isInteractable = false;
-    bool wasOpen = bOpen;
+    const bool wasOpen = bOpen;
     bOpen = false;
     bFirstTimeSnapCursor = false;
     if ( wasOpen )
@@ -13939,7 +13939,7 @@ void GenericGUIMenu::TinkerGUI_t::closeTinkerMenu()
     itemRequiresTitleReflow = true;
     if ( tinkerFrame )
     {
-        for ( auto f : tinkerFrame->getFrames() )
+        for (const auto f : tinkerFrame->getFrames() )
         {
             f->removeSelf();
         }
@@ -14013,7 +14013,7 @@ bool GenericGUIMenu::TinkerGUI_t::tinkerGUIHasBeenCreated() const
     {
         if ( !tinkerFrame->getFrames().empty() )
         {
-            for ( auto f : tinkerFrame->getFrames() )
+            for (const auto f : tinkerFrame->getFrames() )
             {
                 if ( !f->isToBeDeleted() )
                 {
@@ -14064,7 +14064,7 @@ void tinkerScrapChangeEvent(const int player, int metalAmount, int magicAmount, 
     auto& tinkerGUI = GenericGUI[player].tinkerGUI;
     {
         bool addedToCurrentTotal = false;
-        bool isAnimatingValue = true || ((ticks - tinkerGUI.animScrapStartTicks) > TICKS_PER_SECOND / 2);
+        const bool isAnimatingValue = true || ((ticks - tinkerGUI.animScrapStartTicks) > TICKS_PER_SECOND / 2);
         if ( metalAmount < 0 )
         {
             if ( tinkerGUI.playerChangeMetalScrap < 0
@@ -14116,7 +14116,7 @@ void tinkerScrapChangeEvent(const int player, int metalAmount, int magicAmount, 
     }
     {
         bool addedToCurrentTotal = false;
-        bool isAnimatingValue = true || ((ticks - tinkerGUI.animScrapStartTicks) > TICKS_PER_SECOND / 2);
+        const bool isAnimatingValue = true || ((ticks - tinkerGUI.animScrapStartTicks) > TICKS_PER_SECOND / 2);
         if ( magicAmount < 0 )
         {
             if ( tinkerGUI.playerChangeMagicScrap < 0
@@ -14170,8 +14170,8 @@ void tinkerScrapChangeEvent(const int player, int metalAmount, int magicAmount, 
 
 void GenericGUIMenu::TinkerGUI_t::updateTinkerScrapHeld(void* metalHeldText, void* magicHeldText, int realMetalScrap, int realMagicScrap)
 {
-    auto metalField = static_cast<Field*>(metalHeldText);
-    auto magicField = static_cast<Field*>(magicHeldText);
+    const auto metalField = static_cast<Field*>(metalHeldText);
+    const auto magicField = static_cast<Field*>(magicHeldText);
 
     bool pauseChangeScrapAnim = false;
     if ( playerChangeMetalScrap != 0 || playerChangeMagicScrap != 0 )
@@ -14179,7 +14179,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerScrapHeld(void* metalHeldText, voi
         if ( true || ((ticks - animScrapStartTicks) > TICKS_PER_SECOND / 2) )
         {
             const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-            real_t setpointDiffX = fpsScale * std::max(.1, (animScrap)) / 10.0;
+            const real_t setpointDiffX = fpsScale * std::max(.1, (animScrap)) / 10.0;
             animScrap -= setpointDiffX;
             animScrap = std::max(0.0, animScrap);
 
@@ -14201,7 +14201,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerScrapHeld(void* metalHeldText, voi
     }
 
     {
-        bool pauseChangeScrapAnim = false;
+        const bool pauseChangeScrapAnim = false;
         bool showChangedMetalScrap = false;
         if ( playerChangeMetalScrap != 0 )
         {
@@ -14221,7 +14221,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerScrapHeld(void* metalHeldText, voi
                 //}
                 //s += std::to_string(displayedChangeMetalScrap);
                 //changeGoldText->setText(s.c_str());
-                int displayedCurrentMetalScrap = playerCurrentMetalScrap
+                const int displayedCurrentMetalScrap = playerCurrentMetalScrap
                     + (playerChangeMetalScrap - displayedChangeMetalScrap);
                 metalField->setText(std::to_string(displayedCurrentMetalScrap).c_str());
             }
@@ -14256,7 +14256,7 @@ void GenericGUIMenu::TinkerGUI_t::updateTinkerScrapHeld(void* metalHeldText, voi
                 //}
                 //s += std::to_string(displayedChangeMagicScrap);
                 //changeGoldText->setText(s.c_str());
-                int displayedCurrentMagicScrap = playerCurrentMagicScrap
+                const int displayedCurrentMagicScrap = playerCurrentMagicScrap
                     + (playerChangeMagicScrap - displayedChangeMagicScrap);
                 magicField->setText(std::to_string(displayedCurrentMagicScrap).c_str());
             }
@@ -16121,8 +16121,8 @@ void GenericGUIMenu::TinkerGUI_t::createTinkerMenu()
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
             filterBtn->setCallback([](Button& button) {
-                auto oldTab = GenericGUI[button.getOwner()].tinkeringFilter;
-                bool changeToDifferentTab = oldTab != GenericGUIMenu::TINKER_FILTER_SALVAGEABLE;
+                const auto oldTab = GenericGUI[button.getOwner()].tinkeringFilter;
+                const bool changeToDifferentTab = oldTab != GenericGUIMenu::TINKER_FILTER_SALVAGEABLE;
                 GenericGUI[button.getOwner()].tinkeringFilter = GenericGUIMenu::TINKER_FILTER_SALVAGEABLE;
                 onTinkerChangeTabAction(button.getOwner(), changeToDifferentTab);
                 if ( oldTab == GenericGUIMenu::TINKER_FILTER_CRAFTABLE )
@@ -16162,8 +16162,8 @@ void GenericGUIMenu::TinkerGUI_t::createTinkerMenu()
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
             filterBtn->setCallback([](Button& button) {
-                auto oldTab = GenericGUI[button.getOwner()].tinkeringFilter;
-                bool changeToDifferentTab = oldTab != GenericGUIMenu::TINKER_FILTER_CRAFTABLE;
+                const auto oldTab = GenericGUI[button.getOwner()].tinkeringFilter;
+                const bool changeToDifferentTab = oldTab != GenericGUIMenu::TINKER_FILTER_CRAFTABLE;
                 GenericGUI[button.getOwner()].tinkeringFilter = GenericGUIMenu::TINKER_FILTER_CRAFTABLE;
                 onTinkerChangeTabAction(button.getOwner(), changeToDifferentTab);
                 GenericGUI[button.getOwner()].tinkerGUI.animPromptMoveLeft = true;
@@ -16196,8 +16196,8 @@ void GenericGUIMenu::TinkerGUI_t::createTinkerMenu()
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
             filterBtn->setCallback([](Button& button) {
-                auto oldTab = GenericGUI[button.getOwner()].tinkeringFilter;
-                bool changeToDifferentTab = oldTab != GenericGUIMenu::TINKER_FILTER_REPAIRABLE;
+                const auto oldTab = GenericGUI[button.getOwner()].tinkeringFilter;
+                const bool changeToDifferentTab = oldTab != GenericGUIMenu::TINKER_FILTER_REPAIRABLE;
                 GenericGUI[button.getOwner()].tinkeringFilter = GenericGUIMenu::TINKER_FILTER_REPAIRABLE;
                 onTinkerChangeTabAction(button.getOwner(), changeToDifferentTab);
                 GenericGUI[button.getOwner()].tinkerGUI.animPromptMoveLeft = false;
@@ -16281,7 +16281,7 @@ bool GenericGUIMenu::TinkerGUI_t::isTinkerConstructItemSelected(Item* item)
             && selectedTinkerSlotY >= 0 && selectedTinkerSlotY < MAX_TINKER_Y
             && item->x == selectedTinkerSlotX && item->y == selectedTinkerSlotY )
         {
-            if ( auto slotFrame = getTinkerSlotFrame(item->x, item->y) )
+            if (const auto slotFrame = getTinkerSlotFrame(item->x, item->y) )
             {
                 return slotFrame->capturesMouse();
             }
@@ -16309,15 +16309,15 @@ bool GenericGUIMenu::TinkerGUI_t::isSalvageOrRepairItemSelected(Item* item)
 
     if ( players[parentGUI.getPlayer()]->GUI.activeModule == Player::GUI_t::MODULE_INVENTORY )
     {
-        auto& inventoryUI = players[parentGUI.getPlayer()]->inventoryUI;
-        auto& paperDoll = players[parentGUI.getPlayer()]->paperDoll;
+        const auto& inventoryUI = players[parentGUI.getPlayer()]->inventoryUI;
+        const auto& paperDoll = players[parentGUI.getPlayer()]->paperDoll;
         if ( item->y < 0 && paperDoll.getSlotForItem(*item) != Player::PaperDoll_t::SLOT_MAX )
         {
             int slotx, sloty;
             paperDoll.getCoordinatesFromSlotType(paperDoll.getSlotForItem(*item), slotx, sloty);
             if ( slotx == inventoryUI.getSelectedSlotX() && sloty == inventoryUI.getSelectedSlotY() )
             {
-                if ( auto slotFrame = inventoryUI.getInventorySlotFrame(slotx, sloty) )
+                if (const auto slotFrame = inventoryUI.getInventorySlotFrame(slotx, sloty) )
                 {
                     return slotFrame->capturesMouse();
                 }
@@ -16335,7 +16335,7 @@ bool GenericGUIMenu::TinkerGUI_t::isSalvageOrRepairItemSelected(Item* item)
                 && inventoryUI.getSelectedSlotY() < inventoryUI.getSizeY()
                 && item->x == inventoryUI.getSelectedSlotX() && item->y == inventoryUI.getSelectedSlotY() )
             {
-                if ( auto slotFrame = inventoryUI.getInventorySlotFrame(item->x, item->y) )
+                if (const auto slotFrame = inventoryUI.getInventorySlotFrame(item->x, item->y) )
                 {
                     return slotFrame->capturesMouse();
                 }
@@ -16360,7 +16360,7 @@ Frame* GenericGUIMenu::TinkerGUI_t::getTinkerSlotFrame(int x, int y) const
 {
     if ( tinkerFrame )
     {
-        int key = x + y * 100;
+        const int key = x + y * 100;
         if ( tinkerSlotFrames.find(key) != tinkerSlotFrames.end() )
         {
             return tinkerSlotFrames.at(key);
@@ -16427,14 +16427,14 @@ GenericGUIMenu::TinkerGUI_t::TinkerActions_t GenericGUIMenu::TinkerGUI_t::setIte
 
     auto actionResult = TINKER_ACTION_NONE;
 
-    bool isTinkeringBot = (item->type == TOOL_SENTRYBOT
+    const bool isTinkeringBot = (item->type == TOOL_SENTRYBOT
         || item->type == TOOL_SPELLBOT
         || item->type == TOOL_DUMMYBOT
         || item->type == TOOL_GYROBOT);
 
 
     const int player = parentGUI.getPlayer();
-    bool tinkeringKitNeedsRepairs = parentGUI.tinkeringKitItem && parentGUI.tinkeringKitItem->status == BROKEN;
+    const bool tinkeringKitNeedsRepairs = parentGUI.tinkeringKitItem && parentGUI.tinkeringKitItem->status == BROKEN;
 
     if ( parentGUI.isNodeTinkeringCraftableItem(item->node) && parentGUI.tinkeringFilter == TINKER_FILTER_CRAFTABLE )
     {
@@ -16449,9 +16449,9 @@ GenericGUIMenu::TinkerGUI_t::TinkerActions_t GenericGUIMenu::TinkerGUI_t::setIte
 
             if ( !checkStatusOnly )
             {
-                int oldTinkering = stats[player]->getProficiency(PRO_LOCKPICKING);
+                const int oldTinkering = stats[player]->getProficiency(PRO_LOCKPICKING);
                 stats[player]->setProficiencyUnsafe(PRO_LOCKPICKING, 999);
-                Sint32 oldPER = stats[player]->PER;
+                const Sint32 oldPER = stats[player]->PER;
                 stats[player]->PER += -statGetPER(stats[player], players[player]->entity);
                 itemRequirement = parentGUI.tinkeringPlayerHasSkillLVLToCraft(item) * 20; // manually hack this to max to get requirement
                 if ( itemRequirement == 0 )
@@ -16544,9 +16544,9 @@ GenericGUIMenu::TinkerGUI_t::TinkerActions_t GenericGUIMenu::TinkerGUI_t::setIte
             int dummy2 = 0;
             repairable = parentGUI.tinkeringGetRepairCost(item, &dummy1, &dummy2);
         }
-        int requirement = parentGUI.tinkeringRepairGeneralItemSkillRequirement(item);
+        const int requirement = parentGUI.tinkeringRepairGeneralItemSkillRequirement(item);
 
-        int skillLVL = stats[player]->getModifiedProficiency(PRO_LOCKPICKING) 
+        const int skillLVL = stats[player]->getModifiedProficiency(PRO_LOCKPICKING) 
             + statGetPER(stats[player], players[player]->entity);
         if ( !item->identified )
         {
@@ -16589,9 +16589,9 @@ GenericGUIMenu::TinkerGUI_t::TinkerActions_t GenericGUIMenu::TinkerGUI_t::setIte
             if ( !checkStatusOnly )
             {
                 // can't craft, figure out base requirement
-                int oldTinkering = stats[player]->getProficiency(PRO_LOCKPICKING);
+                const int oldTinkering = stats[player]->getProficiency(PRO_LOCKPICKING);
                 stats[player]->setProficiencyUnsafe(PRO_LOCKPICKING, 999);
-                Sint32 oldPER = stats[player]->PER;
+                const Sint32 oldPER = stats[player]->PER;
                 stats[player]->PER += -statGetPER(stats[player], players[player]->entity);
                 itemRequirement = parentGUI.tinkeringPlayerHasSkillLVLToCraft(item) * 20; // manually hack this to max to get requirement
                 if ( itemRequirement == 0 )
@@ -16639,9 +16639,9 @@ GenericGUIMenu::TinkerGUI_t::TinkerActions_t GenericGUIMenu::TinkerGUI_t::setIte
                 }
                 else
                 {
-                    int oldTinkering = stats[player]->getProficiency(PRO_LOCKPICKING);
+                    const int oldTinkering = stats[player]->getProficiency(PRO_LOCKPICKING);
                     stats[player]->setProficiencyUnsafe(PRO_LOCKPICKING, 999);
-                    Sint32 oldPER = stats[player]->PER;
+                    const Sint32 oldPER = stats[player]->PER;
                     stats[player]->PER += -statGetPER(stats[player], players[player]->entity);
                     itemRequirement = parentGUI.tinkeringPlayerHasSkillLVLToCraft(item) * 20; // manually hack this to max to get requirement
                     if ( itemRequirement == 0 )
@@ -16686,12 +16686,12 @@ GenericGUIMenu::TinkerGUI_t::TinkerActions_t GenericGUIMenu::TinkerGUI_t::setIte
         itemActionType = actionResult;
         if ( tinkerFrame )
         {
-            if ( auto baseFrame = tinkerFrame->findFrame("tinker base") )
+            if (const auto baseFrame = tinkerFrame->findFrame("tinker base") )
             {
-                if ( auto itemTooltipFrame = baseFrame->findFrame("tinker display tooltip") )
+                if (const auto itemTooltipFrame = baseFrame->findFrame("tinker display tooltip") )
                 {
-                    auto itemSlotFrame = itemTooltipFrame->findFrame("item slot frame");
-                    int oldQty = item->count;
+                    const auto itemSlotFrame = itemTooltipFrame->findFrame("item slot frame");
+                    const int oldQty = item->count;
                     if ( parentGUI.isNodeTinkeringCraftableItem(item->node) && parentGUI.tinkeringFilter == TINKER_FILTER_CRAFTABLE )
                     {
                         //item->count = 1;
@@ -16717,10 +16717,10 @@ bool GenericGUIMenu::TinkerGUI_t::warpMouseToSelectedTinkerItem(Item* snapToItem
             y = snapToItem->y;
         }
 
-        if ( auto slot = getTinkerSlotFrame(x, y) )
+        if (const auto slot = getTinkerSlotFrame(x, y) )
         {
-            int playernum = parentGUI.getPlayer();
-            auto player = players[playernum];
+            const int playernum = parentGUI.getPlayer();
+            const auto player = players[playernum];
             if ( !isInteractable )
             {
                 //messagePlayer(0, "[Debug]: select item queued");
@@ -16756,11 +16756,11 @@ const int GenericGUIMenu::AlchemyGUI_t::MAX_ALCH_Y = 6;
 void GenericGUIMenu::AlchemyGUI_t::openAlchemyMenu(GenericGUIMenu::AlchemyGUI_t::AlchemyView_t view)
 {
     const int playernum = parentGUI.getPlayer();
-    auto player = players[playernum];
+    const auto player = players[playernum];
 
     if ( alchFrame )
     {
-        bool wasDisabled = alchFrame->isDisabled();
+        const bool wasDisabled = alchFrame->isDisabled();
         alchFrame->setDisabled(false);
         if ( wasDisabled )
         {
@@ -16827,7 +16827,7 @@ void GenericGUIMenu::AlchemyGUI_t::closeAlchemyMenu()
     animRecipeAutoAddToSlot2Uid = 0;
 
     isInteractable = false;
-    bool wasOpen = bOpen;
+    const bool wasOpen = bOpen;
     bOpen = false;
     bFirstTimeSnapCursor = false;
     if ( wasOpen )
@@ -16854,7 +16854,7 @@ void GenericGUIMenu::AlchemyGUI_t::closeAlchemyMenu()
     itemRequiresTitleReflow = true;
     if ( alchFrame )
     {
-        for ( auto f : alchFrame->getFrames() )
+        for (const auto f : alchFrame->getFrames() )
         {
             f->removeSelf();
         }
@@ -16896,7 +16896,7 @@ bool GenericGUIMenu::AlchemyGUI_t::alchemyGUIHasBeenCreated() const
     {
         if ( !alchFrame->getFrames().empty() )
         {
-            for ( auto f : alchFrame->getFrames() )
+            for (const auto f : alchFrame->getFrames() )
             {
                 if ( !f->isToBeDeleted() )
                 {
@@ -16942,7 +16942,7 @@ void buttonAlchemyUpdateSelectorOnHighlight(const int player, Button* button)
 
 bool playerKnowsRecipe(const int player, ItemType basePotion, ItemType secondaryPotion, ItemType result)
 {
-    for ( auto& entry : clientLearnedAlchemyRecipes[player] )
+    for (const auto& entry : clientLearnedAlchemyRecipes[player] )
     {
         if ( entry.first == result
             && ((entry.second.first == basePotion && entry.second.second == secondaryPotion)
@@ -16961,7 +16961,7 @@ void getInventoryItemAlchemyAnimSlotPos(Frame* slotFrame, Player* player, int it
     if ( itemy >= player->inventoryUI.DEFAULT_INVENTORY_SIZEY )
     {
         // backpack slots, add another offset.
-        if ( auto invSlotsFrame = player->inventoryUI.frame->findFrame("inventory slots") )
+        if (const auto invSlotsFrame = player->inventoryUI.frame->findFrame("inventory slots") )
         {
             outPosY += invSlotsFrame->getSize().h;
         }
@@ -19250,7 +19250,7 @@ void GenericGUIMenu::AlchemyGUI_t::createAlchemyMenu()
         clearRecipeBtn->setBackgroundActivated("*#images/ui/Alchemy/Alchemy_RecipeClear_ButtonPress_00.png");
         clearRecipeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
         clearRecipeBtn->setCallback([](Button& button) {
-            int player = button.getOwner();
+            const int player = button.getOwner();
             auto& alchemyGUI = GenericGUI[player].alchemyGUI;
             alchemyGUI.recipes.activateRecipeIndex = -1;
             alchemyGUI.potion1Uid = 0;
@@ -19397,7 +19397,7 @@ void GenericGUIMenu::AlchemyGUI_t::createAlchemyMenu()
             stationCookBtn->setHighlightColor(makeColor(255, 255, 255, 255));
             //recipeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
             stationCookBtn->setCallback([](Button& button) {
-                int player = button.getOwner();
+                const int player = button.getOwner();
                 if ( GenericGUI[player].alchemyGUI.bOpen )
                 {
                     if ( GenericGUI[player].alchemyGUI.currentView == GenericGUIMenu::AlchemyGUI_t::ALCHEMY_VIEW_BREW
@@ -19520,7 +19520,7 @@ void GenericGUIMenu::AlchemyGUI_t::createAlchemyMenu()
             recipeBtn->setBackgroundActivated("*#images/ui/Alchemy/Alchemy_Recipe_ButtonPress_00.png");
             //recipeBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
             recipeBtn->setCallback([](Button& button) {
-                int player = button.getOwner();
+                const int player = button.getOwner();
                 if ( GenericGUI[player].alchemyGUI.bOpen )
                 {
                     if ( GenericGUI[player].alchemyGUI.currentView == GenericGUIMenu::AlchemyGUI_t::ALCHEMY_VIEW_BREW
@@ -19588,7 +19588,7 @@ void GenericGUIMenu::AlchemyGUI_t::createAlchemyMenu()
             brewBtn->setBackgroundActivated("*#images/ui/Alchemy/Alchemy_ButtonBrew_Press_00.png");
             brewBtn->setTextHighlightColor(makeColor(201, 162, 100, 255));
             brewBtn->setCallback([](Button& button) {
-                int player = button.getOwner();
+                const int player = button.getOwner();
                 auto& alchemyGUI = GenericGUI[player].alchemyGUI;
                 alchemyGUI.recipes.activateRecipeIndex = -1;
                 alchemyGUI.potion1Uid = 0;
@@ -19680,7 +19680,7 @@ Frame* GenericGUIMenu::AlchemyGUI_t::getAlchemySlotFrame(int x, int y) const
 {
     if ( alchFrame )
     {
-        int key = x + y * 100;
+        const int key = x + y * 100;
         if ( alchemySlotFrames.find(key) != alchemySlotFrames.end() )
         {
             return alchemySlotFrames.at(key);
@@ -19730,8 +19730,8 @@ bool GenericGUIMenu::AlchemyGUI_t::inventoryItemAllowedInGUI(Item* item)
     }
     else if ( currentView == ALCHEMY_VIEW_COOK || currentView == ALCHEMY_VIEW_RECIPES_COOK )
     {
-        Item* item1 = potion1Uid != 0 ? uidToItem(potion1Uid) : nullptr;
-        Item* item2 = potion2Uid != 0 ? uidToItem(potion2Uid) : nullptr;
+        const Item* item1 = potion1Uid != 0 ? uidToItem(potion1Uid) : nullptr;
+        const Item* item2 = potion2Uid != 0 ? uidToItem(potion2Uid) : nullptr;
 
         if ( GenericGUIMenu::isItemRationSeasoning(item->type) || item->type == TOOL_TOWEL || item->type == POTION_WATER )
         {
@@ -19815,15 +19815,15 @@ void GenericGUIMenu::AlchemyGUI_t::setItemDisplayNameAndPriceBrew(Item* item, co
         snprintf(buf, sizeof(buf), "%s %s (%+d)", ItemTooltips.getItemStatusAdjective(item->type, item->status).c_str(), item->getName(), item->beatitude);
     }
 
-    auto activateSelectionPrompt = alchFrame->findField("activate prompt");
+    const auto activateSelectionPrompt = alchFrame->findField("activate prompt");
     activateSelectionPrompt->setText("");
 
-    int player = parentGUI.getPlayer();
+    const int player = parentGUI.getPlayer();
     bool isSameResult = false;
     bool isDuplicationResult = false;
     if ( itemCategory(item) == POTION && item->type != POTION_EMPTY )
     {
-        bool isEquipped = itemIsEquipped(item, player);
+        const bool isEquipped = itemIsEquipped(item, player);
         if ( (!item->identified || isEquipped) && !isTooltipForResultPotion && !isTooltipForRecipe )
         {
             itemActionType = ALCHEMY_ACTION_UNIDENTIFIED_POTION;
@@ -19832,9 +19832,9 @@ void GenericGUIMenu::AlchemyGUI_t::setItemDisplayNameAndPriceBrew(Item* item, co
         {
             itemActionType = ALCHEMY_ACTION_OK;
         }
-        auto find = clientLearnedAlchemyIngredients[player].find(item->type);
-        Item* basePotion = nullptr;
-        Item* secondaryPotion = nullptr;
+        const auto find = clientLearnedAlchemyIngredients[player].find(item->type);
+        const Item* basePotion = nullptr;
+        const Item* secondaryPotion = nullptr;
         bool isRandomResult = false;
         bool recipeMissingMaterials = false;
         if ( isTooltipForRecipe )
@@ -20011,7 +20011,7 @@ void GenericGUIMenu::AlchemyGUI_t::setItemDisplayNameAndPriceBrew(Item* item, co
         }
         else if ( isTooltipForResultPotion )
         {
-            bool usingGamepad = inputs.hasController(player) && !inputs.getVirtualMouse(player)->draw_cursor;
+            const bool usingGamepad = inputs.hasController(player) && !inputs.getVirtualMouse(player)->draw_cursor;
             if ( !usingGamepad )
             {
                 if ( isSameResult )
@@ -20056,15 +20056,15 @@ void GenericGUIMenu::AlchemyGUI_t::setItemDisplayNameAndPriceCook(Item* item, co
         snprintf(buf, sizeof(buf), "%s %s (%+d)", ItemTooltips.getItemStatusAdjective(item->type, item->status).c_str(), item->getName(), item->beatitude);
     }
 
-    auto activateSelectionPrompt = alchFrame->findField("activate prompt");
+    const auto activateSelectionPrompt = alchFrame->findField("activate prompt");
     activateSelectionPrompt->setText("");
 
-    int player = parentGUI.getPlayer();
+    const int player = parentGUI.getPlayer();
     //bool isSameResult = false;
     //bool isDuplicationResult = false;
     if ( inventoryItemAllowedInGUI(item) )
     {
-        bool isEquipped = itemIsEquipped(item, player);
+        const bool isEquipped = itemIsEquipped(item, player);
         if ( (!item->identified || isEquipped) && !isTooltipForResultPotion && !isTooltipForRecipe )
         {
             itemActionType = ALCHEMY_ACTION_UNIDENTIFIED_POTION;
@@ -20216,7 +20216,7 @@ void GenericGUIMenu::AlchemyGUI_t::setItemDisplayNameAndPriceCook(Item* item, co
         }
         else if ( isTooltipForResultPotion )
         {
-            bool usingGamepad = inputs.hasController(player) && !inputs.getVirtualMouse(player)->draw_cursor;
+            const bool usingGamepad = inputs.hasController(player) && !inputs.getVirtualMouse(player)->draw_cursor;
             if ( !usingGamepad )
             {
                 /*if ( isSameResult )
@@ -20248,10 +20248,10 @@ bool GenericGUIMenu::AlchemyGUI_t::warpMouseToSelectedAlchemyItem(Item* snapToIt
             y = snapToItem->y;
         }
 
-        if ( auto slot = getAlchemySlotFrame(x, y) )
+        if (const auto slot = getAlchemySlotFrame(x, y) )
         {
-            int playernum = parentGUI.getPlayer();
-            auto player = players[playernum];
+            const int playernum = parentGUI.getPlayer();
+            const auto player = players[playernum];
             if ( !isInteractable )
             {
                 //messagePlayer(0, "[Debug]: select item queued");
@@ -20297,7 +20297,7 @@ void GenericGUIMenu::AlchemyGUI_t::AlchemyRecipes_t::openRecipePanel()
     {
         alchemy.currentView = ALCHEMY_VIEW_RECIPES_COOK;
     }
-    bool wasDisabled = alchemy.recipesFrame->isDisabled();
+    const bool wasDisabled = alchemy.recipesFrame->isDisabled();
     alchemy.recipesFrame->setDisabled(false);
     if ( wasDisabled )
     {
@@ -20333,7 +20333,7 @@ void GenericGUIMenu::AlchemyGUI_t::AlchemyRecipes_t::closeRecipePanel()
     scrollPercent = 0.0;
     scrollInertia = 0.0;
     scrollAnimateX = scrollSetpoint;
-    bool wasOpen = bOpen;
+    const bool wasOpen = bOpen;
     bOpen = false;
     bFirstTimeSnapCursor = false;
     recipeList.clear();
@@ -21047,15 +21047,15 @@ void GenericGUIMenu::AlchemyGUI_t::AlchemyRecipes_t::updateRecipePanel()
 
 void GenericGUIMenu::AlchemyGUI_t::AlchemyRecipes_t::scrollToSlot(int x, int y, bool instantly)
 {
-    int lowerY = currentScrollRow;
-    int upperY = currentScrollRow + getNumRecipesToDisplayVertical() - 1;
+    const int lowerY = currentScrollRow;
+    const int upperY = currentScrollRow + getNumRecipesToDisplayVertical() - 1;
 
     if ( y >= lowerY && y <= upperY )
     {
         // no work to do.
         return;
     }
-    int player = alchemy.parentGUI.getPlayer();
+    const int player = alchemy.parentGUI.getPlayer();
     int lowestItemY = getNumRecipesToDisplayVertical() - 1;
     const int slotSize = players[player]->inventoryUI.getSlotSize();
     if ( !recipeList.empty() )
@@ -21069,7 +21069,7 @@ void GenericGUIMenu::AlchemyGUI_t::AlchemyRecipes_t::scrollToSlot(int x, int y, 
             }
         }
     }
-    int maxScroll = std::max((lowestItemY + 1) - (getNumRecipesToDisplayVertical()), 0) * slotSize;
+    const int maxScroll = std::max((lowestItemY + 1) - (getNumRecipesToDisplayVertical()), 0) * slotSize;
 
     int scrollAmount = 0;
     if ( y < lowerY )
@@ -21105,8 +21105,8 @@ bool GenericGUIMenu::AlchemyGUI_t::AlchemyRecipes_t::isSlotVisible(int x, int y)
             return false;
         }
     }
-    int lowerY = currentScrollRow;
-    int upperY = currentScrollRow + getNumRecipesToDisplayVertical() - 1;
+    const int lowerY = currentScrollRow;
+    const int upperY = currentScrollRow + getNumRecipesToDisplayVertical() - 1;
 
     if ( y >= lowerY && y <= upperY )
     {
@@ -21127,8 +21127,8 @@ const int GenericGUIMenu::FeatherGUI_t::MAX_FEATHER_Y = NUMLABELS - 1;
 bool GenericGUIMenu::FeatherGUI_t::scrollSortFunc(const std::pair<std::string, std::pair<int, bool>>& lhs, 
     const std::pair<std::string, std::pair<int, bool>>& rhs)
 {
-    int lhsVal = lhs.second.second == true ? 1 : 0; // second.second is identified status, convert to int
-    int rhsVal = rhs.second.second == true ? 1 : 0; // second.second is identified status, convert to int
+    const int lhsVal = lhs.second.second == true ? 1 : 0; // second.second is identified status, convert to int
+    const int rhsVal = rhs.second.second == true ? 1 : 0; // second.second is identified status, convert to int
     if ( sortType == SORT_SCROLL_UNKNOWN )
     {
         return lhsVal < rhsVal;
@@ -21145,7 +21145,7 @@ void featherChangeChargeEvent(const int player, int chargeAmount, int realCharge
     auto& featherGUI = GenericGUI[player].featherGUI;
     {
         bool addedToCurrentTotal = false;
-        bool isAnimatingValue = ((ticks - featherGUI.animChargeStartTicks) > TICKS_PER_SECOND);
+        const bool isAnimatingValue = ((ticks - featherGUI.animChargeStartTicks) > TICKS_PER_SECOND);
         if ( chargeAmount < 0 )
         {
             if ( featherGUI.changeFeatherCharge < 0
@@ -21200,8 +21200,8 @@ void featherChangeChargeEvent(const int player, int chargeAmount, int realCharge
 
 void GenericGUIMenu::FeatherGUI_t::updateFeatherCharge(void* featherChargeText, void* featherChangeChargeText, int currentCharge)
 {
-    auto featherChargeField = static_cast<Field*>(featherChargeText);
-    auto featherChangeChargeField = static_cast<Field*>(featherChangeChargeText);
+    const auto featherChargeField = static_cast<Field*>(featherChargeText);
+    const auto featherChangeChargeField = static_cast<Field*>(featherChangeChargeText);
 
     bool pauseChangeChargeAnim = false;
     if ( changeFeatherCharge != 0 )
@@ -21210,7 +21210,7 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherCharge(void* featherChargeText, 
             && (inscribeSuccessTicks == 0 || (ticks - inscribeSuccessTicks) >= 1.5 * TICKS_PER_SECOND) )
         {
             const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-            real_t setpointDiffX = fpsScale * std::max(.1, (animCharge)) / 10.0;
+            const real_t setpointDiffX = fpsScale * std::max(.1, (animCharge)) / 10.0;
             animCharge -= setpointDiffX;
             animCharge = std::max(0.0, animCharge);
 
@@ -21224,7 +21224,7 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherCharge(void* featherChargeText, 
             pauseChangeChargeAnim = true;
 
             const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-            real_t setpointDiffX = fpsScale * std::max(.01, (1.0 - animCharge)) / 10.0;
+            const real_t setpointDiffX = fpsScale * std::max(.01, (1.0 - animCharge)) / 10.0;
             animCharge += setpointDiffX;
             animCharge = std::min(1.0, animCharge);
         }
@@ -21250,7 +21250,7 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherCharge(void* featherChargeText, 
                 }
                 s += std::to_string(displayedChangeCharge);
                 featherChangeChargeField->setText(s.c_str());
-                int displayedCurrentCharge = currentFeatherCharge
+                const int displayedCurrentCharge = currentFeatherCharge
                     + (changeFeatherCharge - displayedChangeCharge);
                 char buf[32] = "";
                 snprintf(buf, sizeof(buf), "%d%%", displayedCurrentCharge);
@@ -21260,7 +21260,7 @@ void GenericGUIMenu::FeatherGUI_t::updateFeatherCharge(void* featherChargeText, 
 
         if ( !showChangedCharge )
         {
-            int displayedChangeCharge = 0;
+            const int displayedChangeCharge = 0;
             featherChangeChargeField->setDisabled(true);
             featherChangeChargeField->setText(std::to_string(displayedChangeCharge).c_str());
             char buf[32] = "";
@@ -21352,7 +21352,7 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
         }
         if ( parentGUI.isNodeScribingCraftableItem(node) )
         {
-            auto item = static_cast<Item*>(node->element);
+            const auto item = static_cast<Item*>(node->element);
             if ( item )
             {
                 std::string label = item->getScrollLabel();
@@ -21386,7 +21386,7 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
     for ( auto& scroll : sortedScrolls )
     {
         Item* scrollItem = nullptr;
-        for ( node_t* node = parentGUI.scribingTotalItems.first; node; node = node->next )
+        for (const node_t* node = parentGUI.scribingTotalItems.first; node; node = node->next )
         {
             if ( node->list == &stats[parentGUI.getPlayer()]->inventory )
             {
@@ -21394,7 +21394,7 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
             }
             if ( node->element )
             {
-                auto item = static_cast<Item*>(node->element);
+                const auto item = static_cast<Item*>(node->element);
                 if ( item && scroll.first == item->getScrollLabel() )
                 {
                     item->x = 0;
@@ -21404,9 +21404,9 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
                 }
             }
         }
-        if ( auto frame = getFeatherSlotFrame(0, index) )
+        if (const auto frame = getFeatherSlotFrame(0, index) )
         {
-            auto titleTxt = frame->findField("title");
+            const auto titleTxt = frame->findField("title");
             titleTxt->setText(scroll.first.c_str());
             titleTxt->setColor(hudColors.characterSheetLightNeutral);
             auto result = FEATHER_ACTION_NONE;
@@ -21418,7 +21418,7 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
                     titleTxt->setColor(hudColors.characterSheetFaintText);
                 }
             }
-            auto bodyTxt = frame->findField("body");
+            const auto bodyTxt = frame->findField("body");
             bodyTxt->setText("???");
             bodyTxt->setColor(hudColors.characterSheetOffWhiteText);
             if ( scroll.second.second )
@@ -21444,7 +21444,7 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
                         real_t percent = ((ticks - discovery.startTicks) / (TICKS_PER_SECOND / 10)) + 1;
                         percent /= 10.0;
                         percent = std::min(percent, 1.0);
-                        size_t numChars = std::min(static_cast<size_t>(scrollShortName.size() * percent), scrollShortName.size());
+                        const size_t numChars = std::min(static_cast<size_t>(scrollShortName.size() * percent), scrollShortName.size());
                         discovery.name = scrollShortName.substr(0, numChars);
                         for ( auto sz = numChars; sz < scrollShortName.size(); ++sz )
                         {
@@ -21475,7 +21475,7 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
             {
                 bodyTxt->setColor(hudColors.characterSheetFaintText);
             }
-            auto bg = frame->findImage("bg");
+            const auto bg = frame->findImage("bg");
             switch ( index % 5 )
             {
                 case 0: bg->path = "*#images/ui/Feather/Feather_ListUnselected_00.png"; break;
@@ -21501,11 +21501,11 @@ void GenericGUIMenu::FeatherGUI_t::updateScrolls()
 void GenericGUIMenu::FeatherGUI_t::openFeatherMenu()
 {
     const int playernum = parentGUI.getPlayer();
-    auto player = players[playernum];
+    const auto player = players[playernum];
 
     if ( featherFrame )
     {
-        bool wasDisabled = featherFrame->isDisabled();
+        const bool wasDisabled = featherFrame->isDisabled();
         featherFrame->setDisabled(false);
         if ( wasDisabled )
         {
@@ -21559,7 +21559,7 @@ void GenericGUIMenu::FeatherGUI_t::closeFeatherMenu()
     animDrawer = 0.0;
     invalidActionType = INVALID_ACTION_NONE;
     isInteractable = false;
-    bool wasOpen = bOpen;
+    const bool wasOpen = bOpen;
     bOpen = false;
     bFirstTimeSnapCursor = false;
     highlightedSlot = -1;
@@ -21591,7 +21591,7 @@ void GenericGUIMenu::FeatherGUI_t::closeFeatherMenu()
     itemRequiresTitleReflow = true;
     if ( featherFrame )
     {
-        for ( auto f : featherFrame->getFrames() )
+        for (const auto f : featherFrame->getFrames() )
         {
             f->removeSelf();
         }
@@ -23579,8 +23579,8 @@ void GenericGUIMenu::FeatherGUI_t::createFeatherMenu()
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
             filterBtn->setCallback([](Button& button) {
-                auto oldTab = GenericGUI[button.getOwner()].scribingFilter;
-                bool changeToDifferentTab = oldTab != GenericGUIMenu::SCRIBING_FILTER_CRAFTABLE;
+                const auto oldTab = GenericGUI[button.getOwner()].scribingFilter;
+                const bool changeToDifferentTab = oldTab != GenericGUIMenu::SCRIBING_FILTER_CRAFTABLE;
                 GenericGUI[button.getOwner()].scribingFilter = GenericGUIMenu::SCRIBING_FILTER_CRAFTABLE;
                 onFeatherChangeTabAction(button.getOwner(), changeToDifferentTab);
                 GenericGUI[button.getOwner()].featherGUI.animPromptMoveLeft = true;
@@ -23612,8 +23612,8 @@ void GenericGUIMenu::FeatherGUI_t::createFeatherMenu()
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
             filterBtn->setCallback([](Button& button) {
-                auto oldTab = GenericGUI[button.getOwner()].scribingFilter;
-                bool changeToDifferentTab = oldTab != GenericGUIMenu::SCRIBING_FILTER_REPAIRABLE;
+                const auto oldTab = GenericGUI[button.getOwner()].scribingFilter;
+                const bool changeToDifferentTab = oldTab != GenericGUIMenu::SCRIBING_FILTER_REPAIRABLE;
                 GenericGUI[button.getOwner()].scribingFilter = GenericGUIMenu::SCRIBING_FILTER_REPAIRABLE;
                 onFeatherChangeTabAction(button.getOwner(), changeToDifferentTab);
                 GenericGUI[button.getOwner()].featherGUI.animPromptMoveLeft = false;
@@ -23686,7 +23686,7 @@ bool GenericGUIMenu::FeatherGUI_t::featherGUIHasBeenCreated() const
     {
         if ( !featherFrame->getFrames().empty() )
         {
-            for ( auto f : featherFrame->getFrames() )
+            for (const auto f : featherFrame->getFrames() )
             {
                 if ( !f->isToBeDeleted() )
                 {
@@ -23713,7 +23713,7 @@ Frame* GenericGUIMenu::FeatherGUI_t::getFeatherSlotFrame(int x, int y) const
 {
     if ( featherFrame )
     {
-        int key = x + y * 100;
+        const int key = x + y * 100;
         if ( featherSlotFrames.find(key) != featherSlotFrames.end() )
         {
             return featherSlotFrames.at(key);
@@ -23731,7 +23731,7 @@ GenericGUIMenu::FeatherGUI_t::FeatherActions_t GenericGUIMenu::FeatherGUI_t::set
     {
         featherCharge = parentGUI.scribingToolItem->appearance % ENCHANTED_FEATHER_MAX_DURABILITY;
     }
-    bool isItemInscriptionNode = parentGUI.isNodeScribingCraftableItem(item->node);
+    const bool isItemInscriptionNode = parentGUI.isNodeScribingCraftableItem(item->node);
     if ( !checkResultOnly )
     {
         chargeCostMin = 0;
@@ -23743,7 +23743,7 @@ GenericGUIMenu::FeatherGUI_t::FeatherActions_t GenericGUIMenu::FeatherGUI_t::set
         {
             if ( isItemInscriptionNode )
             {
-                std::string label = item->getScrollLabel();
+                const std::string label = item->getScrollLabel();
                 if ( !checkResultOnly )
                 {
                     currentHoveringInscriptionLabel = label;
@@ -23905,11 +23905,11 @@ GenericGUIMenu::FeatherGUI_t::FeatherActions_t GenericGUIMenu::FeatherGUI_t::set
                 itemRequiresTitleReflow = true;
                 if ( featherFrame )
                 {
-                    if ( auto baseFrame = featherFrame->findFrame("feather base") )
+                    if (const auto baseFrame = featherFrame->findFrame("feather base") )
                     {
-                        if ( auto itemTooltipFrame = baseFrame->findFrame("feather display tooltip") )
+                        if (const auto itemTooltipFrame = baseFrame->findFrame("feather display tooltip") )
                         {
-                            auto itemSlotFrame = itemTooltipFrame->findFrame("item slot frame");
+                            const auto itemSlotFrame = itemTooltipFrame->findFrame("item slot frame");
                             itemSlotFrame->setDisabled(true);
                         }
                     }
@@ -23936,11 +23936,11 @@ GenericGUIMenu::FeatherGUI_t::FeatherActions_t GenericGUIMenu::FeatherGUI_t::set
 
             if ( featherFrame )
             {
-                if ( auto baseFrame = featherFrame->findFrame("feather base") )
+                if (const auto baseFrame = featherFrame->findFrame("feather base") )
                 {
-                    if ( auto itemTooltipFrame = baseFrame->findFrame("feather display tooltip") )
+                    if (const auto itemTooltipFrame = baseFrame->findFrame("feather display tooltip") )
                     {
-                        auto itemSlotFrame = itemTooltipFrame->findFrame("item slot frame");
+                        const auto itemSlotFrame = itemTooltipFrame->findFrame("item slot frame");
                         updateSlotFrameFromItem(itemSlotFrame, displayItem);
                     }
                 }
@@ -23967,15 +23967,15 @@ bool GenericGUIMenu::FeatherGUI_t::warpMouseToSelectedFeatherItem(Item* snapToIt
         {
             if ( abs(scrollAnimateX - scrollSetpoint) > 0.00001 )
             {
-                int diff = (scrollAnimateX - scrollSetpoint) / inscriptionSlotHeight;
+                const int diff = (scrollAnimateX - scrollSetpoint) / inscriptionSlotHeight;
                 y += diff; // if we have a scroll in the works, then manipulate y to pretend where we'd be ahead of time.
             }
         }
 
-        if ( auto slot = getFeatherSlotFrame(x, y) )
+        if (const auto slot = getFeatherSlotFrame(x, y) )
         {
-            int playernum = parentGUI.getPlayer();
-            auto player = players[playernum];
+            const int playernum = parentGUI.getPlayer();
+            const auto player = players[playernum];
             if ( !isInteractable )
             {
                 //messagePlayer(0, "[Debug]: select item queued");
@@ -24012,8 +24012,8 @@ int GenericGUIMenu::FeatherGUI_t::getNumInscriptionsToDisplayVertical() const
 
 void GenericGUIMenu::FeatherGUI_t::scrollToSlot(int x, int y, bool instantly)
 {
-    int lowerY = currentScrollRow;
-    int upperY = currentScrollRow + getNumInscriptionsToDisplayVertical() - 1;
+    const int lowerY = currentScrollRow;
+    const int upperY = currentScrollRow + getNumInscriptionsToDisplayVertical() - 1;
 
     if ( y >= lowerY && y <= upperY )
     {
@@ -24021,9 +24021,9 @@ void GenericGUIMenu::FeatherGUI_t::scrollToSlot(int x, int y, bool instantly)
         return;
     }
     int player = parentGUI.getPlayer();
-    int lowestItemY = MAX_FEATHER_Y - 1;
+    const int lowestItemY = MAX_FEATHER_Y - 1;
     const int slotSize = inscriptionSlotHeight;
-    int maxScroll = std::max((lowestItemY + 1) - (getNumInscriptionsToDisplayVertical()), 0) * slotSize;
+    const int maxScroll = std::max((lowestItemY + 1) - (getNumInscriptionsToDisplayVertical()), 0) * slotSize;
 
     int scrollAmount = 0;
     if ( y < lowerY )
@@ -24059,8 +24059,8 @@ bool GenericGUIMenu::FeatherGUI_t::isSlotVisible(int x, int y) const
             return false;
         }
     }
-    int lowerY = currentScrollRow;
-    int upperY = currentScrollRow + getNumInscriptionsToDisplayVertical() - 1;
+    const int lowerY = currentScrollRow;
+    const int upperY = currentScrollRow + getNumInscriptionsToDisplayVertical() - 1;
 
     if ( y >= lowerY && y <= upperY )
     {
@@ -24093,7 +24093,7 @@ bool GenericGUIMenu::FeatherGUI_t::isInscriptionDrawerItemSelected(Item* item)
             && selectedFeatherSlotY >= 0 && selectedFeatherSlotY < MAX_FEATHER_Y
             && item->x == selectedFeatherSlotX && item->y == selectedFeatherSlotY )
         {
-            if ( auto slotFrame = getFeatherSlotFrame(item->x, item->y) )
+            if (const auto slotFrame = getFeatherSlotFrame(item->x, item->y) )
             {
                 return slotFrame->capturesMouse();
             }
@@ -24121,15 +24121,15 @@ bool GenericGUIMenu::FeatherGUI_t::isItemSelectedToRepairOrInscribe(Item* item)
 
     if ( players[parentGUI.getPlayer()]->GUI.activeModule == Player::GUI_t::MODULE_INVENTORY )
     {
-        auto& inventoryUI = players[parentGUI.getPlayer()]->inventoryUI;
-        auto& paperDoll = players[parentGUI.getPlayer()]->paperDoll;
+        const auto& inventoryUI = players[parentGUI.getPlayer()]->inventoryUI;
+        const auto& paperDoll = players[parentGUI.getPlayer()]->paperDoll;
         if ( item->y < 0 && paperDoll.getSlotForItem(*item) != Player::PaperDoll_t::SLOT_MAX )
         {
             int slotx, sloty;
             paperDoll.getCoordinatesFromSlotType(paperDoll.getSlotForItem(*item), slotx, sloty);
             if ( slotx == inventoryUI.getSelectedSlotX() && sloty == inventoryUI.getSelectedSlotY() )
             {
-                if ( auto slotFrame = inventoryUI.getInventorySlotFrame(slotx, sloty) )
+                if (const auto slotFrame = inventoryUI.getInventorySlotFrame(slotx, sloty) )
                 {
                     return slotFrame->capturesMouse();
                 }
@@ -24147,7 +24147,7 @@ bool GenericGUIMenu::FeatherGUI_t::isItemSelectedToRepairOrInscribe(Item* item)
                 && inventoryUI.getSelectedSlotY() < inventoryUI.getSizeY()
                 && item->x == inventoryUI.getSelectedSlotX() && item->y == inventoryUI.getSelectedSlotY() )
             {
-                if ( auto slotFrame = inventoryUI.getInventorySlotFrame(item->x, item->y) )
+                if (const auto slotFrame = inventoryUI.getInventorySlotFrame(item->x, item->y) )
                 {
                     return slotFrame->capturesMouse();
                 }
@@ -25166,14 +25166,14 @@ bool GenericGUIMenu::ItemEffectGUI_t::isItemSelectedToEffect(Item* item)
 
     if ( players[parentGUI.getPlayer()]->GUI.activeModule == Player::GUI_t::MODULE_SPELLS )
     {
-        auto& inventoryUI = players[parentGUI.getPlayer()]->inventoryUI;
+        const auto& inventoryUI = players[parentGUI.getPlayer()]->inventoryUI;
         if ( inventoryUI.getSelectedSpellX() >= 0
             && inventoryUI.getSelectedSpellX() < inventoryUI.MAX_SPELLS_X
             && inventoryUI.getSelectedSpellY() >= 0
             && inventoryUI.getSelectedSpellY() < inventoryUI.MAX_SPELLS_Y
             && item->x == inventoryUI.getSelectedSpellX() && item->y == inventoryUI.getSelectedSpellY() )
         {
-            if ( auto slotFrame = inventoryUI.getSpellSlotFrame(item->x, item->y) )
+            if (const auto slotFrame = inventoryUI.getSpellSlotFrame(item->x, item->y) )
             {
                 return slotFrame->capturesMouse();
             }
@@ -25185,15 +25185,15 @@ bool GenericGUIMenu::ItemEffectGUI_t::isItemSelectedToEffect(Item* item)
     }
     else if ( players[parentGUI.getPlayer()]->GUI.activeModule == Player::GUI_t::MODULE_INVENTORY )
     {
-        auto& inventoryUI = players[parentGUI.getPlayer()]->inventoryUI;
-        auto& paperDoll = players[parentGUI.getPlayer()]->paperDoll;
+        const auto& inventoryUI = players[parentGUI.getPlayer()]->inventoryUI;
+        const auto& paperDoll = players[parentGUI.getPlayer()]->paperDoll;
         if ( item->y < 0 && paperDoll.getSlotForItem(*item) != Player::PaperDoll_t::SLOT_MAX )
         {
             int slotx, sloty;
             paperDoll.getCoordinatesFromSlotType(paperDoll.getSlotForItem(*item), slotx, sloty);
             if ( slotx == inventoryUI.getSelectedSlotX() && sloty == inventoryUI.getSelectedSlotY() )
             {
-                if ( auto slotFrame = inventoryUI.getInventorySlotFrame(slotx, sloty) )
+                if (const auto slotFrame = inventoryUI.getInventorySlotFrame(slotx, sloty) )
                 {
                     return slotFrame->capturesMouse();
                 }
@@ -25211,7 +25211,7 @@ bool GenericGUIMenu::ItemEffectGUI_t::isItemSelectedToEffect(Item* item)
                 && inventoryUI.getSelectedSlotY() < inventoryUI.getSizeY()
                 && item->x == inventoryUI.getSelectedSlotX() && item->y == inventoryUI.getSelectedSlotY() )
             {
-                if ( auto slotFrame = inventoryUI.getInventorySlotFrame(item->x, item->y) )
+                if (const auto slotFrame = inventoryUI.getInventorySlotFrame(item->x, item->y) )
                 {
                     return slotFrame->capturesMouse();
                 }
@@ -25229,7 +25229,7 @@ bool GenericGUIMenu::ItemEffectGUI_t::isItemSelectedToEffect(Item* item)
 void GenericGUIMenu::ItemEffectGUI_t::openItemEffectMenu(GenericGUIMenu::ItemEffectGUI_t::ItemEffectModes mode)
 {
     const int playernum = parentGUI.getPlayer();
-    auto player = players[playernum];
+    const auto player = players[playernum];
 
     currentMode = mode;
     modeHasCostEffect = COST_EFFECT_NONE;
@@ -25265,7 +25265,7 @@ void GenericGUIMenu::ItemEffectGUI_t::openItemEffectMenu(GenericGUIMenu::ItemEff
     }
     if ( itemEffectFrame )
     {
-        bool wasDisabled = itemEffectFrame->isDisabled();
+        const bool wasDisabled = itemEffectFrame->isDisabled();
         itemEffectFrame->setDisabled(false);
         if ( wasDisabled )
         {
@@ -25324,7 +25324,7 @@ void GenericGUIMenu::ItemEffectGUI_t::closeItemEffectMenu()
     currentMode = ITEMFX_MODE_NONE;
     invalidActionType = INVALID_ACTION_NONE;
     isInteractable = false;
-    bool wasOpen = bOpen;
+    const bool wasOpen = bOpen;
     bOpen = false;
     bFirstTimeSnapCursor = false;
     if ( wasOpen )
@@ -25357,7 +25357,7 @@ void GenericGUIMenu::ItemEffectGUI_t::closeItemEffectMenu()
     itemRequiresTitleReflow = true;
     if ( itemEffectFrame )
     {
-        for ( auto f : itemEffectFrame->getFrames() )
+        for (const auto f : itemEffectFrame->getFrames() )
         {
             f->removeSelf();
         }
@@ -25373,7 +25373,7 @@ bool GenericGUIMenu::ItemEffectGUI_t::ItemEffectHasBeenCreated() const
     {
         if ( !itemEffectFrame->getFrames().empty() )
         {
-            for ( auto f : itemEffectFrame->getFrames() )
+            for (const auto f : itemEffectFrame->getFrames() )
             {
                 if ( !f->isToBeDeleted() )
                 {
@@ -27024,26 +27024,26 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
     }
 
     {
-        auto bgFrame = itemEffectFrame->addFrame("itemfx base");
+        const auto bgFrame = itemEffectFrame->addFrame("itemfx base");
         bgFrame->setSize(basePos);
         bgFrame->setHollow(false);
         bgFrame->setDisabled(true);
-        auto bg = bgFrame->addImage(SDL_Rect{ 0, 0, basePos.w, basePos.h },
+        const auto bg = bgFrame->addImage(SDL_Rect{ 0, 0, basePos.w, basePos.h },
             makeColor(255, 255, 255, 255),
             baseWindow, "itemfx base img");
 
-        auto skillIcon = bgFrame->addImage(SDL_Rect{ 270, 36, 24, 24 },
+        const auto skillIcon = bgFrame->addImage(SDL_Rect{ 270, 36, 24, 24 },
             makeColor(255, 255, 255, 255),
             "", "itemfx skill img");
         skillIcon->disabled = true;
 
-        auto itemIcon = bgFrame->addImage(SDL_Rect{ 270, 36, 24, 24 },
+        const auto itemIcon = bgFrame->addImage(SDL_Rect{ 270, 36, 24, 24 },
             makeColor(255, 255, 255, 255),
             "", "itemfx item img");
         itemIcon->disabled = true;
 
-        auto headerFont = "fonts/pixel_maz_multiline.ttf#16#2";
-        auto itemFxTitle = bgFrame->addField("itemfx title", 128);
+        const auto headerFont = "fonts/pixel_maz_multiline.ttf#16#2";
+        const auto itemFxTitle = bgFrame->addField("itemfx title", 128);
         itemFxTitle->setFont(headerFont);
         itemFxTitle->setText("");
         itemFxTitle->setHJustify(Field::justify_t::CENTER);
@@ -27051,7 +27051,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
         itemFxTitle->setSize(SDL_Rect{ 0, 0, 0, 0 });
         itemFxTitle->setTextColor(hudColors.characterSheetLightNeutral);
         itemFxTitle->setOutlineColor(makeColor(29, 16, 11, 255));
-        auto itemFxStatus = bgFrame->addField("itemfx status", 128);
+        const auto itemFxStatus = bgFrame->addField("itemfx status", 128);
         itemFxStatus->setFont(headerFont);
         itemFxStatus->setText("");
         itemFxStatus->setHJustify(Field::justify_t::CENTER);
@@ -27060,13 +27060,13 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
         itemFxStatus->setTextColor(hudColors.characterSheetLightNeutral);
         itemFxStatus->setOutlineColor(makeColor(29, 16, 11, 255));
 
-        auto itemFont = "fonts/pixel_maz_multiline.ttf#16#2";
-        auto itemDisplayTooltip = bgFrame->addFrame("itemfx display tooltip");
+        const auto itemFont = "fonts/pixel_maz_multiline.ttf#16#2";
+        const auto itemDisplayTooltip = bgFrame->addFrame("itemfx display tooltip");
         itemDisplayTooltip->setSize(SDL_Rect{ 0, 0, 298, 108 });
         itemDisplayTooltip->setHollow(true);
         itemDisplayTooltip->setInheritParentFrameOpacity(false);
         {
-            auto itemNameText = itemDisplayTooltip->addField("item display name", 1024);
+            const auto itemNameText = itemDisplayTooltip->addField("item display name", 1024);
             itemNameText->setFont(itemFont);
             itemNameText->setText("");
             itemNameText->setHJustify(Field::justify_t::LEFT);
@@ -27080,20 +27080,20 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
             auto itemBgImg = itemDisplayTooltip->addImage(SDL_Rect{ 0, 0, 54, 54 }, 0xFFFFFFFF,
                 "*images/ui/ScrollSpells/Scroll_ItemBGSurround_00.png", "item bg img");
 
-            auto itemBgTransmuteGlow = itemDisplayTooltip->addImage(SDL_Rect{ 0, 0, 44, 44 }, 0xFFFFFFFF,
+            const auto itemBgTransmuteGlow = itemDisplayTooltip->addImage(SDL_Rect{ 0, 0, 44, 44 }, 0xFFFFFFFF,
                 "*images/ui/ScrollSpells/Gleam_00.png", "item transmute gleam img");
             itemBgTransmuteGlow->disabled = true;
 
             {
-                auto itemCostBg = itemDisplayTooltip->addImage(SDL_Rect{ 0, 0, 104, 34 },
+                const auto itemCostBg = itemDisplayTooltip->addImage(SDL_Rect{ 0, 0, 104, 34 },
                     0xFFFFFFFF, "*images/ui/ScrollSpells/Scroll_CostBacking_00.png", "item cost img");
                 itemCostBg->disabled = true;
 
-                auto itemCostBg2 = itemDisplayTooltip->addImage(SDL_Rect{ 0, 0, 104, 34 },
+                const auto itemCostBg2 = itemDisplayTooltip->addImage(SDL_Rect{ 0, 0, 104, 34 },
                     0xFFFFFFFF, "*images/ui/ScrollSpells/Scroll_MPBacking_00.png", "item cost img 2");
                 itemCostBg2->disabled = true;
 
-                auto costEffectGoldText = itemDisplayTooltip->addField("item gold value", 32);
+                const auto costEffectGoldText = itemDisplayTooltip->addField("item gold value", 32);
                 costEffectGoldText->setFont(itemFont);
                 costEffectGoldText->setText("");
                 costEffectGoldText->setHJustify(Field::justify_t::RIGHT);
@@ -27102,7 +27102,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
                 costEffectGoldText->setColor(hudColors.characterSheetLightNeutral);
                 costEffectGoldText->setDisabled(true);
 
-                auto costEffectMPText = itemDisplayTooltip->addField("item mp value", 32);
+                const auto costEffectMPText = itemDisplayTooltip->addField("item mp value", 32);
                 costEffectMPText->setFont(itemFont);
                 costEffectMPText->setText("");
                 costEffectMPText->setHJustify(Field::justify_t::RIGHT);
@@ -27111,7 +27111,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
                 costEffectMPText->setColor(hudColors.characterSheetLightNeutral);
                 costEffectMPText->setDisabled(true);
 
-                auto costLabel = itemDisplayTooltip->addField("item cost label", 64);
+                const auto costLabel = itemDisplayTooltip->addField("item cost label", 64);
                 costLabel->setFont(itemFont);
                 costLabel->setText("");
                 costLabel->setHJustify(Field::justify_t::RIGHT);
@@ -27120,7 +27120,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
                 costLabel->setColor(hudColors.characterSheetLightNeutral);
                 costLabel->setDisabled(true);
 
-                auto costLabel2 = itemDisplayTooltip->addField("item cost label 2", 64);
+                const auto costLabel2 = itemDisplayTooltip->addField("item cost label 2", 64);
                 costLabel2->setFont(itemFont);
                 costLabel2->setText("");
                 costLabel2->setHJustify(Field::justify_t::RIGHT);
@@ -27130,8 +27130,8 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
                 costLabel2->setDisabled(true);
             }
 
-            auto slotFrame = itemDisplayTooltip->addFrame("item slot frame");
-            SDL_Rect slotPos{ 0, 0, players[player]->inventoryUI.getSlotSize(), players[player]->inventoryUI.getSlotSize() };
+            const auto slotFrame = itemDisplayTooltip->addFrame("item slot frame");
+            const SDL_Rect slotPos{ 0, 0, players[player]->inventoryUI.getSlotSize(), players[player]->inventoryUI.getSlotSize() };
             slotFrame->setSize(slotPos);
             slotFrame->setDisabled(true);
             slotFrame->setInheritParentFrameOpacity(false);
@@ -27139,8 +27139,8 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
         }
 
         {
-            auto closeBtn = bgFrame->addButton("close itemfx button");
-            SDL_Rect closeBtnPos{ basePos.w - 4 - 26, 14, 26, 26 };
+            const auto closeBtn = bgFrame->addButton("close itemfx button");
+            const SDL_Rect closeBtnPos{ basePos.w - 4 - 26, 14, 26, 26 };
             closeBtn->setSize(closeBtnPos);
             closeBtn->setColor(makeColor(255, 255, 255, 255));
             closeBtn->setHighlightColor(makeColor(255, 255, 255, 255));
@@ -27160,14 +27160,14 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
             });
             closeBtn->setTickCallback(genericgui_deselect_fn);
 
-            auto closeGlyph = bgFrame->addImage(SDL_Rect{ 0, 0, 0, 0 },
+            const auto closeGlyph = bgFrame->addImage(SDL_Rect{ 0, 0, 0, 0 },
                 0xFFFFFFFF, "", "close itemfx glyph");
             closeGlyph->disabled = true;
             closeGlyph->ontop = true;
         }
 
         {
-            auto actionPromptTxt = bgFrame->addField("action prompt txt", 64);
+            const auto actionPromptTxt = bgFrame->addField("action prompt txt", 64);
             actionPromptTxt->setFont(itemFont);
             actionPromptTxt->setText("");
             actionPromptTxt->setHJustify(Field::justify_t::RIGHT);
@@ -27175,18 +27175,18 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
             actionPromptTxt->setSize(SDL_Rect{ 0, 0, 0, 0 });
             actionPromptTxt->setColor(makeColor(255, 255, 255, 255));
 
-            auto actionPromptGlyph = bgFrame->addImage(SDL_Rect{ 0, 0, 0, 0 },
+            const auto actionPromptGlyph = bgFrame->addImage(SDL_Rect{ 0, 0, 0, 0 },
                 0xFFFFFFFF, "", "action prompt glyph");
             actionPromptGlyph->ontop = true;
 
-            auto actionModifierGlyph = bgFrame->addImage(SDL_Rect{ 0, 0, 0, 0 },
+            const auto actionModifierGlyph = bgFrame->addImage(SDL_Rect{ 0, 0, 0, 0 },
                 0xFFFFFFFF, "", "action modifier glyph");
             actionModifierGlyph->ontop = true;
             actionModifierGlyph->disabled = true;
         }
 
         {
-            auto actionButtonConfirm = bgFrame->addButton("action button confirm");
+            const auto actionButtonConfirm = bgFrame->addButton("action button confirm");
             SDL_Rect actionBtnPos{ 0, 0, 86, 26 };
             actionButtonConfirm->setSize(actionBtnPos);
             actionButtonConfirm->setColor(makeColor(255, 255, 255, 255));
@@ -27223,7 +27223,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
             actionPromptGlyph->ontop = true;
             actionPromptGlyph->disabled = true;
 
-            auto actionButtonCancel = bgFrame->addButton("action button cancel");
+            const auto actionButtonCancel = bgFrame->addButton("action button cancel");
             actionBtnPos = SDL_Rect{ 0, 0, 86, 26 };
             actionButtonCancel->setSize(actionBtnPos);
             actionButtonCancel->setColor(makeColor(255, 255, 255, 255));
@@ -27268,7 +27268,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
             actionButtonCancel->setInvisible(true);
             actionButtonCancel->setDisabled(true);
 
-            auto actionButtonRefresh = bgFrame->addButton("action button refresh");
+            const auto actionButtonRefresh = bgFrame->addButton("action button refresh");
             actionBtnPos = SDL_Rect{ 0, 0, 40, 40 };
             actionButtonRefresh->setSize(actionBtnPos);
             actionButtonRefresh->setColor(makeColor(255, 255, 255, 255));
@@ -27296,7 +27296,7 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
         }
 
         {
-            auto actionPromptUnselectedTxt = bgFrame->addField("action prompt unselected txt", 64);
+            const auto actionPromptUnselectedTxt = bgFrame->addField("action prompt unselected txt", 64);
             actionPromptUnselectedTxt->setFont(itemFont);
             actionPromptUnselectedTxt->setText("");
             actionPromptUnselectedTxt->setHJustify(Field::justify_t::CENTER);
@@ -27305,16 +27305,16 @@ void GenericGUIMenu::ItemEffectGUI_t::createItemEffectMenu()
             actionPromptUnselectedTxt->setColor(makeColor(255, 255, 255, 255));
             actionPromptUnselectedTxt->setDisabled(true);
 
-            auto actionPromptCoverLeftImg = bgFrame->addImage(SDL_Rect{ 0, 70, 56, 26 },
+            const auto actionPromptCoverLeftImg = bgFrame->addImage(SDL_Rect{ 0, 70, 56, 26 },
                 0xFFFFFFFF, "*images/ui/ScrollSpells/Scroll_PromptCoverLeft_00.png", "action prompt lcover");
             actionPromptCoverLeftImg->ontop = true;
-            auto actionPromptCoverRightImg = bgFrame->addImage(SDL_Rect{ bg->pos.w - 56, 70, 56, 26 },
+            const auto actionPromptCoverRightImg = bgFrame->addImage(SDL_Rect{ bg->pos.w - 56, 70, 56, 26 },
                 0xFFFFFFFF, "*images/ui/ScrollSpells/Scroll_PromptCoverRight_00.png", "action prompt rcover");
             actionPromptCoverRightImg->ontop = true;
         }
 
         {
-            auto itemIncrementText = bgFrame->addField("item increment txt", 64);
+            const auto itemIncrementText = bgFrame->addField("item increment txt", 64);
             itemIncrementText->setFont(itemFont);
             itemIncrementText->setText("");
             itemIncrementText->setHJustify(Field::justify_t::TOP);
@@ -27628,7 +27628,7 @@ void setCalloutBannerTextFormatted(const int player, Field* field, Uint32 color,
 
     field->setText(buf);
     field->clearWordsToHighlight();
-    for ( auto v : highlights )
+    for (const auto v : highlights )
     {
         field->addWordToHighlight(v, color);
     }
@@ -27641,10 +27641,10 @@ void setCalloutBannerTextUnformatted(const int player, Field* field, const char*
     {
         return;
     }
-    auto& textMap = CalloutMenu[player].iconEntries[iconName].text_map[textKey];
+    const auto& textMap = CalloutMenu[player].iconEntries[iconName].text_map[textKey];
     field->setText(textMap.bannerText.c_str());
     field->clearWordsToHighlight();
-    for ( auto v : textMap.bannerHighlights )
+    for (const auto v : textMap.bannerHighlights )
     {
         field->addWordToHighlight(v, color);
     }
@@ -28896,7 +28896,7 @@ std::string CalloutRadialMenu::setCalloutText(Field* field, const char* iconName
 
 void CalloutRadialMenu::initCalloutMenuGUICursor(bool openInventory)
 {
-    bool oldshootmode = players[gui_player]->shootmode;
+    const bool oldshootmode = players[gui_player]->shootmode;
     if ( openInventory )
     {
         //players[gui_player]->openStatusScreen(GUI_MODE_INVENTORY, INVENTORY_MODE_ITEM);
@@ -28906,7 +28906,7 @@ void CalloutRadialMenu::initCalloutMenuGUICursor(bool openInventory)
 
     if ( !oldshootmode )
     {
-        Uint32 flags = (Inputs::SET_MOUSE | Inputs::SET_CONTROLLER | Inputs::UNSET_RELATIVE_MOUSE);
+        const Uint32 flags = (Inputs::SET_MOUSE | Inputs::SET_CONTROLLER | Inputs::UNSET_RELATIVE_MOUSE);
         inputs.warpMouse(gui_player,
             players[gui_player]->camera_x1() + (players[gui_player]->camera_width() / 2),
             players[gui_player]->camera_y1() + (players[gui_player]->camera_height() / 2), flags);
@@ -28931,7 +28931,7 @@ bool CalloutRadialMenu::calloutGUIHasBeenCreated() const
     {
         if ( !calloutFrame->getFrames().empty() )
         {
-            for ( auto f : calloutFrame->getFrames() )
+            for (const auto f : calloutFrame->getFrames() )
             {
                 if ( !f->isToBeDeleted() )
                 {
@@ -28963,25 +28963,25 @@ void CalloutRadialMenu::createCalloutMenuGUI()
     const int midx = calloutFrame->getSize().w / 2;
     const int midy = calloutFrame->getSize().h / 2;
 
-    auto bgFrame = calloutFrame->addFrame("wheel base");
+    const auto bgFrame = calloutFrame->addFrame("wheel base");
     bgFrame->setSize(SDL_Rect{ 0, 0, calloutFrame->getSize().w, calloutFrame->getSize().h });
     bgFrame->setHollow(false);
     bgFrame->setDisabled(false);
     bgFrame->setInheritParentFrameOpacity(false);
     bgFrame->setOpacity(0.0);
 
-    auto font = "fonts/pixel_maz_multiline.ttf#16#2";
+    const auto font = "fonts/pixel_maz_multiline.ttf#16#2";
 
     int panelIndex = 0;
     for ( auto& entry : panelEntries )
     {
         if ( panelIndex < PANEL_DIRECTION_END )
         {
-            SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
+            const SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
             char buf[32] = "";
             snprintf(buf, sizeof(buf), "panel %d", panelIndex);
             Frame::image_t* img = bgFrame->addImage(pos, 0xFFFFFFFF, entry.path.c_str(), buf);
-            if ( auto imgGet = Image::get(img->path.c_str()) )
+            if (const auto imgGet = Image::get(img->path.c_str()) )
             {
                 img->pos.w = imgGet->getWidth();
                 img->pos.h = imgGet->getHeight();
@@ -28992,11 +28992,11 @@ void CalloutRadialMenu::createCalloutMenuGUI()
     }
 
     panelIndex = 0;
-    for ( auto& entry : panelEntries )
+    for (const auto& entry : panelEntries )
     {
         if ( panelIndex < PANEL_DIRECTION_END )
         {
-            SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
+            const SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
             char buf[32] = "";
             snprintf(buf, sizeof(buf), "icon %d", panelIndex);
             Frame::image_t* imgIcon = bgFrame->addImage(pos, 0xFFFFFFFF, "", buf);
@@ -29008,19 +29008,19 @@ void CalloutRadialMenu::createCalloutMenuGUI()
 
     {
         // do center panel
-        auto& entry = panelEntries[panelEntries.size() - 1];
-        SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
+        const auto& entry = panelEntries[panelEntries.size() - 1];
+        const SDL_Rect pos{ entry.x + midx, entry.y + midy, 0, 0 };
         char buf[32] = "";
         snprintf(buf, sizeof(buf), "panel %d", PANEL_DIRECTION_END);
         Frame::image_t* img = bgFrame->addImage(pos, 0xFFFFFFFF, entry.path.c_str(), buf);
-        if ( auto imgGet = Image::get(img->path.c_str()) )
+        if (const auto imgGet = Image::get(img->path.c_str()) )
         {
             img->pos.w = imgGet->getWidth();
             img->pos.h = imgGet->getHeight();
         }
     }
 
-    auto bannerFrame = calloutFrame->addFrame("banner frame");
+    const auto bannerFrame = calloutFrame->addFrame("banner frame");
     bannerFrame->setSize(SDL_Rect{ 0, 0, 0, 40 });
     bannerFrame->setHollow(false);
     bannerFrame->setDisabled(false);
@@ -29028,7 +29028,7 @@ void CalloutRadialMenu::createCalloutMenuGUI()
     bannerFrame->addImage(SDL_Rect{ 0, 0, 42, 40 }, 0xFFFFFFFF, "#*images/ui/FollowerWheel/banner-cmd_l.png", "banner left");
     bannerFrame->addImage(SDL_Rect{ 0, 0, 42, 40 }, 0xFFFFFFFF, "#*images/ui/FollowerWheel/banner-cmd_r.png", "banner right");
     bannerFrame->addImage(SDL_Rect{ 0, 12, 0, 28 }, 0xFFFFFFFF, "*images/ui/FollowerWheel/banner-cmd_c.png", "banner center");
-    auto bannerText = bannerFrame->addField("banner txt", 128);
+    const auto bannerText = bannerFrame->addField("banner txt", 128);
     bannerText->setFont(font);
     bannerText->setText("");
     bannerText->setHJustify(Field::justify_t::LEFT);
@@ -29036,12 +29036,12 @@ void CalloutRadialMenu::createCalloutMenuGUI()
     bannerText->setSize(SDL_Rect{ 0, 0, 0, 24 });
     bannerText->setTextColor(followerBannerTextColor);
     bannerText->setOutlineColor(makeColor(29, 16, 11, 255));
-    auto bannerGlyph = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "banner glyph");
+    const auto bannerGlyph = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "banner glyph");
     bannerGlyph->disabled = true;
-    auto bannerGlyph2 = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "banner modifier glyph");
+    const auto bannerGlyph2 = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "banner modifier glyph");
     bannerGlyph2->disabled = true;
 
-    auto wheelTitleText = bgFrame->addField("wheel title", 128);
+    const auto wheelTitleText = bgFrame->addField("wheel title", 128);
     wheelTitleText->setFont(font);
     wheelTitleText->setText("");
     wheelTitleText->setHJustify(Field::justify_t::LEFT);
@@ -29050,9 +29050,9 @@ void CalloutRadialMenu::createCalloutMenuGUI()
     wheelTitleText->setTextColor(followerTitleColor);
     wheelTitleText->setOutlineColor(makeColor(29, 16, 11, 255));
 
-    auto wheelSkillImg = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "skill img");
+    const auto wheelSkillImg = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "skill img");
     wheelSkillImg->disabled = true;
-    auto wheelStatImg = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "stat img");
+    const auto wheelStatImg = bannerFrame->addImage(SDL_Rect{ 0, 0, 0, 0 }, 0xFFFFFFFF, "", "stat img");
     wheelStatImg->disabled = true;
 }
 
@@ -29131,7 +29131,7 @@ CalloutRadialMenu::CalloutType CalloutRadialMenu::getCalloutTypeForEntity(const 
     }
     else if ( parent->behavior == &actMonster )
     {
-        int monsterType = parent->getMonsterTypeFromSprite();
+        const int monsterType = parent->getMonsterTypeFromSprite();
         bool enemies = false;
         if ( players[player]->entity )
         {
@@ -29189,7 +29189,7 @@ CalloutRadialMenu::CalloutType CalloutRadialMenu::getCalloutTypeForEntity(const 
         int wallLockState = parent->wallLockState;
         if ( parent->sprite >= 1585 && parent->sprite <= 1592 )
         {
-            if ( Entity* lock = uidToEntity(parent->parent) )
+            if (const Entity* lock = uidToEntity(parent->parent) )
             {
                 wallLockState = lock->wallLockState;
             }
@@ -29221,7 +29221,7 @@ CalloutRadialMenu::CalloutType CalloutRadialMenu::getCalloutTypeForEntity(const 
         if ( parent->sprite == 1151
             || parent->sprite == 1152 )
         {
-            if ( Entity* lock = uidToEntity(parent->parent) )
+            if (const Entity* lock = uidToEntity(parent->parent) )
             {
                 wallLockState = lock->wallLockState;
             }
@@ -29474,7 +29474,7 @@ void CalloutRadialMenu::closeCalloutMenuGUI()
     if ( calloutFrame )
     {
         calloutFrame->setDisabled(true);
-        for ( auto f : calloutFrame->getFrames() )
+        for (const auto f : calloutFrame->getFrames() )
         {
             f->removeSelf();
         }
@@ -29943,7 +29943,7 @@ void CalloutRadialMenu::CalloutParticle_t::animate()
     const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
     if ( animateState <= 2 )
     {
-        real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateX)) / (animspeed);
+        const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateX)) / (animspeed);
         animateX += setpointDiffX;
         for ( int i = 0; i < MAXPLAYERS; ++i )
         {
@@ -29967,12 +29967,12 @@ void CalloutRadialMenu::CalloutParticle_t::animate()
         {
             if ( !big[i] )
             {
-                real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateScaleForPlayerView[i])) / (animspeed);
+                const real_t setpointDiffX = fpsScale * std::max(.1, (1.0 - animateScaleForPlayerView[i])) / (animspeed);
                 animateScaleForPlayerView[i] += setpointDiffX;
             }
             else
             {
-                real_t setpointDiffX = fpsScale * std::max(.1, (animateScaleForPlayerView[i])) / (animspeed);
+                const real_t setpointDiffX = fpsScale * std::max(.1, (animateScaleForPlayerView[i])) / (animspeed);
                 animateScaleForPlayerView[i] -= setpointDiffX;
             }
             animateScaleForPlayerView[i] = std::max(0.0, std::min(1.0, animateScaleForPlayerView[i]));
@@ -30075,7 +30075,7 @@ bool CalloutRadialMenu::createParticleCallout(Entity* entity, CalloutRadialMenu:
     {
         if ( CalloutMenu[i].callouts.find(entity->getUID()) != CalloutMenu[i].callouts.end() )
         {
-            auto& existingCallout = CalloutMenu[i].callouts[entity->getUID()];
+            const auto& existingCallout = CalloutMenu[i].callouts[entity->getUID()];
             if ( i == getPlayer() && existingCallout.cmd == _cmd )
             {
                 existingMessageSent = existingCallout.messageSentTick;
@@ -30127,8 +30127,8 @@ bool CalloutRadialMenu::createParticleCallout(Entity* entity, CalloutRadialMenu:
         }
     }
 
-    std::string calloutTypeKey = getCalloutKeyForCommand(_cmd);
-    Uint32 oldTarget = lockOnEntityUid;
+    const std::string calloutTypeKey = getCalloutKeyForCommand(_cmd);
+    const Uint32 oldTarget = lockOnEntityUid;
     if ( overrideUID != 0 )
     {
         lockOnEntityUid = overrideUID;
@@ -30137,7 +30137,7 @@ bool CalloutRadialMenu::createParticleCallout(Entity* entity, CalloutRadialMenu:
     {
         lockOnEntityUid = entity->getUID();
     }
-    std::string key = setCalloutText(nullptr, calloutTypeKey.c_str(), 0, _cmd, SET_CALLOUT_ICON_KEY, -1);
+    const std::string key = setCalloutText(nullptr, calloutTypeKey.c_str(), 0, _cmd, SET_CALLOUT_ICON_KEY, -1);
     lockOnEntityUid = oldTarget;
 
     callout.tagID = worldIconEntries[iconEntries[calloutTypeKey].text_map[key].worldIconTag].id;
@@ -30201,7 +30201,7 @@ bool CalloutRadialMenu::createParticleCallout(real_t x, real_t y, real_t z, Uint
     Uint32 existingMessageSent = 0;
     if ( _cmd == CALLOUT_CMD_MOVE && callouts.find(uid) != callouts.end() )
     {
-        auto& existingCallout = callouts[uid];
+        const auto& existingCallout = callouts[uid];
         if ( existingCallout.cmd == _cmd )
         {
             existingMessageSent = existingCallout.messageSentTick;
@@ -30257,10 +30257,10 @@ bool CalloutRadialMenu::createParticleCallout(real_t x, real_t y, real_t z, Uint
         }
     }
 
-    std::string calloutTypeKey = getCalloutKeyForCommand(_cmd);
-    Uint32 oldTarget = lockOnEntityUid;
+    const std::string calloutTypeKey = getCalloutKeyForCommand(_cmd);
+    const Uint32 oldTarget = lockOnEntityUid;
     lockOnEntityUid = uid;
-    std::string key = setCalloutText(nullptr, calloutTypeKey.c_str(), 0, _cmd, SET_CALLOUT_ICON_KEY, -1);
+    const std::string key = setCalloutText(nullptr, calloutTypeKey.c_str(), 0, _cmd, SET_CALLOUT_ICON_KEY, -1);
     lockOnEntityUid = oldTarget;
 
     callout.tagID = worldIconEntries[iconEntries[calloutTypeKey].text_map[key].worldIconTag].id;
@@ -30286,8 +30286,8 @@ bool CalloutRadialMenu::createParticleCallout(real_t x, real_t y, real_t z, Uint
             net_packet->len = 14;
             if ( uid == 0 )
             {
-                Uint16 _x = std::min<Uint16>(std::max<int>(0.0, x / 16), map.width - 1);
-                Uint16 _y = std::min<Uint16>(std::max<int>(0.0, y / 16), map.height - 1);
+                const Uint16 _x = std::min<Uint16>(std::max<int>(0.0, x / 16), map.width - 1);
+                const Uint16 _y = std::min<Uint16>(std::max<int>(0.0, y / 16), map.height - 1);
                 SDLNet_Write16(_x, &net_packet->data[14]);
                 SDLNet_Write16(_y, &net_packet->data[16]);
                 net_packet->len = 18;
@@ -30326,8 +30326,8 @@ void CalloutRadialMenu::sendCalloutText(CalloutRadialMenu::CalloutCommand cmd)
         net_packet->len = 14;
         if ( lockOnEntityUid == 0 )
         {
-            Uint16 _x = std::min<Uint16>(std::max<int>(0.0, moveToX / 16), map.width - 1);
-            Uint16 _y = std::min<Uint16>(std::max<int>(0.0, moveToY / 16), map.height - 1);
+            const Uint16 _x = std::min<Uint16>(std::max<int>(0.0, moveToX / 16), map.width - 1);
+            const Uint16 _y = std::min<Uint16>(std::max<int>(0.0, moveToY / 16), map.height - 1);
             SDLNet_Write16(_x, &net_packet->data[14]);
             SDLNet_Write16(_y, &net_packet->data[16]);
             net_packet->len = 18;
@@ -31490,9 +31490,9 @@ bool CalloutRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool updat
         return false;
     }
 
-    bool interactItems = true; //allowedInteractItems(followerStats->type) || allowedInteractFood(followerStats->type);
-    bool interactWorld = true; //allowedInteractWorld(followerStats->type);
-    bool enableAttack = true;
+    const bool interactItems = true; //allowedInteractItems(followerStats->type) || allowedInteractFood(followerStats->type);
+    const bool interactWorld = true; //allowedInteractWorld(followerStats->type);
+    const bool enableAttack = true;
 
     if ( updateInteractText )
     {
@@ -31552,7 +31552,7 @@ bool CalloutRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool updat
         int wallLockMaterial = selectedEntity.wallLockMaterial;
         if ( selectedEntity.sprite >= 1585 && selectedEntity.sprite <= 1592 )
         {
-            if ( Entity* parent = uidToEntity(selectedEntity.parent) )
+            if (const Entity* parent = uidToEntity(selectedEntity.parent) )
             {
                 wallLockState = parent->wallLockState;
                 wallLockMaterial = parent->wallLockMaterial;
@@ -31845,7 +31845,7 @@ bool CalloutRadialMenu::allowedInteractEntity(Entity& selectedEntity, bool updat
     {
         if ( updateInteractText )
         {
-            int playernum = selectedEntity.skill[2];
+            const int playernum = selectedEntity.skill[2];
             if ( playernum >= 0 && playernum < MAXPLAYERS )
             {
                 char shortname[32];
@@ -31900,11 +31900,11 @@ void GenericGUIMenu::AssistShrineGUI_t::openAssistShrine(Entity* shrine)
         Compendium_t::Events_t::eventUpdateWorld(parentGUI.gui_player, Compendium_t::CPDM_ASSIST_INTERACTS, "assist shrine", 1);
     }
     const int playernum = parentGUI.getPlayer();
-    auto player = players[playernum];
+    const auto player = players[playernum];
 
     if ( assistShrineFrame )
     {
-        bool wasDisabled = assistShrineFrame->isDisabled();
+        const bool wasDisabled = assistShrineFrame->isDisabled();
         assistShrineFrame->setDisabled(false);
         if ( wasDisabled )
         {
@@ -31971,7 +31971,7 @@ void GenericGUIMenu::AssistShrineGUI_t::changeCurrentView(GenericGUIMenu::Assist
             }
         }
 
-        auto result = isCharacterValidFromDLC(parentGUI.gui_player, i, playerRace, appearance);
+        const auto result = isCharacterValidFromDLC(parentGUI.gui_player, i, playerRace, appearance);
 
         if ( result == CharacterDLCValidation::VALID_OK_CHARACTER )
         {
@@ -32014,7 +32014,7 @@ void GenericGUIMenu::AssistShrineGUI_t::changeCurrentView(GenericGUIMenu::Assist
     {
         int index = -1;
         int raceHighlighted = -1;
-        for ( auto race : raceSlots )
+        for (const auto race : raceSlots )
         {
             ++index;
             if ( (selectedRace == -1 && (savedRace == -1 && race == stats[parentGUI.gui_player]->playerRace))
@@ -32036,9 +32036,9 @@ void GenericGUIMenu::AssistShrineGUI_t::changeCurrentView(GenericGUIMenu::Assist
 
         if ( assistShrineFrame )
         {
-            if ( auto raceFrame = assistShrineFrame->findFrame("assist races") )
+            if (const auto raceFrame = assistShrineFrame->findFrame("assist races") )
             {
-                if ( auto sexBtn = raceFrame->findButton("sex toggle button") )
+                if (const auto sexBtn = raceFrame->findButton("sex toggle button") )
                 {
                     if ( (selectedSex == -1 && savedSex == -1 && stats[parentGUI.gui_player]->sex == MALE)
                         || (savedSex == MALE && selectedSex == -1)
@@ -32053,7 +32053,7 @@ void GenericGUIMenu::AssistShrineGUI_t::changeCurrentView(GenericGUIMenu::Assist
                         sexBtn->setPressed(true);
                     }
                 }
-                if ( auto disableBtn = raceFrame->findButton("race ability btn") )
+                if (const auto disableBtn = raceFrame->findButton("race ability btn") )
                 {
                     if ( raceHighlighted == RACE_HUMAN || raceHighlighted == -1 )
                     {
@@ -32082,7 +32082,7 @@ void GenericGUIMenu::AssistShrineGUI_t::changeCurrentView(GenericGUIMenu::Assist
     else if ( currentView == ASSIST_SHRINE_VIEW_CLASSES )
     {
         bool found = false;
-        for ( auto& pair : classSlots )
+        for (const auto& pair : classSlots )
         {
             if ( (selectedClass == -1 && (savedClass == -1 && pair.second == client_classes[parentGUI.gui_player]))
                 || (savedClass >= 0 && pair.second == savedClass)
@@ -32126,27 +32126,27 @@ void GenericGUIMenu::AssistShrineGUI_t::updateRaceSlots()
     }
 
     int index = -1;
-    bool usingGamepad = inputs.hasController(parentGUI.gui_player) && !inputs.getVirtualMouse(parentGUI.gui_player)->draw_cursor;
-    for ( auto& race : raceSlots )
+    const bool usingGamepad = inputs.hasController(parentGUI.gui_player) && !inputs.getVirtualMouse(parentGUI.gui_player)->draw_cursor;
+    for (const auto& race : raceSlots )
     {
         ++index;
         static const std::string prefix = "*images/ui/Main Menus/Play/PlayerCreation/ClassSelection/";
-        int x = ASSIST_RACE_COLUMN;
-        int y = index;
+        const int x = ASSIST_RACE_COLUMN;
+        const int y = index;
 
         //if ( find != MainMenu::classes.end() )
         {
-            if ( auto slotFrame = getAssistShrineSlotFrame(ASSIST_RACE_COLUMN, index) )
+            if (const auto slotFrame = getAssistShrineSlotFrame(ASSIST_RACE_COLUMN, index) )
             {
-                auto slotBg = slotFrame->findImage("race bg");
-                auto slotFg = slotFrame->findImage("race fg");
-                auto slotGlyph = slotFrame->findImage("race glyph");
+                const auto slotBg = slotFrame->findImage("race bg");
+                const auto slotFg = slotFrame->findImage("race fg");
+                const auto slotGlyph = slotFrame->findImage("race glyph");
                 slotGlyph->disabled = true;
                 slotFg->disabled = false;
-                auto slotTxt = slotFrame->findField("race");
+                const auto slotTxt = slotFrame->findField("race");
                 if ( slotBg && slotFg )
                 {
-                    bool selected = (selectedRace == -1 && savedRace == -1 && stats[parentGUI.gui_player]->playerRace == race)
+                    const bool selected = (selectedRace == -1 && savedRace == -1 && stats[parentGUI.gui_player]->playerRace == race)
                         || (savedRace >= 0 && savedRace == race && selectedRace == -1)
                         || (selectedRace >= 0 && selectedRace == race);
                     bool highlighted = false;
@@ -32232,7 +32232,7 @@ void GenericGUIMenu::AssistShrineGUI_t::updateRaceSlots()
                         slotBg->disabled = true;
                     }
 
-                    if ( auto img = Image::get(slotFg->path.c_str()) )
+                    if (const auto img = Image::get(slotFg->path.c_str()) )
                     {
                         slotFg->pos.x = 4;
                         slotFg->pos.y = 0;
@@ -32240,7 +32240,7 @@ void GenericGUIMenu::AssistShrineGUI_t::updateRaceSlots()
                         slotFg->pos.h = img->getHeight();
                         if ( (30 - slotFg->pos.h) > 0 )
                         {
-                            int offset = (30 - slotFg->pos.h) / 2;
+                            const int offset = (30 - slotFg->pos.h) / 2;
                             slotFg->pos.x += offset;
                             slotFg->pos.y += offset;
                         }
@@ -32249,7 +32249,7 @@ void GenericGUIMenu::AssistShrineGUI_t::updateRaceSlots()
                     if ( highlighted && usingGamepad )
                     {
                         slotGlyph->path = Input::inputs[parentGUI.gui_player].getGlyphPathForBinding("MenuConfirm");
-                        if ( auto img = Image::get(slotGlyph->path.c_str()) )
+                        if (const auto img = Image::get(slotGlyph->path.c_str()) )
                         {
                             slotGlyph->disabled = false;
                             slotGlyph->pos.w = img->getWidth();
@@ -32271,38 +32271,38 @@ void GenericGUIMenu::AssistShrineGUI_t::updateClassSlots()
         return;
     }
 
-    bool usingGamepad = inputs.hasController(parentGUI.gui_player) && !inputs.getVirtualMouse(parentGUI.gui_player)->draw_cursor;
-    auto classFrame = assistShrineFrame->findFrame("assist classes");
+    const bool usingGamepad = inputs.hasController(parentGUI.gui_player) && !inputs.getVirtualMouse(parentGUI.gui_player)->draw_cursor;
+    const auto classFrame = assistShrineFrame->findFrame("assist classes");
     if ( !classFrame )
     {
         return;
     }
-    auto classGlyph = classFrame->findImage("class select glyph");
+    const auto classGlyph = classFrame->findImage("class select glyph");
     classGlyph->disabled = true;
 
-    for ( auto& pair : classSlots )
+    for (const auto& pair : classSlots )
     {
-        int classIndex = pair.second;
-        auto key = MainMenu::classes_in_order[classIndex];
+        const int classIndex = pair.second;
+        const auto key = MainMenu::classes_in_order[classIndex];
         auto find = MainMenu::classes.find(key);
         static const std::string prefix = "*images/ui/Main Menus/Play/PlayerCreation/ClassSelection/";
 
-        int x = pair.first % 100;
-        int y = pair.first / 100;
+        const int x = pair.first % 100;
+        const int y = pair.first / 100;
 
         if ( find != MainMenu::classes.end() )
         {
-            if ( auto slotFrame = getAssistShrineSlotFrame(x, y) )
+            if (const auto slotFrame = getAssistShrineSlotFrame(x, y) )
             {
-                auto slotBg = slotFrame->findImage("class bg");
-                auto slotFg = slotFrame->findImage("class fg");
+                const auto slotBg = slotFrame->findImage("class bg");
+                const auto slotFg = slotFrame->findImage("class fg");
                 /*auto slotGlyph = slotFrame->findImage("class glyph");
                 slotGlyph->disabled = true;*/
                 if ( slotBg && slotFg )
                 {
                     auto& full_class = find->second;
 
-                    bool selected = (selectedClass == -1 && savedClass == -1 && client_classes[parentGUI.gui_player] == classIndex)
+                    const bool selected = (selectedClass == -1 && savedClass == -1 && client_classes[parentGUI.gui_player] == classIndex)
                         || (savedClass >= 0 && savedClass == classIndex && selectedClass == -1)
                         || (selectedClass >= 0 && selectedClass == classIndex);
                     bool highlighted = false;
@@ -32340,7 +32340,7 @@ void GenericGUIMenu::AssistShrineGUI_t::updateClassSlots()
                                slotGlyph->pos.y = slotFg->pos.h - slotGlyph->pos.h;
                            }*/
                             classGlyph->path = Input::inputs[parentGUI.gui_player].getGlyphPathForBinding("MenuConfirm");
-                            if ( auto img = Image::get(classGlyph->path.c_str()) )
+                            if (const auto img = Image::get(classGlyph->path.c_str()) )
                             {
                                 classGlyph->disabled = false;
                                 classGlyph->pos.w = img->getWidth();
@@ -32351,7 +32351,7 @@ void GenericGUIMenu::AssistShrineGUI_t::updateClassSlots()
                                 classGlyph->pos.x += slotFrame->getSize().x;
                                 classGlyph->pos.y += slotFrame->getSize().y;
 
-                                auto slots = slotFrame->getParent();
+                                const auto slots = slotFrame->getParent();
                                 classGlyph->pos.x += slots->getSize().x;
                                 classGlyph->pos.y += slots->getSize().y + 12;
                                 classGlyph->pos.y -= slots->getActualSize().y;
@@ -32431,7 +32431,7 @@ void GenericGUIMenu::AssistShrineGUI_t::closeAssistShrine()
     notifications.clear();
 
     isInteractable = false;
-    bool wasOpen = bOpen;
+    const bool wasOpen = bOpen;
     bOpen = false;
     bFirstTimeSnapCursor = false;
     if ( wasOpen )
@@ -32457,7 +32457,7 @@ void GenericGUIMenu::AssistShrineGUI_t::closeAssistShrine()
     clearItemDisplayed();
     if ( assistShrineFrame )
     {
-        for ( auto f : assistShrineFrame->getFrames() )
+        for (const auto f : assistShrineFrame->getFrames() )
         {
             f->removeSelf();
         }
@@ -32495,7 +32495,7 @@ bool GenericGUIMenu::AssistShrineGUI_t::assistShrineGUIHasBeenCreated() const
     {
         if ( !assistShrineFrame->getFrames().empty() )
         {
-            for ( auto f : assistShrineFrame->getFrames() )
+            for (const auto f : assistShrineFrame->getFrames() )
             {
                 if ( !f->isToBeDeleted() )
                 {
@@ -32522,7 +32522,7 @@ void buttonAssistShrineUpdateSelectorOnHighlight(const int player, Button* butto
             players[player]->GUI.activateModule(Player::GUI_t::MODULE_ASSISTSHRINE);
         }
         SDL_Rect pos = button->getAbsoluteSize();
-        SDL_Rect off = button->getSelectorOffset();
+        const SDL_Rect off = button->getSelectorOffset();
         pos.x += off.x;
         pos.y += off.y;
         pos.w += off.w;
@@ -32546,7 +32546,7 @@ Frame* GenericGUIMenu::AssistShrineGUI_t::getAssistShrineSlotFrame(int x, int y)
 {
     if ( assistShrineFrame )
     {
-        int key = x + y * 100;
+        const int key = x + y * 100;
         if ( assistShrineSlotFrames.find(key) != assistShrineSlotFrames.end() )
         {
             return assistShrineSlotFrames.at(key);
@@ -32567,10 +32567,10 @@ bool GenericGUIMenu::AssistShrineGUI_t::warpMouseToSelectedAssistShrineItem(Item
             y = snapToItem->y;
         }
 
-        if ( auto slot = getAssistShrineSlotFrame(x, y) )
+        if (const auto slot = getAssistShrineSlotFrame(x, y) )
         {
-            int playernum = parentGUI.getPlayer();
-            auto player = players[playernum];
+            const int playernum = parentGUI.getPlayer();
+            const auto player = players[playernum];
             if ( !isInteractable )
             {
                 //messagePlayer(0, "[Debug]: select item queued");
@@ -32659,9 +32659,9 @@ int GenericGUIMenu::AssistShrineGUI_t::getAssistPointsSaved()
     assistItems.push_back(&itemMask);
     assistItems.push_back(&itemAmulet);
     assistItems.push_back(&itemCloak);
-    for ( auto type : claimedItems )
+    for (const auto type : claimedItems )
     {
-        for ( auto item : assistItems )
+        for (const auto item : assistItems )
         {
             if ( type == item->type )
             {
@@ -32680,7 +32680,7 @@ int GenericGUIMenu::AssistShrineGUI_t::getAssistPointsPreview()
     assistItems.push_back(&itemMask);
     assistItems.push_back(&itemAmulet);
     assistItems.push_back(&itemCloak);
-    for ( auto item : assistItems )
+    for (const auto item : assistItems )
     {
         if ( claimedItems.find(item->type) == claimedItems.end() )
         {
@@ -32968,7 +32968,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             item_request_btn->setCallback([](Button& button) {
                 if ( !(svFlags & SV_FLAG_ASSIST_ITEMS) )
                 {
-                    int player = button.getOwner();
+                    const int player = button.getOwner();
                     if ( player >= 0 && player < MAXPLAYERS && players[player]->entity && players[player]->isLocalPlayer() )
                     {
                         if ( multiplayer == CLIENT )
@@ -32977,7 +32977,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                             auto& calloutMenu = CalloutMenu[player];
                             for ( auto node = map.entities->first; node; node = node->next )
                             {
-                                auto shrine = static_cast<Entity*>(node->element);
+                                const auto shrine = static_cast<Entity*>(node->element);
                                 if ( shrine && (shrine->behavior == &::actAssistShrine) )
                                 {
                                     calloutMenu.lockOnEntityUid = shrine->getUID();
@@ -33010,19 +33010,19 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                                     MainMenu::createMainMenu(true);
                                     if ( MainMenu::main_menu_frame )
                                     {
-                                        if ( auto buttons = MainMenu::main_menu_frame->findFrame("buttons") )
+                                        if (const auto buttons = MainMenu::main_menu_frame->findFrame("buttons") )
                                         {
-                                            if ( auto settings = buttons->findButton("Settings") )
+                                            if (const auto settings = buttons->findButton("Settings") )
                                             {
                                                 settings->getCallback()(*settings);
-                                                if ( auto settings_menu = MainMenu::main_menu_frame->findFrame("settings") )
+                                                if (const auto settings_menu = MainMenu::main_menu_frame->findFrame("settings") )
                                                 {
-                                                    if ( auto settings_menu_button = settings_menu->findButton("Game") )
+                                                    if (const auto settings_menu_button = settings_menu->findButton("Game") )
                                                     {
                                                         settings_menu_button->getCallback()(*settings_menu_button);
-                                                        if ( auto settings_subwindow = settings_menu->findFrame("settings_subwindow") )
+                                                        if (const auto settings_subwindow = settings_menu->findFrame("settings_subwindow") )
                                                         {
-                                                            if ( auto assist_items_toggle = settings_subwindow->findButton("setting_assist_items_button") )
+                                                            if (const auto assist_items_toggle = settings_subwindow->findButton("setting_assist_items_button") )
                                                             {
                                                                 assist_items_toggle->select();
                                                             }
@@ -33299,7 +33299,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                 gui.savedClass = gui.selectedClass >= 0 ? gui.selectedClass
                     : (gui.savedClass == -1 ? client_classes[button.getOwner()] : gui.savedClass);
 
-                int prevRace = gui.savedRace == -1 ? stats[button.getOwner()]->playerRace : gui.savedRace;
+                const int prevRace = gui.savedRace == -1 ? stats[button.getOwner()]->playerRace : gui.savedRace;
                 gui.savedRace = gui.selectedRace >= 0 ? gui.selectedRace
                     : (gui.savedRace == -1 ? stats[button.getOwner()]->playerRace : gui.savedRace);
 
@@ -33481,7 +33481,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                 }
                 Player::soundActivate();
 
-                int prevRace = gui.savedRace == -1 ? stats[button.getOwner()]->playerRace : gui.savedRace;
+                const int prevRace = gui.savedRace == -1 ? stats[button.getOwner()]->playerRace : gui.savedRace;
                 gui.savedRace = gui.selectedRace >= 0 ? gui.selectedRace 
                     : (gui.savedRace == -1 ? stats[button.getOwner()]->playerRace : gui.savedRace);
 
@@ -33569,11 +33569,11 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             disableAbilityTxt->setSize(SDL_Rect{ 16 + 8, raceFrame->getSize().h - 52 + 5 - 46, raceFrame->getSize().w - 24, 48 });
             disableAbilityTxt->setColor(makeColor(121, 117, 116, 255));
             disableAbilityTxt->setTickCallback([](Widget& widget) {
-                auto field = static_cast<Field*>(&widget); assert(field);
-                auto parent = static_cast<Frame*>(widget.getParent()); assert(parent);
-                auto button = parent->findButton("race ability btn"); assert(button);
+                const auto field = static_cast<Field*>(&widget); assert(field);
+                const auto parent = static_cast<Frame*>(widget.getParent()); assert(parent);
+                const auto button = parent->findButton("race ability btn"); assert(button);
                 const auto player = widget.getOwner();
-                auto& gui = GenericGUI[player].assistShrineGUI;
+                const auto& gui = GenericGUI[player].assistShrineGUI;
                 if ( (gui.selectedRace == -1 && gui.savedRace == -1 && stats[widget.getOwner()]->playerRace == RACE_HUMAN)
                     || (gui.savedRace == RACE_HUMAN && gui.selectedRace == -1)
                     || gui.selectedRace == RACE_HUMAN )
@@ -33742,14 +33742,14 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                 sexBtn->setPressed(false);
                 sexBtn->setTickCallback(genericgui_deselect_fn);
                 sexBtn->setDrawCallback([](const Widget& widget, SDL_Rect pos) {
-                    auto& gui = GenericGUI[widget.getOwner()].assistShrineGUI;
-                    auto button = (Button*)&widget;
+                    const auto& gui = GenericGUI[widget.getOwner()].assistShrineGUI;
+                    const auto button = (Button*)&widget;
                     pos.y += 2;
                     if ( (gui.selectedRace == -1 && gui.savedRace == -1 && stats[widget.getOwner()]->playerRace == RACE_AUTOMATON)
                         || (gui.savedRace == RACE_AUTOMATON && gui.selectedRace == -1)
                         || gui.selectedRace == RACE_AUTOMATON )
                     {
-                        if ( auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Sex_AutomatonM_02.png") )
+                        if (const auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Sex_AutomatonM_02.png") )
                         {
                             SDL_Rect pos2 = pos;
                             pos2.x -= img->getWidth();
@@ -33759,7 +33759,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                             img->drawColor(nullptr, pos2, SDL_Rect{ 0, 0, Frame::virtualScreenX, Frame::virtualScreenY },
                                 !widget.isPressed() ? makeColorRGB(255, 255, 255) : makeColorRGB(128, 128, 128));
                         }
-                        if ( auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Sex_AutomatonF_02.png") )
+                        if (const auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Sex_AutomatonF_02.png") )
                         {
                             SDL_Rect pos2 = pos;
                             pos2.x += button->getSize().w + 8;
@@ -33773,7 +33773,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                         || (gui.savedRace == RACE_MYCONID && gui.selectedRace == -1)
                         || gui.selectedRace == RACE_MYCONID)
                     {
-                        if ( auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Height_S_00.png") )
+                        if (const auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Height_S_00.png") )
                         {
                             SDL_Rect pos2 = pos;
                             pos2.x -= img->getWidth();
@@ -33783,7 +33783,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                             img->drawColor(nullptr, pos2, SDL_Rect{ 0, 0, Frame::virtualScreenX, Frame::virtualScreenY },
                                 !widget.isPressed() ? makeColorRGB(255, 255, 255) : makeColorRGB(128, 128, 128));
                         }
-                        if ( auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Height_T_00.png") )
+                        if (const auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Height_T_00.png") )
                         {
                             SDL_Rect pos2 = pos;
                             pos2.x += button->getSize().w + 8;
@@ -33797,7 +33797,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                         || (gui.savedRace == RACE_DRYAD && gui.selectedRace == -1)
                         || gui.selectedRace == RACE_DRYAD )
                     {
-                        if ( auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Height_T_00.png") )
+                        if (const auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Height_T_00.png") )
                         {
                             SDL_Rect pos2 = pos;
                             pos2.x -= img->getWidth();
@@ -33807,7 +33807,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                             img->drawColor(nullptr, pos2, SDL_Rect{ 0, 0, Frame::virtualScreenX, Frame::virtualScreenY },
                                 !widget.isPressed() ? makeColorRGB(255, 255, 255) : makeColorRGB(128, 128, 128));
                         }
-                        if ( auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Height_S_00.png") )
+                        if (const auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Height_S_00.png") )
                         {
                             SDL_Rect pos2 = pos;
                             pos2.x += button->getSize().w + 8;
@@ -33819,7 +33819,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                     }
                     else
                     {
-                        if ( auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Sex_M_02.png") )
+                        if (const auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Sex_M_02.png") )
                         {
                             SDL_Rect pos2 = pos;
                             pos2.x -= img->getWidth();
@@ -33829,7 +33829,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                             img->drawColor(nullptr, pos2, SDL_Rect{ 0, 0, Frame::virtualScreenX, Frame::virtualScreenY },
                                 !widget.isPressed() ? makeColorRGB(255, 255, 255) : makeColorRGB(128, 128, 128));
                         }
-                        if ( auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Sex_F_02.png") )
+                        if (const auto img = Image::get("*images/ui/CharSheet/HUD_CharSheet_Sex_F_02.png") )
                         {
                             SDL_Rect pos2 = pos;
                             pos2.x += button->getSize().w + 8;
@@ -33969,8 +33969,8 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
             filterBtn->setCallback([](Button& button) {
-                auto oldTab = GenericGUI[button.getOwner()].assistShrineGUI.currentView;
-                bool changeToDifferentTab = oldTab != GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_ITEMS;
+                const auto oldTab = GenericGUI[button.getOwner()].assistShrineGUI.currentView;
+                const bool changeToDifferentTab = oldTab != GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_ITEMS;
                 GenericGUI[button.getOwner()].assistShrineGUI.changeCurrentView(GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_ITEMS);
                 //GenericGUI[button.getOwner()].assistShrineGUI.animPromptMoveLeft = false;
                 if ( changeToDifferentTab )
@@ -34001,8 +34001,8 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
             filterBtn->setCallback([](Button& button) {
-                auto oldTab = GenericGUI[button.getOwner()].assistShrineGUI.currentView;
-                bool changeToDifferentTab = oldTab != GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_RACE;
+                const auto oldTab = GenericGUI[button.getOwner()].assistShrineGUI.currentView;
+                const bool changeToDifferentTab = oldTab != GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_RACE;
                 GenericGUI[button.getOwner()].assistShrineGUI.changeCurrentView(GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_RACE);
                 if ( oldTab == GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_CLASSES )
                 {
@@ -34030,9 +34030,9 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             filterTxt->setOntop(true);
             filterTxt->setTickCallback([](Widget& widget) {
                 widget.setInvisible(false);
-                if ( auto parent = static_cast<Frame*>(widget.getParent()) )
+                if (const auto parent = static_cast<Frame*>(widget.getParent()) )
                 {
-                    if ( auto filterBtn = parent->findButton("filter race btn") )
+                    if (const auto filterBtn = parent->findButton("filter race btn") )
                     {
                         widget.setInvisible(filterBtn->isInvisible());
                     }
@@ -34050,8 +34050,8 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             filterBtn->setHideSelectors(true);
             filterBtn->setMenuConfirmControlType(0);
             filterBtn->setCallback([](Button& button) {
-                auto oldTab = GenericGUI[button.getOwner()].assistShrineGUI.currentView;
-                bool changeToDifferentTab = oldTab != GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_CLASSES;
+                const auto oldTab = GenericGUI[button.getOwner()].assistShrineGUI.currentView;
+                const bool changeToDifferentTab = oldTab != GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_CLASSES;
                 GenericGUI[button.getOwner()].assistShrineGUI.changeCurrentView(GenericGUIMenu::AssistShrineGUI_t::ASSIST_SHRINE_VIEW_CLASSES);
                 //GenericGUI[button.getOwner()].assistShrineGUI.animPromptMoveLeft = false;
                 if ( changeToDifferentTab )
@@ -34072,9 +34072,9 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
             filterTxt->setOntop(true);
             filterTxt->setTickCallback([](Widget& widget) {
                 widget.setInvisible(false);
-                if ( auto parent = static_cast<Frame*>(widget.getParent()) )
+                if (const auto parent = static_cast<Frame*>(widget.getParent()) )
                 {
-                    if ( auto filterBtn = parent->findButton("filter class btn") )
+                    if (const auto filterBtn = parent->findButton("filter class btn") )
                     {
                         widget.setInvisible(filterBtn->isInvisible());
                     }
@@ -34141,7 +34141,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
                     playSound(90, 64);
                     return;
                 }
-                bool success = GenericGUI[button.getOwner()].assistShrineGUI.claimItems(nullptr);
+                const bool success = GenericGUI[button.getOwner()].assistShrineGUI.claimItems(nullptr);
                 if ( success )
                 {
                     Player::soundActivate();
@@ -34313,7 +34313,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
 
             static auto minus_callback_fn = [](Button& button) {
                 auto& gui = GenericGUI[button.getOwner()].assistShrineGUI;
-                auto slotIndex = reinterpret_cast<intptr_t>(button.getUserData());
+                const auto slotIndex = reinterpret_cast<intptr_t>(button.getUserData());
                 if ( slotIndex > 0 )
                 {
                     Item* item = nullptr;
@@ -34358,7 +34358,7 @@ void GenericGUIMenu::AssistShrineGUI_t::createAssistShrine()
 
             static auto plus_callback_fn = [](Button& button) {
                 auto& gui = GenericGUI[button.getOwner()].assistShrineGUI;
-                auto slotIndex = reinterpret_cast<intptr_t>(button.getUserData());
+                const auto slotIndex = reinterpret_cast<intptr_t>(button.getUserData());
                 if ( slotIndex > 0 )
                 {
                     Item* item = nullptr;
@@ -34591,9 +34591,9 @@ bool GenericGUIMenu::AssistShrineGUI_t::claimItems(bool* isEquipped)
         return false;
     }
 
-    int prevPoints = getAssistPointsSaved();
+    const int prevPoints = getAssistPointsSaved();
 
-    int playernum = parentGUI.gui_player;
+    const int playernum = parentGUI.gui_player;
     if ( isEquipped )
     {
         *isEquipped = false;
@@ -38758,7 +38758,7 @@ void GenericGUIMenu::AssistShrineGUI_t::scrollToSlot(int x, int y, bool instantl
     auto& currentScrollRow = (currentView == ASSIST_SHRINE_VIEW_CLASSES ? currentScrollRow1 : currentScrollRow2);
     auto& scrollSetpoint = (currentView == ASSIST_SHRINE_VIEW_CLASSES ? scrollSetpoint1 : scrollSetpoint2);
     auto& scrollAnimateX = (currentView == ASSIST_SHRINE_VIEW_CLASSES ? scrollAnimateX1 : scrollAnimateX2);
-    int lowerY = currentScrollRow;
+    const int lowerY = currentScrollRow;
     int upperY = currentScrollRow;
     int lowestItemY = 0;
     int slotSize = kClassSlotHeight;
@@ -38768,7 +38768,7 @@ void GenericGUIMenu::AssistShrineGUI_t::scrollToSlot(int x, int y, bool instantl
         numDisplayVertical = kNumClassesToDisplayVertical;
         slotSize = kClassSlotHeight;
         upperY += numDisplayVertical - 1;
-        for ( auto& pair : classSlots )
+        for (const auto& pair : classSlots )
         {
             lowestItemY = std::max(lowestItemY, pair.first / 100);
         }
@@ -38787,7 +38787,7 @@ void GenericGUIMenu::AssistShrineGUI_t::scrollToSlot(int x, int y, bool instantl
         return;
     }
     int player = parentGUI.getPlayer();
-    int maxScroll = std::max((lowestItemY + 1) - (numDisplayVertical), 0) * slotSize;
+    const int maxScroll = std::max((lowestItemY + 1) - (numDisplayVertical), 0) * slotSize;
 
     int scrollAmount = 0;
     if ( y < lowerY )
@@ -38839,8 +38839,8 @@ bool GenericGUIMenu::AssistShrineGUI_t::isSlotVisible(int x, int y) const
     {
         if ( currentView == ASSIST_SHRINE_VIEW_CLASSES )
         {
-            int lowerY = currentScrollRow1;
-            int upperY = currentScrollRow1 + kNumClassesToDisplayVertical - 1;
+            const int lowerY = currentScrollRow1;
+            const int upperY = currentScrollRow1 + kNumClassesToDisplayVertical - 1;
 
             if ( y >= lowerY && y <= upperY )
             {
@@ -38852,8 +38852,8 @@ bool GenericGUIMenu::AssistShrineGUI_t::isSlotVisible(int x, int y) const
         }
         else if ( currentView == ASSIST_SHRINE_VIEW_RACE )
         {
-            int lowerY = currentScrollRow2;
-            int upperY = currentScrollRow2 + kNumRacesToDisplayVertical - 1;
+            const int lowerY = currentScrollRow2;
+            const int upperY = currentScrollRow2 + kNumRacesToDisplayVertical - 1;
 
             if ( y >= lowerY && y <= upperY )
             {
@@ -38892,7 +38892,7 @@ void GenericGUIMenu::MailboxGui_t::closeMailMenu()
     animRecvItem = 0.0;
 
     isInteractable = false;
-    bool wasOpen = bOpen;
+    const bool wasOpen = bOpen;
     bOpen = false;
     bFirstTimeSnapCursor = false;
     if ( wasOpen )
@@ -38919,7 +38919,7 @@ void GenericGUIMenu::MailboxGui_t::closeMailMenu()
     itemRequiresTitleReflow = true;
     if ( mailFrame )
     {
-        for ( auto f : mailFrame->getFrames() )
+        for (const auto f : mailFrame->getFrames() )
         {
             f->removeSelf();
         }
@@ -38959,7 +38959,7 @@ void getInventoryItemMailboxAnimSlotPos(Frame* slotFrame, Player* player, int it
     if ( itemy >= player->inventoryUI.DEFAULT_INVENTORY_SIZEY )
     {
         // backpack slots, add another offset.
-        if ( auto invSlotsFrame = player->inventoryUI.frame->findFrame("inventory slots") )
+        if (const auto invSlotsFrame = player->inventoryUI.frame->findFrame("inventory slots") )
         {
             outPosY += invSlotsFrame->getSize().h;
         }
@@ -38972,7 +38972,7 @@ bool GenericGUIMenu::MailboxGui_t::mailGUIHasBeenCreated() const
     {
         if ( !mailFrame->getFrames().empty() )
         {
-            for ( auto f : mailFrame->getFrames() )
+            for (const auto f : mailFrame->getFrames() )
             {
                 if ( !f->isToBeDeleted() )
                 {
@@ -39010,11 +39010,11 @@ void buttonMailUpdateSelectorOnHighlight(const int player, Button* button)
 void GenericGUIMenu::MailboxGui_t::openMailMenu()
 {
     const int playernum = parentGUI.getPlayer();
-    auto player = players[playernum];
+    const auto player = players[playernum];
 
     if ( mailFrame )
     {
-        bool wasDisabled = mailFrame->isDisabled();
+        const bool wasDisabled = mailFrame->isDisabled();
         mailFrame->setDisabled(false);
         if ( wasDisabled )
         {
@@ -40424,10 +40424,10 @@ void GenericGUIMenu::MailboxGui_t::updateMailMenu()
 
 void GenericGUIMenu::mailboxClaimItem()
 {
-    auto& item = mailboxGUI.mailReceiveItem;
+    const auto& item = mailboxGUI.mailReceiveItem;
 
     Item* claimedItem = newItem(item.type, item.status, item.beatitude, item.count, item.appearance, item.identified, nullptr);
-    Item* pickedUp = itemPickup(gui_player, claimedItem);
+    const Item* pickedUp = itemPickup(gui_player, claimedItem);
     if ( pickedUp )
     {
         mailboxGUI.recvItemUid = pickedUp->uid;
@@ -40454,7 +40454,7 @@ void GenericGUIMenu::MailboxGui_t::createMailMenu()
         return;
     }
 
-    SDL_Rect basePos{ 0, 0, mailBaseWidth, 308 };
+    const SDL_Rect basePos{ 0, 0, mailBaseWidth, 308 };
     mailSlotFrames.clear();
 
     const int inventorySlotSize = players[player]->inventoryUI.getSlotSize();
@@ -40493,7 +40493,7 @@ void GenericGUIMenu::MailboxGui_t::createMailMenu()
  }*/
 
     {
-        auto bgFrame = mailFrame->addFrame("mail base");
+        const auto bgFrame = mailFrame->addFrame("mail base");
         bgFrame->setSize(basePos);
         bgFrame->setHollow(false);
         bgFrame->setDisabled(true);
@@ -40508,8 +40508,8 @@ void GenericGUIMenu::MailboxGui_t::createMailMenu()
      auto alembicAlchemyBadge = bgFrame->addImage(SDL_Rect{ 8, 6, 190, 60 }, 0xFFFFFFFF,
             "*#images/ui/Alchemy/Alchemy_Badge.png", "alchemy badge");*/
 
-        auto headerFont = "fonts/pixel_maz_multiline.ttf#16#2";
-        auto mailTitle = bgFrame->addField("mail title", 128);
+        const auto headerFont = "fonts/pixel_maz_multiline.ttf#16#2";
+        const auto mailTitle = bgFrame->addField("mail title", 128);
         mailTitle->setFont(headerFont);
         mailTitle->setText("");
         mailTitle->setHJustify(Field::justify_t::CENTER);
@@ -40526,14 +40526,14 @@ void GenericGUIMenu::MailboxGui_t::createMailMenu()
         alembicStatus->setTextColor(hudColors.characterSheetLightNeutral);
      alembicStatus->setOutlineColor(makeColor(29, 16, 11, 255));*/
 
-        auto itemFont = "fonts/pixel_maz_multiline.ttf#16#2";
+        const auto itemFont = "fonts/pixel_maz_multiline.ttf#16#2";
         {
-            auto itemDisplayTooltip = bgFrame->addFrame("mail display tooltip");
+            const auto itemDisplayTooltip = bgFrame->addFrame("mail display tooltip");
             itemDisplayTooltip->setSize(SDL_Rect{ 0, 0, 186, 108 });
             itemDisplayTooltip->setHollow(true);
             itemDisplayTooltip->setInheritParentFrameOpacity(false);
             {
-                auto itemNameText = itemDisplayTooltip->addField("item display name", 1024);
+                const auto itemNameText = itemDisplayTooltip->addField("item display name", 1024);
                 itemNameText->setFont(itemFont);
                 itemNameText->setText("");
                 itemNameText->setHJustify(Field::justify_t::LEFT);
@@ -40547,8 +40547,8 @@ void GenericGUIMenu::MailboxGui_t::createMailMenu()
         }
 
         {
-            auto closeBtn = bgFrame->addButton("close mail button");
-            SDL_Rect closeBtnPos{ basePos.w - 0 - 26, 0, 26, 26 };
+            const auto closeBtn = bgFrame->addButton("close mail button");
+            const SDL_Rect closeBtnPos{ basePos.w - 0 - 26, 0, 26, 26 };
             closeBtn->setSize(closeBtnPos);
             closeBtn->setColor(makeColor(255, 255, 255, 255));
             closeBtn->setHighlightColor(makeColor(255, 255, 255, 255));
@@ -40568,7 +40568,7 @@ void GenericGUIMenu::MailboxGui_t::createMailMenu()
                 });
             closeBtn->setTickCallback(genericgui_deselect_fn);
 
-            auto closeGlyph = bgFrame->addImage(SDL_Rect{ 0, 0, 0, 0 },
+            const auto closeGlyph = bgFrame->addImage(SDL_Rect{ 0, 0, 0, 0 },
                 0xFFFFFFFF, "", "close mail glyph");
             closeGlyph->disabled = true;
             closeGlyph->ontop = true;
@@ -40613,7 +40613,7 @@ void GenericGUIMenu::MailboxGui_t::createMailMenu()
 
         {
             Frame* slotFrame = mailFrame->addFrame("mail send frame");
-            SDL_Rect slotPos{ 0, 0, players[player]->inventoryUI.getSlotSize(), players[player]->inventoryUI.getSlotSize() };
+            const SDL_Rect slotPos{ 0, 0, players[player]->inventoryUI.getSlotSize(), players[player]->inventoryUI.getSlotSize() };
             slotFrame->setSize(slotPos);
             slotFrame->setDisabled(true);
             slotFrame->setInheritParentFrameOpacity(false);
@@ -40629,11 +40629,11 @@ void GenericGUIMenu::MailboxGui_t::createMailMenu()
         }
     }
 
-    auto activateSelectionGlyph = mailFrame->addImage(SDL_Rect{ 0, 0, 0, 0 },
+    const auto activateSelectionGlyph = mailFrame->addImage(SDL_Rect{ 0, 0, 0, 0 },
         0xFFFFFFFF, "", "activate glyph");
     activateSelectionGlyph->disabled = true;
     activateSelectionGlyph->ontop = true;
-    auto activateSelectionPrompt = mailFrame->addField("activate prompt", 64);
+    const auto activateSelectionPrompt = mailFrame->addField("activate prompt", 64);
     activateSelectionPrompt->setFont("fonts/pixel_maz_multiline.ttf#16#2");
     activateSelectionPrompt->setText("");
     activateSelectionPrompt->setHJustify(Field::justify_t::LEFT);
@@ -40654,7 +40654,7 @@ Frame* GenericGUIMenu::MailboxGui_t::getMailSlotFrame(int x, int y) const
 {
     if ( mailFrame )
     {
-        int key = x + y * 100;
+        const int key = x + y * 100;
         if ( mailSlotFrames.find(key) != mailSlotFrames.end() )
         {
             return mailSlotFrames.at(key);
@@ -40773,10 +40773,10 @@ void GenericGUIMenu::MailboxGui_t::setItemDisplayNameAndPrice(Item* item, const 
         snprintf(buf, sizeof(buf), "%s %s (%+d)", ItemTooltips.getItemStatusAdjective(item->type, item->status).c_str(), item->getName(), item->beatitude);
     }
 
-    auto activateSelectionPrompt = mailFrame->findField("activate prompt");
+    const auto activateSelectionPrompt = mailFrame->findField("activate prompt");
     activateSelectionPrompt->setText("");
 
-    int player = parentGUI.getPlayer();
+    const int player = parentGUI.getPlayer();
     if ( isTooltipForRecvItem )
     {
         if ( item->type != POTION_EMPTY )
@@ -40786,7 +40786,7 @@ void GenericGUIMenu::MailboxGui_t::setItemDisplayNameAndPrice(Item* item, const 
     }
     else if ( itemCategory(item) == SCROLL || item->type == READABLE_BOOK )
     {
-        bool isEquipped = itemIsEquipped(item, player);
+        const bool isEquipped = itemIsEquipped(item, player);
         if ( (!item->identified || isEquipped) && !isTooltipForRecvItem )
         {
             itemActionType = MAIL_ACTION_UNIDENTIFIED;
@@ -40867,7 +40867,7 @@ void GenericGUIMenu::MailboxGui_t::setItemDisplayNameAndPrice(Item* item, const 
         }
         else if ( isTooltipForRecvItem )
         {
-            bool usingGamepad = inputs.hasController(player) && !inputs.getVirtualMouse(player)->draw_cursor;
+            const bool usingGamepad = inputs.hasController(player) && !inputs.getVirtualMouse(player)->draw_cursor;
             if ( !usingGamepad )
             {
                 activateSelectionPrompt->setText(Language::get(6988));
@@ -40888,10 +40888,10 @@ bool GenericGUIMenu::MailboxGui_t::warpMouseToSelectedMailItem(Item* snapToItem,
             y = snapToItem->y;
         }
 
-        if ( auto slot = getMailSlotFrame(x, y) )
+        if (const auto slot = getMailSlotFrame(x, y) )
         {
-            int playernum = parentGUI.getPlayer();
-            auto player = players[playernum];
+            const int playernum = parentGUI.getPlayer();
+            const auto player = players[playernum];
             if ( !isInteractable )
             {
                 //messagePlayer(0, "[Debug]: select item queued");

@@ -93,7 +93,7 @@ void initGoatman(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
 
             // boss variants
@@ -117,7 +117,7 @@ void initGoatman(Entity* my, Stat* myStats)
                 //TODO: Boss stats
 
                 //Spawn in potions.
-                int end = rng.rand()%NUM_GOATMAN_BOSS_GHARBAD_POTIONS + 5;
+                const int end = rng.rand()%NUM_GOATMAN_BOSS_GHARBAD_POTIONS + 5;
                 for ( int i = 0; i < end; ++i )
                 {
                     switch ( rng.rand()%10 )
@@ -161,7 +161,7 @@ void initGoatman(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
             // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -245,7 +245,7 @@ void initGoatman(Entity* my, Stat* myStats)
                 int numpotions = rng.rand() % NUM_GOATMAN_POTIONS + 2;
                 if ( rng.rand() % 3 == 0 )
                 {
-                    int numhealpotion = rng.rand() % 2 + 1;
+                    const int numhealpotion = rng.rand() % 2 + 1;
                     newItem(POTION_HEALING, static_cast<Status>(rng.rand() % 3 + DECREPIT), 0, numhealpotion, rng.rand(), false, &myStats->inventory);
                     numpotions -= numhealpotion;
                 }
@@ -883,9 +883,9 @@ void goatmanMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 {
                     if ( my->monsterAttack == MONSTER_POSE_RANGED_WINDUP3 )
                     {
-                        Entity* rightbody = nullptr;
+                        const Entity* rightbody = nullptr;
                         // set rightbody to left leg.
-                        node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
+                        const node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
                         if ( rightbodyNode )
                         {
                             rightbody = static_cast<Entity*>(rightbodyNode->element);
@@ -1067,10 +1067,10 @@ void goatmanMoveBodyparts(Entity* my, Stat* myStats, double dist)
             // right arm
             case LIMB_HUMANOID_RIGHTARM:
             {
-                node_t* weaponNode = list_Node(&my->children, 7);
+                const node_t* weaponNode = list_Node(&my->children, 7);
                 if ( weaponNode )
                 {
-                    auto weapon = static_cast<Entity*>(weaponNode->element);
+                    const auto weapon = static_cast<Entity*>(weaponNode->element);
                     if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT) )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -1096,10 +1096,10 @@ void goatmanMoveBodyparts(Entity* my, Stat* myStats, double dist)
             case LIMB_HUMANOID_LEFTARM:
             {
                 shieldarm = entity;
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT )
                     {
                         entity->focalx = limbs[GOATMAN][5][0]; // 0
@@ -1446,10 +1446,10 @@ void goatmanMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, 8);
+    const node_t* shieldNode = list_Node(&my->children, 8);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;
@@ -1524,7 +1524,7 @@ void Entity::goatmanChooseWeapon(const Entity* target, double dist)
                     if ( hasPotion )
                     {
                         //Equip and chuck it now.
-                        bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, hasPotion, false, false);
+                        const bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, hasPotion, false, false);
                         if ( !swapped )
                         {
                             //printlog("Error in Entity::goatmanChooseWeapon(): failed to swap healing potion into hand!");
@@ -1541,7 +1541,7 @@ void Entity::goatmanChooseWeapon(const Entity* target, double dist)
                 else
                 {
                     //Equip and chuck it now.
-                    bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, hasPotion, false, false);
+                    const bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, hasPotion, false, false);
                     if ( !swapped )
                     {
                         //printlog("Error in Entity::goatmanChooseWeapon(): failed to swap healing potion into hand!");
@@ -1563,7 +1563,7 @@ void Entity::goatmanChooseWeapon(const Entity* target, double dist)
                 if ( hasPotion )
                 {
                     //Equip and chuck it now.
-                    bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, hasPotion, false, false);
+                    const bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, hasPotion, false, false);
                     if ( !swapped )
                     {
                         //printlog("Error in Entity::goatmanChooseWeapon(): failed to swap healing potion into hand!");
@@ -1580,7 +1580,7 @@ void Entity::goatmanChooseWeapon(const Entity* target, double dist)
         }
     }
 
-    bool inMeleeRange = monsterInMeleeRange(target, dist);
+    const bool inMeleeRange = monsterInMeleeRange(target, dist);
 
     if ( inMeleeRange )
     {
@@ -1598,7 +1598,7 @@ void Entity::goatmanChooseWeapon(const Entity* target, double dist)
                 node_t* thrownNode = itemNodeInInventory(myStats, -1, THROWN);
                 if ( thrownNode )
                 {
-                    bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, thrownNode, false, false);
+                    const bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, thrownNode, false, false);
                     if ( !swapped )
                     {
                         //printlog("Error in Entity::goatmanChooseWeapon(): failed to swap THROWN into hand! Cursed? (%d)", myStats->weapon->beatitude);
@@ -1626,7 +1626,7 @@ void Entity::goatmanChooseWeapon(const Entity* target, double dist)
                 return; //Resort to fists.
             }
 
-            bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, weaponNode, false, false);
+            const bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, weaponNode, false, false);
             if ( !swapped )
             {
                 //printlog("Error in Entity::goatmanChooseWeapon(): failed to swap melee weapon into hand! Cursed? (%d)", myStats->weapon->beatitude);
@@ -1690,7 +1690,7 @@ void Entity::goatmanChooseWeapon(const Entity* target, double dist)
 
 bool Entity::goatmanCanWieldItem(const Item& item) const
 {
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( !myStats )
     {
         return false;
@@ -1726,7 +1726,7 @@ bool Entity::goatmanCanWieldItem(const Item& item) const
             return true;
         case ARMOR:
             { //Little baby compiler stop whining, wah wah.
-                int equipType = checkEquipType(&item);
+                const int equipType = checkEquipType(&item);
                 if ( equipType == TYPE_HAT || equipType == TYPE_HELM )
                 {
                     return false; //No can wear hats, because horns.

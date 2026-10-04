@@ -225,11 +225,11 @@ int initGame()
             if ( (fp = FileIO::open(serial.c_str(), "rb")) != nullptr)
             {
                 char buf[64];
-                size_t len = fp->read(&buf, sizeof(char), 32);
+                const size_t len = fp->read(&buf, sizeof(char), 32);
                 buf[len] = '\0';
                 serial = buf;
                 // compute hash
-                size_t DLCHash = serialHash(serial);
+                const size_t DLCHash = serialHash(serial);
                 if ( DLCHash == 144425 )
                 {
                     printlog("[LICENSE]: Myths and Outcasts DLC license key found.");
@@ -251,11 +251,11 @@ int initGame()
             if ( (fp = FileIO::open(serial.c_str(), "rb")) != nullptr)
             {
                 char buf[64];
-                size_t len = fp->read(&buf, sizeof(char), 32);
+                const size_t len = fp->read(&buf, sizeof(char), 32);
                 buf[len] = '\0';
                 serial = buf;
                 // compute hash
-                size_t DLCHash = serialHash(serial);
+                const size_t DLCHash = serialHash(serial);
                 if ( DLCHash == 135398 )
                 {
                     printlog("[LICENSE]: Legends and Pariahs DLC license key found.");
@@ -277,11 +277,11 @@ int initGame()
             if ( (fp = FileIO::open(serial.c_str(), "rb")) != nullptr)
             {
                 char buf[64];
-                size_t len = fp->read(&buf, sizeof(char), 32);
+                const size_t len = fp->read(&buf, sizeof(char), 32);
                 buf[len] = '\0';
                 serial = buf;
                 // compute hash
-                size_t DLCHash = serialHash(serial);
+                const size_t DLCHash = serialHash(serial);
                 if ( DLCHash == 121449 )
                 {
                     printlog("[LICENSE]: Deserters and Disciples DLC license key found.");
@@ -394,7 +394,7 @@ int initGame()
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
     destroyLoadingScreen();
 
-    int result = loading_task.get();
+    const int result = loading_task.get();
     if (result == 0)
     {
         bookParser_t.createBooks(false);
@@ -407,14 +407,14 @@ int initGame()
             items[c].surfaces.last = nullptr;
             for ( int x = 0; x < list_Size(&items[c].images); x++ )
             {
-                auto surface = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*)));
+                const auto surface = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*)));
                 node_t* node = list_AddNodeLast(&items[c].surfaces);
                 node->element = surface;
                 node->deconstructor = &defaultDeconstructor;
                 node->size = sizeof(SDL_Surface*);
 
-                node_t* node2 = list_Node(&items[c].images, x);
-                auto string = static_cast<string_t*>(node2->element);
+                const node_t* node2 = list_Node(&items[c].images, x);
+                const auto string = static_cast<string_t*>(node2->element);
                 std::string itemImgDir;
                 if ( PHYSFS_getRealDir(string->data) != nullptr)
                 {
@@ -518,7 +518,7 @@ void deinitGame()
         }
 
         // this short delay makes sure that the disconnect message gets out
-        Uint32 timetoshutdown = SDL_GetTicks();
+        const Uint32 timetoshutdown = SDL_GetTicks();
         while ( SDL_GetTicks() - timetoshutdown < 200 )
         {
             /*if ( multiplayer == CLIENT ) {
@@ -757,10 +757,10 @@ void deinitGame()
     {
         list_FreeAll(&items[c].images);
         node_t*nextnode;
-        for ( node_t* node = items[c].surfaces.first; node != nullptr; node = nextnode )
+        for (const node_t* node = items[c].surfaces.first; node != nullptr; node = nextnode )
         {
             nextnode = node->next;
-            auto surface = static_cast<SDL_Surface**>(node->element);
+            const auto surface = static_cast<SDL_Surface**>(node->element);
             if ( surface )
                 if ( *surface )
                 {
@@ -844,7 +844,7 @@ void deinitGame()
     }
     CompendiumEntries.compendiumMap.tiles.clear();
 
-    for ( auto it : allGameSpells )
+    for (const auto it : allGameSpells )
     {
         spell_t* spell = it.second;
         list_RemoveNode(spell->sustain_node);
@@ -889,7 +889,7 @@ void loadAchievementData(const char* path) {
     }
 
     static char buf[120000];
-    int count = static_cast<int>(fp->read(buf, sizeof(buf[0]), sizeof(buf)));
+    const int count = static_cast<int>(fp->read(buf, sizeof(buf[0]), sizeof(buf)));
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -908,7 +908,7 @@ void loadAchievementData(const char* path) {
             printlog("[JSON]: Error: could not parse %s", path);
             return;
         }
-        auto achName = it.name.GetString();
+        const auto achName = it.name.GetString();
 #ifdef NINTENDO
         if ( !strcmp(achName, "BARONY_ACH_LOCAL_CUSTOMS") )
         {
@@ -1074,16 +1074,16 @@ void sortAchievementsForDisplay()
     {
         names.push_back(std::make_pair(achData.first, achData.second.name));
     }
-    Compendium_t::AchievementData_t::Comparator compFunctor =
+    const Compendium_t::AchievementData_t::Comparator compFunctor =
         [](std::pair<std::string, std::string> lhs, std::pair<std::string, std::string> rhs)
     {
-        auto& achData1 = Compendium_t::achievements[lhs.first];
-        auto& achData2 = Compendium_t::achievements[rhs.first];
+        const auto& achData1 = Compendium_t::achievements[lhs.first];
+        const auto& achData2 = Compendium_t::achievements[rhs.first];
 
-        bool ach1 = achData1.unlocked;
-        bool ach2 = achData2.unlocked;
-        bool lhsAchIsHidden = achData1.hidden;
-        bool rhsAchIsHidden = achData2.hidden;
+        const bool ach1 = achData1.unlocked;
+        const bool ach2 = achData2.unlocked;
+        const bool lhsAchIsHidden = achData1.hidden;
+        const bool rhsAchIsHidden = achData2.hidden;
         if ( !Compendium_t::AchievementData_t::sortAlphabetical )
         {
             if ( ach1 && !ach2 )
@@ -1202,7 +1202,7 @@ void sortAchievementsForDisplay()
         bool foundHidden = false;
         for ( auto& name : entry.second )
         {
-            auto& achData = Compendium_t::achievements[name.first];
+            const auto& achData = Compendium_t::achievements[name.first];
             if ( foundHidden )
             {
                 if ( Compendium_t::compendium_sorting_hide_ach_unlocked )

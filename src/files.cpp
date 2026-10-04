@@ -2317,8 +2317,8 @@ static ConsoleVariable<Vector4> cvar_map_ambience("/map_ambience", { 0.f, 0.f, 0
 -------------------------------------------------------------------------------*/
 
 bool verifyMapHash(const char* filename, int hash, bool *fileExistsInTable) {
-    auto r = strrchr(filename, '/');
-    auto it = mapHashes.find(r ? (r + 1) : filename);
+    const auto r = strrchr(filename, '/');
+    const auto it = mapHashes.find(r ? (r + 1) : filename);
     const int canonical = it != mapHashes.end() ? it->second : -1;
     if ( fileExistsInTable )
     {
@@ -3332,7 +3332,7 @@ int saveMap(const char* filename2)
         fp->write(&numentities, sizeof(Uint32), 1); // number of entities on the map
         for (node = map.entities->first; node != nullptr; node = node->next)
         {
-            Entity* entity = static_cast<Entity*>(node->element);
+            const Entity* entity = static_cast<Entity*>(node->element);
             fp->write(&entity->sprite, sizeof(Sint32), 1);
 
             switch ( checkSpriteType(entity->sprite) )
@@ -3651,7 +3651,7 @@ std::list<std::string> directoryContents(const char* directory, bool includeSubd
     char fullPath[PATH_MAX];
     completePath(fullPath, directory, base);
     DIR* dir = opendir(fullPath);
-    struct dirent* entry = nullptr;
+    const struct dirent* entry = nullptr;
 
     if ( !dir )
     {
@@ -4075,7 +4075,7 @@ void saveModelCache() {
         strcat(modelCacheHeader, VERSION);
         model_cache->write(&modelCacheHeader, sizeof(char), strlen(modelCacheHeader));
         for (size_t model_index = 0; model_index < nummodels; model_index++) {
-            polymodel_t* cur = &polymodels[model_index];
+            const polymodel_t* cur = &polymodels[model_index];
             model_cache->write(&cur->numfaces, sizeof(cur->numfaces), 1);
             model_cache->write(cur->faces, sizeof(polytriangle_t), cur->numfaces);
         }
@@ -5244,16 +5244,16 @@ void generateVBOs(int start, int end)
 {
     const int count = end - start;
 
-    std::unique_ptr<GLuint[]> vaos(new GLuint[count]);
+    const std::unique_ptr<GLuint[]> vaos(new GLuint[count]);
     GL_CHECK_ERR(glGenVertexArrays(count, vaos.get()));
 
-    std::unique_ptr<GLuint[]> position_vbos(new GLuint[count]);
+    const std::unique_ptr<GLuint[]> position_vbos(new GLuint[count]);
     GL_CHECK_ERR(glGenBuffers(count, position_vbos.get()));
 
-    std::unique_ptr<GLuint[]> color_vbos(new GLuint[count]);
+    const std::unique_ptr<GLuint[]> color_vbos(new GLuint[count]);
     GL_CHECK_ERR(glGenBuffers(count, color_vbos.get()));
 
-    std::unique_ptr<GLuint[]> normal_vbos(new GLuint[count]);
+    const std::unique_ptr<GLuint[]> normal_vbos(new GLuint[count]);
     GL_CHECK_ERR(glGenBuffers(count, normal_vbos.get()));
 
     for ( uint64_t c = static_cast<uint64_t>(start); c < static_cast<uint64_t>(end); ++c )
@@ -5635,7 +5635,7 @@ void physfsReloadTiles(bool reloadAll)
                         swimmingtiles[c] = false;
                         if ( tiles[c] != nullptr)
                         {
-                            size_t found = tileFile.find(".png");
+                            const size_t found = tileFile.find(".png");
                             if ( found != string::npos && found != 0 )
                             {
                                 if ( tileFile.at(found - 1) >= '0' && tileFile.at(found - 1) <= '9' )
@@ -5731,13 +5731,13 @@ bool physfsIsMapLevelListModded()
         {
             continue;
         }
-        std::size_t found = line.find(' ');
+        const std::size_t found = line.find(' ');
         if ( found != std::string::npos )
         {
             std::string mapType = line.substr(0, found);
             std::string mapName;
             mapName = line.substr(found + 1, line.find('\n'));
-            std::size_t carriageReturn = mapName.find('\r');
+            const std::size_t carriageReturn = mapName.find('\r');
             if ( carriageReturn != std::string::npos )
             {
                 mapName.erase(carriageReturn);
@@ -5787,13 +5787,13 @@ bool physfsIsMapLevelListModded()
         {
             continue;
         }
-        std::size_t found = line.find(' ');
+        const std::size_t found = line.find(' ');
         if ( found != std::string::npos )
         {
             std::string mapType = line.substr(0, found);
             std::string mapName;
             mapName = line.substr(found + 1, line.find('\n'));
-            std::size_t carriageReturn = mapName.find('\r');
+            const std::size_t carriageReturn = mapName.find('\r');
             if ( carriageReturn != std::string::npos )
             {
                 mapName.erase(carriageReturn);
@@ -5829,8 +5829,8 @@ bool physfsSearchItemSpritesToUpdate()
     {
         for ( int x = 0; x < list_Size(&items[c].images); x++ )
         {
-            node_t* node = list_Node(&items[c].images, x);
-            auto string = static_cast<string_t*>(node->element);
+            const node_t* node = list_Node(&items[c].images, x);
+            const auto string = static_cast<string_t*>(node->element);
             std::string itemImgDir;
             if ( PHYSFS_getRealDir(string->data) != nullptr)
             {
@@ -5855,8 +5855,8 @@ void physfsReloadItemSprites(bool reloadAll)
         {
             for ( int x = 0; x < list_Size(&items[c].images); x++ )
             {
-                node_t* node = list_Node(&items[c].images, x);
-                auto string = static_cast<string_t*>(node->element);
+                const node_t* node = list_Node(&items[c].images, x);
+                const auto string = static_cast<string_t*>(node->element);
                 std::string itemImgDir;
                 if ( PHYSFS_getRealDir(string->data) != nullptr)
                 {
@@ -5873,10 +5873,10 @@ void physfsReloadItemSprites(bool reloadAll)
             // free the image data.
             //list_FreeAll(&items[c].images);
             node_t*nextnode;
-            for ( node_t* node = items[c].surfaces.first; node != nullptr; node = nextnode )
+            for (const node_t* node = items[c].surfaces.first; node != nullptr; node = nextnode )
             {
                 nextnode = node->next;
-                auto surface = static_cast<SDL_Surface**>(node->element);
+                const auto surface = static_cast<SDL_Surface**>(node->element);
                 if ( surface )
                 {
                     if ( *surface )
@@ -5890,14 +5890,14 @@ void physfsReloadItemSprites(bool reloadAll)
             // now reload the image data.
             for ( int x = 0; x < list_Size(&items[c].images); x++ )
             {
-                auto surface = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*)));
+                const auto surface = static_cast<SDL_Surface**>(malloc(sizeof(SDL_Surface*)));
                 node_t* node = list_AddNodeLast(&items[c].surfaces);
                 node->element = surface;
                 node->deconstructor = &defaultDeconstructor;
                 node->size = sizeof(SDL_Surface*);
 
-                node_t* node2 = list_Node(&items[c].images, x);
-                auto string = static_cast<string_t*>(node2->element);
+                const node_t* node2 = list_Node(&items[c].images, x);
+                const auto string = static_cast<string_t*>(node2->element);
                 std::string itemImgDir;
                 if ( PHYSFS_getRealDir(string->data) != nullptr)
                 {

@@ -1113,8 +1113,8 @@ public:
         }
         const int freeVisibleInventorySlots() const
         {
-            int x = getPlayerItemInventoryX();
-            int y = getPlayerItemInventoryY();
+            const int x = getPlayerItemInventoryX();
+            const int y = getPlayerItemInventoryY();
             return x * y;
         }
         const bool bItemInventoryHasFreeSlot() const;

@@ -48,7 +48,7 @@ void actSprite(Entity* my)
         {
             if ( my->actSpriteUseCustomSurface != 0 )
             {
-                if ( auto fx = AOEIndicators_t::getIndicator(my->actSpriteUseCustomSurface) )
+                if (const auto fx = AOEIndicators_t::getIndicator(my->actSpriteUseCustomSurface) )
                 {
                     fx->expired = true;
                 }
@@ -61,7 +61,7 @@ void actSprite(Entity* my)
     }
     if ( my->actSpriteFollowUID > 0 )
     {
-        if ( Entity* parent = uidToEntity(my->actSpriteFollowUID) )
+        if (const Entity* parent = uidToEntity(my->actSpriteFollowUID) )
         {
             my->x = parent->x;
             my->y = parent->y;
@@ -121,7 +121,7 @@ void actSprite(Entity* my)
 
 void actSpriteNametag(Entity* my)
 {
-    Entity* parent = uidToEntity(my->parent);
+    const Entity* parent = uidToEntity(my->parent);
     if ( parent )
     {
         my->flags[INVISIBLE] = false;
@@ -162,7 +162,7 @@ void actSpriteWorldTooltip(Entity* my)
 {
     //list_RemoveNode(my->mynode);
     //return;
-    Entity* parent = uidToEntity(my->parent);
+    const Entity* parent = uidToEntity(my->parent);
     if ( parent )
     {
         my->x = parent->x;
@@ -188,7 +188,7 @@ void actSpriteWorldTooltip(Entity* my)
             my->y += parent->focalx * sin(parent->yaw) + parent->focaly * sin(parent->yaw + PI / 2);
         }
 
-        bool inrange = (my->worldTooltipActive == 1);
+        const bool inrange = (my->worldTooltipActive == 1);
         bool skipUpdating = true;
         if ( players[my->worldTooltipPlayer]->worldUI.bTooltipActiveForPlayer(*my) )
         {
@@ -270,7 +270,7 @@ void actSpriteWorldTooltip(Entity* my)
         {
             int index = 0;
             bool bFound = false;
-            for ( auto& tooltip : players[i]->worldUI.tooltipsInRange )
+            for (const auto& tooltip : players[i]->worldUI.tooltipsInRange )
             {
                 if ( tooltip.first == my )
                 {
@@ -489,7 +489,7 @@ Entity* spawnExplosionFromSprite(Uint16 sprite, Sint16 x, Sint16 y, Sint16 z)
 Entity* spawnPoof(Sint16 x, Sint16 y, Sint16 z, real_t scale, bool updateClients)
 {
     // poof
-    auto entity = newEntity(170, 1, map.entities, nullptr);
+    const auto entity = newEntity(170, 1, map.entities, nullptr);
     entity->x = x;
     entity->y = y;
     entity->z = z;

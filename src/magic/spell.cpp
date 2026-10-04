@@ -156,7 +156,7 @@ bool addSpell(int spell, int player, bool ignoreSkill)
 
     spell_t* new_spell = nullptr;
 
-    auto find = allGameSpells.find(spell);
+    const auto find = allGameSpells.find(spell);
     assert(find != allGameSpells.end());
     if ( find != allGameSpells.end() )
     {
@@ -365,7 +365,7 @@ bool addSpell(int spell, int player, bool ignoreSkill)
         {
             for ( node = stats[player]->inventory.first; node != nullptr; node = node->next )
             {
-                auto item = static_cast<Item*>(node->element);
+                const auto item = static_cast<Item*>(node->element);
                 if ( item->type == SPELL_ITEM )
                 {
                     if ( item->appearance >= 1000 )
@@ -520,7 +520,7 @@ void spellConstructor(spell_t* spell, int ID)
 
 spell_t* spellConstructor(int ID, int difficulty, const char* internal_name, std::vector<int> elements)
 {
-    auto spell = static_cast<spell_t*>(malloc(sizeof(spell_t)));
+    const auto spell = static_cast<spell_t*>(malloc(sizeof(spell_t)));
     if ( spell )
     {
         spellConstructor(spell, ID);
@@ -538,7 +538,7 @@ spell_t* spellConstructor(int ID, int difficulty, const char* internal_name, std
                 node->element = copySpellElement(&find->second);
                 node->size = sizeof(spellElement_t);
                 node->deconstructor = &spellElementDeconstructor;
-                auto element = static_cast<spellElement_t*>(node->element);
+                const auto element = static_cast<spellElement_t*>(node->element);
                 element->node = node; //Tell the element what list it resides in.
                 if ( list == &spell->elements )
                 {
@@ -673,7 +673,7 @@ void spellElementDeconstructor(void* data)
 
 spell_t* copySpell(spell_t* spell, int subElementIndexToCopy)
 {
-    auto result = static_cast<spell_t*>(malloc(sizeof(spell_t)));
+    const auto result = static_cast<spell_t*>(malloc(sizeof(spell_t)));
     *result = *spell; // copy over all the static data members.
 
     result->needsDataFreed = 0;
@@ -682,16 +682,16 @@ spell_t* copySpell(spell_t* spell, int subElementIndexToCopy)
     result->elements.first = nullptr;
     result->elements.last = nullptr;
 
-    for ( node_t* node = spell->elements.first; node != nullptr; node = node->next )
+    for (const node_t* node = spell->elements.first; node != nullptr; node = node->next )
     {
-        auto tempElement = static_cast<spellElement_t*>(node->element);
+        const auto tempElement = static_cast<spellElement_t*>(node->element);
 
         node_t* tempNode = list_AddNodeLast(&result->elements);
         tempNode->deconstructor = &spellElementDeconstructor;
         tempNode->size = sizeof(spellElement_t);
         tempNode->element = copySpellElement(tempElement);
 
-        auto newElement = static_cast<spellElement_t*>(tempNode->element);
+        const auto newElement = static_cast<spellElement_t*>(tempNode->element);
         newElement->node = tempNode;
 
         if ( subElementIndexToCopy >= 0 ) // only select 1 sub element
@@ -728,39 +728,39 @@ void copySpellElement(spellElement_t* spellElement, spellElement_t* spellElement
     spellElementToSet->elements.first = nullptr;
     spellElementToSet->elements.last = nullptr;
 
-    for ( node_t* node = spellElement->elements.first; node != nullptr; node = node->next )
+    for (const node_t* node = spellElement->elements.first; node != nullptr; node = node->next )
     {
-        auto tempElement = static_cast<spellElement_t*>(node->element);
+        const auto tempElement = static_cast<spellElement_t*>(node->element);
 
         node_t* tempNode = list_AddNodeLast(&spellElementToSet->elements);
         tempNode->deconstructor = &spellElementDeconstructor;
         tempNode->size = sizeof(spellElement_t);
         tempNode->element = copySpellElement(tempElement);
 
-        auto newElement = static_cast<spellElement_t*>(tempNode->element);
+        const auto newElement = static_cast<spellElement_t*>(tempNode->element);
         newElement->node = tempNode;
     }
 }
 
 spellElement_t* copySpellElement(spellElement_t* spellElement)
 {
-    auto result = static_cast<spellElement_t*>(malloc(sizeof(spellElement_t)));
+    const auto result = static_cast<spellElement_t*>(malloc(sizeof(spellElement_t)));
     *result = *spellElement; // copy over all the static data members.
 
     result->node = nullptr;
     result->elements.first = nullptr;
     result->elements.last = nullptr;
 
-    for ( node_t* node = spellElement->elements.first; node != nullptr; node = node->next )
+    for (const node_t* node = spellElement->elements.first; node != nullptr; node = node->next )
     {
-        auto tempElement = static_cast<spellElement_t*>(node->element);
+        const auto tempElement = static_cast<spellElement_t*>(node->element);
 
         node_t* tempNode = list_AddNodeLast(&result->elements);
         tempNode->deconstructor = &spellElementDeconstructor;
         tempNode->size = sizeof(spellElement_t);
         tempNode->element = copySpellElement(tempElement);
 
-        auto newElement = static_cast<spellElement_t*>(tempNode->element);
+        const auto newElement = static_cast<spellElement_t*>(tempNode->element);
         newElement->node = tempNode;
     }
 
@@ -779,13 +779,13 @@ int getGoldCostOfSpell(spell_t* spell, int player)
     if ( spell->ID == SPELL_LEAD_BOLT )
     {
         cost = getSpellDamageSecondaryFromID(SPELL_LEAD_BOLT, players[player]->entity, stats[player], players[player]->entity);
-        int minCost = getSpellEffectDurationSecondaryFromID(SPELL_LEAD_BOLT, players[player]->entity, stats[player], players[player]->entity);
+        const int minCost = getSpellEffectDurationSecondaryFromID(SPELL_LEAD_BOLT, players[player]->entity, stats[player], players[player]->entity);
         cost = std::max(minCost, cost);
     }
     else if ( spell->ID == SPELL_MERCURY_BOLT )
     {
         cost = getSpellDamageSecondaryFromID(SPELL_MERCURY_BOLT, players[player]->entity, stats[player], players[player]->entity);
-        int minCost = getSpellEffectDurationSecondaryFromID(SPELL_MERCURY_BOLT, players[player]->entity, stats[player], players[player]->entity);
+        const int minCost = getSpellEffectDurationSecondaryFromID(SPELL_MERCURY_BOLT, players[player]->entity, stats[player], players[player]->entity);
         cost = std::max(minCost, cost);
     }
     else if ( spell->ID == SPELL_FORGE_MAGIC_SCRAP )
@@ -807,9 +807,9 @@ int getSustainCostOfSpell(spell_t* spell, Entity* caster)
         return 0;
     }
 
-    for ( node_t* node = spell->elements.first; node != nullptr; node = node->next )
+    for (const node_t* node = spell->elements.first; node != nullptr; node = node->next )
     {
-        auto spellElement = static_cast<spellElement_t*>(node->element);
+        const auto spellElement = static_cast<spellElement_t*>(node->element);
         cost += spellElement->channeledMana;
     }
     return cost;
@@ -832,16 +832,16 @@ int getCostOfSpell(spell_t* spell, Entity* caster)
   else */
     if ( spell->ID == SPELL_SUMMON && caster )
     {
-        Stat* casterStats = caster->getStats();
+        const Stat* casterStats = caster->getStats();
         if ( casterStats )
         {
-            int summonLevel = casterStats->playerSummonLVLHP >> 16;
+            const int summonLevel = casterStats->playerSummonLVLHP >> 16;
             cost += 5 * (summonLevel / 5);
         }
     }
     else if ( spell->ID == SPELL_BREATHE_FIRE && caster )
     {
-        Stat* casterStats = caster->getStats();
+        const Stat* casterStats = caster->getStats();
         if ( casterStats )
         {
             cost += (casterStats->MAXMP / 50);
@@ -864,11 +864,11 @@ int getCostOfSpell(spell_t* spell, Entity* caster)
 
 bool spell_isChanneled(spell_t* spell)
 {
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
 
     for ( node = spell->elements.first; node != nullptr; node = node->next )
     {
-        auto spellElement = static_cast<spellElement_t*>(node->element);
+        const auto spellElement = static_cast<spellElement_t*>(node->element);
         if ( spellElement_isChanneled(spellElement) )
         {
             return true;
@@ -892,13 +892,13 @@ int getSpellbookBaseINTBonus(Entity* caster, Stat* casterStats, int skillID)
     }
     if ( casterStats )
     {
-        int INT = statGetINT(casterStats, caster);
+        const int INT = statGetINT(casterStats, caster);
         if ( INT > 0 )
         {
             bonus += INT;
             if ( skillID == PRO_SORCERY )
             {
-                int bonusStat = statGetINT(casterStats, caster);
+                const int bonusStat = statGetINT(casterStats, caster);
                 if ( bonusStat > 0 )
                 {
                     bonus += bonusStat;
@@ -907,7 +907,7 @@ int getSpellbookBaseINTBonus(Entity* caster, Stat* casterStats, int skillID)
         }
         if ( skillID == PRO_MYSTICISM )
         {
-            int bonusStat = statGetCHR(casterStats, caster);
+            const int bonusStat = statGetCHR(casterStats, caster);
             if ( bonusStat > 0 )
             {
                 bonus += bonusStat;
@@ -915,7 +915,7 @@ int getSpellbookBaseINTBonus(Entity* caster, Stat* casterStats, int skillID)
         }
         else if ( skillID == PRO_THAUMATURGY )
         {
-            int bonusStat = statGetCON(casterStats, caster);
+            const int bonusStat = statGetCON(casterStats, caster);
             if ( bonusStat > 0 )
             {
                 bonus += bonusStat;
@@ -940,13 +940,13 @@ real_t getSpellBonusFromCasterINT(Entity* caster, Stat* casterStats, int skillID
     }
     if ( casterStats )
     {
-        int INT = statGetINT(casterStats, caster);
+        const int INT = statGetINT(casterStats, caster);
         if ( INT > 0 )
         {
             bonus += INT / 100.0;
             if ( skillID == PRO_SORCERY )
             {
-                int bonusStat = statGetINT(casterStats, caster);
+                const int bonusStat = statGetINT(casterStats, caster);
                 if ( bonusStat > 0 )
                 {
                     bonus += bonusStat / 100.0;
@@ -955,7 +955,7 @@ real_t getSpellBonusFromCasterINT(Entity* caster, Stat* casterStats, int skillID
         }
         if ( skillID == PRO_MYSTICISM )
         {
-            int bonusStat = statGetCHR(casterStats, caster);
+            const int bonusStat = statGetCHR(casterStats, caster);
             if ( bonusStat > 0 )
             {
                 bonus += bonusStat / 100.0;
@@ -963,7 +963,7 @@ real_t getSpellBonusFromCasterINT(Entity* caster, Stat* casterStats, int skillID
         }
         else if ( skillID == PRO_THAUMATURGY )
         {
-            int bonusStat = statGetCON(casterStats, caster);
+            const int bonusStat = statGetCON(casterStats, caster);
             if ( bonusStat > 0 )
             {
                 bonus += bonusStat / 100.0;
@@ -976,7 +976,7 @@ real_t getSpellBonusFromCasterINT(Entity* caster, Stat* casterStats, int skillID
             real_t mult = 1.0;
             if ( casterStats->getModifiedProficiency(skillID) >= SKILL_LEVEL_EXPERT )
             {
-                real_t ratio = (casterStats->getModifiedProficiency(skillID) - SKILL_LEVEL_EXPERT) / 40.0;
+                const real_t ratio = (casterStats->getModifiedProficiency(skillID) - SKILL_LEVEL_EXPERT) / 40.0;
                 mult += (ratio * (60 / 100.0)); // 0.6 max
             }
             if ( casterStats->getModifiedProficiency(skillID) >= SKILL_LEVEL_LEGENDARY )
@@ -1001,10 +1001,10 @@ real_t getBonusFromCasterOfSpellElement(Entity* caster, Stat* casterStats, spell
     {
         if ( casterStats )
         {
-            if ( Uint8 effectStrength = casterStats->getEffectActive(EFF_INCOHERENCE) )
+            if (const Uint8 effectStrength = casterStats->getEffectActive(EFF_INCOHERENCE) )
             {
-                real_t mult = std::min(0.9, 0.2 + (effectStrength - 1) * 0.1);
-                real_t bonus = -mult;
+                const real_t mult = std::min(0.9, 0.2 + (effectStrength - 1) * 0.1);
+                const real_t bonus = -mult;
                 return std::max(-0.9, bonus);
             }
         }
@@ -1019,7 +1019,7 @@ real_t getBonusFromCasterOfSpellElement(Entity* caster, Stat* casterStats, spell
     }
     else
     {
-        if ( auto spell = getSpellFromID(spellID) )
+        if (const auto spell = getSpellFromID(spellID) )
         {
             bonus += getSpellBonusFromCasterINT(caster, casterStats, spell->skillID);
             spellSkillID = spell->skillID;
@@ -1062,7 +1062,7 @@ real_t getBonusFromCasterOfSpellElement(Entity* caster, Stat* casterStats, spell
         }
         if ( casterStats->shield && itemTypeIsFoci(casterStats->shield->type) )
         {
-            if ( auto spell = getSpellFromID(getSpellIDFromFoci(casterStats->shield->type)) )
+            if (const auto spell = getSpellFromID(getSpellIDFromFoci(casterStats->shield->type)) )
             {
                 if ( spell->skillID == spellSkillID )
                 {
@@ -1145,19 +1145,19 @@ real_t getBonusFromCasterOfSpellElement(Entity* caster, Stat* casterStats, spell
 
         if ( casterStats->type == SALAMANDER )
         {
-            if ( Uint8 effectStrength = casterStats->getEffectActive(EFF_SALAMANDER_HEART) )
+            if (const Uint8 effectStrength = casterStats->getEffectActive(EFF_SALAMANDER_HEART) )
             {
                 if ( effectStrength == 1 || effectStrength == 2 )
                 {
-                    real_t ratio = (statGetCHR(casterStats, caster) * 2 + 10) / 100.0;
+                    const real_t ratio = (statGetCHR(casterStats, caster) * 2 + 10) / 100.0;
                     bonus += 1.0 * (ratio);
                 }
             }
         }
 
-        if ( Uint8 effectStrength = casterStats->getEffectActive(EFF_INCOHERENCE) )
+        if (const Uint8 effectStrength = casterStats->getEffectActive(EFF_INCOHERENCE) )
         {
-            real_t mult = std::min(0.9, 0.2 + (effectStrength - 1) * 0.1);
+            const real_t mult = std::min(0.9, 0.2 + (effectStrength - 1) * 0.1);
             bonus = -mult;
         }
     }
@@ -1168,7 +1168,7 @@ real_t getBonusFromCasterOfSpellElement(Entity* caster, Stat* casterStats, spell
 
 bool spellElement_isChanneled(spellElement_t* spellElement)
 {
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
 
     if ( spellElement->channeledMana > 0 && !spellElement->fociSpell )
     {
@@ -1176,7 +1176,7 @@ bool spellElement_isChanneled(spellElement_t* spellElement)
     }
     for ( node = spellElement->elements.first; node != nullptr; node = node->next )
     {
-        if (auto tempElement = static_cast<spellElement_t*>(node->element) )
+        if (const auto tempElement = static_cast<spellElement_t*>(node->element) )
         {
             if ( spellElement_isChanneled(tempElement) )
             {
@@ -1247,7 +1247,7 @@ spell_t* getSpellFromID(int ID)
 {
     spell_t* spell = nullptr;
 
-    auto find = allGameSpells.find(ID);
+    const auto find = allGameSpells.find(ID);
     assert(ID != SPELL_NONE);
     assert(find != allGameSpells.end());
     if ( find != allGameSpells.end() )
@@ -1452,7 +1452,7 @@ int getSpellbookFromSpellID(int spellID)
 {
     ItemType itemType = WOODEN_SHIELD;
 
-    auto find = ItemTooltips.spellItems.find(spellID);
+    const auto find = ItemTooltips.spellItems.find(spellID);
     if ( find != ItemTooltips.spellItems.end() )
     {
         if ( find->second.spellbookId >= 0 && find->second.spellbookId < NUMITEMS )
@@ -1642,7 +1642,7 @@ int getSpellIDFromFoci(int fociType)
     {
         if ( items[fociType].hasAttribute("foci_spell") )
         {
-            auto& spellID = items[fociType].attributes["foci_spell"];
+            const auto& spellID = items[fociType].attributes["foci_spell"];
             if ( spellID >= SPELL_NONE && spellID < NUM_SPELLS )
             {
                 return spellID;
@@ -1658,7 +1658,7 @@ int getSpellIDFromSpellbook(int spellbookType)
     {
         if ( items[spellbookType].hasAttribute("spellbook_spell") )
         {
-            auto& spellID = items[spellbookType].attributes["spellbook_spell"];
+            const auto& spellID = items[spellbookType].attributes["spellbook_spell"];
             if ( spellID >= SPELL_NONE && spellID < NUM_SPELLS )
             {
                 return spellID;
@@ -1785,9 +1785,9 @@ bool spellInList(list_t* list, spell_t* spell)
     {
         return false;
     }
-    for ( node_t* node = list->first; node != nullptr; node = node->next )
+    for (const node_t* node = list->first; node != nullptr; node = node->next )
     {
-        auto current = static_cast<spell_t*>(node->element);
+        const auto current = static_cast<spell_t*>(node->element);
         if (current)
         {
             if (current->ID == spell->ID)
@@ -1807,14 +1807,14 @@ void spell_changeHealth(Entity* entity, int amount, bool overdrewFromHP, bool do
         return;
     }
 
-    int baseAmount = amount;
+    const int baseAmount = amount;
     if ( amount > 0 )
     {
-        real_t healMult = entity->getHealingSpellPotionModifierFromEffects(false);
+        const real_t healMult = entity->getHealingSpellPotionModifierFromEffects(false);
         amount *= healMult;
     }
-    Stat* entitystats = entity->getStats();
-    Sint32 prevHP = entitystats ? entity->getStats()->HP : 0;
+    const Stat* entitystats = entity->getStats();
+    const Sint32 prevHP = entitystats ? entity->getStats()->HP : 0;
     entity->modHP(amount);
 
     if ( entitystats && entitystats->HP > prevHP )
@@ -1843,18 +1843,18 @@ void spell_changeHealth(Entity* entity, int amount, bool overdrewFromHP, bool do
             {
                 if ( overdrewFromHP )
                 {
-                    Uint32 color = makeColorRGB(255, 255, 255);
+                    const Uint32 color = makeColorRGB(255, 255, 255);
                     messagePlayerColor(player, MESSAGE_STATUS, color, Language::get(3400));
                 }
                 else
                 {
-                    Uint32 color = makeColorRGB(0, 255, 0);
+                    const Uint32 color = makeColorRGB(0, 255, 0);
                     messagePlayerColor(player, MESSAGE_STATUS, color, Language::get(443));
                 }
             }
             else
             {
-                Uint32 color = makeColorRGB(255, 255, 0);
+                const Uint32 color = makeColorRGB(255, 255, 0);
                 if (amount == 0)
                 {
                     messagePlayerColor(player, MESSAGE_COMBAT, color, Language::get(444));
@@ -1882,7 +1882,7 @@ void spell_changeHealth(Entity* entity, int amount, bool overdrewFromHP, bool do
 spell_t* getSpellFromItem(const int player, Item* item, bool usePlayerInventory)
 {
     spell_t* spell = nullptr;
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
     if ( !item )
     {
         return nullptr;
@@ -1917,7 +1917,7 @@ spell_t* getSpellFromItem(const int player, Item* item, bool usePlayerInventory)
     }
     else
     {
-        for ( auto spell : allGameSpells )
+        for (const auto spell : allGameSpells )
         {
             if ( spell.second->ID == appearance )
             {
@@ -1942,7 +1942,7 @@ int canUseShapeshiftSpellInCurrentForm(const int player, Item& item)
     {
         return -1;
     }
-    spell_t* spell = getSpellFromItem(player, &item, false);
+    const spell_t* spell = getSpellFromItem(player, &item, false);
     if ( !spell )
     {
         return -1;

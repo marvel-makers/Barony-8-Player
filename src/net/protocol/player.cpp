@@ -25,7 +25,7 @@ void serverUpdateEffects(int player)
     }
 
     strcpy((char*)net_packet->data, "UPEF");
-    int numBytes = NUMEFFECTS / 8;
+    const int numBytes = NUMEFFECTS / 8;
     for ( int i = 0; i < numBytes; ++i )
     {
         net_packet->data[4 + i] = 0;
@@ -54,7 +54,7 @@ void serverUpdateEffects(int player)
     
     net_packet->data[4 + numBytes * 2] = static_cast<Uint8>(effectStrengths.size());
     net_packet->len = 4 + numBytes * 2 + 1;
-    for ( auto& pair : effectStrengths )
+    for (const auto& pair : effectStrengths )
     {
         if ( net_packet->len + 1 >= NET_PACKET_SIZE )
         {
@@ -244,12 +244,12 @@ void serverUpdatePlayerGameplayStats(int player, int gameplayStat, int changeval
             if ( spellID >= 30 )
             {
                 spellID -= 30;
-                int shifted = (1 << spellID);
+                const int shifted = (1 << spellID);
                 gameStatistics[gameplayStat] |= shifted;
             }
             else
             {
-                int shifted = (1 << spellID);
+                const int shifted = (1 << spellID);
                 gameStatistics[gameplayStat] |= shifted;
             }
         }

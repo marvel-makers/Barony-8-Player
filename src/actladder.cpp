@@ -240,8 +240,8 @@ void actPortal(Entity* my)
 
     if ( my->flags[INVISIBLE] && ticks % 50 == 0 && !strncmp(map.name, "Cockatrice Lair", 15) )
     {
-        node_t* node = nullptr;
-        Entity* entity = nullptr;
+        const node_t* node = nullptr;
+        const Entity* entity = nullptr;
         bool bossAlive = false;
         for ( node = map.entities->first; node != nullptr; )
         {
@@ -273,8 +273,8 @@ void actPortal(Entity* my)
     }
     else if ( my->flags[INVISIBLE] && ticks % 50 == 0 && !strncmp(map.name, "Bram's Castle", 13) )
     {
-        node_t* node = nullptr;
-        Entity* entity = nullptr;
+        const node_t* node = nullptr;
+        const Entity* entity = nullptr;
         bool bossAlive = false;
         for ( node = map.entities->first; node != nullptr; )
         {
@@ -284,7 +284,7 @@ void actPortal(Entity* my)
                 && entity->getMonsterTypeFromSprite() == VAMPIRE
                 && !entity->monsterAllyGetPlayerLeader() )
             {
-                Stat* stats = entity->getStats();
+                const Stat* stats = entity->getStats();
                 if ( stats && (stats->getAttribute("special_npc") == "bram kindly") )
                 {
                     bossAlive = true;
@@ -324,7 +324,7 @@ void actPortal(Entity* my)
                     {
                         playercount++;
                     }
-                    double dist = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
+                    const double dist = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
                     if (dist > TOUCHRANGE)
                     {
                         sendMinimapPing(i, my->x / 16.0, my->y / 16.0);
@@ -361,9 +361,9 @@ void actPortal(Entity* my)
                         {
                             ; //lol
                             bool visiblegrave = false;
-                            for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+                            for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
                             {
-                                auto entity = static_cast<Entity*>(node->element);
+                                const auto entity = static_cast<Entity*>(node->element);
                                 if ( entity->sprite == 224 && !entity->flags[INVISIBLE] )
                                 {
                                     visiblegrave = true;
@@ -445,12 +445,12 @@ void actWinningPortal(Entity* my)
                     return; // classic mode disabled.
                 }
             }
-            for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
+            for (const node_t* node = map.creatures->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( entity->behavior == &actMonster )
                 {
-                    Stat* stats = entity->getStats();
+                    const Stat* stats = entity->getStats();
                     if ( stats )
                     {
                         if ( stats->type == LICH || stats->type == DEVIL )
@@ -467,7 +467,7 @@ void actWinningPortal(Entity* my)
                     // powered on.
                     if ( !my->portalFireAnimation )
                     {
-                        Entity* timer = createParticleTimer(my, 100, 174);
+                        const Entity* timer = createParticleTimer(my, 100, 174);
                         timer->particleTimerCountdownAction = PARTICLE_TIMER_ACTION_SPAWN_PORTAL;
                         timer->particleTimerCountdownSprite = 174;
                         timer->particleTimerEndAction = PARTICLE_EFFECT_PORTAL_SPAWN;
@@ -536,7 +536,7 @@ void actWinningPortal(Entity* my)
                     {
                         playercount++;
                     }
-                    double dist = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
+                    const double dist = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
                     if (dist > TOUCHRANGE)
                     {
                         sendMinimapPing(i, my->x / 16.0, my->y / 16.0);
@@ -702,14 +702,14 @@ void Entity::actExpansionEndGamePortal()
     {
         if ( flags[INVISIBLE] )
         {
-            for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
+            for (const node_t* node = map.creatures->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( entity )
                 {
                     if ( entity->behavior == &actMonster )
                     {
-                        Stat* stats = entity->getStats();
+                        const Stat* stats = entity->getStats();
                         if ( stats )
                         {
                             if ( stats->type == LICH_FIRE || stats->type == LICH_ICE )
@@ -727,7 +727,7 @@ void Entity::actExpansionEndGamePortal()
                     // powered on.
                     if ( !portalFireAnimation )
                     {
-                        Entity* timer = createParticleTimer(this, 100, 174);
+                        const Entity* timer = createParticleTimer(this, 100, 174);
                         timer->particleTimerCountdownAction = PARTICLE_TIMER_ACTION_SPAWN_PORTAL;
                         timer->particleTimerCountdownSprite = 174;
                         timer->particleTimerEndAction = PARTICLE_EFFECT_PORTAL_SPAWN;
@@ -784,7 +784,7 @@ void Entity::actExpansionEndGamePortal()
                     {
                         playercount++;
                     }
-                    double dist = sqrt(pow(x - players[c]->entity->x, 2) + pow(y - players[c]->entity->y, 2));
+                    const double dist = sqrt(pow(x - players[c]->entity->x, 2) + pow(y - players[c]->entity->y, 2));
                     if ( dist > TOUCHRANGE )
                     {
                         sendMinimapPing(i, this->x / 16.0, this->y / 16.0);
@@ -911,14 +911,14 @@ void Entity::actMidGamePortal()
                     return; // classic mode enabled, don't process.
                 }
             }
-            for ( node_t* node = map.creatures->first; node != nullptr; node = node->next )
+            for (const node_t* node = map.creatures->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( entity )
                 {
                     if ( entity->behavior == &actMonster )
                     {
-                        Stat* stats = entity->getStats();
+                        const Stat* stats = entity->getStats();
                         if ( stats )
                         {
                             if ( stats->type == LICH || stats->type == DEVIL )
@@ -936,7 +936,7 @@ void Entity::actMidGamePortal()
                     // powered on.
                     if ( !portalFireAnimation )
                     {
-                        Entity* timer = createParticleTimer(this, 100, 174);
+                        const Entity* timer = createParticleTimer(this, 100, 174);
                         timer->particleTimerCountdownAction = PARTICLE_TIMER_ACTION_SPAWN_PORTAL;
                         timer->particleTimerCountdownSprite = 174;
                         timer->particleTimerEndAction = PARTICLE_EFFECT_PORTAL_SPAWN;
@@ -1005,7 +1005,7 @@ void Entity::actMidGamePortal()
                     {
                         playercount++;
                     }
-                    double dist = sqrt(pow(x - players[c]->entity->x, 2) + pow(y - players[c]->entity->y, 2));
+                    const double dist = sqrt(pow(x - players[c]->entity->x, 2) + pow(y - players[c]->entity->y, 2));
                     if ( dist > TOUCHRANGE )
                     {
                         sendMinimapPing(i, this->x / 16.0, this->y / 16.0);
@@ -1153,13 +1153,13 @@ int customPortalLookForMapWithName(char* mapToSearch, bool isSecretLevel, int le
         }
 
         // find the actual map name, ignoring gen: or map: in the line.
-        std::size_t found = line.find(' ');
+        const std::size_t found = line.find(' ');
         std::string mapName;
         if ( found != std::string::npos )
         {
             std::string mapType = line.substr(0, found);
             mapName = line.substr(found + 1, line.find('\n'));
-            std::size_t carriageReturn = mapName.find('\r');
+            const std::size_t carriageReturn = mapName.find('\r');
             if ( carriageReturn != std::string::npos )
             {
                 mapName.erase(carriageReturn);
@@ -1204,8 +1204,8 @@ int customPortalLookForMapWithName(char* mapToSearch, bool isSecretLevel, int le
         }
     }
 
-    int min = eligibleLevels.front();
-    int max = eligibleLevels.back();
+    const int min = eligibleLevels.front();
+    const int max = eligibleLevels.back();
 
     if ( eligibleLevels.size() == 1 )
     {
@@ -1324,7 +1324,7 @@ void actCustomPortal(Entity* my)
                     // powered on.
                     if ( !my->portalFireAnimation && my->portalCustomSpriteAnimationFrames > 0 )
                     {
-                        Entity* timer = createParticleTimer(my, 100, 174);
+                        const Entity* timer = createParticleTimer(my, 100, 174);
                         timer->particleTimerCountdownAction = PARTICLE_TIMER_ACTION_SPAWN_PORTAL;
                         timer->particleTimerCountdownSprite = 174;
                         timer->particleTimerEndAction = PARTICLE_EFFECT_PORTAL_SPAWN;
@@ -1422,7 +1422,7 @@ void actCustomPortal(Entity* my)
                     {
                         playercount++;
                     }
-                    double dist = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
+                    const double dist = sqrt(pow(my->x - players[c]->entity->x, 2) + pow(my->y - players[c]->entity->y, 2));
                     if ( dist > TOUCHRANGE )
                     {
                         sendMinimapPing(i, my->x / 16.0, my->y / 16.0);
@@ -1455,13 +1455,13 @@ void actCustomPortal(Entity* my)
 
                 if ( gameModeManager.getMode() == GameModeManager_t::GAME_MODE_TUTORIAL )
                 {
-                    std::string mapname = map.name;
+                    const std::string mapname = map.name;
                     if ( mapname.find("Tutorial Hub") == std::string::npos
                         && mapname.find("Tutorial ") != std::string::npos )
                     {
                         achievementObserver.updatePlayerAchievement(clientnum, AchievementObserver::BARONY_ACH_DIPLOMA, AchievementObserver::DIPLOMA_LEVEL_COMPLETE);
                         achievementObserver.updatePlayerAchievement(clientnum, AchievementObserver::BARONY_ACH_BACK_TO_BASICS, AchievementObserver::BACK_TO_BASICS_LEVEL_COMPLETE);
-                        int number = stoi(mapname.substr(mapname.find("Tutorial ") + strlen("Tutorial "), 2));
+                        const int number = stoi(mapname.substr(mapname.find("Tutorial ") + strlen("Tutorial "), 2));
                         auto& tutorialLevels = gameModeManager.Tutorial.levels;
                         if ( number >= 1 && number < tutorialLevels.size() )
                         {
@@ -1524,7 +1524,7 @@ void actCustomPortal(Entity* my)
                     {
                         mapName[totalChars] = '\0';
                     }
-                    int levelToJumpTo = customPortalLookForMapWithName(mapName, my->portalNotSecret ? false : true, my->portalCustomLevelsToJump);
+                    const int levelToJumpTo = customPortalLookForMapWithName(mapName, my->portalNotSecret ? false : true, my->portalCustomLevelsToJump);
                     if ( levelToJumpTo == -1000 )
                     {
                         // error.
@@ -1565,7 +1565,7 @@ void actCustomPortal(Entity* my)
                         messagePlayer(i, MESSAGE_MISC, "Error: Map %s was not found in the maps folder!", mapName);
                         return;
                     }
-                    int levelDifference = currentlevel - levelToJumpTo;
+                    const int levelDifference = currentlevel - levelToJumpTo;
                     if ( levelDifference == 0 && ((my->portalNotSecret && !secretlevel) || (!my->portalNotSecret && secretlevel)) )
                     {
                         //// error, we're reloading the same position, will glitch out clients.

@@ -288,7 +288,7 @@ bool rangefinderTargetEnemyType(spell_t& spell, Entity& entity)
             }
             else
             {
-                Monster type = entity.getMonsterTypeFromSprite();
+                const Monster type = entity.getMonsterTypeFromSprite();
                 if ( type == MIMIC 
                     || type == AUTOMATON 
                     || type == CRYSTALGOLEM 
@@ -922,7 +922,7 @@ void fireOffSpellAnimation(spellcasting_animation_manager_t* animation_manager, 
     {
         return;
     }
-    int player = caster->skill[2];
+    const int player = caster->skill[2];
     if ( !spell )
     {
         return;
@@ -936,7 +936,7 @@ void fireOffSpellAnimation(spellcasting_animation_manager_t* animation_manager, 
         return;
     }
 
-    bool overchargeRepeat = animation_manager->overcharge > 0;
+    const bool overchargeRepeat = animation_manager->overcharge > 0;
 
     if ( !overchargeRepeat )
     {
@@ -1038,7 +1038,7 @@ void fireOffSpellAnimation(spellcasting_animation_manager_t* animation_manager, 
 
     if ( isSpellcasterBeginner(player, caster, spell->skillID) )   //There's a chance that caster is newer to magic (and thus takes longer to cast a spell).
     {
-        int chance = local_rng.rand() % 10;
+        const int chance = local_rng.rand() % 10;
         if (chance >= stat->getModifiedProficiency(spell->skillID) / 15)
         {
             int amount = (local_rng.rand() % 50) / std::max(stat->getModifiedProficiency(spell->skillID) + statGetINT(stat, caster), 1);
@@ -1056,7 +1056,7 @@ void fireOffSpellAnimation(spellcasting_animation_manager_t* animation_manager, 
             {
                 casterAbility = 0; // cursed book has cast penalty.
             }
-            int difficulty = spell->difficulty / 20;
+            const int difficulty = spell->difficulty / 20;
             if ( difficulty > casterAbility )
             {
                 animation_manager->times_to_circle += (std::min(5, 1 + 2 * (difficulty - casterAbility))) * HANDMAGIC_TICKS_PER_CIRCLE;
@@ -1136,7 +1136,7 @@ void spellcastingAnimationManager_completeSpell(int player, spellcasting_animati
         spellcastAnimationUpdate(animation_manager->player, 1, 0);
     }
 
-    int overcharge = (animation_manager->overcharge > 0 && animation_manager->stage == ANIM_SPELL_OVERCHARGE_THROW) ? animation_manager->overcharge : 0;
+    const int overcharge = (animation_manager->overcharge > 0 && animation_manager->stage == ANIM_SPELL_OVERCHARGE_THROW) ? animation_manager->overcharge : 0;
 
     if ( animation_manager->rangefinder == SpellRangefinderType::RANGEFINDER_TARGET
         || animation_manager->rangefinder == SpellRangefinderType::RANGEFINDER_TOUCH_FLOOR_TILE
@@ -1270,7 +1270,7 @@ void actLeftHandMagic(Entity* my)
     my->z = (cameras[HANDMAGIC_PLAYERNUM].z * .5 - players[HANDMAGIC_PLAYERNUM]->entity->z) + 7;
     my->z -= 4;
     my->yaw = HANDMAGIC_YAW - cameravars[HANDMAGIC_PLAYERNUM].shakex2;
-    double defaultpitch = (0 - 2.2);
+    const double defaultpitch = (0 - 2.2);
     my->pitch = defaultpitch + HANDMAGIC_PITCH - cameravars[HANDMAGIC_PLAYERNUM].shakey2 / 200.f;
     my->roll = HANDMAGIC_ROLL;
     my->scalex = 0.5f;
@@ -1575,14 +1575,14 @@ void actLeftHandMagic(Entity* my)
                     cast_animation[HANDMAGIC_PLAYERNUM].consume_timer = cast_animation[HANDMAGIC_PLAYERNUM].consume_interval;
                     if ( multiplayer == SINGLE && cast_animation[HANDMAGIC_PLAYERNUM].consumeMana )
                     {
-                        int HP = stats[HANDMAGIC_PLAYERNUM]->HP;
-                        int MP = stats[HANDMAGIC_PLAYERNUM]->MP;
+                        const int HP = stats[HANDMAGIC_PLAYERNUM]->HP;
+                        const int MP = stats[HANDMAGIC_PLAYERNUM]->MP;
                         players[HANDMAGIC_PLAYERNUM]->entity->drainMP(1, false); // don't notify otherwise we'll get spammed each 1 mp
 
                         if ( cast_animation[HANDMAGIC_PLAYERNUM].spell )
                         {
                             bool sustainedSpell = false;
-                            auto findSpellDef = ItemTooltips.spellItems.find(cast_animation[HANDMAGIC_PLAYERNUM].spell->ID);
+                            const auto findSpellDef = ItemTooltips.spellItems.find(cast_animation[HANDMAGIC_PLAYERNUM].spell->ID);
                             if ( findSpellDef != ItemTooltips.spellItems.end() )
                             {
                                 sustainedSpell = (findSpellDef->second.spellType == ItemTooltips_t::SpellItemTypes::SPELL_TYPE_SELF_SUSTAIN);
@@ -1603,7 +1603,7 @@ void actLeftHandMagic(Entity* my)
                             cameravars[HANDMAGIC_PLAYERNUM].shakex += 0.1;
                             cameravars[HANDMAGIC_PLAYERNUM].shakey += 10;
                             playSoundPlayer(HANDMAGIC_PLAYERNUM, 28, 92);
-                            Uint32 color = makeColorRGB(255, 255, 0);
+                            const Uint32 color = makeColorRGB(255, 255, 0);
                             messagePlayerColor(HANDMAGIC_PLAYERNUM, MESSAGE_STATUS, color, Language::get(621));
                         }
                     }
@@ -1664,7 +1664,7 @@ void actLeftHandMagic(Entity* my)
                 my->flags[INVISIBLE] = true;
                 my->flags[INVISIBLE_DITHER] = false;
 
-                bool levitating = isLevitating(stats[HANDMAGIC_PLAYERNUM]);
+                const bool levitating = isLevitating(stats[HANDMAGIC_PLAYERNUM]);
 
                 //Water walking boots
                 bool waterwalkingboots = false;
@@ -1684,8 +1684,8 @@ void actLeftHandMagic(Entity* my)
                 if ( !waterwalkingboots && !levitating )
                 {
                     bool swimming = false;
-                    int x = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->x / 16)), map.width - 1);
-                    int y = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->y / 16)), map.height - 1);
+                    const int x = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->x / 16)), map.width - 1);
+                    const int y = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->y / 16)), map.height - 1);
                     if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] || lavatiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
                     {
                         swimming = true;
@@ -1729,7 +1729,7 @@ void actLeftHandMagic(Entity* my)
                 my->flags[INVISIBLE] = true;
                 my->flags[INVISIBLE_DITHER] = false;
 
-                bool overchargeRepeat = cast_animation[HANDMAGIC_PLAYERNUM].stage == ANIM_SPELL_OVERCHARGE_THROW
+                const bool overchargeRepeat = cast_animation[HANDMAGIC_PLAYERNUM].stage == ANIM_SPELL_OVERCHARGE_THROW
                     && cast_animation[HANDMAGIC_PLAYERNUM].overcharge > 0;
 
                 auto& anim = cast_animation[HANDMAGIC_PLAYERNUM];
@@ -1750,7 +1750,7 @@ void actLeftHandMagic(Entity* my)
                 }
                 else
                 {
-                    float setpointDiff = std::max(.05f, (1.f - anim.lefthand_angle) / 10.f);
+                    const float setpointDiff = std::max(.05f, (1.f - anim.lefthand_angle) / 10.f);
                     anim.lefthand_angle += setpointDiff;
                     anim.lefthand_angle = std::min(1.f, anim.lefthand_angle);
                 }
@@ -1831,7 +1831,7 @@ void actLeftHandMagic(Entity* my)
                     cast_animation[HANDMAGIC_PLAYERNUM].circle_count++;
                 }
 
-                bool levitating = isLevitating(stats[HANDMAGIC_PLAYERNUM]);
+                const bool levitating = isLevitating(stats[HANDMAGIC_PLAYERNUM]);
 
                 //Water walking boots
                 bool waterwalkingboots = false;
@@ -1851,8 +1851,8 @@ void actLeftHandMagic(Entity* my)
                 if ( !waterwalkingboots && !levitating )
                 {
                     bool swimming = false;
-                    int x = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->x / 16)), map.width - 1);
-                    int y = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->y / 16)), map.height - 1);
+                    const int x = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->x / 16)), map.width - 1);
+                    const int y = std::min<int>(std::max<int>(0, floor(players[HANDMAGIC_PLAYERNUM]->entity->y / 16)), map.height - 1);
                     if ( swimmingtiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] || lavatiles[map.tiles[y * MAP_LAYERS + x * MAP_LAYERS * map.height]] )
                     {
                         swimming = true;
@@ -1963,7 +1963,7 @@ void actLeftHandMagic(Entity* my)
             || cast_animation[HANDMAGIC_PLAYERNUM].stage == ANIM_SPELL_OVERCHARGE_READY
             || cast_animation[HANDMAGIC_PLAYERNUM].stage == ANIM_SPELL_OVERCHARGE_CHARGE )
         {
-            float x = my->x + 2.5;
+            const float x = my->x + 2.5;
             float y = -my->y;
             float z = my->z - 0.0;
 
@@ -1983,11 +1983,11 @@ void actLeftHandMagic(Entity* my)
             }
 
             // boosty boost
-            Uint32 castLoopDuration = 4 * TICKS_PER_SECOND / 10;
+            const Uint32 castLoopDuration = 4 * TICKS_PER_SECOND / 10;
             for ( int i = 1; i < 3 && !(players[HANDMAGIC_PLAYERNUM]->entity->skill[3] != 0); ++i )
             {
                 //if ( i == 1 || i == 3 ) { continue; }
-                Uint32 animTick = cast_animation[HANDMAGIC_PLAYERNUM].active_count >= castLoopDuration
+                const Uint32 animTick = cast_animation[HANDMAGIC_PLAYERNUM].active_count >= castLoopDuration
                     ? castLoopDuration
                     : cast_animation[HANDMAGIC_PLAYERNUM].active_count;
 
@@ -2077,7 +2077,7 @@ void actRightHandMagic(Entity* my)
     my->z = (cameras[HANDMAGIC_PLAYERNUM].z * .5 - players[HANDMAGIC_PLAYERNUM]->entity->z) + 7;
     my->z -= 4;
     my->yaw = HANDMAGIC_YAW - cameravars[HANDMAGIC_PLAYERNUM].shakex2;
-    double defaultpitch = (0 - 2.2);
+    const double defaultpitch = (0 - 2.2);
     my->pitch = defaultpitch + HANDMAGIC_PITCH - cameravars[HANDMAGIC_PLAYERNUM].shakey2 / 200.f;
     my->roll = HANDMAGIC_ROLL;
     my->scalex = 0.5f;
@@ -2484,7 +2484,7 @@ void actMagicRangefinder(Entity* my)
     if ( players[HANDMAGIC_PLAYERNUM] == nullptr || players[HANDMAGIC_PLAYERNUM]->entity == nullptr
         || (players[HANDMAGIC_PLAYERNUM]->entity && players[HANDMAGIC_PLAYERNUM]->entity->playerCreatedDeathCam != 0) )
     {
-        if ( auto indicator = AOEIndicators_t::getIndicator(my->actSpriteUseCustomSurface) )
+        if (const auto indicator = AOEIndicators_t::getIndicator(my->actSpriteUseCustomSurface) )
         {
             indicator->expired = true;
         }
@@ -2496,7 +2496,7 @@ void actMagicRangefinder(Entity* my)
         return;
     }
 
-    auto& cast_anim = cast_animation[HANDMAGIC_PLAYERNUM];
+    const auto& cast_anim = cast_animation[HANDMAGIC_PLAYERNUM];
 
     if ( !(cast_anim.active || cast_anim.active_spellbook) || !cast_anim.rangefinder 
         || cast_anim.stage == ANIM_SPELL_TOUCH_THROW
@@ -2514,7 +2514,7 @@ void actMagicRangefinder(Entity* my)
     my->sprite = 222;
     my->x = cast_anim.target_x;
     my->y = cast_anim.target_y;
-    Entity* target = nullptr;
+    const Entity* target = nullptr;
     if ( cast_anim.targetUid != 0 
         && (cast_anim.rangefinder == RANGEFINDER_TOUCH 
             || cast_anim.rangefinder == RANGEFINDER_TOUCH_INTERACT_TEST
@@ -2601,10 +2601,10 @@ void actMagicRangefinder(Entity* my)
 
     if ( !AOEIndicators_t::getIndicator(my->actSpriteUseCustomSurface) )
     {
-        int size = 20;
+        const int size = 20;
         my->actSpriteUseCustomSurface = AOEIndicators_t::createIndicator(4, size, size * 2 + 4, -1);
     }
-    if ( auto indicator = AOEIndicators_t::getIndicator(my->actSpriteUseCustomSurface) )
+    if (const auto indicator = AOEIndicators_t::getIndicator(my->actSpriteUseCustomSurface) )
     {
         indicator->cacheType = AOEIndicators_t::CACHE_CASTING;
         indicator->gradient = 6;

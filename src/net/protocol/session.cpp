@@ -32,7 +32,7 @@ void deleteMultiplayerSaveGames()
 
     for ( std::size_t i = 0; i < std::size(players); ++i )
     {
-        Stat* stat = nullptr;
+        const Stat* stat = nullptr;
         if ( players[i] && players[i]->entity && (stat = players[i]->entity->getStats()) && stat->HP > 0)
         {
             lastAlive = false;
@@ -61,12 +61,12 @@ void deleteMultiplayerSaveGames()
 
 void handleScanPacket() {
     if (directConnect) {
-        Uint32 hostname_len = static_cast<Uint32>(strlen(MainMenu::getHostname()));
+        const Uint32 hostname_len = static_cast<Uint32>(strlen(MainMenu::getHostname()));
         SDLNet_Write32(hostname_len, &net_packet->data[4]);
         for (int c = 0; c < hostname_len; ++c) {
             net_packet->data[8 + c] = MainMenu::getHostname()[c];
         }
-        Uint32 offset = 8 + hostname_len;
+        const Uint32 offset = 8 + hostname_len;
         int numplayers = 0;
         for (int c = 0; c < barony::net::playerCapacity(); ++c) {
             if (!client_disconnected[c]) {
@@ -102,15 +102,15 @@ void PingNetworkStatus_t::reset()
 
 void PingNetworkStatus_t::receive()
 {
-    int player = net_packet->data[4];
+    const int player = net_packet->data[4];
     if ( player < 0 || static_cast<std::size_t>(player) >= std::size(players) )
     {
         return;
     }
     auto& p = PingNetworkStatus[player];
-    Uint32 seq = SDLNet_Read32(&net_packet->data[5]);
+    const Uint32 seq = SDLNet_Read32(&net_packet->data[5]);
 
-    auto find = p.pings.find(seq);
+    const auto find = p.pings.find(seq);
     if ( find != p.pings.end() )
     {
         if ( seq > p.lastSequence )
@@ -138,7 +138,7 @@ void PingNetworkStatus_t::receive()
 
 void PingNetworkStatus_t::respond()
 {
-    int player = net_packet->data[4];
+    const int player = net_packet->data[4];
     if ( player < 0 || static_cast<std::size_t>(player) >= std::size(players) )
     {
         return;
@@ -255,7 +255,7 @@ void PingNetworkStatus_t::update()
                 while ( p.pings.size() >= 10 )
                 {
                     Uint32 minSequence = 0;
-                    for ( auto& keypairs : p.pings )
+                    for (const auto& keypairs : p.pings )
                     {
                         if ( minSequence == 0 )
                         {
@@ -285,7 +285,7 @@ void PingNetworkStatus_t::update()
             return;
         }
         Uint32 minSequence = 0;
-        for ( auto& keypairs : p.pings )
+        for (const auto& keypairs : p.pings )
         {
             if ( minSequence == 0 )
             {

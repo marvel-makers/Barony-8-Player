@@ -30,7 +30,7 @@ Widget::~Widget() {
 }
 
 bool Widget::remove(const char* name) {
-    for (auto widget : widgets) {
+    for (const auto widget : widgets) {
         if (strcmp(widget->getName(), name) == 0) {
             widget->removeSelf();
             return true;
@@ -43,7 +43,7 @@ void Widget::removeSelf() {
     toBeDeleted = true;
     
     // also mark children deleted so they don't get processed.
-    for (auto widget : widgets) {
+    for (const auto widget : widgets) {
         widget->removeSelf();
     }
 }
@@ -54,7 +54,7 @@ void Widget::select() {
     }
     Widget* head = findHead();
     if (head && head->getType() == WIDGET_FRAME) {
-        auto f = static_cast<Frame*>(head);
+        const auto f = static_cast<Frame*>(head);
         f->deselect(); // this deselects everything in the gui
     }
     if (owner >= 0 && owner < MAXPLAYERS) {
@@ -90,7 +90,7 @@ Frame* Widget::findSearchRoot() {
         if (widgetSearchParent.empty()) {
             return static_cast<Frame*>(gui);
         } else {
-            auto search = gui->findWidget(widgetSearchParent.c_str(), true);
+            const auto search = gui->findWidget(widgetSearchParent.c_str(), true);
             if (search && search->getType() == WIDGET_FRAME) {
                 return static_cast<Frame*>(search);
             } else {
@@ -108,7 +108,7 @@ const Frame* Widget::findSearchRoot() const {
         if (widgetSearchParent.empty()) {
             return static_cast<const Frame*>(gui);
         } else {
-            auto search = gui->findWidget(widgetSearchParent.c_str(), true);
+            const auto search = gui->findWidget(widgetSearchParent.c_str(), true);
             if (search && search->getType() == WIDGET_FRAME) {
                 return static_cast<const Frame*>(search);
             } else {
@@ -139,7 +139,7 @@ Widget* Widget::handleInput() {
                     }
                     //printlog("%s: %p", move.second.c_str(), (void*)result);
                     if (result && !result->disabled && !result->invisible) {
-                        auto in = input.input(move.first.c_str());
+                        const auto in = input.input(move.first.c_str());
 #ifndef EDITOR
                         if (in.type != Input::binding_t::bindtype_t::MOUSE_BUTTON &&
                             in.type != Input::binding_t::bindtype_t::KEYBOARD) {
@@ -165,7 +165,7 @@ Widget* Widget::handleInput() {
                     }
                     //printlog("%s: %p", action.second.c_str(), (void*)result);
                     if (result && !result->disabled) {
-                        auto in = input.input(action.first.c_str());
+                        const auto in = input.input(action.first.c_str());
 #ifndef EDITOR
                         if (in.type != Input::binding_t::bindtype_t::MOUSE_BUTTON &&
                             in.type != Input::binding_t::bindtype_t::KEYBOARD) {
@@ -181,7 +181,7 @@ Widget* Widget::handleInput() {
 
         // activate current selection
         if (!(menuConfirmControlType & MENU_CONFIRM_CONTROLLER) || !(menuConfirmControlType & MENU_CONFIRM_KEYBOARD)) {
-            auto binding = input.input("MenuConfirm");
+            const auto binding = input.input("MenuConfirm");
             if ((binding.isBindingUsingGamepad() && (menuConfirmControlType & MENU_CONFIRM_CONTROLLER)) ||
                 (binding.isBindingUsingKeyboard() && (menuConfirmControlType & MENU_CONFIRM_KEYBOARD))) {
                 if (input.consumeBinaryToggle("MenuConfirm") && !disabled) {
@@ -217,7 +217,7 @@ const Widget* Widget::findHead() const {
 
 Widget* Widget::findWidget(const char* name, bool recursive, Widget::SearchType searchType) {
     if (searchType == Widget::SearchType::DEPTH_FIRST) {
-        for (auto widget : widgets) {
+        for (const auto widget : widgets) {
             if (widget->toBeDeleted) {
                 continue;
             }
@@ -228,7 +228,7 @@ Widget* Widget::findWidget(const char* name, bool recursive, Widget::SearchType 
                 return widget;
             }
             if (recursive) {
-                auto result = widget->findWidget(name, recursive);
+                const auto result = widget->findWidget(name, recursive);
                 if (result) {
                     return result;
                 }
@@ -265,7 +265,7 @@ Widget* Widget::findWidget(const char* name, bool recursive, Widget::SearchType 
 
 const Widget* Widget::findWidget(const char* name, bool recursive, Widget::SearchType searchType) const {
     if (searchType == Widget::SearchType::DEPTH_FIRST) {
-        for (auto widget : widgets) {
+        for (const auto widget : widgets) {
             if (widget->toBeDeleted) {
                 continue;
             }
@@ -273,7 +273,7 @@ const Widget* Widget::findWidget(const char* name, bool recursive, Widget::Searc
                 return widget;
             }
             if (recursive) {
-                auto result = widget->findWidget(name, recursive);
+                const auto result = widget->findWidget(name, recursive);
                 if (result) {
                     return result;
                 }
@@ -328,7 +328,7 @@ void Widget::findSelectedWidgets(std::vector<const Widget*>& outResult) const {
 Widget* Widget::findSelectedWidget(int owner) {
     std::vector<Widget*> selectedWidgets;
     findSelectedWidgets(selectedWidgets);
-    for (auto widget : selectedWidgets) {
+    for (const auto widget : selectedWidgets) {
         if (widget && widget->owner == owner) {
             return widget;
         }
@@ -373,7 +373,7 @@ void Widget::drawPost(const SDL_Rect size,
     const Widget* selectedWidget = nullptr;
     const Widget* searchParent = nullptr;
     for (int c = 0; c < selectedWidgets.size(); ++c) {
-        auto widget = selectedWidgets[c];
+        const auto widget = selectedWidgets[c];
         if (widget && widget->owner == owner) {
             searchParent = searchParents[c];
             selectedWidget = widget;
@@ -391,43 +391,43 @@ void Widget::drawPost(const SDL_Rect size,
     // draw selector widgets
     if (!hideSelectors && selectedWidget == this && !Mods::isLoading) {
         {
-            auto image = Image::get("*images/ui/Main Menus/Selector_TL.png");
-            int w = image->getWidth();
-            int h = image->getHeight();
-            int x = size.x + selectorOffset.x;
-            int y = size.y + selectorOffset.y;
-            int beatx = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? w / 2 : w / 4;
-            int beaty = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? h / 2 : h / 4;
+            const auto image = Image::get("*images/ui/Main Menus/Selector_TL.png");
+            const int w = image->getWidth();
+            const int h = image->getHeight();
+            const int x = size.x + selectorOffset.x;
+            const int y = size.y + selectorOffset.y;
+            const int beatx = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? w / 2 : w / 4;
+            const int beaty = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? h / 2 : h / 4;
             image->draw(nullptr, SDL_Rect{x - beatx, y - beaty, w, h}, viewport);
         }
         {
-            auto image = Image::get("*images/ui/Main Menus/Selector_TR.png");
-            int w = image->getWidth();
-            int h = image->getHeight();
-            int x = size.x + size.w - w + selectorOffset.w;
-            int y = size.y + selectorOffset.y;
-            int beatx = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? w / 2 : w / 4;
-            int beaty = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? h / 2 : h / 4;
+            const auto image = Image::get("*images/ui/Main Menus/Selector_TR.png");
+            const int w = image->getWidth();
+            const int h = image->getHeight();
+            const int x = size.x + size.w - w + selectorOffset.w;
+            const int y = size.y + selectorOffset.y;
+            const int beatx = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? w / 2 : w / 4;
+            const int beaty = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? h / 2 : h / 4;
             image->draw(nullptr, SDL_Rect{x + beatx, y - beaty, w, h}, viewport);
         }
         {
-            auto image = Image::get("*images/ui/Main Menus/Selector_BL.png");
-            int w = image->getWidth();
-            int h = image->getHeight();
-            int x = size.x + selectorOffset.x;
-            int y = size.y + size.h - h + selectorOffset.h;
-            int beatx = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? w / 2 : w / 4;
-            int beaty = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? h / 2 : h / 4;
+            const auto image = Image::get("*images/ui/Main Menus/Selector_BL.png");
+            const int w = image->getWidth();
+            const int h = image->getHeight();
+            const int x = size.x + selectorOffset.x;
+            const int y = size.y + size.h - h + selectorOffset.h;
+            const int beatx = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? w / 2 : w / 4;
+            const int beaty = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? h / 2 : h / 4;
             image->draw(nullptr, SDL_Rect{x - beatx, y + beaty, w, h}, viewport);
         }
         {
-            auto image = Image::get("*images/ui/Main Menus/Selector_BR.png");
-            int w = image->getWidth();
-            int h = image->getHeight();
-            int x = size.x + size.w - w + selectorOffset.w;
-            int y = size.y + size.h - h + selectorOffset.h;
-            int beatx = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? w / 2 : w / 4;
-            int beaty = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? h / 2 : h / 4;
+            const auto image = Image::get("*images/ui/Main Menus/Selector_BR.png");
+            const int w = image->getWidth();
+            const int h = image->getHeight();
+            const int x = size.x + size.w - w + selectorOffset.w;
+            const int y = size.y + size.h - h + selectorOffset.h;
+            const int beatx = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? w / 2 : w / 4;
+            const int beaty = (ticks % TICKS_PER_SECOND) < (TICKS_PER_SECOND / 2) ? h / 2 : h / 4;
             image->draw(nullptr, SDL_Rect{x + beatx, y + beaty, w, h}, viewport);
         }
     }
@@ -478,15 +478,15 @@ void Widget::drawPost(const SDL_Rect size,
         }
 
         // draw glyphs
-        bool pressed = ticks % TICKS_PER_SECOND < TICKS_PER_SECOND / 2;
-        Input& input = Input::inputs[owner];
+        const bool pressed = ticks % TICKS_PER_SECOND < TICKS_PER_SECOND / 2;
+        const Input& input = Input::inputs[owner];
         for (int c = 0; c < actionListSize; ++c) {
             if ((action = actions.find(actionList[c])) != actions.end()) {
                 if (action->second == name) {
                     auto path = input.getGlyphPathForBinding(actionList[c], pressed);
-                    auto image = Image::get((std::string("*") + path).c_str());
-                    int w = image->getWidth();
-                    int h = image->getHeight();
+                    const auto image = Image::get((std::string("*") + path).c_str());
+                    const int w = image->getWidth();
+                    const int h = image->getHeight();
                     image->draw(nullptr, SDL_Rect{x - w / 2, y - h / 2, w, h}, viewport);
                     if (glyphPosition == UPPER_RIGHT ||
                         glyphPosition == CENTERED_RIGHT ||
@@ -498,9 +498,9 @@ void Widget::drawPost(const SDL_Rect size,
                 }
             } else if (c == 0 && selectedWidget == this) {
                 auto path = input.getGlyphPathForBinding(actionList[c], pressed);
-                auto image = Image::get((std::string("*") + path).c_str());
-                int w = image->getWidth();
-                int h = image->getHeight();
+                const auto image = Image::get((std::string("*") + path).c_str());
+                const int w = image->getWidth();
+                const int h = image->getHeight();
                 image->draw(nullptr, SDL_Rect{x - w / 2, y - h / 2, w, h}, viewport);
                 if (glyphPosition == UPPER_RIGHT ||
                     glyphPosition == CENTERED_RIGHT ||

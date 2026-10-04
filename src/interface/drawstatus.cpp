@@ -82,9 +82,9 @@ void updateEnemyBar(Entity* source, Entity* target, const char* name, Sint32 hp,
     {
         if ( target->behavior == &actMonster )
         {
-            if ( Stat* stats = target->getStats() )
+            if (const Stat* stats = target->getStats() )
             {
-                if ( Uint8 effectStrength = stats->getEffectActive(EFF_DETECT_ENEMY) )
+                if (const Uint8 effectStrength = stats->getEffectActive(EFF_DETECT_ENEMY) )
                 {
                     if ( effectStrength >= 1 && effectStrength < 1 + MAXPLAYERS )
                     {
@@ -96,7 +96,7 @@ void updateEnemyBar(Entity* source, Entity* target, const char* name, Sint32 hp,
         if ( source->behavior == &actMonster && source->getStats() && (source->getStats()->type == DUCK_SMALL || (source->getStats()->type == MONSTER_ADORCISED_WEAPON
             && source->getStats()->getAttribute("spirit_weapon") != "")) ) // special non-follower list followers
         {
-            Entity* parent = uidToEntity(source->parent);
+            const Entity* parent = uidToEntity(source->parent);
             if ( parent && parent->behavior == &actPlayer && parent != target )
             {
                 player = parent->skill[2]; // don't update enemy bar if attacking leader.
@@ -114,7 +114,7 @@ void updateEnemyBar(Entity* source, Entity* target, const char* name, Sint32 hp,
         }
         else if ( source->behavior == &actMonster && source->monsterIllusionTauntingThisUid != 0 )
         {
-            Entity* parent = uidToEntity(source->parent);
+            const Entity* parent = uidToEntity(source->parent);
             if ( parent && parent->behavior == &actPlayer && parent != target )
             {
                 player = parent->skill[2]; // don't update enemy bar if attacking leader.
@@ -146,10 +146,10 @@ void updateEnemyBar(Entity* source, Entity* target, const char* name, Sint32 hp,
         }
     }
 
-    Stat* stats = target->getStats();
+    const Stat* stats = target->getStats();
     if ( stats )
     {
-        bool tookDamage = stats->HP != stats->OLDHP;
+        const bool tookDamage = stats->HP != stats->OLDHP;
         if ( isValidEnemyBarPlayerSlot(playertarget) && players[playertarget]->isLocalPlayer() )
         {
             DamageIndicatorHandler.insert(playertarget, source->x, source->y, tookDamage);
@@ -208,7 +208,7 @@ void updateEnemyBar(Entity* source, Entity* target, const char* name, Sint32 hp,
         gibType = DamageGib::DMG_DEFAULT;
     }
 
-    EnemyHPDamageBarHandler::EnemyHPDetails* details = nullptr;
+    const EnemyHPDamageBarHandler::EnemyHPDetails* details = nullptr;
     if ( isValidEnemyBarPlayerSlot(player) /*&& players[player]->isLocalPlayer()*/ )
     {
         // add enemy bar to the server
@@ -332,7 +332,7 @@ bool warpMouseToSelectedHotbarSlot(const int player)
         return false;
     }
 
-    if ( auto hotbarSlotFrame = players[player]->hotbar.getHotbarSlotFrame(players[player]->hotbar.current_hotbar) )
+    if (const auto hotbarSlotFrame = players[player]->hotbar.getHotbarSlotFrame(players[player]->hotbar.current_hotbar) )
     {
         if ( !players[player]->hotbar.isInteractable )
         {

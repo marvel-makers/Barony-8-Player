@@ -70,7 +70,7 @@ void UIToastNotification::init()
     closeButton->setMenuConfirmControlType(0);
     closeButton->setTextHighlightColor(makeColor(201, 162, 100, 255));
     closeButton->setCallback([](Button& button){
-        auto n = static_cast<UIToastNotification*>(button.getUserData());
+        const auto n = static_cast<UIToastNotification*>(button.getUserData());
         n->mainCardHide = true;
         n->dockedCardHide = false;
         n->lastInteractedTick = ticks;
@@ -93,7 +93,7 @@ void UIToastNotification::init()
     actionButton->setMenuConfirmControlType(0);
     actionButton->setTextHighlightColor(makeColor(201, 162, 100, 255));
     actionButton->setCallback([](Button& button) {
-        auto n = static_cast<UIToastNotification*>(button.getUserData());
+        const auto n = static_cast<UIToastNotification*>(button.getUserData());
         n->lastInteractedTick = ticks;
         if (n->buttonAction) {
             n->buttonAction();
@@ -214,10 +214,10 @@ void UIToastNotification::updateCardEvent(bool updateMainText, bool updateSecond
 void UIToastNotification::animate(int& xout, int& current_ticks, int duration, int width, bool hideElement, bool& isHidden)
 {
     // scale duration to FPS - tested @ 144hz
-    double scaledDuration = (duration / (144.0 / (std::max(1U, fpsLimit))));
+    const double scaledDuration = (duration / (144.0 / (std::max(1U, fpsLimit))));
 
-    double t = current_ticks / scaledDuration;
-    double result = -width * t * t * (3.0f - 2.0f * t); // bezier from 0 to width as t (0-1)
+    const double t = current_ticks / scaledDuration;
+    const double result = -width * t * t * (3.0f - 2.0f * t); // bezier from 0 to width as t (0-1)
     xout = static_cast<int>(floor(result) + width);
     isHidden = false;
     if (hideElement)
@@ -262,8 +262,8 @@ void UIToastNotification::drawDockedCard()
     const int mouseowner = intro || gamePaused ? inputs.getPlayerIDAllowedKeyboard() : clientnum;
     Sint32 mousex = (inputs.getMouse(mouseowner, Inputs::X) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
     Sint32 mousey = (inputs.getMouse(mouseowner, Inputs::Y) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
-    Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
-    Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+    const Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+    const Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 #endif
 
     if (!temporaryCardHide && rectContainsPoint(r, omousex, omousey))
@@ -363,7 +363,7 @@ void UIToastNotification::drawMainCard()
     }
     else
     {
-        bool oldHiddenStatus = mainCardIsHidden;
+        const bool oldHiddenStatus = mainCardIsHidden;
         animate(animx, anim_ticks, anim_duration, cardWidth, mainCardHide, mainCardIsHidden);
         if (mainCardHide && mainCardIsHidden)
         {
@@ -468,7 +468,7 @@ void UIToastNotificationManager_t::drawNotifications(bool isMoviePlaying, bool b
             if ( *cvar_achievements_warning )
             {
                 createAchievementsDisabledNotification();
-                if ( auto n = UIToastNotificationManager.getNotificationSingle(UIToastNotification::CardType::UI_CARD_ACHIEVEMENTS_DISABLED) )
+                if (const auto n = UIToastNotificationManager.getNotificationSingle(UIToastNotification::CardType::UI_CARD_ACHIEVEMENTS_DISABLED) )
                 {
                     n->setIdleSeconds(3);
                     n->setHeaderText(Language::get(6139));
@@ -868,7 +868,7 @@ void truncateMainText(std::string& str)
     {
         for ( size_t c, offset = 0;;)
         {
-            size_t lastoffset = offset;
+            const size_t lastoffset = offset;
             for ( c = lastoffset + 1; c < str.size(); ++c )
             {
                 if ( str[c] == ' ' )
@@ -903,7 +903,7 @@ void UIToastNotificationManager_t::createAchievementNotification(const char* nam
 
     auto achievementName = "Unknown Achievement";
     {
-        auto it = Compendium_t::achievements.find(name);
+        const auto it = Compendium_t::achievements.find(name);
         if (it != Compendium_t::achievements.end())
         {
             achievementName = it->second.name.c_str();
@@ -967,7 +967,7 @@ void UIToastNotificationManager_t::createStatisticUpdateNotification(const char*
     }
     else
     {
-        auto it = Compendium_t::achievements.find(name);
+        const auto it = Compendium_t::achievements.find(name);
         if ( it != Compendium_t::achievements.end() )
         {
             achievementName = it->second.name.c_str();
@@ -1011,47 +1011,47 @@ void createGenericWindowDecorations(Frame& frame) {
 
 void sizeWindowDecorations(Frame& frame, SDL_Rect r) {
     {
-        auto img = frame.findImage("topleft"); assert(img);
+        const auto img = frame.findImage("topleft"); assert(img);
         img->section = SDL_Rect{ 0, 0, 16, 16 };
         img->pos = SDL_Rect{ r.x, r.y, 16, 16 };
     }
     {
-        auto img = frame.findImage("top"); assert(img);
+        const auto img = frame.findImage("top"); assert(img);
         img->section = SDL_Rect{ 16, 0, 16, 16 };
         img->pos = SDL_Rect{ r.x + 16, r.y, r.w - 32, 16 };
     }
     {
-        auto img = frame.findImage("topright"); assert(img);
+        const auto img = frame.findImage("topright"); assert(img);
         img->section = SDL_Rect{ 32, 0, 16, 16 };
         img->pos = SDL_Rect{ r.x + r.w - 16, r.y, 16, 16 };
     }
     {
-        auto img = frame.findImage("left"); assert(img);
+        const auto img = frame.findImage("left"); assert(img);
         img->section = SDL_Rect{ 0, 16, 16, 16 };
         img->pos = SDL_Rect{ r.x, r.y + 16, 16, r.h - 32 };
     }
     {
-        auto img = frame.findImage("center"); assert(img);
+        const auto img = frame.findImage("center"); assert(img);
         img->section = SDL_Rect{ 16, 16, 16, 16 };
         img->pos = SDL_Rect{ r.x + 16, r.y + 16, r.w - 32, r.h - 32 };
     }
     {
-        auto img = frame.findImage("right"); assert(img);
+        const auto img = frame.findImage("right"); assert(img);
         img->section = SDL_Rect{ 32, 16, 16, 16 };
         img->pos = SDL_Rect{ r.x + r.w - 16, r.y + 16, 16, r.h - 32 };
     }
     {
-        auto img = frame.findImage("bottomleft"); assert(img);
+        const auto img = frame.findImage("bottomleft"); assert(img);
         img->section = SDL_Rect{ 0, 32, 16, 16 };
         img->pos = SDL_Rect{ r.x, r.y + r.h - 16, 16, 16 };
     }
     {
-        auto img = frame.findImage("bottom"); assert(img);
+        const auto img = frame.findImage("bottom"); assert(img);
         img->section = SDL_Rect{ 16, 32, 16, 16 };
         img->pos = SDL_Rect{ r.x + 16, r.y + r.h - 16, r.w - 32, 16 };
     }
     {
-        auto img = frame.findImage("bottomright"); assert(img);
+        const auto img = frame.findImage("bottomright"); assert(img);
         img->section = SDL_Rect{ 32, 32, 16, 16 };
         img->pos = SDL_Rect{ r.x + r.w - 16, r.y + r.h - 16, 16, 16 };
     }

@@ -892,8 +892,8 @@ void Entity::actChest()
         }
     }
 
-    list_t* inventory = getChestInventoryList();
-    node_t* node = nullptr;
+    const list_t* inventory = getChestInventoryList();
+    const node_t* node = nullptr;
     Item* item = nullptr;
 
     chestOldHealth = chestHealth;
@@ -956,7 +956,7 @@ void Entity::actChest()
         this->closeChest();
 
         // remove chest entities
-        Entity* parentEntity = uidToEntity(parent);
+        const Entity* parentEntity = uidToEntity(parent);
         if ( parentEntity )
         {
             list_RemoveNode(parentEntity->mynode);    // remove lid
@@ -996,7 +996,7 @@ void Entity::actChest()
     {
         if ( players[chestOpener] && players[chestOpener]->entity )
         {
-            unsigned int distance = sqrt(pow(x - players[chestOpener]->entity->x, 2) + pow(y - players[chestOpener]->entity->y, 2));
+            const unsigned int distance = sqrt(pow(x - players[chestOpener]->entity->x, 2) + pow(y - players[chestOpener]->entity->y, 2));
             if (distance > TOUCHRANGE)
             {
                 closeChest();
@@ -1242,7 +1242,7 @@ int getChestOpenerFromEntity(const Entity& chest)
 
 void Entity::closeChest()
 {
-    int player = getChestOpenerFromEntity(*this);
+    const int player = getChestOpenerFromEntity(*this);
 
     if ( players[player]->isLocalPlayer() && multiplayer == CLIENT)
     {
@@ -1348,7 +1348,7 @@ Item* Entity::addItemToChest(Item* item, bool forceNewStack, Item* specificDesti
     {
         return nullptr;
     }
-    int player = getChestOpenerFromEntity(*this);
+    const int player = getChestOpenerFromEntity(*this);
     if ( player < 0 || player >= MAXPLAYERS )
     {
         return nullptr;
@@ -1379,7 +1379,7 @@ Item* Entity::addItemToChest(Item* item, bool forceNewStack, Item* specificDesti
     //Add the item to the chest's inventory.
     list_t* inventory = getChestInventoryList();
 
-    node_t* t_node = nullptr;
+    const node_t* t_node = nullptr;
     if ( !forceNewStack )
     {
         //If item's already in the chest, add it to a pre-existing stack.
@@ -1450,7 +1450,7 @@ Item* Entity::addItemToChestFromInventory(int player, Item* item, int amount, bo
         amount = std::min(static_cast<Sint16>(amount), item->count);
     }
 
-    bool isEquipped = itemIsEquipped(item, player);
+    const bool isEquipped = itemIsEquipped(item, player);
 
     if ( isEquipped )
     {
@@ -1606,7 +1606,7 @@ Item* Entity::getItemFromChest(Item* item, int amount, bool getInfoOnly)
         amount = std::min(static_cast<Sint16>(amount), item->count);
     }
 
-    int player = getChestOpenerFromEntity(*this);
+    const int player = getChestOpenerFromEntity(*this);
 
     if ( players[player]->isLocalPlayer() && multiplayer == CLIENT )
     {
@@ -1627,7 +1627,7 @@ Item* Entity::getItemFromChest(Item* item, int amount, bool getInfoOnly)
             SDLNet_Write32(item->type, &net_packet->data[5]);
             SDLNet_Write32(item->status, &net_packet->data[9]);
             SDLNet_Write32(static_cast<Uint32>(item->beatitude), &net_packet->data[13]);
-            Sint16 count = static_cast<Sint16>(amount);
+            const Sint16 count = static_cast<Sint16>(amount);
             SDLNet_Write32(static_cast<Uint32>(count), &net_packet->data[17]);
             SDLNet_Write32(item->appearance, &net_packet->data[21]);
             net_packet->data[25] = item->identified;
@@ -1729,7 +1729,7 @@ Item* addItemToChestClientside(const int player, Item* item, bool forceNewStack,
         //TODO: Add item to the chest.
 
         Item* item2 = nullptr;
-        node_t* node = nullptr;
+        const node_t* node = nullptr;
 
         if ( !forceNewStack )
         {
@@ -1772,7 +1772,7 @@ Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStac
     }
 
     Item* item2 = nullptr;
-    node_t* t_node = nullptr;
+    const node_t* t_node = nullptr;
 
     //Add the item to the chest's inventory.
     list_t* inventory = &stats[0]->void_chest_inventory;
@@ -1798,7 +1798,7 @@ Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStac
             bool dropped = false;
             if ( players[player]->entity )
             {
-                auto item2 = newItem(item->type,
+                const auto item2 = newItem(item->type,
                     item->status,
                     item->beatitude,
                     item->count,
@@ -1857,7 +1857,7 @@ Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStac
                         if ( item2->shouldItemStack(player) )
                         {
                             int stackAmount = std::max(0, item2->getMaxStackLimit(player) - item2->count);
-                            int qty = std::max(0, std::min(static_cast<int>(item->count), stackAmount));
+                            const int qty = std::max(0, std::min(static_cast<int>(item->count), stackAmount));
                             anyItemsInserted = qty > 0;
                             item2->count += qty;
                             item->count -= qty;
@@ -1873,7 +1873,7 @@ Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStac
                     if ( specificDestinationStack == item2 && item2->shouldItemStack(player) )
                     {
                         int stackAmount = std::max(0, item2->getMaxStackLimit(player) - item2->count);
-                        int qty = std::max(0, std::min(static_cast<int>(item->count), stackAmount));
+                        const int qty = std::max(0, std::min(static_cast<int>(item->count), stackAmount));
                         anyItemsInserted = qty > 0;
                         item2->count += qty;
                         item->count -= qty;
@@ -1892,13 +1892,13 @@ Item* Entity::addItemToVoidChestServer(int player, Item* item, bool forceNewStac
         }
     }
 
-    bool voidChestFull = list_Size(inventory) >= Player::Inventory_t::MAX_CHEST_X * Player::Inventory_t::MAX_CHEST_Y;
+    const bool voidChestFull = list_Size(inventory) >= Player::Inventory_t::MAX_CHEST_X * Player::Inventory_t::MAX_CHEST_Y;
     if ( voidChestFull ) // void chest is full
     {
         bool dropped = false;
         if ( player >= 1 && player < MAXPLAYERS )
         {
-            auto item2 = newItem(item->type,
+            const auto item2 = newItem(item->type,
                 item->status,
                 item->beatitude,
                 item->count,
@@ -1954,7 +1954,7 @@ Item* Entity::addItemToChestServer(Item* item, bool forceNewStack, Item* specifi
     }
 
     Item* item2 = nullptr;
-    node_t* t_node = nullptr;
+    const node_t* t_node = nullptr;
 
     //Add the item to the chest's inventory.
     list_t* inventory = getChestInventoryList();
@@ -2003,9 +2003,9 @@ bool Entity::removeItemFromVoidChestServer(int player, Item* item, int count)
     }
 
     Item* item2 = nullptr;
-    node_t* t_node = nullptr;
+    const node_t* t_node = nullptr;
 
-    list_t* inventory = &stats[0]->void_chest_inventory;
+    const list_t* inventory = &stats[0]->void_chest_inventory;
     if ( !inventory )
     {
         return false;
@@ -2026,7 +2026,7 @@ bool Entity::removeItemFromVoidChestServer(int player, Item* item, int count)
             if ( count < item2->count )
             {
                 //Grab only one item from the chest.
-                int oldcount = item2->count;
+                const int oldcount = item2->count;
                 item2->count = oldcount - count;
                 if ( item2->count <= 0 )
                 {
@@ -2060,11 +2060,11 @@ bool Entity::removeItemFromChestServer(Item* item, int count)
     }
 
     Item* item2 = nullptr;
-    node_t* t_node = nullptr;
+    const node_t* t_node = nullptr;
 
-    Sint32 oldVoidChestState = chestVoidState;
+    const Sint32 oldVoidChestState = chestVoidState;
     chestVoidState = 0;
-    list_t* inventory = getChestInventoryList();
+    const list_t* inventory = getChestInventoryList();
     chestVoidState = oldVoidChestState;
     if (!inventory)
     {
@@ -2086,7 +2086,7 @@ bool Entity::removeItemFromChestServer(Item* item, int count)
             if (count < item2->count)
             {
                 //Grab only one item from the chest.
-                int oldcount = item2->count;
+                const int oldcount = item2->count;
                 item2->count = oldcount - count;
                 if ( item2->count <= 0 )
                 {
@@ -2130,7 +2130,7 @@ void Entity::chestHandleDamageMagic(int damage, Entity &magicProjectile, Entity 
     if ( behavior == &actMonster )
     {
         Stat* stats = getStats();
-        bool oldHP = stats ? stats->HP : 0;
+        const bool oldHP = stats ? stats->HP : 0;
         modHP(-damage); // do the damage
 
         if ( stats && stats->HP <= 0 )

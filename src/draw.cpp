@@ -865,7 +865,7 @@ GLhalf* framebuffer::lock() {
     // map data from the current pixel buffer
     if (pbos[pboindex]) {
         GL_CHECK_ERR(glBindBuffer(GL_PIXEL_PACK_BUFFER, pbos[pboindex]));
-        auto result = GL_CHECK_ERR_RET(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY));
+        const auto result = GL_CHECK_ERR_RET(glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY));
         if (result) {
             mapped = true;
         }
@@ -964,7 +964,7 @@ void framebuffer::unbindForWriting() {
         GL_CHECK_ERR(glBindFramebuffer(GL_FRAMEBUFFER, 0));
         GL_CHECK_ERR(glViewport(0, 0, xres, yres));
     } else {
-        auto fb = fbStack.back();
+        const auto fb = fbStack.back();
         fbStack.pop_back();
         fb->bindForWriting();
     }
@@ -991,7 +991,7 @@ void framebuffer::unbindAll() {
 
 Uint32 getPixel(SDL_Surface* surface, int x, int y)
 {
-    int bpp = surface->format->BytesPerPixel;
+    const int bpp = surface->format->BytesPerPixel;
     // Here p is the address to the pixel we want to retrieve
     Uint8* p = static_cast<Uint8*>(surface->pixels) + y * surface->pitch + x * bpp;
 
@@ -1036,7 +1036,7 @@ Uint32 getPixel(SDL_Surface* surface, int x, int y)
 
 void putPixel(SDL_Surface* surface, int x, int y, Uint32 pixel)
 {
-    int bpp = surface->format->BytesPerPixel;
+    const int bpp = surface->format->BytesPerPixel;
     // Here p is the address to the pixel we want to set
     Uint8* p = static_cast<Uint8*>(surface->pixels) + y * surface->pitch + x * bpp;
 
@@ -1100,7 +1100,7 @@ SDL_Surface* flipSurface( SDL_Surface* surface, int flags )
     {
         for ( y = 0, ry = flipped->h - 1; y < flipped->h; y++, ry-- )
         {
-            Uint32 pixel = getPixel(surface, x, y);
+            const Uint32 pixel = getPixel(surface, x, y);
 
             // copy pixel
             if ( ( flags & FLIP_VERTICAL ) && ( flags & FLIP_HORIZONTAL ) )
@@ -1379,8 +1379,8 @@ int drawRect( SDL_Rect* src, Uint32 color, Uint8 alpha )
         secondsrc.h = yres;
         src = &secondsrc;
     }
-    Uint32 c = (color & 0x00ffffff) | (static_cast<Uint32>(alpha) << 24);
-    auto image = Image::get("images/system/white.png");
+    const Uint32 c = (color & 0x00ffffff) | (static_cast<Uint32>(alpha) << 24);
+    const auto image = Image::get("images/system/white.png");
     image->drawColor(nullptr, *src, SDL_Rect{0, 0, xres, yres}, c);
     return 0;
 }
@@ -1420,9 +1420,9 @@ void drawGear(Sint16 x, Sint16 y, real_t size, Sint32 rotation)
     const int num_teeth = 6;
     for ( int c = 0; c < num_teeth; c++ )
     {
-        real_t p = 180.0 / static_cast<real_t>(num_teeth);
-        real_t r = static_cast<real_t>(c) * (p * 2.0) + static_cast<real_t>(rotation);
-        real_t t = 4.0;
+        const real_t p = 180.0 / static_cast<real_t>(num_teeth);
+        const real_t r = static_cast<real_t>(c) * (p * 2.0) + static_cast<real_t>(rotation);
+        const real_t t = 4.0;
         drawScalingFilledArc(x, y, size, size,
             r,
             r + p,
@@ -1468,7 +1468,7 @@ void drawImageRotatedAlpha( SDL_Surface* image, SDL_Rect* src, SDL_Rect* pos, re
     if (!image || !pos) {
         return;
     }
-    Uint32 color = makeColor(255, 255, 255, alpha);
+    const Uint32 color = makeColor(255, 255, 255, alpha);
     Image::draw(texid[(long int)image->userdata], image->w, image->h,
         src, *pos, SDL_Rect{0, 0, xres, yres}, color, angle);
 }
@@ -1593,8 +1593,8 @@ SDL_Surface* scaleSurface(SDL_Surface* Surface, Uint16 Width, Uint16 Height)
 
     SDL_Surface* _ret = SDL_CreateRGBSurface(Surface->flags, Width, Height, Surface->format->BitsPerPixel, Surface->format->Rmask, Surface->format->Gmask, Surface->format->Bmask, Surface->format->Amask);
 
-    real_t _stretch_factor_x = static_cast<real_t>(Width) / static_cast<real_t>(Surface->w);
-    real_t _stretch_factor_y = static_cast<real_t>(Height) / static_cast<real_t>(Surface->h);
+    const real_t _stretch_factor_x = static_cast<real_t>(Width) / static_cast<real_t>(Surface->w);
+    const real_t _stretch_factor_y = static_cast<real_t>(Height) / static_cast<real_t>(Surface->h);
 
     for (Sint32 y = 0; y < Surface->h; y++)
         for (Sint32 x = 0; x < Surface->w; x++)
@@ -1648,15 +1648,15 @@ void drawLayer(long camx, long camy, int z, map_t* map)
 {
     SDL_Rect pos;
 
-    long minx = std::max<long int>(camx >> TEXTUREPOWER, 0);
-    long maxx = std::min<long int>((camx >> TEXTUREPOWER) + xres / TEXTURESIZE + 2, map->width); //TODO: Why are long int and unsigned int being compared?
-    long miny = std::max<long int>(camy >> TEXTUREPOWER, 0);
-    long maxy = std::min<long int>((camy >> TEXTUREPOWER) + yres / TEXTURESIZE + 2, map->height); //TODO: Why are long int and unsigned int being compared?
+    const long minx = std::max<long int>(camx >> TEXTUREPOWER, 0);
+    const long maxx = std::min<long int>((camx >> TEXTUREPOWER) + xres / TEXTURESIZE + 2, map->width); //TODO: Why are long int and unsigned int being compared?
+    const long miny = std::max<long int>(camy >> TEXTUREPOWER, 0);
+    const long maxy = std::min<long int>((camy >> TEXTUREPOWER) + yres / TEXTURESIZE + 2, map->height); //TODO: Why are long int and unsigned int being compared?
     for ( long y = miny; y < maxy; y++ )
     {
         for ( long x = minx; x < maxx; x++ )
         {
-            int index = map->tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map->height];
+            const int index = map->tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map->height];
             if ( index > 0)
             {
                 pos.x = static_cast<int>((x << TEXTUREPOWER) - camx);
@@ -1876,7 +1876,7 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
                         if ( !visible && !ins.fillWithColor )
                         {
                             // remote players fill in the map within 3x3 area, as they do not have ambient light
-                            real_t dist = pow(posx - inx2, 2) + pow(posy - iny2, 2);
+                            const real_t dist = pow(posx - inx2, 2) + pow(posy - iny2, 2);
                             if ( dist < 10.0 )
                             {
                                 visible = true;
@@ -1916,7 +1916,7 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
                         if ( !visible && !ins.fillWithColor )
                         {
                             // remote players fill in the map within 3x3 area, as they do not have ambient light
-                            real_t dist = pow(posx - inx2, 2) + pow(posy - iny2, 2);
+                            const real_t dist = pow(posx - inx2, 2) + pow(posy - iny2, 2);
                             if ( dist < 10.0 )
                             {
                                 visible = true;
@@ -1975,7 +1975,7 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
         return result;
     };
 
-    auto t = std::chrono::high_resolution_clock::now();
+    const auto t = std::chrono::high_resolution_clock::now();
 
     // shoot the rays
     const vec4_t* lightmap = lightmaps[0].data();
@@ -2011,7 +2011,7 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
         }
         for (int x = static_cast<int>(tasks.size()) - 1; x >= 0; --x) {
             auto out_list = tasks[x].get();
-            for (auto& it : out_list) {
+            for (const auto& it : out_list) {
                 minimap[it.y][it.x] = it.value;
             }
             tasks.pop_back();
@@ -2019,7 +2019,7 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
     } else {
         for (int x = 0; x < NumRays; x += NumRaysPerJob) {
             auto out_list = shoot_ray(ins_t{x, static_cast<int>(map.width), static_cast<int>(map.height), camera, map.tiles, lightmap, minimap, fillWithColor});
-            for (auto& it : out_list) {
+            for (const auto& it : out_list) {
                 minimap[it.y][it.x] = it.value;
             }
         }
@@ -2028,8 +2028,8 @@ void raycast(const view_t& camera, Sint8 (*minimap)[MINIMAP_MAX_DIMENSION], bool
 #ifndef EDITOR
     if (TimeTest) {
         TimeTest = false;
-        auto duration = std::chrono::high_resolution_clock::now() - t;
-        auto timer = std::chrono::duration_cast<std::chrono::microseconds>(duration).count();
+        const auto duration = std::chrono::high_resolution_clock::now() - t;
+        const auto timer = std::chrono::duration_cast<std::chrono::microseconds>(duration).count();
         messageLocalPlayers(MESSAGE_DEBUG, "Raycast took ~%llu microseconds", timer);
     }
 #endif
@@ -2083,7 +2083,7 @@ void drawEntities3D(view_t* camera, int mode)
     const bool ditheringDisabled = ticks - ditherDisabledTime < TICKS_PER_SECOND;
 
     node_t* nextnode = nullptr;
-    for ( node_t* node = map.entities->first; node != nullptr; node = nextnode )
+    for (const node_t* node = map.entities->first; node != nullptr; node = nextnode )
     {
         auto entity = static_cast<Entity*>(node->element);
         nextnode = node->next;
@@ -2366,12 +2366,12 @@ void drawEntities3D(view_t* camera, int mode)
     {
         if ( std::get<2>(distSpriteType) == SPRITE_ENTITY )
         {
-            auto entity = static_cast<Entity*>(std::get<1>(distSpriteType));
+            const auto entity = static_cast<Entity*>(std::get<1>(distSpriteType));
             if ( entity->behavior == &actSpriteNametag )
             {
                 if ( intro ) { continue; } // don't draw on main menu
 #ifndef EDITOR
-                auto parent = uidToEntity(entity->parent);
+                const auto parent = uidToEntity(entity->parent);
                 if (parent) {
                     if (multiplayer == CLIENT) {
 #ifdef USE_FMOD
@@ -2402,7 +2402,7 @@ void drawEntities3D(view_t* camera, int mode)
 #endif
                         if ( entity->skill[3] != 0 ) { continue; }
 
-                        auto stats = parent->behavior == &actPlayer ?
+                        const auto stats = parent->behavior == &actPlayer ?
                             parent->getStats() : (parent->clientsHaveItsStats ? parent->clientStats : nullptr);
                         if (stats && stats->name[0]) {
                             if ( parent->behavior == &actMonster && entity->skill[0] == clientnum && (!players[clientnum]->entity || parent->monsterAllyIndex != clientnum) )
@@ -2459,9 +2459,9 @@ void drawEntities3D(view_t* camera, int mode)
 #endif
                         if ( entity->skill[3] != 0 ) { continue; }
 
-                        auto stats = parent->getStats();
+                        const auto stats = parent->getStats();
                         if (stats && stats->name[0]) {
-                            auto player = stats->leader_uid ?
+                            const auto player = stats->leader_uid ?
                                 playerEntityMatchesUid(stats->leader_uid):
                                 playerEntityMatchesUid(entity->parent);
                             if (player >= 0 && (!stats->leader_uid || camera == &players[player]->camera())) {
@@ -2539,7 +2539,7 @@ void drawEntities3D(view_t* camera, int mode)
         {
 #ifndef EDITOR
             if ( intro ) { continue; } // don't draw on main menu
-            auto enemybar = static_cast<std::pair<Uint32, EnemyHPDamageBarHandler::EnemyHPDetails>*>(std::get<1>(distSpriteType));
+            const auto enemybar = static_cast<std::pair<Uint32, EnemyHPDamageBarHandler::EnemyHPDetails>*>(std::get<1>(distSpriteType));
             glDrawEnemyBarSprite(camera, mode, currentPlayerViewport, &enemybar->second);
 #endif
         }
@@ -2547,7 +2547,7 @@ void drawEntities3D(view_t* camera, int mode)
         {
 #ifndef EDITOR
             if ( intro ) { continue; } // don't draw on main menu
-            auto dialogue = static_cast<Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t*>(std::get<1>(distSpriteType));
+            const auto dialogue = static_cast<Player::WorldUI_t::WorldTooltipDialogue_t::Dialogue_t*>(std::get<1>(distSpriteType));
             glDrawWorldDialogueSprite(camera, dialogue, mode);
 #endif
         }
@@ -3299,7 +3299,7 @@ void drawEntities2D(long camx, long camy)
 
 void drawGrid(int camx, int camy)
 {
-    Uint32 color = makeColorRGB(127, 127, 127);
+    const Uint32 color = makeColorRGB(127, 127, 127);
     drawLine(-camx, (map.height << TEXTUREPOWER) - camy, (map.width << TEXTUREPOWER) - camx, (map.height << TEXTUREPOWER) - camy, color, 255);
     drawLine((map.width << TEXTUREPOWER) - camx, -camy, (map.width << TEXTUREPOWER) - camx, (map.height << TEXTUREPOWER) - camy, color, 255);
     for ( int y = 0; y < map.height; y++ )
@@ -3424,8 +3424,8 @@ void drawDepressed(int x1, int y1, int x2, int y2)
 
 void drawWindowFancy(int x1, int y1, int x2, int y2)
 {
-    auto white = Image::get("images/system/white.png");
-    auto backdrop = Image::get("images/system/fancyWindow.png");
+    const auto white = Image::get("images/system/white.png");
+    const auto backdrop = Image::get("images/system/fancyWindow.png");
 
     white->drawColor(nullptr, SDL_Rect{x1, y1, x2 - x1, y2 - y1},
          SDL_Rect{0, 0, xres, yres}, makeColorRGB(63, 63, 63));
@@ -3485,7 +3485,7 @@ SDL_Rect ttfPrintTextColor( TTF_Font* font, int x, int y, Uint32 color, bool out
     for (int c = 0; c < sizeof(buf) && ptr[c] != '\0'; ++c) {
         if (ptr[c] == '\n') {
             ptr[c] = '\0';
-            auto text = Text::get(ptr, filename, uint32ColorWhite, uint32ColorBlack);
+            const auto text = Text::get(ptr, filename, uint32ColorWhite, uint32ColorBlack);
             text->drawColor(SDL_Rect{0, 0, 0, 0}, SDL_Rect{x, y, 0, 0}, SDL_Rect{0, 0, xres, yres}, color);
             w = std::max(w, static_cast<int>(text->getWidth()));
             h = std::max(h, static_cast<int>(text->getHeight()));
@@ -3494,7 +3494,7 @@ SDL_Rect ttfPrintTextColor( TTF_Font* font, int x, int y, Uint32 color, bool out
         }
     }
     if (ptr < buf + sizeof(buf)) {
-        auto text = Text::get(ptr, filename, uint32ColorWhite, uint32ColorBlack);
+        const auto text = Text::get(ptr, filename, uint32ColorWhite, uint32ColorBlack);
         text->drawColor(SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ x, y, 0, 0 }, SDL_Rect{ 0, 0, xres, yres }, color);
         w = std::max(w, static_cast<int>(text->getWidth()));
         h = std::max(h, static_cast<int>(text->getHeight()));
@@ -3579,7 +3579,7 @@ void printText( SDL_Surface* font_bmp, int x, int y, const char* str )
     }
 
     // format the string
-    int numbytes = static_cast<int>(strlen(str));
+    const int numbytes = static_cast<int>(strlen(str));
 
     // define font dimensions
     dest.x = x;
@@ -3626,7 +3626,7 @@ void debugPrintText(int x, int y, const SDL_Rect& viewport, char const * const f
     va_list argptr;
     va_start(argptr, fmt);
     char str[1024] = {'\0'};
-    int size = vsnprintf(str, sizeof(str), fmt, argptr);
+    const int size = vsnprintf(str, sizeof(str), fmt, argptr);
     va_end(argptr);
 
     // define font dimensions
@@ -3666,7 +3666,7 @@ void printTextFormatted( SDL_Surface* font_bmp, int x, int y, char const * const
 
     // format the string
     va_start( argptr, fmt );
-    int numbytes = vsnprintf(str, 1023, fmt, argptr);
+    const int numbytes = vsnprintf(str, 1023, fmt, argptr);
     va_end( argptr );
 
     // define font dimensions
@@ -3729,7 +3729,7 @@ void printTextFormattedColor(SDL_Surface* font_bmp, int x, int y, Uint32 color, 
 
     // format the string
     va_start( argptr, fmt );
-    int numbytes = vsnprintf(str, 1023, fmt, argptr);
+    const int numbytes = vsnprintf(str, 1023, fmt, argptr);
     va_end( argptr );
 
     // define font dimensions
@@ -4067,7 +4067,7 @@ float foverflow() {
 }
 
 float toFloat32(GLhalf value) {
-    int s = (value >> 15) & 0x00000001;
+    const int s = (value >> 15) & 0x00000001;
     int e = (value >> 10) & 0x0000001f;
     int m = value & 0x000003ff;
 
@@ -4116,7 +4116,7 @@ float toFloat32(GLhalf value) {
 GLhalf toFloat16(float f) {
     uif32 entry;
     entry.f = f;
-    int i = static_cast<int>(entry.i);
+    const int i = static_cast<int>(entry.i);
 
     // Our floating point number, f, is represented by the bit
     // pattern in integer i.  Disassemble that bit pattern into
@@ -4125,7 +4125,7 @@ GLhalf toFloat16(float f) {
     // resulting half number.
     // Adjust e, accounting for the different exponent bias
     // of float and half (127 versus 15).
-    int s = (i >> 16) & 0x00008000;
+    const int s = (i >> 16) & 0x00008000;
     int e = ((i >> 23) & 0x000000ff) - (127 - 15);
     int m = i & 0x007fffff;
 

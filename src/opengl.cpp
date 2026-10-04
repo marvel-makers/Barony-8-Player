@@ -33,8 +33,8 @@ static ConsoleVariable<bool> cvar_fullBright("/fullbright", false);
 
 static void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar)
 {
-    GLdouble fH = tan(fovY / 360 * PI) * zNear;
-    GLdouble fW = fH * aspect;
+    const GLdouble fH = tan(fovY / 360 * PI) * zNear;
+    const GLdouble fW = fH * aspect;
 
     GL_CHECK_ERR(glFrustum(-fW, fW, -fH, fH, zNear, zFar));
 }
@@ -115,7 +115,7 @@ float length_vec4(const vec4_t* v) {
 }
 
 vec4_t* normal_vec4(vec4_t* result, const vec4_t* v) {
-    float length = length_vec4(v);
+    const float length = length_vec4(v);
     result->x = v->x / length;
     result->y = v->y / length;
     result->z = v->z / length;
@@ -376,7 +376,7 @@ bool invertMatrix4x4(mat4x4_t* result, const mat4x4_t* m)
 
     det = 1.f / det;
 
-    auto out = (float*)result;
+    const auto out = (float*)result;
     for (int i = 0; i < 16; ++i) {
         out[i] = inv[i] * det;
     }
@@ -395,8 +395,8 @@ vec4_t project(
     copy = vec4_copy(&result); mul_mat_vec4(&result, model, &copy);
     copy = vec4_copy(&result); mul_mat_vec4(&result, projview, &copy);
 
-    vec4 half(0.5f);
-    vec4 w(result.w);
+    const vec4 half(0.5f);
+    const vec4 w(result.w);
     div_vec4(&result, &result, &w);
     mul_vec4(&result, &result, &half);
     add_vec4(&result, &result, &half);
@@ -462,8 +462,8 @@ ClipResult project_clipped(
         clipResult.isBehind = true;
     }
 
-    vec4 half(0.5f);
-    vec4 div(w);
+    const vec4 half(0.5f);
+    const vec4 div(w);
     div_vec4(&result, &result, &div);
     mul_vec4(&result, &result, &half);
     add_vec4(&result, &result, &half);
@@ -527,8 +527,8 @@ ClipResult project_clipped2(
         clipResult.isBehind = true;
     }
 
-    vec4 half(0.5f);
-    vec4 div(w);
+    const vec4 half(0.5f);
+    const vec4 div(w);
     div_vec4(&result, &result, &div);
     mul_vec4(&result, &result, &half);
     add_vec4(&result, &result, &half);
@@ -547,7 +547,7 @@ vec4_t unproject(
     result.x = (result.x - window->x) / window->z;
     result.y = (result.y - window->y) / window->w;
 
-    vec4 half(0.5f);
+    const vec4 half(0.5f);
     sub_vec4(&result, &result, &half);
     div_vec4(&result, &result, &half);
 
@@ -555,8 +555,8 @@ vec4_t unproject(
     mat4x4_t inv;
     invertMatrix4x4(&inv, projview);
     copy = vec4_copy(&result); mul_mat_vec4(&result, &inv, &copy);
-    
-    vec4 w(result.w);
+
+    const vec4 w(result.w);
     div_vec4(&result, &result, &w);
 
     return result;
@@ -578,8 +578,8 @@ static void fillSmoothLightmap(int which, map_t& map) {
     }
 #endif
 
-    auto lightmap = lightmaps[which].data();
-    auto lightmapSmoothed = lightmapsSmoothed[which].data();
+    const auto lightmap = lightmaps[which].data();
+    const auto lightmapSmoothed = lightmapsSmoothed[which].data();
     
     constexpr float epsilon = 1.f;
     constexpr float defaultSmoothRate = 4.f;
@@ -636,7 +636,7 @@ static inline bool testTileOccludes(const map_t& map, int index) {
 }
 
 static void loadLightmapTexture(int which, map_t& map) {
-    auto lightmapSmoothed = lightmapsSmoothed[which].data();
+    const auto lightmapSmoothed = lightmapsSmoothed[which].data();
     
     // allocate lightmap pixel data
     static std::vector<float> pixels;
@@ -677,7 +677,7 @@ static void loadLightmapTexture(int which, map_t& map) {
                     if ( total.w > 0.01 )
                     {
 #ifndef EDITOR
-                        float shade = std::min(1.f, (total.w / count) * div);
+                        const float shade = std::min(1.f, (total.w / count) * div);
                         total.x -= total.x * shade * cvar_shade_factor->x;
                         total.y -= total.y * shade * cvar_shade_factor->y;
                         total.z -= total.z * shade * cvar_shade_factor->z;
@@ -726,8 +726,8 @@ static void uploadUniforms(Shader& shader, float* proj, float* view, float* mapD
     GL_CHECK_ERR(glUniform1f(shader.uniform("uFogDistance"), fogDistance));
 #else
     if (shader == spriteUIShader) {
-        float fogDistance = 0.f;
-        float fogColor[4] = { 1.f, 1.f, 1.f, 1.f };
+        const float fogDistance = 0.f;
+        const float fogColor[4] = { 1.f, 1.f, 1.f, 1.f };
         GL_CHECK_ERR(glUniform4fv(shader.uniform("uFogColor"), 1, fogColor));
         GL_CHECK_ERR(glUniform1f(shader.uniform("uFogDistance"), fogDistance));
     } else {
@@ -1213,7 +1213,7 @@ void glEndCamera(view_t* camera, bool useHDR, map_t& map)
         
         // calculate luminance
         camera->fb[fbIndex].bindForReading();
-        auto pixels = camera->fb[fbIndex].lock();
+        const auto pixels = camera->fb[fbIndex].lock();
         if (pixels) {
             // functor for crawling through the framebuffer collecting samples
             auto fn = [](GLhalf* pixels, GLhalf* end, const int step) {
@@ -2461,7 +2461,7 @@ void glDrawWorld(view_t* camera, int mode)
     if (allowChunkRebuild) {
         if ( chunksToBuild.size() > 0 )
         {
-            bool rebuildClouds = shouldDrawClouds(map); // force check for clouds regardless of fog so we don't rebuild the map wrong
+            const bool rebuildClouds = shouldDrawClouds(map); // force check for clouds regardless of fog so we don't rebuild the map wrong
             for (auto& pair : chunksToBuild) {
                 auto& chunk = *pair.second;
                 chunk.build(map, !rebuildClouds, chunk.x, chunk.y, chunk.w, chunk.h);
@@ -2471,7 +2471,7 @@ void glDrawWorld(view_t* camera, int mode)
     
     // draw chunks
     for (auto& chunk : chunks) {
-        auto& dither = chunk.dithering[camera];
+        const auto& dither = chunk.dithering[camera];
         if (dither.value) {
             if (mode == REALCOLORS) {
                 if (dither.value == 10) {
@@ -2541,7 +2541,7 @@ unsigned int GO_GetPixelU32(int x, int y, view_t& camera)
     }
     
 #ifndef EDITOR
-    float fogDistance = *cvar_fogDistance;
+    const float fogDistance = *cvar_fogDistance;
     *cvar_fogDistance = 0.f;
 #endif
     if (dirty) {

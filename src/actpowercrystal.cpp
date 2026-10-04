@@ -53,11 +53,11 @@ void actPowerCrystal(Entity* my)
 void Entity::actPowerCrystal()
 {
     //Entity* entity;
-    real_t upper_z = this->crystalStartZ - 0.4;
-    real_t lower_z = crystalStartZ + 0.4;
+    const real_t upper_z = this->crystalStartZ - 0.4;
+    const real_t lower_z = crystalStartZ + 0.4;
     int i = 0;
 
-    real_t acceleration = 0.95;
+    const real_t acceleration = 0.95;
 
     if ( ticks == 1 )
     {

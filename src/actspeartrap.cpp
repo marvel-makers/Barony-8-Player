@@ -141,9 +141,9 @@ void actSpearTrap(Entity* my)
             }
             else if ( SPEARTRAP_OUTTIME == 1 )
             {
-                for ( node_t* node = map.creatures->first; node != nullptr; node = node->next ) //Searching explicitly for players and monsters, so search only creature list, not map.entities.
+                for (const node_t* node = map.creatures->first; node != nullptr; node = node->next ) //Searching explicitly for players and monsters, so search only creature list, not map.entities.
                 {
-                    auto entity = static_cast<Entity*>(node->element);
+                    const auto entity = static_cast<Entity*>(node->element);
                     if ( entity->behavior == &actPlayer || entity->behavior == &actMonster )
                     {
                         Stat* stats = entity->getStats();
@@ -161,7 +161,7 @@ void actSpearTrap(Entity* my)
                                 // do damage!
                                 if ( entity->behavior == &actPlayer )
                                 {
-                                    Uint32 color = makeColorRGB(255, 0, 0);
+                                    const Uint32 color = makeColorRGB(255, 0, 0);
                                     messagePlayerColor(entity->skill[2], MESSAGE_STATUS, color, Language::get(586));
                                     if ( players[entity->skill[2]]->isLocalPlayer() )
                                     {
@@ -188,10 +188,10 @@ void actSpearTrap(Entity* my)
                                 {
                                     damage *= 1.5;
                                 }
-                                int trapResist = entity->getEntityBonusTrapResist();
+                                const int trapResist = entity->getEntityBonusTrapResist();
                                 if ( trapResist != 0 )
                                 {
-                                    real_t mult = std::max(0.0, 1.0 - (trapResist / 100.0));
+                                    const real_t mult = std::max(0.0, 1.0 - (trapResist / 100.0));
                                     damage *= mult;
                                 }
 
@@ -209,7 +209,7 @@ void actSpearTrap(Entity* my)
                                     playSoundEntity(entity, 28, 64);
                                     spawnGib(entity);
 
-                                    Sint32 oldHP = stats->HP;
+                                    const Sint32 oldHP = stats->HP;
                                     entity->modHP(-damage);
 
                                     if ( oldHP > stats->HP )

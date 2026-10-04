@@ -31,7 +31,7 @@ void Entity::initMonster(int mySprite)
         {
             if ( myStats->type != NOTHING )
             {
-                int specialNPCModel = MonsterData_t::getSpecialNPCBaseModel(*myStats);
+                const int specialNPCModel = MonsterData_t::getSpecialNPCBaseModel(*myStats);
                 if ( specialNPCModel != 0 )
                 {
                     sprite = specialNPCModel;
@@ -40,13 +40,13 @@ void Entity::initMonster(int mySprite)
                 {
                     if ( skill[3] != 0 ) // MONSTER_INIT, loading a savefile
                     {
-                        auto key = MonsterData_t::getKeyFromSprite(sprite);
+                        const auto key = MonsterData_t::getKeyFromSprite(sprite);
                         if ( myStats->sex == sex_t::MALE )
                         {
                             if ( key == "monster female" )
                             {
                                 // need to swap
-                                int newsprite = MonsterData_t::getSpriteFromKey(sprite, "monster male");
+                                const int newsprite = MonsterData_t::getSpriteFromKey(sprite, "monster male");
                                 if ( newsprite != 0 )
                                 {
                                     sprite = newsprite;
@@ -58,7 +58,7 @@ void Entity::initMonster(int mySprite)
                             if ( key == "monster male" )
                             {
                                 // need to swap
-                                int newsprite = MonsterData_t::getSpriteFromKey(sprite, "monster female");
+                                const int newsprite = MonsterData_t::getSpriteFromKey(sprite, "monster female");
                                 if ( newsprite != 0 )
                                 {
                                     sprite = newsprite;
@@ -76,7 +76,7 @@ void Entity::initMonster(int mySprite)
     flags[BLOCKSIGHT] = true;
     flags[INVISIBLE] = false;
 
-    Monster monsterType = this->getMonsterTypeFromSprite();
+    const Monster monsterType = this->getMonsterTypeFromSprite();
 
     if (monsterType != SPIDER) {
         focalx = limbs[monsterType][0][0];
@@ -284,8 +284,8 @@ void Entity::initMonster(int mySprite)
 
 Monster Entity::getMonsterTypeFromSprite() const
 {
-    Sint32 mySprite = this->sprite;
-    Monster result = Entity::getMonsterTypeFromSprite(mySprite);
+    const Sint32 mySprite = this->sprite;
+    const Monster result = Entity::getMonsterTypeFromSprite(mySprite);
     if ( result != NOTHING )
     {
         if ( flags[SPRITE] )
@@ -301,7 +301,7 @@ Monster Entity::getMonsterTypeFromSprite() const
 
 Monster Entity::getMonsterTypeFromSprite(const int sprite)
 {
-    Sint32 mySprite = sprite;
+    const Sint32 mySprite = sprite;
     static std::unordered_map<Sint32, Monster> spriteToMonster;
     if ( spriteToMonster.empty() ) {
         for ( int c = 0; c < NUMMONSTERS; ++c ) {
@@ -313,7 +313,7 @@ Monster Entity::getMonsterTypeFromSprite(const int sprite)
         }
     }
 
-    auto find = spriteToMonster.find(mySprite);
+    const auto find = spriteToMonster.find(mySprite);
     if ( find != spriteToMonster.end() ) {
         return find->second;
     }
@@ -426,7 +426,7 @@ void Entity::removeMonsterDeathNodes()
         nextnode = node->next;
         if ( node->element != nullptr && i >= 2 )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             if ( entity->light != nullptr )
             {
                 list_RemoveNode(entity->light->node);
@@ -444,8 +444,8 @@ void Entity::spawnBlood(int bloodSprite)
 {
     if ( spawn_blood || bloodSprite != 160 )
     {
-        int tileX = std::min<unsigned int>(std::max<int>(0, this->x / 16), map.width - 1);
-        int tileY = std::min<unsigned int>(std::max<int>(0, this->y / 16), map.height - 1);
+        const int tileX = std::min<unsigned int>(std::max<int>(0, this->x / 16), map.width - 1);
+        const int tileY = std::min<unsigned int>(std::max<int>(0, this->y / 16), map.height - 1);
         if ( map.tiles[tileY * MAP_LAYERS + tileX * MAP_LAYERS * map.height] )
         {
             if ( !checkObstacle(this->x, this->y, this, nullptr) )
@@ -484,7 +484,7 @@ int MonsterData_t::getSpriteFromKey(int sprite, std::string key, int type)
     }
 
     auto& data = monsterDataEntries[type];
-    auto find = data.keyToSpriteLookup.find(key);
+    const auto find = data.keyToSpriteLookup.find(key);
     if ( find == data.keyToSpriteLookup.end() ) {
         return 0;
     }
@@ -511,7 +511,7 @@ std::string& MonsterData_t::getKeyFromSprite(int sprite, int type)
     }
 
     auto& data = monsterDataEntries[type];
-    auto find = data.iconSpritesAndPaths.find(sprite);
+    const auto find = data.iconSpritesAndPaths.find(sprite);
     if ( find == data.iconSpritesAndPaths.end() ) {
         return keyDefaultString;
     }
@@ -533,7 +533,7 @@ std::string& MonsterData_t::getAllyIconFromSprite(int sprite, int type)
     }
     
     auto& data = monsterDataEntries[type];
-    auto find = data.iconSpritesAndPaths.find(sprite);
+    const auto find = data.iconSpritesAndPaths.find(sprite);
     if (find == data.iconSpritesAndPaths.end()) {
         return data.defaultIconPath;
     } else {
@@ -543,7 +543,7 @@ std::string& MonsterData_t::getAllyIconFromSprite(int sprite, int type)
 
 int MonsterData_t::getSpecialNPCBaseModel(Stat& myStats)
 {
-    std::string npcValue = myStats.getAttribute("special_npc");
+    const std::string npcValue = myStats.getAttribute("special_npc");
     if ( npcValue != "" )
     {
         return monsterDataEntries[myStats.type].specialNPCs[npcValue].baseModel;
@@ -553,7 +553,7 @@ int MonsterData_t::getSpecialNPCBaseModel(Stat& myStats)
 
 std::string MonsterData_t::getSpecialNPCName(Stat& myStats)
 {
-    std::string npcValue = myStats.getAttribute("special_npc");
+    const std::string npcValue = myStats.getAttribute("special_npc");
     if ( npcValue != "" )
     {
         return monsterDataEntries[myStats.type].specialNPCs[npcValue].name;

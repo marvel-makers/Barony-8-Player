@@ -45,11 +45,11 @@ void clickDescription(int player, Entity* entity)
             return;
         }
 
-        Sint32 mx = inputs.getMouse(player, Inputs::OX);
-        Sint32 my = inputs.getMouse(player, Inputs::OY);
+        const Sint32 mx = inputs.getMouse(player, Inputs::OX);
+        const Sint32 my = inputs.getMouse(player, Inputs::OY);
         auto& inventoryUI = players[player]->inventoryUI;
 
-        auto& camera = cameras[player];
+        const auto& camera = cameras[player];
 
         if ( mx < camera.winx || mx >= camera.winx + camera.winw || my < camera.winy || my >= camera.winy + camera.winh )
         {
@@ -69,7 +69,7 @@ void clickDescription(int player, Entity* entity)
 
         input.consumeBinaryToggle("InspectWithMouse");
 
-        Uint32 uidnum = GO_GetPixelU32(mx, yres - my, cameras[player]);
+        const Uint32 uidnum = GO_GetPixelU32(mx, yres - my, cameras[player]);
         entity = uidToEntity(uidnum);
     }
 
@@ -298,7 +298,7 @@ void clickDescription(int player, Entity* entity)
                     int wallLockMaterial = entity->wallLockMaterial;
                     if ( entity->sprite >= 1585 && entity->sprite <= 1592 )
                     {
-                        if ( Entity* parent = uidToEntity(entity->parent) )
+                        if (const Entity* parent = uidToEntity(entity->parent) )
                         {
                             wallLockState = parent->wallLockState;
                             wallLockMaterial = parent->wallLockMaterial;

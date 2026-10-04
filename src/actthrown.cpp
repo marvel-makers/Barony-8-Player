@@ -55,7 +55,7 @@ void onThrownLandingParticle(Entity* my)
 {
     if ( my )
     {
-        int itemType = THROWN_TYPE;
+        const int itemType = THROWN_TYPE;
         if ( itemType >= WOODEN_SHIELD && itemType < NUMITEMS )
         {
             if ( items[itemType].category == POTION )
@@ -2637,13 +2637,13 @@ void thrownItemUpdateSpellTrail(Entity& my, real_t _x, real_t _y)
 {
     if ( my.sprite == items[DUST_BALL].index )
     {
-        auto findEffects = particleTimerEffects.find(my.thrownProjectileParticleTimerUID);
+        const auto findEffects = particleTimerEffects.find(my.thrownProjectileParticleTimerUID);
         if ( findEffects != particleTimerEffects.end() )
         {
-            if ( auto spellTimer = uidToEntity(my.thrownProjectileParticleTimerUID) )
+            if (const auto spellTimer = uidToEntity(my.thrownProjectileParticleTimerUID) )
             {
-                int x = static_cast<int>(_x) / 16;
-                int y = static_cast<int>(_y) / 16;
+                const int x = static_cast<int>(_x) / 16;
+                const int y = static_cast<int>(_y) / 16;
                 bool freeSpot = true;
                 Uint32 lastTick = 1;
                 for ( auto& eff : findEffects->second.effectMap )
@@ -2662,8 +2662,8 @@ void thrownItemUpdateSpellTrail(Entity& my, real_t _x, real_t _y)
                     {
                         effect.firstEffect = true;
                     }
-                    int spellID = spellTimer->particleTimerVariable2;
-                    auto particleEffectType = (spellID == SPELL_MYCELIUM_BOMB || spellID == SPELL_MYCELIUM_SPORES)
+                    const int spellID = spellTimer->particleTimerVariable2;
+                    const auto particleEffectType = (spellID == SPELL_MYCELIUM_BOMB || spellID == SPELL_MYCELIUM_SPORES)
                         ? ParticleTimerEffect_t::EffectType::EFFECT_MYCELIUM
                         : ParticleTimerEffect_t::EffectType::EFFECT_SPORES;
                     effect.effectType = particleEffectType;

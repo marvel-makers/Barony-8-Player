@@ -106,19 +106,19 @@ void GameModeManager_t::Tutorial_t::buttonReturnToTutorialHub(button_t* my)
 
 void GameModeManager_t::Tutorial_t::buttonRestartTrial(button_t* my)
 {
-    std::string mapname = map.name;
+    const std::string mapname = map.name;
     if ( mapname.find("Tutorial Hub") == std::string::npos
         && mapname.find("Tutorial ") != std::string::npos )
     {
         buttonStartSingleplayer(nullptr);
-        std::string number = mapname.substr(mapname.find("Tutorial ") + strlen("Tutorial "), 2);
+        const std::string number = mapname.substr(mapname.find("Tutorial ") + strlen("Tutorial "), 2);
         std::string filename = "tutorial";
         filename.append(std::to_string(stoi(number)));
         filename.append(".lmp");
         gameModeManager.Tutorial.setTutorialMap(filename);
         gameModeManager.Tutorial.dungeonLevel = currentlevel;
 
-        int tutorialNum = stoi(number);
+        const int tutorialNum = stoi(number);
         if ( tutorialNum > 0 && tutorialNum <= gameModeManager.Tutorial.kNumTutorialLevels )
         {
             gameModeManager.Tutorial.onMapRestart(tutorialNum);
@@ -460,7 +460,7 @@ void GameModeManager_t::CurrentSession_t::SeededRun_t::setup(std::string _seedSt
         seedString = "";
         return;
     }
-    int num = atoi(_seedString.c_str());
+    const int num = atoi(_seedString.c_str());
     if ( num == 0 )
     {
         seed = djb2Hash(const_cast<char*>(_seedString.c_str()));
@@ -623,7 +623,7 @@ void GameModeManager_t::CurrentSession_t::SeededRun_t::readSeedNamesFromFile()
     }
 
     char buf[10000];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -663,7 +663,7 @@ bool IRCHandler_t::readFromFile()
             return false;
         }
         char buf[65536];
-        int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+        const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
         buf[count] = '\0';
         rapidjson::StringStream is(buf);
         FileIO::close(fp);
@@ -758,7 +758,7 @@ int IRCHandler_t::packetSend(std::string data)
     {
         return -1;
     }
-    int sentBytes = SDLNet_TCP_Send(net_ircsocket, data.data(), data.length());
+    const int sentBytes = SDLNet_TCP_Send(net_ircsocket, data.data(), data.length());
     return sentBytes;
 }
 
@@ -774,7 +774,7 @@ int IRCHandler_t::packetReceive()
         if ( SDLNet_SocketReady(net_ircsocketset) )
         {
             std::fill(recvBuffer.begin(), recvBuffer.end(), '\0');
-            int receiveLen = SDLNet_TCP_Recv(net_ircsocket, &recvBuffer[0], MAX_BUFFER_LEN);
+            const int receiveLen = SDLNet_TCP_Recv(net_ircsocket, &recvBuffer[0], MAX_BUFFER_LEN);
             if ( receiveLen <= 0 )
             {
                 printlog("[IRCHandler]: Error in packetReceive: %s", SDLNet_GetError());
@@ -821,14 +821,14 @@ void IRCHandler_t::handleMessage(std::string& msg)
         return;
     }
 
-    std::string msgPrefix = "PRIVMSG #" + auth.chatroom + " :";
-    auto findMsg = msg.find(msgPrefix);
+    const std::string msgPrefix = "PRIVMSG #" + auth.chatroom + " :";
+    const auto findMsg = msg.find(msgPrefix);
     if ( findMsg != std::string::npos )
     {
         if ( msg.find("!") != std::string::npos )
         {
-            std::string user = msg.substr(1, msg.find("!") - 1);
-            std::string formattedMsg = msg.substr(msgPrefix.length() + findMsg);
+            const std::string user = msg.substr(1, msg.find("!") - 1);
+            const std::string formattedMsg = msg.substr(msgPrefix.length() + findMsg);
             messagePlayer(clientnum, MESSAGE_MISC, "IRC: [@%s]: %s", user.c_str(), formattedMsg.c_str());
         }
         return;
@@ -2366,7 +2366,7 @@ int ItemTooltips_t::getSpellDamageOrHealAmount(const int player, spell_t* spell,
     {
         return 0;
     }
-    node_t* rootNode = spell->elements.first;
+    const node_t* rootNode = spell->elements.first;
     spellElement_t* elementRoot = nullptr;
     if ( rootNode )
     {
@@ -2379,7 +2379,7 @@ int ItemTooltips_t::getSpellDamageOrHealAmount(const int player, spell_t* spell,
     real_t damageMult = 1.0;
     if ( elementRoot )
     {
-        node_t* primaryNode = elementRoot->elements.first;
+        const node_t* primaryNode = elementRoot->elements.first;
         if ( primaryNode )
         {
             primaryElement = static_cast<spellElement_t*>(primaryNode->element);
@@ -2451,7 +2451,7 @@ std::string ItemTooltips_t::getSpellDescriptionText(const int player, Item& item
 #ifdef EDITOR
     return defaultString;
 #else
-    spell_t* spell = getSpellFromItem(player, &item, false);
+    const spell_t* spell = getSpellFromItem(player, &item, false);
     if ( !spell || spellItems.find(spell->ID) == spellItems.end() )
     {
         return defaultString;
@@ -2783,7 +2783,7 @@ std::string ItemTooltips_t::getSpellIconText(const int player, Item& item, const
     }
     else if ( itemCategory(&item) == MAGICSTAFF )
     {
-        for ( auto& s : spellItems )
+        for (const auto& s : spellItems )
         {
             if ( s.second.magicstaffId == item.type )
             {
@@ -2837,7 +2837,7 @@ std::string ItemTooltips_t::getSpellIconText(const int player, Item& item, const
     }
     else if ( spell->ID == SPELL_BREATHE_FIRE )
     {
-        std::string result = getSpellIconFormatText(player, item, str, spell, 0, compendiumTooltipIntro);
+        const std::string result = getSpellIconFormatText(player, item, str, spell, 0, compendiumTooltipIntro);
         if ( result != "" )
         {
             str = result;
@@ -2853,7 +2853,7 @@ std::string ItemTooltips_t::getSpellIconText(const int player, Item& item, const
     }
     else if ( spellItems[spell->ID].spellFormatTags.size() )
     {
-        std::string result = getSpellIconFormatText(player, item, str, spell, 0, compendiumTooltipIntro);
+        const std::string result = getSpellIconFormatText(player, item, str, spell, 0, compendiumTooltipIntro);
         if ( result != "" )
         {
             str = result;
@@ -2868,14 +2868,14 @@ std::string ItemTooltips_t::getSpellIconText(const int player, Item& item, const
 
 real_t ItemTooltips_t::getSpellSustainCostPerSecond(int spellID)
 {
-    real_t cost = 0.0;
-    if ( auto spell = getSpellFromID(spellID) )
+    const real_t cost = 0.0;
+    if (const auto spell = getSpellFromID(spellID) )
     {
         if ( spell_isChanneled(spell) )
         {
             if ( spell->elements.first )
             {
-                if (auto element = static_cast<spellElement_t*>(spell->elements.first->element) )
+                if (const auto element = static_cast<spellElement_t*>(spell->elements.first->element) )
                 {
                     if ( element->channeledMana > 0 )
                     {
@@ -2916,7 +2916,7 @@ std::string& ItemTooltips_t::getSpellTypeString(const int player, Item& item)
 #ifdef EDITOR
     return defaultString;
 #else
-    spell_t* spell = getSpellFromItem(player, &item, false);
+    const spell_t* spell = getSpellFromItem(player, &item, false);
     if ( !spell )
     {
         return defaultString;
@@ -2978,7 +2978,7 @@ std::string ItemTooltips_t::getCostOfSpellString(const int player, Item& item)
     memset(buf, 0, sizeof(buf));
     if ( spell->ID == SPELL_DOMINATE )
     {
-        std::string templateName = "template_spell_cost_dominate";
+        const std::string templateName = "template_spell_cost_dominate";
         std::string str;
         for ( auto it = templates[templateName].begin();
             it != templates[templateName].end(); ++it )
@@ -2993,7 +2993,7 @@ std::string ItemTooltips_t::getCostOfSpellString(const int player, Item& item)
     }
     else if ( spell->ID == SPELL_DEMON_ILLUSION )
     {
-        std::string templateName = "template_spell_cost_demon_illusion";
+        const std::string templateName = "template_spell_cost_demon_illusion";
         std::string str;
         for ( auto it = templates[templateName].begin();
             it != templates[templateName].end(); ++it )
@@ -3009,7 +3009,7 @@ std::string ItemTooltips_t::getCostOfSpellString(const int player, Item& item)
     else if ( spell->ID == SPELL_LEAD_BOLT || spell->ID == SPELL_MERCURY_BOLT
         || spell->ID == SPELL_FORGE_METAL_SCRAP || spell->ID == SPELL_FORGE_MAGIC_SCRAP )
     {
-        std::string templateName = "template_spell_cost_gold";
+        const std::string templateName = "template_spell_cost_gold";
         std::string str;
         for ( auto it = templates[templateName].begin();
             it != templates[templateName].end(); ++it )
@@ -3025,7 +3025,7 @@ std::string ItemTooltips_t::getCostOfSpellString(const int player, Item& item)
     else
     {
         std::string templateName = "template_spell_cost";
-        real_t sustainCostPerSecond = getSpellSustainCostPerSecond(spell->ID);
+        const real_t sustainCostPerSecond = getSpellSustainCostPerSecond(spell->ID);
         if ( sustainCostPerSecond > 0.01 )
         {
             templateName = "template_spell_cost_sustained";
@@ -3105,11 +3105,11 @@ std::string ItemTooltips_t::getSpellIconPath(const int player, Item& item, int s
 #ifdef EDITOR
     return "items/images/null.png";
 #else
-    node_t* spellImageNode = nullptr;
+    const node_t* spellImageNode = nullptr;
     if ( itemCategory(&item) == MAGICSTAFF )
     {
-        spell_t* spell = nullptr;
-        for ( auto& s : spellItems )
+        const spell_t* spell = nullptr;
+        for (const auto& s : spellItems )
         {
             if ( s.second.magicstaffId == item.type )
             {
@@ -3146,7 +3146,7 @@ std::string ItemTooltips_t::getSpellIconPath(const int player, Item& item, int s
         }
         else
         {
-            spell_t* spell = getSpellFromItem(player, &item, false);
+            const spell_t* spell = getSpellFromItem(player, &item, false);
             if ( spell )
             {
                 spellImageNode = getSpellNodeFromSpellID(spell->ID);
@@ -3159,7 +3159,7 @@ std::string ItemTooltips_t::getSpellIconPath(const int player, Item& item, int s
     }
     if ( spellImageNode )
     {
-        auto string = static_cast<string_t*>(spellImageNode->element);
+        const auto string = static_cast<string_t*>(spellImageNode->element);
         if ( string )
         {
             return string->data;
@@ -3369,7 +3369,7 @@ Sint32 getStatAttributeBonusFromItem(const int player, Item& item, std::string& 
 {
 #ifndef EDITOR
     Sint32 stat = 0;
-    bool cursedItemIsBuff = shouldInvertEquipmentBeatitude(stats[player]);
+    const bool cursedItemIsBuff = shouldInvertEquipmentBeatitude(stats[player]);
     if ( item.beatitude >= 0 || cursedItemIsBuff )
     {
         stat += items[item.type].attributes[attribute];
@@ -6705,21 +6705,21 @@ void ItemTooltips_t::getWordIndexesItemDetails(void* field, std::string& str, st
         }
     }
 
-    for ( auto& p : positiveIndexes )
+    for (const auto& p : positiveIndexes )
     {
-        Uint32 color = tooltip.positiveTextColor;
+        const Uint32 color = tooltip.positiveTextColor;
         static_cast<Field*>(field)->addWordToHighlight(p.first, color);
         //messagePlayer(0, "Positives: %d", p.first);
     }
-    for ( auto& n : negativeIndexes )
+    for (const auto& n : negativeIndexes )
     {
-        Uint32 color = tooltip.negativeTextColor;
+        const Uint32 color = tooltip.negativeTextColor;
         static_cast<Field*>(field)->addWordToHighlight(n.first, color);
         //messagePlayer(0, "Negatives: %d", n.first);
     }
-    for ( auto& h : highlightIndexes )
+    for (const auto& h : highlightIndexes )
     {
-        Uint32 color = tooltip.statusEffectTextColor;
+        const Uint32 color = tooltip.statusEffectTextColor;
         static_cast<Field*>(field)->addWordToHighlight(h.first, color);
         //messagePlayer(0, "Highlights: %d", h.first);
     }
@@ -6744,7 +6744,7 @@ void ItemTooltips_t::stripOutPositiveNegativeItemDetails(std::string& str, std::
         {
             if ( std::next(it) != str.end() )
             {
-                char peekCharacter = *(std::next(it));
+                const char peekCharacter = *(std::next(it));
                 if ( !(peekCharacter >= '0' && peekCharacter <= '9') )
                 {
                     sign = 0; // don't highlight +text, only +0 numbers
@@ -7018,10 +7018,10 @@ void StatueManager_t::refreshAllStatues()
 {
 #ifndef EDITOR
     node_t* nextnode = nullptr;
-    for ( node_t* node = map.entities->first; node; node = nextnode )
+    for (const node_t* node = map.entities->first; node; node = nextnode )
     {
         nextnode = node->next;
-        auto entity = static_cast<Entity*>(node->element);
+        const auto entity = static_cast<Entity*>(node->element);
         if ( entity->behavior == &actStatue )
         {
             entity->statueInit = 0;
@@ -7029,7 +7029,7 @@ void StatueManager_t::refreshAllStatues()
             for ( node_t* node2 = entity->children.first; node2; node2 = nextnode2 )
             {
                 nextnode2 = node2->next;
-                auto entity2 = static_cast<Entity*>(node2->element);
+                const auto entity2 = static_cast<Entity*>(node2->element);
                 list_RemoveNode(entity2->mynode);
                 list_RemoveNode(node2);
             }
@@ -7040,8 +7040,8 @@ void StatueManager_t::refreshAllStatues()
 
 void StatueManager_t::readAllStatues()
 {
-    std::string baseDir = "data/statues";
-    auto files = physfsGetFileNamesInDirectory(baseDir.c_str());
+    const std::string baseDir = "data/statues";
+    const auto files = physfsGetFileNamesInDirectory(baseDir.c_str());
     for ( auto& file : files )
     {
         std::string checkFile = baseDir + '/' + file;
@@ -7091,7 +7091,7 @@ void StatueManager_t::readStatueFromFile(int index, std::string filename)
             return;
         }
         char buf[65536];
-        int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+        const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
         buf[count] = '\0';
         rapidjson::StringStream is(buf);
         FileIO::close(fp);
@@ -7105,7 +7105,7 @@ void StatueManager_t::readStatueFromFile(int index, std::string filename)
         }
         int version = d["version"].GetInt();
         Uint32 statueId = d["statue_id"].GetUint();
-        auto findStatue = allStatues.find(statueId);
+        const auto findStatue = allStatues.find(statueId);
         if ( findStatue != allStatues.end() )
         {
             allStatues.erase(findStatue);
@@ -7145,7 +7145,7 @@ void StatueManager_t::readStatueFromFile(int index, std::string filename)
 void DebugTimers_t::printAllTimepoints()
 {
     int posy = 100;
-    for ( auto& keyValue : timepoints )
+    for (const auto& keyValue : timepoints )
     {
         printTimepoints(keyValue.first, posy);
         posy += 16;
@@ -7157,15 +7157,15 @@ void DebugTimers_t::printTimepoints(std::string key, int& posy)
     if ( !font8x8_bmp || intro ) {
         return;
     }
-    auto& points = timepoints[key];
+    const auto& points = timepoints[key];
     if ( points.empty() ) { return; }
-    int starty = posy;
+    const int starty = posy;
     int index = 0;
     std::string output = "";
     auto previousPoint = points[0];
     for ( auto& point : points )
     {
-        double timediff = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(point.second - previousPoint.second).count();
+        const double timediff = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(point.second - previousPoint.second).count();
         char outputBuf[1024] = "";
         snprintf(outputBuf, sizeof(outputBuf), "[%d]['%s'] %4.5fms\n", index, point.first.c_str(), timediff);
         output += outputBuf;
@@ -7388,11 +7388,11 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
 
         auto& glyphData = keyValue.second;
 
-        Image* base = Image::get(unpressedPath.c_str());
+        const Image* base = Image::get(unpressedPath.c_str());
         if ( base->getWidth() != 0 )
         {
             // successfully loaded, do unpressed glyph
-            auto srcSurf = const_cast<SDL_Surface*>(base->getSurf());
+            const auto srcSurf = const_cast<SDL_Surface*>(base->getSurf());
             SDL_Rect pos{ 0, 0, static_cast<int>(base->getWidth()), static_cast<int>(base->getHeight()) };
             SDL_Surface* sprite = SDL_CreateRGBSurface(0, pos.w, pos.h, 32,
                 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
@@ -7405,11 +7405,11 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
             {
                 keyPath.erase(0, 1);
             }
-            auto key = Image::get(keyPath.c_str());
+            const auto key = Image::get(keyPath.c_str());
             if ( key->getWidth() != 0 )
             {
                 // successfully loaded
-                auto keySurf = const_cast<SDL_Surface*>(key->getSurf());
+                const auto keySurf = const_cast<SDL_Surface*>(key->getSurf());
                 SDL_Rect keyPos{ 0, 0, static_cast<int>(key->getWidth()), static_cast<int>(key->getHeight()) };
                 keyPos.x = pos.w / 2 - keyPos.w / 2;
                 keyPos.y = keyValue.second.render_offsety;
@@ -7452,7 +7452,7 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
         if ( base->getWidth() != 0 )
         {
             // successfully loaded, do pressed glyph
-            auto srcSurf = const_cast<SDL_Surface*>(base->getSurf());
+            const auto srcSurf = const_cast<SDL_Surface*>(base->getSurf());
             SDL_Rect pos{ 0, 0, static_cast<int>(base->getWidth()), static_cast<int>(base->getHeight()) };
             SDL_Surface* sprite = SDL_CreateRGBSurface(0, pos.w, pos.h, 32,
                 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
@@ -7465,11 +7465,11 @@ void GlyphRenderer_t::renderGlyphsToPNGs()
             {
                 keyPath.erase(0, 1);
             }
-            auto key = Image::get(keyPath.c_str());
+            const auto key = Image::get(keyPath.c_str());
             if ( key->getWidth() != 0 )
             {
                 // successfully loaded
-                auto keySurf = const_cast<SDL_Surface*>(key->getSurf());
+                const auto keySurf = const_cast<SDL_Surface*>(key->getSurf());
                 SDL_Rect keyPos{ 0, 0, static_cast<int>(key->getWidth()), static_cast<int>(key->getHeight()) };
                 keyPos.x = pos.w / 2 - keyPos.w / 2;
                 keyPos.y = keyValue.second.render_offsety;
@@ -7517,8 +7517,8 @@ void ScriptTextParser_t::readAllScripts()
 {
     allEntries.clear();
 
-    std::string baseDir = "/data/scripts";
-    auto files = physfsGetFileNamesInDirectory(baseDir.c_str());
+    const std::string baseDir = "/data/scripts";
+    const auto files = physfsGetFileNamesInDirectory(baseDir.c_str());
     for ( auto& file : files )
     {
         std::string checkFile = baseDir + '/' + file;
@@ -9862,7 +9862,7 @@ void ClassHotbarConfig_t::readFromFile(ClassHotbarConfig_t::HotbarConfigType fil
     }
 
     static char buf[140000];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -10010,7 +10010,7 @@ void ClassHotbarConfig_t::init()
 
 void ClassHotbarConfig_t::assignHotbarSlots(const int player)
 {
-    int classnum = client_classes[player];
+    const int classnum = client_classes[player];
     auto& layoutDefault = players[player]->hotbar.useHotbarFaceMenu ? ClassHotbarsDefault[classnum].layoutModern : ClassHotbarsDefault[classnum].layoutClassic;
     auto& layoutCustom = players[player]->hotbar.useHotbarFaceMenu ? ClassHotbars[classnum].layoutModern : ClassHotbars[classnum].layoutClassic;
 
@@ -10080,9 +10080,9 @@ void ClassHotbarConfig_t::assignHotbarSlots(const int player)
         MatchingItem_t() {};
     };
     std::map<int, MatchingItem_t> matchingItems;
-    for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item )
         {
             int itemType = item->type;
@@ -10092,7 +10092,7 @@ void ClassHotbarConfig_t::assignHotbarSlots(const int player)
                 {
                     continue; // shaman form spells
                 }
-                if ( spell_t* spell = getSpellFromItem(player, item, false) )
+                if (const spell_t* spell = getSpellFromItem(player, item, false) )
                 {
                     itemType = spell->ID + 10000;
                 }
@@ -10143,7 +10143,7 @@ void LocalAchievements_t::readFromFile()
     }
 
     static char buf[65536 * 2];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -10273,11 +10273,11 @@ void LocalAchievements_t::updateAchievement(const char* name, const bool unlocke
     if ( achievements.find(name) != achievements.end() )
     {
         auto& ach = achievements[name];
-        bool oldUnlocked = ach.unlocked;
+        const bool oldUnlocked = ach.unlocked;
         ach.unlocked = unlocked;
         if ( ach.unlocked && !oldUnlocked )
         {
-            auto t = getTime();
+            const auto t = getTime();
             ach.unlockTime = t;
 
             UIToastNotificationManager.createAchievementNotification(name);
@@ -10335,9 +10335,9 @@ void GameplayPreferences_t::sendToClients(const int targetPlayer)
     net_packet->data[4] = static_cast<Uint8>(player);
     net_packet->data[5] = static_cast<Uint8>(GPREF_ENUM_END);
     int index = 0;
-    for ( auto& pref : preferences )
+    for (const auto& pref : preferences )
     {
-        Uint8 data = (pref.value & 0xFF);
+        const Uint8 data = (pref.value & 0xFF);
         net_packet->data[6 + index] = data;
         ++index;
     }
@@ -10353,14 +10353,14 @@ void GameplayPreferences_t::receivePacket()
     {
         return;
     }
-    int player = net_packet->data[4];
+    const int player = net_packet->data[4];
     if ( player >= 0 && player < MAXPLAYERS )
     {
         auto& playerPrefs = gameplayPreferences[player];
         const int numPrefs = net_packet->data[5];
         for ( int i = 0; i < numPrefs && i < GPREF_ENUM_END; ++i )
         {
-            int data = (net_packet->data[6 + i] & 0xFF);
+            const int data = (net_packet->data[6 + i] & 0xFF);
             playerPrefs.preferences[i].value = data;
             playerPrefs.preferences[i].needsUpdate = false;
             //messagePlayer(clientnum, MESSAGE_DEBUG, "%d rcv: %d : %d", player, i, playerPrefs.preferences[i].value);
@@ -10383,7 +10383,7 @@ void GameplayPreferences_t::sendToServer()
     int index = 0;
     for ( auto& pref : preferences )
     {
-        Uint8 data = (pref.value & 0xFF);
+        const Uint8 data = (pref.value & 0xFF);
         net_packet->data[6 + index] = data;
         ++index;
         pref.needsUpdate = false;
@@ -10605,9 +10605,9 @@ void GameplayPreferences_t::serverUpdateGameConfig()
             strcpy((char*)net_packet->data, "GOPT");
             net_packet->data[4] = static_cast<Uint8>(GOPT_ENUM_END);
             int index = 0;
-            for ( auto& conf : gameConfig )
+            for (const auto& conf : gameConfig )
             {
-                Uint8 data = (conf.value & 0xFF);
+                const Uint8 data = (conf.value & 0xFF);
                 net_packet->data[5 + index] = data;
                 ++index;
             }
@@ -10626,7 +10626,7 @@ void GameplayPreferences_t::receiveGameConfig()
     const int numConfigs = net_packet->data[4];
     for ( int i = 0; i < numConfigs && i < GOPT_ENUM_END; ++i )
     {
-        int data = (net_packet->data[5 + i] & 0xFF);
+        const int data = (net_packet->data[5 + i] & 0xFF);
         gameConfig[i].value = data;
         gameConfig[i].needsUpdate = false;
         //messagePlayer(clientnum, MESSAGE_DEBUG, "GOPT %d rcv: %d", i, gameConfig[i].value);
@@ -10644,7 +10644,7 @@ void GameplayPreferences_t::serverProcessGameConfig()
         {
             case GOPT_ARACHNOPHOBIA:
             {
-                int oldValue = getGameConfigValue(static_cast<GameConfigIndexes>(pref));
+                const int oldValue = getGameConfigValue(static_cast<GameConfigIndexes>(pref));
                 for ( int i = 0; i < MAXPLAYERS; ++i )
                 {
                     if ( !client_disconnected[i] && gameplayPreferences[i].isInit )
@@ -10679,7 +10679,7 @@ void GameplayPreferences_t::serverProcessGameConfig()
             }
             case GOPT_COLORBLIND:
             {
-                int oldValue = getGameConfigValue(static_cast<GameConfigIndexes>(pref));
+                const int oldValue = getGameConfigValue(static_cast<GameConfigIndexes>(pref));
                 for ( int i = 0; i < MAXPLAYERS; ++i )
                 {
                     if ( !client_disconnected[i] && gameplayPreferences[i].isInit )
@@ -11345,7 +11345,7 @@ bool Mods::verifyMapFiles(const char* folder, bool ignoreBaseFolder)
     for ( auto& f : directoryContents(fullpath.c_str(), false, true) )
     {
         const std::string mapPath = "maps/" + f;
-        auto path = PHYSFS_getRealDir(mapPath.c_str());
+        const auto path = PHYSFS_getRealDir(mapPath.c_str());
         if ( path && ignoreBaseFolder && !strcmp(path, "./") )
         {
             continue;
@@ -11366,7 +11366,7 @@ bool Mods::verifyMapFiles(const char* folder, bool ignoreBaseFolder)
         {
             int maphash = 0;
             const std::string fullMapPath = path + (PHYSFS_getDirSeparator() + mapPath);
-            int result = loadMap(fullMapPath.c_str(), &m, m.entities, m.creatures, &maphash);
+            const int result = loadMap(fullMapPath.c_str(), &m, m.entities, m.creatures, &maphash);
             if ( result >= 0 ) {
                 bool fileExistsInTable = false;
                 if ( !verifyMapHash(fullMapPath.c_str(), maphash, &fileExistsInTable) )
@@ -11786,7 +11786,7 @@ void Mods::loadMods()
     {
         int modelsIndexUpdateStart = 1;
         int modelsIndexUpdateEnd = nummodels;
-        bool oldModelCache = useModelCache;
+        const bool oldModelCache = useModelCache;
         useModelCache = false;
         physfsModelIndexUpdate(modelsIndexUpdateStart, modelsIndexUpdateEnd);
         for (int c = modelsIndexUpdateStart; c < modelsIndexUpdateEnd && c < nummodels; ++c) {
@@ -11891,7 +11891,7 @@ void Mods::loadMods()
     updateLoadingScreen(70);
     doLoadingScreen();
 
-    std::string langDirectory = PHYSFS_getRealDir("lang/en.txt");
+    const std::string langDirectory = PHYSFS_getRealDir("lang/en.txt");
     if ( langDirectory.compare("./") != 0 )
     {
         if ( Language::reloadLanguage() != 0 )
@@ -11988,7 +11988,7 @@ void Mods::writeLevelsTxtAndPreview(std::string modFolder)
     path.append(PHYSFS_getDirSeparator()).append("mods/").append(modFolder);
     if ( access(path.c_str(), F_OK) == 0 )
     {
-        std::string writeFile = modFolder + "/maps/levels.txt";
+        const std::string writeFile = modFolder + "/maps/levels.txt";
         PHYSFS_File* physfp = PHYSFS_openWrite(writeFile.c_str());
         if ( physfp != nullptr )
         {
@@ -12037,7 +12037,7 @@ void Mods::writeLevelsTxtAndPreview(std::string modFolder)
 
         std::string srcImage = datadir;
         srcImage.append("images/system/preview.png");
-        std::string dstImage = path + "/preview.png";
+        const std::string dstImage = path + "/preview.png";
         if ( access(srcImage.c_str(), F_OK) == 0 )
         {
             if ( File* fp_read = FileIO::open(srcImage.c_str(), "rb") )
@@ -12090,7 +12090,7 @@ int Mods::createBlankModDirectory(std::string foldername)
     {
         if ( PHYSFS_mkdir(foldername.c_str()) )
         {
-            std::string dir = foldername;
+            const std::string dir = foldername;
             std::string folder = "/books";
             PHYSFS_mkdir((dir + folder).c_str());
             folder = "/editor";
@@ -12151,10 +12151,10 @@ int EquipmentModelOffsets_t::modelOffsetExists(int monster, int sprite, int mons
 {
     if ( monsterSprite >= NUMMONSTERS )
     {
-        auto find = monsterModelsMap.find(monsterSprite);
+        const auto find = monsterModelsMap.find(monsterSprite);
         if ( find != monsterModelsMap.end() )
         {
-            auto find2 = find->second.find(sprite);
+            const auto find2 = find->second.find(sprite);
             if ( find2 != find->second.end() )
             {
                 return monsterSprite;
@@ -12162,10 +12162,10 @@ int EquipmentModelOffsets_t::modelOffsetExists(int monster, int sprite, int mons
         }
     }
     {
-        auto find = monsterModelsMap.find(monster);
+        const auto find = monsterModelsMap.find(monster);
         if ( find != monsterModelsMap.end() )
         {
-            auto find2 = find->second.find(sprite);
+            const auto find2 = find->second.find(sprite);
             if ( find2 != find->second.end() )
             {
                 return monster;
@@ -12182,14 +12182,14 @@ EquipmentModelOffsets_t::ModelOffset_t& EquipmentModelOffsets_t::getModelOffset(
 
 int EquipmentModelOffsets_t::expandHelmToFitMask(int monster, int helmSprite, int maskSprite, int monsterSprite)
 {
-    if ( int resultMonsterSprite = modelOffsetExists(monster, maskSprite, monsterSprite) )
+    if (const int resultMonsterSprite = modelOffsetExists(monster, maskSprite, monsterSprite) )
     {
-        auto& maskOffset = getModelOffset(resultMonsterSprite, maskSprite);
+        const auto& maskOffset = getModelOffset(resultMonsterSprite, maskSprite);
         if ( maskOffset.oversizedMask )
         {
             if ( modelOffsetExists(resultMonsterSprite, helmSprite, 0) )
             {
-                auto& helmOffset = getModelOffset(resultMonsterSprite, helmSprite);
+                const auto& helmOffset = getModelOffset(resultMonsterSprite, helmSprite);
                 if ( helmOffset.expandToFitMask )
                 {
                     return resultMonsterSprite;
@@ -12202,7 +12202,7 @@ int EquipmentModelOffsets_t::expandHelmToFitMask(int monster, int helmSprite, in
 
 int EquipmentModelOffsets_t::maskHasAdjustmentForExpandedHelm(int monster, int helmSprite, int maskSprite, int monsterSprite)
 {
-    if ( int resultMonsterSprite = modelOffsetExists(monster, maskSprite, monsterSprite) )
+    if (const int resultMonsterSprite = modelOffsetExists(monster, maskSprite, monsterSprite) )
     {
         auto& maskOffset = getModelOffset(resultMonsterSprite, maskSprite);
         if ( maskOffset.adjustToExpandedHelm.find(helmSprite) != maskOffset.adjustToExpandedHelm.end() )
@@ -12220,7 +12220,7 @@ int EquipmentModelOffsets_t::maskHasAdjustmentForExpandedHelm(int monster, int h
 EquipmentModelOffsets_t::ModelOffset_t::AdditionalOffset_t EquipmentModelOffsets_t::getExpandHelmOffset(int monster, 
     int helmSprite, int maskSprite)
 {
-    if ( int resultMonsterSprite = modelOffsetExists(monster, helmSprite, 0) )
+    if (const int resultMonsterSprite = modelOffsetExists(monster, helmSprite, 0) )
     {
         auto& helmOffset = getModelOffset(resultMonsterSprite, helmSprite);
         if ( helmOffset.adjustToOversizeMask.find(maskSprite) != helmOffset.adjustToOversizeMask.end() )
@@ -12238,7 +12238,7 @@ EquipmentModelOffsets_t::ModelOffset_t::AdditionalOffset_t EquipmentModelOffsets
 EquipmentModelOffsets_t::ModelOffset_t::AdditionalOffset_t EquipmentModelOffsets_t::getMaskOffsetForExpandHelm(int monster, 
     int helmSprite, int maskSprite)
 {
-    if ( int resultMonsterSprite = modelOffsetExists(monster, maskSprite, 0) )
+    if (const int resultMonsterSprite = modelOffsetExists(monster, maskSprite, 0) )
     {
         auto& maskOffset = getModelOffset(resultMonsterSprite, maskSprite);
         if ( maskOffset.adjustToExpandedHelm.find(helmSprite) != maskOffset.adjustToExpandedHelm.end() )
@@ -12276,7 +12276,7 @@ void EquipmentModelOffsets_t::readBaseItemsFromFile()
     }
 
     static char buf[32000];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -12307,7 +12307,7 @@ void EquipmentModelOffsets_t::readBaseItemsFromFile()
             {
                 continue;
             }
-            auto itemType = static_cast<ItemType>(ItemTooltips.itemNameStringToItemID[itemName]);
+            const auto itemType = static_cast<ItemType>(ItemTooltips.itemNameStringToItemID[itemName]);
             std::vector<int> models;
             if ( it2->value.HasMember("models") )
             {
@@ -12333,9 +12333,9 @@ void EquipmentModelOffsets_t::readBaseItemsFromFile()
                 }
             }
 
-            real_t focalx = it2->value.HasMember("focalx") ? it2->value["focalx"].GetDouble() : 0.0;
-            real_t focaly = it2->value.HasMember("focaly") ? it2->value["focaly"].GetDouble() : 0.0;
-            real_t focalz = it2->value.HasMember("focalz") ? it2->value["focalz"].GetDouble() : 0.0;
+            const real_t focalx = it2->value.HasMember("focalx") ? it2->value["focalx"].GetDouble() : 0.0;
+            const real_t focaly = it2->value.HasMember("focaly") ? it2->value["focaly"].GetDouble() : 0.0;
+            const real_t focalz = it2->value.HasMember("focalz") ? it2->value["focalz"].GetDouble() : 0.0;
             real_t scalex = 0.0;
             if ( it2->value.HasMember("scalex") )
             {
@@ -13237,7 +13237,7 @@ void Compendium_t::readContentsLang(std::string name, std::map<std::string, std:
     }
 
     char buf[65536];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -13320,12 +13320,12 @@ void Compendium_t::AchievementData_t::readContentsLang()
 
 void Compendium_t::updateTooltip()
 {
-    bool update = tooltipNeedUpdate;
+    const bool update = tooltipNeedUpdate;
     tooltipNeedUpdate = false;
 
     if ( MainMenu::main_menu_frame )
     {
-        auto compendiumFrame = MainMenu::main_menu_frame->findFrame("compendium");
+        const auto compendiumFrame = MainMenu::main_menu_frame->findFrame("compendium");
         if ( !compendiumFrame ) { return; }
         
         players[MainMenu::getMenuOwner()]->inventoryUI.updateInventoryItemTooltip(compendiumFrame);
@@ -13337,9 +13337,9 @@ void Compendium_t::updateTooltip()
 
         if ( Frame* tooltipContainerFrame = compendiumFrame->findFrame("player tooltip container 0") )
         {
-            if ( auto prompt = tooltipContainerFrame->findFrame("item_widget") )
+            if (const auto prompt = tooltipContainerFrame->findFrame("item_widget") )
             {
-                if ( auto tooltip = tooltipContainerFrame->findFrame("player tooltip 0") )
+                if (const auto tooltip = tooltipContainerFrame->findFrame("player tooltip 0") )
                 {
                     if ( tooltip->getSize().w == 0 )
                     {
@@ -13403,7 +13403,7 @@ void Compendium_t::readItemsTranslationsFromFile(bool forceLoadBaseDirectory)
     }
 
     char buf[120000];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -13729,7 +13729,7 @@ void Compendium_t::readMagicTranslationsFromFile(bool forceLoadBaseDirectory)
     }
 
     char buf[120000];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -14239,7 +14239,7 @@ void Compendium_t::readCodexTranslationsFromFile(bool forceLoadBaseDirectory)
     }
 
     char buf[120000];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -14589,7 +14589,7 @@ void Compendium_t::readWorldTranslationsFromFile(bool forceLoadBaseDirectory)
     }
 
     char buf[120000];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -15003,7 +15003,7 @@ void Compendium_t::readMonstersTranslationsFromFile(bool forceLoadBaseDirectory)
     }
 
     char buf[120000];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -15078,7 +15078,7 @@ void Compendium_t::readMonstersFromFile(bool forceLoadBaseDirectory)
     }
 
     char buf[120000];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -15362,7 +15362,7 @@ void Compendium_t::Events_t::readEventsTranslations()
     }
 
     char buf[120000];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -16452,7 +16452,7 @@ void Compendium_t::Events_t::loadItemsSaveData()
 
     const int bufSize = 360000;
     char buf[bufSize];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -16483,7 +16483,7 @@ void Compendium_t::Events_t::loadItemsSaveData()
         for ( auto itr2 = itr->value.MemberBegin(); itr2 != itr->value.MemberEnd(); ++itr2 )
         {
             int itemType = std::stoi(itr2->name.GetString());
-            Sint32 value = itr2->value.GetInt();
+            const Sint32 value = itr2->value.GetInt();
             if ( itemType >= kEventMonsterOffset && itemType < kEventMonsterOffset + 1000 )
             {
                 eventUpdateMonster(0, id, nullptr, value, true, itemType);
@@ -16521,12 +16521,12 @@ void Compendium_t::Events_t::loadItemsSaveData()
     }
     if ( CompendiumEntries.migrateOldSkillIndexes )
     {
-        int oldClass = client_classes[0];
-        std::vector<int> skillIndexes = { PRO_MYSTICISM, PRO_SORCERY, PRO_THAUMATURGY };
+        const int oldClass = client_classes[0];
+        const std::vector<int> skillIndexes = { PRO_MYSTICISM, PRO_SORCERY, PRO_THAUMATURGY };
         for ( int i = 0; i < NUMCLASSES; ++i )
         {
             client_classes[0] = i;
-            for ( auto skillID : skillIndexes )
+            for (const auto skillID : skillIndexes )
             {
                 const char* skillstr = Compendium_t::getSkillStringForCompendium(skillID);
                 if ( strcmp(skillstr, "") )
@@ -16552,7 +16552,7 @@ static ConsoleCommand ccmd_compendium_dummy_data(
         {
             return;
         }
-        int playernum = atoi(argv[1]);
+        const int playernum = atoi(argv[1]);
         Compendium_t::Events_t::createDummyClientData(playernum);
     });
 void Compendium_t::Events_t::createDummyClientData(const int playernum)
@@ -16574,7 +16574,7 @@ void Compendium_t::Events_t::createDummyClientData(const int playernum)
     }
     for ( auto& pair : eventMonsterLookup  )
     {
-        for ( auto monster : pair.second )
+        for (const auto monster : pair.second )
         {
             eventUpdateMonster(playernum, pair.first, nullptr, 1, false, monster);
         }
@@ -16590,7 +16590,7 @@ void Compendium_t::Events_t::createDummyClientData(const int playernum)
     {
         if ( eventClassIds.find(pair.first) != eventClassIds.end() )
         {
-            int oldclass = client_classes[playernum];
+            const int oldclass = client_classes[playernum];
             for ( int c = 0; c < NUMCLASSES; ++c )
             {
                 client_classes[playernum] = c;
@@ -16732,7 +16732,7 @@ void Compendium_t::readUnlocksSaveData()
 
     const int bufSize = 200000;
     char buf[bufSize];
-    int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
+    const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf) - 1);
     buf[count] = '\0';
     rapidjson::StringStream is(buf);
     FileIO::close(fp);
@@ -16959,7 +16959,7 @@ void Compendium_t::Events_t::writeItemsSaveData()
 
 bool Compendium_t::Events_t::EventVal_t::applyValue(const Sint32 val)
 {
-    bool first = firstValue;
+    const bool first = firstValue;
     firstValue = false;
     if ( type == SUM )
     {
@@ -17055,8 +17055,8 @@ void Compendium_t::Events_t::updateEventsInMainLoop(const int playernum)
 
     if ( ticks % TICKS_PER_SECOND == 25 )
     {
-        auto entity = players[playernum]->entity;
-        auto myStats = stats[playernum];
+        const auto entity = players[playernum]->entity;
+        const auto myStats = stats[playernum];
         {
             real_t resistance = 100.0 * Entity::getDamageTableMultiplier(entity, *myStats, DAMAGE_TABLE_MAGIC);
             resistance = -(resistance - 100.0);
@@ -17116,18 +17116,18 @@ void Compendium_t::Events_t::updateEventsInMainLoop(const int playernum)
         }
 
         {
-            bool oldDefending = myStats->defending;
+            const bool oldDefending = myStats->defending;
             myStats->defending = false;
 
-            Sint32 ac = AC(myStats);
+            const Sint32 ac = AC(myStats);
 
-            Sint32 con = myStats->CON;
+            const Sint32 con = myStats->CON;
             myStats->CON = 0;
             int numBlessings = 0;
-            Sint32 acFromArmor = AC(myStats);
+            const Sint32 acFromArmor = AC(myStats);
 
-            real_t targetACEffectiveness = Entity::getACEffectiveness(entity, myStats, true, nullptr, nullptr, numBlessings);
-            int effectiveness = targetACEffectiveness * 100.0;
+            const real_t targetACEffectiveness = Entity::getACEffectiveness(entity, myStats, true, nullptr, nullptr, numBlessings);
+            const int effectiveness = targetACEffectiveness * 100.0;
 
             myStats->CON = con;
             myStats->defending = oldDefending;
@@ -17148,15 +17148,15 @@ void Compendium_t::Events_t::updateEventsInMainLoop(const int playernum)
 
         {
             int skillID = NUMPROFICIENCIES;
-            if ( auto spell = players[playernum]->magic.selectedSpell() )
+            if (const auto spell = players[playernum]->magic.selectedSpell() )
             {
                 skillID = spell->skillID;
             }
 
             {
                 // base PWR INT Bonus
-                real_t bonus = getSpellBonusFromCasterINT(entity, myStats, skillID) * 100.0;
-                real_t val = bonus;
+                const real_t bonus = getSpellBonusFromCasterINT(entity, myStats, skillID) * 100.0;
+                const real_t val = bonus;
                 eventUpdateCodex(playernum, CPDM_CLASS_PWR_MAX, "pwr", static_cast<int>(val));
             }
 
@@ -17164,15 +17164,15 @@ void Compendium_t::Events_t::updateEventsInMainLoop(const int playernum)
             {
                 real_t val = (getBonusFromCasterOfSpellElement(entity, myStats, nullptr, SPELL_NONE, NUMPROFICIENCIES) * 100.0);
                 // look for damage/healing spell bonus for mitre/magus hat
-                if ( auto spell = getSpellFromID(SPELL_FIREBALL) )
+                if (const auto spell = getSpellFromID(SPELL_FIREBALL) )
                 {
                     val = std::max(val, getBonusFromCasterOfSpellElement(entity, myStats, nullptr, SPELL_FIREBALL, spell->skillID) * 100.0);
                 }
-                if ( auto spell = getSpellFromID(SPELL_HEALING) )
+                if (const auto spell = getSpellFromID(SPELL_HEALING) )
                 {
                     val = std::max(val, getBonusFromCasterOfSpellElement(entity, myStats, nullptr, SPELL_HEALING, spell->skillID) * 100.0);
                 }
-                real_t bonus = getSpellBonusFromCasterINT(entity, myStats, skillID);
+                const real_t bonus = getSpellBonusFromCasterINT(entity, myStats, skillID);
                 val -= bonus * 100.0;
                 eventUpdateCodex(playernum, CPDM_PWR_MAX_EQUIP, "pwr", static_cast<int>(val));
             }
@@ -17183,9 +17183,9 @@ void Compendium_t::Events_t::updateEventsInMainLoop(const int playernum)
     {
         int weight = 0;
         int numDeathBoxes = 0;
-        for ( node_t* node = stats[playernum]->inventory.first; node != nullptr; node = node->next )
+        for (const node_t* node = stats[playernum]->inventory.first; node != nullptr; node = node->next )
         {
-            auto item = static_cast<Item*>(node->element);
+            const auto item = static_cast<Item*>(node->element);
             if ( !item )
             {
                 continue;
@@ -17398,14 +17398,14 @@ void Player::CompendiumProgress_t::updateFloorEvents()
     {
         if ( p1.first >= 0 && p1.first < Compendium_t::EventTags::CPDM_EVENT_TAGS_MAX )
         {
-            auto tag = static_cast<Compendium_t::EventTags>(p1.first);
+            const auto tag = static_cast<Compendium_t::EventTags>(p1.first);
             for ( auto& p2 : p1.second )
             {
                 const char* category = p2.first.c_str();
-                for ( auto& p3 : p2.second )
+                for (const auto& p3 : p2.second )
                 {
-                    int eventID = p3.first;
-                    Sint32 value = p3.second;
+                    const int eventID = p3.first;
+                    const Sint32 value = p3.second;
                     if ( eventID >= Compendium_t::Events_t::kEventCodexOffset && eventID <= Compendium_t::Events_t::kEventCodexOffsetMax )
                     {
                         Compendium_t::Events_t::eventUpdateCodex(player.playernum, tag, category, value, false);
@@ -17460,9 +17460,9 @@ void Compendium_t::Events_t::onLevelChangeEvent(const int playernum, const int p
             if ( stats[playernum] )
             {
                 int numDeathBoxes = 0;
-                for ( node_t* node = stats[playernum]->inventory.first; node; node = node->next )
+                for (const node_t* node = stats[playernum]->inventory.first; node; node = node->next )
                 {
-                    auto item = static_cast<Item*>(node->element);
+                    const auto item = static_cast<Item*>(node->element);
                     if ( !item )
                     {
                         continue;
@@ -17667,12 +17667,12 @@ void Compendium_t::Events_t::eventUpdate(int playernum, const EventTags tag, con
 
     if ( multiplayer == SINGLE && playernum != 0 ) { return; }
 
-    auto find = events.find(tag);
+    const auto find = events.find(tag);
     if ( find == events.end() )
     {
         return;
     }
-    auto& def = find->second;
+    const auto& def = find->second;
 
     bool clientReceiveUpdateFromServer = false;
 
@@ -17722,7 +17722,7 @@ void Compendium_t::Events_t::eventUpdate(int playernum, const EventTags tag, con
         itemType = kEventSpellOffset + spellID;
     }
 
-    auto find2 = eventItemLookup[tag].find(itemType);
+    const auto find2 = eventItemLookup[tag].find(itemType);
     if ( find2 == eventItemLookup[tag].end() )
     {
         return;
@@ -17732,7 +17732,7 @@ void Compendium_t::Events_t::eventUpdate(int playernum, const EventTags tag, con
 
     if ( def.eventTrackingType == EventTrackingType::ONCE_PER_RUN && !loadingValue )
     {
-        auto find = players[playernum]->compendiumProgress.itemEvents[def.name].find(itemType);
+        const auto find = players[playernum]->compendiumProgress.itemEvents[def.name].find(itemType);
         if ( find != players[playernum]->compendiumProgress.itemEvents[def.name].end() )
         {
             // already present, skip adding
@@ -17815,8 +17815,8 @@ void Compendium_t::Events_t::eventUpdate(int playernum, const EventTags tag, con
                 }
                 if ( monsterUnlock != NOTHING )
                 {
-                    int monsterId = Compendium_t::Events_t::kEventMonsterOffset + monsterUnlock;
-                    auto find = Compendium_t::Events_t::monsterIDToString.find(monsterId);
+                    const int monsterId = Compendium_t::Events_t::kEventMonsterOffset + monsterUnlock;
+                    const auto find = Compendium_t::Events_t::monsterIDToString.find(monsterId);
                     if ( find != Compendium_t::Events_t::monsterIDToString.end() )
                     {
                         auto& unlockStatus = Compendium_t::CompendiumMonsters_t::unlocks[find->second];
@@ -17837,7 +17837,7 @@ void Compendium_t::Events_t::eventUpdate(int playernum, const EventTags tag, con
                     itemUnlocked = true;
                 }
             }
-            auto find = itemIDToString.find(itemType);
+            const auto find = itemIDToString.find(itemType);
             if ( find != itemIDToString.end() )
             {
                 auto& unlockStatus = Compendium_t::CompendiumItems_t::unlocks[find->second];
@@ -17873,12 +17873,12 @@ void Compendium_t::Events_t::eventUpdateMonster(int playernum, const EventTags t
 
     if ( multiplayer == SINGLE && playernum != 0 ) { return; }
 
-    auto find = events.find(tag);
+    const auto find = events.find(tag);
     if ( find == events.end() )
     {
         return;
     }
-    auto& def = find->second;
+    const auto& def = find->second;
 
     bool clientReceiveUpdateFromServer = false;
 
@@ -17926,7 +17926,7 @@ void Compendium_t::Events_t::eventUpdateMonster(int playernum, const EventTags t
     }
     else if ( entity && entity->behavior == &actMonster )
     {
-        if ( auto stats = entity->getStats() )
+        if (const auto stats = entity->getStats() )
         {
             if ( stats->type == GNOME && stats->getAttribute("gnome_type").find("gnome2") != std::string::npos )
             {
@@ -17962,7 +17962,7 @@ void Compendium_t::Events_t::eventUpdateMonster(int playernum, const EventTags t
         monsterType += kEventMonsterOffset; // convert to offset
     }
 
-    auto find2 = eventMonsterLookup[tag].find(monsterType);
+    const auto find2 = eventMonsterLookup[tag].find(monsterType);
     if ( find2 == eventMonsterLookup[tag].end() )
     {
         return;
@@ -17976,7 +17976,7 @@ void Compendium_t::Events_t::eventUpdateMonster(int playernum, const EventTags t
 
     if ( def.eventTrackingType == EventTrackingType::ONCE_PER_RUN && !loadingValue )
     {
-        auto find = players[playernum]->compendiumProgress.itemEvents[def.name].find(monsterType);
+        const auto find = players[playernum]->compendiumProgress.itemEvents[def.name].find(monsterType);
         if ( find != players[playernum]->compendiumProgress.itemEvents[def.name].end() )
         {
             // already present, skip adding
@@ -18021,7 +18021,7 @@ void Compendium_t::Events_t::eventUpdateMonster(int playernum, const EventTags t
 
     if ( playernum == clientnum )
     {
-        auto find = monsterIDToString.find(monsterType);
+        const auto find = monsterIDToString.find(monsterType);
         if ( find != monsterIDToString.end() )
         {
             auto& unlockStatus = Compendium_t::CompendiumMonsters_t::unlocks[find->second];
@@ -18046,12 +18046,12 @@ void Compendium_t::Events_t::eventUpdateWorld(int playernum, const EventTags tag
         return;
     }
 
-    auto find = events.find(tag);
+    const auto find = events.find(tag);
     if ( find == events.end() )
     {
         return;
     }
-    auto& def = find->second;
+    const auto& def = find->second;
 
     bool clientReceiveUpdateFromServer = false;
 
@@ -18108,12 +18108,12 @@ void Compendium_t::Events_t::eventUpdateWorld(int playernum, const EventTags tag
     }
     else
     {
-        auto find2 = eventWorldLookup[tag].find(category);
+        const auto find2 = eventWorldLookup[tag].find(category);
         if ( find2 == eventWorldLookup[tag].end() )
         {
             return;
         }
-        auto find = eventWorldIDLookup.find(category);
+        const auto find = eventWorldIDLookup.find(category);
         if ( find != eventWorldIDLookup.end() )
         {
             worldID = find->second;
@@ -18135,7 +18135,7 @@ void Compendium_t::Events_t::eventUpdateWorld(int playernum, const EventTags tag
 
     if ( def.eventTrackingType == EventTrackingType::ONCE_PER_RUN && !loadingValue )
     {
-        auto find = players[playernum]->compendiumProgress.itemEvents[def.name].find(worldID);
+        const auto find = players[playernum]->compendiumProgress.itemEvents[def.name].find(worldID);
         if ( find != players[playernum]->compendiumProgress.itemEvents[def.name].end() )
         {
             // already present, skip adding
@@ -18195,7 +18195,7 @@ void Compendium_t::Events_t::eventUpdateWorld(int playernum, const EventTags tag
 
     if ( playernum == clientnum )
     {
-        auto find = worldIDToString.find(worldID);
+        const auto find = worldIDToString.find(worldID);
         if ( find != worldIDToString.end() )
         {
             auto& unlockStatus = Compendium_t::CompendiumWorld_t::unlocks[find->second];
@@ -18217,7 +18217,7 @@ void Compendium_t::Events_t::eventUpdateWorld(int playernum, const EventTags tag
             if ( find->second == "shop" )
             {
                 // buying items triggers shopkeep stuff
-                auto find = monsterIDToString.find(Compendium_t::Events_t::kEventMonsterOffset + SHOPKEEPER);
+                const auto find = monsterIDToString.find(Compendium_t::Events_t::kEventMonsterOffset + SHOPKEEPER);
                 if ( find != monsterIDToString.end() )
                 {
                     auto& unlockStatus = Compendium_t::CompendiumMonsters_t::unlocks[find->second];
@@ -18229,7 +18229,7 @@ void Compendium_t::Events_t::eventUpdateWorld(int playernum, const EventTags tag
             }
             else if ( find->second == "herx lair" )
             {
-                auto find = monsterIDToString.find(Compendium_t::Events_t::kEventMonsterOffset + LICH);
+                const auto find = monsterIDToString.find(Compendium_t::Events_t::kEventMonsterOffset + LICH);
                 if ( find != monsterIDToString.end() )
                 {
                     auto& unlockStatus = Compendium_t::CompendiumMonsters_t::unlocks[find->second];
@@ -18279,7 +18279,7 @@ void Compendium_t::Events_t::eventUpdateWorld(int playernum, const EventTags tag
             }
             else if ( find->second == "molten throne" )
             {
-                auto find = monsterIDToString.find(Compendium_t::Events_t::kEventMonsterOffset + DEVIL);
+                const auto find = monsterIDToString.find(Compendium_t::Events_t::kEventMonsterOffset + DEVIL);
                 if ( find != monsterIDToString.end() )
                 {
                     auto& unlockStatus = Compendium_t::CompendiumMonsters_t::unlocks[find->second];
@@ -18333,7 +18333,7 @@ void Compendium_t::Events_t::eventUpdateCodex(int playernum, const EventTags tag
         return;
     }
 
-    auto find = events.find(tag);
+    const auto find = events.find(tag);
     if ( find == events.end() )
     {
         return;
@@ -18360,7 +18360,7 @@ void Compendium_t::Events_t::eventUpdateCodex(int playernum, const EventTags tag
             }
             if ( category )
             {
-                auto find = CompendiumEntries.codex.find(category);
+                const auto find = CompendiumEntries.codex.find(category);
                 if ( find != CompendiumEntries.codex.end() )
                 {
                     if ( !find->second.enableTutorial )
@@ -18407,10 +18407,10 @@ void Compendium_t::Events_t::eventUpdateCodex(int playernum, const EventTags tag
         if ( def.attributes.find("class") != def.attributes.end()
             || def.attributes.find("race") != def.attributes.end() )
         {
-            auto findClassTag = eventClassIds.find(tag);
+            const auto findClassTag = eventClassIds.find(tag);
             if ( findClassTag != eventClassIds.end() )
             {
-                for ( auto& pair : findClassTag->second )
+                for (const auto& pair : findClassTag->second )
                 {
                     if ( pair.second == ((codexID < kEventCodexOffset) ? (codexID + kEventCodexOffset) : codexID) )
                     {
@@ -18442,19 +18442,19 @@ void Compendium_t::Events_t::eventUpdateCodex(int playernum, const EventTags tag
     }
     else
     {
-        auto find2 = eventCodexLookup[tag].find(category);
+        const auto find2 = eventCodexLookup[tag].find(category);
         if ( find2 == eventCodexLookup[tag].end() )
         {
             return;
         }
-        auto find = eventCodexIDLookup.find(category);
+        const auto find = eventCodexIDLookup.find(category);
         if ( find != eventCodexIDLookup.end() )
         {
             codexID = find->second;
             baseCodexID = codexID;
             if ( def.attributes.find("class") != def.attributes.end() )
             {
-                auto findClassTag = eventClassIds.find(tag);
+                const auto findClassTag = eventClassIds.find(tag);
                 if ( findClassTag != eventClassIds.end() )
                 {
                     // iterate through classes
@@ -18471,7 +18471,7 @@ void Compendium_t::Events_t::eventUpdateCodex(int playernum, const EventTags tag
                         }
                     }
 
-                    auto findClassId = findClassTag->second.find(classId);
+                    const auto findClassId = findClassTag->second.find(classId);
                     if ( findClassId != findClassTag->second.end() )
                     {
                         codexID = findClassId->second;
@@ -18484,7 +18484,7 @@ void Compendium_t::Events_t::eventUpdateCodex(int playernum, const EventTags tag
             }
             else if ( def.attributes.find("race") != def.attributes.end() )
             {
-                auto findRaceTag = eventClassIds.find(tag);
+                const auto findRaceTag = eventClassIds.find(tag);
                 if ( findRaceTag != eventClassIds.end() )
                 {
                     int race = RACE_HUMAN;
@@ -18492,7 +18492,7 @@ void Compendium_t::Events_t::eventUpdateCodex(int playernum, const EventTags tag
                     {
                         race = stats[playernum]->playerRace;
                     }
-                    auto findRaceId = findRaceTag->second.find(race);
+                    const auto findRaceId = findRaceTag->second.find(race);
                     if ( findRaceId != findRaceTag->second.end() )
                     {
                         codexID = findRaceId->second;
@@ -18532,7 +18532,7 @@ void Compendium_t::Events_t::eventUpdateCodex(int playernum, const EventTags tag
 
     if ( def.eventTrackingType == EventTrackingType::ONCE_PER_RUN && !loadingValue )
     {
-        auto find = players[playernum]->compendiumProgress.itemEvents[def.name].find(codexID);
+        const auto find = players[playernum]->compendiumProgress.itemEvents[def.name].find(codexID);
         if ( find != players[playernum]->compendiumProgress.itemEvents[def.name].end() )
         {
             // already present, skip adding
@@ -18584,7 +18584,7 @@ void Compendium_t::Events_t::eventUpdateCodex(int playernum, const EventTags tag
     {
         if ( baseCodexID >= 0 )
         {
-            auto find = codexIDToString.find(baseCodexID);
+            const auto find = codexIDToString.find(baseCodexID);
             if ( find != codexIDToString.end() )
             {
                 auto& unlockStatus = Compendium_t::CompendiumCodex_t::unlocks[find->second];
@@ -19050,7 +19050,7 @@ void Compendium_t::updateLorePointCounts()
     lorePointsAchievementsTotal = 0;
     int completed = 0;
     int total = achievements.size();
-    for ( auto& achData : achievements )
+    for (const auto& achData : achievements )
     {
         if ( achData.second.unlocked )
         {
@@ -19092,7 +19092,7 @@ void Compendium_t::updateLorePointCounts()
     for ( auto& item : CompendiumEntries.items )
     {
         total += item.second.items_in_category.size();
-        for ( auto& entry : item.second.items_in_category )
+        for (const auto& entry : item.second.items_in_category )
         {
             int type = entry.itemID == SPELL_ITEM
                 ? entry.spellID + Compendium_t::Events_t::kEventSpellOffset :
@@ -19141,7 +19141,7 @@ void Compendium_t::updateLorePointCounts()
     for ( auto& item : CompendiumEntries.magic )
     {
         total += item.second.items_in_category.size();
-        for ( auto& entry : item.second.items_in_category )
+        for (const auto& entry : item.second.items_in_category )
         {
             int type = entry.itemID == SPELL_ITEM
                 ? entry.spellID + Compendium_t::Events_t::kEventSpellOffset :
@@ -19366,7 +19366,7 @@ void Compendium_t::PointsAnim_t::tickAnimate()
     {
         // constant decay for animation
         const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-        real_t setpointDiffX = fpsScale * 1.0 / 25.0;
+        const real_t setpointDiffX = fpsScale * 1.0 / 25.0;
         animNoFunds -= setpointDiffX;
         animNoFunds = std::max(0.0, animNoFunds);
 
@@ -19379,11 +19379,11 @@ void Compendium_t::PointsAnim_t::tickAnimate()
     bool pauseChangeAnim = false;
     if ( pointsChange != 0 )
     {
-        Uint32 duration = pointsChange > 0 ? (3 * TICKS_PER_SECOND) : (TICKS_PER_SECOND / 2);
+        const Uint32 duration = pointsChange > 0 ? (3 * TICKS_PER_SECOND) : (TICKS_PER_SECOND / 2);
         if ( ((ticks - startTicks) > duration) )
         {
             const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-            real_t setpointDiffX = fpsScale * std::max(.1, (anim)) / 10.0;
+            const real_t setpointDiffX = fpsScale * std::max(.1, (anim)) / 10.0;
             anim -= setpointDiffX;
             anim = std::max(0.0, anim);
 
@@ -19397,7 +19397,7 @@ void Compendium_t::PointsAnim_t::tickAnimate()
             pauseChangeAnim = true;
 
             const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-            real_t setpointDiffX = fpsScale * std::max(.01, (1.0 - anim)) / 10.0;
+            const real_t setpointDiffX = fpsScale * std::max(.01, (1.0 - anim)) / 10.0;
             anim += setpointDiffX;
             anim = std::min(1.0, anim);
             anim = 1.0;
@@ -19424,7 +19424,7 @@ void Compendium_t::PointsAnim_t::tickAnimate()
             s += std::to_string(displayedChange);
             txtChangePoints = displayedChange;
             //changeGoldText->setText(s.c_str());
-            Sint32 displayedCurrent = pointsCurrent
+            const Sint32 displayedCurrent = pointsCurrent
                 + (pointsChange - displayedChange);
             //currentGoldText->setText(std::to_string(displayedCurrentGold).c_str());
             txtCurrentPoints = displayedCurrent;
@@ -19451,7 +19451,7 @@ void Compendium_t::PointsAnim_t::noFundsEvent()
 void Compendium_t::PointsAnim_t::pointsChangeEvent(Sint32 amount)
 {
     bool addedToCurrentTotal = false;
-    Uint32 duration = pointsChange > 0 ? (3 * TICKS_PER_SECOND) : (TICKS_PER_SECOND / 2);
+    const Uint32 duration = pointsChange > 0 ? (3 * TICKS_PER_SECOND) : (TICKS_PER_SECOND / 2);
     const bool isAnimatingValue = ((ticks - startTicks) > duration);
     const auto balance = Compendium_t::lorePointsFromAchievements - Compendium_t::lorePointsSpent;
     if ( amount < 0 )
@@ -19512,7 +19512,7 @@ std::vector<Sint32> Compendium_t::CompendiumMonsters_t::Monster_t::getDisplaySta
         return retVal;
     }
 
-    bool ignoreHardcore =
+    const bool ignoreHardcore =
         (monsterType == DUMMYBOT
             || monsterType == GYROBOT
             || monsterType == SENTRYBOT
@@ -19520,9 +19520,9 @@ std::vector<Sint32> Compendium_t::CompendiumMonsters_t::Monster_t::getDisplaySta
             || monsterType == NOTHING
             || monsterType == HUMAN
             );
-    bool hardcore = !intro && (svFlags & SV_FLAG_HARDCORE);
+    const bool hardcore = !intro && (svFlags & SV_FLAG_HARDCORE);
 
-    Stat stats(1000 + monsterType);
+    const Stat stats(1000 + monsterType);
     if ( !strcmp(name, "hp") )
     {
         if ( !hardcore || ignoreHardcore )
@@ -19598,9 +19598,9 @@ std::vector<Sint32> Compendium_t::CompendiumMonsters_t::Monster_t::getDisplaySta
         }
 
         int statIncrease = (abs(statMin) / 5 + 1) * 1;
-        int minIncrease = statIncrease - (statIncrease / 2);
+        const int minIncrease = statIncrease - (statIncrease / 2);
         statIncrease = (abs(statMax) / 5 + 1) * 1;
-        int maxIncrease = statIncrease;
+        const int maxIncrease = statIncrease;
 
         if ( ac.size() > 0 )
         {
@@ -19644,9 +19644,9 @@ std::vector<Sint32> Compendium_t::CompendiumMonsters_t::Monster_t::getDisplaySta
         }
 
         int statIncrease = (abs(statMin) / 5 + 1) * 5;
-        int minIncrease = statIncrease - (statIncrease / 4);
+        const int minIncrease = statIncrease - (statIncrease / 4);
         statIncrease = (abs(statMax) / 5 + 1) * 5;
-        int maxIncrease = statIncrease;
+        const int maxIncrease = statIncrease;
 
         if ( atk.size() > 0 )
         {
@@ -19678,23 +19678,23 @@ std::vector<Sint32> Compendium_t::CompendiumMonsters_t::Monster_t::getDisplaySta
         Sint32 statMaxIncrease = 0;
 
         {
-            Sint32 statMinDEX = stats.DEX;
-            Sint32 statMaxDEX = stats.DEX + stats.RANDOM_DEX;
+            const Sint32 statMinDEX = stats.DEX;
+            const Sint32 statMaxDEX = stats.DEX + stats.RANDOM_DEX;
             int statIncrease = std::min((abs(statMinDEX) / 4 + 1) * 1, 8);
-            int minIncrease = (statIncrease / 2);
+            const int minIncrease = (statIncrease / 2);
             statIncrease = std::min((abs(statMaxDEX) / 4 + 1) * 1, 8);
-            int maxIncrease = statIncrease;
+            const int maxIncrease = statIncrease;
 
             statMinIncrease += minIncrease;
             statMaxIncrease += maxIncrease;
         }
         {
-            Sint32 statMinPER = stats.PER;
-            Sint32 statMaxPER = stats.PER + stats.RANDOM_PER;
+            const Sint32 statMinPER = stats.PER;
+            const Sint32 statMaxPER = stats.PER + stats.RANDOM_PER;
             int statIncrease = (abs(statMinPER) / 5 + 1) * 5;
-            int minIncrease = statIncrease - (statIncrease / 4);
+            const int minIncrease = statIncrease - (statIncrease / 4);
             statIncrease = (abs(statMaxPER) / 5 + 1) * 5;
-            int maxIncrease = statIncrease;
+            const int maxIncrease = statIncrease;
 
             statMinIncrease += minIncrease;
             statMaxIncrease += maxIncrease;
@@ -19732,7 +19732,7 @@ std::vector<Sint32> Compendium_t::CompendiumMonsters_t::Monster_t::getDisplaySta
 
         if ( lvl.size() > 0 )
         {
-            Sint32 statMin = lvl[0];
+            const Sint32 statMin = lvl[0];
             Sint32 statMax = statMin;
             if ( lvl.size() > 1 )
             {

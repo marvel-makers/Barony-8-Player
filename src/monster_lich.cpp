@@ -68,7 +68,7 @@ void initLich(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // boss variants
 
@@ -86,7 +86,7 @@ void initLich(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
                                                          // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -220,10 +220,10 @@ void lichDie(Entity* my)
     //playSoundEntity(my, 94, 128);
     my->removeLightField();
     // kill all other monsters on the level
-    for ( node_t* node = map.creatures->first; node != nullptr; node = nextnode ) //Only searching for monsters, so don't search full map.entities.
+    for (const node_t* node = map.creatures->first; node != nullptr; node = nextnode ) //Only searching for monsters, so don't search full map.entities.
     {
         nextnode = node->next;
-        auto entity = static_cast<Entity*>(node->element);
+        const auto entity = static_cast<Entity*>(node->element);
         if ( entity == my )
         {
             continue;
@@ -291,7 +291,7 @@ void lichAnimate(Entity* my, double dist)
     // set invisibility //TODO: isInvisible()?
     if ( multiplayer != CLIENT )
     {
-        Stat* myStats = my->getStats();
+        const Stat* myStats = my->getStats();
         if ( myStats->getEffectActive(EFF_INVISIBLE) )
         {
             my->flags[INVISIBLE] = true;
@@ -354,7 +354,7 @@ void lichAnimate(Entity* my, double dist)
     }
 
     // move arms
-    Entity* rightarm = nullptr;
+    const Entity* rightarm = nullptr;
     for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++)
     {
         if ( bodypart < 2 )
@@ -422,14 +422,14 @@ void lichAnimate(Entity* my, double dist)
             case 4:
             {
                 entity->z -= 4.25;
-                Entity* playertotrack = nullptr;
-                for ( node_t* tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Only searching for players, so don't search full map.entities.
+                const Entity* playertotrack = nullptr;
+                for (const node_t* tempNode = map.creatures->first; tempNode != nullptr; tempNode = tempNode->next ) //Only searching for players, so don't search full map.entities.
                 {
-                    auto tempEntity = static_cast<Entity*>(tempNode->element);
-                    double lowestdist = 5000;
+                    const auto tempEntity = static_cast<Entity*>(tempNode->element);
+                    const double lowestdist = 5000;
                     if ( tempEntity->behavior == &actPlayer )
                     {
-                        double disttoplayer = entityDist(my, tempEntity);
+                        const double disttoplayer = entityDist(my, tempEntity);
                         if ( disttoplayer < lowestdist )
                         {
                             playertotrack = tempEntity;
@@ -438,7 +438,7 @@ void lichAnimate(Entity* my, double dist)
                 }
                 if ( playertotrack && !MONSTER_ATTACK )
                 {
-                    double tangent = atan2( playertotrack->y - entity->y, playertotrack->x - entity->x );
+                    const double tangent = atan2( playertotrack->y - entity->y, playertotrack->x - entity->x );
                     double dir = entity->yaw - tangent;
                     while ( dir >= PI )
                     {

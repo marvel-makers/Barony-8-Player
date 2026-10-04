@@ -50,7 +50,7 @@ void initDemon(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // boss variants
             const bool boss =
@@ -92,7 +92,7 @@ void initDemon(Entity* my, Stat* myStats)
             //max limit of 6 custom items per entity.
 
             // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -269,7 +269,7 @@ void demonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;
-    Entity* rightbody = nullptr;
+    const Entity* rightbody = nullptr;
     int bodypart;
 
     // set invisibility //TODO: isInvisible()?
@@ -485,7 +485,7 @@ void demonMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 {
                     // vertical chop
                     // get leftarm from bodypart 6 element if ready to attack
-                    auto leftarm = static_cast<Entity*>(node->next->element);
+                    const auto leftarm = static_cast<Entity*>(node->next->element);
 
                     if ( my->monsterAttack == 1 || my->monsterAttack == MONSTER_POSE_MELEE_WINDUP1
                         || my->monsterAttack == MONSTER_POSE_MELEE_WINDUP2 )

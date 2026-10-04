@@ -120,7 +120,7 @@ int getLootBagLightPaletteForVariation(const int variation, const bool colorblin
 
 bool autoHotbarSoftReserveItem(Item& item)
 {
-    Category cat = itemCategory(&item);
+    const Category cat = itemCategory(&item);
     if ( cat == THROWN || item.type == GEM_ROCK || itemIsThrowableTinkerTool(&item) || item.type == TOOL_BEARTRAP )
     {
         return true;
@@ -145,7 +145,7 @@ void autoHotbarTryAdd(const int player, Item& item)
     {
         return; // we're going to replace our spellbook slot
     }
-    Category cat = itemCategory(&item);
+    const Category cat = itemCategory(&item);
     if ( !item.identified && cat != SPELL_CAT ) { return; }
 
     std::vector<std::tuple<int, int, hotbar_slot_t*>> slots(NUM_HOTBAR_SLOTS); // index, priority, then stored item info
@@ -180,7 +180,7 @@ void autoHotbarTryAdd(const int player, Item& item)
     }
 
 
-    bool softReserveSlots = autoHotbarSoftReserveItem(item);
+    const bool softReserveSlots = autoHotbarSoftReserveItem(item);
     if ( softReserveSlots )
     {
         for ( auto& slot : slots )
@@ -188,7 +188,7 @@ void autoHotbarTryAdd(const int player, Item& item)
             auto& priority = std::get<1>(slot);
             if ( priority < 0 ) { continue; }
 
-            auto hotbar_slot = std::get<2>(slot);
+            const auto hotbar_slot = std::get<2>(slot);
             if ( !hotbar_slot ) { continue; }
             if ( !hotbar_slot->lastItem.identified ) { continue; } // no good
 
@@ -214,7 +214,7 @@ void autoHotbarTryAdd(const int player, Item& item)
     std::pair<int, int> indexAndPriorityToPick = { -1, 0 };
     for ( auto& slot : slots )
     {
-        auto& priority = std::get<1>(slot);
+        const auto& priority = std::get<1>(slot);
         if ( priority > indexAndPriorityToPick.second )
         {
             indexAndPriorityToPick.second = priority;
@@ -224,7 +224,7 @@ void autoHotbarTryAdd(const int player, Item& item)
 
     if ( indexAndPriorityToPick.first >= 0 )
     {
-        size_t index = indexAndPriorityToPick.first;
+        const size_t index = indexAndPriorityToPick.first;
         players[player]->hotbar.slots()[index].item = item.uid;
         players[player]->hotbar.slots()[index].storeLastItem(&item);
         if ( item.type == BOOMERANG )
@@ -307,7 +307,7 @@ Item* newItem(const ItemType type, const Status status, const Sint16 beatitude, 
     if ( inventory )
     {
         Player::Inventory_t* playerInventoryUI = nullptr;
-        Player::Magic_t* playerMagic = nullptr;
+        const Player::Magic_t* playerMagic = nullptr;
         int player = -1;
         for ( int i = 0; i < MAXPLAYERS; ++i )
         {
@@ -379,9 +379,9 @@ Item* uidToItem(const Uint32 uid)
         {
             continue;
         }
-        for ( node_t* node = stats[i]->inventory.first; node != nullptr; node = node->next )
+        for (const node_t* node = stats[i]->inventory.first; node != nullptr; node = node->next )
         {
-            auto item = static_cast<Item*>(node->element);
+            const auto item = static_cast<Item*>(node->element);
             if ( item->uid == uid )
             {
                 return item;
@@ -422,7 +422,7 @@ ItemType itemLevelCurveEntity(Entity& my, Category cat, int minLevel, int maxLev
         itemLevelCurveType = ITEM_LEVEL_CURVE_TYPE_CHEST;
     }
 
-    auto result = itemLevelCurve(cat, minLevel, maxLevel, rng);
+    const auto result = itemLevelCurve(cat, minLevel, maxLevel, rng);
     itemLevelCurveType = ITEM_LEVEL_CURVE_TYPE_DEFAULT;
     itemLevelCurveShop = -1;
     return result;
@@ -435,7 +435,7 @@ bool itemLevelCurvePostProcess(Entity* my, Item* item, BaronyRNG& rng, int itemL
         return false;
     }
 
-    bool modified = false;
+    const bool modified = false;
     itemLevelCurveType = ITEM_LEVEL_CURVE_TYPE_DEFAULT;
     if ( my )
     {
@@ -487,7 +487,7 @@ bool itemLevelCurvePostProcess(Entity* my, Item* item, BaronyRNG& rng, int itemL
                 chances.reserve(NUM_SPELLS);
                 std::vector<unsigned int> chanceWeights;
                 chanceWeights.reserve(NUM_SPELLS);
-                int minDifficulty = std::min(60, (itemLevel / 5) * 20);
+                const int minDifficulty = std::min(60, (itemLevel / 5) * 20);
 #ifndef NDEBUG
                 std::map<int, int> debugChances;
                 std::map<int, int> debugChancesNum;
@@ -497,7 +497,7 @@ bool itemLevelCurvePostProcess(Entity* my, Item* item, BaronyRNG& rng, int itemL
                     auto find = allGameSpells.find(i);
                     if ( find != allGameSpells.end() )
                     {
-                        if ( auto spell = find->second )
+                        if (const auto spell = find->second )
                         {
                             if ( spell->ID != SPELL_NONE && !spell->hide_from_ui && itemLevel >= spell->drop_table )
                             {
@@ -555,8 +555,8 @@ bool itemLevelCurvePostProcess(Entity* my, Item* item, BaronyRNG& rng, int itemL
                 if ( chances.size() )
                 {
                     Uint32 appearance = (my && my->behavior == &actItem) ? my->skill[14] : item->appearance;
-                    int pick = rng.discrete(chanceWeights.data(), chanceWeights.size());
-                    int spellbookType = getSpellbookFromSpellID(chances[pick].second);
+                    const int pick = rng.discrete(chanceWeights.data(), chanceWeights.size());
+                    const int spellbookType = getSpellbookFromSpellID(chances[pick].second);
                     if ( items[spellbookType].category == SPELLBOOK )
                     {
                         itemType = spellbookType;
@@ -1234,7 +1234,7 @@ int getItemVariationFromSpellbookOrTome(const Item& item)
     {
         return -1;
     }
-    if ( auto spell = getSpellFromID(spellID) )
+    if (const auto spell = getSpellFromID(spellID) )
     {
         int index = -1;
         switch ( spell->skillID )
@@ -1361,7 +1361,7 @@ Sint32 itemModel(const Item* const item, bool shortModel, Entity* creature)
         }
     }
 
-    int index = shortModel ? items[item->type].indexShort : items[item->type].index;
+    const int index = shortModel ? items[item->type].indexShort : items[item->type].index;
 
     if ( item->type == TOOL_PLAYER_LOOT_BAG )
     {
@@ -1384,7 +1384,7 @@ Sint32 itemModel(const Item* const item, bool shortModel, Entity* creature)
     }
     else if ( itemCategory(item) == SPELLBOOK || itemCategory(item) == TOME_SPELL )
     {
-        int variation = getItemVariationFromSpellbookOrTome(*item);
+        const int variation = getItemVariationFromSpellbookOrTome(*item);
         if ( variation >= 0 && variation < items[item->type].variations )
         {
             return index + variation;
@@ -1421,7 +1421,7 @@ Sint32 itemModelFirstperson(const Item* const item)
     }
     else if ( itemCategory(item) == SPELLBOOK || itemCategory(item) == TOME_SPELL )
     {
-        int variation = getItemVariationFromSpellbookOrTome(*item);
+        const int variation = getItemVariationFromSpellbookOrTome(*item);
         if ( variation >= 0 && variation < items[item->type].variations )
         {
             return items[item->type].fpindex + variation;
@@ -1607,7 +1607,7 @@ bool playerThrowDuck(const int player, Item* const item, int charge)
         entity->skill[14] = item->appearance;
         entity->skill[15] = item->identified;
 
-        real_t speed = 1.f + 4.f * (-30 + std::min(50, std::max(30, charge))) / static_cast<real_t>(20);
+        const real_t speed = 1.f + 4.f * (-30 + std::min(50, std::max(30, charge))) / static_cast<real_t>(20);
         entity->vel_x = speed * cos(players[player]->entity->yaw);
         entity->vel_y = speed * sin(players[player]->entity->yaw);
         entity->vel_z = -.5;
@@ -1833,7 +1833,7 @@ bool dropItem(Item* const item, const int player, const bool notifyMessage, cons
         oldcount = item->count;
         if ( item->count >= 10 && (item->type == TOOL_METAL_SCRAP || item->type == TOOL_MAGIC_SCRAP) )
         {
-            int qty = dropAll ? item->count : 10;
+            const int qty = dropAll ? item->count : 10;
             item->count = qty;
             messagePlayer(player, MESSAGE_SPAM_MISC, Language::get(1088), item->description());
             item->count = oldcount - qty;
@@ -2192,8 +2192,8 @@ Entity* dropItemMonster(Item* const item, Entity* const monster, Stat* const mon
             else if ( monsterStats->type == DUCK_SMALL )
             {
                 // drop in center of tile
-                int ix = static_cast<int>(std::floor(monster->x)) >> 4;
-                int iy = static_cast<int>(std::floor(monster->y)) >> 4;
+                const int ix = static_cast<int>(std::floor(monster->x)) >> 4;
+                const int iy = static_cast<int>(std::floor(monster->y)) >> 4;
                 entity->x = ix * 16.0 + 8.0;
                 entity->y = iy * 16.0 + 8.0;
                 entity->z = 4;
@@ -2206,8 +2206,8 @@ Entity* dropItemMonster(Item* const item, Entity* const monster, Stat* const mon
             {
                 entity->vel_x = 0.0;
                 entity->vel_y = 0.0;
-                int ix = static_cast<int>(std::floor(monster->x)) >> 4;
-                int iy = static_cast<int>(std::floor(monster->y)) >> 4;
+                const int ix = static_cast<int>(std::floor(monster->x)) >> 4;
+                const int iy = static_cast<int>(std::floor(monster->y)) >> 4;
                 if ( map.tiles[OBSTACLELAYER + iy * MAP_LAYERS + ix * MAP_LAYERS * map.height]
                     || !map.tiles[iy * MAP_LAYERS + ix * MAP_LAYERS * map.height] )
                 {
@@ -2378,7 +2378,7 @@ EquipItemResult equipItem(Item* const item, Item** const slot, const int player,
                             Compendium_t::Events_t::eventUpdate(player, Compendium_t::CPDM_APPRAISED, (*slot)->type, 1);
                         }
                     }
-                    bool prevIdentified = (*slot)->identified;
+                    const bool prevIdentified = (*slot)->identified;
                     (*slot)->identified = true;
                     if ( !prevIdentified )
                     {
@@ -2496,7 +2496,7 @@ EquipItemResult equipItem(Item* const item, Item** const slot, const int player,
                             Compendium_t::Events_t::eventUpdate(player, Compendium_t::CPDM_APPRAISED, (*slot)->type, 1);
                         }
                     }
-                    bool prevIdentified = (*slot)->identified;
+                    const bool prevIdentified = (*slot)->identified;
                     (*slot)->identified = true;
                     if ( !prevIdentified )
                     {
@@ -2626,9 +2626,9 @@ void useItem(Item* item, const int player, Entity* usedBy, bool unequipForDroppi
         if ( item->type == FOOD_TIN )
         {
             bool havetinopener = false;
-            for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+            for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
             {
-                auto tempitem = static_cast<Item*>(node->element);
+                const auto tempitem = static_cast<Item*>(node->element);
                 if ( tempitem->type == TOOL_TINOPENER )
                 {
                     if ( tempitem->status != BROKEN )
@@ -2949,7 +2949,7 @@ void useItem(Item* item, const int player, Entity* usedBy, bool unequipForDroppi
             break;
         case AMULET_STRANGULATION:
         {
-            bool oldStrangulation = stats[player]->amulet && stats[player]->amulet->type == AMULET_STRANGULATION;
+            const bool oldStrangulation = stats[player]->amulet && stats[player]->amulet->type == AMULET_STRANGULATION;
             equipItemResult = equipItem(item, &stats[player]->amulet, player, checkInventorySpaceForPaperDoll);
             if ( stats[player]->amulet && stats[player]->amulet->type == AMULET_STRANGULATION
                 && !oldStrangulation )
@@ -3558,12 +3558,12 @@ void useItem(Item* item, const int player, Entity* usedBy, bool unequipForDroppi
         case TOOL_PLAYER_LOOT_BAG:
             if ( multiplayer != CLIENT )
             {
-                int lootbagPlayer = item->getLootBagPlayer();
+                const int lootbagPlayer = item->getLootBagPlayer();
                 
                 if ( lootbagPlayer >= 0 && lootbagPlayer < MAXPLAYERS
                     && stats[lootbagPlayer] )
                 {
-                    std::string name = stats[lootbagPlayer]->name;
+                    const std::string name = stats[lootbagPlayer]->name;
                     if ( lootbagPlayer == player )
                     {
                         messagePlayer(player, MESSAGE_INVENTORY | MESSAGE_HINT | MESSAGE_EQUIPMENT,
@@ -3883,7 +3883,7 @@ Item* itemPickup(const int player, Item* const item, Item* addToSpecificInventor
         std::unordered_set<Uint32> appearancesOfSimilarItems;
         bool doSpecificItemCheck = (addToSpecificInventoryItem != nullptr);
         bool hasRunSpecificItemCheck = false;
-        for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+        for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
         {
             if ( doSpecificItemCheck )
             {
@@ -4138,7 +4138,7 @@ ItemStackResult getItemStackingBehaviorIndividualItemCheck(const int player, Ite
         // if items are the same, check to see if they should stack
         else if ( itemDestinationStack->shouldItemStack(player) )
         {
-            int maxStack = itemDestinationStack->getMaxStackLimit(player);
+            const int maxStack = itemDestinationStack->getMaxStackLimit(player);
 
             const int total = itemToCheck->count + itemDestinationStack->count;
             if ( total > maxStack )
@@ -4183,7 +4183,7 @@ ItemStackResult getItemStackingBehaviorIndividualItemCheck(const int player, Ite
 
 void getItemEmptySlotStackingBehavior(const int player, Item& itemToCheck, int& newQtyForCheckedItem, int& newQtyForDestItem)
 {
-    int maxStack = itemToCheck.getMaxStackLimit(player);
+    const int maxStack = itemToCheck.getMaxStackLimit(player);
     if ( itemToCheck.count > maxStack )
     {
         newQtyForCheckedItem = itemToCheck.count - maxStack;
@@ -4206,7 +4206,7 @@ ItemStackResult getItemStackingBehaviorIntoChest(const int player, Item* itemToC
         return itemStackResult;
     }
 
-    list_t* chest_inventory = nullptr;
+    const list_t* chest_inventory = nullptr;
     if ( multiplayer == CLIENT )
     {
         chest_inventory = &chestInv[player];
@@ -4231,9 +4231,9 @@ ItemStackResult getItemStackingBehaviorIntoChest(const int player, Item* itemToC
     newQtyForCheckedItem = itemToCheck->count;
     newQtyForDestItem = 0;
 
-    for ( node_t* node = chest_inventory->first; node != nullptr; node = node->next )
+    for (const node_t* node = chest_inventory->first; node != nullptr; node = node->next )
     {
-        auto item2 = static_cast<Item*>(node->element);
+        const auto item2 = static_cast<Item*>(node->element);
         if ( item2 )
         {
             int tmpQtyCheckedItem = newQtyForCheckedItem;
@@ -4307,7 +4307,7 @@ ItemStackResult getItemStackingBehaviorIntoChest(const int player, Item* itemToC
     //}
 
     itemStackResult.resultType = ITEM_ADDED_WITHOUT_NEEDING_STACK;
-    int maxStack = itemToCheck->getMaxStackLimit(player);
+    const int maxStack = itemToCheck->getMaxStackLimit(player);
     if ( itemToCheck->count > maxStack )
     {
         newQtyForCheckedItem = itemToCheck->count - maxStack;
@@ -4340,9 +4340,9 @@ ItemStackResult getItemStackingBehavior(const int player, Item* itemToCheck, Ite
     newQtyForCheckedItem = itemToCheck->count;
     newQtyForDestItem = 0;
 
-    for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+    for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
     {
-        auto item2 = static_cast<Item*>(node->element);
+        const auto item2 = static_cast<Item*>(node->element);
         if ( item2 )
         {
             int tmpQtyCheckedItem = newQtyForCheckedItem;
@@ -4373,7 +4373,7 @@ ItemStackResult getItemStackingBehavior(const int player, Item* itemToCheck, Ite
     }
 
     itemStackResult.resultType = ITEM_ADDED_WITHOUT_NEEDING_STACK;
-    int maxStack = itemToCheck->getMaxStackLimit(player);
+    const int maxStack = itemToCheck->getMaxStackLimit(player);
     if ( itemToCheck->count > maxStack )
     {
         newQtyForCheckedItem = itemToCheck->count - maxStack;
@@ -4402,7 +4402,7 @@ Item* newItemFromEntity(const Entity* const entity, bool discardUid)
     {
         return nullptr;
     }
-    Uint32 oldUids = itemuids;
+    const Uint32 oldUids = itemuids;
     Item* item = newItem(static_cast<ItemType>(entity->skill[10]), static_cast<Status>(entity->skill[11]), entity->skill[12], entity->skill[13], entity->skill[14], entity->skill[15], nullptr);
     if ( !item )
     {
@@ -4960,7 +4960,7 @@ Sint32 Item::potionGetEffectHealth(Entity* my, Stat* myStats) const
         case POTION_HEALING:
         {
             int amount = std::max(7 + status, 0);
-            int multiplier = std::max(5, beatitude + 5);
+            const int multiplier = std::max(5, beatitude + 5);
             amount *= multiplier / 5.f;
             heal += amount;
             break;
@@ -4968,7 +4968,7 @@ Sint32 Item::potionGetEffectHealth(Entity* my, Stat* myStats) const
         case POTION_EXTRAHEALING:
         {
             int amount = std::max(15 + status, 0);
-            int multiplier = std::max(5, beatitude + 5);
+            const int multiplier = std::max(5, beatitude + 5);
             amount *= multiplier;
             heal += amount;
             break;
@@ -4976,7 +4976,7 @@ Sint32 Item::potionGetEffectHealth(Entity* my, Stat* myStats) const
         case POTION_RESTOREMAGIC:
         {
             int amount = std::max(7 + status, 0);
-            int multiplier = std::max(5, beatitude + 5);
+            const int multiplier = std::max(5, beatitude + 5);
             amount *= multiplier;
             heal += amount;
             break;
@@ -5173,7 +5173,7 @@ Sint32 Item::potionGetEffectDurationMaximum(Entity* my, Stat* myStats) const
 
 Sint32 Item::potionGetEffectDurationRandom(Entity* my, Stat* myStats) const
 {
-    Sint32 range = std::max(1, potionGetEffectDurationMaximum(my, myStats) - potionGetEffectDurationMinimum(my, myStats));
+    const Sint32 range = std::max(1, potionGetEffectDurationMaximum(my, myStats) - potionGetEffectDurationMinimum(my, myStats));
     return potionGetEffectDurationMinimum(my, myStats) + (local_rng.rand() % (range));
 }
 
@@ -5307,7 +5307,7 @@ Sint32 Item::potionGetCursedEffectDurationMaximum(Entity* my, Stat* myStats) con
 
 Sint32 Item::potionGetCursedEffectDurationRandom(Entity* my, Stat* myStats) const
 {
-    Sint32 range = std::max(1, potionGetCursedEffectDurationMaximum(my, myStats) - potionGetCursedEffectDurationMinimum(my, myStats));
+    const Sint32 range = std::max(1, potionGetCursedEffectDurationMaximum(my, myStats) - potionGetCursedEffectDurationMinimum(my, myStats));
     return potionGetCursedEffectDurationMinimum(my, myStats) + (local_rng.rand() % (range));
 }
 
@@ -5317,10 +5317,10 @@ Sint32 Item::getGoldValue() const
     {
         if ( items[type].category == TOME_SPELL )
         {
-            int spellID = getTomeSpellID();
+            const int spellID = getTomeSpellID();
             if ( spellID > SPELL_NONE )
             {
-                if ( auto spell = getSpellFromID(spellID) )
+                if (const auto spell = getSpellFromID(spellID) )
                 {
                     if ( spell->difficulty >= 100 )
                     {
@@ -5393,7 +5393,7 @@ Sint32 Item::getWeight() const
 
 void Item::foodTinGetDescriptionIndices(int* a, int* b, int* c) const
 {
-    Uint32 scaledAppearance = appearance % 4096;
+    const Uint32 scaledAppearance = appearance % 4096;
     if ( a )
     {
         *a = ((scaledAppearance >> 8) & 0xF); // 0-15
@@ -5858,7 +5858,7 @@ bool Item::canUnequip(const Stat* const wielder)
                         Compendium_t::Events_t::eventUpdate(player, Compendium_t::CPDM_APPRAISED, type, 1);
                     }
                 }
-                bool prevIdentified = identified;
+                const bool prevIdentified = identified;
                 identified = true;
                 if ( !prevIdentified )
                 {
@@ -5882,7 +5882,7 @@ bool Item::canUnequip(const Stat* const wielder)
                 Compendium_t::Events_t::eventUpdate(player, Compendium_t::CPDM_APPRAISED, type, 1);
             }
         }
-        bool prevIdentified = identified;
+        const bool prevIdentified = identified;
         identified = true;
         if ( !prevIdentified )
         {
@@ -6100,9 +6100,9 @@ void Item::applyLockpickToWall(const int player, const int x, const int y) const
         return;
     }
 
-    for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+    for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
     {
-        auto entity = static_cast<Entity*>(node->element);
+        const auto entity = static_cast<Entity*>(node->element);
         if ( entity && entity->behavior == &actArrowTrap
             && static_cast<int>(entity->x / 16) == x
             && static_cast<int>(entity->y / 16) == y )
@@ -6236,7 +6236,7 @@ bool isPotionBad(const Item& potion)
 
 void createCustomInventory(Stat* const stats, const int itemLimit, BaronyRNG& rng)
 {
-    int itemSlots[6] = { ITEM_SLOT_INV_1, ITEM_SLOT_INV_2, ITEM_SLOT_INV_3, ITEM_SLOT_INV_4, ITEM_SLOT_INV_5, ITEM_SLOT_INV_6 };
+    const int itemSlots[6] = { ITEM_SLOT_INV_1, ITEM_SLOT_INV_2, ITEM_SLOT_INV_3, ITEM_SLOT_INV_4, ITEM_SLOT_INV_5, ITEM_SLOT_INV_6 };
     int i = 0;
     Sint32 itemId = -1;
     int itemAppearance = rng.rand();
@@ -6363,7 +6363,7 @@ node_t* itemNodeInInventory(const Stat* const myStats, Sint32 itemToFind, const 
     for ( node = myStats->inventory.first; node != nullptr; node = nextnode )
     {
         nextnode = node->next;
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item != nullptr )
         {
             if ( cat >= WEAPON && itemCategory(item) == cat )
@@ -6417,7 +6417,7 @@ node_t* spellbookNodeInInventory(const Stat* const myStats, const int spellIDToF
 
     for ( node_t* node = myStats->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item != nullptr && itemCategory(item) == SPELLBOOK && getSpellIDFromSpellbook(item->type) == spellIDToFind )
         {
             return node;
@@ -6445,7 +6445,7 @@ node_t* getRangedWeaponItemNodeInInventory(const Stat* const myStats, const bool
 
     for ( node_t* node = myStats->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item != nullptr )
         {
             if ( isRangedWeapon(*item) )
@@ -6471,7 +6471,7 @@ node_t* getMeleeWeaponItemNodeInInventory(const Stat* const myStats)
 
     for ( node_t* node = myStats->inventory.first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item != nullptr )
         {
             if ( isMeleeWeapon(*item) )
@@ -6893,7 +6893,7 @@ bool Item::shouldItemStackInShop(bool ignoreStackLimit)
 {
     node_t* itemNode = node;
     node = nullptr; // to make isEquipped return false in shouldItemStack
-    bool result = shouldItemStack(clientnum, ignoreStackLimit);
+    const bool result = shouldItemStack(clientnum, ignoreStackLimit);
     node = itemNode;
     return result;
 }
@@ -6978,7 +6978,7 @@ int Item::getTomeSpellID() const
 {
     if ( type == TOME_SORCERY )
     {
-        auto find = spellTomeAppearanceToID[PRO_SORCERY].find(appearance % TOME_APPEARANCE_MAX);
+        const auto find = spellTomeAppearanceToID[PRO_SORCERY].find(appearance % TOME_APPEARANCE_MAX);
         if ( find == spellTomeAppearanceToID[PRO_SORCERY].end() )
         {
             return SPELL_FORCEBOLT;
@@ -6987,7 +6987,7 @@ int Item::getTomeSpellID() const
     }
     else if ( type == TOME_MYSTICISM )
     {
-        auto find = spellTomeAppearanceToID[PRO_MYSTICISM].find(appearance % TOME_APPEARANCE_MAX);
+        const auto find = spellTomeAppearanceToID[PRO_MYSTICISM].find(appearance % TOME_APPEARANCE_MAX);
         if ( find == spellTomeAppearanceToID[PRO_MYSTICISM].end() )
         {
             return SPELL_SLOW;
@@ -6996,7 +6996,7 @@ int Item::getTomeSpellID() const
     }
     else if ( type == TOME_THAUMATURGY )
     {
-        auto find = spellTomeAppearanceToID[PRO_THAUMATURGY].find(appearance % TOME_APPEARANCE_MAX);
+        const auto find = spellTomeAppearanceToID[PRO_THAUMATURGY].find(appearance % TOME_APPEARANCE_MAX);
         if ( find == spellTomeAppearanceToID[PRO_THAUMATURGY].end() )
         {
             return SPELL_LIGHT;
@@ -7010,8 +7010,8 @@ const char* Item::getTomeLabel() const
 {
     if ( itemCategory(this) == TOME_SPELL )
     {
-        int spellID = getTomeSpellID();
-        if ( auto spell = getSpellFromID(spellID) )
+        const int spellID = getTomeSpellID();
+        if (const auto spell = getSpellFromID(spellID) )
         {
             return spell->getSpellName(true);
         }
@@ -7391,16 +7391,16 @@ bool playerCanSpawnMoreTinkeringBots(const Stat* const myStats)
         return true;
     }
     int numBots = 0;
-    for ( node_t* node = myStats->FOLLOWERS.first; node != nullptr; node = node->next )
+    for (const node_t* node = myStats->FOLLOWERS.first; node != nullptr; node = node->next )
     {
-        Entity* follower = nullptr;
+        const Entity* follower = nullptr;
         if ( static_cast<Uint32*>(node->element) )
         {
             follower = uidToEntity(*static_cast<Uint32*>(node->element));
         }
         if ( follower )
         {
-            Stat* followerStats = follower->getStats();
+            const Stat* followerStats = follower->getStats();
             if ( followerStats )
             {
                 if ( followerStats->type == SENTRYBOT || followerStats->type == GYROBOT
@@ -7647,7 +7647,7 @@ int Item::getLootBagNumItems() const
     if ( stats[0]->player_lootbags.find(appearance)
         != stats[0]->player_lootbags.end() )
     {
-        auto& lootbag = stats[0]->player_lootbags[appearance];
+        const auto& lootbag = stats[0]->player_lootbags[appearance];
         if ( !lootbag.looted )
         {
             return lootbag.items.size();
@@ -7661,8 +7661,8 @@ void Item::itemFindUniqueAppearance(Item* tempItem, std::unordered_set<Uint32>& 
 {
     if ( !appearancesOfSimilarItems.empty() && tempItem )
     {
-        Uint32 originalAppearance = tempItem->appearance;
-        int originalVariation = originalAppearance % items[tempItem->type].variations;
+        const Uint32 originalAppearance = tempItem->appearance;
+        const int originalVariation = originalAppearance % items[tempItem->type].variations;
 
         int tries = 100;
         bool robot = false;
@@ -7687,13 +7687,13 @@ void Item::itemFindUniqueAppearance(Item* tempItem, std::unordered_set<Uint32>& 
             if ( tempItem->appearance % items[tempItem->type].variations != originalVariation )
             {
                 // we need to match the variation for the new appearance, take the difference so new varation matches
-                int change = (tempItem->appearance % items[tempItem->type].variations - originalVariation);
+                const int change = (tempItem->appearance % items[tempItem->type].variations - originalVariation);
                 if ( tempItem->appearance < change ) // underflow protection
                 {
                     tempItem->appearance += items[tempItem->type].variations;
                 }
                 tempItem->appearance -= change;
-                int newVariation = tempItem->appearance % items[tempItem->type].variations;
+                const int newVariation = tempItem->appearance % items[tempItem->type].variations;
                 assert(newVariation == originalVariation);
             }
         }
@@ -7718,13 +7718,13 @@ void Item::itemFindUniqueAppearance(Item* tempItem, std::unordered_set<Uint32>& 
                 if ( tempItem->appearance % items[tempItem->type].variations != originalVariation )
                 {
                     // we need to match the variation for the new appearance, take the difference so new varation matches
-                    int change = (tempItem->appearance % items[tempItem->type].variations - originalVariation);
+                    const int change = (tempItem->appearance % items[tempItem->type].variations - originalVariation);
                     if ( tempItem->appearance < change ) // underflow protection
                     {
                         tempItem->appearance += items[tempItem->type].variations;
                     }
                     tempItem->appearance -= change;
-                    int newVariation = tempItem->appearance % items[tempItem->type].variations;
+                    const int newVariation = tempItem->appearance % items[tempItem->type].variations;
                     assert(newVariation == originalVariation);
                 }
             }
@@ -7739,9 +7739,9 @@ void Item::onItemIdentified(int player, Item* tempItem)
     if ( player >= 0 && player < MAXPLAYERS && players[player]->isLocalPlayer() && stats[player] )
     {
         std::unordered_set<Uint32> appearancesOfSimilarItems;
-        for ( node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
+        for (const node_t* node = stats[player]->inventory.first; node != nullptr; node = node->next )
         {
-            auto item2 = static_cast<Item*>(node->element);
+            const auto item2 = static_cast<Item*>(node->element);
             if ( item2 && item2 != tempItem && !itemCompare(tempItem, item2, true) )
             {
                 // items are the same (incl. appearance!)

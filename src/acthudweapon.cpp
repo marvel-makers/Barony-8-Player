@@ -88,7 +88,7 @@ HUDFlail_t HUDFlail[MAXPLAYERS];
 void actHudArm(Entity* my)
 {
     players[HUDARM_PLAYERNUM]->hud.arm = my;
-    Entity* parent = players[HUDARM_PLAYERNUM]->hud.weapon;
+    const Entity* parent = players[HUDARM_PLAYERNUM]->hud.weapon;
 
     if (players[HUDARM_PLAYERNUM] == nullptr || players[HUDARM_PLAYERNUM]->entity == nullptr)
     {
@@ -4112,8 +4112,8 @@ void actHudShield(Entity* my)
 
     Input& input = Input::inputs[HUDSHIELD_PLAYERNUM];
 
-    auto& camera_shakex2 = cameravars[HUDSHIELD_PLAYERNUM].shakex2;
-    auto& camera_shakey2 = cameravars[HUDSHIELD_PLAYERNUM].shakey2;
+    const auto& camera_shakex2 = cameravars[HUDSHIELD_PLAYERNUM].shakex2;
+    const auto& camera_shakey2 = cameravars[HUDSHIELD_PLAYERNUM].shakey2;
 
     my->flags[INVISIBLE_DITHER] = false;
 
@@ -4167,7 +4167,7 @@ void actHudShield(Entity* my)
     {
         if ( players[HUDSHIELD_PLAYERNUM]->entity->mistformGLRender > 0.05 )
         {
-            real_t modulus = fmod(players[HUDSHIELD_PLAYERNUM]->entity->mistformGLRender, 1.0);
+            const real_t modulus = fmod(players[HUDSHIELD_PLAYERNUM]->entity->mistformGLRender, 1.0);
             if ( modulus >= 0.05 && modulus < 0.15 ) // force shield
             {
                 my->mistformGLRender = 0.5;
@@ -4481,7 +4481,7 @@ void actHudShield(Entity* my)
         return;
     }
 
-    bool crossbow = (stats[HUDSHIELD_PLAYERNUM]->weapon 
+    const bool crossbow = (stats[HUDSHIELD_PLAYERNUM]->weapon 
         && (stats[HUDSHIELD_PLAYERNUM]->weapon->type == CROSSBOW || stats[HUDSHIELD_PLAYERNUM]->weapon->type == HEAVY_CROSSBOW
             || stats[HUDSHIELD_PLAYERNUM]->weapon->type == BLACKIRON_CROSSBOW) );
     bool doCrossbowReloadAnimation = false;
@@ -4917,7 +4917,7 @@ void actHudShield(Entity* my)
             HUDSHIELD_DUCK_CHARGE += 1.0;
         }
 
-        real_t chargeAnim = std::min(1.0, HUDSHIELD_DUCK_CHARGE / 10.0);
+        const real_t chargeAnim = std::min(1.0, HUDSHIELD_DUCK_CHARGE / 10.0);
 
         if ( HUDSHIELD_DUCK_CHARGE >= 1.0 )
         {
@@ -5210,7 +5210,7 @@ void actHudAdditional2(Entity* my)
     my->flags[INVISIBLE] = players[HUDADDITIONAL_PLAYERNUM]->hud.weapon->flags[INVISIBLE];
     my->flags[INVISIBLE_DITHER] = players[HUDADDITIONAL_PLAYERNUM]->hud.weapon->flags[INVISIBLE_DITHER];
 
-    auto& weaponLimb = players[HUDADDITIONAL_PLAYERNUM]->hud.weapon;
+    const auto& weaponLimb = players[HUDADDITIONAL_PLAYERNUM]->hud.weapon;
     if ( (my->flags[INVISIBLE] && !my->flags[INVISIBLE_DITHER]) || weaponLimb->skill[6] != 0 ) // HUDWEAPON_HIDEWEAPON
     {
         hudFlail.needsInit = true;
@@ -5300,7 +5300,7 @@ void actHudAdditional2(Entity* my)
     static ConsoleVariable<float> cvar_anim_flail_mult("/anim_flail_mult", .1f);
     // spring motion
     {
-        real_t accel = (-*cvar_anim_flail_damp * bounce - *cvar_anim_flail_spring * hudFlail.roll) / *cvar_anim_flail_mass;
+        const real_t accel = (-*cvar_anim_flail_damp * bounce - *cvar_anim_flail_spring * hudFlail.roll) / *cvar_anim_flail_mass;
         bounce += accel * *cvar_anim_flail_mult;
         hudFlail.roll += bounce * *cvar_anim_flail_mult;
     }
@@ -5316,7 +5316,7 @@ void actHudAdditional2(Entity* my)
         spin += std::max(0.01, (1.0 - spin) / 20);
         spin = std::min(1.0, spin);
 
-        real_t prevRollSpin = rollSpin;
+        const real_t prevRollSpin = rollSpin;
         rollSpin += spin / 3;
 
         if ( weaponLimb->skill[0] == 1 )
@@ -5378,15 +5378,15 @@ void actHudAdditional2(Entity* my)
 
     hudFlail.pitch = -(4 * PI / 8) * spin;
 
-    float basePitch = 0.15;
+    const float basePitch = 0.15;
     my->pitch = hudFlail.pitch - (1.0 - spin) * (PI * basePitch);
     my->roll = hudFlail.roll + rollSpin;
     my->yaw = hudFlail.yaw + sin(spin2 * PI / 2);
 
     // target focal x/y/z relative to weapon's position
-    real_t focalx = 1.5 + weaponLimb->focalx;
-    real_t focaly = 0.0 + weaponLimb->focaly;
-    real_t focalz = -0.9 + weaponLimb->focalz;
+    const real_t focalx = 1.5 + weaponLimb->focalx;
+    const real_t focaly = 0.0 + weaponLimb->focaly;
+    const real_t focalz = -0.9 + weaponLimb->focalz;
 
     // magic code to translate focals into pure coords (doesn't include focaly)
     real_t xoffset = focalz * sin(weaponLimb->pitch + PI) * cos(weaponLimb->roll) * cos(weaponLimb->yaw);
@@ -5414,8 +5414,8 @@ void actHudAdditional(Entity* my)
 
     my->flags[UNCLICKABLE] = true;
 
-    auto& camera_shakex2 = cameravars[HUDSHIELD_PLAYERNUM].shakex2;
-    auto& camera_shakey2 = cameravars[HUDSHIELD_PLAYERNUM].shakey2;
+    const auto& camera_shakex2 = cameravars[HUDSHIELD_PLAYERNUM].shakex2;
+    const auto& camera_shakey2 = cameravars[HUDSHIELD_PLAYERNUM].shakey2;
 
     my->flags[INVISIBLE_DITHER] = false;
 
@@ -5446,7 +5446,7 @@ void actHudAdditional(Entity* my)
     my->mistformGLRender = 0.0;
     if ( players[HUDSHIELD_PLAYERNUM]->entity->mistformGLRender > 0.05 )
     {
-        real_t modulus = fmod(players[HUDSHIELD_PLAYERNUM]->entity->mistformGLRender, 1.0);
+        const real_t modulus = fmod(players[HUDSHIELD_PLAYERNUM]->entity->mistformGLRender, 1.0);
         if ( modulus >= 0.05 && modulus < 0.15 ) // force shield
         {
             my->mistformGLRender = 0.5;
@@ -5467,7 +5467,7 @@ void actHudAdditional(Entity* my)
         return;
     }
 
-    Entity* shieldLimb = nullptr;
+    const Entity* shieldLimb = nullptr;
     if ( players[HUDSHIELD_PLAYERNUM]->entity->bodyparts.size() > 2 )
     {
         shieldLimb = players[HUDSHIELD_PLAYERNUM]->entity->bodyparts.at(2);
@@ -5537,7 +5537,7 @@ void actHudAdditional(Entity* my)
         my->flags[INVISIBLE_DITHER] = false;
     }
 
-    bool defending = false;
+    const bool defending = false;
 
     // shield switching animation
     if ( players[HUDSHIELD_PLAYERNUM]->hud.shieldSwitch )
@@ -5754,7 +5754,7 @@ void actHudArrowModel(Entity* my)
     my->mistformGLRender = 0.0;
     if ( players[HUDSHIELD_PLAYERNUM]->entity->mistformGLRender > 0.05 )
     {
-        real_t modulus = fmod(players[HUDSHIELD_PLAYERNUM]->entity->mistformGLRender, 1.0);
+        const real_t modulus = fmod(players[HUDSHIELD_PLAYERNUM]->entity->mistformGLRender, 1.0);
         if ( modulus >= 0.05 && modulus < 0.15 ) // force shield
         {
             my->mistformGLRender = 0.5;

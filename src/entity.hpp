@@ -136,7 +136,7 @@ public:
             string = nullptr;
         }
         if ( !str ) { return; }
-        size_t len = sizeof(char) * (strlen(str) + 1);
+        const size_t len = sizeof(char) * (strlen(str) + 1);
         if ( string = static_cast<char*>(malloc(len)) )
         {
             memset(string, 0, len);
@@ -755,7 +755,7 @@ public:
     void entityShowOnMapTickDuration()
     {
         auto duration = getEntityShowOnMapDuration();
-        auto source = getEntityShowOnMapSource();
+        const auto source = getEntityShowOnMapSource();
         if ( duration > 0 )
         {
             --duration;
@@ -1010,7 +1010,7 @@ public:
 
     Monster getRace() const
     {
-        Stat* myStats = getStats();
+        const Stat* myStats = getStats();
 
         if ( !myStats )
         {
@@ -1146,7 +1146,7 @@ public:
     //Lets monsters swap out weapons.
     void inline chooseWeapon(const Entity* target, double dist)
     {
-        Stat* myStats = getStats();
+        const Stat* myStats = getStats();
         if ( !myStats )
         {
             return;
@@ -1198,7 +1198,7 @@ public:
             case SHOPKEEPER:
                 if ( target )
                 {
-                    if ( Stat* targetStats = target->getStats() )
+                    if (const Stat* targetStats = target->getStats() )
                     {
                         if ( targetStats->type == SHOPKEEPER && myStats->weapon && myStats->weapon->type == SPELLBOOK_DRAIN_SOUL )
                         {
@@ -1731,9 +1731,9 @@ public:
     std::vector<Entity*> getScriptAttachedEntities(Entity& script)
     {
         std::vector<Entity*> entities;
-        for ( node_t* node = script.children.first; node; node = node->next )
+        for (const node_t* node = script.children.first; node; node = node->next )
         {
-            Uint32 entityUid = *static_cast<Uint32*>(node->element);
+            const Uint32 entityUid = *static_cast<Uint32*>(node->element);
             Entity* child = uidToEntity(entityUid);
             if ( child )
             {

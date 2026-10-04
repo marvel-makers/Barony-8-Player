@@ -100,7 +100,7 @@ void castSpellInit(Uint32 caster_uid, spell_t* spell, bool usingSpellbook, bool 
             for (node = channeledSpells[player].first; node; node = nextnode)
             {
                 nextnode = node->next;
-                auto spell_search = static_cast<spell_t*>(node->element);
+                const auto spell_search = static_cast<spell_t*>(node->element);
                 if (spell_search->ID == spell->ID)
                 {
                     //list_RemoveNode(node);
@@ -264,7 +264,7 @@ void castSpellInit(Uint32 caster_uid, spell_t* spell, bool usingSpellbook, bool 
 
     if ( player >= 0 )
     {
-        int goldCost = getGoldCostOfSpell(spell, player);
+        const int goldCost = getGoldCostOfSpell(spell, player);
         if ( goldCost > 0 )
         {
             if ( goldCost > stat->GOLD )
@@ -370,7 +370,7 @@ bool isSpellcasterBeginnerFromSpellbook(int player, Entity* caster, Stat* stat, 
         return false;
     }
 
-    int spellcastingLvl = std::min(std::max(0, stat->getModifiedProficiency(spell->skillID) + statGetINT(stat, caster)), 100);
+    const int spellcastingLvl = std::min(std::max(0, stat->getModifiedProficiency(spell->skillID) + statGetINT(stat, caster)), 100);
     bool newbie = false;
 
     if ( spellcastingLvl >= spell->difficulty || playerLearnedSpellbook(player, spellbookItem) )
@@ -410,11 +410,11 @@ int getSpellbookBonusPercent(Entity* caster, Stat* stat, Item* spellbookItem)
     {
         return 0;
     }
-    if ( auto spell = getSpellFromID(spellID) )
+    if (const auto spell = getSpellFromID(spellID) )
     {
         if ( itemCategory(spellbookItem) == SPELLBOOK )
         {
-            auto find = ItemTooltips.spellItems.find(spell->ID);
+            const auto find = ItemTooltips.spellItems.find(spell->ID);
             if ( find != ItemTooltips.spellItems.end()
                 && find->second.spellTags.find(ItemTooltips_t::SPELL_TAG_SPELLBOOK_SCALING) == find->second.spellTags.end() )
             {
@@ -451,7 +451,7 @@ Entity* getSpellTarget(node_t* node, int radius, Entity* caster, bool targetCast
     {
         return nullptr;
     }
-    auto entity = static_cast<Entity*>(node->element);
+    const auto entity = static_cast<Entity*>(node->element);
     if ( !entity )
     {
         return nullptr;
@@ -488,7 +488,7 @@ bool CastSpellProps_t::setToMonsterCast(Entity* monster, int spellID)
     caster_y = monster->y;
 
     real_t spellDist = 64.0;
-    spell_t* spell = getSpellFromID(spellID);
+    const spell_t* spell = getSpellFromID(spellID);
     if ( spell )
     {
         spellDist = std::max(spellDist, spell->distance);
@@ -498,8 +498,8 @@ bool CastSpellProps_t::setToMonsterCast(Entity* monster, int spellID)
     if ( Entity* target = uidToEntity(monster->monsterTarget) )
     {
         Entity* ohit = hit.entity;
-        real_t tangent = atan2(target->y - monster->y, target->x - monster->x);
-        real_t dist = lineTraceTarget(monster, monster->x, monster->y, tangent, spellDist, 0, false, target);
+        const real_t tangent = atan2(target->y - monster->y, target->x - monster->x);
+        const real_t dist = lineTraceTarget(monster, monster->x, monster->y, tangent, spellDist, 0, false, target);
         if ( hit.entity == target )
         {
             target_x = target->x;
@@ -5676,8 +5676,8 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
             {
                 auto compFunc = [](std::pair<std::pair<Sint32, real_t>, Entity*>& lhs, std::pair<std::pair<Sint32, real_t>, Entity*>& rhs)
                 {
-                    int lhs_dist = 64 * (static_cast<int>(lhs.first.second) / 64);
-                    int rhs_dist = 64 * (static_cast<int>(rhs.first.second) / 64);
+                    const int lhs_dist = 64 * (static_cast<int>(lhs.first.second) / 64);
+                    const int rhs_dist = 64 * (static_cast<int>(rhs.first.second) / 64);
                     if ( lhs_dist == rhs_dist )
                     {
                         return lhs.first.first < rhs.first.first;
@@ -9443,7 +9443,7 @@ bool spellIsNaturallyLearnedByRaceOrClass(Entity* caster, Stat& stat, int spellI
     }
     
     // class specific:
-    int playernum = caster ? caster->skill[2] : player;
+    const int playernum = caster ? caster->skill[2] : player;
     if ( playernum < 0 ) { return false; }
     if ( client_classes[playernum] == CLASS_PUNISHER && (spellID == SPELL_TELEPULL || spellID == SPELL_DEMON_ILLUSION) )
     {
@@ -9560,7 +9560,7 @@ void createParticleFociLight(Entity* entity, int spellID, bool updateClients)
 {
     if ( !entity ) { return; }
 
-    int sprite = 1866;
+    const int sprite = 1866;
     if ( updateClients )
     {
         serverSpawnMiscParticles(entity, PARTICLE_EFFECT_FOCI_LIGHT, spellID);

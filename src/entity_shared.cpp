@@ -2356,10 +2356,10 @@ int canWearEquip(Entity* entity, int category)
     int equipType = 0;
     if ( entity != nullptr)
     {
-        Stat* stats = entity->getStats();
+        const Stat* stats = entity->getStats();
         if ( stats != nullptr)
         {
-            int type = stats->type;
+            const int type = stats->type;
 
             switch ( type )
             {
@@ -2477,7 +2477,7 @@ void setSpriteAttributes(Entity* entityNew, Entity* entityToCopy, Entity* entity
         tmpStats = entityStatToCopy->getStats();
     }
 
-    int spriteType = checkSpriteType(entityNew->sprite);
+    const int spriteType = checkSpriteType(entityNew->sprite);
     // monsters.
     if ( spriteType == 1 )
     {

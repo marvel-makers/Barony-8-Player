@@ -130,13 +130,13 @@ void actFurniture(Entity* my)
 void Entity::furnitureHandleDamageMagic(int damage, Entity& magicProjectile, Entity* caster, bool messages, bool doSound)
 {
     updateEntityOldHPBeforeMagicHit(*this, magicProjectile);
-    int oldHP = this->furnitureHealth;
+    const int oldHP = this->furnitureHealth;
     this->furnitureHealth -= damage;
     if ( caster )
     {
         if ( caster->behavior == &actPlayer )
         {
-            bool destroyed = oldHP > 0 && this->furnitureHealth <= 0;
+            const bool destroyed = oldHP > 0 && this->furnitureHealth <= 0;
             if ( destroyed )
             {
                 gameModeManager.currentSession.challengeRun.updateKillEvent(this);
@@ -453,8 +453,8 @@ void actStatue(Entity* my)
             {
                 int index = 0;
                 real_t baseHeight = 0.0;
-                std::string directionString = StatueManager.directionKeys[my->statueDir];
-                for ( auto& limb : StatueManager.allStatues[my->statueId].limbs[directionString] )
+                const std::string directionString = StatueManager.directionKeys[my->statueDir];
+                for (const auto& limb : StatueManager.allStatues[my->statueId].limbs[directionString] )
                 {
                     Entity* childEntity = newEntity(limb.sprite, 1, map.entities, nullptr);
                     childEntity->parent = my->getUID();
@@ -675,7 +675,7 @@ int colliderGetSpellRange(Entity* my)
 {
     if ( my->colliderSpellEvent % 1000 == 0 ) { return 0; }
     int range = 32;
-    int effectType = my->colliderSpellEvent % 1000;
+    const int effectType = my->colliderSpellEvent % 1000;
     switch ( effectType )
     {
     case 3:
@@ -706,7 +706,7 @@ void actColliderMushroomCap(Entity* my)
     my->pitch = (my->fskill[2]) * (PI / 24) * sin(my->fskill[1]);
     my->roll =  (my->fskill[2]) * (PI / 24) * sin(my->fskill[1] + PI / 2);
 
-    real_t bobScale = 0.08 * my->skill[0];
+    const real_t bobScale = 0.08 * my->skill[0];
     my->scalex = 1.0 + bobScale * sin(my->fskill[0]);
     my->scaley = 1.0 + bobScale * sin(my->fskill[0]);
     my->scalez = 1.0 - bobScale * sin(my->fskill[0]);
@@ -726,7 +726,7 @@ void actColliderMushroomCap(Entity* my)
 
     if ( trigger > 0 )
     {
-        real_t percent = (trigger % 100) / 100.0;
+        const real_t percent = (trigger % 100) / 100.0;
         my->skill[0] = 4;
 
         if ( percent < 0.5 )
@@ -758,7 +758,7 @@ void actColliderMushroomCap(Entity* my)
     if ( my->skill[0] > 0 )
     {
         int range = colliderGetSpellRange(parent);
-        int effectType = parent->colliderSpellEvent % 1000;
+        const int effectType = parent->colliderSpellEvent % 1000;
         if ( effectType == 3 || effectType == 4 || effectType == 7 )
         {
             range = 32;
@@ -797,11 +797,11 @@ void actColliderMushroomCap(Entity* my)
 
                 if ( (effectType == 3 || effectType == 4 || effectType == 7) && multiplayer != CLIENT )
                 {
-                    if ( Entity* target = uidToEntity(parent->colliderSpellTarget) )
+                    if (const Entity* target = uidToEntity(parent->colliderSpellTarget) )
                     {
-                        real_t tangent = atan2(target->y - parent->y, target->x - parent->x);
+                        const real_t tangent = atan2(target->y - parent->y, target->x - parent->x);
 
-                        Entity* caster = parent;
+                        const Entity* caster = parent;
                         if ( parent->colliderCreatedParent != 0 )
                         {
                             if ( Entity* ent = uidToEntity(parent->colliderCreatedParent) )
@@ -819,7 +819,7 @@ void actColliderMushroomCap(Entity* my)
                             missile->x = parent->x;
                             missile->y = parent->y;
                             missile->z = 6.0;
-                            real_t vel = sqrt(pow(missile->vel_x, 2) + pow(missile->vel_y, 2));
+                            const real_t vel = sqrt(pow(missile->vel_x, 2) + pow(missile->vel_y, 2));
                             missile->vel_z = -1.2;
                             missile->vel_x = vel * cos(tangent);
                             missile->vel_y = vel * sin(tangent);
@@ -844,13 +844,13 @@ void actColliderMushroomCap(Entity* my)
                     gib->lightBonus = vec4{ 0.25f, 0.25f, 0.25f, 0.f };
                 }
 
-                if ( Entity* fx = createParticleAOEIndicator(parent, parent->x, parent->y, 0.0, TICKS_PER_SECOND * 2, range) )
+                if (const Entity* fx = createParticleAOEIndicator(parent, parent->x, parent->y, 0.0, TICKS_PER_SECOND * 2, range) )
                 {
                     //fx->actSpriteFollowUID = 0;
                     fx->actSpriteCheckParentExists = 0;
                     //fx->scalex = 0.8;
                     //fx->scaley = 0.8;
-                    if ( auto indicator = AOEIndicators_t::getIndicator(fx->skill[10]) )
+                    if (const auto indicator = AOEIndicators_t::getIndicator(fx->skill[10]) )
                     {
                         //indicator->arc = PI / 2;
                         indicator->indicatorColor = color;
@@ -876,7 +876,7 @@ void actColliderMushroomCap(Entity* my)
                 my->skill[0]--;
                 if ( my->skill[0] == 1 )
                 {
-                    auto& colliderData = EditorEntityData_t::colliderData[parent->colliderDamageTypes];
+                    const auto& colliderData = EditorEntityData_t::colliderData[parent->colliderDamageTypes];
                     if ( (effectType == 3 || effectType == 4) &&
                         colliderData.name.find("_fragile") != std::string::npos )
                     {
@@ -909,7 +909,7 @@ void actColliderMushroomCap(Entity* my)
                 }
                 else if ( friendlyFire == 0 )
                 {
-                    auto& colliderData = EditorEntityData_t::colliderData[parent->colliderDamageTypes];
+                    const auto& colliderData = EditorEntityData_t::colliderData[parent->colliderDamageTypes];
                     if ( !(effectType == 3 || effectType == 4) &&
                         colliderData.name.find("_fragile") != std::string::npos )
                     {
@@ -925,12 +925,12 @@ void actColliderMushroomCap(Entity* my)
             if ( multiplayer != CLIENT )
             {
                 Entity* caster = uidToEntity(parent->colliderCreatedParent);
-                std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1 + (range / 16));
-                for ( auto it : entLists )
+                const std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1 + (range / 16));
+                for (const auto it : entLists )
                 {
-                    for ( node_t* node = it->first; node != nullptr; node = node->next )
+                    for (const node_t* node = it->first; node != nullptr; node = node->next )
                     {
-                        auto entity = static_cast<Entity*>(node->element);
+                        const auto entity = static_cast<Entity*>(node->element);
                         if ( !(entity->behavior == &actPlayer || entity->behavior == &actMonster) )
                         {
                             continue;
@@ -977,7 +977,7 @@ void actColliderMushroomCap(Entity* my)
                             continue;
                         }
 
-                        auto props = getParticleEmitterHitProps(parent->getUID(), entity);
+                        const auto props = getParticleEmitterHitProps(parent->getUID(), entity);
                         if ( !props )
                         {
                             continue;
@@ -987,8 +987,8 @@ void actColliderMushroomCap(Entity* my)
                             continue;
                         }
 
-                        real_t tangent = atan2(entity->y - parent->y, entity->x - parent->x);
-                        bool oldPassable = entity->flags[PASSABLE];
+                        const real_t tangent = atan2(entity->y - parent->y, entity->x - parent->x);
+                        const bool oldPassable = entity->flags[PASSABLE];
                         entity->flags[PASSABLE] = false;
                         real_t d = lineTraceTarget(parent, parent->x, parent->y, tangent, range + 4.0, 0, false, entity);
                         entity->flags[PASSABLE] = oldPassable;
@@ -1011,7 +1011,7 @@ void actColliderMushroomCap(Entity* my)
                             }
                             if ( caster && caster->behavior == &actPlayer )
                             {
-                                if ( Stat* casterStats = caster->getStats() )
+                                if (const Stat* casterStats = caster->getStats() )
                                 {
                                     if ( casterStats->type == MYCONID && casterStats->getEffectActive(EFF_GROWTH) >= 2 )
                                     {
@@ -1063,7 +1063,7 @@ void actColliderMushroomCap(Entity* my)
                             }
                             else if ( effectType == 5 )
                             {
-                                bool wasEffected = stats->getEffectActive(EFF_DUSTED);
+                                const bool wasEffected = stats->getEffectActive(EFF_DUSTED);
                                 if ( entity->setEffect(EFF_DUSTED, true, 10 * TICKS_PER_SECOND + 10, true) )
                                 {
                                     spawnMagicEffectParticles(entity->x, entity->y, entity->z, 944);
@@ -1095,8 +1095,8 @@ void actColliderMushroomCap(Entity* my)
 
                                 if ( entity->setEffect(EFF_KNOCKBACK, true, 30, false) )
                                 {
-                                    real_t pushbackMultiplier = 0.9;
-                                    real_t tangent = atan2(entity->y - parent->y, entity->x - parent->x);
+                                    const real_t pushbackMultiplier = 0.9;
+                                    const real_t tangent = atan2(entity->y - parent->y, entity->x - parent->x);
                                     if ( entity->behavior == &actPlayer )
                                     {
                                         if ( !players[entity->skill[2]]->isLocalPlayer() )
@@ -1140,23 +1140,23 @@ void actColliderMushroomCap(Entity* my)
 bool Entity::isColliderShownAsWallOnMinimap() const
 {
     if ( !isDamageableCollider() ) { return false; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
-    auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
     return colliderDmgType.showAsWallOnMinimap;
 }
 
 bool Entity::isColliderWeakToBoulders() const
 {
     if ( !isDamageableCollider() ) { return false; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
-    auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
     return colliderDmgType.boulderDestroys;
 }
 
 bool Entity::isColliderWeakToSkill(const int proficiency) const
 {
     if ( !isDamageableCollider() ) { return false; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
     auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
     return colliderDmgType.proficiencyBonusDamage.find(proficiency) != colliderDmgType.proficiencyBonusDamage.end();
 }
@@ -1164,7 +1164,7 @@ bool Entity::isColliderWeakToSkill(const int proficiency) const
 bool Entity::isColliderResistToSkill(const int proficiency) const
 {
     if ( !isDamageableCollider() ) { return false; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
     auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
     return colliderDmgType.proficiencyResistDamage.find(proficiency) != colliderDmgType.proficiencyResistDamage.end();
 }
@@ -1172,24 +1172,24 @@ bool Entity::isColliderResistToSkill(const int proficiency) const
 bool Entity::isColliderDamageableByMelee() const
 {
     if ( !isDamageableCollider() ) { return false; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
-    auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
     return colliderDmgType.meleeAffects;
 }
 
 bool Entity::isColliderDamageableByMagic() const
 {
     if ( !isDamageableCollider() ) { return false; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
-    auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
     return colliderDmgType.magicAffects;
 }
 
 bool Entity::isColliderAttachableToBombs() const
 {
     if ( !isDamageableCollider() ) { return false; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
-    auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
     return colliderDmgType.bombsAttach;
 }
 
@@ -1208,7 +1208,7 @@ bool Entity::isDamageableCollider() const
 bool Entity::isColliderWall() const
 {
     if ( !isDamageableCollider() ) { return false; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
     if ( colliderData.hpbarLookupName.find("_wall") != std::string::npos )
     {
         return true;
@@ -1219,7 +1219,7 @@ bool Entity::isColliderWall() const
 bool Entity::isColliderBreakableContainer() const
 {
     if ( !isDamageableCollider() ) { return false; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
     if ( colliderData.damageCalculationType.find("breakable") != std::string::npos )
     {
         return true;
@@ -1233,7 +1233,7 @@ void Entity::colliderOnDestroy()
     if ( multiplayer == CLIENT ) { return; }
     flags[PASSABLE] = true;
 
-    Entity* killer = nullptr;
+    const Entity* killer = nullptr;
     if ( colliderKillerUid != 0 )
     {
         killer = uidToEntity(colliderKillerUid);
@@ -1246,7 +1246,7 @@ void Entity::colliderOnDestroy()
         }
     }
 
-    auto find = EditorEntityData_t::colliderData.find(colliderDamageTypes);
+    const auto find = EditorEntityData_t::colliderData.find(colliderDamageTypes);
     if ( find != EditorEntityData_t::colliderData.end() )
     {
         if ( find->second.name == "mushroom_spell_casted" )
@@ -1255,7 +1255,7 @@ void Entity::colliderOnDestroy()
             {
                 if ( local_rng.rand() % 10 == 0 )
                 {
-                    if ( Entity* ent = dropItemMonster(newItem(DUST_BALL, SERVICABLE, 0, 1, 0, true, nullptr), this, nullptr) )
+                    if (const Entity* ent = dropItemMonster(newItem(DUST_BALL, SERVICABLE, 0, 1, 0, true, nullptr), this, nullptr) )
                     {
                         ent->itemOriginalOwner = colliderCreatedParent;
                         ent->itemGerminateResult = 1;
@@ -1263,7 +1263,7 @@ void Entity::colliderOnDestroy()
                 }
                 else
                 {
-                    if ( Entity* ent = dropItemMonster(newItem(FOOD_SHROOM, SERVICABLE, 0, 1, 0, true, nullptr), this, nullptr) )
+                    if (const Entity* ent = dropItemMonster(newItem(FOOD_SHROOM, SERVICABLE, 0, 1, 0, true, nullptr), this, nullptr) )
                     {
                         ent->itemOriginalOwner = colliderCreatedParent;
                         ent->itemGerminateResult = 1;
@@ -1277,7 +1277,7 @@ void Entity::colliderOnDestroy()
         {
             for ( int i = 0; i < this->colliderDropVariable; ++i )
             {
-                if ( Entity* ent = dropItemMonster(newItem(FOOD_NUT, SERVICABLE, 0, 1, 0, true, nullptr), this, nullptr) )
+                if (const Entity* ent = dropItemMonster(newItem(FOOD_NUT, SERVICABLE, 0, 1, 0, true, nullptr), this, nullptr) )
                 {
                     ent->itemOriginalOwner = colliderCreatedParent;
                     ent->itemGerminateResult = 1;
@@ -1289,11 +1289,11 @@ void Entity::colliderOnDestroy()
     if ( colliderHideMonster != 0 )
     {
         int type = colliderHideMonster % 1000;
-        int numSpawns = type == BAT_SMALL ? 2 : 1;
+        const int numSpawns = type == BAT_SMALL ? 2 : 1;
         int successes = 0;
         for ( int i = 0; i < numSpawns; ++i )
         {
-            auto monster = summonMonster(static_cast<Monster>(type), static_cast<int>(x / 16) * 16 + 8, static_cast<int>(y / 16) * 16 + 8);
+            const auto monster = summonMonster(static_cast<Monster>(type), static_cast<int>(x / 16) * 16 + 8, static_cast<int>(y / 16) * 16 + 8);
             if ( monster )
             {
                 monster->yaw = yaw;
@@ -1349,7 +1349,7 @@ void Entity::colliderOnDestroy()
     }
     if ( colliderContainedEntity != 0 )
     {
-        if ( auto entity = uidToEntity(colliderContainedEntity) )
+        if (const auto entity = uidToEntity(colliderContainedEntity) )
         {
             if ( entity->behavior == &actItem || entity->behavior == &actGoldBag )
             {
@@ -1387,10 +1387,10 @@ void Entity::colliderOnDestroy()
                         auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(entity, 2);
                         for (auto it = entLists.begin(); it != entLists.end(); ++it )
                         {
-                            list_t* currentList = *it;
-                            for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+                            const list_t* currentList = *it;
+                            for (const node_t* node = currentList->first; node != nullptr; node = node->next )
                             {
-                                auto ent = static_cast<Entity*>(node->element);
+                                const auto ent = static_cast<Entity*>(node->element);
                                 if ( ent && ent->behavior == &actGoldBag && ent != entity && ent->goldInContainer != 0
                                     && ent->goldInContainer == entity->goldInContainer )
                                 {
@@ -1477,42 +1477,42 @@ void Entity::colliderOnDestroy()
 int Entity::getColliderLangName() const
 {
     if ( !isDamageableCollider() ) { return 1; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
     return colliderData.entityLangEntry;
 }
 
 int Entity::getColliderOnHitLangEntry() const
 {
     if ( !isDamageableCollider() ) { return 1; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
     return colliderData.hitMessageLangEntry;
 }
 
 int Entity::getColliderOnBreakLangEntry() const
 {
     if ( !isDamageableCollider() ) { return 1; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
     return colliderData.breakMessageLangEntry;
 }
 
 int Entity::getColliderOnJumpLangEntry() const
 {
     if ( !isDamageableCollider() ) { return 1; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
     return colliderData.colliderJumpLangEntry;
 }
 
 int Entity::getColliderSfxOnHit() const
 {
     if ( !isDamageableCollider() ) { return 0; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
     return colliderData.sfxHit;
 }
 
 int Entity::getColliderSfxOnBreak() const
 {
     if ( !isDamageableCollider() ) { return 0; }
-    auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
+    const auto& colliderData = EditorEntityData_t::colliderData[colliderDamageTypes];
     if ( colliderData.sfxBreak.size() == 0 ) { return 0; }
     return colliderData.sfxBreak[local_rng.rand() % colliderData.sfxBreak.size()];
 }
@@ -1523,19 +1523,19 @@ Entity* Entity::createBreakableCollider(int colliderDamageType, real_t _x, real_
     {
         return nullptr;
     }
-    int x = static_cast<int>(_x) >> 4;
-    int y = static_cast<int>(_y) >> 4;
+    const int x = static_cast<int>(_x) >> 4;
+    const int y = static_cast<int>(_y) >> 4;
     if ( !(x > 0 && x < map.width - 1 && y > 0 && y < map.height - 1) )
     {
         return nullptr;
     }
-    int mapIndex = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
+    const int mapIndex = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
     if ( !map.tiles[mapIndex] || swimmingtiles[map.tiles[mapIndex]] || lavatiles[map.tiles[mapIndex]] )
     {
         return nullptr;
     }
 
-    auto find = EditorEntityData_t::colliderData.find(colliderDamageType);
+    const auto find = EditorEntityData_t::colliderData.find(colliderDamageType);
     if ( find == EditorEntityData_t::colliderData.end() )
     {
         return nullptr;
@@ -1562,7 +1562,7 @@ Entity* Entity::createBreakableCollider(int colliderDamageType, real_t _x, real_
     {
         while ( coords.size() > 0 )
         {
-            int pick = local_rng.rand() % coords.size();
+            const int pick = local_rng.rand() % coords.size();
             if ( checkObstacle(breakable->x + coords[pick].first * 16, breakable->y + coords[pick].second * 16, breakable, nullptr, true, true, true, false) )
             {
                 coords.erase(coords.begin() + pick);
@@ -1621,7 +1621,7 @@ void Entity::colliderAssignProperties(Entity* entity, bool mapGeneration, map_t*
     }
     /*static ConsoleVariable<int> debugColliderType("/collider_type", 14);
  entity->colliderDamageTypes = *debugColliderType;*/
-    auto find = EditorEntityData_t::colliderData.find(entity->colliderDamageTypes);
+    const auto find = EditorEntityData_t::colliderData.find(entity->colliderDamageTypes);
     if ( find != EditorEntityData_t::colliderData.end() )
     {
         auto& data = find->second;
@@ -1713,7 +1713,7 @@ void Entity::colliderAssignProperties(Entity* entity, bool mapGeneration, map_t*
             {
                 std::vector<unsigned int> chances;
                 bool avoidLastSpell = false;
-                for ( auto s : data.spellTriggers )
+                for (const auto s : data.spellTriggers )
                 {
                     chances.push_back(1);
                     if ( lastSpellEvent != 0 && s != lastSpellEvent )
@@ -1744,7 +1744,7 @@ void Entity::colliderAssignProperties(Entity* entity, bool mapGeneration, map_t*
                     }
                 }
 
-                int pickIndex = entity->entity_rng->discrete(chances.data(), chances.size());
+                const int pickIndex = entity->entity_rng->discrete(chances.data(), chances.size());
                 int picked = data.spellTriggers[pickIndex];
                 if ( picked > 0 )
                 {
@@ -1807,8 +1807,8 @@ void Entity::colliderAssignProperties(Entity* entity, bool mapGeneration, map_t*
         }
         if ( modifiedFocal )
         {
-            real_t fx = entity->focalx;
-            real_t fy = entity->focaly;
+            const real_t fx = entity->focalx;
+            const real_t fy = entity->focaly;
             entity->focalx = fx * cos(entity->yaw) - fy * cos(entity->yaw + PI / 2);
             entity->focaly = -fx * sin(entity->yaw) + fy * sin(entity->yaw + PI / 2);
         }
@@ -1858,8 +1858,8 @@ void actColliderDecoration(Entity* my)
         }
         if ( my->isDamageableCollider() )
         {
-            auto& colliderData = EditorEntityData_t::colliderData[my->colliderDamageTypes];
-            auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
+            const auto& colliderData = EditorEntityData_t::colliderData[my->colliderDamageTypes];
+            const auto& colliderDmgType = EditorEntityData_t::colliderDmgTypes[colliderData.damageCalculationType];
             if ( colliderDmgType.burnable )
             {
                 my->flags[BURNABLE] = true;
@@ -1912,7 +1912,7 @@ void actColliderDecoration(Entity* my)
 
             if ( multiplayer != CLIENT )
             {
-                auto& colliderData = EditorEntityData_t::colliderData[my->colliderDamageTypes];
+                const auto& colliderData = EditorEntityData_t::colliderData[my->colliderDamageTypes];
                 if ( colliderData.name.find("germinate_spell") != std::string::npos )
                 {
                     Entity* caster = my->colliderCreatedParent != 0 ? uidToEntity(my->colliderCreatedParent) : my;
@@ -1956,10 +1956,10 @@ void actColliderDecoration(Entity* my)
         bool somebodyinside = false;
         for (auto it = entLists.begin(); it != entLists.end() && !somebodyinside; ++it )
         {
-            list_t* currentList = *it;
-            for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+            const list_t* currentList = *it;
+            for (const node_t* node = currentList->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( !(entity->behavior == &actPlayer || entity->behavior == &actMonster) )
                 {
                     continue;
@@ -1999,8 +1999,8 @@ void actColliderDecoration(Entity* my)
         }
         if ( checkWallDeletion )
         {
-            int x = static_cast<int>(my->x) >> 4;
-            int y = static_cast<int>(my->y) >> 4;
+            const int x = static_cast<int>(my->x) >> 4;
+            const int y = static_cast<int>(my->y) >> 4;
             if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
             {
                 //messagePlayer(0, MESSAGE_DEBUG, "[Collider]: Destroyed self at x: %d, y: %d", x, y);
@@ -2039,7 +2039,7 @@ void actColliderDecoration(Entity* my)
             }
             if ( telepathy )
             {
-                if ( Entity* containedEntity = uidToEntity(my->colliderContainedEntity) )
+                if (const Entity* containedEntity = uidToEntity(my->colliderContainedEntity) )
                 {
                     if ( containedEntity->behavior == &actGoldBag )
                     {
@@ -2051,7 +2051,7 @@ void actColliderDecoration(Entity* my)
 
         if ( multiplayer != CLIENT )
         {
-            auto& colliderData = EditorEntityData_t::colliderData[my->colliderDamageTypes];
+            const auto& colliderData = EditorEntityData_t::colliderData[my->colliderDamageTypes];
             if ( my->flags[BURNING] && my->flags[BURNABLE] )
             {
                 if ( ticks % 30 == 0 )
@@ -2064,7 +2064,7 @@ void actColliderDecoration(Entity* my)
                 }
             }
 
-            auto prevOldHP = my->colliderOldHP;
+            const auto prevOldHP = my->colliderOldHP;
             my->colliderOldHP = my->colliderCurrentHP;
 
             if ( my->colliderCurrentHP > 0 )
@@ -2083,9 +2083,9 @@ void actColliderDecoration(Entity* my)
                     }
                     else if ( (my->colliderSpellEvent % 1000) != 8 && (my->colliderSpellEvent % 1000) != 9 )
                     {
-                        Entity* found = nullptr;
+                        const Entity* found = nullptr;
                         bool rescan = false;
-                        int effectType = my->colliderSpellEvent % 1000;
+                        const int effectType = my->colliderSpellEvent % 1000;
                         if ( prevOldHP != my->colliderCurrentHP )
                         {
                             my->colliderSpellEventCooldown = 4 * TICKS_PER_SECOND;
@@ -2106,13 +2106,13 @@ void actColliderDecoration(Entity* my)
                             {
                                 targetNonPlayer = true;
                             }
-                            int range = colliderGetSpellRange(my);
+                            const int range = colliderGetSpellRange(my);
                             auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1 + (range / 16));
                             std::vector<Entity*> entitiesInRange;
                             for (auto it = entLists.begin(); it != entLists.end() && !found; ++it )
                             {
-                                list_t* currentList = *it;
-                                for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+                                const list_t* currentList = *it;
+                                for (const node_t* node = currentList->first; node != nullptr; node = node->next )
                                 {
                                     auto entity = static_cast<Entity*>(node->element);
                                     if ( !entity || !(entity->behavior == &actPlayer || entity->behavior == &actMonster) ) { continue; }
@@ -2146,16 +2146,16 @@ void actColliderDecoration(Entity* my)
                                             continue;
                                         }
                                     }
-                                    real_t targetDist = entityDist(entity, my);
+                                    const real_t targetDist = entityDist(entity, my);
                                     if ( targetDist >= (range + 4.0) )
                                     {
                                         continue;
                                     }
-                                    real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
-                                    real_t traceDist = range;
+                                    const real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
+                                    const real_t traceDist = range;
                                     if ( Stat* entitystats = entity->getStats() )
                                     {
-                                        int light = entity->entityLightAfterReductions(*entitystats, my);
+                                        const int light = entity->entityLightAfterReductions(*entitystats, my);
                                         if ( targetDist > light )
                                         {
                                             continue;
@@ -2183,7 +2183,7 @@ void actColliderDecoration(Entity* my)
                                 {
                                     if ( caster && caster->behavior == &actMonster && caster->monsterTarget != 0 )
                                     {
-                                        for ( auto ent : entitiesInRange )
+                                        for (const auto ent : entitiesInRange )
                                         {
                                             if ( ent->getUID() == caster->monsterTarget )
                                             {
@@ -2196,7 +2196,7 @@ void actColliderDecoration(Entity* my)
                                     {
                                         if ( caster )
                                         {
-                                            for ( auto ent : entitiesInRange )
+                                            for (const auto ent : entitiesInRange )
                                             {
                                                 if ( ent->behavior == &actMonster && ent->monsterTarget == caster->getUID() )
                                                 {
@@ -2230,13 +2230,13 @@ void actColliderDecoration(Entity* my)
                         auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
                         for (auto it = entLists.begin(); it != entLists.end() && !found; ++it )
                         {
-                            list_t* currentList = *it;
-                            for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+                            const list_t* currentList = *it;
+                            for (const node_t* node = currentList->first; node != nullptr; node = node->next )
                             {
-                                auto entity = static_cast<Entity*>(node->element);
+                                const auto entity = static_cast<Entity*>(node->element);
                                 if ( entity && (entity->behavior == &actPlayer || (entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader())) )
                                 {
-                                    real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
+                                    const real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
                                     if ( entityDist(entity, my) < 40.0 )
                                     {
                                         lineTraceTarget(my, my->x, my->y, tangent, 32.0, 0, false, entity);
@@ -2255,14 +2255,14 @@ void actColliderDecoration(Entity* my)
                     {
                         int type = my->colliderHideMonster % 1000;
                         my->colliderHideMonster = 0;
-                        bool bOldFlag = my->flags[PASSABLE];
+                        const bool bOldFlag = my->flags[PASSABLE];
                         my->flags[PASSABLE] = true;
 
-                        int numSpawns = type == BAT_SMALL ? 2 : 1;
+                        const int numSpawns = type == BAT_SMALL ? 2 : 1;
                         int successes = 0;
                         for ( int i = 0; i < numSpawns; ++i )
                         {
-                            auto monster = summonMonster(static_cast<Monster>(type), static_cast<int>(my->x / 16) * 16 + 8, static_cast<int>(my->y / 16) * 16 + 8);
+                            const auto monster = summonMonster(static_cast<Monster>(type), static_cast<int>(my->x / 16) * 16 + 8, static_cast<int>(my->y / 16) * 16 + 8);
                             if ( monster )
                             {
                                 monster->yaw = my->yaw;
@@ -2324,7 +2324,7 @@ void actColliderDecoration(Entity* my)
             }
             if ( my->colliderCurrentHP <= 0 )
             {
-                int sprite = colliderData.gib;
+                const int sprite = colliderData.gib;
                 if ( sprite > 0 )
                 {
                     createParticleRock(my, sprite);
@@ -2345,7 +2345,7 @@ void actColliderDecoration(Entity* my)
 void Entity::colliderHandleDamageMagic(int damage, Entity &magicProjectile, Entity *caster, bool messages, bool doSound)
 {
     updateEntityOldHPBeforeMagicHit(*this, magicProjectile);
-    auto oldHP = colliderCurrentHP;
+    const auto oldHP = colliderCurrentHP;
     colliderCurrentHP -= damage; //Decrease object health.
     if ( caster )
     {
@@ -2475,10 +2475,10 @@ void actFloorDecoration(Entity* my)
             break;
         }
 
-        for ( auto& pair : coords )
+        for (const auto& pair : coords )
         {
-            int x = pair.first;
-            int y = pair.second;
+            const int x = pair.first;
+            const int y = pair.second;
             if ( x >= 0 && x < map.width && y >= 0 && y < map.height )
             {
                 if ( !map.tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * map.height] )
@@ -2534,7 +2534,7 @@ void actFloorDecoration(Entity* my)
                     std::string key = "";
                     for ( int j = 0; j <= totalChars; ++j )
                     {
-                        char c = buf[j];
+                        const char c = buf[j];
                         if ( c == '$' ) { continue; }
                         if ( charIsWordSeparator(c) ) { break; }
                         key += c;
@@ -2568,7 +2568,7 @@ void actFloorDecoration(Entity* my)
                             Uint8 r = 255;
                             Uint8 g = 255;
                             Uint8 b = 255;
-                            for ( auto& var : find->second.variables )
+                            for (const auto& var : find->second.variables )
                             {
                                 if ( var.type == ScriptTextParser_t::VariableTypes::COLOR_R )
                                 {
@@ -4847,10 +4847,10 @@ void Entity::actTextSource()
         int entitiesVisible = 0;
         int entitiesInvisible = 0;
         // check if our attached entities still exist.
-        for ( node_t* node = children.first; node; node = node->next )
+        for (const node_t* node = children.first; node; node = node->next )
         {
-            Uint32 entityUid = *static_cast<Uint32*>(node->element);
-            Entity* child = uidToEntity(entityUid);
+            const Uint32 entityUid = *static_cast<Uint32*>(node->element);
+            const Entity* child = uidToEntity(entityUid);
             if ( child )
             {
                 ++entitiesExisting;
@@ -4879,10 +4879,10 @@ void Entity::actTextSource()
                 if ( textSourceScript.getAttachedToEntityType(textSourceIsScript) == textSourceScript.TO_BELL )
                 {
                     bool doEffect = false;
-                    for ( node_t* node = children.first; node; node = node->next )
+                    for (const node_t* node = children.first; node; node = node->next )
                     {
-                        Uint32 entityUid = *static_cast<Uint32*>(node->element);
-                        Entity* child = uidToEntity(entityUid);
+                        const Uint32 entityUid = *static_cast<Uint32*>(node->element);
+                        const Entity* child = uidToEntity(entityUid);
                         if ( child )
                         {
                             if ( child->behavior == &actBell )
@@ -4953,7 +4953,7 @@ void Entity::actTextSource()
 
             std::string output = textSourceScript.getScriptFromEntity(*this);
 
-            Uint32 color = makeColorRGB((textSourceColorRGB >> 16) & 0xFF, (textSourceColorRGB >> 8) & 0xFF,
+            const Uint32 color = makeColorRGB((textSourceColorRGB >> 16) & 0xFF, (textSourceColorRGB >> 8) & 0xFF,
                 (textSourceColorRGB >> 0) & 0xFF);
 
             if ( textSourceIsScript != textSourceScript.NO_SCRIPT )
@@ -4962,7 +4962,7 @@ void Entity::actTextSource()
                 return;
             }
 
-            size_t foundPlayerRef = output.find("@p");
+            const size_t foundPlayerRef = output.find("@p");
             if ( foundPlayerRef != std::string::npos )
             {
                 output.erase(foundPlayerRef, 2);
@@ -5191,7 +5191,7 @@ std::string TextSourceScript::getScriptFromEntity(Entity& src)
         std::string key = "";
         for ( int i = 0; i <= totalChars; ++i )
         {
-            char c = buf[i];
+            const char c = buf[i];
             if ( c == '$' ) { continue; }
             if ( charIsWordSeparator(c) ) { break; }
             key += c;
@@ -5231,7 +5231,7 @@ void TextSourceScript::addScriptToTextSource(Entity& src, const char* text)
     }
 
     int skillnum = 4;
-    int len = strlen(text);
+    const int len = strlen(text);
     int encodeIndex = 0;
     for ( int s = 0; s < len; ++s )
     {
@@ -5254,7 +5254,7 @@ void TextSourceScript::parseScriptInMapGeneration(Entity& src)
 {
     std::string script = getScriptFromEntity(src);
 
-    size_t foundScriptTag = script.find("@script");
+    const size_t foundScriptTag = script.find("@script");
     if ( foundScriptTag != std::string::npos )
     {
         if ( (foundScriptTag + strlen("@script")) < script.length()
@@ -5276,7 +5276,7 @@ void TextSourceScript::parseScriptInMapGeneration(Entity& src)
 
     if ( script.find("@triggerif=") != std::string::npos )
     {
-        int result = textSourceProcessScriptTag(script, "@triggerif=", src);
+        const int result = textSourceProcessScriptTag(script, "@triggerif=", src);
         if ( result != k_ScriptError )
         {
             textSourceScript.setTriggerType(src.textSourceIsScript, result);
@@ -5285,7 +5285,7 @@ void TextSourceScript::parseScriptInMapGeneration(Entity& src)
 
     if ( script.find("@attachto=") != std::string::npos )
     {
-        int attachTo = textSourceProcessScriptTag(script, "@attachto=", src);
+        const int attachTo = textSourceProcessScriptTag(script, "@attachto=", src);
         if ( attachTo == k_ScriptError )
         {
             return;
@@ -5302,7 +5302,7 @@ void TextSourceScript::parseScriptInMapGeneration(Entity& src)
         y2 += src.mapGenerationRoomY;
         if ( script.find("@attachrange=") != std::string::npos )
         {
-            int result = textSourceProcessScriptTag(script, "@attachrange=", src);
+            const int result = textSourceProcessScriptTag(script, "@attachrange=", src);
             if ( result != k_ScriptError )
             {
                 x1 = result & 0xFF;
@@ -5312,9 +5312,9 @@ void TextSourceScript::parseScriptInMapGeneration(Entity& src)
             }
         }
         textSourceScript.setAttachedToEntityType(src.textSourceIsScript, attachTo);
-        for ( node_t* node = map.entities->first; node; node = node->next )
+        for (const node_t* node = map.entities->first; node; node = node->next )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             if ( entity )
             {
                 if ( (entity->behavior == &actMonster && attachTo == TO_MONSTERS)
@@ -5334,13 +5334,13 @@ void TextSourceScript::parseScriptInMapGeneration(Entity& src)
                 {
                     continue;
                 }
-                int findx = static_cast<int>(entity->x) >> 4;
-                int findy = static_cast<int>(entity->y) >> 4;
+                const int findx = static_cast<int>(entity->x) >> 4;
+                const int findy = static_cast<int>(entity->y) >> 4;
                 if ( findx >= x1 && findx <= x2 && findy >= y1 && findy <= y2 )
                 {
                     node_t* node = list_AddNodeLast(&src.children);
                     node->deconstructor = &defaultDeconstructor;
-                    auto entityUid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
+                    const auto entityUid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
                     node->element = entityUid;
                     node->size = sizeof(Uint32);
                     *entityUid = entity->getUID();
@@ -5358,15 +5358,15 @@ void bellAttractMonsters(Entity* my)
 
     for (auto it = entLists.begin(); it != entLists.end(); ++it )
     {
-        list_t* currentList = *it;
-        for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+        const list_t* currentList = *it;
+        for (const node_t* node = currentList->first; node != nullptr; node = node->next )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             if ( entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader() == nullptr )
             {
                 if ( (entity->monsterState == MONSTER_STATE_WAIT || entity->monsterTarget == 0) )
                 {
-                    Stat* myStats = entity->getStats();
+                    const Stat* myStats = entity->getStats();
                     if ( !entity->isBossMonster() && !entity->monsterIsTinkeringCreation()
                         && entity->isMobile()
                         && myStats
@@ -5410,17 +5410,17 @@ int getBellDmgOnEntity(Entity* entity)
 {
     if ( !entity ) { return 0; }
 
-    Stat* stats = entity->getStats();
+    const Stat* stats = entity->getStats();
     if ( !stats )
     {
         return 0;
     }
 
     int damage = 80;
-    int trapResist = entity->getEntityBonusTrapResist();
+    const int trapResist = entity->getEntityBonusTrapResist();
     if ( trapResist != 0 )
     {
-        real_t mult = std::max(0.0, 1.0 - (trapResist / 100.0));
+        const real_t mult = std::max(0.0, 1.0 - (trapResist / 100.0));
         damage *= mult;
     }
 
@@ -5435,14 +5435,14 @@ int getBellDmgOnEntity(Entity* entity)
     }
     else if ( stats->helmet )
     {
-        bool shapeshifted = (entity->behavior == &actPlayer && entity->effectShapeshift != NOTHING);
+        const bool shapeshifted = (entity->behavior == &actPlayer && entity->effectShapeshift != NOTHING);
 
         if ( !shapeshifted
             && (stats->helmet->type == HELM_MINING || stats->helmet->type == HAT_TOPHAT) )
         {
             if ( stats->helmet->type == HAT_TOPHAT )
             {
-                bool cursedItemIsBuff = shouldInvertEquipmentBeatitude(stats);
+                const bool cursedItemIsBuff = shouldInvertEquipmentBeatitude(stats);
                 if ( stats->helmet->beatitude >= 0 || cursedItemIsBuff )
                 {
                     if ( stats->HP <= damage )
@@ -5460,7 +5460,7 @@ int getBellDmgOnEntity(Entity* entity)
             else if ( stats->helmet->type == HELM_MINING )
             {
                 real_t mult = 0.5;
-                bool cursedItemIsBuff = shouldInvertEquipmentBeatitude(stats);
+                const bool cursedItemIsBuff = shouldInvertEquipmentBeatitude(stats);
                 if ( stats->helmet->beatitude >= 0 || cursedItemIsBuff )
                 {
                     mult -= 0.25 * abs(stats->helmet->beatitude);
@@ -5494,7 +5494,7 @@ int getBellDmgOnEntity(Entity* entity)
 
             if ( entity->behavior == &actPlayer )
             {
-                int player = entity->skill[2];
+                const int player = entity->skill[2];
                 if ( stats->helmet->status > BROKEN )
                 {
                     messagePlayer(player, MESSAGE_EQUIPMENT, Language::get(681), stats->helmet->getName());
@@ -5525,12 +5525,12 @@ int getBellDmgOnEntity(Entity* entity)
 void spawnMagicEffectParticlesBell(Entity* my, Uint32 sprite)
 {
     if ( !my ) { return; }
-    int baseX = my->x / 16;
-    int baseY = my->y / 16;
+    const int baseX = my->x / 16;
+    const int baseY = my->y / 16;
 
-    real_t posx = baseX * 16.0 + 8;
-    real_t posy = baseY * 16.0 + 8;
-    real_t z = 8.0;
+    const real_t posx = baseX * 16.0 + 8;
+    const real_t posy = baseY * 16.0 + 8;
+    const real_t z = 8.0;
     const int numParticles = 64;
     for ( int c = 0; c < numParticles; c++ )
     {
@@ -5594,11 +5594,11 @@ void bellBreakBulb(Entity* my, bool minotaurBreak)
     }
 
     Entity* bell = nullptr;
-    for ( node_t* node = my->children.first; node; node = node->next )
+    for (const node_t* node = my->children.first; node; node = node->next )
     {
         if ( node->element != nullptr )
         {
-            auto child = static_cast<Entity*>(node->element);
+            const auto child = static_cast<Entity*>(node->element);
             if ( child )
             {
                 if ( child->sprite == 1475 && !child->flags[INVISIBLE] ) // bell
@@ -5613,7 +5613,7 @@ void bellBreakBulb(Entity* my, bool minotaurBreak)
     {
         bellAttractMonsters(my);
         auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
-        int dir = rng.rand() % 9;
+        const int dir = rng.rand() % 9;
         if ( dir == 8 )
         {
             bell->vel_x = 0.0;

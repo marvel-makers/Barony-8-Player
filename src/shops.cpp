@@ -132,7 +132,7 @@ void startTradingServer(Entity* entity, int player)
     else if ( multiplayer == SERVER )
     {
         // open shop on client
-        Stat* entitystats = entity->getStats();
+        const Stat* entitystats = entity->getStats();
         strcpy((char*)net_packet->data, "SHOP");
         SDLNet_Write32(entity->getUID(), &net_packet->data[4]);
         net_packet->data[8] = entity->monsterStoreType;
@@ -144,9 +144,9 @@ void startTradingServer(Entity* entity, int player)
         sendPacketSafe(net_sock, -1, net_packet, player - 1);
 
         // fill client's shop inventory with items
-        for ( node_t* node = entitystats->inventory.first; node != nullptr; node = node->next )
+        for (const node_t* node = entitystats->inventory.first; node != nullptr; node = node->next )
         {
-            auto item = static_cast<Item*>(node->element);
+            const auto item = static_cast<Item*>(node->element);
             strcpy((char*)net_packet->data, "SHPI");
             SDLNet_Write32(item->type, &net_packet->data[4]);
             net_packet->data[8] = static_cast<Sint8>(item->status);
@@ -248,7 +248,7 @@ bool buyItemFromShop(const int player, Item* item, bool& bOutConsumedEntireStack
         }
         
         playSound(89, 64);
-        int ocount = item->count;
+        const int ocount = item->count;
         if ( !itemTypeIsQuiver(item->type) )
         {
             item->count = 1;
@@ -266,7 +266,7 @@ bool buyItemFromShop(const int player, Item* item, bool& bOutConsumedEntireStack
             if ( players[player] && players[player]->entity && !item->playerSoldItemToShop )
             {
                 bool increaseSkill = false;
-                int buyValue = item->buyValue(player);
+                const int buyValue = item->buyValue(player);
                 if ( buyValue >= 100 )
                 {
                     increaseSkill = true;
@@ -283,7 +283,7 @@ bool buyItemFromShop(const int player, Item* item, bool& bOutConsumedEntireStack
                 {
                     if ( !strcmp(map.name, "Mages Guild") )
                     {
-                        int increases = hamletShopkeeperSkillLimit[player][entity->getUID()];
+                        const int increases = hamletShopkeeperSkillLimit[player][entity->getUID()];
                         if ( increases >= hamletTradingSkillLimit )
                         {
                             increaseSkill = false;
@@ -535,7 +535,7 @@ bool sellItemToShop(const int player, Item* item)
         return false;
     }
 
-    bool deal = isItemSellableToShop(player, item);
+    const bool deal = isItemSellableToShop(player, item);
 
     if ( !deal )
     {
@@ -666,7 +666,7 @@ bool sellItemToShop(const int player, Item* item)
 
     if ( multiplayer != CLIENT )
     {
-        Entity* entity = uidToEntity(shopkeeper[player]);
+        const Entity* entity = uidToEntity(shopkeeper[player]);
         if ( entity )
         {
             Stat* shopstats = entity->getStats();
@@ -680,7 +680,7 @@ bool sellItemToShop(const int player, Item* item)
     }
 
     playSound(89, 64);
-    int ocount = item->count;
+    const int ocount = item->count;
     if ( !itemTypeIsQuiver(item->type) )
     {
         item->count = 1;
@@ -765,7 +765,7 @@ bool shopIsMysteriousShopkeeper(Entity* entity)
 
 void buyItemFromMysteriousShopkeepConsumeOrb(const int player, Entity& entity, Item& boughtItem)
 {
-    list_t* inventory = nullptr;
+    const list_t* inventory = nullptr;
     if ( multiplayer == CLIENT )
     {
         inventory = shopInv[player];
@@ -785,7 +785,7 @@ void buyItemFromMysteriousShopkeepConsumeOrb(const int player, Entity& entity, I
             {
                 // item is part of an orb set. need to consume the orb.
                 node_t* nextnode = nullptr;
-                for ( node_t* node = inventory->first; node; node = nextnode )
+                for (const node_t* node = inventory->first; node; node = nextnode )
                 {
                     nextnode = node->next;
                     auto orb = static_cast<Item*>(node->element);

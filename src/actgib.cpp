@@ -153,9 +153,9 @@ void actGib(Entity* my)
                 if ( Entity* fx = spawnMagicParticleCustom(my, 245, 1.0, 1.0) )
                 {
                     fx->ditheringDisabled = true;
-                    real_t dir = atan2(GIB_VELY, GIB_VELX);
+                    const real_t dir = atan2(GIB_VELY, GIB_VELX);
                     //dir += local_rng.rand() % 2 == 0 ? PI / 32 : -PI / 32;
-                    real_t spd = sqrt(GIB_VELX * GIB_VELX + GIB_VELY * GIB_VELY);
+                    const real_t spd = sqrt(GIB_VELX * GIB_VELX + GIB_VELY * GIB_VELY);
                     fx->vel_x = spd * 0.05 * cos(dir);
                     fx->vel_y = spd * 0.05 * sin(dir);
                     fx->flags[BRIGHT] = true;
@@ -320,11 +320,11 @@ void actFociGib(Entity* my)
             if ( GIB_SWIRL > 0.00001 )
             {
                 my->yaw += GIB_SWIRL;
-                Uint32 vortexStart = TICKS_PER_SECOND / 8;
+                const Uint32 vortexStart = TICKS_PER_SECOND / 8;
                 if ( my->ticks >= vortexStart )
                 {
-                    real_t vortexTime = 0.5 * TICKS_PER_SECOND;
-                    real_t ratio = 2.0 + 2.0 * sin((-PI / 2) + (PI)*std::min(static_cast<Uint32>(vortexTime), my->ticks - vortexStart) / vortexTime);
+                    const real_t vortexTime = 0.5 * TICKS_PER_SECOND;
+                    const real_t ratio = 2.0 + 2.0 * sin((-PI / 2) + (PI)*std::min(static_cast<Uint32>(vortexTime), my->ticks - vortexStart) / vortexTime);
                     my->focalx += ratio * cos(my->yaw);
                     my->focaly += ratio * sin(my->yaw);
                 }
@@ -359,11 +359,11 @@ void actFociGib(Entity* my)
                         my->x = GIB_ORBIT_X;
                         my->y = GIB_ORBIT_Y;
 
-                        real_t scale = 2.0;
+                        const real_t scale = 2.0;
                         GIB_FOCI_FLOAT2 += 0.2;
                         real_t ratio = scale + scale * sin(GIB_FOCI_FLOAT2);
 
-                        real_t dir = atan2(my->vel_y, my->vel_x);
+                        const real_t dir = atan2(my->vel_y, my->vel_x);
                         my->x -= 2.0 * cos(dir) * sin(std::min(PI, GIB_FOCI_FLOAT2));
                         my->y -= 2.0 * sin(dir) * sin(std::min(PI, GIB_FOCI_FLOAT2));
 
@@ -380,7 +380,7 @@ void actFociGib(Entity* my)
                             //GIB_ORBIT_X += my->vel_x;
                             //GIB_ORBIT_Y += my->vel_y;
 
-                            real_t dist = clipMove(&GIB_ORBIT_X, &GIB_ORBIT_Y, my->vel_x, my->vel_y, my);
+                            const real_t dist = clipMove(&GIB_ORBIT_X, &GIB_ORBIT_Y, my->vel_x, my->vel_y, my);
                             if ( multiplayer != CLIENT )
                             {
                                 if ( dist != sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2)) )
@@ -410,14 +410,14 @@ void actFociGib(Entity* my)
 
             if ( abs(GIB_OSC_H) > 0.00001 )
             {
-                Uint32 vortexStart = 0;// TICKS_PER_SECOND / 8;
+                const Uint32 vortexStart = 0;// TICKS_PER_SECOND / 8;
                 if ( my->ticks >= vortexStart )
                 {
                     //my->yaw = atan2(my->vel_y, my->vel_x);
-                    real_t vortexTime = 0.2 * TICKS_PER_SECOND;
-                    real_t magnitude = GIB_OSC_H;
-                    real_t ratio = magnitude * sin((PI) * ((my->ticks - vortexStart) / vortexTime));
-                    real_t tangent = 0.0;// my->yaw - atan2(my->vel_y, my->vel_x);
+                    const real_t vortexTime = 0.2 * TICKS_PER_SECOND;
+                    const real_t magnitude = GIB_OSC_H;
+                    const real_t ratio = magnitude * sin((PI) * ((my->ticks - vortexStart) / vortexTime));
+                    const real_t tangent = 0.0;// my->yaw - atan2(my->vel_y, my->vel_x);
                     my->focalx += ratio * cos(tangent);
                     my->focaly += ratio * sin(tangent);
                 }
@@ -430,7 +430,7 @@ void actFociGib(Entity* my)
             }
             else
             {
-                real_t dist = clipMove(&my->x, &my->y, my->vel_x, my->vel_y, my);
+                const real_t dist = clipMove(&my->x, &my->y, my->vel_x, my->vel_y, my);
                 if ( multiplayer != CLIENT )
                 {
                     if ( dist != sqrt(pow(my->vel_x, 2) + pow(my->vel_y, 2)) )
@@ -478,9 +478,9 @@ void actFociGib(Entity* my)
                 auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1);
                 for (auto it = entLists.begin(); it != entLists.end() && spell; ++it )
                 {
-                    list_t* currentList = *it;
+                    const list_t* currentList = *it;
                     bool lastEntity = false;
-                    for ( node_t* node = currentList->first;; )
+                    for (const node_t* node = currentList->first;; )
                     {
                         Entity* entity = nullptr;
                         if ( node == nullptr ) // at the end of the list try the hit.entity from clipMove
@@ -561,7 +561,7 @@ void actFociGib(Entity* my)
                             continue;
                         }
 
-                        auto hitprops = getParticleEmitterHitProps(my->getUID(), entity);
+                        const auto hitprops = getParticleEmitterHitProps(my->getUID(), entity);
                         if ( hitprops )
                         {
                             if ( hitprops->hits > 0 )
@@ -602,7 +602,7 @@ void actFociGib(Entity* my)
                             continue;
                         }
 
-                        Uint32 targetUid = entity->getUID();
+                        const Uint32 targetUid = entity->getUID();
                         if ( Entity* entity = newEntity(my->sprite, 1, map.entities, nullptr) )
                         {
                             entity->behavior = &actMagicMissile;
@@ -691,7 +691,7 @@ void actFociGib(Entity* my)
                     fx->focaly = my->focaly;
                     fx->focalz = my->focalz;
 
-                    real_t dir = atan2(my->vel_y, my->vel_x);
+                    const real_t dir = atan2(my->vel_y, my->vel_x);
                     fx->x -= 4.0 * cos(dir);
                     fx->y -= 4.0 * sin(dir);
                 }
@@ -751,7 +751,7 @@ void actFociGib(Entity* my)
                 fx->focaly = my->focaly;
                 fx->focalz = my->focalz;
 
-                real_t dir = atan2(my->vel_y, my->vel_x);
+                const real_t dir = atan2(my->vel_y, my->vel_x);
                 fx->x -= 2.0 * cos(dir);
                 fx->y -= 2.0 * sin(dir);
             }
@@ -768,7 +768,7 @@ void actFociGib(Entity* my)
                 fx->focaly = my->focaly;
                 fx->focalz = my->focalz;
 
-                real_t dir = atan2(my->vel_y, my->vel_x);
+                const real_t dir = atan2(my->vel_y, my->vel_x);
                 fx->x -= 2.0 * cos(dir);
                 fx->y -= 2.0 * sin(dir);
             }
@@ -787,7 +787,7 @@ void actFociGib(Entity* my)
                     fx->focaly = my->focaly;
                     fx->focalz = my->focalz;
 
-                    real_t dir = atan2(my->vel_y, my->vel_x);
+                    const real_t dir = atan2(my->vel_y, my->vel_x);
                     fx->x -= 2.0 * cos(dir);
                     fx->y -= 2.0 * sin(dir);
                 }
@@ -806,7 +806,7 @@ void actFociGib(Entity* my)
                     fx->focaly = my->focaly;
                     fx->focalz = my->focalz;
 
-                    real_t dir = atan2(my->vel_y, my->vel_x);
+                    const real_t dir = atan2(my->vel_y, my->vel_x);
                     fx->x -= 2.0 * cos(dir);
                     fx->y -= 2.0 * sin(dir);
                 }
@@ -878,7 +878,7 @@ void actDamageGib(Entity* my)
         || my->skill[3] == DMG_MISS )
     {
         real_t scale = 0.2;
-        auto& anim = EnemyHPDamageBarHandler::damageGibAnimCurves[DMG_DEFAULT];
+        const auto& anim = EnemyHPDamageBarHandler::damageGibAnimCurves[DMG_DEFAULT];
         if ( my->ticks >= anim.size() )
         {
             scale *= anim[anim.size() - 1] / 100.0;
@@ -962,7 +962,7 @@ void actDamageGib(Entity* my)
 Entity* spawnGib(Entity* parentent, int customGibSprite)
 {
     Entity* entity = nullptr;
-    Stat* parentstats = nullptr;
+    const Stat* parentstats = nullptr;
     int gibsprite = 5;
 
     if ( !parentent )
@@ -995,7 +995,7 @@ Entity* spawnGib(Entity* parentent, int customGibSprite)
                     break;
                 case 3:
                 {
-                    std::string color = MonsterData_t::getKeyFromSprite(parentent->sprite, SLIME);
+                    const std::string color = MonsterData_t::getKeyFromSprite(parentent->sprite, SLIME);
                     if ( color == "slime green" )
                     {
                         // green blood
@@ -1061,7 +1061,7 @@ Entity* spawnGib(Entity* parentent, int customGibSprite)
     entity->yaw = (local_rng.rand() % 360) * PI / 180.0;
     entity->pitch = (local_rng.rand() % 360) * PI / 180.0;
     entity->roll = (local_rng.rand() % 360) * PI / 180.0;
-    double vel = (local_rng.rand() % 10) / 10.f;
+    const double vel = (local_rng.rand() % 10) / 10.f;
     entity->vel_x = vel * cos(entity->yaw);
     entity->vel_y = vel * sin(entity->yaw);
     entity->vel_z = -.5;
@@ -1413,15 +1413,15 @@ Entity* spawnDamageGib(Entity* parentent, Sint32 dmgAmount, int gibDmgType, int 
     {
         if ( parentent->behavior == &actDeathGhost )
         {
-            if ( node_t* node = list_Node(&parentent->children, 2) )
+            if (const node_t* node = list_Node(&parentent->children, 2) )
             {
-                if (auto entity2 = static_cast<Entity*>(node->element) )
+                if (const auto entity2 = static_cast<Entity*>(node->element) )
                 {
                     if ( Entity::getMonsterTypeFromSprite(entity2->sprite) == DUCK_SMALL )
                     {
-                        if ( node_t* node = list_Node(&entity2->children, 2) )
+                        if (const node_t* node = list_Node(&entity2->children, 2) )
                         {
-                            if (auto entity3 = static_cast<Entity*>(node->element) )
+                            if (const auto entity3 = static_cast<Entity*>(node->element) )
                             {
                                 entity->z = entity3->z - 4;
                             }
@@ -1432,9 +1432,9 @@ Entity* spawnDamageGib(Entity* parentent, Sint32 dmgAmount, int gibDmgType, int 
         }
         else if ( parentent->behavior == &actMonster && Entity::getMonsterTypeFromSprite(parentent->sprite) == DUCK_SMALL )
         {
-            if ( node_t* node = list_Node(&parentent->children, 2) )
+            if (const node_t* node = list_Node(&parentent->children, 2) )
             {
-                if (auto entity2 = static_cast<Entity*>(node->element) )
+                if (const auto entity2 = static_cast<Entity*>(node->element) )
                 {
                     entity->z = entity2->z - 4;
                 }
@@ -1597,12 +1597,12 @@ void serverSpawnGibForClient(Entity* gib)
 void spawnGreasePuddleSpawner(Entity* caster, real_t x, real_t y, int duration)
 {
     if ( multiplayer == CLIENT ) { return; }
-    int ox = x / 16;
-    int oy = y / 16;
+    const int ox = x / 16;
+    const int oy = y / 16;
 
     if ( ox >= 0 && ox < map.width && oy >= 0 && oy < map.height )
     {
-        int mapIndex = oy * MAP_LAYERS + ox * MAP_LAYERS * map.height;
+        const int mapIndex = oy * MAP_LAYERS + ox * MAP_LAYERS * map.height;
         if ( !map.tiles[mapIndex] )
         {
             return;
@@ -1610,10 +1610,10 @@ void spawnGreasePuddleSpawner(Entity* caster, real_t x, real_t y, int duration)
         auto entLists = TileEntityList.getEntitiesWithinRadius(ox, oy, 0);
         for (auto it = entLists.begin(); it != entLists.end(); ++it )
         {
-            list_t* currentList = *it;
-            for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+            const list_t* currentList = *it;
+            for (const node_t* node = currentList->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( entity->behavior == &actGreasePuddleSpawner && entity->skill[0] > 0 )
                 {
                     entity->skill[0] = std::max(entity->skill[0], duration);
@@ -1622,8 +1622,8 @@ void spawnGreasePuddleSpawner(Entity* caster, real_t x, real_t y, int duration)
             }
         }
         Entity* entity = newEntity(1786, 1, map.entities, nullptr); //Blood/gib entity.
-        real_t x = ox * 16.0 + 8.0;
-        real_t y = oy * 16.0 + 8.0;
+        const real_t x = ox * 16.0 + 8.0;
+        const real_t y = oy * 16.0 + 8.0;
         entity->x = x;
         entity->y = y;
         entity->z = 7.5;
@@ -1646,8 +1646,8 @@ void spawnGreasePuddleSpawner(Entity* caster, real_t x, real_t y, int duration)
 void spawnGreasePuddle(Entity* parent, real_t x, real_t y, int duration, int location)
 {
     if ( !parent ) { return; }
-    int ox = x / 16;
-    int oy = y / 16;
+    const int ox = x / 16;
+    const int oy = y / 16;
     if ( ox >= 0 && ox < map.width && oy >= 0 && oy < map.height )
     {
         Entity* entity = newEntity(1784, 1, map.entities, nullptr); //Blood/gib entity.
@@ -1704,13 +1704,13 @@ void actGreasePuddle(Entity* my)
 void actGreasePuddleSpawner(Entity* my)
 {
     my->flags[INVISIBLE] = true;
-    int x = my->x / 16;
-    int y = my->y / 16;
+    const int x = my->x / 16;
+    const int y = my->y / 16;
     if ( multiplayer != CLIENT )
     {
         if ( my->flags[BURNING] )
         {
-            int player = achievementObserver.checkUidIsFromPlayer(my->parent);
+            const int player = achievementObserver.checkUidIsFromPlayer(my->parent);
             if ( player >= 0 )
             {
                 if ( achievementObserver.playerAchievements[player].hellsKitchen >= 0 )
@@ -1734,14 +1734,14 @@ void actGreasePuddleSpawner(Entity* my)
                 auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 0);
                 for (auto it = entLists.begin(); it != entLists.end() && !foundGrease; ++it )
                 {
-                    list_t* currentList = *it;
-                    for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+                    const list_t* currentList = *it;
+                    for (const node_t* node = currentList->first; node != nullptr; node = node->next )
                     {
-                        auto entity = static_cast<Entity*>(node->element);
+                        const auto entity = static_cast<Entity*>(node->element);
                         if ( entity && entity->behavior == &actGreasePuddleSpawner && entity != my )
                         {
-                            int x2 = entity->x / 16;
-                            int y2 = entity->y / 16;
+                            const int x2 = entity->x / 16;
+                            const int y2 = entity->y / 16;
                             if ( x2 == x && y2 == y )
                             {
                                 foundGrease = true;
@@ -1772,7 +1772,7 @@ void actGreasePuddleSpawner(Entity* my)
                 serverUpdateMapTileFlag(x, y, 0, map_t::TILE_ATTRIBUTE_GREASE, 0);
             }
 
-            int mapIndex = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
+            const int mapIndex = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
             if ( lavatiles[map.tiles[mapIndex]] )
             {
                 if ( !my->flags[BURNING] )
@@ -1785,12 +1785,12 @@ void actGreasePuddleSpawner(Entity* my)
             Entity* parent = my->parent == 0 ? nullptr : uidToEntity(my->parent);
             for (auto it = entLists.begin(); it != entLists.end(); ++it )
             {
-                list_t* currentList = *it;
-                for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+                const list_t* currentList = *it;
+                for (const node_t* node = currentList->first; node != nullptr; node = node->next )
                 {
-                    if (auto entity = static_cast<Entity*>(node->element) )
+                    if (const auto entity = static_cast<Entity*>(node->element) )
                     {
-                        if ( Stat* stats = entity->getStats() )
+                        if (const Stat* stats = entity->getStats() )
                         {
                             if ( entity->monsterIsTargetable() )
                             {
@@ -1810,7 +1810,7 @@ void actGreasePuddleSpawner(Entity* my)
                         {
                             if ( entity->flags[BURNABLE] && !entity->flags[BURNING] )
                             {
-                                if ( Stat* stats = entity->getStats() )
+                                if (const Stat* stats = entity->getStats() )
                                 {
                                     if ( swimmingtiles[map.tiles[mapIndex]] && entity->behavior == &actPlayer && players[entity->skill[2]]->movement.isPlayerSwimming() )
                                     {
@@ -1827,7 +1827,7 @@ void actGreasePuddleSpawner(Entity* my)
                                         {
                                             stats->burningInflictedBy = parent->getUID();
 
-                                            bool alertTarget = entity->monsterAlertBeforeHit(parent);
+                                            const bool alertTarget = entity->monsterAlertBeforeHit(parent);
 
                                             // alert the monster!
                                             if ( entity->monsterState != MONSTER_STATE_ATTACK && (stats->type < LICH || stats->type >= SHOPKEEPER) )
@@ -1874,10 +1874,10 @@ void actGreasePuddleSpawner(Entity* my)
                     auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1);
                     for (auto it = entLists.begin(); it != entLists.end(); ++it )
                     {
-                        list_t* currentList = *it;
-                        for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+                        const list_t* currentList = *it;
+                        for (const node_t* node = currentList->first; node != nullptr; node = node->next )
                         {
-                            auto entity = static_cast<Entity*>(node->element);
+                            const auto entity = static_cast<Entity*>(node->element);
                             if ( entity && entity->behavior == &actGreasePuddleSpawner && entity != my )
                             {
                                 int x2 = entity->x / 16;
@@ -1926,7 +1926,7 @@ void actGreasePuddleSpawner(Entity* my)
                         chances[i] = 0;
                     }
                 }
-                int pick = local_rng.discrete(chances.data(), chances.size());
+                const int pick = local_rng.discrete(chances.data(), chances.size());
                 my->skill[3] |= (1 << pick);
                 spawnGreasePuddle(my, my->x, my->y, 10 * TICKS_PER_SECOND, pick);
             }
@@ -1955,7 +1955,7 @@ void actMiscPuddle(Entity* my)
 
         if ( my->scalex < my->fskill[0] )
         {
-            real_t diff = std::max(0.01, (my->fskill[0] - my->scalex) / 10.0);
+            const real_t diff = std::max(0.01, (my->fskill[0] - my->scalex) / 10.0);
             my->scalex = std::min(my->scalex + diff, my->fskill[0]);
         }
         my->scalez = my->scalex;
@@ -1965,7 +1965,7 @@ void actMiscPuddle(Entity* my)
 #define LEAF_IDLE_BOUNCE_TIME 50
 void actLeafParticle(Entity* my)
 {
-    Entity* parent = nullptr;
+    const Entity* parent = nullptr;
 
     auto& particle_life = my->skill[0];
     auto& anim_bounce = my->skill[1];
@@ -1980,7 +1980,7 @@ void actLeafParticle(Entity* my)
     auto& pos_z_start = my->fskill[6];
     auto& pos_z_end = my->fskill[7];
     auto& anim_bounce_rise_amt = my->fskill[8];
-    auto& rotation_offset = my->fskill[9];
+    const auto& rotation_offset = my->fskill[9];
 
     if ( my->parent != 0 )
     {
@@ -2007,13 +2007,13 @@ void actLeafParticle(Entity* my)
 
     bool grounded = false;
     bool noFloor = false;
-    int mapx = my->x / 16;
-    int mapy = my->y / 16;
+    const int mapx = my->x / 16;
+    const int mapy = my->y / 16;
     if ( my->parent == 0 ) // check no floor
     {
         if ( mapx >= 0 && mapx < map.width && mapy >= 0 && mapy < map.height )
         {
-            int mapIndex = mapy * MAP_LAYERS + mapx * MAP_LAYERS * map.height;
+            const int mapIndex = mapy * MAP_LAYERS + mapx * MAP_LAYERS * map.height;
             if ( !map.tiles[mapIndex] )
             {
                 noFloor = true;
@@ -2093,7 +2093,7 @@ void actLeafParticle(Entity* my)
         anim_bounce_fall = std::max(0.0, anim_bounce_fall);
     }
 
-    real_t rate = (sin(float_oscillate_amt * PI / 2));
+    const real_t rate = (sin(float_oscillate_amt * PI / 2));
     my->roll = (PI / 4) * rate;
     /*if ( keystatus[SDLK_g] )
  {
@@ -2126,7 +2126,7 @@ void actLeafParticle(Entity* my)
                 {
                     anim_bounce_rise_amt = 12.0 + 0.25 * (local_rng.rand() % 13); // 12-15.0 random rise
                     anim_bounce_rise_amt *= 10.0;
-                    real_t maxHeight = 0.0 + 5.0 * rotation_offset / (2 * PI);
+                    const real_t maxHeight = 0.0 + 5.0 * rotation_offset / (2 * PI);
                     if ( my->z - boost > maxHeight )
                     {
                         pos_z_end = std::min(my->z - boost, maxHeight) - pos_z_start;
@@ -2146,7 +2146,7 @@ void actLeafParticle(Entity* my)
             }
         }
     }
-    real_t faceDir = my->yaw;
+    const real_t faceDir = my->yaw;
     my->x = pos_x_center + 4.0 * cos(faceDir) - 2.0 * rate * cos(faceDir + PI / 2);
     my->y = pos_y_center + 4.0 * sin(faceDir) - 2.0 * rate * sin(faceDir + PI / 2);
     if ( anim_bounce == 0 )
@@ -2189,7 +2189,7 @@ void actLeafParticle(Entity* my)
                         if ( abs(players[i]->entity->vel_x > 0.1) || abs(players[i]->entity->vel_y) > 0.1 )
                         {
                             anim_bounce_timer = LEAF_IDLE_BOUNCE_TIME;
-                            real_t tangent = atan2(my->y - players[i]->entity->y, my->x - players[i]->entity->x);
+                            const real_t tangent = atan2(my->y - players[i]->entity->y, my->x - players[i]->entity->x);
                             my->vel_x = 1.5 * cos(tangent);
                             my->vel_y = 1.5 * sin(tangent);
                             float_oscillate_dir = 1 + local_rng.rand() % 2;
@@ -2197,7 +2197,7 @@ void actLeafParticle(Entity* my)
                             anim_bounce_fall = 0.0;
                             pos_z_start = my->z;
                             anim_bounce_rise_amt = 12.0 + 0.25 * (local_rng.rand() % 13); // 12-15.0 random rise
-                            real_t boost = 4.0 + 0.25 * (local_rng.rand() % 9); // 4-6
+                            const real_t boost = 4.0 + 0.25 * (local_rng.rand() % 9); // 4-6
                             pos_z_end = std::max(my->z - boost, -7.5) - pos_z_start;
                             break;
                         }
@@ -2218,7 +2218,7 @@ void actLeafParticle(Entity* my)
             float_oscillate_dir = 1 + local_rng.rand() % 2;
             anim_bounce_fall = 0.0;
             pos_z_start = my->z;
-            real_t boost = 4.0 + 0.25 * (local_rng.rand() % 9); // 4-6
+            const real_t boost = 4.0 + 0.25 * (local_rng.rand() % 9); // 4-6
             anim_bounce_rise_amt = 12.0 + 0.25 * (local_rng.rand() % 13); // 12-15.0
             pos_z_end = std::max(my->z - boost, -7.5) - pos_z_start;
         }
@@ -2246,9 +2246,9 @@ Entity* spawnLeafPile(real_t x, real_t y, bool trap)
         leaf->flags[PASSABLE] = true;
         leaf->flags[UNCLICKABLE] = true;
 
-        int mapx = static_cast<int>(x) / 16;
-        int mapy = static_cast<int>(y) / 16;
-        int mapIndex = mapy * MAP_LAYERS + mapx * MAP_LAYERS * map.height;
+        const int mapx = static_cast<int>(x) / 16;
+        const int mapy = static_cast<int>(y) / 16;
+        const int mapIndex = mapy * MAP_LAYERS + mapx * MAP_LAYERS * map.height;
         if ( mapx > 0 && mapx < map.width && mapy > 0 && mapy < map.height )
         {
             if ( !map.tiles[mapIndex] || swimmingtiles[map.tiles[mapIndex]] || lavatiles[map.tiles[mapIndex]]
@@ -2336,16 +2336,16 @@ void actLeafPile(Entity* my)
     {
         if ( my->skill[3] == 0 )
         {
-            std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1);
-            for ( auto it : entLists )
+            const std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 1);
+            for (const auto it : entLists )
             {
                 if ( my->skill[3] != 0 )
                 {
                     break;
                 }
-                for ( node_t* node = it->first; node != nullptr; node = node->next )
+                for (const node_t* node = it->first; node != nullptr; node = node->next )
                 {
-                    auto entity = static_cast<Entity*>(node->element);
+                    const auto entity = static_cast<Entity*>(node->element);
                     if ( entity->behavior == &actMonster || entity->behavior == &actPlayer )
                     {
                         if ( !entity->monsterIsTargetable() ) { continue; }
@@ -2396,12 +2396,12 @@ void actLeafPile(Entity* my)
         }
         if ( abs(my->vel_x) > 0.01 || abs(my->vel_y) > 0.01 )
         {
-            real_t result = clipMove(&my->x, &my->y, my->vel_x, my->vel_y, my);
+            const real_t result = clipMove(&my->x, &my->y, my->vel_x, my->vel_y, my);
             if ( result != sqrt(my->vel_x * my->vel_x + my->vel_y * my->vel_y) )
             {
                 if ( spinStrength == 100 )
                 {
-                    real_t bouncePenalty = 1.0;
+                    const real_t bouncePenalty = 1.0;
                     if ( hit.side == HORIZONTAL )
                     {
                         my->vel_x = -my->vel_x * bouncePenalty;
@@ -2432,7 +2432,7 @@ void actLeafPile(Entity* my)
 
     if ( spinStrength > 0 )
     {
-        real_t amt = spinStrength / 100.0;
+        const real_t amt = spinStrength / 100.0;
 
         my->fskill[10] += std::max(0.01, (amt - my->fskill[10]) / 10.0);
         my->fskill[10] = std::min(amt, my->fskill[10]);
@@ -2450,28 +2450,28 @@ void actLeafPile(Entity* my)
                 spellProps.target_y = my->y;
                 castSpell(my->getUID(), getSpellFromID(SPELL_SLAM), false, true, false, &spellProps);
 
-                std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
+                const std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
                 real_t dist = 10000.0;
-                Entity* closestEntity = nullptr;
-                for ( auto it : entLists )
+                const Entity* closestEntity = nullptr;
+                for (const auto it : entLists )
                 {
-                    for ( node_t* node = it->first; node != nullptr; node = node->next )
+                    for (const node_t* node = it->first; node != nullptr; node = node->next )
                     {
-                        auto entity = static_cast<Entity*>(node->element);
+                        const auto entity = static_cast<Entity*>(node->element);
                         if ( entity->behavior == &actMonster || entity->behavior == &actPlayer )
                         {
                             if ( !entity->monsterIsTargetable() ) { continue; }
-                            if ( Stat* entityStats = entity->getStats() )
+                            if (const Stat* entityStats = entity->getStats() )
                             {
                                 if ( entityStats->type == MYCONID || entityStats->type == DRYAD )
                                 {
                                     continue;
                                 }
                             }
-                            real_t newDist = entityDist(my, entity);
+                            const real_t newDist = entityDist(my, entity);
                             if ( newDist < dist && newDist < 64.0 )
                             {
-                                real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
+                                const real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
                                 real_t d = lineTraceTarget(my, my->x, my->y, tangent, 64.0, 0, false, entity);
                                 if ( hit.entity == entity )
                                 {
@@ -2485,7 +2485,7 @@ void actLeafPile(Entity* my)
 
                 if ( closestEntity )
                 {
-                    real_t tangent = atan2(closestEntity->y - my->y, closestEntity->x - my->x);
+                    const real_t tangent = atan2(closestEntity->y - my->y, closestEntity->x - my->x);
                     my->vel_x = 0.75 * cos(tangent);
                     my->vel_y = 0.75 * sin(tangent);
                 }
@@ -2588,13 +2588,13 @@ void actLeafPile(Entity* my)
                 }
                 if ( dirs.size() > 0 )
                 {
-                    real_t newDir = dirs[local_rng.rand() % dirs.size()];
+                    const real_t newDir = dirs[local_rng.rand() % dirs.size()];
                     my->vel_x = 0.5 * cos(newDir);
                     my->vel_y = 0.5 * sin(newDir);
                 }
                 else
                 {
-                    real_t newDir = (local_rng.rand() % 4) * PI / 2;
+                    const real_t newDir = (local_rng.rand() % 4) * PI / 2;
                     my->vel_x = 0.5 * cos(newDir);
                     my->vel_y = 0.5 * sin(newDir);
                 }
@@ -2636,13 +2636,13 @@ void actLeafPile(Entity* my)
             }
             if ( dirs.size() > 0 )
             {
-                real_t newDir = dirs[local_rng.rand() % dirs.size()];
+                const real_t newDir = dirs[local_rng.rand() % dirs.size()];
                 my->vel_x = 0.5 * cos(newDir);
                 my->vel_y = 0.5 * sin(newDir);
             }
             else
             {
-                real_t newDir = (local_rng.rand() % 4) * PI / 2;
+                const real_t newDir = (local_rng.rand() % 4) * PI / 2;
                 my->vel_x = 0.5 * cos(newDir);
                 my->vel_y = 0.5 * sin(newDir);
             }
@@ -2682,9 +2682,9 @@ Entity* spawnMiscPuddle(Entity* parentent, real_t x, real_t y, int sprite, bool 
         y = parentent->y;
     }
 
-    int mapx = static_cast<int>(x) / 16;
-    int mapy = static_cast<int>(y) / 16;
-    int mapIndex = mapy * MAP_LAYERS + mapx * MAP_LAYERS * map.height;
+    const int mapx = static_cast<int>(x) / 16;
+    const int mapy = static_cast<int>(y) / 16;
+    const int mapIndex = mapy * MAP_LAYERS + mapx * MAP_LAYERS * map.height;
     if ( mapx > 0 && mapx < map.width && mapy > 0 && mapy < map.height )
     {
         if ( !map.tiles[mapIndex] || map.tiles[OBSTACLELAYER + mapIndex] )
@@ -2701,7 +2701,7 @@ Entity* spawnMiscPuddle(Entity* parentent, real_t x, real_t y, int sprite, bool 
             puddle->sizex = 2;
             puddle->sizey = 2;
             puddle->behavior = &actMiscPuddle;
-            int randomScale = local_rng.rand() % 10;
+            const int randomScale = local_rng.rand() % 10;
             puddle->fskill[0] = (100 - randomScale) / 100.f; // end scale
 
             puddle->scalex = 0.0;

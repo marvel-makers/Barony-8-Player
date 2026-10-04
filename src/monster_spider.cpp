@@ -125,7 +125,7 @@ void initSpider(Entity* my, Stat* myStats)
             //max limit of 6 custom items per entity.
 
             // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -374,7 +374,7 @@ void spiderMoveBodyparts(Entity* my, Stat* myStats, double dist)
     }
 
     // animate limbs
-    Entity* leftArm = nullptr;
+    const Entity* leftArm = nullptr;
     for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++)
     {
         if ( bodypart < 2 )
@@ -382,7 +382,7 @@ void spiderMoveBodyparts(Entity* my, Stat* myStats, double dist)
             continue;
         }
         entity = static_cast<Entity*>(node->element);
-        Entity* previous = nullptr; // previous part
+        const Entity* previous = nullptr; // previous part
         if ( bodypart > 2 )
         {
             previous = static_cast<Entity*>(node->prev->element);
@@ -394,7 +394,7 @@ void spiderMoveBodyparts(Entity* my, Stat* myStats, double dist)
 
         if ( bodypart == 2 || bodypart == 3 )
         {
-            bool left = (bodypart == 2);
+            const bool left = (bodypart == 2);
             if ( left )
             {
                 leftArm = entity;
@@ -409,7 +409,7 @@ void spiderMoveBodyparts(Entity* my, Stat* myStats, double dist)
             if ( left )
             {
                 real_t rollRate = 0.0;
-                real_t pitchMult = arachnophobia_filter ? 0.5 : 1.0; // crab limbs are more expressive so tone it down
+                const real_t pitchMult = arachnophobia_filter ? 0.5 : 1.0; // crab limbs are more expressive so tone it down
                 if ( MONSTER_ATTACK != 0 )
                 {
                     if ( MONSTER_ATTACK == MONSTER_POSE_MAGIC_WINDUP1 )

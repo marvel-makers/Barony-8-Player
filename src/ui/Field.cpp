@@ -58,7 +58,7 @@ Field::~Field() {
         text = nullptr;
     }
     while ( !cache.empty() ) {
-        auto text = cache.back().second;
+        const auto text = cache.back().second;
         if ( text ) {
             delete text;
         }
@@ -113,7 +113,7 @@ char* Field::tokenize(char* str, const char* const delimiters) {
     if (!str || !delimiters) {
         return nullptr;
     }
-    size_t del_len = strlen(delimiters);
+    const size_t del_len = strlen(delimiters);
     for (char* token = str;; ++token) {
         for (size_t c = 0; c < del_len; ++c) {
             if (*token == delimiters[c]) {
@@ -191,13 +191,13 @@ static ConsoleVariable<bool> cvar_enableFieldCache(
 
 void Field::buildCache() {
     while ( !cache.empty() ) {
-        auto text = cache.back().second;
+        const auto text = cache.back().second;
         if ( text ) {
             delete text;
         }
         cache.pop_back();
     }
-    auto buf = static_cast<char*>(malloc(textlen + 1));
+    const auto buf = static_cast<char*>(malloc(textlen + 1));
     if ( buf ) {
         dirty = false;
         memcpy(buf, text ? text : "\0", textlen + 1);
@@ -211,7 +211,7 @@ void Field::buildCache() {
         if ( *cvar_enableFieldCache ) {
             for ( char *nexttoken = buf, *token; (token = nexttoken) != nullptr;) {
                 nexttoken = tokenize(token, "\n");
-                auto line = Text::hash(token, font.c_str(), textColor, outlineColor);
+                const auto line = Text::hash(token, font.c_str(), textColor, outlineColor);
                 cache.push_back(std::make_pair(token, new Text(line.second)));
             }
         }
@@ -554,8 +554,8 @@ Field::result_t Field::process(SDL_Rect _size, SDL_Rect _actualSize, const bool 
     Sint32 omousey = (::omousey / (float)yres) * (float)Frame::virtualScreenY;
 #else
     const int mouseowner = intro || gamePaused ? inputs.getPlayerIDAllowedKeyboard() : owner;
-    Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
-    Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
+    const Sint32 omousex = (inputs.getMouse(mouseowner, Inputs::OX) / static_cast<float>(xres)) * static_cast<float>(Frame::virtualScreenX);
+    const Sint32 omousey = (inputs.getMouse(mouseowner, Inputs::OY) / static_cast<float>(yres)) * static_cast<float>(Frame::virtualScreenY);
 #endif
 
 #ifndef EDITOR
@@ -597,7 +597,7 @@ void Field::setText(const char* _text) {
     if ( _text == nullptr ) {
         return;
     }
-    size_t len = std::min(strlen(_text), static_cast<size_t>(textlen));
+    const size_t len = std::min(strlen(_text), static_cast<size_t>(textlen));
     if ( stringCmp(text, _text, textlen, len) ) {
         stringCopy(text, _text, textlen, len);
         dirty = true;
@@ -605,9 +605,9 @@ void Field::setText(const char* _text) {
 }
 
 void Field::scrollParent() {
-    auto fparent = static_cast<Frame*>(parent);
+    const auto fparent = static_cast<Frame*>(parent);
     auto fActualSize = fparent->getActualSize();
-    auto fSize = fparent->getSize();
+    const auto fSize = fparent->getSize();
     if (size.y < fActualSize.y) {
         fActualSize.y = size.y;
     }
@@ -625,7 +625,7 @@ void Field::scrollParent() {
 
 void reflowTextLine(std::string& input, int width, const char* font, std::vector<std::string>& result)
 {
-    Font* actualFont = Font::get(font);
+    const Font* actualFont = Font::get(font);
     if ( !actualFont )
     {
         return;
@@ -662,12 +662,12 @@ void reflowTextLine(std::string& input, int width, const char* font, std::vector
     tokens.push_back(input.substr(offset));
 
     size_t currentLine = 0;
-    Text* getText = nullptr;
+    const Text* getText = nullptr;
     bool lastInsertedManualSpace = false;
     result.push_back("");
     for ( auto& token : tokens )
     {
-        size_t currentLength = result[currentLine].size();
+        const size_t currentLength = result[currentLine].size();
         if ( (currentLength + 1 + token.size() < charactersPerLine / 2) )
         {
             // this is probably OK
@@ -726,12 +726,12 @@ std::string Field::getLongestLine()
     }
     char* nexttoken;
     char* token = text;
-    std::string originalText = text;
+    const std::string originalText = text;
     std::string longestLine = "";
     int longestLineWidth = 0;
     do {
         nexttoken = tokenize(token, "\n");
-        if ( auto getText = Text::get(token, font.c_str(), textColor, outlineColor) )
+        if (const auto getText = Text::get(token, font.c_str(), textColor, outlineColor) )
         {
             if ( getText->getWidth() > longestLineWidth )
             {
@@ -749,7 +749,7 @@ int Field::getLastLineThatFitsWithinHeight()
     if ( text == nullptr || textlen <= 1 ) {
         return -1;
     }
-    if ( auto getText = Text::get(text, font.c_str(), textColor, outlineColor) )
+    if (const auto getText = Text::get(text, font.c_str(), textColor, outlineColor) )
     {
         if ( getText->getHeight() <= getSize().h/* - getSize().y*/ )
         {
@@ -765,7 +765,7 @@ int Field::getLastLineThatFitsWithinHeight()
     int lineNumber = 0;
     char* nexttoken;
     char* token = text;
-    std::string originalText = text;
+    const std::string originalText = text;
     do {
         nexttoken = tokenize(token, "\n");
         if ( !allLines.empty() )
@@ -773,7 +773,7 @@ int Field::getLastLineThatFitsWithinHeight()
             allLines.push_back('\n');
         }
         allLines += token[0];
-        if ( auto getText = Text::get(allLines.c_str(), font.c_str(), textColor, outlineColor) )
+        if (const auto getText = Text::get(allLines.c_str(), font.c_str(), textColor, outlineColor) )
         {
             if ( getText->getHeight() > getSize().h )
             {
@@ -794,7 +794,7 @@ void Field::reflowTextToFit(const int characterOffset, bool check) {
     }
 
     if (check) {
-        if (auto getText = Text::get(text, font.c_str(), textColor, outlineColor)) {
+        if (const auto getText = Text::get(text, font.c_str(), textColor, outlineColor)) {
             if (getText->getWidth() <= (getSize().w)) {
                 // no work to do
                 return;
@@ -804,7 +804,7 @@ void Field::reflowTextToFit(const int characterOffset, bool check) {
     std::string reflowText = "";
 
 #ifndef EDITOR
-    bool usePreciseStringWidth = bUsePreciseFieldTextReflow;
+    const bool usePreciseStringWidth = bUsePreciseFieldTextReflow;
 #else
     bool usePreciseStringWidth = true;
 #endif
@@ -838,7 +838,7 @@ void Field::reflowTextToFit(const int characterOffset, bool check) {
         return;
     }
 
-    Font* actualFont = Font::get(font.c_str());
+    const Font* actualFont = Font::get(font.c_str());
     if ( !actualFont )
     {
         return;
@@ -863,10 +863,10 @@ void Field::reflowTextToFit(const int characterOffset, bool check) {
     {
         if ( (currentCharacters - characterOffset) > charactersPerLine )
         {
-            size_t findSpace = reflowText.rfind(' ', reflowText.size());
+            const size_t findSpace = reflowText.rfind(' ', reflowText.size());
             if ( findSpace != std::string::npos )
             {
-                size_t lastWordEnd = reflowText.size();
+                const size_t lastWordEnd = reflowText.size();
                 reflowText.at(findSpace) = '\n';
                 currentCharacters = static_cast<int>(lastWordEnd - findSpace);
             }
@@ -899,9 +899,9 @@ int Field::getNumTextLines() const {
 SDL_Rect Field::getAbsoluteSize() const
 {
     SDL_Rect _size{ size.x, size.y, size.w, size.h };
-    auto _parent = static_cast<Frame*>(this->parent);
+    const auto _parent = static_cast<Frame*>(this->parent);
     if ( _parent ) {
-        SDL_Rect absoluteSize = _parent->getAbsoluteSize();
+        const SDL_Rect absoluteSize = _parent->getAbsoluteSize();
         _size.x += absoluteSize.x;
         _size.y += absoluteSize.y;
     }

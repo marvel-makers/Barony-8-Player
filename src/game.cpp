@@ -426,8 +426,8 @@ void TimerExperiments::renderCameras(view_t& camera, int player)
                 {
                     diff += 2 * PI;
                 }
-                real_t curStateYaw = players[player]->entity->lerpCurrentState.yaw.position;
-                real_t prevStateYaw = players[player]->entity->lerpPreviousState.yaw.position;
+                const real_t curStateYaw = players[player]->entity->lerpCurrentState.yaw.position;
+                const real_t prevStateYaw = players[player]->entity->lerpPreviousState.yaw.position;
                 if (abs(diff) > PI / 8)
                 {
                     messagePlayer(0, MESSAGE_DEBUG, "new: %.4f old: %.4f | current: %.4f | prev: %.4f",
@@ -554,7 +554,7 @@ void TimerExperiments::State::resetPosition()
 
 void TimerExperiments::State::normalize(real_t min, real_t max)
 {
-    real_t range = std::max(fabs(min), fabs(max));
+    const real_t range = std::max(fabs(min), fabs(max));
     position = fmod(position, range);
     while (position >= max)
     {
@@ -612,7 +612,7 @@ void TimerExperiments::updateClocks()
         if (doneTick != ticks && ticks % (2 * TICKS_PER_SECOND) == 0)
         {
             doneTick = ticks;
-            auto microseconds = std::chrono::microseconds(static_cast<Uint64>(300000));
+            const auto microseconds = std::chrono::microseconds(static_cast<Uint64>(300000));
             preciseSleep(microseconds.count() / 1e6);
         }
     }
@@ -640,7 +640,7 @@ void TimerExperiments::updateClocks()
 
     static ConsoleVariable<bool> cvar_lerpAutoAdjust("/autocameralerp", true);
 
-    time_point newTime = Clock::now();
+    const time_point newTime = Clock::now();
     auto frameTime = newTime - currentTime;
     if (frameTime > std::chrono::milliseconds{frameTimeLimit})
     {
@@ -652,8 +652,8 @@ void TimerExperiments::updateClocks()
 
     if ((*cvar_lerpAutoAdjust))
     {
-        int frameTimeMillis = std::chrono::duration_cast<Clock::duration>(frameTime).count();
-        real_t approxFPS = 1000.0 / frameTimeMillis;
+        const int frameTimeMillis = std::chrono::duration_cast<Clock::duration>(frameTime).count();
+        const real_t approxFPS = 1000.0 / frameTimeMillis;
         lerpFactor = 30.0;
         if (approxFPS < 32.0)
         {
@@ -662,7 +662,7 @@ void TimerExperiments::updateClocks()
     }
 
     std::vector<Entity*> entitiesToInterpolate;
-    for (node_t* node = map.entities->first; node != nullptr; node = node->next)
+    for (const node_t* node = map.entities->first; node != nullptr; node = node->next)
     {
         auto entity = static_cast<Entity*>(node->element);
         if (entity->bUseRenderInterpolation)
@@ -683,7 +683,7 @@ void TimerExperiments::updateClocks()
             integrate(cameraCurrentState[i].pitch, timepoint, dt);
             integrate(cameraCurrentState[i].roll, timepoint, dt);
         }
-        for (auto& entity : entitiesToInterpolate)
+        for (const auto& entity : entitiesToInterpolate)
         {
             entity->lerpPreviousState = entity->lerpCurrentState;
             integrate(entity->lerpCurrentState.x, timepoint, dt);
@@ -697,7 +697,7 @@ void TimerExperiments::updateClocks()
         accumulator -= dt;
     }
 
-    double alpha = std::chrono::duration<double>{accumulator} / dt;
+    const double alpha = std::chrono::duration<double>{accumulator} / dt;
     for (int i = 0; i < MAXPLAYERS; ++i)
     {
         cameraRenderState[i] = cameraCurrentState[i] * alpha + cameraPreviousState[i] * (1.0 - alpha);
@@ -723,7 +723,7 @@ void TimerExperiments::updateClocks()
         //real_t adiff = a2 - a1;
         //cameraRenderState[i].yaw.position = a1 + alpha * (fmod(3 * PI + fmod(adiff, 2 * PI), 2 * PI) - PI);
     }
-    for (auto& entity : entitiesToInterpolate)
+    for (const auto& entity : entitiesToInterpolate)
     {
         entity->lerpRenderState = entity->lerpCurrentState * alpha + entity->lerpPreviousState * (1.0 - alpha);
         // make sure these are limited to prevent large jumps
@@ -746,7 +746,7 @@ void TimerExperiments::updateClocks()
 
 real_t TimerExperiments::lerpAngle(real_t angle1, real_t angle2, real_t alpha)
 {
-    real_t adiff = angle2 - angle1;
+    const real_t adiff = angle2 - angle1;
     return angle1 + alpha * (fmod(3 * PI + fmod(adiff, 2 * PI), 2 * PI) - PI);
 }
 
@@ -756,7 +756,7 @@ std::string TimerExperiments::render(State state)
     static auto t = time_point_cast<seconds>(Clock::now());
     static int frame_count = 0;
     static int frame_rate = 0;
-    auto pt = t;
+    const auto pt = t;
     t = time_point_cast<seconds>(Clock::now());
     ++frame_count;
     if (t != pt)
@@ -859,7 +859,7 @@ static void demo_record(const char* filename)
     demo_file->write(&client_classes[clientnum], sizeof(client_classes[clientnum]), 1);
 
     // write player name
-    Uint32 name_len = static_cast<Uint32>(strlen(stats[clientnum]->name));
+    const Uint32 name_len = static_cast<Uint32>(strlen(stats[clientnum]->name));
     demo_file->write(&name_len, sizeof(name_len), 1);
     demo_file->write(stats[clientnum]->name, sizeof(char), name_len);
 
@@ -2299,7 +2299,7 @@ void gameLogic(void)
                         updateLoadingScreen(10);
 
                         int checkMapHash = -1;
-                        int result = physfsLoadMapFile(currentlevel, mapseed, false, &checkMapHash);
+                        const int result = physfsLoadMapFile(currentlevel, mapseed, false, &checkMapHash);
                         if (!verifyMapHash(map.filename, checkMapHash))
                         {
                             conductGameChallenges[CONDUCT_MODDED] = 1;
@@ -4085,13 +4085,13 @@ void handleButtons(void)
     node_t* nextnode;
     int w = 0, h = 0;
 
-    Sint32 mousex = inputs.getMouse(clientnum, Inputs::MouseInputs::X);
-    Sint32 mousey = inputs.getMouse(clientnum, Inputs::MouseInputs::Y);
-    Sint32 omousex = inputs.getMouse(clientnum, Inputs::MouseInputs::OX);
-    Sint32 omousey = inputs.getMouse(clientnum, Inputs::MouseInputs::OY);
+    const Sint32 mousex = inputs.getMouse(clientnum, Inputs::MouseInputs::X);
+    const Sint32 mousey = inputs.getMouse(clientnum, Inputs::MouseInputs::Y);
+    const Sint32 omousex = inputs.getMouse(clientnum, Inputs::MouseInputs::OX);
+    const Sint32 omousey = inputs.getMouse(clientnum, Inputs::MouseInputs::OY);
 
     // handle buttons
-    for (node_t* node = button_l.first; node != nullptr; node = nextnode)
+    for (const node_t* node = button_l.first; node != nullptr; node = nextnode)
     {
         nextnode = node->next;
         if (node->element == nullptr)
@@ -4165,13 +4165,13 @@ void handleButtons(void)
                     if (mousey >= button->y && mousey < button->y + button->sizey && omousey >= button->y && omousey <
                         button->y + button->sizey)
                     {
-                        for (node_t* node = button_l.first; node != nullptr; node = node->next)
+                        for (const node_t* node = button_l.first; node != nullptr; node = node->next)
                         {
                             if (node->element == nullptr)
                             {
                                 continue;
                             }
-                            auto button = static_cast<button_t*>(node->element);
+                            const auto button = static_cast<button_t*>(node->element);
                             button->pressed = false;
                         }
                         button->pressed = true;
@@ -4228,7 +4228,7 @@ void handleButtons(void)
         {
             //Draw golden border.
             //For such things as which settings tab the controller has presently selected.
-            Uint32 color = makeColor(255, 255, 0, 127);
+            const Uint32 color = makeColor(255, 255, 0, 127);
             SDL_Rect pos;
             pos.x = button->x;
             pos.w = button->sizex;
@@ -5829,19 +5829,19 @@ void preciseSleep(double seconds)
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
         auto end = std::chrono::high_resolution_clock::now();
 
-        double observed = (end - start).count() / 1e9;
+        const double observed = (end - start).count() / 1e9;
         seconds -= observed;
 
         ++count;
-        double delta = observed - mean;
+        const double delta = observed - mean;
         mean += delta / count;
         m2 += delta * (observed - mean);
-        double stddev = sqrt(m2 / (count - 1));
+        const double stddev = sqrt(m2 / (count - 1));
         estimate = mean + stddev;
     }
 
     // spin lock
-    auto start = std::chrono::high_resolution_clock::now();
+    const auto start = std::chrono::high_resolution_clock::now();
     while ((std::chrono::high_resolution_clock::now() - start).count() / 1e9 < seconds);
 }
 
@@ -5888,10 +5888,10 @@ bool frameRateLimit(Uint32 maxFrameRate, bool resetAccumulator, bool sleep)
     {
         return false;
     }
-    float desiredFrameSeconds = 1.0f / maxFrameRate;
-    Uint64 gameTickCount = SDL_GetPerformanceCounter();
-    Uint64 ticksPerSecond = SDL_GetPerformanceFrequency();
-    Uint64 ticksElapsed = gameTickCount - lastGameTickCount;
+    const float desiredFrameSeconds = 1.0f / maxFrameRate;
+    const Uint64 gameTickCount = SDL_GetPerformanceCounter();
+    const Uint64 ticksPerSecond = SDL_GetPerformanceFrequency();
+    const Uint64 ticksElapsed = gameTickCount - lastGameTickCount;
     lastGameTickCount = gameTickCount;
     framerateAccumulatedTicks += ticksElapsed;
 
@@ -5908,7 +5908,7 @@ bool frameRateLimit(Uint32 maxFrameRate, bool resetAccumulator, bool sleep)
             // sleep a fraction of the remaining time.
             // This saves power if you're running on battery.
 #if 1
-            auto microseconds = std::chrono::microseconds(static_cast<Uint64>(diff * 1000000));
+            const auto microseconds = std::chrono::microseconds(static_cast<Uint64>(diff * 1000000));
             preciseSleep(microseconds.count() / 1e6);
 #else
             static ConsoleVariable<float> sleepLimit("/timer_sleep_limit", 0.001f);
@@ -6892,7 +6892,7 @@ void drawAllPlayerCameras()
             ++playercount;
         }
     }
-    Uint32 oldFov = ::fov;
+    const Uint32 oldFov = ::fov;
     if (playercount == 2)
     {
         if (*MainMenu::vertical_splitscreen)
@@ -6915,8 +6915,8 @@ void drawAllPlayerCameras()
     if (playercount >= 1)
     {
         // drunkenness spinning
-        double cosspin = cos(ticks % 360 * PI / 180.f) * 0.25;
-        double sinspin = sin(ticks % 360 * PI / 180.f) * 0.25;
+        const double cosspin = cos(ticks % 360 * PI / 180.f) * 0.25;
+        const double sinspin = sin(ticks % 360 * PI / 180.f) * 0.25;
 
         // setup a graphics frame
         beginGraphics();
@@ -6996,9 +6996,9 @@ void drawAllPlayerCameras()
                                 continue; // don't share for first x ticks due to level change warping
                             }
 
-                            real_t x = camera.x;
-                            real_t y = camera.y;
-                            real_t ang = camera.ang;
+                            const real_t x = camera.x;
+                            const real_t y = camera.y;
+                            const real_t ang = camera.ang;
 
                             camera.x = Player::getPlayerInteractEntity(i)->x / 16.0;
                             camera.y = Player::getPlayerInteractEntity(i)->y / 16.0;
@@ -7026,13 +7026,13 @@ void drawAllPlayerCameras()
                         globalLightModifierEntities = 0.f;
                         if (!intro)
                         {
-                            bool selfTelepath = stats[c]->mask && stats[c]->mask->type == TOOL_BLINDFOLD_TELEPATHY;
+                            const bool selfTelepath = stats[c]->mask && stats[c]->mask->type == TOOL_BLINDFOLD_TELEPATHY;
                             if (selfTelepath)
                             {
-                                for (node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->
+                                for (const node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->
                                      next)
                                 {
-                                    auto mapCreature = static_cast<Entity*>(mapNode->element);
+                                    const auto mapCreature = static_cast<Entity*>(mapNode->element);
                                     if (mapCreature &&
                                         (selfTelepath
                                             /*|| (mapCreature->getStats() && mapCreature->getStats()->getEffectActive(EFF_DETECT_ENEMY))*/
@@ -7067,7 +7067,7 @@ void drawAllPlayerCameras()
                     real_t limit = PERModifier * 0.01;
                     globalLightModifier = std::min(limit, globalLightModifier + 0.0005);
 
-                    int telepathyLimit = std::min(64, 48 + players[c]->entity->getPER());
+                    const int telepathyLimit = std::min(64, 48 + players[c]->entity->getPER());
                     globalLightModifierEntities = std::min(telepathyLimit / 255.0,
                                                            globalLightModifierEntities + (0.2 / 255.0));
                 }
@@ -7075,9 +7075,9 @@ void drawAllPlayerCameras()
                 {
                     if (globalLightModifierActive == GLOBAL_LIGHT_MODIFIER_INUSE)
                     {
-                        for (node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next)
+                        for (const node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next)
                         {
-                            auto mapCreature = static_cast<Entity*>(mapNode->element);
+                            const auto mapCreature = static_cast<Entity*>(mapNode->element);
                             if (mapCreature)
                             {
                                 mapCreature->monsterEntityRenderAsTelepath = 0;
@@ -7109,9 +7109,9 @@ void drawAllPlayerCameras()
                 // undo blindness effects
                 if (globalLightModifierActive == GLOBAL_LIGHT_MODIFIER_INUSE)
                 {
-                    for (node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next)
+                    for (const node_t* mapNode = map.creatures->first; mapNode != nullptr; mapNode = mapNode->next)
                     {
-                        auto mapCreature = static_cast<Entity*>(mapNode->element);
+                        const auto mapCreature = static_cast<Entity*>(mapNode->element);
                         if (mapCreature)
                         {
                             mapCreature->monsterEntityRenderAsTelepath = 0;
@@ -7155,7 +7155,7 @@ void drawAllPlayerCameras()
                 camera.vang -= sinspin * drunkextend[c];
             }
 
-            auto& cvars = cameravars[c];
+            const auto& cvars = cameravars[c];
             camera.ang -= cvars.shakex2;
             camera.vang -= cvars.shakey2 / 200.0;
         }
@@ -7352,7 +7352,7 @@ static void doConsoleCommands()
                         char chatstring[256];
                         strcpy(chatstring, Language::get(739));
                         strcat(chatstring, command_str);
-                        Uint32 color = playerColor(commandPlayer, colorblind_lobby, false);
+                        const Uint32 color = playerColor(commandPlayer, colorblind_lobby, false);
                         if (messagePlayerColor(commandPlayer, MESSAGE_CHAT, color, chatstring))
                         {
                             playSound(Message::CHAT_MESSAGE_SFX, 64);
@@ -7383,7 +7383,7 @@ static void doConsoleCommands()
                         char chatstring[256];
                         strcpy(chatstring, Language::get(739));
                         strcat(chatstring, command_str);
-                        Uint32 color = playerColor(commandPlayer, colorblind_lobby, false);
+                        const Uint32 color = playerColor(commandPlayer, colorblind_lobby, false);
                         if (messagePlayerColor(commandPlayer, MESSAGE_CHAT, color, chatstring))
                         {
                             playSound(Message::CHAT_MESSAGE_SFX, 64);
@@ -8757,16 +8757,16 @@ void DebugStatsClass::storeStats()
         return;
     }
     storeOldTimePoints();
-    double out1 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t2Stored - t21Stored).count();
-    double out2 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t3Stored - t2Stored).count();
-    double out3 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t5Stored - t4Stored).count();
-    double out4 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t6Stored - t5Stored).count();
-    double out5 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t7Stored - t6Messages).count();
-    double out6 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t8Stored - t7Stored).count();
-    double out7 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t9Stored - t8Stored).count();
-    double out8 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t10Stored - t9Stored).count();
-    double out9 = -1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t11Stored - t10Stored).count();
-    double out10 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t21Stored - t1Stored).count();
+    const double out1 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t2Stored - t21Stored).count();
+    const double out2 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t3Stored - t2Stored).count();
+    const double out3 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t5Stored - t4Stored).count();
+    const double out4 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t6Stored - t5Stored).count();
+    const double out5 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t7Stored - t6Messages).count();
+    const double out6 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t8Stored - t7Stored).count();
+    const double out7 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t9Stored - t8Stored).count();
+    const double out8 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t10Stored - t9Stored).count();
+    const double out9 = -1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t11Stored - t10Stored).count();
+    const double out10 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t21Stored - t1Stored).count();
     snprintf(debugOutput, 1023,
              "Messages: %4.5fms\nEvents: %4.5fms\nSteamCallbacks: %4.5fms\nMainDraw: %4.5fms\nMessages: %4.5fms\nInputs: %4.5fms\nStatus: %4.5fms\nGUI: %4.5fms\nFrameLimiter: %4.5fms\nEnd: %4.5fms\n",
              out10, out1, out2, out3, out4, out5, out6, out7, out8, out9);
@@ -8774,20 +8774,20 @@ void DebugStatsClass::storeStats()
 
 void DebugStatsClass::storeEventStats()
 {
-    double out1 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(eventsT2stored - eventsT1stored).
+    const double out1 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(eventsT2stored - eventsT1stored).
         count();
-    double out2 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(eventsT3stored - eventsT2stored).
+    const double out2 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(eventsT3stored - eventsT2stored).
         count();
-    double out3 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(eventsT4stored - eventsT3stored).
+    const double out3 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(eventsT4stored - eventsT3stored).
         count();
-    double out4 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(eventsT5stored - eventsT4stored).
+    const double out4 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(eventsT5stored - eventsT4stored).
         count();
-    double out5 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(eventsT6stored - eventsT5stored).
+    const double out5 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(eventsT6stored - eventsT5stored).
         count();
 
-    double messages1 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(messagesT1stored - t1StartLoop).
+    const double messages1 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(messagesT1stored - t1StartLoop).
         count();
-    double messages2 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t21Stored - messagesT1stored).
+    const double messages2 = 1000 * std::chrono::duration_cast<std::chrono::duration<double>>(t21Stored - messagesT1stored).
         count();
 
     snprintf(debugEventOutput, 1023,

@@ -1303,7 +1303,7 @@ struct AOEIndicators_t
 
     static TempTexture* getTexture(Uint32 uid)
     {
-        auto find = indicators.find(uid);
+        const auto find = indicators.find(uid);
         if ( find != indicators.end() )
         {
             return find->second.texture;
@@ -1312,7 +1312,7 @@ struct AOEIndicators_t
     }
     static SDL_Surface* getSurface(Uint32 uid)
     {
-        auto find = indicators.find(uid);
+        const auto find = indicators.find(uid);
         if ( find != indicators.end() )
         {
             return find->second.surfaceOld;
@@ -1321,7 +1321,7 @@ struct AOEIndicators_t
     }
     static Indicator_t* getIndicator(Uint32 uid)
     {
-        auto find = indicators.find(uid);
+        const auto find = indicators.find(uid);
         if ( find != indicators.end() )
         {
             return &find->second;

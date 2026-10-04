@@ -95,7 +95,7 @@ void Entity::actTeleporter()
                     {
                         if ( Entity* caster = uidToEntity(this->parent) )
                         {
-                            if ( auto hitprops = getParticleEmitterHitProps(this->getUID(), this) )
+                            if (const auto hitprops = getParticleEmitterHitProps(this->getUID(), this) )
                             {
                                 if ( hitprops->hits == 0 )
                                 {
@@ -142,7 +142,7 @@ void Entity::actTeleporter()
                             messagePlayer(i, MESSAGE_INTERACTION, Language::get(6696));
                             if ( Entity* caster = uidToEntity(this->parent) )
                             {
-                                if ( auto hitprops = getParticleEmitterHitProps(this->getUID(), this) )
+                                if (const auto hitprops = getParticleEmitterHitProps(this->getUID(), this) )
                                 {
                                     if ( hitprops->hits == 0 )
                                     {
@@ -193,7 +193,7 @@ void Entity::actTeleporter()
             }
         }
 
-        real_t increment = std::max(.05, (1.0 - scalex)) / 3.0;
+        const real_t increment = std::max(.05, (1.0 - scalex)) / 3.0;
         scalex = std::min(1.0, scalex + increment);
         scaley = std::min(1.0, scaley + increment);
         scalez = std::min(1.0, scalez + increment);

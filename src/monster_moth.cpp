@@ -57,7 +57,7 @@ void initMoth(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -198,7 +198,7 @@ void actMothLimb(Entity* my)
 
 void mothDie(Entity* my)
 {
-    Stat* myStats = my->getStats();
+    const Stat* myStats = my->getStats();
     if ( myStats && myStats->getAttribute("fire_sprite") != "" )
     {
         spawnPoof(my->x, my->y, my->z, 0.25, true);
@@ -275,7 +275,7 @@ int mothGetAttackPose(Entity* my, int basePose)
         {
             if ( (i / 3) < 4 )
             {
-                Entity* body = my->bodyparts.at(i);
+                const Entity* body = my->bodyparts.at(i);
                 if ( BODY_ATTACK == 0 && !body->flags[INVISIBLE] )
                 {
                     available.push_back(i);
@@ -285,7 +285,7 @@ int mothGetAttackPose(Entity* my, int basePose)
 
         if ( available.size() > 0 )
         {
-            int pick = available[local_rng.rand() % available.size()];
+            const int pick = available[local_rng.rand() % available.size()];
             switch ( pick / 3 )
             {
             case 0:
@@ -307,12 +307,12 @@ int mothGetAttackPose(Entity* my, int basePose)
     }
     else if ( basePose == MONSTER_POSE_MAGIC_WINDUP1 )
     {
-        Stat* myStats = my->getStats();
+        const Stat* myStats = my->getStats();
         if ( myStats && myStats->getAttribute("fire_sprite") != "" )
         {
             if ( my->bodyparts.size() > 0 )
             {
-                Entity* body = my->bodyparts.at(0);
+                const Entity* body = my->bodyparts.at(0);
                 if ( BODY_ATTACK == 0 && !body->flags[INVISIBLE] )
                 {
                     return MONSTER_POSE_MAGIC_WINDUP1;
@@ -327,7 +327,7 @@ int mothGetAttackPose(Entity* my, int basePose)
         {
             if ( (i / 3) >= 4 )
             {
-                Entity* body = my->bodyparts.at(i);
+                const Entity* body = my->bodyparts.at(i);
                 if ( BODY_ATTACK == 0 && !body->flags[INVISIBLE] )
                 {
                     available.push_back(i);
@@ -337,7 +337,7 @@ int mothGetAttackPose(Entity* my, int basePose)
 
         if ( available.size() > 0 )
         {
-            int pick = available[local_rng.rand() % available.size()];
+            const int pick = available[local_rng.rand() % available.size()];
             switch ( pick / 3 )
             {
             case 4:
@@ -417,7 +417,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
         my->mistformGLRender = 1.0;
     }
 
-    bool fireSprite = my->sprite == 1822;
+    const bool fireSprite = my->sprite == 1822;
 
     if ( fireSprite )
     {
@@ -439,7 +439,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
             }
         }
 
-        real_t percentHP = myStats->HP / static_cast<real_t>(std::max(1, myStats->MAXHP));
+        const real_t percentHP = myStats->HP / static_cast<real_t>(std::max(1, myStats->MAXHP));
         if ( percentHP < 0.1 )
         {
             myStats->setAttribute("moth_state", "5");
@@ -465,7 +465,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
             myStats->setAttribute("moth_state", "0");
         }
 
-        int state = myStats->getAttribute("moth_state") != "" ? std::stoi(myStats->getAttribute("moth_state")) : 0;
+        const int state = myStats->getAttribute("moth_state") != "" ? std::stoi(myStats->getAttribute("moth_state")) : 0;
         std::set<int> toDisappear;
         if ( state >= 1 )
         {
@@ -560,7 +560,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
     int numBodies = 0;
     for ( int i = 0; i < my->bodyparts.size(); i += 3 )
     {
-        Entity* body = my->bodyparts.at(i);
+        const Entity* body = my->bodyparts.at(i);
         if ( !body->flags[INVISIBLE] )
         {
             ++numBodies;
@@ -570,7 +570,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
     if ( MONSTER_ATTACK >= MONSTER_POSE_MELEE_WINDUP1 && MONSTER_ATTACK <= MONSTER_POSE_RANGED_WINDUP1
         && MONSTER_ATTACKTIME == 0 )
     {
-        int bodypart = (MONSTER_ATTACK - MONSTER_POSE_MELEE_WINDUP1) * 3;
+        const int bodypart = (MONSTER_ATTACK - MONSTER_POSE_MELEE_WINDUP1) * 3;
         if ( bodypart < my->bodyparts.size() )
         {
             Entity* body = my->bodyparts.at(bodypart);
@@ -602,7 +602,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
     }
 
     //Move bodyparts
-    Entity* leftWing = nullptr;
+    const Entity* leftWing = nullptr;
     Entity* body = nullptr;
     for ( bodypart = 0, node = my->children.first; node != nullptr; node = node->next, ++bodypart )
     {
@@ -693,8 +693,8 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
                     {
                         if ( multiplayer != CLIENT )
                         {
-                            real_t prevYaw = my->yaw;
-                            if ( Entity* target = uidToEntity(my->monsterTarget) )
+                            const real_t prevYaw = my->yaw;
+                            if (const Entity* target = uidToEntity(my->monsterTarget) )
                             {
                                 my->yaw = atan2(target->y - my->y, target->x - my->x);
                             }
@@ -704,7 +704,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
                             }
                             else
                             {
-                                int spell = local_rng.rand() % 3;
+                                const int spell = local_rng.rand() % 3;
                                 if ( spell == 0 )
                                 {
                                     castSpell(my->getUID(), getSpellFromID(SPELL_TELEPULL), true, false);
@@ -755,7 +755,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
 
                             if ( entity->skill[1] == 0 )
                             {
-                                real_t speed = limbs[MOTH_SMALL][13][2];
+                                const real_t speed = limbs[MOTH_SMALL][13][2];
                                 real_t setpoint = PI / 16;
                                 if ( limbAngleWithinRange(entity->fskill[0], -speed, setpoint) )
                                 {
@@ -770,14 +770,14 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
                             }
                             else
                             {
-                                real_t speed = limbs[MOTH_SMALL][13][1];
+                                const real_t speed = limbs[MOTH_SMALL][13][1];
                                 entity->fskill[0] += speed;
                                 entity->fskill[0] = std::min(entity->fskill[0], 0.0);
                             }
                         }
                         else
                         {
-                            real_t speed = limbs[MOTH_SMALL][13][0];
+                            const real_t speed = limbs[MOTH_SMALL][13][0];
                             entity->fskill[0] -= speed;
                             entity->fskill[0] = std::max(entity->fskill[0], -((PI / 2) + PI / 32));
                         }
@@ -839,7 +839,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
 
                 if ( entity->skill[1] == 0 )
                 {
-                    real_t speed = limbs[MOTH_SMALL][14][0];
+                    const real_t speed = limbs[MOTH_SMALL][14][0];
                     if ( limbAngleWithinRange(entity->fskill[1], speed, 0.0) )
                     {
                         entity->fskill[1] = 0.0;
@@ -860,7 +860,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
                 }
                 else if ( entity->skill[1] == 1 )
                 {
-                    real_t speed = limbs[MOTH_SMALL][14][0];
+                    const real_t speed = limbs[MOTH_SMALL][14][0];
                     if ( limbAngleWithinRange(entity->fskill[1], speed, PI / 4) )
                     {
                         entity->fskill[1] = PI / 4;
@@ -874,8 +874,8 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
                 }
                 else if ( entity->skill[1] == 2 )
                 {
-                    real_t speed = limbs[MOTH_SMALL][14][1];
-                    real_t setpoint = -PI / 2 - PI / 8;
+                    const real_t speed = limbs[MOTH_SMALL][14][1];
+                    const real_t setpoint = -PI / 2 - PI / 8;
                     if ( limbAngleWithinRange(entity->fskill[1], -speed, setpoint) )
                     {
                         entity->fskill[1] = setpoint;
@@ -889,7 +889,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
                 }
                 else if ( entity->skill[1] == 3 )
                 {
-                    real_t speed = limbs[MOTH_SMALL][14][2];
+                    const real_t speed = limbs[MOTH_SMALL][14][2];
                     if ( limbAngleWithinRange(entity->fskill[1], speed, 0.0) )
                     {
                         entity->fskill[1] = 0.0;
@@ -961,7 +961,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
                 BODY_FLOAT_X = limbs[MOTH_SMALL][10][0] * sin(body->fskill[1] * limbs[MOTH_SMALL][11][0]) * cos(entity->yaw + PI / 2);
                 BODY_FLOAT_Y = limbs[MOTH_SMALL][10][1] * sin(body->fskill[1] * limbs[MOTH_SMALL][11][1]) * sin(entity->yaw + PI / 2);
                 BODY_FLOAT_Z = limbs[MOTH_SMALL][10][2] * sin(body->fskill[1] * limbs[MOTH_SMALL][11][2]);
-                real_t floatAtkZ = BODY_FLOAT_ATK < 0 ? 2 * sin(BODY_FLOAT_ATK * PI / 8) : 0.5 * sin(BODY_FLOAT_ATK * PI / 8);
+                const real_t floatAtkZ = BODY_FLOAT_ATK < 0 ? 2 * sin(BODY_FLOAT_ATK * PI / 8) : 0.5 * sin(BODY_FLOAT_ATK * PI / 8);
                 BODY_FLOAT_Z += floatAtkZ;
             }
 
@@ -991,13 +991,13 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
                 real_t setpoint = BODY_CIRCLING_ATTACK_SETPOINT;
                 if ( BODY_CIRCLING_ATTACK > setpoint + 0.01 )
                 {
-                    real_t diff = std::max(0.025, (BODY_CIRCLING_ATTACK - setpoint) / 10.0);
+                    const real_t diff = std::max(0.025, (BODY_CIRCLING_ATTACK - setpoint) / 10.0);
                     BODY_CIRCLING_ATTACK -= diff;
                     BODY_CIRCLING_ATTACK = std::max(setpoint, BODY_CIRCLING_ATTACK);
                 }
                 if ( BODY_CIRCLING_ATTACK < setpoint - 0.01 )
                 {
-                    real_t diff = std::max(0.025, (setpoint - BODY_CIRCLING_ATTACK) / 10.0);
+                    const real_t diff = std::max(0.025, (setpoint - BODY_CIRCLING_ATTACK) / 10.0);
                     BODY_CIRCLING_ATTACK += diff;
                     BODY_CIRCLING_ATTACK = std::min(setpoint, BODY_CIRCLING_ATTACK);
                 }
@@ -1022,7 +1022,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
                     speed = 2.0;
                 }
 
-                real_t& amount = abs(BODY_CIRCLING_AMOUNT) > abs(BODY_CIRCLING_ATTACK)
+                const real_t& amount = abs(BODY_CIRCLING_AMOUNT) > abs(BODY_CIRCLING_ATTACK)
                     ? BODY_CIRCLING_AMOUNT : BODY_CIRCLING_ATTACK;
 
                 if ( BODY_CIRCLING_AMOUNT < 0.0 )
@@ -1090,9 +1090,9 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
 
             // wings flap sync with body
             {
-                real_t wingMin = -1.3;
-                real_t wingMax = 0.8;
-                real_t wingMid = wingMin + (wingMax - wingMin) / 2;
+                const real_t wingMin = -1.3;
+                const real_t wingMax = 0.8;
+                const real_t wingMid = wingMin + (wingMax - wingMin) / 2;
                 real_t speed = 1.0;
                 if ( BODY_ATTACK == MONSTER_POSE_MAGIC_WINDUP1 )
                 {
@@ -1191,7 +1191,7 @@ void mothAnimate(Entity* my, Stat* myStats, double dist)
 
 void Entity::mothChooseWeapon(const Entity* target, double dist)
 {
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( !myStats )
     {
         return;
@@ -1207,7 +1207,7 @@ void Entity::mothChooseWeapon(const Entity* target, double dist)
         && (monsterAttack == 0 || ((monsterAttack == 1) && monsterAttackTime >= 25))
         && dist < 128 )
     {
-        Stat* targetStats = target->getStats();
+        const Stat* targetStats = target->getStats();
         if ( !targetStats )
         {
             return;

@@ -61,7 +61,7 @@ std::string getBookDefaultNameFromIndex(int index, bool censored)
     }
     if (!spawn_blood && censored) {
         for (int c = 0; c < num_banned_books; ++c) {
-            auto banned_book = banned_books[c];
+            const auto banned_book = banned_books[c];
             if (allBooks[index].default_name == banned_book) {
                 return getBookDefaultNameFromIndex((index + 1) % allBooks.size(), censored);
             }
@@ -77,7 +77,7 @@ std::string getBookLocalizedNameFromIndex(int index, bool censored)
     }
     if ( !spawn_blood && censored ) {
         for ( int c = 0; c < num_banned_books; ++c ) {
-            auto banned_book = banned_books[c];
+            const auto banned_book = banned_books[c];
             if ( allBooks[index].default_name == banned_book ) {
                 return getBookLocalizedNameFromIndex((index + 1) % allBooks.size(), censored);
             }
@@ -122,7 +122,7 @@ bool BookParser_t::readCompiledBooks()
         if ( fp )
         {
             static char buf[MAX_FILE_LENGTH];
-            int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
+            const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
             buf[count] = '\0';
             rapidjson::StringStream is(buf);
             FileIO::close(fp);
@@ -170,7 +170,7 @@ bool BookParser_t::booksRequireCompiling()
         if ( fp )
         {
             static char buf[MAX_FILE_LENGTH];
-            int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
+            const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
             buf[count] = '\0';
             rapidjson::StringStream is(buf);
             FileIO::close(fp);
@@ -235,7 +235,7 @@ std::list<std::string> BookParser_t::getListOfBooksAfterFiltering()
         if ( fp )
         {
             char buf[MAX_FILE_LENGTH];
-            int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
+            const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
             buf[count] = '\0';
             rapidjson::StringStream is(buf);
             FileIO::close(fp);
@@ -304,7 +304,7 @@ void BookParser_t::readBooksIntoTemp()
 {
     tempBookData.clear();
 
-    std::list<std::string> discoveredbooks = getListOfBooksAfterFiltering();
+    const std::list<std::string> discoveredbooks = getListOfBooksAfterFiltering();
 
     if ( !discoveredbooks.empty() )
     {
@@ -314,7 +314,7 @@ void BookParser_t::readBooksIntoTemp()
         {
             //printlog("reading book: \"%s\"\n", filename.c_str());
             std::string filenameNoExtension = filename;
-            auto findExtension = filename.find(".txt");
+            const auto findExtension = filename.find(".txt");
             if ( findExtension != std::string::npos )
             {
                 filenameNoExtension = filename.substr(0, findExtension);
@@ -362,7 +362,7 @@ void BookParser_t::createBooks(bool forceCacheRebuild)
         printlog("[Books]: Error - Failed to read pre-compiled books... recompiling.");
     }
 
-    std::list<std::string> discoveredbooks = getListOfBooksAfterFiltering();
+    const std::list<std::string> discoveredbooks = getListOfBooksAfterFiltering();
     // create books
     for ( const auto& filename : discoveredbooks )
     {
@@ -601,7 +601,7 @@ void BookParser_t::createBook(std::string filename)
     }
 
     newBook.default_name = filename;
-    auto findTxt = newBook.default_name.find(".txt");
+    const auto findTxt = newBook.default_name.find(".txt");
     if ( findTxt != std::string::npos )
     {
         newBook.default_name = newBook.default_name.substr(0, findTxt);
@@ -609,7 +609,7 @@ void BookParser_t::createBook(std::string filename)
     //newBook.rawBookText = book->text;
     
     std::string pageText = "";
-    for ( auto& character : newBook.text )
+    for (const auto& character : newBook.text )
     {
         if ( character == '\r' )
         {
@@ -635,7 +635,7 @@ void BookParser_t::createBook(std::string filename)
     tmpField->setText(pageText.c_str());
     tmpField->reflowTextToFit(0, false);
 
-    int len = strlen(tmpField->getText());
+    const int len = strlen(tmpField->getText());
     auto reflowedText = static_cast<char*>(malloc(len + 1));
     memcpy(reflowedText, tmpField->getText(), sizeof(char) * (len + 1));
     reflowedText[len] = '\0';
@@ -653,7 +653,7 @@ void BookParser_t::createBook(std::string filename)
         firstIteration = false;
         pageText += token;
         tmpField->setText(pageText.c_str());
-        int textHeight = tmpField->getNumTextLines() * Font::get(tmpField->getFont())->height();
+        const int textHeight = tmpField->getNumTextLines() * Font::get(tmpField->getFont())->height();
         if ( textHeight > tmpField->getSize().h )
         {
             // exceeds size, move to next page.
@@ -935,7 +935,7 @@ void BookParser_t::createBook(std::string filename)
 
 bool physfsSearchBooksToUpdate()
 {
-    std::list<std::string> booklist = getListOfBooks();
+    const std::list<std::string> booklist = getListOfBooks();
     if ( !booklist.empty() )
     {
         for ( auto& bookTitle : booklist )

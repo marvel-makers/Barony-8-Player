@@ -192,7 +192,7 @@ public:
 
         bool readKeyToItemEntry(rapidjson::Value::ConstMemberIterator& itr)
         {
-            std::string name = itr->name.GetString();
+            const std::string name = itr->name.GetString();
             if ( name.compare("type") == 0 )
             {
                 std::string itemName = "empty";
@@ -275,7 +275,7 @@ public:
                 }
                 else if ( itr->value.IsString() )
                 {
-                    std::string str = itr->value.GetString();
+                    const std::string str = itr->value.GetString();
                     if ( str.compare("random") == 0 )
                     {
                         this->appearance = monster_stat_rng.rand();
@@ -399,13 +399,13 @@ public:
             {
                 std::vector<unsigned int> variantChances(followerVariants.size(), 0);
                 int index = 0;
-                for ( auto& pair : followerVariants )
+                for (const auto& pair : followerVariants )
                 {
                     variantChances.at(index) = pair.second;
                     ++index;
                 }
 
-                int result = monster_stat_rng.discrete(variantChances.data(), variantChances.size());
+                const int result = monster_stat_rng.discrete(variantChances.data(), variantChances.size());
                 return followerVariants.at(result).first;
             }
             return "none";
@@ -604,7 +604,7 @@ public:
                     }
                 }
             }
-            for ( auto& it : inventory_items )
+            for (const auto& it : inventory_items )
             {
                 if ( it.emptyItemEntry )
                 {
@@ -804,9 +804,9 @@ public:
         rapidjson::Value invItemsArray;
         invItemsArray.SetArray();
         CustomHelpers::addMemberToRoot(d, "inventory_items", invItemsArray);
-        for ( node_t* node = myStats->inventory.first; node; node = node->next )
+        for (const node_t* node = myStats->inventory.first; node; node = node->next )
         {
-            auto item = static_cast<Item*>(node->element);
+            const auto item = static_cast<Item*>(node->element);
             if ( item )
             {
                 addArrayMemberFromItem(d, "inventory_items", item);
@@ -868,7 +868,7 @@ public:
 
     bool readKeyToStatEntry(StatEntry& statEntry, rapidjson::Value::ConstMemberIterator& itr)
     {
-        std::string name = itr->name.GetString();
+        const std::string name = itr->name.GetString();
         if ( name.compare("name") == 0 )
         {
             strcpy(statEntry.name, itr->value.GetString());
@@ -876,7 +876,7 @@ public:
         }
         else if ( name.compare("type") == 0 )
         {
-            std::string val = itr->value.GetString();
+            const std::string val = itr->value.GetString();
             for ( int i = 0; i < NUMMONSTERS; ++i )
             {
                 if ( val.compare(monstertypename[i]) == 0 )
@@ -1068,7 +1068,7 @@ public:
         }
         std::string outputPath = PHYSFS_getRealDir("/data/custom-monsters/");
         outputPath.append(PHYSFS_getDirSeparator());
-        std::string fileName = "data/custom-monsters/monster_" + monsterFileName + "_export" + std::to_string(filenum) + ".json";
+        const std::string fileName = "data/custom-monsters/monster_" + monsterFileName + "_export" + std::to_string(filenum) + ".json";
         outputPath.append(fileName.c_str());
 
 
@@ -1535,7 +1535,7 @@ public:
         {
             if ( curve.mapName.compare(currentMap) == 0 )
             {
-                for ( MonsterCurveEntry& monster : curve.monsterCurve )
+                for (const MonsterCurveEntry& monster : curve.monsterCurve )
                 {
                     if ( currentlevel >= monster.levelmin && currentlevel <= monster.levelmax )
                     {
@@ -1552,7 +1552,7 @@ public:
                         }
                     }
                 }
-                int result = monster_curve_rng.discrete(monsterCurveChances.data(), monsterCurveChances.size());
+                const int result = monster_curve_rng.discrete(monsterCurveChances.data(), monsterCurveChances.size());
                 //printlog("[MonsterCurveCustomManager]: Rolled: %d", result);
                 return result;
             }
@@ -1584,7 +1584,7 @@ public:
                                 }
                                 else
                                 {
-                                    size_t dist = static_cast<size_t>(std::distance(variantResults.begin(), find));
+                                    const size_t dist = static_cast<size_t>(std::distance(variantResults.begin(), find));
                                     variantChances.at(dist) += pair.second;
                                 }
                             }
@@ -1594,7 +1594,7 @@ public:
                 }
                 if ( !variantResults.empty() )
                 {
-                    int result = monster_curve_rng.discrete(variantChances.data(), variantChances.size());
+                    const int result = monster_curve_rng.discrete(variantChances.data(), variantChances.size());
                     return variantResults[result];
                 }
             }
@@ -1613,13 +1613,13 @@ public:
                     {
                         std::vector<unsigned int> variantChances(monster.variants.size(), 0);
                         int index = 0;
-                        for ( auto& pair : monster.variants )
+                        for (const auto& pair : monster.variants )
                         {
                             variantChances.at(index) = pair.second;
                             ++index;
                         }
 
-                        int result = monster_curve_rng.discrete(variantChances.data(), variantChances.size());
+                        const int result = monster_curve_rng.discrete(variantChances.data(), variantChances.size());
                         return monster.variants.at(result).first;
                     }
                 }
@@ -1822,7 +1822,7 @@ public:
         }
         std::string outputPath = PHYSFS_getRealDir("/data/");
         outputPath.append(PHYSFS_getDirSeparator());
-        std::string fileName = "data/monstercurve_export" + std::to_string(filenum) + ".json";
+        const std::string fileName = "data/monstercurve_export" + std::to_string(filenum) + ".json";
         outputPath.append(fileName.c_str());
 
         File* fp = FileIO::open(outputPath.c_str(), "wb");
@@ -2032,7 +2032,7 @@ public:
         }
         std::string outputPath = PHYSFS_getRealDir("/data/");
         outputPath.append(PHYSFS_getDirSeparator());
-        std::string fileName = "data/gameplaymodifiers_export" + std::to_string(filenum) + ".json";
+        const std::string fileName = "data/gameplaymodifiers_export" + std::to_string(filenum) + ".json";
         outputPath.append(fileName.c_str());
 
         File* fp = FileIO::open(outputPath.c_str(), "wb");
@@ -2063,7 +2063,7 @@ public:
                 return;
             }
             char buf[65536];
-            int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
+            const int count = fp->read(buf, sizeof(buf[0]), sizeof(buf));
             buf[count] = '\0';
             rapidjson::StringStream is(buf);
             FileIO::close(fp);
@@ -2091,7 +2091,7 @@ public:
 
     bool readKeyToGameplayProperty(rapidjson::Value::ConstMemberIterator& itr)
     {
-        std::string name = itr->name.GetString();
+        const std::string name = itr->name.GetString();
         if ( name.compare("version") == 0 )
         {
             return true;
@@ -2190,7 +2190,7 @@ public:
         {
             for ( rapidjson::Value::ConstMemberIterator map_itr = itr->value.MemberBegin(); map_itr != itr->value.MemberEnd(); ++map_itr )
             {
-                std::string mapName = map_itr->name.GetString();
+                const std::string mapName = map_itr->name.GetString();
                 MapGeneration m(mapName);
                 for ( rapidjson::Value::ConstMemberIterator obj_itr = map_itr->value.MemberBegin(); obj_itr != map_itr->value.MemberEnd(); ++obj_itr )
                 {
@@ -2206,7 +2206,7 @@ public:
 
     bool readKeyToMapGenerationProperty(MapGeneration& m, rapidjson::Value::ConstMemberIterator& itr)
     {
-        std::string name = itr->name.GetString();
+        const std::string name = itr->name.GetString();
         if ( name.compare("trap_generation_types") == 0 )
         {
             m.usingTrapTypes = true;
@@ -2290,7 +2290,7 @@ public:
             return true;
         }
 
-        auto m = getMapGenerationForMapName(mapName);
+        const auto m = getMapGenerationForMapName(mapName);
         if ( m )
         {
             if ( m->minoPercent == -1 )
@@ -2326,7 +2326,7 @@ public:
             return false;
         }
 
-        auto m = getMapGenerationForMapName(mapName);
+        const auto m = getMapGenerationForMapName(mapName);
         if ( m )
         {
             if ( m->darkPercent == -1 )
@@ -2362,7 +2362,7 @@ public:
             return false;
         }
 
-        auto m = getMapGenerationForMapName(mapName);
+        const auto m = getMapGenerationForMapName(mapName);
         if ( m )
         {
             if ( m->shopPercent == -1 )
@@ -2403,7 +2403,7 @@ public:
             return false;
         }
 
-        auto m = getMapGenerationForMapName(mapName);
+        const auto m = getMapGenerationForMapName(mapName);
         if ( m )
         {
             int percentValue = -1;
@@ -3398,7 +3398,7 @@ struct EditorEntityData_t
         std::map<std::string, int> overrideProperties;
         bool hasOverride(std::string key)
         {
-            auto find = overrideProperties.find(key);
+            const auto find = overrideProperties.find(key);
             if ( find != overrideProperties.end() )
             {
                 return true;
@@ -3410,7 +3410,7 @@ struct EditorEntityData_t
         }
         int getOverride(std::string key)
         {
-            auto find = overrideProperties.find(key);
+            const auto find = overrideProperties.find(key);
             if ( find != overrideProperties.end() )
             {
                 return find->second;
@@ -3439,7 +3439,7 @@ struct EditorEntityData_t
     static std::map<std::string, int> colliderNameIndexes;
     static int getColliderIndexFromName(std::string name)
     {
-        auto find = colliderNameIndexes.find(name);
+        const auto find = colliderNameIndexes.find(name);
         if ( find != colliderNameIndexes.end() )
         {
             return find->second;
@@ -4348,7 +4348,7 @@ struct Compendium_t
             EventVal_t() = default;
             EventVal_t(EventTags tag)
             {
-                auto& def = events[tag];
+                const auto& def = events[tag];
                 type = def.type;
                 id = def.id;
                 value = 0;

@@ -52,7 +52,7 @@ void initMinotaur(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // boss variants
             if ( strcmp(map.name, "Hell Boss") == 0 )
@@ -88,7 +88,7 @@ void initMinotaur(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
                                                          // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -293,7 +293,7 @@ void minotaurMoveBodyparts(Entity* my, Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;
-    Entity* rightbody = nullptr;
+    const Entity* rightbody = nullptr;
     Entity* head = nullptr;
     Entity* chest = nullptr;
     int bodypart;
@@ -661,7 +661,7 @@ void actMinotaurTrap(Entity* my)
                         {
                             playSoundPlayer( c, 107 + local_rng.rand() % 3, 128 );
                         }
-                        Uint32 color = makeColorRGB(255, 128, 0);
+                        const Uint32 color = makeColorRGB(255, 128, 0);
                         messagePlayerColor(c, MESSAGE_HINT, color, Language::get(1113));
                     }
                 }
@@ -720,7 +720,7 @@ void actMinotaurTimer(Entity* my)
             playSoundNotification(175, 64);
             for ( c = 0; c < MAXPLAYERS; c++ )
             {
-                Uint32 color = makeColorRGB(0, 255, 255);
+                const Uint32 color = makeColorRGB(0, 255, 255);
                 if ( stats[c]->type == HUMAN )
                 {
                     messagePlayerColor(c, MESSAGE_WORLD, color, Language::get(1114), stats[c]->name);
@@ -755,7 +755,7 @@ void actMinotaurTimer(Entity* my)
                 {
                     playSoundPlayer( c, 107 + local_rng.rand() % 3, 128 );
                 }
-                Uint32 color = makeColorRGB(255, 128, 0);
+                const Uint32 color = makeColorRGB(255, 128, 0);
                 messagePlayerColor(c, MESSAGE_HINT, color, Language::get(1115));
             }
             MINOTAURTIMER_ACTIVE = MINOTAURTIMER_LIFE;
@@ -784,7 +784,7 @@ void actMinotaurTimer(Entity* my)
                 {
                     playSoundPlayer(c, 120 + local_rng.rand() % 3, 128);
                 }
-                Uint32 color = makeColorRGB(255, 0, 255);
+                const Uint32 color = makeColorRGB(255, 0, 255);
                 messagePlayerColor(c, MESSAGE_WORLD, color, Language::get(1116));
                 messagePlayerColor(c, MESSAGE_WORLD, color, Language::get(73));
             }
@@ -820,8 +820,8 @@ void actMinotaurTimer(Entity* my)
 void actMinotaurCeilingBuster(Entity* my)
 {
     // levitate particles
-    int u = std::min<unsigned int>(std::max<int>(0, my->x / 16), map.width - 1);
-    int v = std::min<unsigned int>(std::max<int>(0, my->y / 16), map.height - 1);
+    const int u = std::min<unsigned int>(std::max<int>(0, my->x / 16), map.width - 1);
+    const int v = std::min<unsigned int>(std::max<int>(0, my->y / 16), map.height - 1);
     if ( !map.tiles[v * MAP_LAYERS + u * MAP_LAYERS * map.height] )
     {
         for ( int c = 0; c < 2; c++ )
@@ -855,7 +855,7 @@ void actMinotaurCeilingBuster(Entity* my)
         {
             if ( x >= 0 && y >= 0 && x < map.width << 4 && y < map.height << 4 )
             {
-                int index = (MAP_LAYERS - 1) + static_cast<int>(floor(y / 16)) * MAP_LAYERS + static_cast<int>(floor(x / 16)) * MAP_LAYERS * map.height;
+                const int index = (MAP_LAYERS - 1) + static_cast<int>(floor(y / 16)) * MAP_LAYERS + static_cast<int>(floor(x / 16)) * MAP_LAYERS * map.height;
                 if ( map.tiles[index] )
                 {
                     if ( my->monsterAttack == 0 )
@@ -885,7 +885,7 @@ void actMinotaurCeilingBuster(Entity* my)
                     }
 
                     // spawn several rock particles (NOT items)
-                    int i = 6 + local_rng.rand() % 4;
+                    const int i = 6 + local_rng.rand() % 4;
                     for ( int c = 0; c < i; c++ )
                     {
                         Entity *entity = nullptr;
@@ -921,17 +921,17 @@ void actMinotaurCeilingBuster(Entity* my)
                 std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
                 for (auto it = entLists.begin(); it != entLists.end(); ++it )
                 {
-                    list_t* currentList = *it;
-                    for ( node_t* node = currentList->first; node != nullptr; node = nextnode )
+                    const list_t* currentList = *it;
+                    for (const node_t* node = currentList->first; node != nullptr; node = nextnode )
                     {
                         nextnode = node->next;
-                        auto entity = static_cast<Entity*>(node->element);
+                        const auto entity = static_cast<Entity*>(node->element);
                         if ( static_cast<int>(x / 16) == static_cast<int>(entity->x / 16) && static_cast<int>(y / 16) == static_cast<int>(entity->y / 16) )
                         {
                             if ( entity->behavior == &actDoorFrame )
                             {
                                 // spawn several rock items
-                                int i = 8 + local_rng.rand() % 4;
+                                const int i = 8 + local_rng.rand() % 4;
                                 for ( int c = 0; c < i; c++ )
                                 {
                                     Entity *entity = nullptr;
@@ -1049,7 +1049,7 @@ void actMinotaurCeilingBuster(Entity* my)
                                     )
                             {
                                 // spawn several rock items
-                                int i = local_rng.rand() % 4;
+                                const int i = local_rng.rand() % 4;
                                 for ( int c = 0; c < i; ++c )
                                 {
                                     //Entity* childEntity = spawnGib(my);

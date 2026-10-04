@@ -78,7 +78,7 @@ void entityDeconstructor(void* data)
 {
     if ( data != nullptr )
     {
-        Entity* entity = static_cast<Entity*>(data);
+        const Entity* entity = static_cast<Entity*>(data);
 
         //TODO: If I am part of the creaturelist, remove my node from that list.)
 
@@ -99,7 +99,7 @@ void statDeconstructor(void* data)
 {
     if ( data != nullptr )
     {
-        Stat* stat = static_cast<Stat*>(data);
+        const Stat* stat = static_cast<Stat*>(data);
         //free(data);
         delete stat;
     }
@@ -116,7 +116,7 @@ void statDeconstructor(void* data)
 void lightDeconstructor(void* data)
 {
     if (data != nullptr) {
-        auto light = static_cast<light_t*>(data);
+        const auto light = static_cast<light_t*>(data);
         if (light->tiles != nullptr) {
             const auto lightsize = (light->radius * 2 + 1) * (light->radius * 2 + 1);
             const auto mapsize = map.width * map.height;
@@ -368,7 +368,7 @@ string_t* newString(list_t* list, Uint32 color, Uint32 time, int player, char co
 #ifndef EDITOR
         if ( list && list == &messages )
         {
-            std::string sanitizedStr = messageSanitizePercentSign(content, nullptr).c_str();
+            const std::string sanitizedStr = messageSanitizePercentSign(content, nullptr).c_str();
             const char* strPtr = sanitizedStr.c_str();
             // format the content
             va_start( argptr, strPtr);

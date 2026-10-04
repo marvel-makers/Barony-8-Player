@@ -62,7 +62,7 @@ void initBat(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -238,7 +238,7 @@ bool Entity::disturbBat(Entity* touched, bool takenDamage, bool doMessage)
         setEffect(EFF_STUNNED, true, 10, false);
         if ( bodyparts.size() >= 1 )
         {
-            auto& body = bodyparts[0];
+            const auto& body = bodyparts[0];
             if ( body->z < -15 )
             {
                 setEffect(EFF_STUNNED, true, 30, false);
@@ -339,7 +339,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
     }
 
     //Move bodyparts
-    Entity* leftWing = nullptr;
+    const Entity* leftWing = nullptr;
     Entity* body = nullptr;
     for ( bodypart = 0, node = my->children.first; node != nullptr; node = node->next, ++bodypart )
     {
@@ -372,7 +372,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
             if ( my->monsterSpecialState == BAT_REST && BAT_REST_STATE == 1 )
             {
                 entity->fskill[0] = std::max(body->fskill[0], entity->fskill[0]);
-                real_t speed = 0.2;
+                const real_t speed = 0.2;
                 if ( limbAngleWithinRange(entity->fskill[0], speed, 3 * PI / 4) )
                 {
                     entity->fskill[0] = 3 * PI / 4;
@@ -385,7 +385,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
             }
             else if ( MONSTER_ATTACK == 0 )
             {
-                real_t speed = -0.2;
+                const real_t speed = -0.2;
                 real_t setpoint = PI / 16;
                 if ( entity->fskill[0] < (setpoint - 0.01) || limbAngleWithinRange(entity->fskill[0], speed, setpoint) )
                 {
@@ -422,7 +422,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
 
             if ( my->monsterSpecialState == BAT_REST && BAT_REST_STATE == 1 )
             {
-                real_t speed = 0.2;
+                const real_t speed = 0.2;
                 if ( limbAngleWithinRange(entity->fskill[0], speed, PI / 2) )
                 {
                     entity->fskill[0] = PI / 2;
@@ -435,7 +435,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
             }
             else if ( MONSTER_ATTACK == 0 )
             {
-                real_t speed = -0.2;
+                const real_t speed = -0.2;
                 if ( entity->fskill[0] < -0.01 || limbAngleWithinRange(entity->fskill[0], speed, 0.0) )
                 {
                     entity->fskill[0] = 0.0;
@@ -471,7 +471,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
 
                         if ( entity->skill[1] == 0 )
                         {
-                            real_t speed = limbs[BAT_SMALL][13][2];
+                            const real_t speed = limbs[BAT_SMALL][13][2];
                             if ( limbAngleWithinRange(entity->fskill[0], -speed, -((PI / 2) + PI / 4)) )
                             {
                                 entity->fskill[0] = -((PI / 2) + PI / 4);
@@ -485,14 +485,14 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
                         }
                         else
                         {
-                            real_t speed = limbs[BAT_SMALL][13][1];
+                            const real_t speed = limbs[BAT_SMALL][13][1];
                             entity->fskill[0] += speed;
                             entity->fskill[0] = std::min(entity->fskill[0], 0.0);
                         }
                     }
                     else
                     {
-                        real_t speed = limbs[BAT_SMALL][13][0];
+                        const real_t speed = limbs[BAT_SMALL][13][0];
                         entity->fskill[0] -= speed;
                         entity->fskill[0] = std::max(entity->fskill[0], -((PI / 2) + PI / 32));
                     }
@@ -544,7 +544,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
             if ( my->monsterSpecialState == BAT_REST )
             {
                 {
-                    real_t speed = -0.1;
+                    const real_t speed = -0.1;
                     real_t setpoint = -5 * PI / 8;
                     if ( limbAngleWithinRange(entity->fskill[1], speed, setpoint) )
                     {
@@ -560,7 +560,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
                     real_t setpoint = 0.0;
                     if ( entity->fskill[0] < 0.01 )
                     {
-                        real_t speed = 0.1;
+                        const real_t speed = 0.1;
                         if ( limbAngleWithinRange(entity->fskill[0], speed, setpoint) )
                         {
                             entity->fskill[0] = setpoint;
@@ -573,7 +573,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
                     }
                     else if ( entity->fskill[0] > 0.01 )
                     {
-                        real_t speed = -0.1;
+                        const real_t speed = -0.1;
                         if ( limbAngleWithinRange(entity->fskill[0], speed, setpoint) )
                         {
                             entity->fskill[0] = setpoint;
@@ -602,7 +602,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
 
                 if ( entity->skill[1] == 0 )
                 {
-                    real_t speed = limbs[BAT_SMALL][14][0];
+                    const real_t speed = limbs[BAT_SMALL][14][0];
                     if ( limbAngleWithinRange(entity->fskill[1], speed, 0.0) )
                     {
                         entity->fskill[1] = 0.0;
@@ -623,7 +623,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
                 }
                 else if ( entity->skill[1] == 1 )
                 {
-                    real_t speed = limbs[BAT_SMALL][14][0];
+                    const real_t speed = limbs[BAT_SMALL][14][0];
                     if ( limbAngleWithinRange(entity->fskill[1], speed, PI / 4) )
                     {
                         entity->fskill[1] = PI / 4;
@@ -637,8 +637,8 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
                 }
                 else if ( entity->skill[1] == 2 )
                 {
-                    real_t speed = limbs[BAT_SMALL][14][1];
-                    real_t setpoint = -PI / 2 - PI / 8;
+                    const real_t speed = limbs[BAT_SMALL][14][1];
+                    const real_t setpoint = -PI / 2 - PI / 8;
                     if ( limbAngleWithinRange(entity->fskill[1], -speed, setpoint) )
                     {
                         entity->fskill[1] = setpoint;
@@ -652,7 +652,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
                 }
                 else if ( entity->skill[1] == 3 )
                 {
-                    real_t speed = limbs[BAT_SMALL][14][2];
+                    const real_t speed = limbs[BAT_SMALL][14][2];
                     if ( limbAngleWithinRange(entity->fskill[1], speed, 0.0) )
                     {
                         entity->fskill[1] = 0.0;
@@ -682,13 +682,13 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
             {
                 if ( my->monsterSpecialState == BAT_REST && BAT_REST_STATE == 1 )
                 {
-                    real_t diff = std::max(0.002, (1.0 - BAT_REST_ROTATE) / 20.0);
+                    const real_t diff = std::max(0.002, (1.0 - BAT_REST_ROTATE) / 20.0);
                     BAT_REST_ROTATE += diff;
                     BAT_REST_ROTATE = std::min(1.0, BAT_REST_ROTATE);
                 }
                 else
                 {
-                    real_t diff = std::max(0.05, BAT_REST_ROTATE / 20.0);
+                    const real_t diff = std::max(0.05, BAT_REST_ROTATE / 20.0);
                     BAT_REST_ROTATE -= diff;
                     BAT_REST_ROTATE = std::max(0.0, BAT_REST_ROTATE);
                 }
@@ -733,11 +733,11 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
                     BAT_FLOAT_Y = 0.0;
                     BAT_FLOAT_Z = 0.0;
 
-                    int mapx = static_cast<int>(my->x) >> 4;
-                    int mapy = static_cast<int>(my->y) >> 4;
+                    const int mapx = static_cast<int>(my->x) >> 4;
+                    const int mapy = static_cast<int>(my->y) >> 4;
                     if ( mapx >= 0 && mapx < map.width && mapy >= 0 && mapy < map.height )
                     {
-                        int mapIndex = (mapy)*MAP_LAYERS + (mapx) * MAP_LAYERS * map.height;
+                        const int mapIndex = (mapy)*MAP_LAYERS + (mapx) * MAP_LAYERS * map.height;
                         if ( !map.tiles[(MAP_LAYERS - 1) + mapIndex] )
                         {
                             // no ceiling
@@ -748,7 +748,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
                             }
                             else
                             {
-                                real_t diff = std::max(0.05, (BAT_REST_FLY_Z - -19.0) / 25.0);
+                                const real_t diff = std::max(0.05, (BAT_REST_FLY_Z - -19.0) / 25.0);
                                 BAT_REST_FLY_Z -= diff;
                             }
                         }
@@ -761,7 +761,7 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
                             }
                             else
                             {
-                                real_t diff = std::max(0.05, (BAT_REST_FLY_Z - -3.0) / 25.0);
+                                const real_t diff = std::max(0.05, (BAT_REST_FLY_Z - -3.0) / 25.0);
                                 BAT_REST_FLY_Z -= diff;
                             }
                         }
@@ -785,14 +785,14 @@ void batAnimate(Entity* my, Stat* myStats, double dist)
                     }
                     else
                     {
-                        real_t diff = std::max(0.1, (-BAT_REST_FLY_Z) / 25.0);
+                        const real_t diff = std::max(0.1, (-BAT_REST_FLY_Z) / 25.0);
                         BAT_REST_FLY_Z += diff;
                     }
 
                     BAT_FLOAT_X = limbs[BAT_SMALL][10][0] * sin(body->fskill[1] * limbs[BAT_SMALL][11][0]) * cos(entity->yaw + PI / 2);
                     BAT_FLOAT_Y = limbs[BAT_SMALL][10][1] * sin(body->fskill[1] * limbs[BAT_SMALL][11][1]) * sin(entity->yaw + PI / 2);
                     BAT_FLOAT_Z = limbs[BAT_SMALL][10][2] * sin(body->fskill[1] * limbs[BAT_SMALL][11][2]);
-                    real_t floatAtkZ = BAT_FLOAT_ATK < 0 ? 2 * sin(BAT_FLOAT_ATK * PI / 8) : 0.5 * sin(BAT_FLOAT_ATK * PI / 8);
+                    const real_t floatAtkZ = BAT_FLOAT_ATK < 0 ? 2 * sin(BAT_FLOAT_ATK * PI / 8) : 0.5 * sin(BAT_FLOAT_ATK * PI / 8);
                     BAT_FLOAT_Z += floatAtkZ;
                 }
 

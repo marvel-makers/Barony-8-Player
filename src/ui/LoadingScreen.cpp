@@ -32,7 +32,7 @@ static void baseCreateLoadingScreen(real_t progress, const char* background_imag
     const SDL_Rect fullscreen{0, 0,
         Frame::virtualScreenX, Frame::virtualScreenY};
 
-    auto loading_frame = gui->addFrame("loading_frame");
+    const auto loading_frame = gui->addFrame("loading_frame");
     loading_frame->setSize(fullscreen);
     loading_frame->setActualSize(fullscreen);
     loading_frame->setBorder(0);
@@ -48,7 +48,7 @@ static void baseCreateLoadingScreen(real_t progress, const char* background_imag
         );
 
         // loading bar
-        auto loading_bar = loading_frame->addFrame("loading_bar");
+        const auto loading_bar = loading_frame->addFrame("loading_bar");
         loading_bar->setSize(SDL_Rect{(Frame::virtualScreenX - 1168) / 2, Frame::virtualScreenY - (720 - 474), 1168, 228});
         {
             // background
@@ -60,7 +60,7 @@ static void baseCreateLoadingScreen(real_t progress, const char* background_imag
             );
 
             // gas
-            auto gas = loading_bar->addImage(
+            const auto gas = loading_bar->addImage(
                 SDL_Rect{52, 114, 0, 36},
                 0xffffffff,
                 "images/ui/LoadingScreen/LoadingBar/Gas/000.png",
@@ -69,7 +69,7 @@ static void baseCreateLoadingScreen(real_t progress, const char* background_imag
             gas->tiled = true;
 
             // bubbles
-            auto bubbles = loading_bar->addImage(
+            const auto bubbles = loading_bar->addImage(
                 SDL_Rect{52, 102, 0, 60},
                 0xffffffff,
                 "images/ui/LoadingScreen/LoadingBar/Bubbles/000.png",
@@ -148,7 +148,7 @@ void createLevelLoadScreen(real_t progress) {
 
 void doLoadingScreen() {
     std::lock_guard<std::mutex> lock(loading_mutex);
-    auto loading_frame = gui->findFrame("loading_frame"); assert(loading_frame);
+    const auto loading_frame = gui->findFrame("loading_frame"); assert(loading_frame);
     if (!loading_frame)
     {
         return;
@@ -158,11 +158,11 @@ void doLoadingScreen() {
     (void)handleEvents();
     if (oldTicks != loadingticks) {
         // spinning widget
-        auto spinning_widget = loading_frame->findImage("spinning_widget");
+        const auto spinning_widget = loading_frame->findImage("spinning_widget");
         if (spinning_widget) {
             // build new image path
             const char path[] = "images/ui/LoadingScreen/boulder";
-            auto image_num = spinning_widget->path.substr(sizeof(path) - 1);
+            const auto image_num = spinning_widget->path.substr(sizeof(path) - 1);
             int i = static_cast<int>(strtol(image_num.c_str(), nullptr, 10));
             i = (i + 1) % 30;
 
@@ -171,17 +171,17 @@ void doLoadingScreen() {
         }
 
         // loading bar
-        auto loading_bar = loading_frame->findFrame("loading_bar");
+        const auto loading_bar = loading_frame->findFrame("loading_bar");
         if (loading_bar) {
             // gas
             if (loadingticks % 4 == 0) {
-                auto gas = loading_bar->findImage("gas");
+                const auto gas = loading_bar->findImage("gas");
                 if (gas) {
                     constexpr int num_frames = 6;
 
                     // build new image path
                     const char path[] = "images/ui/LoadingScreen/LoadingBar/Gas/";
-                    auto image_num = gas->path.substr(sizeof(path) - 1);
+                    const auto image_num = gas->path.substr(sizeof(path) - 1);
                     int i = static_cast<int>(strtol(image_num.c_str(), nullptr, 10));
                     i = (i + 1) % num_frames;
 
@@ -194,13 +194,13 @@ void doLoadingScreen() {
 
             // bubbles
             if (loadingticks % 4 == 2) {
-                auto bubbles = loading_bar->findImage("bubbles");
+                const auto bubbles = loading_bar->findImage("bubbles");
                 if (bubbles) {
                     constexpr int num_frames = 12;
 
                     // build new image path
                     const char path[] = "images/ui/LoadingScreen/LoadingBar/Bubbles/";
-                    auto image_num = bubbles->path.substr(sizeof(path) - 1);
+                    const auto image_num = bubbles->path.substr(sizeof(path) - 1);
                     int i = static_cast<int>(strtol(image_num.c_str(), nullptr, 10));
                     i = (i + 1) % num_frames;
 
@@ -231,7 +231,7 @@ void doLoadingScreen() {
 
 void updateLoadingScreen(real_t progress) {
     std::lock_guard<std::mutex> lock(loading_mutex);
-    auto loading_frame = gui->findFrame("loading_frame");
+    const auto loading_frame = gui->findFrame("loading_frame");
     if (!loading_frame)
     {
         return;
@@ -258,24 +258,24 @@ void updateLoadingScreen(real_t progress) {
 #endif
 
     // update loading bar
-    auto loading_bar = loading_frame->findFrame("loading_bar");
+    const auto loading_bar = loading_frame->findFrame("loading_bar");
     if (loading_bar) {
         const int size = (static_cast<int>(progress) * 1062) / 100;
 
         // gas
-        auto gas = loading_bar->findImage("gas");
+        const auto gas = loading_bar->findImage("gas");
         if (gas) {
             gas->pos.w = size;
         }
 
         // bubbles
-        auto bubbles = loading_bar->findImage("bubbles");
+        const auto bubbles = loading_bar->findImage("bubbles");
         if (bubbles) {
             bubbles->pos.w = size;
         }
 
         // gungnir
-        auto gungnir = loading_bar->findImage("gungnir");
+        const auto gungnir = loading_bar->findImage("gungnir");
         if (gungnir) {
             gungnir->pos.x = size - 16;
         }

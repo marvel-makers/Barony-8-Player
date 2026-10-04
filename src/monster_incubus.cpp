@@ -49,7 +49,7 @@ void initIncubus(Entity* my, Stat* myStats)
 
             if ( !strncmp(myStats->name, "inner demon", strlen("inner demon")) )
             {
-                Entity* parent = uidToEntity(my->parent);
+                const Entity* parent = uidToEntity(my->parent);
                 if ( !parent )
                 {
                     myStats->HP = 0;
@@ -69,7 +69,7 @@ void initIncubus(Entity* my, Stat* myStats)
                         myStats->STR = -999;
                         myStats->DEX = std::min(parentStats->DEX, 15);
                         // pretend the parent wasn't defending as this gets added in AC() call.
-                        bool wasDefending = parentStats->defending;
+                        const bool wasDefending = parentStats->defending;
                         parentStats->defending = false;
                         myStats->CON = AC(parentStats);
                         parentStats->defending = wasDefending;
@@ -106,7 +106,7 @@ void initIncubus(Entity* my, Stat* myStats)
                 setRandomMonsterStats(myStats, rng);
 
                 // generate 6 items max, less if there are any forced items from boss variants
-                int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+                const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
                 // boss variants
 
@@ -122,7 +122,7 @@ void initIncubus(Entity* my, Stat* myStats)
                 int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
                                                              // count any inventory items set to default in edtior
-                int defaultItems = countDefaultItems(myStats);
+                const int defaultItems = countDefaultItems(myStats);
 
                 my->setHardcoreStats(*myStats);
 
@@ -476,7 +476,7 @@ void actIncubusLimb(Entity* my)
 
 void incubusDie(Entity* my)
 {
-    Stat* myStats = my->getStats();
+    const Stat* myStats = my->getStats();
     if ( myStats && !strncmp(myStats->name, "inner demon", strlen("inner demon")) )
     {
         // die, no blood.
@@ -592,7 +592,7 @@ void incubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
 
         if ( !strncmp(myStats->name, "inner demon", strlen("inner demon")) )
         {
-            Entity* parent = uidToEntity(my->parent);
+            const Entity* parent = uidToEntity(my->parent);
             if ( !parent )
             {
                 myStats->HP = 0;
@@ -657,14 +657,14 @@ void incubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 // leftarm follows the right arm during special steal state/teleport attack
                 // will not work when shield is visible
                 // else animate normally.
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] )
                     {
-                        Entity* weaponarm = nullptr;
-                        node_t* weaponarmNode = list_Node(&my->children, LIMB_HUMANOID_RIGHTARM);
+                        const Entity* weaponarm = nullptr;
+                        const node_t* weaponarmNode = list_Node(&my->children, LIMB_HUMANOID_RIGHTARM);
                         if ( weaponarmNode )
                         {
                             weaponarm = static_cast<Entity*>(weaponarmNode->element);
@@ -691,9 +691,9 @@ void incubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 weaponarm = entity;
                 if ( my->monsterAttack > 0 )
                 {
-                    Entity* rightbody = nullptr;
+                    const Entity* rightbody = nullptr;
                     // set rightbody to left leg.
-                    node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
+                    const node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
                     if ( rightbodyNode )
                     {
                         rightbody = static_cast<Entity*>(rightbodyNode->element);
@@ -849,7 +849,7 @@ void incubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
                             my->monsterArmbended = 0;
                             my->monsterAttack = 0;
                             Entity* leftarm = nullptr;
-                            node_t* leftarmNode = list_Node(&my->children, LIMB_HUMANOID_LEFTARM);
+                            const node_t* leftarmNode = list_Node(&my->children, LIMB_HUMANOID_LEFTARM);
                             if ( leftarmNode )
                             {
                                 leftarm = static_cast<Entity*>(leftarmNode->element);
@@ -980,10 +980,10 @@ void incubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
             // right arm
             case LIMB_HUMANOID_RIGHTARM:
             {
-                node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
+                const node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
                 if ( weaponNode )
                 {
-                    auto weapon = static_cast<Entity*>(weaponNode->element);
+                    const auto weapon = static_cast<Entity*>(weaponNode->element);
                     if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState != MONSTER_STATE_ATTACK) )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -1013,10 +1013,10 @@ void incubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
             case LIMB_HUMANOID_LEFTARM:
             {
                 shieldarm = entity;
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] && (my->monsterState != MONSTER_STATE_ATTACK) )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -1382,10 +1382,10 @@ void incubusMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
+    const node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;
@@ -1455,7 +1455,7 @@ void Entity::incubusChooseWeapon(const Entity* target, double dist)
 
     if ( monsterSpecialTimer == 0 && (ticks % 10 == 0) && monsterAttack == 0 )
     {
-        Stat* targetStats = target->getStats();
+        const Stat* targetStats = target->getStats();
         if ( !targetStats )
         {
             return;
@@ -1566,7 +1566,7 @@ void Entity::incubusChooseWeapon(const Entity* target, double dist)
         }
     }
 
-    bool inMeleeRange = monsterInMeleeRange(target, dist);
+    const bool inMeleeRange = monsterInMeleeRange(target, dist);
 
     if ( inMeleeRange )
     {
@@ -1579,7 +1579,7 @@ void Entity::incubusChooseWeapon(const Entity* target, double dist)
                 return; //Resort to fists.
             }
 
-            bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, weaponNode, false, false);
+            const bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, weaponNode, false, false);
             if ( !swapped )
             {
                 //Don't return so that monsters will at least equip ranged weapons in melee range if they don't have anything else.
@@ -1611,7 +1611,7 @@ void Entity::incubusChooseWeapon(const Entity* target, double dist)
 
 void Entity::incubusTeleportToTarget(const Entity* target)
 {
-    Entity* spellTimer = createParticleTimer(this, 40, 593);
+    const Entity* spellTimer = createParticleTimer(this, 40, 593);
     spellTimer->particleTimerEndAction = PARTICLE_EFFECT_INCUBUS_TELEPORT_TARGET; // teleport behavior of timer.
     spellTimer->particleTimerEndSprite = 593; // sprite to use for end of timer function.
     spellTimer->particleTimerCountdownAction = PARTICLE_TIMER_ACTION_SHOOT_PARTICLES;
@@ -1629,7 +1629,7 @@ void Entity::incubusTeleportToTarget(const Entity* target)
 
 void Entity::incubusTeleportRandom()
 {
-    Entity* spellTimer = createParticleTimer(this, 80, 593);
+    const Entity* spellTimer = createParticleTimer(this, 80, 593);
     spellTimer->particleTimerEndAction = PARTICLE_EFFECT_INCUBUS_TELEPORT_STEAL; // teleport behavior of timer.
     spellTimer->particleTimerEndSprite = 593; // sprite to use for end of timer function.
     spellTimer->particleTimerCountdownAction = PARTICLE_TIMER_ACTION_SHOOT_PARTICLES;

@@ -124,7 +124,7 @@ static void updateModFolderNames()
     modFolderNames = directoryContents(path.c_str(), true, false);
     if ( !modFolderNames.empty() )
     {
-        auto it = std::find(modFolderNames.begin(), modFolderNames.end(), "..");
+        const auto it = std::find(modFolderNames.begin(), modFolderNames.end(), "..");
         if ( it != modFolderNames.end() )
         {
             modFolderNames.erase(it);
@@ -139,7 +139,7 @@ void writeLevelsTxt(std::string modFolder)
     path.append(PHYSFS_getDirSeparator()).append("mods/").append(modFolder);
     if ( access(path.c_str(), F_OK) == 0 )
     {
-        std::string writeFile = modFolder + "/maps/levels.txt";
+        const std::string writeFile = modFolder + "/maps/levels.txt";
         PHYSFS_File *physfp = PHYSFS_openWrite(writeFile.c_str());
         if ( physfp != nullptr)
         {
@@ -676,7 +676,7 @@ void buttonSetSaveDirectoryFolder(button_t* my)
         
         if ( PHYSFS_mkdir(foldername) )
         {
-            std::string dir = foldername;
+            const std::string dir = foldername;
             std::string folder = "/books";
             PHYSFS_mkdir((dir + folder).c_str());
             folder = "/editor";
@@ -850,7 +850,7 @@ void buttonOpenConfirm(button_t* my)
     {
       strcat(message, " ");
   }*/
-    std::string fullMapName = physfsFormatMapName(filename);
+    const std::string fullMapName = physfsFormatMapName(filename);
     printlog("opening map file '%s'...\n", fullMapName.c_str());
     if (loadMap(fullMapName.c_str(), &map, map.entities, map.creatures) == -1)
     {
@@ -1056,7 +1056,7 @@ void buttonCycleSprites(button_t* my)
     Entity* entity = nullptr;
     Entity* lastEntity = nullptr;
     bool entityWasSelected = false;
-    for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+    for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
     {
         entity = static_cast<Entity*>(node->element);
         pos.x = entity->x * (TEXTURESIZE / 16) - camx;
@@ -1621,7 +1621,7 @@ void buttonEditorToolsHelp(button_t* my)
 {
     node_t* nextnode;
     button_t* button;
-    for ( node_t* node = button_l.first; node != nullptr; node = nextnode )
+    for (const node_t* node = button_l.first; node != nullptr; node = nextnode )
     {
         nextnode = node->next;
         button = static_cast<button_t*>(node->element);
@@ -1739,7 +1739,7 @@ void buttonOpenNextMap(button_t* my)
     updateMapNames();
 
     std::string searchStr = filename;
-    auto find = searchStr.find(".lmp");
+    const auto find = searchStr.find(".lmp");
     if ( find == std::string::npos )
     {
         searchStr += ".lmp";
@@ -1755,7 +1755,7 @@ void buttonOpenNextMap(button_t* my)
                 if ( it->size() > 0 && it->front() != '.' )
                 {
                     std::string f = *it;
-                    auto find = f.find(".lmp");
+                    const auto find = f.find(".lmp");
                     if ( find != std::string::npos )
                     {
                         f.erase(find, strlen(".lmp"));
@@ -1783,7 +1783,7 @@ void buttonOpenPrevMap(button_t* my)
     updateMapNames();
 
     std::string searchStr = filename;
-    auto find = searchStr.find(".lmp");
+    const auto find = searchStr.find(".lmp");
     if ( find == std::string::npos )
     {
         searchStr += ".lmp";
@@ -1799,7 +1799,7 @@ void buttonOpenPrevMap(button_t* my)
                 if ( it->size() > 0 && it->front() != '.' )
                 {
                     std::string f = *it;
-                    auto find = f.find(".lmp");
+                    const auto find = f.find(".lmp");
                     if ( find != std::string::npos )
                     {
                         f.erase(find, strlen(".lmp"));
@@ -1827,7 +1827,7 @@ void buttonSpriteProperties(button_t* my)
     int c = 0;
     Stat* tmpSpriteStats = nullptr;
     int spriteType = 0;
-    int spacing = 20;
+    const int spacing = 20;
     char tmpStr[32] = "";
     int itemIndex = 0;
 
@@ -2152,9 +2152,9 @@ void buttonSpriteProperties(button_t* my)
                 break;
             case 16:
             {
-                Uint32 r = static_cast<Uint32>(selectedEntity[0]->textSourceColorRGB >> 16) & 0xFF;
-                Uint32 g = static_cast<Uint32>(selectedEntity[0]->textSourceColorRGB >> 8) & 0xFF;
-                Uint32 b = static_cast<Uint32>(selectedEntity[0]->textSourceColorRGB >> 0) & 0xFF;
+                const Uint32 r = static_cast<Uint32>(selectedEntity[0]->textSourceColorRGB >> 16) & 0xFF;
+                const Uint32 g = static_cast<Uint32>(selectedEntity[0]->textSourceColorRGB >> 8) & 0xFF;
+                const Uint32 b = static_cast<Uint32>(selectedEntity[0]->textSourceColorRGB >> 0) & 0xFF;
                 snprintf(spriteProperties[0], 4, "%d", r);
                 snprintf(spriteProperties[1], 4, "%d", g);
                 snprintf(spriteProperties[2], 4, "%d", b);
@@ -2582,7 +2582,7 @@ void buttonSpriteProperties(button_t* my)
                     butMonsterX->focused = 1;
 
                     int pad_y2 = suby1 + 28 + 2 * spacing;
-                    int pad_x3 = 40;
+                    const int pad_x3 = 40;
                     int pad_x4 = subx2 - 112;
                     itemIndex = 0;
                     if ( tmpSpriteStats->EDITOR_ITEMS[itemIndex * ITEM_SLOT_NUMPROPERTIES] == 0 )
@@ -3076,7 +3076,7 @@ void buttonSpritePropertiesConfirm(button_t* my)
     button_t* button = nullptr;
     if ( selectedEntity[0] != nullptr)
     {
-        int spriteType = checkSpriteType(selectedEntity[0]->sprite);
+        const int spriteType = checkSpriteType(selectedEntity[0]->sprite);
         switch ( spriteType )
         {
             case 1: //monsters
@@ -3471,9 +3471,9 @@ void buttonSpritePropertiesConfirm(button_t* my)
                 break;
             case 16: // text source
             {
-                Uint32 r = static_cast<Uint32>(atoi(spriteProperties[0]));
-                Uint32 g = static_cast<Uint32>(atoi(spriteProperties[1]));
-                Uint32 b = static_cast<Uint32>(atoi(spriteProperties[2]));
+                const Uint32 r = static_cast<Uint32>(atoi(spriteProperties[0]));
+                const Uint32 g = static_cast<Uint32>(atoi(spriteProperties[1]));
+                const Uint32 b = static_cast<Uint32>(atoi(spriteProperties[2]));
                 selectedEntity[0]->textSourceColorRGB = 0;
                 selectedEntity[0]->textSourceColorRGB |= (r << 16);
                 selectedEntity[0]->textSourceColorRGB |= (g << 8);
@@ -3548,7 +3548,7 @@ void buttonSpritePropertiesConfirm(button_t* my)
                 selectedEntity[0]->portalCustomZOffset = atoi(spriteProperties[2]);
                 selectedEntity[0]->portalCustomLevelsToJump = atoi(spriteProperties[3]);
                 selectedEntity[0]->portalCustomRequiresPower = atoi(spriteProperties[5]);
-                int isSecret = atoi(spriteProperties[6]);
+                const int isSecret = atoi(spriteProperties[6]);
                 selectedEntity[0]->portalNotSecret = isSecret ? 0 : 1;
 
                 int totalChars = 0;
@@ -3712,7 +3712,7 @@ void buttonSpritePropertiesConfirm(button_t* my)
 
 void buttonCloseSpriteSubwindow(button_t* my)
 {
-    Stat* tmpSpriteStats = nullptr;
+    const Stat* tmpSpriteStats = nullptr;
     // close window
     if ( my == butMonsterItemCancel || my == butMonsterItemX )
     {
@@ -3754,7 +3754,7 @@ void buttonCloseSpriteSubwindow(button_t* my)
 
 void buttonMonsterItems(button_t* my)
 {
-    int spacing = 20;
+    const int spacing = 20;
     int pad_y2 = suby1 + 28 + 2 * spacing;
     int pad_x3 = 40;
     int pad_x4 = subx2 - 112;
@@ -3774,7 +3774,7 @@ void buttonMonsterItems(button_t* my)
     suby2 = yres / 2 + 158;
     strcpy(subtext, "Monster Item Properties:");
 
-    Stat* tmpSpriteStats = selectedEntity[0]->getStats();
+    const Stat* tmpSpriteStats = selectedEntity[0]->getStats();
 
     // stores any modified monster stats, to be restored when window is closed.
 

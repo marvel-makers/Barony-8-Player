@@ -44,9 +44,9 @@ void actHeadstone(Entity* my)
         {
             int goldbags = 0;
             bool artifact = false;
-            for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+            for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( entity->sprite == 130 )   // gold bag
                 {
                     ++goldbags;
@@ -140,7 +140,7 @@ void actHeadstone(Entity* my)
                     if ( HEADSTONE_GHOUL && !HEADSTONE_FIRED )
                     {
                         shouldspawn = true;
-                        Uint32 color = makeColorRGB(255, 128, 0);
+                        const Uint32 color = makeColorRGB(255, 128, 0);
                         messagePlayerColor(i, MESSAGE_INTERACTION, color, Language::get(502));
                     }
                 }

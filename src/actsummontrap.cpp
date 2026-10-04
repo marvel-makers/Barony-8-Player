@@ -48,13 +48,13 @@ void actSummonTrap(Entity* my)
             auto entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, SUMMONTRAP_SPAWN_IN_PLAYER_PROXIMITY);
             for (auto it = entLists.begin(); it != entLists.end() && !foundTriggerEntity; ++it )
             {
-                list_t* currentList = *it;
-                for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+                const list_t* currentList = *it;
+                for (const node_t* node = currentList->first; node != nullptr; node = node->next )
                 {
-                    auto entity = static_cast<Entity*>(node->element);
+                    const auto entity = static_cast<Entity*>(node->element);
                     if ( entity && (entity->behavior == &actPlayer || (entity->behavior == &actMonster && entity->monsterAllyGetPlayerLeader())) )
                     {
-                        real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
+                        const real_t tangent = atan2(entity->y - my->y, entity->x - my->x);
                         lineTraceTarget(my, my->x, my->y, tangent, 32.0, 0, false, entity);
                         if ( hit.entity == entity )
                         {
@@ -84,10 +84,10 @@ void actSummonTrap(Entity* my)
             {
                 auto& rng = my->entity_rng ? *my->entity_rng : local_rng;
 
-                bool useCustomMonsters = monsterCurveCustomManager.curveExistsForCurrentMapName(map.name);
+                const bool useCustomMonsters = monsterCurveCustomManager.curveExistsForCurrentMapName(map.name);
                 bool fixedCustomMonster = true;
                 Monster customMonsterType = NOTHING;
-                bool pickedRandomMonsters = (SUMMONTRAP_MONSTER == -1);
+                const bool pickedRandomMonsters = (SUMMONTRAP_MONSTER == -1);
 
                 if ( SUMMONTRAP_MONSTER > 0 && SUMMONTRAP_MONSTER < NUMMONSTERS )
                 {
@@ -202,9 +202,9 @@ void actSummonTrap(Entity* my)
                     }
                 }
 
-                int x = my->x / 16;
-                int y = my->y / 16;
-                int mapIndex = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
+                const int x = my->x / 16;
+                const int y = my->y / 16;
+                const int mapIndex = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
                 bool splash = false;
                 if ( x > 0 && x < map.width && y > 0 && y < map.height )
                 {

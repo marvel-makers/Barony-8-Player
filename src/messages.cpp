@@ -22,7 +22,7 @@ void messageDeconstructor(void* data)
 {
     if (data != nullptr)
     {
-        auto message = static_cast<Message*>(data);
+        const auto message = static_cast<Message*>(data);
         stringDeconstructor(message->text);
         free(data);
     }
@@ -46,7 +46,7 @@ void Player::MessageZone_t::addMessage(Uint32 color, const char* content)
 
     //First check number of lines all messages currently are contributing.
     int line_count = 0;
-    for (Message *m : notification_messages)
+    for (const Message *m : notification_messages)
     {
         line_count += m->text->lines;
     }
@@ -56,12 +56,12 @@ void Player::MessageZone_t::addMessage(Uint32 color, const char* content)
     while (!notification_messages.empty() && total_lines > getMaxTotalLines()) {
         Message *msg = notification_messages.back();
         if (msg->text->lines > 1 && total_lines - msg->text->lines < getMaxTotalLines()) {
-            int lines_to_delete = total_lines - getMaxTotalLines();
+            const int lines_to_delete = total_lines - getMaxTotalLines();
             int lines = 1;
             for (int c = 0; msg->text->data[c] != '\0'; ++c) {
                 if (msg->text->data[c] == '\n') {
                     if (lines == lines_to_delete) {
-                        size_t len = strlen(msg->text->data);
+                        const size_t len = strlen(msg->text->data);
                         memmove(msg->text->data, msg->text->data + c, len - c);
                         msg->text->data[c] = '\0';
                         msg->text->lines -= lines_to_delete;
@@ -103,7 +103,7 @@ void Player::MessageZone_t::addMessage(Uint32 color, const char* content)
 
         int additionalCharacters = 0;
         strncpy(str, messageSanitizePercentSign(content, &additionalCharacters).c_str(), sizeof(str) - 1);
-        int i = content_len + additionalCharacters;
+        const int i = content_len + additionalCharacters;
 
         new_message->text->data = static_cast<char*>(malloc(sizeof(char) * (i + 1)));
         if (new_message->text->data == nullptr)
@@ -122,7 +122,7 @@ void Player::MessageZone_t::addMessage(Uint32 color, const char* content)
     notification_messages.push_front(new_message);
 
     //Update the position of the other messages;
-    Message *prev = nullptr;
+    const Message *prev = nullptr;
     for (Message *m : notification_messages)
     {
         prev = m;

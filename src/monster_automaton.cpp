@@ -108,7 +108,7 @@ void initAutomaton(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // boss variants
             //if ( rng.rand() % 50 || my->flags[USERFLAG2] )
@@ -161,7 +161,7 @@ void initAutomaton(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
                                                          // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -812,9 +812,9 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 {
                     if ( my->monsterAttack == MONSTER_POSE_SPECIAL_WINDUP1 )
                     {
-                        Entity* rightbody = nullptr;
+                        const Entity* rightbody = nullptr;
                         // set rightbody to left leg.
-                        node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
+                        const node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
                         if ( rightbodyNode )
                         {
                             rightbody = static_cast<Entity*>(rightbodyNode->element);
@@ -1061,10 +1061,10 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
             // right arm
             case LIMB_HUMANOID_RIGHTARM:
             {
-                node_t* weaponNode = list_Node(&my->children, 7);
+                const node_t* weaponNode = list_Node(&my->children, 7);
                 if ( weaponNode )
                 {
-                    auto weapon = static_cast<Entity*>(weaponNode->element);
+                    const auto weapon = static_cast<Entity*>(weaponNode->element);
                     if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterAttack == 0) )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -1090,10 +1090,10 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
             case LIMB_HUMANOID_LEFTARM:
             {
                 shieldarm = entity;
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] )
                     {
                         // if shield invisible, relax arm.
@@ -1442,10 +1442,10 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
+    const node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;
@@ -1467,7 +1467,7 @@ void automatonMoveBodyparts(Entity* my, Stat* myStats, double dist)
 
 bool Entity::automatonCanWieldItem(const Item& item) const
 {
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( !myStats )
     {
         return false;
@@ -1484,7 +1484,7 @@ bool Entity::automatonCanWieldItem(const Item& item) const
             return true;
         case ARMOR:
             {
-                int equipType = checkEquipType(&item);
+                const int equipType = checkEquipType(&item);
                 if ( equipType == TYPE_HAT )
                 {
                     return false; //No can wear hats, beep boop
@@ -1529,9 +1529,9 @@ void Entity::automatonRecycleItem()
         return;
     }
 
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
     node_t* nextnode = nullptr;
-    int numItemsHeld = list_Size(&myStats->inventory);
+    const int numItemsHeld = list_Size(&myStats->inventory);
     //messagePlayer(0, "Numitems: %d", numItemsHeld);
     if ( numItemsHeld < 2 )
     {
@@ -1561,7 +1561,7 @@ void Entity::automatonRecycleItem()
             break;
         }
         nextnode = node->next;
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item != nullptr )
         {
             if ( (itemCategory(item) == WEAPON || itemCategory(item) == THROWN || itemCategory(item) == ARMOR)
@@ -1590,7 +1590,7 @@ void Entity::automatonRecycleItem()
     }
 
     this->monsterSpecialState = AUTOMATON_RECYCLE_ANIMATION_WAITING; // reset my special state after the previous lines.
-    int pickItem1 = local_rng.rand() % matches; // pick random valid item index in inventory
+    const int pickItem1 = local_rng.rand() % matches; // pick random valid item index in inventory
     int pickItem2 = local_rng.rand() % matches;
     while ( pickItem2 == pickItem1 )
     {
@@ -1628,7 +1628,7 @@ void Entity::automatonRecycleItem()
     {
         maxGoldValue = ((item1->getGoldValue() + item2->getGoldValue()) * 1) / 2;
     }
-    int minGoldValue = ((item1->getGoldValue() + item2->getGoldValue()) * 1) / 3;
+    const int minGoldValue = ((item1->getGoldValue() + item2->getGoldValue()) * 1) / 3;
     ItemType type;
     // generate a weapon/armor piece and add it into the inventory.
     switch ( local_rng.rand() % 10 )
@@ -1670,7 +1670,7 @@ void Entity::automatonRecycleItem()
     if ( type != GEM_ROCK ) // found an item in category
     {
         Item* item = nullptr;
-        Item* degraded = nullptr;
+        const Item* degraded = nullptr;
         // recycle item1 or item2, reduce durability.
         if ( local_rng.rand() % 2 == 0 )
         {
@@ -1693,7 +1693,7 @@ void Entity::automatonRecycleItem()
             {
                 if ( players[c] && players[c]->entity )
                 {
-                    Uint32 playerUid = players[c]->entity->getUID();
+                    const Uint32 playerUid = players[c]->entity->getUID();
                     if ( playerUid == myStats->leader_uid
                         && (item1->ownerUid == playerUid || item2->ownerUid == playerUid) )
                     {

@@ -133,8 +133,8 @@ void Entity::actMagicTrapCeiling()
 
     ++spellTrapCounter;
 
-    node_t* node = children.first;
-    auto ceilingModel = static_cast<Entity*>(node->element);
+    const node_t* node = children.first;
+    const auto ceilingModel = static_cast<Entity*>(node->element);
     int triggerSprite = 0;
     switch ( spellTrapType )
     {
@@ -177,7 +177,7 @@ void Entity::actMagicTrapCeiling()
             entity->x = x;
             entity->y = y;
             entity->z = ceilingModel->z - 2;
-            double missile_speed = 4.0;
+            const double missile_speed = 4.0;
             entity->vel_x = 0.0;
             entity->vel_y = 0.0;
             entity->vel_z = 0.5 * (missile_speed);
@@ -241,8 +241,8 @@ void actMagicTrap(Entity* my)
 
     // eliminate traps that have been destroyed.
     // check wall inside me.
-    int checkx = static_cast<int>(my->x) >> 4;
-    int checky = static_cast<int>(my->y) >> 4;
+    const int checkx = static_cast<int>(my->x) >> 4;
+    const int checky = static_cast<int>(my->y) >> 4;
     if ( !map.tiles[OBSTACLELAYER + checky * MAP_LAYERS + checkx * MAP_LAYERS * map.height] )   // wall
     {
         my->removeLightField();
@@ -293,8 +293,8 @@ void actMagicTrap(Entity* my)
                 MAGICTRAP_DIRECTION = 0;
                 break;
         }
-        int u = std::min<int>(std::max<int>(0.0, (my->x + x) / 16), map.width - 1);
-        int v = std::min<int>(std::max<int>(0.0, (my->y + y) / 16), map.height - 1);
+        const int u = std::min<int>(std::max<int>(0.0, (my->x + x) / 16), map.width - 1);
+        const int v = std::min<int>(std::max<int>(0.0, (my->y + y) / 16), map.height - 1);
         if ( !map.tiles[OBSTACLELAYER + v * MAP_LAYERS + u * MAP_LAYERS * map.height] )
         {
             Entity* entity = castSpell(my->getUID(), getSpellFromID(MAGICTRAP_SPELL), false, true);
@@ -302,7 +302,7 @@ void actMagicTrap(Entity* my)
             entity->y = my->y + y;
             entity->z = my->z;
             entity->yaw = oldir * (PI / 2.f);
-            double missile_speed = 4.0;
+            const double missile_speed = 4.0;
             entity->vel_x = cos(entity->yaw) * (missile_speed);
             entity->vel_y = sin(entity->yaw) * (missile_speed);
         }
@@ -383,13 +383,13 @@ void Entity::actTeleportShrine()
     // using
     if ( this->isInteractWithMonster() )
     {
-        Entity* monsterInteracting = uidToEntity(this->interactedByMonster);
+        const Entity* monsterInteracting = uidToEntity(this->interactedByMonster);
         if ( monsterInteracting )
         {
             if ( shrineActivateDelay == 0 )
             {
                 std::vector<std::pair<Entity*, std::pair<int, int>>> allShrines;
-                for ( node_t* node = map.entities->first; node; node = node->next )
+                for (const node_t* node = map.entities->first; node; node = node->next )
                 {
                     auto entity = static_cast<Entity*>(node->element);
                     if ( !entity ) { continue; }
@@ -399,7 +399,7 @@ void Entity::actTeleportShrine()
                     }
                 }
 
-                Entity* selectedShrine = nullptr;
+                const Entity* selectedShrine = nullptr;
                 for ( size_t s = 0; s < allShrines.size(); ++s )
                 {
                     if ( allShrines[s].first == this )
@@ -422,12 +422,12 @@ void Entity::actTeleportShrine()
                     playSoundEntity(this, 252, 128);
                     //messagePlayer(i, MESSAGE_INTERACTION, Language::get(4301));
 
-                    if ( auto leader = monsterInteracting->monsterAllyGetPlayerLeader() )
+                    if (const auto leader = monsterInteracting->monsterAllyGetPlayerLeader() )
                     {
                         Compendium_t::Events_t::eventUpdateWorld(leader->skill[2], Compendium_t::CPDM_OBELISK_FOLLOWER_USES, "obelisk", 1);
                     }
 
-                    Entity* spellTimer = createParticleTimer(this, 200, 625);
+                    const Entity* spellTimer = createParticleTimer(this, 200, 625);
                     spellTimer->particleTimerPreDelay = 0; // wait x ticks before animation.
                     spellTimer->particleTimerEndAction = PARTICLE_EFFECT_SHRINE_TELEPORT; // teleport behavior of timer.
                     spellTimer->particleTimerEndSprite = 625; // sprite to use for end of timer function.
@@ -462,7 +462,7 @@ void Entity::actTeleportShrine()
                 }
 
                 std::vector<std::pair<Entity*, std::pair<int, int>>> allShrines;
-                for ( node_t* node = map.entities->first; node; node = node->next )
+                for (const node_t* node = map.entities->first; node; node = node->next )
                 {
                     auto entity = static_cast<Entity*>(node->element);
                     if ( !entity ) { continue; }
@@ -472,7 +472,7 @@ void Entity::actTeleportShrine()
                     }
                 }
 
-                Entity* selectedShrine = nullptr;
+                const Entity* selectedShrine = nullptr;
                 for ( size_t s = 0; s < allShrines.size(); ++s )
                 {
                     if ( allShrines[s].first == this )
@@ -497,7 +497,7 @@ void Entity::actTeleportShrine()
 
                     Compendium_t::Events_t::eventUpdateWorld(i, Compendium_t::CPDM_OBELISK_USES, "obelisk", 1);
 
-                    Entity* spellTimer = createParticleTimer(this, 200, 625);
+                    const Entity* spellTimer = createParticleTimer(this, 200, 625);
                     spellTimer->particleTimerPreDelay = 0; // wait x ticks before animation.
                     spellTimer->particleTimerEndAction = PARTICLE_EFFECT_SHRINE_TELEPORT; // teleport behavior of timer.
                     spellTimer->particleTimerEndSprite = 625; // sprite to use for end of timer function.
@@ -563,10 +563,10 @@ void daedalusShrineInteract(Entity* my, Entity* touched)
             SHRINE_LAST_TOUCHED = touched ? touched->getUID() : 0;
         }
 
-        Entity* exitEntity = nullptr;
-        for ( node_t* node = map.entities->first; node; node = node->next )
+        const Entity* exitEntity = nullptr;
+        for (const node_t* node = map.entities->first; node; node = node->next )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             if ( !entity ) { continue; }
             if ( (entity->behavior == &actLadder && strcmp(map.name, "Hell")) || (entity->behavior == &actPortal && !strcmp(map.name, "Hell")) )
             {
@@ -622,7 +622,7 @@ void daedalusShrineInteract(Entity* my, Entity* touched)
             {
                 if ( touched && touched->getStats() )
                 {
-                    Stat* myStats = touched->getStats();
+                    const Stat* myStats = touched->getStats();
                     if ( myStats->getEffectActive(EFF_SLOW) )
                     {
                         touched->setEffect(EFF_SLOW, false, 0, true);
@@ -717,8 +717,8 @@ void Entity::actDaedalusShrine()
     {
         // point to exit
         int dir = 0;
-        real_t startDir = fskill[0];
-        real_t targetDir = fskill[1];
+        const real_t startDir = fskill[0];
+        const real_t targetDir = fskill[1];
 
         int diff = static_cast<int>((startDir - targetDir) * 180.0 / PI) % 360;
         if ( diff < 0 )
@@ -759,7 +759,7 @@ void Entity::actDaedalusShrine()
                 {
                     if ( touched && touched->getStats() )
                     {
-                        Stat* myStats = touched->getStats();
+                        const Stat* myStats = touched->getStats();
                         if ( myStats->getEffectActive(EFF_SLOW) )
                         {
                             touched->setEffect(EFF_SLOW, false, 0, true);
@@ -1107,7 +1107,7 @@ void Entity::actAssistShrine()
             {
                 if ( shrineInteracting != 0 )
                 {
-                    if ( Entity* interacting = uidToEntity(shrineInteracting) )
+                    if (const Entity* interacting = uidToEntity(shrineInteracting) )
                     {
                         if ( interacting != players[i]->entity )
                         {

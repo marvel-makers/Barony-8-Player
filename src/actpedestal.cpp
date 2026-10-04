@@ -53,8 +53,8 @@ void actPedestalOrb(Entity* my)
 
 void Entity::actPedestalBase()
 {
-    node_t* node = children.first;
-    auto orbEntity = static_cast<Entity*>(node->element);
+    const node_t* node = children.first;
+    const auto orbEntity = static_cast<Entity*>(node->element);
     if ( pedestalInit == 0 )
     {
         pedestalPowerStatus = -1;
@@ -110,12 +110,12 @@ void Entity::actPedestalBase()
             // wait for external source to trigger the initialisation.
             if ( multiplayer != CLIENT )
             {
-                for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+                for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
                 {
-                    auto entity = static_cast<Entity*>(node->element);
+                    const auto entity = static_cast<Entity*>(node->element);
                     if ( entity->behavior == &actMonster )
                     {
-                        Stat* stats = entity->getStats();
+                        const Stat* stats = entity->getStats();
                         if ( stats )
                         {
                             if ( stats->type == LICH )
@@ -148,10 +148,10 @@ void Entity::actPedestalBase()
                 {
                     continue;
                 }
-                auto& player = players[c];
+                const auto& player = players[c];
                 if ( player && player->entity )
                 {
-                    real_t dist = entityDist(player->entity, this);
+                    const real_t dist = entityDist(player->entity, this);
                     if ( dist < 512 && ticks % 5 == 0 )
                     {
                         cameravars[c].shakex += .02;
@@ -264,10 +264,10 @@ void Entity::actPedestalBase()
     {
         // see if any entity is currently inside, otherwise set PASSABLE to false
         bool somebodyInside = false;
-        node_t* node2 = nullptr;
+        const node_t* node2 = nullptr;
         for ( node2 = map.entities->first; node2 != nullptr; node2 = node2->next )
         {
-            auto entity = static_cast<Entity*>(node2->element);
+            const auto entity = static_cast<Entity*>(node2->element);
             if ( entity == this || (entity->flags[PASSABLE] && entity->behavior != &actDeathGhost)
                 || entity->behavior == &actDoorFrame || entity == orbEntity )
             {
@@ -357,11 +357,11 @@ void Entity::actPedestalBase()
 
 void Entity::actPedestalOrb()
 {
-    real_t upper_z = orbStartZ - 0.4;
-    real_t lower_z = orbStartZ + 0.4;
+    const real_t upper_z = orbStartZ - 0.4;
+    const real_t lower_z = orbStartZ + 0.4;
     int i = 0;
 
-    real_t acceleration = 0.95;
+    const real_t acceleration = 0.95;
 
     Entity* parent = uidToEntity(this->parent);
     if ( !parent )

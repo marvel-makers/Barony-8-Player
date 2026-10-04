@@ -55,7 +55,7 @@ void initSentryBot(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -89,7 +89,7 @@ void initSentryBot(Entity* my, Stat* myStats)
         }
     }
 
-    int race = my->getMonsterTypeFromSprite();
+    const int race = my->getMonsterTypeFromSprite();
 
     // tripod
     Entity* entity = newEntity(873, 1, map.entities, nullptr); //Limb entity.
@@ -299,7 +299,7 @@ void initGyroBot(Entity* my, Stat* myStats)
             myStats->EFFECTS_TIMERS[EFF_LEVITATING] = 0;
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -395,7 +395,7 @@ void sentryBotDie(Entity* my)
     if ( my->monsterSpecialState == DUMMYBOT_RETURN_FORM )
     {
         // don't make noises etc.
-        Stat* myStats = my->getStats();
+        const Stat* myStats = my->getStats();
         if ( myStats && !strncmp(myStats->obituary, Language::get(3631), strlen(Language::get(3631))) )
         {
             // returning to land, don't explode into gibs.
@@ -510,7 +510,7 @@ void sentryBotAnimate(Entity* my, Stat* myStats, double dist)
         {
             if ( limbAnimateToLimit(my, ANIMATE_PITCH, 0.01, PI / 8, false, 0.0) )
             {
-                int appearance = monsterTinkeringConvertHPToAppearance(myStats);
+                const int appearance = monsterTinkeringConvertHPToAppearance(myStats);
                 ItemType type = TOOL_SENTRYBOT;
                 if ( myStats->type == SPELLBOT )
                 {
@@ -530,7 +530,7 @@ void sentryBotAnimate(Entity* my, Stat* myStats, double dist)
         }
     }
 
-    int race = my->getMonsterTypeFromSprite();
+    const int race = my->getMonsterTypeFromSprite();
 
     my->focalx = limbs[race][0][0];
     my->focaly = limbs[race][0][1];
@@ -546,10 +546,10 @@ void sentryBotAnimate(Entity* my, Stat* myStats, double dist)
         playSoundEntityLocal(my, 259, 8);
     }
 
-    Entity* tripod = nullptr;
-    Entity* gearBodyLeft = nullptr;
-    Entity* gearHeadLeft = nullptr;
-    Entity* weaponLoader = nullptr;
+    const Entity* tripod = nullptr;
+    const Entity* gearBodyLeft = nullptr;
+    const Entity* gearHeadLeft = nullptr;
+    const Entity* weaponLoader = nullptr;
     //Move bodyparts
     for (bodypart = 0, node = my->children.first; node != nullptr; node = node->next, ++bodypart)
     {
@@ -955,7 +955,7 @@ void sentryBotAnimate(Entity* my, Stat* myStats, double dist)
 
 bool gyroBotFoundNewEntity(Entity& ent)
 {
-    auto find = gyroBotDetectedUids.find(ent.getUID());
+    const auto find = gyroBotDetectedUids.find(ent.getUID());
     if ( find == gyroBotDetectedUids.end() )
     {
         gyroBotDetectedUids.insert(std::make_pair(ent.getUID(), ticks));
@@ -1015,10 +1015,10 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
             // drop any bots we collected from the previous level.
             node_t* invNodeNext = nullptr;
             bool dropped = false;
-            for ( node_t* invNode = myStats->inventory.first; invNode; invNode = invNodeNext )
+            for (const node_t* invNode = myStats->inventory.first; invNode; invNode = invNodeNext )
             {
                 invNodeNext = invNode->next;
-                auto item = static_cast<Item*>(invNode->element);
+                const auto item = static_cast<Item*>(invNode->element);
                 if ( item && (item->type == TOOL_DUMMYBOT || item->type == TOOL_SENTRYBOT || item->type == TOOL_SPELLBOT) )
                 {
                     for ( int c = item->count; c > 0; c-- )
@@ -1034,26 +1034,26 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
             }
             if ( dropped )
             {
-                int leader = my->monsterAllyIndex;
+                const int leader = my->monsterAllyIndex;
                 if ( leader >= 0 )
                 {
-                    Uint32 color = makeColorRGB(0, 255, 0);
+                    const Uint32 color = makeColorRGB(0, 255, 0);
                     messagePlayerColor(leader, MESSAGE_HINT, color, Language::get(3651));
                 }
             }
         }
     }
 
-    int detectDuration = 5 * TICKS_PER_SECOND;
+    const int detectDuration = 5 * TICKS_PER_SECOND;
     if ( my->ticks % (detectDuration) == 0 && my->monsterAllyIndex >= 0 && players[my->monsterAllyIndex]->isLocalPlayer() )
     {
-        Entity* playerLeader = my->monsterAllyGetPlayerLeader();
+        const Entity* playerLeader = my->monsterAllyGetPlayerLeader();
         bool doPing = false;
         int foundGoodSound = 0;
         int foundBadSound = 0;
-        for ( node_t* searchNode = map.entities->first; searchNode != nullptr; searchNode = searchNode->next )
+        for (const node_t* searchNode = map.entities->first; searchNode != nullptr; searchNode = searchNode->next )
         {
-            auto ent = static_cast<Entity*>(searchNode->element);
+            const auto ent = static_cast<Entity*>(searchNode->element);
             if ( !ent || ent == my )
             {
                 continue;
@@ -1200,9 +1200,9 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
         }
         if ( doPing )
         {
-            int pingx = my->x / 16;
-            int pingy = my->y / 16;
-            MinimapPing radiusPing(ticks, my->monsterAllyIndex, pingx, pingy, true);
+            const int pingx = my->x / 16;
+            const int pingy = my->y / 16;
+            const MinimapPing radiusPing(ticks, my->monsterAllyIndex, pingx, pingy, true);
             minimapPingAdd(my->monsterAllyIndex, my->monsterAllyIndex, radiusPing);
 
             if ( foundGoodSound >= 1 )
@@ -1269,7 +1269,7 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
                 my->attack(MONSTER_POSE_RANGED_WINDUP1, 0, nullptr);
                 my->monsterSpecialTimer = TICKS_PER_SECOND * 8;
 
-                if ( auto leader = my->monsterAllyGetPlayerLeader() )
+                if (const auto leader = my->monsterAllyGetPlayerLeader() )
                 {
                     Compendium_t::Events_t::eventUpdateMonster(leader->skill[2], Compendium_t::CPDM_GYROBOT_FLIPS, my, 1);
                 }
@@ -1280,7 +1280,7 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
         {
             if ( limbAnimateToLimit(my, ANIMATE_Z, 0.05, 0, false, 0.0) )
             {
-                int appearance = monsterTinkeringConvertHPToAppearance(myStats);
+                const int appearance = monsterTinkeringConvertHPToAppearance(myStats);
                 Item* item = newItem(TOOL_GYROBOT, static_cast<Status>(myStats->monsterTinkeringStatus), 0, 1, appearance, true, &myStats->inventory);
                 myStats->HP = 0;
                 myStats->killer = KilledBy::NO_FUEL;
@@ -1463,9 +1463,9 @@ void gyroBotAnimate(Entity* my, Stat* myStats, double dist)
                 if ( multiplayer != CLIENT )
                 {
                     entity->sprite = -1;
-                    for ( node_t* inv = myStats->inventory.first; inv; inv = inv->next )
+                    for (const node_t* inv = myStats->inventory.first; inv; inv = inv->next )
                     {
-                        auto holding = static_cast<Item*>(inv->element);
+                        const auto holding = static_cast<Item*>(inv->element);
                         if ( holding && itemIsThrowableTinkerTool(holding) )
                         {
                             entity->sprite = items[holding->type].index;
@@ -1545,7 +1545,7 @@ void gyroBotDie(Entity* my)
     if ( my->monsterSpecialState == GYRO_RETURN_LANDING )
     {
         // don't make noises etc.
-        Stat* myStats = my->getStats();
+        const Stat* myStats = my->getStats();
         if ( myStats && !strncmp(myStats->obituary, Language::get(3631), strlen(Language::get(3631))) )
         {
             // returning to land, don't explode into gibs.
@@ -1616,7 +1616,7 @@ void initDummyBot(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -1703,7 +1703,7 @@ void initDummyBot(Entity* my, Stat* myStats)
     entity->flags[PASSABLE] = true;
     entity->flags[NOUPDATE] = true;
     entity->yaw = my->yaw;
-    real_t prevYaw = entity->yaw;
+    const real_t prevYaw = entity->yaw;
     //entity->flags[USERFLAG2] = my->flags[USERFLAG2];
     entity->focalx = limbs[DUMMYBOT][4][0];
     entity->focaly = limbs[DUMMYBOT][4][1];
@@ -1778,7 +1778,7 @@ void dummyBotDie(Entity* my)
     if ( my->monsterSpecialState == DUMMYBOT_RETURN_FORM )
     {
         // don't make noises etc.
-        Stat* myStats = my->getStats();
+        const Stat* myStats = my->getStats();
         if ( myStats && !strncmp(myStats->obituary, Language::get(3643), strlen(Language::get(3643))) )
         {
             // returning to box, don't explode into gibs.
@@ -1871,7 +1871,7 @@ void dummyBotAnimate(Entity* my, Stat* myStats, double dist)
 {
     node_t* node;
     Entity* entity = nullptr;
-    Entity* head = nullptr;
+    const Entity* head = nullptr;
     int bodypart;
 
     my->flags[INVISIBLE] = true; // hide the "AI" bodypart
@@ -1907,7 +1907,7 @@ void dummyBotAnimate(Entity* my, Stat* myStats, double dist)
                     {
                         // on hit, bounce a bit.
                         my->attack(MONSTER_POSE_RANGED_WINDUP1, 0, nullptr);
-                        if ( Entity* leader = my->monsterAllyGetPlayerLeader() )
+                        if (const Entity* leader = my->monsterAllyGetPlayerLeader() )
                         {
                             Compendium_t::Events_t::eventUpdate(leader->skill[2],
                                 Compendium_t::CPDM_DUMMY_HITS_TAKEN, TOOL_DUMMYBOT, 1);
@@ -1955,7 +1955,7 @@ void dummyBotAnimate(Entity* my, Stat* myStats, double dist)
                     if ( multiplayer != CLIENT )
                     {
                         // kill me!
-                        int appearance = monsterTinkeringConvertHPToAppearance(myStats);
+                        const int appearance = monsterTinkeringConvertHPToAppearance(myStats);
                         Item* item = newItem(TOOL_DUMMYBOT, static_cast<Status>(myStats->monsterTinkeringStatus), 0, 1, appearance, true, &myStats->inventory);
                         myStats->HP = 0;
                         myStats->killer = KilledBy::NO_FUEL;

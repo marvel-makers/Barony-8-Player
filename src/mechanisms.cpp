@@ -68,12 +68,12 @@ void Entity::updateCircuitNeighbors()
 
     if (neighbors)
     {
-        node_t* node = nullptr;
+        const node_t* node = nullptr;
         for (node = neighbors->first; node != nullptr; node = node->next)
         {
             if (node->element)
             {
-                auto powerable = static_cast<Entity*>(node->element);
+                const auto powerable = static_cast<Entity*>(node->element);
 
                 if (powerable)
                 {
@@ -83,10 +83,10 @@ void Entity::updateCircuitNeighbors()
                     }
                     else if ( powerable->behavior == &::actSignalTimer )
                     {
-                        int x1 = static_cast<int>(this->x / 16);
-                        int x2 = static_cast<int>(powerable->x / 16);
-                        int y1 = static_cast<int>(this->y / 16);
-                        int y2 = static_cast<int>(powerable->y / 16);
+                        const int x1 = static_cast<int>(this->x / 16);
+                        const int x2 = static_cast<int>(powerable->x / 16);
+                        const int y1 = static_cast<int>(this->y / 16);
+                        const int y2 = static_cast<int>(powerable->y / 16);
                         //messagePlayer(0, "%d, %d, %d, %d", x1, x2, y1, y2);
                         switch ( powerable->signalInputDirection )
                         {
@@ -120,8 +120,8 @@ void Entity::updateCircuitNeighbors()
                     }
                     else if ( powerable->behavior == &::actSignalGateAND )
                     {
-                        int x1 = static_cast<int>(this->x / 16);
-                        int y1 = static_cast<int>(this->y / 16);
+                        const int x1 = static_cast<int>(this->x / 16);
+                        const int y1 = static_cast<int>(this->y / 16);
                         //messagePlayer(0, "%d, %d, %d, %d", x1, x2, y1, y2);
                         signalGateANDOnReceive(*powerable, circuit_status > 1, x1, y1);
                     }
@@ -205,7 +205,7 @@ void actSwitch(Entity* my)
         }
         if ( my->isInteractWithMonster() )
         {
-            Entity* monsterInteracting = uidToEntity(my->interactedByMonster);
+            const Entity* monsterInteracting = uidToEntity(my->interactedByMonster);
             if ( monsterInteracting && monsterInteracting->getMonsterTypeFromSprite() == GYROBOT )
             {
                 Entity* leader = monsterInteracting->monsterAllyGetPlayerLeader();
@@ -416,10 +416,10 @@ void actTrap(Entity* my)
     std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
     for (auto it = entLists.begin(); it != entLists.end() && !somebodyonme; ++it )
     {
-        list_t* currentList = *it;
-        for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+        const list_t* currentList = *it;
+        for (const node_t* node = currentList->first; node != nullptr; node = node->next )
         {
-            Entity* entity = static_cast<Entity*>(node->element);
+            const Entity* entity = static_cast<Entity*>(node->element);
             if ( entity->behavior == &actItem && entity->flags[INVISIBLE] )
             {
                 continue;
@@ -597,7 +597,7 @@ void actTrapPermanent(Entity* my)
         std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
         for (auto it = entLists.begin(); it != entLists.end(); ++it )
         {
-            list_t* currentList = *it;
+            const list_t* currentList = *it;
             for ( node = currentList->first; node != nullptr; node = node->next )
             {
                 entity = static_cast<Entity*>(node->element);
@@ -697,12 +697,12 @@ void Entity::toggleSwitch(int skillIndexForPower)
 
     if (neighbors)
     {
-        node_t* node = nullptr;
+        const node_t* node = nullptr;
         for (node = neighbors->first; node != nullptr; node = node->next)
         {
             if (node->element)
             {
-                auto powerable = static_cast<Entity*>(node->element);
+                const auto powerable = static_cast<Entity*>(node->element);
 
                 if (powerable)
                 {
@@ -712,10 +712,10 @@ void Entity::toggleSwitch(int skillIndexForPower)
                     }
                     else if ( powerable->behavior == &::actSignalTimer )
                     {
-                        int x1 = static_cast<int>(this->x / 16);
-                        int x2 = static_cast<int>(powerable->x / 16);
-                        int y1 = static_cast<int>(this->y / 16);
-                        int y2 = static_cast<int>(powerable->y / 16);
+                        const int x1 = static_cast<int>(this->x / 16);
+                        const int x2 = static_cast<int>(powerable->x / 16);
+                        const int y1 = static_cast<int>(this->y / 16);
+                        const int y2 = static_cast<int>(powerable->y / 16);
                         //messagePlayer(0, "%d, %d, %d, %d", x1, x2, y1, y2);
                         switch ( powerable->signalInputDirection )
                         {
@@ -749,8 +749,8 @@ void Entity::toggleSwitch(int skillIndexForPower)
                     }
                     else if ( powerable->behavior == &::actSignalGateAND )
                     {
-                        int x1 = static_cast<int>(this->x / 16);
-                        int y1 = static_cast<int>(this->y / 16);
+                        const int x1 = static_cast<int>(this->x / 16);
+                        const int y1 = static_cast<int>(this->y / 16);
                         //messagePlayer(0, "%d, %d, %d, %d", x1, x2, y1, y2);
                         signalGateANDOnReceive(*powerable, switchPower, x1, y1);
                     }
@@ -773,12 +773,12 @@ void Entity::switchUpdateNeighbors()
 
     if (neighbors)
     {
-        node_t* node = nullptr;
+        const node_t* node = nullptr;
         for (node = neighbors->first; node != nullptr; node = node->next)
         {
             if (node->element)
             {
-                auto powerable = static_cast<Entity*>(node->element);
+                const auto powerable = static_cast<Entity*>(node->element);
 
                 if (powerable)
                 {
@@ -790,10 +790,10 @@ void Entity::switchUpdateNeighbors()
                         }
                         else if ( powerable->behavior == &::actSignalTimer )
                         {
-                            int x1 = static_cast<int>(this->x / 16);
-                            int x2 = static_cast<int>(powerable->x / 16);
-                            int y1 = static_cast<int>(this->y / 16);
-                            int y2 = static_cast<int>(powerable->y / 16);
+                            const int x1 = static_cast<int>(this->x / 16);
+                            const int x2 = static_cast<int>(powerable->x / 16);
+                            const int y1 = static_cast<int>(this->y / 16);
+                            const int y2 = static_cast<int>(powerable->y / 16);
                             //messagePlayer(0, "%d, %d, %d, %d", x1, x2, y1, y2);
                             switch ( powerable->signalInputDirection )
                             {
@@ -827,8 +827,8 @@ void Entity::switchUpdateNeighbors()
                         }
                         else if ( powerable->behavior == &::actSignalGateAND )
                         {
-                            int x1 = static_cast<int>(this->x / 16);
-                            int y1 = static_cast<int>(this->y / 16);
+                            const int x1 = static_cast<int>(this->x / 16);
+                            const int y1 = static_cast<int>(this->y / 16);
                             //messagePlayer(0, "%d, %d, %d, %d", x1, x2, y1, y2);
                             signalGateANDOnReceive(*powerable, true, x1, y1);
                         }
@@ -854,7 +854,7 @@ void getPowerablesOnTile(int x, int y, list_t** list)
     //And then free the list returned by checkTileForEntity.
 
     //Right. First, grab all the entities on the tile.
-    list_t* entities = nullptr;
+    const list_t* entities = nullptr;
     entities = checkTileForEntity(x, y);
 
     if (!entities)
@@ -862,14 +862,14 @@ void getPowerablesOnTile(int x, int y, list_t** list)
         return;    //No use continuing, got no entities.
     }
 
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
     node_t* node2 = nullptr;
     //Loop through the list of entities.
     for (node = entities->first; node != nullptr; node = node->next)
     {
         if (node->element)
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             //Check if the entity is powerable.
             if (entity && entity->skill[28])   //If skill 28 = 0, the entity is not a powerable.
             {
@@ -903,8 +903,8 @@ list_t* Entity::getPowerableNeighbors()
     list_t* return_val = nullptr;
 
 
-    int tx = x / 16;
-    int ty = y / 16;
+    const int tx = x / 16;
+    const int ty = y / 16;
 
     getPowerablesOnTile(tx, ty, &return_val); //Check current tile
     getPowerablesOnTile(tx - 1, ty, &return_val); //Check tile to the left.
@@ -1008,8 +1008,8 @@ void Entity::actSignalTimer()
         return;
     }
 
-    int tx = x / 16;
-    int ty = y / 16;
+    const int tx = x / 16;
+    const int ty = y / 16;
     list_t *neighbors = nullptr;
     bool updateNeighbors = false;
     if ( !SIGNAL_INIT )
@@ -1122,13 +1122,13 @@ void Entity::actSignalTimer()
         }
         if ( neighbors != nullptr )
         {
-            bool power_to_neighbors = ((signalInvertOutput == 0) ? (switch_power == SWITCH_POWERED) : (!(switch_power == SWITCH_POWERED)));
-            node_t* node = nullptr;
+            const bool power_to_neighbors = ((signalInvertOutput == 0) ? (switch_power == SWITCH_POWERED) : (!(switch_power == SWITCH_POWERED)));
+            const node_t* node = nullptr;
             for ( node = neighbors->first; node != nullptr; node = node->next )
             {
                 if ( node->element )
                 {
-                    auto powerable = static_cast<Entity*>(node->element);
+                    const auto powerable = static_cast<Entity*>(node->element);
 
                     if ( powerable )
                     {
@@ -1172,8 +1172,8 @@ void Entity::actSignalTimer()
                             }
                             else if ( powerable->behavior == &::actSignalGateAND )
                             {
-                                int x1 = static_cast<int>(this->x / 16);
-                                int y1 = static_cast<int>(this->y / 16);
+                                const int x1 = static_cast<int>(this->x / 16);
+                                const int y1 = static_cast<int>(this->y / 16);
                                 //messagePlayer(0, "%d, %d, %d, %d", x1, x2, y1, y2);
                                 signalGateANDOnReceive(*powerable, power_to_neighbors, x1, y1);
                             }
@@ -1231,13 +1231,13 @@ SignalGate_t SignalGateProps;
 
 void signalGateANDOnReceive(Entity& gate, const bool powered, const int receivex, const int receivey)
 {
-    int x = static_cast<int>(gate.x / 16);
-    int y = static_cast<int>(gate.y / 16);
+    const int x = static_cast<int>(gate.x / 16);
+    const int y = static_cast<int>(gate.y / 16);
 
-    auto& dirsAllowed = SignalGateProps.recvDirs[gate.signalInputDirection];
+    const auto& dirsAllowed = SignalGateProps.recvDirs[gate.signalInputDirection];
     Uint32 bits = 0;
     bool foundResult = false;
-    for ( auto dir : dirsAllowed )
+    for (const auto dir : dirsAllowed )
     {
         bits |= (1 << dir);
         bool res = false;
@@ -1304,8 +1304,8 @@ void Entity::actSignalGateAND()
         return;
     }
 
-    int tx = x / 16;
-    int ty = y / 16;
+    const int tx = x / 16;
+    const int ty = y / 16;
     list_t* neighbors = nullptr;
     bool updateNeighbors = false;
     if ( !SIGNAL_INIT )
@@ -1418,14 +1418,14 @@ void Entity::actSignalGateAND()
         }
         if ( neighbors != nullptr )
         {
-            bool power_to_neighbors = ((signalInvertOutput == 0) ? (switch_power == SWITCH_POWERED) : (!(switch_power == SWITCH_POWERED)));
+            const bool power_to_neighbors = ((signalInvertOutput == 0) ? (switch_power == SWITCH_POWERED) : (!(switch_power == SWITCH_POWERED)));
 
-            node_t* node = nullptr;
+            const node_t* node = nullptr;
             for ( node = neighbors->first; node != nullptr; node = node->next )
             {
                 if ( node->element )
                 {
-                    auto powerable = static_cast<Entity*>(node->element);
+                    const auto powerable = static_cast<Entity*>(node->element);
 
                     if ( powerable )
                     {
@@ -1469,8 +1469,8 @@ void Entity::actSignalGateAND()
                             }
                             else if ( powerable->behavior == &::actSignalGateAND )
                             {
-                                int x1 = static_cast<int>(this->x / 16);
-                                int y1 = static_cast<int>(this->y / 16);
+                                const int x1 = static_cast<int>(this->x / 16);
+                                const int y1 = static_cast<int>(this->y / 16);
                                 //messagePlayer(0, "%d, %d, %d, %d", x1, x2, y1, y2);
                                 signalGateANDOnReceive(*powerable, power_to_neighbors, x1, y1);
                             }
@@ -1506,7 +1506,7 @@ void Entity::actWallButton()
     }
     node_t* nextnode = nullptr;
     Entity* key = nullptr;
-    for ( node_t* node = this->children.first; node != nullptr; node = nextnode )
+    for (const node_t* node = this->children.first; node != nullptr; node = nextnode )
     {
         nextnode = node->next;
         if ( node->element != nullptr )
@@ -1586,7 +1586,7 @@ void Entity::actWallButton()
             }
         }
 
-        Entity* monsterInteracting = nullptr;
+        const Entity* monsterInteracting = nullptr;
         for ( int i = 0; i < MAXPLAYERS; i++ )
         {
             if ( (client_selected[i] == this || selectedEntity[i] == this) )
@@ -1676,17 +1676,17 @@ void Entity::actWallButton()
 
         key->focalz = *cvar_wall_button_key_z;
 
-        real_t travel = std::max(0.05, 2.0 * inset);
+        const real_t travel = std::max(0.05, 2.0 * inset);
         key->x = this->x + travel * cos(this->yaw);
         key->y = this->y + travel * sin(this->yaw);
     }
 
     if ( multiplayer != CLIENT )
     {
-        int tx = x / 16;
-        int ty = y / 16;
+        const int tx = x / 16;
+        const int ty = y / 16;
         list_t* neighbors = nullptr;
-        bool power_to_neighbors = wallLockInvertPower ? wallLockPower == 0 : wallLockPower != 0;
+        const bool power_to_neighbors = wallLockInvertPower ? wallLockPower == 0 : wallLockPower != 0;
         // comment out power_to_neighbors if we dont want this running all the time
         // running all the time matches switch behavior so that 1 thing toggling doesnt shut the network
         // if multiple active mechanisms are also powering it
@@ -1709,12 +1709,12 @@ void Entity::actWallButton()
             }
             if ( neighbors != nullptr )
             {
-                node_t* node = nullptr;
+                const node_t* node = nullptr;
                 for ( node = neighbors->first; node != nullptr; node = node->next )
                 {
                     if ( node->element )
                     {
-                        auto powerable = static_cast<Entity*>(node->element);
+                        const auto powerable = static_cast<Entity*>(node->element);
 
                         if ( powerable )
                         {
@@ -1758,8 +1758,8 @@ void Entity::actWallButton()
                                 }
                                 else if ( powerable->behavior == &::actSignalGateAND )
                                 {
-                                    int x1 = static_cast<int>(this->x / 16);
-                                    int y1 = static_cast<int>(this->y / 16);
+                                    const int x1 = static_cast<int>(this->x / 16);
+                                    const int y1 = static_cast<int>(this->y / 16);
                                     //messagePlayer(0, "%d, %d, %d, %d", x1, x2, y1, y2);
                                     signalGateANDOnReceive(*powerable, power_to_neighbors, x1, y1);
                                 }
@@ -1796,7 +1796,7 @@ void Entity::actWallLock()
     }
     node_t* nextnode = nullptr;
     Entity* key = nullptr;
-    for ( node_t* node = this->children.first; node != nullptr; node = nextnode )
+    for (const node_t* node = this->children.first; node != nullptr; node = nextnode )
     {
         nextnode = node->next;
         if ( node->element != nullptr )
@@ -2081,17 +2081,17 @@ void Entity::actWallLock()
         }
         key->focalz -= scaleDown / 2;
 
-        real_t travel = 0.95 + 1.5 * inset;
+        const real_t travel = 0.95 + 1.5 * inset;
         key->x = this->x + travel * cos(this->yaw);
         key->y = this->y + travel * sin(this->yaw);
     }
 
     if ( multiplayer != CLIENT )
     {
-        int tx = x / 16;
-        int ty = y / 16;
+        const int tx = x / 16;
+        const int ty = y / 16;
         list_t* neighbors = nullptr;
-        bool power_to_neighbors = wallLockInvertPower ? wallLockPower == 0 : wallLockPower != 0;
+        const bool power_to_neighbors = wallLockInvertPower ? wallLockPower == 0 : wallLockPower != 0;
         // comment out power_to_neighbors if we dont want this running all the time
         // running all the time matches switch behavior so that 1 thing toggling doesnt shut the network
         // if multiple active mechanisms are also powering it
@@ -2115,12 +2115,12 @@ void Entity::actWallLock()
             }
             if ( neighbors != nullptr )
             {
-                node_t* node = nullptr;
+                const node_t* node = nullptr;
                 for ( node = neighbors->first; node != nullptr; node = node->next )
                 {
                     if ( node->element )
                     {
-                        auto powerable = static_cast<Entity*>(node->element);
+                        const auto powerable = static_cast<Entity*>(node->element);
 
                         if ( powerable )
                         {
@@ -2164,8 +2164,8 @@ void Entity::actWallLock()
                                 }
                                 else if ( powerable->behavior == &::actSignalGateAND )
                                 {
-                                    int x1 = static_cast<int>(this->x / 16);
-                                    int y1 = static_cast<int>(this->y / 16);
+                                    const int x1 = static_cast<int>(this->x / 16);
+                                    const int y1 = static_cast<int>(this->y / 16);
                                     //messagePlayer(0, "%d, %d, %d, %d", x1, x2, y1, y2);
                                     signalGateANDOnReceive(*powerable, power_to_neighbors, x1, y1);
                                 }
@@ -2199,14 +2199,14 @@ static ConsoleVariable<float> cvar_map_tile_wind("/map_tile_wind", 1.0);
 bool entityInsideWind(Entity* entity1, Entity* wind)
 {
     if ( !entity1 || !wind ) { return false; }
-    real_t startx = wind->x;
-    real_t starty = wind->y;
+    const real_t startx = wind->x;
+    const real_t starty = wind->y;
     int numTiles = wind->actWindTileBonusLength;
     bool result = false;
     while ( numTiles >= 0 )
     {
-        int map_x = wind->x / 16;
-        int map_y = wind->y / 16;
+        const int map_x = wind->x / 16;
+        const int map_y = wind->y / 16;
         if ( map_x > 0 && map_x < map.width - 1 && map_y > 0 && map_y < map.height - 1 )
         {
             if ( map.tiles[OBSTACLELAYER + map_y * MAP_LAYERS + map_x * MAP_LAYERS * map.height] )
@@ -2264,18 +2264,18 @@ void Entity::actWind()
     }
     else
     {
-        int map_x = static_cast<int>(x / 16);
-        int map_y = static_cast<int>(y / 16);
+        const int map_x = static_cast<int>(x / 16);
+        const int map_y = static_cast<int>(y / 16);
         std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadius(map_x, map_y, actWindTileBonusLength + 2);
         for (auto it = entLists.begin(); it != entLists.end(); ++it )
         {
-            list_t* currentList = *it;
-            for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+            const list_t* currentList = *it;
+            for (const node_t* node = currentList->first; node != nullptr; node = node->next )
             {
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if ( windEffectsEntity(entity) && entityInsideWind(entity, this) )
                 {
-                    auto hitProps = getParticleEmitterHitProps(getUID(), entity);
+                    const auto hitProps = getParticleEmitterHitProps(getUID(), entity);
                     if ( !hitProps )
                     {
                         continue;
@@ -2319,7 +2319,7 @@ void Entity::actWind()
                     }
                     else if ( hitProps->hits == 0 )
                     {
-                        if ( Entity* caster = uidToEntity(this->parent) )
+                        if (const Entity* caster = uidToEntity(this->parent) )
                         {
                             //magicOnSpellCastEvent(caster, caster, entity, SPELL_WINDGATE, spell_t::SPELL_LEVEL_EVENT_DEFAULT, 1);
                             if ( caster->behavior == &actPlayer )
@@ -2344,8 +2344,8 @@ void Entity::actWind()
 
     if ( actWindParticleEffect == 1 )
     {
-        real_t eff_x = static_cast<int>(x / 16) * 16.0 + 8.0;
-        real_t eff_y = static_cast<int>(y / 16) * 16.0 + 8.0;
+        const real_t eff_x = static_cast<int>(x / 16) * 16.0 + 8.0;
+        const real_t eff_y = static_cast<int>(y / 16) * 16.0 + 8.0;
 
         if ( ticks % 10 == 0 )
         {

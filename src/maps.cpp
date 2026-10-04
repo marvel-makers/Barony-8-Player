@@ -389,9 +389,9 @@ void TreasureRoomGenerator::init()
                     chances = { 0, 10, 7, 0, 0 }; // underworld
                 }
 
-                unsigned int res1 = treasure_rng.discrete(chances.data(), chances.size());
+                const unsigned int res1 = treasure_rng.discrete(chances.data(), chances.size());
                 chances[res1] = 0;
-                unsigned int res2 = treasure_rng.discrete(chances.data(), chances.size());
+                const unsigned int res2 = treasure_rng.discrete(chances.data(), chances.size());
 
                 //if ( treasure_rng.rand() % 3 == 0 )
                 {
@@ -470,12 +470,12 @@ void TreasureRoomGenerator::init()
                                 chances_strs.push_back(0);
                             }
                         }
-                        unsigned int station_name_pick = treasure_rng.discrete(chances_strs.data(), chances_strs.size());
+                        const unsigned int station_name_pick = treasure_rng.discrete(chances_strs.data(), chances_strs.size());
                         floors_stations[i + (chosen_level == 0 ? res1 : res2)] = strs[station_name_pick];
                         previous_station[j] = strs[station_name_pick];
 
                         bool anyChances = false;
-                        for ( auto val : chances_level )
+                        for (const auto val : chances_level )
                         {
                             if ( val > 0 )
                             {
@@ -1412,7 +1412,7 @@ bool loadSubRoomData(const std::string& fullMapPath, list_t* mapList)
     }
 
     // level is successfully loaded, add it to the pool
-    auto subRoomList = static_cast<list_t*>(malloc(sizeof(list_t)));
+    const auto subRoomList = static_cast<list_t*>(malloc(sizeof(list_t)));
     subRoomList->first = nullptr;
     subRoomList->last = nullptr;
 
@@ -1433,7 +1433,7 @@ bool loadSubRoomData(const std::string& fullMapPath, list_t* mapList)
             {
                 if ( !subRoomMap->tiles[OBSTACLELAYER + y * MAP_LAYERS + x * MAP_LAYERS * subRoomMap->height] )
                 {
-                    auto door = static_cast<door_t*>(malloc(sizeof(door_t)));
+                    const auto door = static_cast<door_t*>(malloc(sizeof(door_t)));
                     door->x = x;
                     door->y = y;
                     if ( x == subRoomMap->width - 1 )
@@ -2406,8 +2406,8 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
                         {
                             return false;
                         }
-                        node_t* roomNode = static_cast<list_t*>(mapNode->element)->first;
-                        auto candidateMap = static_cast<map_t*>(roomNode->element);
+                        const node_t* roomNode = static_cast<list_t*>(mapNode->element)->first;
+                        const auto candidateMap = static_cast<map_t*>(roomNode->element);
                         outLevelnum2 = mapIndex;
                         outNode = mapNode;
                         outMap = candidateMap;
@@ -11829,9 +11829,9 @@ void mapFoodOnLevel(int player)
 {
     int numFood = 0;
     bool previouslyIdentifiedFood = false;
-    for ( node_t* node = map.entities->first; node != nullptr; node = node->next )
+    for (const node_t* node = map.entities->first; node != nullptr; node = node->next )
     {
-        auto entity = static_cast<Entity*>(node->element);
+        const auto entity = static_cast<Entity*>(node->element);
         if ( entity && entity->behavior == &actItem )
         {
             Item* item = newItemFromEntity(entity);
@@ -11886,17 +11886,17 @@ void mapFoodOnLevel(int player)
 int loadMainMenuMap(bool blessedAdditionMaps, bool forceVictoryMap, int forcemap)
 {
     bool foundVictory = false;
-    for ( node_t* node = topscores_json.first; node != nullptr && !foundVictory; node = node->next )
+    for (const node_t* node = topscores_json.first; node != nullptr && !foundVictory; node = node->next )
     {
-        auto score = static_cast<score_t*>(node->element);
+        const auto score = static_cast<score_t*>(node->element);
         if ( score && (score->victory == 3 || score->victory == 4 || score->victory == 5) )
         {
             foundVictory = true;
         }
     }
-    for ( node_t* node = topscoresMultiplayer_json.first; node != nullptr && !foundVictory; node = node->next )
+    for (const node_t* node = topscoresMultiplayer_json.first; node != nullptr && !foundVictory; node = node->next )
     {
-        auto score = static_cast<score_t*>(node->element);
+        const auto score = static_cast<score_t*>(node->element);
         if ( score && (score->victory == 3 || score->victory == 4 || score->victory == 5) )
         {
             foundVictory = true;
@@ -12003,7 +12003,7 @@ int loadMainMenuMap(bool blessedAdditionMaps, bool forceVictoryMap, int forcemap
 
 bool map_t::tileHasAttribute(int x, int y, int layer, Uint32 attribute)
 {
-    auto find = tileAttributes.find(layer + y * MAP_LAYERS + x * MAP_LAYERS * height);
+    const auto find = tileAttributes.find(layer + y * MAP_LAYERS + x * MAP_LAYERS * height);
     if ( find != tileAttributes.end() )
     {
         return find->second & attribute;

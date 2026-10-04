@@ -120,7 +120,7 @@ void initVampire(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // generates equipment and weapons if available from editor
             createMonsterEquipment(myStats, rng);
@@ -132,7 +132,7 @@ void initVampire(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
             // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -564,7 +564,7 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
 
         // levitation
-        bool levitating = isLevitating(myStats);
+        const bool levitating = isLevitating(myStats);
         if ( levitating )
         {
             my->z -= 1; // floating
@@ -611,14 +611,14 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 // leftarm follows the right arm during special attack
                 // will not work when shield is visible
                 // else animate normally.
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] )
                     {
-                        Entity* weaponarm = nullptr;
-                        node_t* weaponarmNode = list_Node(&my->children, LIMB_HUMANOID_RIGHTARM);
+                        const Entity* weaponarm = nullptr;
+                        const node_t* weaponarmNode = list_Node(&my->children, LIMB_HUMANOID_RIGHTARM);
                         if ( weaponarmNode )
                         {
                             weaponarm = static_cast<Entity*>(weaponarmNode->element);
@@ -650,9 +650,9 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 weaponarm = entity;
                 if ( my->monsterAttack > 0 )
                 {
-                    Entity* rightbody = nullptr;
+                    const Entity* rightbody = nullptr;
                     // set rightbody to left leg.
-                    node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
+                    const node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
                     if ( rightbodyNode )
                     {
                         rightbody = static_cast<Entity*>(rightbodyNode->element);
@@ -663,7 +663,7 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
                     }
                     Entity* leftarm = nullptr;
                     // set leftarm
-                    node_t* leftarmNode = list_Node(&my->children, LIMB_HUMANOID_LEFTARM);
+                    const node_t* leftarmNode = list_Node(&my->children, LIMB_HUMANOID_LEFTARM);
                     if ( leftarmNode )
                     {
                         leftarm = static_cast<Entity*>(leftarmNode->element);
@@ -946,10 +946,10 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
                     entity->sprite = entity->skill[7];
                 }
 
-                node_t* tempNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
+                const node_t* tempNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
                 if ( tempNode )
                 {
-                    auto weapon = static_cast<Entity*>(tempNode->element);
+                    const auto weapon = static_cast<Entity*>(tempNode->element);
                     if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState != MONSTER_STATE_ATTACK) )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -1019,10 +1019,10 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
                     entity->sprite = entity->skill[7];
                 }
 
-                node_t* tempNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
+                const node_t* tempNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
                 if ( tempNode )
                 {
-                    auto shield = static_cast<Entity*>(tempNode->element);
+                    const auto shield = static_cast<Entity*>(tempNode->element);
                     if ( shield->flags[INVISIBLE] && (my->monsterState != MONSTER_STATE_ATTACK) )
                     {
                         // if shield invisible and I'm not attacking, relax arm.
@@ -1375,10 +1375,10 @@ void vampireMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, 8);
+    const node_t* shieldNode = list_Node(&my->children, 8);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;
@@ -1416,7 +1416,7 @@ void Entity::vampireChooseWeapon(const Entity* target, double dist)
 
     if ( monsterSpecialTimer == 0 && (ticks % 10 == 0) && monsterAttack == 0 )
     {
-        Stat* targetStats = target->getStats();
+        const Stat* targetStats = target->getStats();
         if ( !targetStats )
         {
             return;
@@ -1493,7 +1493,7 @@ void Entity::vampireChooseWeapon(const Entity* target, double dist)
         }
     }
 
-    bool inMeleeRange = monsterInMeleeRange(target, dist);
+    const bool inMeleeRange = monsterInMeleeRange(target, dist);
 
     if ( inMeleeRange )
     {
@@ -1506,7 +1506,7 @@ void Entity::vampireChooseWeapon(const Entity* target, double dist)
                 return; //Resort to fists.
             }
 
-            bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, weaponNode, false, false);
+            const bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, weaponNode, false, false);
             if ( !swapped )
             {
                 //Don't return so that monsters will at least equip ranged weapons in melee range if they don't have anything else.

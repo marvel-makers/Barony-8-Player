@@ -339,7 +339,7 @@ void ShopkeeperPlayerHostility_t::resetPlayerHostility(const int player, bool cl
 {
     if ( player < 0 || player >= MAXPLAYERS ) { return; }
 
-    if ( auto h = getPlayerHostility(player) )
+    if (const auto h = getPlayerHostility(player) )
     {
         if ( h->wantedLevel != NO_WANTED_LEVEL && h->wantedLevel != FAILURE_TO_IDENTIFY )
         {
@@ -400,12 +400,12 @@ bool ShopkeeperPlayerHostility_t::isPlayerEnemy(const int player)
 {
     if ( player < 0 || player >= MAXPLAYERS ) { return false; }
 
-    Monster type = stats[player]->type;
+    const Monster type = stats[player]->type;
     if ( !playerRaceCheckHostility(player, type) )
     { 
         return true;
     }
-    if ( auto h = getPlayerHostility(player) )
+    if (const auto h = getPlayerHostility(player) )
     {
         return h->wantedLevel != NO_WANTED_LEVEL;
     }
@@ -490,7 +490,7 @@ ShopkeeperPlayerHostility_t::WantedLevel ShopkeeperPlayerHostility_t::getWantedL
     if ( player < 0 || player >= MAXPLAYERS ) { return NO_WANTED_LEVEL; }
 
     //if ( !playerRaceCheckHostility(player, type) ) { return NO_WANTED_LEVEL; }
-    if ( auto h = getPlayerHostility(player) )
+    if (const auto h = getPlayerHostility(player) )
     {
         return h->wantedLevel;
     }
@@ -538,7 +538,7 @@ void ShopkeeperPlayerHostility_t::setWantedLevel(ShopkeeperPlayerHostility_t::Pl
 
     if ( shopkeeper )
     {
-        bool inshop = false;
+        const bool inshop = false;
         //if ( shopx >= 0 && shopx < map.width && shopy >= 0 && shopy < map.height )
         //{
         //  // if the crime was inside a shop
@@ -562,14 +562,14 @@ void ShopkeeperPlayerHostility_t::setWantedLevel(ShopkeeperPlayerHostility_t::Pl
 
             if ( inshop )
             {
-                int secondary_playerx = static_cast<int>(players[i]->entity->x) >> 4;
-                int secondary_playery = static_cast<int>(players[i]->entity->y) >> 4;
+                const int secondary_playerx = static_cast<int>(players[i]->entity->x) >> 4;
+                const int secondary_playery = static_cast<int>(players[i]->entity->y) >> 4;
                 if ( secondary_playerx >= 0 && secondary_playerx < map.width && secondary_playery >= 0 && secondary_playery < map.height )
                 {
                     // if the accessory was inside a shop, no need for LOS checks.
                     if ( shoparea[secondary_playery + secondary_playerx * map.height] )
                     {
-                        if ( auto h2 = getPlayerHostility(i) )
+                        if (const auto h2 = getPlayerHostility(i) )
                         {
                             setWantedLevel(*h2, WantedLevel::WANTED_FOR_ACCESSORY, shopkeeper, false);
                             ++h2->numAccessories;
@@ -586,8 +586,8 @@ void ShopkeeperPlayerHostility_t::setWantedLevel(ShopkeeperPlayerHostility_t::Pl
             {
                 monsterVisionRange = std::max(monsterVisionRange, 5 * 16.0);
             }
-            int light = players[i]->entity->entityLightAfterReductions(*stats[i], shopkeeper);
-            double targetdist = sqrt(pow(shopkeeper->x - players[i]->entity->x, 2) + pow(shopkeeper->y - players[i]->entity->y, 2));
+            const int light = players[i]->entity->entityLightAfterReductions(*stats[i], shopkeeper);
+            const double targetdist = sqrt(pow(shopkeeper->x - players[i]->entity->x, 2) + pow(shopkeeper->y - players[i]->entity->y, 2));
 
             if ( targetdist > monsterVisionRange )
             {
@@ -596,15 +596,15 @@ void ShopkeeperPlayerHostility_t::setWantedLevel(ShopkeeperPlayerHostility_t::Pl
             if ( targetdist < light )
             {
                 Entity* ohitentity = hit.entity;
-                real_t tangent = atan2(players[i]->entity->y - shopkeeper->y, players[i]->entity->x - shopkeeper->x);
+                const real_t tangent = atan2(players[i]->entity->y - shopkeeper->y, players[i]->entity->x - shopkeeper->x);
                 lineTrace(shopkeeper, shopkeeper->x, shopkeeper->y, tangent, monsterVisionRange, 0, true);
 
-                bool found = hit.entity == players[i]->entity;
+                const bool found = hit.entity == players[i]->entity;
                 hit.entity = ohitentity;
 
                 if ( found )
                 {
-                    if ( auto h2 = getPlayerHostility(i) )
+                    if (const auto h2 = getPlayerHostility(i) )
                     {
                         setWantedLevel(*h2, WantedLevel::WANTED_FOR_ACCESSORY, shopkeeper, false);
                         ++h2->numAccessories;
@@ -624,7 +624,7 @@ void ShopkeeperPlayerHostility_t::onShopkeeperDeath(Entity* my, Stat* myStats, E
     {
         if ( attacker->behavior == &actPlayer )
         {
-            if ( auto h = getPlayerHostility(attacker->skill[2]) )
+            if (const auto h = getPlayerHostility(attacker->skill[2]) )
             {
                 setWantedLevel(*h, WantedLevel::WANTED_FOR_KILL, my, true);
                 ++h->numKills;
@@ -647,7 +647,7 @@ void ShopkeeperPlayerHostility_t::onShopkeeperHit(Entity* my, Stat* myStats, Ent
     {
         if ( attacker->behavior == &actPlayer )
         {
-            if ( auto h = getPlayerHostility(attacker->skill[2]) )
+            if (const auto h = getPlayerHostility(attacker->skill[2]) )
             {
                 setWantedLevel(*h, WantedLevel::WANTED_FOR_AGGRESSION, my, true);
                 ++h->numAggressions;
@@ -735,7 +735,7 @@ bool Entity::monsterAlertBeforeHit(Entity* attacker)
         }
     }
 
-    if ( Stat* myStats = getStats() )
+    if (const Stat* myStats = getStats() )
     {
         if ( myStats->getEffectActive(EFF_NUMBING_BOLT) )
         {
@@ -756,7 +756,7 @@ void Entity::updateEntityOnHit(Entity* attacker, bool alertTarget)
 
     if ( Stat* myStats = getStats() )
     {
-        if ( Uint8 effectStrength = myStats->getEffectActive(EFF_PENANCE) )
+        if (const Uint8 effectStrength = myStats->getEffectActive(EFF_PENANCE) )
         {
             if ( attacker )
             {
@@ -773,7 +773,7 @@ void Entity::updateEntityOnHit(Entity* attacker, bool alertTarget)
         {
             setEffect(EFF_SEEK_CREATURE, false, 0, true);
         }
-        if ( Uint8 effectStrength = myStats->getEffectActive(EFF_COMMAND) )
+        if (const Uint8 effectStrength = myStats->getEffectActive(EFF_COMMAND) )
         {
             if ( attacker && (attacker->behavior == &actPlayer || attacker->monsterAllyGetPlayerLeader()) )
             {
@@ -821,13 +821,13 @@ bool MonsterAllyFormation_t::getFollowLocation(Uint32 uid, Uint32 leaderUid, std
 {
     outPos.first = -1;
     outPos.second = -1;
-    Entity* leader = uidToEntity(leaderUid);
+    const Entity* leader = uidToEntity(leaderUid);
     if ( !leader ) { return false; }
     if ( leader->behavior != &actPlayer && leader->behavior != &actMonster ) { return false; }
 
     auto& leaderUnits = units[leaderUid];
-    auto findMelee = leaderUnits.meleeUnits.find(uid);
-    auto findRanged = leaderUnits.rangedUnits.find(uid);
+    const auto findMelee = leaderUnits.meleeUnits.find(uid);
+    const auto findRanged = leaderUnits.rangedUnits.find(uid);
 
     bool found = false;
     if ( findMelee != leaderUnits.meleeUnits.end() )
@@ -864,14 +864,14 @@ void MonsterAllyFormation_t::updateOnPathFail(Uint32 uid, Entity* entity)
         return;
     }
 
-    if ( Stat* myStats = entity->getStats() )
+    if (const Stat* myStats = entity->getStats() )
     {
         if ( myStats->leader_uid != 0 )
         {
-            auto find = units.find(myStats->leader_uid);
+            const auto find = units.find(myStats->leader_uid);
             if ( find != units.end() )
             {
-                auto find2 = find->second.meleeUnits.find(uid);
+                const auto find2 = find->second.meleeUnits.find(uid);
                 if ( find2 != find->second.meleeUnits.end() )
                 {
                     find2->second.pathingDelay = std::min(10, find2->second.pathingDelay + 1);
@@ -883,7 +883,7 @@ void MonsterAllyFormation_t::updateOnPathFail(Uint32 uid, Entity* entity)
                     }
                     return;
                 }
-                auto find3 = find->second.rangedUnits.find(uid);
+                const auto find3 = find->second.rangedUnits.find(uid);
                 if ( find3 != find->second.rangedUnits.end() )
                 {
                     find3->second.pathingDelay = std::min(10, find3->second.pathingDelay + 1);
@@ -912,21 +912,21 @@ void MonsterAllyFormation_t::updateOnPathSucceed(Uint32 uid, Entity* entity)
         return;
     }
 
-    if ( Stat* myStats = entity->getStats() )
+    if (const Stat* myStats = entity->getStats() )
     {
         if ( myStats->leader_uid != 0 )
         {
-            auto find = units.find(myStats->leader_uid);
+            const auto find = units.find(myStats->leader_uid);
             if ( find != units.end() )
             {
-                auto find2 = find->second.meleeUnits.find(uid);
+                const auto find2 = find->second.meleeUnits.find(uid);
                 if ( find2 != find->second.meleeUnits.end() )
                 {
                     find2->second.pathingDelay = std::max(0, find2->second.pathingDelay - 2);
                     find2->second.tryExtendPath = std::max(0, find2->second.tryExtendPath - 1);
                     return;
                 }
-                auto find3 = find->second.rangedUnits.find(uid);
+                const auto find3 = find->second.rangedUnits.find(uid);
                 if ( find3 != find->second.rangedUnits.end() )
                 {
                     find3->second.pathingDelay = std::max(0, find3->second.pathingDelay - 2);
@@ -950,21 +950,21 @@ void MonsterAllyFormation_t::updateOnFollowCommand(Uint32 uid, Entity* entity)
         return;
     }
 
-    if ( Stat* myStats = entity->getStats() )
+    if (const Stat* myStats = entity->getStats() )
     {
         if ( myStats->leader_uid != 0 )
         {
-            auto find = units.find(myStats->leader_uid);
+            const auto find = units.find(myStats->leader_uid);
             if ( find != units.end() )
             {
-                auto find2 = find->second.meleeUnits.find(uid);
+                const auto find2 = find->second.meleeUnits.find(uid);
                 if ( find2 != find->second.meleeUnits.end() )
                 {
                     find2->second.pathingDelay = 0;
                     find2->second.tryExtendPath = 10;
                     return;
                 }
-                auto find3 = find->second.rangedUnits.find(uid);
+                const auto find3 = find->second.rangedUnits.find(uid);
                 if ( find3 != find->second.rangedUnits.end() )
                 {
                     find3->second.pathingDelay = 0;
@@ -980,15 +980,15 @@ int MonsterAllyFormation_t::getFollowerChaseLeaderInterval(Entity& my, Stat& myS
 {
     if ( myStats.leader_uid != 0 )
     {
-        auto find = units.find(myStats.leader_uid);
+        const auto find = units.find(myStats.leader_uid);
         if ( find != units.end() )
         {
-            auto find2 = find->second.meleeUnits.find(my.getUID());
+            const auto find2 = find->second.meleeUnits.find(my.getUID());
             if ( find2 != find->second.meleeUnits.end() )
             {
                 return find2->second.pathingDelay * TICKS_PER_SECOND + TICKS_PER_SECOND;
             }
-            auto find3 = find->second.rangedUnits.find(my.getUID());
+            const auto find3 = find->second.rangedUnits.find(my.getUID());
             if ( find3 != find->second.rangedUnits.end() )
             {
                 return find3->second.pathingDelay * TICKS_PER_SECOND + TICKS_PER_SECOND;
@@ -1002,15 +1002,15 @@ int MonsterAllyFormation_t::getFollowerPathingDelay(Entity& my, Stat& myStats)
 {
     if ( myStats.leader_uid != 0 )
     {
-        auto find = units.find(myStats.leader_uid);
+        const auto find = units.find(myStats.leader_uid);
         if ( find != units.end() )
         {
-            auto find2 = find->second.meleeUnits.find(my.getUID());
+            const auto find2 = find->second.meleeUnits.find(my.getUID());
             if ( find2 != find->second.meleeUnits.end() )
             {
                 return find2->second.pathingDelay;
             }
-            auto find3 = find->second.rangedUnits.find(my.getUID());
+            const auto find3 = find->second.rangedUnits.find(my.getUID());
             if ( find3 != find->second.rangedUnits.end() )
             {
                 return find3->second.pathingDelay;
@@ -1024,15 +1024,15 @@ int MonsterAllyFormation_t::getFollowerTryExtendedPathSearch(Entity& my, Stat& m
 {
     if ( myStats.leader_uid != 0 )
     {
-        auto find = units.find(myStats.leader_uid);
+        const auto find = units.find(myStats.leader_uid);
         if ( find != units.end() )
         {
-            auto find2 = find->second.meleeUnits.find(my.getUID());
+            const auto find2 = find->second.meleeUnits.find(my.getUID());
             if ( find2 != find->second.meleeUnits.end() )
             {
                 return find2->second.tryExtendPath;
             }
-            auto find3 = find->second.rangedUnits.find(my.getUID());
+            const auto find3 = find->second.rangedUnits.find(my.getUID());
             if ( find3 != find->second.rangedUnits.end() )
             {
                 return find3->second.tryExtendPath;
@@ -1068,11 +1068,11 @@ void MonsterAllyFormation_t::updateFormation(Uint32 leaderUid, Uint32 monsterUpd
 
     if ( leader->behavior == &actPlayer )
     {
-        if ( Stat* leaderStats = leader->getStats() )
+        if (const Stat* leaderStats = leader->getStats() )
         {
-            for ( node_t* allyNode = leaderStats->FOLLOWERS.first; allyNode != nullptr; allyNode = allyNode->next )
+            for (const node_t* allyNode = leaderStats->FOLLOWERS.first; allyNode != nullptr; allyNode = allyNode->next )
             {
-                auto c = static_cast<Uint32*>(allyNode->element);
+                const auto c = static_cast<Uint32*>(allyNode->element);
                 if ( !c ) { continue; }
                 Uint32 allyUid = *c;
                 Entity* ally = uidToEntity(allyUid);
@@ -1084,7 +1084,7 @@ void MonsterAllyFormation_t::updateFormation(Uint32 leaderUid, Uint32 monsterUpd
                     continue;
                 }
 
-                bool isRanged = ally->hasRangedWeapon();
+                const bool isRanged = ally->hasRangedWeapon();
                 if ( isRanged )
                 {
                     if ( leaderUnits.rangedUnits.find(allyUid) == leaderUnits.rangedUnits.end() )
@@ -1134,8 +1134,8 @@ void MonsterAllyFormation_t::updateFormation(Uint32 leaderUid, Uint32 monsterUpd
                 break;
             }
 
-            real_t offsetx = formationShape[formationIndex].second;
-            real_t offsety = formationShape[formationIndex].first;
+            const real_t offsetx = formationShape[formationIndex].second;
+            const real_t offsety = formationShape[formationIndex].first;
 
             real_t x = leader->x;
             real_t y = leader->y;
@@ -1156,12 +1156,12 @@ void MonsterAllyFormation_t::updateFormation(Uint32 leaderUid, Uint32 monsterUpd
             particle->scalez = 2.0;*/
 
             Entity* ohitentity = hit.entity;
-            real_t oldx = ally->x;
-            real_t oldy = ally->y;
+            const real_t oldx = ally->x;
+            const real_t oldy = ally->y;
             ally->x = x;
             ally->y = y;
-            double tangent = atan2(leader->y - ally->y, leader->x - ally->x);
-            bool oldPassable = leader->flags[PASSABLE]; // hack to linetrace ghosts
+            const double tangent = atan2(leader->y - ally->y, leader->x - ally->x);
+            const bool oldPassable = leader->flags[PASSABLE]; // hack to linetrace ghosts
             leader->flags[PASSABLE] = false;
             lineTraceTarget(ally, ally->x, ally->y, tangent, 128, 0, false, leader);
             leader->flags[PASSABLE] = oldPassable;
@@ -1195,8 +1195,8 @@ void MonsterAllyFormation_t::updateFormation(Uint32 leaderUid, Uint32 monsterUpd
                 break;
             }
 
-            real_t offsetx = formationShape[formationIndex].second;
-            real_t offsety = formationShape[formationIndex].first;
+            const real_t offsetx = formationShape[formationIndex].second;
+            const real_t offsety = formationShape[formationIndex].first;
 
             real_t x = leader->x;
             real_t y = leader->y;
@@ -1217,12 +1217,12 @@ void MonsterAllyFormation_t::updateFormation(Uint32 leaderUid, Uint32 monsterUpd
             particle->scalez = 2.0;*/
 
             Entity* ohitentity = hit.entity;
-            real_t oldx = ally->x;
-            real_t oldy = ally->y;
+            const real_t oldx = ally->x;
+            const real_t oldy = ally->y;
             ally->x = x;
             ally->y = y;
-            double tangent = atan2(leader->y - ally->y, leader->x - ally->x);
-            bool oldPassable = leader->flags[PASSABLE]; // hack to linetrace ghosts
+            const double tangent = atan2(leader->y - ally->y, leader->x - ally->x);
+            const bool oldPassable = leader->flags[PASSABLE]; // hack to linetrace ghosts
             leader->flags[PASSABLE] = false;
             lineTraceTarget(ally, ally->x, ally->y, tangent, 128, 0, false, leader);
             leader->flags[PASSABLE] = oldPassable;
@@ -1260,7 +1260,7 @@ void summonMonsterClient(Monster creature, long x, long y, Uint32 uid)
 
 Entity* summonMonster(Monster creature, long x, long y, bool forceLocation)
 {
-    auto entity = summonMonsterNoSmoke(creature, x, y, forceLocation);
+    const auto entity = summonMonsterNoSmoke(creature, x, y, forceLocation);
 
     // make a puff
     if (entity) {
@@ -10270,8 +10270,8 @@ timeToGoAgain:
 
 void Entity::handleMonsterAttack(Stat* myStats, Entity* target, double dist)
 {
-    Stat* hitstats = nullptr;
-    int charge = 1;
+    const Stat* hitstats = nullptr;
+    const int charge = 1;
 
     if (myStats->type == MINOTAUR) {
         if (checkFriend(target)) {
@@ -10289,12 +10289,12 @@ void Entity::handleMonsterAttack(Stat* myStats, Entity* target, double dist)
             ++monsterHitTime;
             if ( monsterHitTime >= HITRATE )
             {
-                bool anyTarget = duckAreaQuck(this);
+                const bool anyTarget = duckAreaQuck(this);
                 if ( anyTarget )
                 {
                     monsterHitTime = 0;
 
-                    if ( Entity* target = uidToEntity(monsterTarget) )
+                    if (const Entity* target = uidToEntity(monsterTarget) )
                     {
                         if ( monsterSetPathToLocation(target->x / 16, target->y / 16, 1,
                             GeneratePathTypes::GENERATE_PATH_TO_HUNT_MONSTER_TARGET, true, false) )
@@ -10413,11 +10413,11 @@ void Entity::handleMonsterAttack(Stat* myStats, Entity* target, double dist)
                     node_t* node = itemNodeInInventory(myStats, -1, SPELLBOOK);
                     if ( node != nullptr )
                     {
-                        bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, node, true, true);
+                        const bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, node, true, true);
                         if ( swapped )
                         {
                             monsterSpecialState = MONSTER_SPELLCAST_GENERIC;
-                            int timer = (myStats->MISC_FLAGS[STAT_FLAG_MONSTER_CAST_INVENTORY_SPELLBOOKS] >> 4) & 0xFFFF;
+                            const int timer = (myStats->MISC_FLAGS[STAT_FLAG_MONSTER_CAST_INVENTORY_SPELLBOOKS] >> 4) & 0xFFFF;
                             monsterSpecialTimer = timer > 0 ? timer : 250;
                             hasrangedweapon = true;
                         }
@@ -10555,7 +10555,7 @@ void Entity::handleMonsterAttack(Stat* myStats, Entity* target, double dist)
             || (this->monsterHitTime >= HITRATE * 2 && myStats->type == LICH_ICE)
             )
         {
-            bool shouldAttack = this->handleMonsterSpecialAttack(myStats, nullptr, dist, false);
+            const bool shouldAttack = this->handleMonsterSpecialAttack(myStats, nullptr, dist, false);
             if ( !shouldAttack )
             {
                 // handleMonsterSpecialAttack processed an action where the monster should not try to attack this frame.
@@ -10597,7 +10597,7 @@ void Entity::handleMonsterAttack(Stat* myStats, Entity* target, double dist)
             }
 
             // check again for the target in attack range. return the result into hit.entity.
-            double newTangent = atan2(target->y - this->y, target->x - this->x);
+            const double newTangent = atan2(target->y - this->y, target->x - this->x);
             if ( lichRangeCheckOverride )
             {
                 hit.entity = uidToEntity(monsterTarget);
@@ -10621,9 +10621,9 @@ void Entity::handleMonsterAttack(Stat* myStats, Entity* target, double dist)
                 if ( hitstats != nullptr )
                 {
                     // prepare attack, set the animation of the attack based on the current weapon.
-                    int pose = this->getAttackPose();
+                    const int pose = this->getAttackPose();
 
-                    int oldDefend = monsterDefend;
+                    const int oldDefend = monsterDefend;
                     monsterDefend = shouldMonsterDefend(*myStats, *hit.entity, *hitstats, dist, hasrangedweapon);
                     if ( oldDefend != monsterDefend )
                     {
@@ -10631,7 +10631,7 @@ void Entity::handleMonsterAttack(Stat* myStats, Entity* target, double dist)
                     }
 
                     // turn to the target, then reset my yaw.
-                    double oYaw = this->yaw;
+                    const double oYaw = this->yaw;
                     this->yaw = newTangent;
                     if ( myStats->type == LICH_FIRE )
                     {
@@ -10714,7 +10714,7 @@ void Entity::handleMonsterAttack(Stat* myStats, Entity* target, double dist)
         {
             if ( myStats->type == BUGBEAR )
             {
-                int oldDefend = monsterDefend;
+                const int oldDefend = monsterDefend;
                 if ( monsterSpecialState == BUGBEAR_DEFENSE )
                 {
                     monsterDefend = shouldMonsterDefend(*myStats, *target, *target->getStats(), dist, hasrangedweapon);
@@ -10730,7 +10730,7 @@ void Entity::handleMonsterAttack(Stat* myStats, Entity* target, double dist)
             }
             else if ( !hasrangedweapon && dist > TOUCHRANGE && target && target->hasRangedWeapon() )
             {
-                int oldDefend = monsterDefend;
+                const int oldDefend = monsterDefend;
                 monsterDefend = shouldMonsterDefend(*myStats, *target, *target->getStats(), dist, hasrangedweapon);
                 if ( oldDefend != monsterDefend )
                 {
@@ -11142,13 +11142,13 @@ bool forceFollower(Entity& leader, Entity& follower)
         return false;
     }
 
-    auto myuid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
+    const auto myuid = static_cast<Uint32*>(malloc(sizeof(Uint32)));
     *myuid = follower.getUID();
 
     //Deal with the old leader.
     if ( followerStats->leader_uid != 0 )
     {
-        Entity* oldLeader = uidToEntity(followerStats->leader_uid);
+        const Entity* oldLeader = uidToEntity(followerStats->leader_uid);
         if ( oldLeader )
         {
             Stat* oldLeaderStats = oldLeader->getStats();
@@ -11177,9 +11177,9 @@ bool forceFollower(Entity& leader, Entity& follower)
     follower.monsterAllyIndex = -1;
     followerStats->leader_uid = leader.getUID();
 
-    for ( node_t* node = leaderStats->FOLLOWERS.first; node != nullptr; node = node->next )
+    for (const node_t* node = leaderStats->FOLLOWERS.first; node != nullptr; node = node->next )
     {
-        auto c = static_cast<Uint32*>(node->element);
+        const auto c = static_cast<Uint32*>(node->element);
         Entity* entity = nullptr;
         if ( c )
         {
@@ -11191,7 +11191,7 @@ bool forceFollower(Entity& leader, Entity& follower)
         }
     }
 
-    int player = leader.isEntityPlayer();
+    const int player = leader.isEntityPlayer();
     
     if (player >= 0 && player < MAXPLAYERS && ((followerStats->type == HUMAN || followerStats->type == SLIME) || followerStats->name[0]))
     {
@@ -11199,17 +11199,17 @@ bool forceFollower(Entity& leader, Entity& follower)
         if ( followerStats->type == HUMAN && 
             !followerStats->name[0] 
             && !monsterNameIsGeneric(*followerStats)) {
-            auto& names = followerStats->sex == FEMALE ?
+            const auto& names = followerStats->sex == FEMALE ?
                 randomNPCNamesFemale : randomNPCNamesMale;
             const int choice = local_rng.uniform(0, static_cast<int>(names.size()) - 1);
-            auto name = names[choice].c_str();
-            size_t len = names[choice].size();
+            const auto name = names[choice].c_str();
+            const size_t len = names[choice].size();
             stringCopy(followerStats->name, name, sizeof(Stat::name), len);
         }
         else if ( followerStats->type == SLIME
             && !followerStats->name[0] )
         {
-            std::string name = getMonsterLocalizedName(SLIME);
+            const std::string name = getMonsterLocalizedName(SLIME);
             stringCopy(followerStats->name, name.c_str(), sizeof(Stat::name), name.size());
         }
         
@@ -12106,7 +12106,7 @@ bool Entity::handleMonsterSpecialAttack(Stat* myStats, Entity* target, double di
 void getTargetsAroundEntity(Entity* my, Entity* originalTarget, double distToFind, real_t angleToSearch, int searchType, list_t** list)
 {
     Entity* entity = nullptr;
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
     node_t* node2 = nullptr;
 
     // aoe
@@ -12140,7 +12140,7 @@ void getTargetsAroundEntity(Entity* my, Entity* originalTarget, double distToFin
             {
             }
 
-            double aoeTangent = atan2(entity->y - my->y, entity->x - my->x);
+            const double aoeTangent = atan2(entity->y - my->y, entity->x - my->x);
             real_t angle = my->yaw - aoeTangent;
             while ( angle >= PI )
             {
@@ -12152,7 +12152,7 @@ void getTargetsAroundEntity(Entity* my, Entity* originalTarget, double distToFin
             }
             if ( abs(angle) <= angleToSearch ) // searches in 2x the given angle, +/- from yaw.
             {
-                double dist = sqrt(pow(my->x - entity->x, 2) + pow(my->y - entity->y, 2));
+                const double dist = sqrt(pow(my->x - entity->x, 2) + pow(my->y - entity->y, 2));
                 if ( dist < distToFind )
                 {
                     //If this is the first entity found, the list needs to be created.
@@ -12201,7 +12201,7 @@ bool handleMonsterChatter(int monsterclicked, bool ringconflict, char namesays[6
         return false;
     }
 
-    int NPCtype = myStats->MISC_FLAGS[STAT_FLAG_NPC] & 0xFF; // get NPC type, lowest 8 bits.
+    const int NPCtype = myStats->MISC_FLAGS[STAT_FLAG_NPC] & 0xFF; // get NPC type, lowest 8 bits.
     int NPClastLines[MAXPLAYERS];
     for ( int i = 0; i < MAXPLAYERS; ++i )
     {
@@ -12210,7 +12210,7 @@ bool handleMonsterChatter(int monsterclicked, bool ringconflict, char namesays[6
     int& NPClastLine = NPClastLines[monsterclicked];
 
     int numLines = 0;
-    int startLine = 2700 + (NPCtype - 1) * MONSTER_NPC_DIALOGUE_LINES; // lang line to start from.
+    const int startLine = 2700 + (NPCtype - 1) * MONSTER_NPC_DIALOGUE_LINES; // lang line to start from.
     int currentLine = startLine + 1;
 
     bool isSequential = false;
@@ -12275,7 +12275,7 @@ bool handleMonsterChatter(int monsterclicked, bool ringconflict, char namesays[6
 
 int numMonsterTypeAliveOnMap(Monster creature, Entity*& lastMonster)
 {
-    node_t* node = nullptr;
+    const node_t* node = nullptr;
     Entity* entity = nullptr;
     int monsterCount = 0;
     for ( node = map.creatures->first; node != nullptr; node = node->next )
@@ -12371,7 +12371,7 @@ void Entity::monsterMoveBackwardsAndPath(bool trySidesFirst)
                 index = 0;
             }
 
-            std::pair<int, int> tmpPair = sidesToTry[index];
+            const std::pair<int, int> tmpPair = sidesToTry[index];
             u = tmpPair.first;
             v = tmpPair.second;
             if ( !checkObstacle((u << 4) + 8, (v << 4) + 8, this, nullptr) )
@@ -12386,8 +12386,8 @@ void Entity::monsterMoveBackwardsAndPath(bool trySidesFirst)
     }
     while ( areaToTry.size() > 0 && !foundplace )
     {
-        size_t index = local_rng.rand() % areaToTry.size();
-        std::pair<int, int> tmpPair = areaToTry[index];
+        const size_t index = local_rng.rand() % areaToTry.size();
+        const std::pair<int, int> tmpPair = areaToTry[index];
         u = tmpPair.first;
         v = tmpPair.second;
         if ( !checkObstacle((u << 4) + 8, (v << 4) + 8, this, nullptr) )
@@ -12413,7 +12413,7 @@ void Entity::monsterMoveBackwardsAndPath(bool trySidesFirst)
 
 bool Entity::monsterHasLeader()
 {
-    Stat* myStats = this->getStats();
+    const Stat* myStats = this->getStats();
     if ( myStats )
     {
         if ( myStats->leader_uid != 0 )
@@ -12488,7 +12488,7 @@ void Entity::monsterAllySendCommand(int command, int destX, int destY, Uint32 ui
         return;
     }
 
-    bool isTinkeringFollower = FollowerMenu[playerLeader].isTinkeringFollower(myStats->type);
+    const bool isTinkeringFollower = FollowerMenu[playerLeader].isTinkeringFollower(myStats->type);
     int tinkeringLVL = 0;
     int skillLVL = 0;
     if ( stats[playerLeader] )
@@ -12533,7 +12533,7 @@ void Entity::monsterAllySendCommand(int command, int destX, int destY, Uint32 ui
         case ALLY_CMD_RETURN_SOUL:
             if ( monsterAllySummonRank != 0 && myStats->type == SKELETON )
             {
-                float manaToRefund = myStats->MAXMP * (myStats->HP / static_cast<float>(myStats->MAXHP));
+                const float manaToRefund = myStats->MAXMP * (myStats->HP / static_cast<float>(myStats->MAXHP));
                 setMP(static_cast<int>(manaToRefund));
                 setHP(0);
                 if ( stats[playerLeader] && stats[playerLeader]->MP == 0 )
@@ -12759,15 +12759,15 @@ void Entity::monsterAllySendCommand(int command, int destX, int destY, Uint32 ui
             {
                 bool droppedSomething = false;
                 node_t* nextnode = nullptr;
-                for ( node_t* node = myStats->inventory.first; node; node = nextnode )
+                for (const node_t* node = myStats->inventory.first; node; node = nextnode )
                 {
                     nextnode = node->next;
-                    auto item = static_cast<Item*>(node->element);
+                    const auto item = static_cast<Item*>(node->element);
                     if ( item )
                     {
                         if ( itemIsThrowableTinkerTool(item) && item->status > BROKEN )
                         {
-                            int count = item->count;
+                            const int count = item->count;
                             this->monsterEquipItem(*item, &myStats->weapon);
                             this->attack(0, 0, nullptr);
                             if ( count > 1 )
@@ -12781,7 +12781,7 @@ void Entity::monsterAllySendCommand(int command, int destX, int destY, Uint32 ui
                         {
                             for ( int c = item->count; c > 0; --c )
                             {
-                                Entity* dropped = dropItemMonster(item, this, myStats, item->count);
+                                const Entity* dropped = dropItemMonster(item, this, myStats, item->count);
                                 if ( dropped )
                                 {
                                     c = 0;
@@ -12799,11 +12799,11 @@ void Entity::monsterAllySendCommand(int command, int destX, int destY, Uint32 ui
             }
             else if ( stats[playerLeader] )
             {
-                Entity* dropped = nullptr;
+                const Entity* dropped = nullptr;
                 bool confirmDropped = false;
                 bool dropWeaponOnly = false;
                 bool unableToDrop = false;
-                Uint32 owner = players[playerLeader]->entity->getUID();
+                const Uint32 owner = players[playerLeader]->entity->getUID();
                 if ( skillLVL >= SKILL_LEVEL_MASTER )
                 {
                     if ( myStats->helmet )
@@ -12970,9 +12970,9 @@ void Entity::monsterAllySendCommand(int command, int destX, int destY, Uint32 ui
         {
             if ( myStats->type == SENTRYBOT || myStats->type == SPELLBOT )
             {
-                real_t floatx = destX * 16 + 8;
-                real_t floaty = destY * 16 + 8;
-                double tangent = atan2(floaty - y, floatx - x);
+                const real_t floatx = destX * 16 + 8;
+                const real_t floaty = destY * 16 + 8;
+                const double tangent = atan2(floaty - y, floatx - x);
                 monsterLookTime = 1;
                 monsterMoveTime = local_rng.rand() % 10 + 1;
                 monsterLookDir = tangent;
@@ -13012,7 +13012,7 @@ void Entity::monsterAllySendCommand(int command, int destX, int destY, Uint32 ui
                 {
                     if ( monsterY >= 0 && monsterY < map.height )
                     {
-                        int index = (monsterY) * MAP_LAYERS + (monsterX) * MAP_LAYERS * map.height;
+                        const int index = (monsterY) * MAP_LAYERS + (monsterX) * MAP_LAYERS * map.height;
                         noground = !map.tiles[index];
                     }
                 }
@@ -13060,7 +13060,7 @@ void Entity::monsterAllySendCommand(int command, int destX, int destY, Uint32 ui
                 }
                 else
                 {
-                    int duration = TICKS_PER_SECOND * (60);
+                    const int duration = TICKS_PER_SECOND * (60);
                     if ( myStats->HP < myStats->MAXHP && setEffect(EFF_ASLEEP, true, duration, false) ) // 60 seconds of sleep.
                     {
                         setEffect(EFF_HP_REGEN, true, duration, false);
@@ -13120,7 +13120,7 @@ bool Entity::monsterAllySetInteract()
         return false;
     }
     // check distance to interactable.
-    double range = pow(y - target->y, 2) + pow(x - target->x, 2);
+    const double range = pow(y - target->y, 2) + pow(x - target->x, 2);
     if ( range < 576 ) // 24 squared
     {
         if ( getMonsterTypeFromSprite() == GYROBOT 
@@ -13293,7 +13293,7 @@ bool Entity::gyrobotSetPathToReturnLocation(int destX, int destY, int adjacentTi
     }
     else if ( !checkObstacle((destX << 4) + 8, (destY << 4) + 8, this, nullptr) )
     {
-        int index = (destY)* MAP_LAYERS + (destX)* MAP_LAYERS * map.height;
+        const int index = (destY)* MAP_LAYERS + (destX)* MAP_LAYERS * map.height;
         if ( !tryRandomSpot && map.tiles[index] )
         {
             foundplace = true; // we can path directly to the destination specified.
@@ -13314,7 +13314,7 @@ bool Entity::gyrobotSetPathToReturnLocation(int destX, int destY, int adjacentTi
                 }
                 else if ( !checkObstacle((u << 4) + 8, (v << 4) + 8, this, nullptr) )
                 {
-                    int index = (v) * MAP_LAYERS + (u) * MAP_LAYERS * map.height;
+                    const int index = (v) * MAP_LAYERS + (u) * MAP_LAYERS * map.height;
                     if ( !map.tiles[index] )
                     {
                         continue; // bad spot to land
@@ -13802,7 +13802,7 @@ int Entity::shouldMonsterDefend(Stat& myStats, const Entity& target, const Stat&
         return MONSTER_DEFEND_NONE;
     }
 
-    bool isPlayerAlly = (monsterAllyIndex >= 0 && monsterAllyIndex < MAXPLAYERS);
+    const bool isPlayerAlly = (monsterAllyIndex >= 0 && monsterAllyIndex < MAXPLAYERS);
     
     if ( !(isPlayerAlly || myStats.type == HUMAN || myStats.type == BUGBEAR || myStats.type == GREMLIN || myStats.type == GOATMAN) )
     {
@@ -13810,13 +13810,13 @@ int Entity::shouldMonsterDefend(Stat& myStats, const Entity& target, const Stat&
     }
     
     int blockChance = 2; // 10%
-    bool targetHasRangedWeapon = target.hasRangedWeapon();
+    const bool targetHasRangedWeapon = target.hasRangedWeapon();
 
     if ( isPlayerAlly )
     {
         if ( stats[monsterAllyIndex] && players[monsterAllyIndex] && players[monsterAllyIndex]->entity )
         {
-            int leaderSkill = std::max(players[monsterAllyIndex]->entity->getCHR(), 0) + stats[monsterAllyIndex]->getModifiedProficiency(PRO_LEADERSHIP);
+            const int leaderSkill = std::max(players[monsterAllyIndex]->entity->getCHR(), 0) + stats[monsterAllyIndex]->getModifiedProficiency(PRO_LEADERSHIP);
             blockChance += std::max(0, (leaderSkill / 20) * 2); // 0-25% bonus to blockchance.
         }
     }
@@ -14127,7 +14127,7 @@ Entity* Entity::monsterAllyGetPlayerLeader() const
 
 bool Entity::monsterAllyEquipmentInClass(const Item& item) const
 {
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( !myStats )
     {
         return false;
@@ -14340,7 +14340,7 @@ bool Entity::monsterAllyEquipmentInClass(const Item& item) const
 
 bool Entity::monsterIsTinkeringCreation()
 {
-    int race = this->getMonsterTypeFromSprite();
+    const int race = this->getMonsterTypeFromSprite();
     if ( behavior != &actMonster )
     {
         return false;
@@ -14356,9 +14356,9 @@ void Entity::monsterHandleKnockbackVelocity(real_t monsterFacingTangent, real_t 
 {
     // this function makes the monster accelerate to running forwards or 0 movement speed after being knocked back.
     // vel_x, vel_y are set on knockback impact and this slowly accumulates speed from the knocked back movement by a factor of monsterKnockbackVelocity.
-    real_t maxVelX = cos(monsterFacingTangent) * .045 * (std::max(0, monsterGetDexterityForMovement()) + 10) * weightratio;
-    real_t maxVelY = sin(monsterFacingTangent) * .045 * (std::max(0, monsterGetDexterityForMovement()) + 10) * weightratio;
-    bool mobile = ((monsterState == MONSTER_STATE_WAIT) || isMobile()); // if immobile, the intended max speed is 0 (stopped).
+    const real_t maxVelX = cos(monsterFacingTangent) * .045 * (std::max(0, monsterGetDexterityForMovement()) + 10) * weightratio;
+    const real_t maxVelY = sin(monsterFacingTangent) * .045 * (std::max(0, monsterGetDexterityForMovement()) + 10) * weightratio;
+    const bool mobile = ((monsterState == MONSTER_STATE_WAIT) || isMobile()); // if immobile, the intended max speed is 0 (stopped).
     
     if ( maxVelX > 0 )
     {
@@ -14393,7 +14393,7 @@ int Entity::monsterGetDexterityForMovement()
     {
         myDex = std::min(myDex, MONSTER_ALLY_DEXTERITY_SPEED_CAP);
     }
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( myStats )
     {
         if ( myStats->getEffectActive(EFF_DASH) )
@@ -14654,7 +14654,7 @@ void Entity::monsterGenerateQuiverItem(Stat* myStats, bool lesserMonster)
 int Entity::getMonsterEffectiveDistanceOfRangedWeapon(Item* weapon)
 {
     int distance = 160;
-    if ( Stat* myStats = getStats() )
+    if (const Stat* myStats = getStats() )
     {
         if ( myStats->type == DRYAD )
         {
@@ -14765,8 +14765,8 @@ bool Entity::monsterIsTargetable(bool targetInertMimics) const
         return true;
     }
     else if ( behavior == &actMonster ) 
-    { 
-        Monster type = getMonsterTypeFromSprite();
+    {
+        const Monster type = getMonsterTypeFromSprite();
         if ( type == GYROBOT )
         {
             return false;
@@ -14797,15 +14797,15 @@ void batResetIdle(Entity* my)
     // reset to inert after wandering with no target
 
     bool canRest = true;
-    int x = my->x / 16;
-    int y = my->y / 16;
+    const int x = my->x / 16;
+    const int y = my->y / 16;
     std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(my, 2);
     for (auto it = entLists.begin(); it != entLists.end() && canRest; ++it )
     {
-        list_t* currentList = *it;
-        for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+        const list_t* currentList = *it;
+        for (const node_t* node = currentList->first; node != nullptr; node = node->next )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             if ( entity == my )
             {
                 continue;
@@ -14816,8 +14816,8 @@ void batResetIdle(Entity* my)
                 || entity->behavior == &actBell
                 || entity->behavior == &actStalagCeiling )
             {
-                int x2 = entity->x / 16;
-                int y2 = entity->y / 16;
+                const int x2 = entity->x / 16;
+                const int y2 = entity->y / 16;
                 if ( x == x2 && y == y2 )
                 {
                     canRest = false;
@@ -14856,10 +14856,10 @@ void mimicResetIdle(Entity* my)
     tilesToCheck.push_back(std::make_pair(x, y - 1));
 
     bool foundWall = false;
-    for ( auto& pair : tilesToCheck )
+    for (const auto& pair : tilesToCheck )
     {
-        int tx = pair.first;
-        int ty = pair.second;
+        const int tx = pair.first;
+        const int ty = pair.second;
         if ( map.tiles[OBSTACLELAYER + ((ty)*MAP_LAYERS + (tx)*MAP_LAYERS * map.height)] )
         {
             if ( tx == x + 1 )
@@ -14884,10 +14884,10 @@ void mimicResetIdle(Entity* my)
 
     if ( !foundWall )
     {
-        for ( auto& pair : tilesToCheck )
+        for (const auto& pair : tilesToCheck )
         {
-            int tx = pair.first;
-            int ty = pair.second;
+            const int tx = pair.first;
+            const int ty = pair.second;
 
             if ( checkObstacle((tx << 4) + 8, (ty << 4) + 8, my, nullptr) )
             {
@@ -15402,7 +15402,7 @@ bool Entity::monsterCanTradeWith(int player)  const
     if ( behavior == &actMonster )
     {
         Monster type = NOTHING;
-        if ( Stat* myStats = getStats() )
+        if (const Stat* myStats = getStats() )
         {
             type = myStats->type;
         }

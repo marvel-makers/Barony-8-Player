@@ -65,7 +65,7 @@ void initShadow(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             const bool boss =
                 rng.rand() % 50 == 0 &&
@@ -123,7 +123,7 @@ void initShadow(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
                                                          // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -501,7 +501,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
 
-    Entity* shieldarm = nullptr;
+    const Entity* shieldarm = nullptr;
 
     //Move bodyparts
     for ( bodypart = 0, node = my->children.first; node != nullptr; node = node->next, bodypart++ )
@@ -557,14 +557,14 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 // leftarm follows the right arm during special mimic attack
                 // will not work when shield is visible
                 // else animate normally.
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] )
                     {
-                        Entity* weaponarm = nullptr;
-                        node_t* weaponarmNode = list_Node(&my->children, LIMB_HUMANOID_RIGHTARM);
+                        const Entity* weaponarm = nullptr;
+                        const node_t* weaponarmNode = list_Node(&my->children, LIMB_HUMANOID_RIGHTARM);
                         if ( weaponarmNode )
                         {
                             weaponarm = static_cast<Entity*>(weaponarmNode->element);
@@ -582,9 +582,9 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
             {
                 if ( bodypart == LIMB_HUMANOID_RIGHTLEG )
                 {
-                    Entity* rightbody = nullptr;
+                    const Entity* rightbody = nullptr;
                     // set rightbody to left leg.
-                    node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
+                    const node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
                     if ( rightbodyNode )
                     {
                         rightbody = static_cast<Entity*>(rightbodyNode->element);
@@ -594,10 +594,10 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
                         return;
                     }
 
-                    node_t* shieldNode = list_Node(&my->children, 8);
+                    const node_t* shieldNode = list_Node(&my->children, 8);
                     if ( shieldNode )
                     {
-                        auto shield = static_cast<Entity*>(shieldNode->element);
+                        const auto shield = static_cast<Entity*>(shieldNode->element);
                         if ( dist > 0.1 && (bodypart != LIMB_HUMANOID_LEFTARM || shield->sprite == 0) )
                         {
                             // walking to destination
@@ -662,9 +662,9 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 weaponarm = entity;
                 if ( my->monsterAttack > 0 )
                 {
-                    Entity* rightbody = nullptr;
+                    const Entity* rightbody = nullptr;
                     // set rightbody to left leg.
-                    node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
+                    const node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
                     if ( rightbodyNode )
                     {
                         rightbody = static_cast<Entity*>(rightbodyNode->element);
@@ -713,7 +713,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
                                 Entity* target = uidToEntity(my->monsterTarget);
                                 if ( target )
                                 {
-                                    Entity* spellEntity = createParticleSapCenter(my, target, SHADOW_SPELLCAST, 624, 624);
+                                    const Entity* spellEntity = createParticleSapCenter(my, target, SHADOW_SPELLCAST, 624, 624);
                                     if ( spellEntity )
                                     {
                                         playSoundEntity(target, 251, 128); // play sound on hit target.
@@ -755,7 +755,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
                             my->monsterArmbended = 0;
                             my->monsterAttack = 0;
                             Entity* leftarm = nullptr;
-                            node_t* leftarmNode = list_Node(&my->children, LIMB_HUMANOID_LEFTARM);
+                            const node_t* leftarmNode = list_Node(&my->children, LIMB_HUMANOID_LEFTARM);
                             if ( leftarmNode )
                             {
                                 leftarm = static_cast<Entity*>(leftarmNode->element);
@@ -791,7 +791,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
                                 my->monsterAttack = 0;
                                 Entity* leftarm = nullptr;
                                 // set leftbody to right leg.
-                                node_t* leftarmNode = list_Node(&my->children, LIMB_HUMANOID_RIGHTLEG);
+                                const node_t* leftarmNode = list_Node(&my->children, LIMB_HUMANOID_RIGHTLEG);
                                 if ( leftarmNode )
                                 {
                                     leftarm = static_cast<Entity*>(leftarmNode->element);
@@ -944,10 +944,10 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
             // right arm
             case LIMB_HUMANOID_RIGHTARM:
             {
-                node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
+                const node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
                 if ( weaponNode )
                 {
-                    auto weapon = static_cast<Entity*>(weaponNode->element);
+                    const auto weapon = static_cast<Entity*>(weaponNode->element);
                     if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT) )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -981,10 +981,10 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
             case LIMB_HUMANOID_LEFTARM:
             {
                 shieldarm = entity;
-                node_t* shieldNode = list_Node(&my->children, 8);
+                const node_t* shieldNode = list_Node(&my->children, 8);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -1382,10 +1382,10 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, 8);
+    const node_t* shieldNode = list_Node(&my->children, 8);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;
@@ -1407,7 +1407,7 @@ void shadowMoveBodyparts(Entity* my, Stat* myStats, double dist)
 
 bool Entity::shadowCanWieldItem(const Item& item) const
 {
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( !myStats )
     {
         return false;
@@ -1443,7 +1443,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
         return;
     }
 
-    Entity *target = uidToEntity(monsterTarget);
+    const Entity *target = uidToEntity(monsterTarget);
     if ( !target )
     {
         //messagePlayer(clientnum, "Shadow's target deaded!");
@@ -1451,7 +1451,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
         return;
     }
 
-    Stat* targetStats = target->getStats();
+    const Stat* targetStats = target->getStats();
     if ( !targetStats )
     {
         monsterReleaseAttackTarget(true); //Force get rid of the target since it has no stats -- it's useless to us!
@@ -1487,7 +1487,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
         //messagePlayer(clientnum, "[DEBUG: Entity::shadowSpecialAbility() ] Initial mimic.");
         //TODO: On initial mimic, need to reset some the tracking info on what's already been mimic'ed.
         //Such as dropping already equipped items.
-        bool shadowAlreadyStartedWithWeapon = (myStats->weapon != nullptr);
+        const bool shadowAlreadyStartedWithWeapon = (myStats->weapon != nullptr);
         if ( !shadowAlreadyStartedWithWeapon )
         {
             if ( itemCategory(myStats->weapon) == SPELLBOOK )
@@ -1508,12 +1508,12 @@ void Entity::shadowSpecialAbility(bool initialMimic)
         //Spells do not get reset.
 
         //On initial mimic, copy best melee weapon and shield from target's hands or inventory.
-        Item *bestMeleeWeapon = target->getBestMeleeWeaponIHave();
-        Item *bestShield = target->getBestShieldIHave();
+        const Item *bestMeleeWeapon = target->getBestMeleeWeaponIHave();
+        const Item *bestShield = target->getBestShieldIHave();
 
         if ( bestMeleeWeapon && !shadowAlreadyStartedWithWeapon )
         {
-            auto wieldedCopy = new Item();
+            const auto wieldedCopy = new Item();
             copyItem(wieldedCopy, bestMeleeWeapon);
             wieldedCopy->appearance = MONSTER_ITEM_UNDROPPABLE_APPEARANCE;
             monsterEquipItem(*wieldedCopy, &myStats->weapon);
@@ -1521,7 +1521,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
 
         if ( bestShield )
         {
-            auto wieldedCopy = new Item();
+            const auto wieldedCopy = new Item();
             copyItem(wieldedCopy, bestShield);
             wieldedCopy->appearance = MONSTER_ITEM_UNDROPPABLE_APPEARANCE;
             monsterEquipItem(*wieldedCopy, &myStats->shield);
@@ -1559,7 +1559,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
     //Now choose a random skill and copy it over.
     for ( int skillsMimicked = 0; skillsCanMimic.size() && skillsMimicked < numSkillsToMimic; ++skillsMimicked )
     {
-        int choosen = local_rng.rand()%skillsCanMimic.size();
+        const int choosen = local_rng.rand()%skillsCanMimic.size();
         myStats->setProficiency(skillsCanMimic[choosen], targetStats->getModifiedProficiency(skillsCanMimic[choosen]));
 
         //messagePlayer(clientnum, "DEBUG: Shadow mimicked skill %d.", skillsCanMimic[choosen]);
@@ -1573,15 +1573,15 @@ void Entity::shadowSpecialAbility(bool initialMimic)
     std::vector<int> spellsCanMimic; //Array of spell IDs.
     if ( target->behavior == actMonster && itemCategory(targetStats->weapon) == SPELLBOOK )
     {
-        int spellID = getSpellIDFromSpellbook(targetStats->weapon->type);
+        const int spellID = getSpellIDFromSpellbook(targetStats->weapon->type);
         if ( spellID != SPELL_NONE && shadowCanMimickSpell(spellID) && !monsterHasSpellbook(getSpellIDFromSpellbook(targetStats->weapon->type)) )
         {
             spellsCanMimic.push_back(spellID);
         }
     }
-    for ( node_t* node = targetStats->inventory.first; node; node = node->next)
+    for (const node_t* node = targetStats->inventory.first; node; node = node->next)
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( !item )
         {
             continue;
@@ -1595,7 +1595,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
                 continue;
             }
 
-            spell_t *spell = getSpellFromItem(target->skill[2], item, false); //Do not free or delete this.
+            const spell_t *spell = getSpellFromItem(target->skill[2], item, false); //Do not free or delete this.
             if ( !spell )
             {
                 continue;
@@ -1627,7 +1627,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
                 continue;
             }
 
-            spell_t *spell = getSpellFromID(getSpellIDFromSpellbook(item->type));
+            const spell_t *spell = getSpellFromID(getSpellIDFromSpellbook(item->type));
 
             if ( shadowCanMimickSpell(spell->ID) && !monsterHasSpellbook(getSpellIDFromSpellbook(item->type)) )
             {
@@ -1638,7 +1638,7 @@ void Entity::shadowSpecialAbility(bool initialMimic)
     //Now randomly choose & copy over a spell.
     for ( int spellsMimicked = 0; spellsCanMimic.size() && spellsMimicked < numSkillsToMimic; ++spellsMimicked )
     {
-        int choosen = local_rng.rand()%spellsCanMimic.size();
+        const int choosen = local_rng.rand()%spellsCanMimic.size();
 
         int spellbookType = getSpellbookFromSpellID(spellsCanMimic[choosen]);
         if ( spellbookType == WOODEN_SHIELD )
@@ -1690,7 +1690,7 @@ bool Entity::shadowCanMimickSpell(int spellID)
 
 void Entity::shadowTeleportToTarget(const Entity* target, int range)
 {
-    Entity* spellTimer = createParticleTimer(this, 60, 625);
+    const Entity* spellTimer = createParticleTimer(this, 60, 625);
     spellTimer->particleTimerPreDelay = 20; // wait 20 ticks before animation.
     spellTimer->particleTimerEndAction = PARTICLE_EFFECT_SHADOW_TELEPORT; // teleport behavior of timer.
     spellTimer->particleTimerEndSprite = 625; // sprite to use for end of timer function.
@@ -1731,12 +1731,12 @@ void Entity::shadowChooseWeapon(const Entity* target, double dist)
 
     int specialRoll = -1;
 
-    bool inMeleeRange = monsterInMeleeRange(target, dist);
+    const bool inMeleeRange = monsterInMeleeRange(target, dist);
 
     if ( monsterSpecialTimer == 0 && (ticks % 10 == 0) && monsterAttack == 0 )
     {
         //messagePlayer(clientnum, "Preliminary special check.");
-        Stat* targetStats = target->getStats();
+        const Stat* targetStats = target->getStats();
         if ( !targetStats )
         {
             return;
@@ -1747,7 +1747,7 @@ void Entity::shadowChooseWeapon(const Entity* target, double dist)
         // occurs less often against fellow monsters.
         specialRoll = local_rng.rand() % (20 + 50 * (target->behavior == &actMonster));
 
-        int requiredRoll = 10;
+        const int requiredRoll = 10;
 
         // check the roll
         if ( specialRoll < requiredRoll )
@@ -1803,7 +1803,7 @@ void Entity::shadowChooseWeapon(const Entity* target, double dist)
                 return; //Resort to fists.
             }
 
-            bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, weaponNode, false, false);
+            const bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, weaponNode, false, false);
             if ( !swapped )
             {
                 //Don't return so that monsters will at least equip ranged weapons in melee range if they don't have anything else.

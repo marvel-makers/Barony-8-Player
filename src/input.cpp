@@ -191,7 +191,7 @@ float Input::analog(const char* binding) const {
         return inputs[0].analog(binding);
     }
     if (disabled) { return 0.f; }
-    auto b = bindings.find(binding);
+    const auto b = bindings.find(binding);
     return b != bindings.end() ? (*b).second.analog : 0.f;
 }
 
@@ -200,7 +200,7 @@ bool Input::binary(const char* binding) const {
         return inputs[0].binary(binding);
     }
     if (disabled) { return false; }
-    auto b = bindings.find(binding);
+    const auto b = bindings.find(binding);
     if (b == bindings.end()) {
         return false;
     } else {
@@ -215,7 +215,7 @@ bool Input::binaryToggle(const char* binding) const {
         return inputs[0].binaryToggle(binding);
     }
     if (disabled) { return false; }
-    auto b = bindings.find(binding);
+    const auto b = bindings.find(binding);
     if (b == bindings.end()) {
         return false;
     } else {
@@ -229,7 +229,7 @@ bool Input::consumeBinary(const char* binding) {
     if (multiplayer != SINGLE && player != 0) {
         return inputs[0].consumeBinary(binding);
     }
-    auto b = bindings.find(binding);
+    const auto b = bindings.find(binding);
     if (b != bindings.end() && !(*b).second.consumed) {
         (*b).second.consumed = true;
         return disabled == false;
@@ -242,7 +242,7 @@ bool Input::consumeBinaryToggle(const char* binding) {
     if (multiplayer != SINGLE && player != 0) {
         return inputs[0].consumeBinaryToggle(binding);
     }
-    auto b = bindings.find(binding);
+    const auto b = bindings.find(binding);
     if (b != bindings.end() && (*b).second.binary && !(*b).second.consumed) {
         (*b).second.consumed = true;
         return disabled == false;
@@ -256,7 +256,7 @@ bool Input::binaryHeldToggle(const char* binding) const {
         return inputs[0].binaryHeldToggle(binding);
     }
     if (disabled) { return false; }
-    auto b = bindings.find(binding);
+    const auto b = bindings.find(binding);
     return b != bindings.end() 
         ? ((*b).second.binary && !(*b).second.consumed && (ticks - (*b).second.heldTicks) > BUTTON_HELD_TICKS)
         : false;
@@ -266,7 +266,7 @@ const char* Input::binding(const char* binding) const {
     if (multiplayer != SINGLE && player != 0) {
         return inputs[0].binding(binding);
     }
-    auto b = bindings.find(binding);
+    const auto b = bindings.find(binding);
     return b != bindings.end() ? (*b).second.input.c_str() : "";
 }
 
@@ -459,7 +459,7 @@ std::string Input::getGlyphPathForInput(const char* input, bool pressed, Control
         };
         
         // look for glyph in table
-        auto find = mappings.find(input);
+        const auto find = mappings.find(input);
         if (find != mappings.end()) {
             auto& glyphs = find->second;
             return pressed ? rootPath + glyphs.second : rootPath + glyphs.first;
@@ -501,7 +501,7 @@ std::string Input::getGlyphPathForInput(const char* input, bool pressed, Control
         };
         
         // look for glyph in table
-        auto find = mappings.find(input);
+        const auto find = mappings.find(input);
         if (find != mappings.end()) {
             auto& glyphs = find->second;
             return pressed ? rootPath + glyphs.second : rootPath + glyphs.first;
@@ -544,7 +544,7 @@ std::string Input::getGlyphPathForInput(const char* input, bool pressed, Control
         };
         
         // look for glyph in table
-        auto find = mappings.find(input);
+        const auto find = mappings.find(input);
         if (find != mappings.end()) {
             auto& glyphs = find->second;
             return pressed ? rootPath + glyphs.second : rootPath + glyphs.first;
@@ -587,7 +587,7 @@ std::string Input::getGlyphPathForInput(const char* input, bool pressed, Control
         };
         
         // look for glyph in table
-        auto find = mappings.find(input);
+        const auto find = mappings.find(input);
         if (find != mappings.end()) {
             auto& glyphs = find->second;
             return pressed ? rootPath + glyphs.second : rootPath + glyphs.first;
@@ -595,7 +595,7 @@ std::string Input::getGlyphPathForInput(const char* input, bool pressed, Control
     }
 
     // if the above lookups don't work, it's probably a keyboard glyph
-    auto keycode = getKeycodeFromName(input);
+    const auto keycode = getKeycodeFromName(input);
     return GlyphHelper.getGlyphPath(keycode, pressed);
 }
 
@@ -623,7 +623,7 @@ std::string Input::getGlyphPathForBinding(const binding_t& binding, bool pressed
 void Input::bind(const char* binding, const char* input) {
     auto b = bindings.find(binding);
     if (b == bindings.end()) {
-        auto result = bindings.emplace(binding, binding_t());
+        const auto result = bindings.emplace(binding, binding_t());
         b = result.first;
     }
     (*b).second.input.assign(input);
@@ -632,16 +632,16 @@ void Input::bind(const char* binding, const char* input) {
         return;
     }
 
-    size_t len = strlen(input);
+    const size_t len = strlen(input);
     if (len >= 3 && strncmp(input, "Pad", 3) == 0) {
         // game controller
 
         char* type = nullptr;
-        Uint32 index = static_cast<Uint32>(strtol(input + 3, &type, 10));
+        const Uint32 index = static_cast<Uint32>(strtol(input + 3, &type, 10));
         bool foundControllerForPlayer = false;
         SDL_GameController* pad = nullptr;
 #ifndef EDITOR
-        if ( auto controller = ::inputs.getController(player) )
+        if (const auto controller = ::inputs.getController(player) )
         {
             foundControllerForPlayer = true;
             pad = controller->getControllerDevice();
@@ -805,9 +805,9 @@ void Input::bind(const char* binding, const char* input) {
         // joystick
 
         char* type = nullptr;
-        Uint32 index = static_cast<Uint32>(strtol(input + 3, &type, 10));
+        const Uint32 index = static_cast<Uint32>(strtol(input + 3, &type, 10));
         auto& list = joysticks;
-        auto find = list.find(index);
+        const auto find = list.find(index);
         if (find != list.end()) {
             SDL_Joystick* joystick = (*find).second;
             (*b).second.joystick = joystick;
@@ -881,8 +881,8 @@ void Input::bind(const char* binding, const char* input) {
             (*b).second.mouseButton = MOUSE_WHEEL_DOWN;
             return;
         }
-        Uint32 index = static_cast<Uint32>(strtol(input + 5, nullptr, 10));
-        int result = std::min(index, 15U);
+        const Uint32 index = static_cast<Uint32>(strtol(input + 5, nullptr, 10));
+        const int result = std::min(index, 15U);
         (*b).second.mouseButton = result;
         return;
     } else {
@@ -1001,7 +1001,7 @@ bool Input::binaryOf(binding_t& binding) {
     } else if (binding.type == binding_t::MOUSE_BUTTON) {
         return mouseButtons[binding.mouseButton];
     } else if (binding.type == binding_t::KEYBOARD) {
-        SDL_Keycode key = binding.keycode;
+        const SDL_Keycode key = binding.keycode;
         if (key != SDLK_UNKNOWN) {
             return keys[key];
         }
@@ -1071,10 +1071,10 @@ float Input::analogOf(binding_t& binding) {
             return SDL_GameControllerGetButton(pad, binding.padButton) ? 1.f : 0.f;
         } else {
             if (binding.padAxisNegative) {
-                float result = std::min(SDL_GameControllerGetAxis(pad, binding.padAxis) / 32768.f, 0.f) * -1.f;
+                const float result = std::min(SDL_GameControllerGetAxis(pad, binding.padAxis) / 32768.f, 0.f) * -1.f;
                 return (fabs(result) > deadzone) ? result : 0.f;
             } else {
-                float result = std::max(SDL_GameControllerGetAxis(pad, binding.padAxis) / 32767.f, 0.f);
+                const float result = std::max(SDL_GameControllerGetAxis(pad, binding.padAxis) / 32767.f, 0.f);
                 return (fabs(result) > deadzone) ? result : 0.f;
             }
         }
@@ -1088,10 +1088,10 @@ float Input::analogOf(binding_t& binding) {
             return SDL_JoystickGetButton(joystick, binding.joystickButton) ? 1.f : 0.f;
         } else if (binding.type == binding_t::JOYSTICK_AXIS) {
             if (binding.joystickAxisNegative) {
-                float result = std::min(SDL_JoystickGetAxis(joystick, binding.joystickAxis) / 32768.f, 0.f) * -1.f;
+                const float result = std::min(SDL_JoystickGetAxis(joystick, binding.joystickAxis) / 32768.f, 0.f) * -1.f;
                 return (fabs(result) > deadzone) ? result : 0.f;
             } else {
-                float result = std::max(SDL_JoystickGetAxis(joystick, binding.joystickAxis) / 32767.f, 0.f);
+                const float result = std::max(SDL_JoystickGetAxis(joystick, binding.joystickAxis) / 32767.f, 0.f);
                 return (fabs(result) > deadzone) ? result : 0.f;
             }
         } else {
@@ -1100,7 +1100,7 @@ float Input::analogOf(binding_t& binding) {
     } else if (binding.type == binding_t::MOUSE_BUTTON) {
         return mouseButtons[binding.mouseButton] ? 1.f : 0.f;
     } else if (binding.type == binding_t::KEYBOARD) {
-        SDL_Keycode key = binding.keycode;
+        const SDL_Keycode key = binding.keycode;
         if (key != SDLK_UNKNOWN) {
             return keys[key] ? 1.f : 0.f;
         }
@@ -1110,7 +1110,7 @@ float Input::analogOf(binding_t& binding) {
 }
 
 SDL_Keycode Input::getKeycodeFromName(const char* name) {
-    auto search = keycodeNames.find(name);
+    const auto search = keycodeNames.find(name);
     if (search == keycodeNames.end()) {
         SDL_Keycode keycode = SDL_GetKeyFromName(name);
         if (keycode != SDLK_UNKNOWN) {

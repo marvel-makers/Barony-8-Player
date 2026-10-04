@@ -41,8 +41,8 @@
 
 real_t entityDist(Entity* my, Entity* your)
 {
-    real_t dx = my->x - your->x;
-    real_t dy = my->y - your->y;
+    const real_t dx = my->x - your->x;
+    const real_t dy = my->y - your->y;
     return sqrt(dx * dx + dy * dy);
 }
 
@@ -61,7 +61,7 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
 
     Input& input = Input::inputs[player];
 
-    Entity* playerEntity = Player::getPlayerInteractEntity(player);
+    const Entity* playerEntity = Player::getPlayerInteractEntity(player);
 
     if ( gamePaused || movie || !players[player] || !playerEntity
         || playerEntity->ticks < (TICKS_PER_SECOND / 2)
@@ -86,11 +86,11 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
         }
     }
 
-    Sint32 mx = inputs.getMouse(player, Inputs::OX);
-    Sint32 my = inputs.getMouse(player, Inputs::OY);
+    const Sint32 mx = inputs.getMouse(player, Inputs::OX);
+    const Sint32 my = inputs.getMouse(player, Inputs::OY);
     auto& inventoryUI = players[player]->inventoryUI;
 
-    auto& camera = cameras[player];
+    const auto& camera = cameras[player];
 
     if ( !players[player]->shootmode )
     {
@@ -159,9 +159,9 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
         bool waitingForInputHeld = false;
         if ( players[player]->worldUI.tooltipsInRange.size() > 0 )
         {
-            for ( node_t* node = map.worldUI->first; node; node = node->next )
+            for (const node_t* node = map.worldUI->first; node; node = node->next )
             {
-                auto tooltip = static_cast<Entity*>(node->element);
+                const auto tooltip = static_cast<Entity*>(node->element);
                 if ( !tooltip || tooltip->behavior != &actSpriteWorldTooltip )
                 {
                     continue;
@@ -219,7 +219,7 @@ Entity* entityClicked(bool* clickedOnGUI, bool clickCheckOverride, int player, E
             players[player]->movement.monsterEmoteGimpTimer = TICKS_PER_SECOND * 5;
             int sfx = 0;
             int line = 0;
-            int vol = 92;
+            const int vol = 92;
             switch ( stats[player]->type )
             {
                 case SKELETON:
@@ -406,8 +406,8 @@ bool entityInsideTile(Entity* entity, int x, int y, int z, bool checkSafeTiles)
                             return true;
                         }
                         if (entity && entity->behavior == &actMonster) {
-                            bool waterWalking = entity->isWaterWalking();
-                            bool lavaWalking = entity->isLavaWalking();
+                            const bool waterWalking = entity->isWaterWalking();
+                            const bool lavaWalking = entity->isLavaWalking();
                             if ((swimmingtiles[map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height]] && !waterWalking) ||
                                 (lavatiles[map.tiles[z + y * MAP_LAYERS + x * MAP_LAYERS * map.height]] && !lavaWalking))
                             {
@@ -494,10 +494,10 @@ bool entityInsideSomething(Entity* entity)
     std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadiusAroundEntity(entity, 2);
     for (auto it = entLists.begin(); it != entLists.end(); ++it )
     {
-        list_t* currentList = *it;
-        for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+        const list_t* currentList = *it;
+        for (const node_t* node = currentList->first; node != nullptr; node = node->next )
         {
-            auto testEntity = static_cast<Entity*>(node->element);
+            const auto testEntity = static_cast<Entity*>(node->element);
             if ( testEntity == entity || testEntity->flags[PASSABLE] )
             {
                 continue;
@@ -591,7 +591,7 @@ bool Entity::collisionProjectileMiss(Entity* parent, Entity* projectile)
             {
                 if ( projectile->children.first && projectile->children.first->element )
                 {
-                    if (auto spell = static_cast<spell_t*>(projectile->children.first->element) )
+                    if (const auto spell = static_cast<spell_t*>(projectile->children.first->element) )
                     {
                         if ( spell->ID == SPELL_FIREBALL || spell->ID == SPELL_SLIME_FIRE
                             || spell->ID == SPELL_FLAMES || spell->ID == SPELL_METEOR
@@ -631,7 +631,7 @@ bool Entity::collisionProjectileMiss(Entity* parent, Entity* projectile)
             }
             else if ( projectile->flags[BURNING] && (projectile->behavior == &actMonster || projectile->behavior == &actPlayer) )
             {
-                bool prevBurning = this->flags[BURNING];
+                const bool prevBurning = this->flags[BURNING];
                 SetEntityOnFire(projectile);
                 if ( flags[BURNING] )
                 {
@@ -753,7 +753,7 @@ bool Entity::collisionProjectileMiss(Entity* parent, Entity* projectile)
                     fx->x = this->x;
                     fx->y = this->y;
                     fx->z = this->z;
-                    real_t tangent = atan2(projectile->y - this->y, projectile->x - this->x);
+                    const real_t tangent = atan2(projectile->y - this->y, projectile->x - this->x);
                     fx->x += 4.0 * cos(tangent);
                     fx->y += 4.0 * sin(tangent);
                     fx->yaw = tangent;
@@ -782,7 +782,7 @@ bool Entity::collisionProjectileMiss(Entity* parent, Entity* projectile)
                 }
                 bool backstab = false;
                 bool flanking = false;
-                real_t hitAngle = this->yawDifferenceFromEntity(projectile);
+                const real_t hitAngle = this->yawDifferenceFromEntity(projectile);
                 if ( (hitAngle >= 0 && hitAngle <= 2 * PI / 3) ) // 120 degree arc
                 {
                     if ( behavior == &actPlayer )
@@ -811,7 +811,7 @@ bool Entity::collisionProjectileMiss(Entity* parent, Entity* projectile)
                     }
                 }
 
-                bool accuracyBonus = projectile->behavior == &actMagicMissile && myStats->type == BAT_SMALL;
+                const bool accuracyBonus = projectile->behavior == &actMagicMissile && myStats->type == BAT_SMALL;
                 if ( mistFormDodge(false, parent) )
                 {
                     miss = true;
@@ -822,7 +822,7 @@ bool Entity::collisionProjectileMiss(Entity* parent, Entity* projectile)
 
                     if ( myStats->type == DRYAD && myStats->sex == FEMALE && behavior == &actPlayer )
                     {
-                        int baseChance = 5;
+                        const int baseChance = 5;
                         miss = players[this->skill[2]]->mechanics.rollRngProc(Player::PlayerMechanics_t::RngRollTypes::RNG_ROLL_EVASION, baseChance);
                     }
                 }
@@ -1775,8 +1775,8 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
     {
         return nullptr;
     }
-    int originx = static_cast<int>(my->x) >> 4;
-    int originy = static_cast<int>(my->y) >> 4;
+    const int originx = static_cast<int>(my->x) >> 4;
+    const int originy = static_cast<int>(my->y) >> 4;
     std::vector<list_t*> entLists; // stores the possible entities to look through depending on the quadrant.
     // start search from 1 tile behind facing direction in x/y position, extending to the edge of the map in the facing direction.
 
@@ -1884,7 +1884,7 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
     }
 
     //std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-    bool ignoreFurniture = my && my->behavior == &actMonster && myStats
+    const bool ignoreFurniture = my && my->behavior == &actMonster && myStats
         && (myStats->type == SHOPKEEPER
             || myStats->type == MINOTAUR
             || myStats->type == BAT_SMALL
@@ -1896,10 +1896,10 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
 
     for (auto it = entLists.begin(); it != entLists.end(); ++it )
     {
-        list_t* currentList = *it;
-        for ( node_t* node = currentList->first; node != nullptr; node = node->next )
+        const list_t* currentList = *it;
+        for (const node_t* node = currentList->first; node != nullptr; node = node->next )
         {
-            auto entity = static_cast<Entity*>(node->element);
+            const auto entity = static_cast<Entity*>(node->element);
             if ( (entity != target && target != nullptr) || entity->flags[PASSABLE] || entity == my
                 || ((entities & LINETRACE_IGNORE_ENTITIES) && 
                         ( (!entity->flags[BLOCKSIGHT] && entity->behavior != &actMonster) 
@@ -1983,8 +1983,8 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
                 continue;
             }
 
-            int entitymapx = static_cast<int>(entity->x) >> 4;
-            int entitymapy = static_cast<int>(entity->y) >> 4;
+            const int entitymapx = static_cast<int>(entity->x) >> 4;
+            const int entitymapy = static_cast<int>(entity->y) >> 4;
             real_t sizex = entity->sizex;
             real_t sizey = entity->sizey;
             if ( (entities & LINETRACE_ATK_CHECK_FRIENDLYFIRE) && multiplayer != CLIENT )
@@ -2007,10 +2007,10 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
             if ( quadrant == 2 || quadrant == 4 )
             {
                 // upper right and lower left
-                real_t upperX = entity->x + sizex;
-                real_t upperY = entity->y - sizey;
-                real_t lowerX = entity->x - sizex;
-                real_t lowerY = entity->y + sizey;
+                const real_t upperX = entity->x + sizex;
+                const real_t upperY = entity->y - sizey;
+                const real_t lowerX = entity->x - sizex;
+                const real_t lowerY = entity->y + sizey;
                 real_t upperTan = atan2(upperY - y1, upperX - x1);
                 real_t lowerTan = atan2(lowerY - y1, lowerX - x1);
                 if ( adjust )
@@ -2049,7 +2049,7 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
                     }
                     if ( angle >= upperTan && angle <= lowerTan )
                     {
-                        real_t dist = sqrt(pow(x1 - entity->x, 2) + pow(y1 - entity->y, 2));
+                        const real_t dist = sqrt(pow(x1 - entity->x, 2) + pow(y1 - entity->y, 2));
                         if ( dist < lowestDist )
                         {
                             lowestDist = dist;
@@ -2080,7 +2080,7 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
                     }
                     if ( angle <= upperTan && angle >= lowerTan )
                     {
-                        real_t dist = sqrt(pow(x1 - entity->x, 2) + pow(y1 - entity->y, 2));
+                        const real_t dist = sqrt(pow(x1 - entity->x, 2) + pow(y1 - entity->y, 2));
                         if ( dist < lowestDist )
                         {
                             lowestDist = dist;
@@ -2092,10 +2092,10 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
             else
             {
                 // upper left and lower right
-                real_t upperX = entity->x - sizex;
-                real_t upperY = entity->y - sizey;
-                real_t lowerX = entity->x + sizex;
-                real_t lowerY = entity->y + sizey;
+                const real_t upperX = entity->x - sizex;
+                const real_t upperY = entity->y - sizey;
+                const real_t lowerX = entity->x + sizex;
+                const real_t lowerY = entity->y + sizey;
                 real_t upperTan = atan2(upperY - y1, upperX - x1);
                 real_t lowerTan = atan2(lowerY - y1, lowerX - x1);
                 if ( adjust )
@@ -2134,7 +2134,7 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
                     }
                     if ( angle >= upperTan && angle <= lowerTan )
                     {
-                        real_t dist = sqrt(pow(x1 - entity->x, 2) + pow(y1 - entity->y, 2));
+                        const real_t dist = sqrt(pow(x1 - entity->x, 2) + pow(y1 - entity->y, 2));
                         if ( dist < lowestDist )
                         {
                             lowestDist = dist;
@@ -2165,7 +2165,7 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
                     }
                     if ( angle <= upperTan && angle >= lowerTan )
                     {
-                        real_t dist = sqrt(pow(x1 - entity->x, 2) + pow(y1 - entity->y, 2));
+                        const real_t dist = sqrt(pow(x1 - entity->x, 2) + pow(y1 - entity->y, 2));
                         if ( dist < lowestDist )
                         {
                             lowestDist = dist;
@@ -2193,12 +2193,12 @@ Entity* findEntityInLine( Entity* my, real_t x1, real_t y1, real_t angle, int en
 
 real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, int entities, bool ground )
 {
-    int posx = floor(x1);
-    int posy = floor(y1); // integer coordinates
-    real_t fracx = x1 - posx;
-    real_t fracy = y1 - posy; // fraction coordinates
-    real_t rx = cos(angle);
-    real_t ry = sin(angle);
+    const int posx = floor(x1);
+    const int posy = floor(y1); // integer coordinates
+    const real_t fracx = x1 - posx;
+    const real_t fracy = y1 - posy; // fraction coordinates
+    const real_t rx = cos(angle);
+    const real_t ry = sin(angle);
     real_t ix = 0;
     real_t iy = 0;
 
@@ -2241,8 +2241,8 @@ real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, 
     real_t d = 0;
 
     Stat* stats = nullptr;
-    bool waterWalking = my && my->isWaterWalking();
-    bool lavaWalking = my && my->isLavaWalking();
+    const bool waterWalking = my && my->isWaterWalking();
+    const bool lavaWalking = my && my->isLavaWalking();
     bool isMonster = false;
     if ( my )
     {
@@ -2322,7 +2322,7 @@ real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, 
         iy = y1 + ry * d;
 
         // check against the map
-        int index = (iny >> 4) * MAP_LAYERS + (inx >> 4) * MAP_LAYERS * map.height;
+        const int index = (iny >> 4) * MAP_LAYERS + (inx >> 4) * MAP_LAYERS * map.height;
         if ( map.tiles[OBSTACLELAYER + index] )
         {
             hit.x = ix;
@@ -2413,12 +2413,12 @@ real_t lineTrace( Entity* my, real_t x1, real_t y1, real_t angle, real_t range, 
 
 real_t lineTraceTarget(Entity* my, real_t x1, real_t y1, real_t angle, real_t range, int entities, bool ground, Entity* target, list_t* entityListToUse)
 {
-    int posx = floor(x1);
-    int posy = floor(y1); // integer coordinates
-    real_t fracx = x1 - posx;
-    real_t fracy = y1 - posy; // fraction coordinates
-    real_t rx = cos(angle);
-    real_t ry = sin(angle);
+    const int posx = floor(x1);
+    const int posy = floor(y1); // integer coordinates
+    const real_t fracx = x1 - posx;
+    const real_t fracy = y1 - posy; // fraction coordinates
+    const real_t rx = cos(angle);
+    const real_t ry = sin(angle);
     real_t ix = 0;
     real_t iy = 0;
 
@@ -2463,8 +2463,8 @@ real_t lineTraceTarget(Entity* my, real_t x1, real_t y1, real_t angle, real_t ra
     Entity* entity = findEntityInLine(my, x1, y1, angle, entities, target, entityListToUse);
 
     bool isMonster = false;
-    bool waterWalking = my && my->isWaterWalking();
-    bool lavaWalking = my && my->isLavaWalking();
+    const bool waterWalking = my && my->isWaterWalking();
+    const bool lavaWalking = my && my->isLavaWalking();
     if ( my )
     {
         if ( my->behavior == &actMonster )
@@ -2498,7 +2498,7 @@ real_t lineTraceTarget(Entity* my, real_t x1, real_t y1, real_t angle, real_t ra
         iy = y1 + ry * d;
 
         // check against the map
-        int index = (iny >> 4) * MAP_LAYERS + (inx >> 4) * MAP_LAYERS * map.height;
+        const int index = (iny >> 4) * MAP_LAYERS + (inx >> 4) * MAP_LAYERS * map.height;
         if ( map.tiles[OBSTACLELAYER + index] )
         {
             hit.x = ix;
@@ -2597,8 +2597,8 @@ real_t lineTraceTarget(Entity* my, real_t x1, real_t y1, real_t angle, real_t ra
 
 int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntityList, bool checkWalls, bool checkFloor, bool checkEnemies)
 {
-    node_t* node = nullptr;
-    Entity* entity = nullptr;
+    const node_t* node = nullptr;
+    const Entity* entity = nullptr;
     Stat* stats = nullptr;
     bool levitating = false;
 
@@ -2624,7 +2624,7 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
     {
         if ( y >= 0 && y < map.height << 4 )
         {
-            int index = (y >> 4) * MAP_LAYERS + (x >> 4) * MAP_LAYERS * map.height;
+            const int index = (y >> 4) * MAP_LAYERS + (x >> 4) * MAP_LAYERS * map.height;
             if (checkWalls && map.tiles[OBSTACLELAYER + index])   // wall
             {
                 return 1;
@@ -2637,8 +2637,8 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
                     isMonster = true;
                 }
             }
-            bool waterWalking = my && my->isWaterWalking();
-            bool lavaWalking = my && my->isLavaWalking();
+            const bool waterWalking = my && my->isWaterWalking();
+            const bool lavaWalking = my && my->isLavaWalking();
             if ( !levitating
                     && ((!map.tiles[index] && checkFloor)
                                    || ( ((swimmingtiles[map.tiles[index]] && !waterWalking) || (lavatiles[map.tiles[index]] && !lavaWalking))
@@ -2651,10 +2651,10 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
             {
                 // for map generation to detect if decorations have obstacles without entities being assigned actions
                 std::vector<list_t*> entLists{ map.entities };
-                bool ceilingTilesAllowed = !strncmp(map.filename, "fortress", 8);
+                const bool ceilingTilesAllowed = !strncmp(map.filename, "fortress", 8);
                 for (auto it = entLists.begin(); it != entLists.end(); ++it )
                 {
-                    list_t* currentList = *it;
+                    const list_t* currentList = *it;
                     for ( node = currentList->first; node != nullptr; node = node->next )
                     {
                         entity = static_cast<Entity*>(node->element);
@@ -2684,7 +2684,7 @@ int checkObstacle(long x, long y, Entity* my, Entity* target, bool useTileEntity
                 std::vector<list_t*> entLists = TileEntityList.getEntitiesWithinRadius(static_cast<int>(x) >> 4, static_cast<int>(y) >> 4, 2);
                 for (auto it = entLists.begin(); it != entLists.end(); ++it )
                 {
-                    list_t* currentList = *it;
+                    const list_t* currentList = *it;
                     for ( node = currentList->first; node != nullptr; node = node->next )
                     {
                         entity = static_cast<Entity*>(node->element);

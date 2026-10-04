@@ -1521,10 +1521,10 @@ namespace ConsoleCommands {
         {
             int c = 0;
             node_t* nextnode;
-            for (node_t* node = map.entities->first; node != nullptr; node = nextnode)
+            for (const node_t* node = map.entities->first; node != nullptr; node = nextnode)
             {
                 nextnode = node->next;
-                auto entity = static_cast<Entity*>(node->element);
+                const auto entity = static_cast<Entity*>(node->element);
                 if (entity->behavior == &actMonster)
                 {
                     entity->setHP(0);
@@ -1559,7 +1559,7 @@ namespace ConsoleCommands {
         {
             int c = 0;
             node_t* nextnode;
-            for ( node_t* node = map.entities->first; node != nullptr; node = nextnode )
+            for (const node_t* node = map.entities->first; node != nullptr; node = nextnode )
             {
                 nextnode = node->next;
                 const Entity* entity = static_cast<Entity*>(node->element);
@@ -3598,7 +3598,7 @@ namespace ConsoleCommands {
 
         if (creature != NOTHING)
         {
-            auto monsterStats = new Stat(1000 + creature);
+            const auto monsterStats = new Stat(1000 + creature);
             monsterStatCustomManager.writeAllFromStats(monsterStats);
             delete monsterStats;
         }
@@ -3608,7 +3608,7 @@ namespace ConsoleCommands {
         const Entity * target = entityClicked(nullptr, true, clientnum, EntityClickType::ENTITY_CLICK_USE);
         if (target)
         {
-            Entity* parent = uidToEntity(target->skill[2]);
+            const Entity* parent = uidToEntity(target->skill[2]);
             if (target->behavior == &actMonster || (parent && parent->behavior == &actMonster))
             {
                 // see if we selected a limb
@@ -4078,7 +4078,7 @@ namespace ConsoleCommands {
         for ( auto node = stats[clientnum]->inventory.first; node; node = nextnode )
         {
             nextnode = node->next;
-            if (auto item = static_cast<Item*>(node->element) )
+            if (const auto item = static_cast<Item*>(node->element) )
             {
                 if ( getSpellFromItem(clientnum, item, true) )
                 {
@@ -4358,7 +4358,7 @@ namespace ConsoleCommands {
         for ( auto node = map.entities->first; node; node = nextnode )
         {
             nextnode = node->next;
-            if (auto entity = static_cast<Entity*>(node->element) )
+            if (const auto entity = static_cast<Entity*>(node->element) )
             {
                 if ( entity->behavior == &actItem && (items[entity->skill[10]].category == SPELLBOOK || items[entity->skill[10]].category == TOME_SPELL) )
                 {
@@ -4847,7 +4847,7 @@ namespace ConsoleCommands {
 
         if (players[clientnum]->entity)
         {
-            std::vector<Monster> set1 = {
+            const std::vector<Monster> set1 = {
                 HUMAN,
                 RAT,
                 GOBLIN,
@@ -4857,7 +4857,7 @@ namespace ConsoleCommands {
                 GHOUL,
                 SKELETON
             };
-            std::vector<Monster> set2 = {
+            const std::vector<Monster> set2 = {
                 SCORPION,
                 CREATURE_IMP,
                 GNOME,
@@ -4867,7 +4867,7 @@ namespace ConsoleCommands {
                 SCARAB,
                 CRYSTALGOLEM
             };
-            std::vector<Monster> set3 = {
+            const std::vector<Monster> set3 = {
                 INCUBUS,
                 VAMPIRE,
                 SHADOW,
@@ -5600,7 +5600,7 @@ namespace ConsoleCommands {
 
         if ( multiplayer != CLIENT )
         {
-            node_t* nextnode = nullptr;
+            const node_t* nextnode = nullptr;
             for ( tmpNode = map.entities->first; tmpNode != nullptr; tmpNode = nextnode )
             {
                 nextnode = tmpNode->next;
@@ -5838,7 +5838,7 @@ namespace ConsoleCommands {
                 loadMap(fullMapPath.c_str(), &map, map.entities, map.creatures, nullptr);
                 for (const node_t* node = map.entities->first; node; node = node->next )
                 {
-                    if (auto entity = static_cast<Entity*>(node->element) )
+                    if (const auto entity = static_cast<Entity*>(node->element) )
                     {
                         if ( entity->sprite == 179 )
                         {

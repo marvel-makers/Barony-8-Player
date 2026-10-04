@@ -102,7 +102,7 @@ public:
         }
 
         if (jfr.beginObject()) {
-            bool result = serialize(&jfr);
+            const bool result = serialize(&jfr);
             jfr.endObject();
             return result;
         } else {
@@ -113,7 +113,7 @@ public:
     virtual bool isReading() const override { return true; }
 
     virtual bool beginObject() override {
-        auto cv = GetCurrentValue();
+        const auto cv = GetCurrentValue();
         if (cv && cv->IsObject()) {
             DocIterator di;
             di.it = cv;
@@ -132,7 +132,7 @@ public:
     }
 
     virtual bool beginArray(Uint32 & size) override {
-        auto cv = GetCurrentValue();
+        const auto cv = GetCurrentValue();
         if (cv && cv->IsArray()) {
             DocIterator di;
             di.it = cv;
@@ -154,7 +154,7 @@ public:
         propName = fieldName;
     }
     virtual bool value(Uint32& value) override {
-        auto cv = GetCurrentValue();
+        const auto cv = GetCurrentValue();
         if (cv && cv->IsUint()) {
             value = cv->GetUint();
             return true;
@@ -163,7 +163,7 @@ public:
         }
     }
     virtual bool value(Sint32& value) override {
-        auto cv = GetCurrentValue();
+        const auto cv = GetCurrentValue();
         if (cv && cv->IsInt()) {
             value = cv->GetInt();
             return true;
@@ -172,7 +172,7 @@ public:
         }
     }
     virtual bool value(float& value) override {
-        auto cv = GetCurrentValue();
+        const auto cv = GetCurrentValue();
         if (cv && cv->IsFloat()) {
             value = cv->GetFloat();
             return true;
@@ -181,7 +181,7 @@ public:
         }
     }
     virtual bool value(double& value) override {
-        auto cv = GetCurrentValue();
+        const auto cv = GetCurrentValue();
         if (cv && cv->IsDouble()) {
             value = cv->GetDouble();
             return true;
@@ -190,7 +190,7 @@ public:
         }
     }
     virtual bool value(bool& value) override {
-        auto cv = GetCurrentValue();
+        const auto cv = GetCurrentValue();
         if (cv && cv->IsBool()) {
             value = cv->GetBool();
             return true;
@@ -199,7 +199,7 @@ public:
         }
     }
     virtual bool value(std::string& value) override {
-        auto cv = GetCurrentValue();
+        const auto cv = GetCurrentValue();
         if (cv && cv->IsString()) {
             value = cv->GetString();
             return true;
@@ -243,13 +243,13 @@ protected:
     }
 
     bool readAllFileData(File * fp) {
-        long size = fp->size();
+        const long size = fp->size();
 
         // reserve an extra byte for the null terminator
-        auto data = static_cast<char*>(calloc(sizeof(char), size + 1));
+        const auto data = static_cast<char*>(calloc(sizeof(char), size + 1));
         assert(data);
 
-        size_t bytesRead = fp->read(data, sizeof(char), size);
+        const size_t bytesRead = fp->read(data, sizeof(char), size);
         if (bytesRead != size) {
             printlog("JsonFileReader: failed to read data (%d)", errno);
             free(data);
@@ -259,7 +259,7 @@ protected:
         // null terminate
         data[size] = 0;
 
-        rapidjson::ParseResult result = doc.Parse(data);
+        const rapidjson::ParseResult result = doc.Parse(data);
 
         free(data);
 
@@ -298,7 +298,7 @@ public:
         bfw.writeHeader();
 
         if (bfw.beginObject()) {
-            bool result = serialize(&bfw);
+            const bool result = serialize(&bfw);
             bfw.endObject();
             return result;
         } else {
@@ -351,7 +351,7 @@ private:
     }
 
     bool writeStringInternal(const std::string& v) {
-        Uint32 len = static_cast<Uint32>(v.size());
+        const Uint32 len = static_cast<Uint32>(v.size());
         bool result = true;
         result = fp->write(&len, sizeof(len), 1) == 1 ? result : false;
         if (len) {
@@ -380,7 +380,7 @@ public:
         }
 
         bfr.beginObject();
-        bool result = serialize(&bfr);
+        const bool result = serialize(&bfr);
         bfr.endObject();
 
         return result;
@@ -406,27 +406,27 @@ public:
     }
 
     virtual bool value(Uint32& v) override {
-        size_t read = fp->read(&v, sizeof(v), 1);
+        const size_t read = fp->read(&v, sizeof(v), 1);
         return read == 1;
     }
     virtual bool value(Sint32& v) override {
-        size_t read = fp->read(&v, sizeof(v), 1);
+        const size_t read = fp->read(&v, sizeof(v), 1);
         return read == 1;
     }
     virtual bool value(float& v) override {
-        size_t read = fp->read(&v, sizeof(v), 1);
+        const size_t read = fp->read(&v, sizeof(v), 1);
         return read == 1;
     }
     virtual bool value(double& v) override {
-        size_t read = fp->read(&v, sizeof(v), 1);
+        const size_t read = fp->read(&v, sizeof(v), 1);
         return read == 1;
     }
     virtual bool value(bool& v) override {
-        size_t read = fp->read(&v, sizeof(v), 1);
+        const size_t read = fp->read(&v, sizeof(v), 1);
         return read == 1;
     }
     virtual bool value(std::string& v) override {
-        bool result = readStringInternal(v);
+        const bool result = readStringInternal(v);
         return result;
     }
 
@@ -434,7 +434,7 @@ private:
 
     bool readHeader() {
         Uint32 fileFormatTag;
-        size_t read = fp->read(&fileFormatTag, sizeof(fileFormatTag), 1);
+        const size_t read = fp->read(&fileFormatTag, sizeof(fileFormatTag), 1);
         if (read != 1) {
             printlog("BinaryFileReader: failed to read format tag (%d)", errno);
             return false;
@@ -516,7 +516,7 @@ bool FileHelper::readObjectInternal(const char * filename, const SerializationFu
         return false;
     }
 
-    EFileFormat format = GetFileFormat(file);
+    const EFileFormat format = GetFileFormat(file);
 
     bool success = false;
     if (format == EFileFormat::Binary) {

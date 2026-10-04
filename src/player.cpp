@@ -299,7 +299,7 @@ void GameController::handleAnalog(int player)
 
     //Right analog stick = look.
 
-    bool radialMenuOpen = FollowerMenu[player].followerMenuIsOpen() || CalloutMenu[player].calloutMenuIsOpen();
+    const bool radialMenuOpen = FollowerMenu[player].followerMenuIsOpen() || CalloutMenu[player].calloutMenuIsOpen();
     if ( !radialMenuOpen )
     {
         consumeDpadDirToggle();
@@ -345,7 +345,7 @@ void GameController::handleAnalog(int player)
             const real_t maxInputVector = 32767;
             const real_t magnitude = sqrt(pow(floatx, 2) + pow(floaty, 2));
             const real_t normalised = magnitude / (maxInputVector);
-            real_t deadzone = 0.8;
+            const real_t deadzone = 0.8;
 
             const int numoptions = 8;
             DpadDirection dir = DpadDirection::CENTERED;
@@ -374,7 +374,7 @@ void GameController::handleAnalog(int player)
                     angleMiddle = angleStart + PI / numoptions;
                     angleEnd = angleMiddle + PI / numoptions;
                 }
-                DpadDirection oldDpad = virtualDpad.padVirtualDpad;
+                const DpadDirection oldDpad = virtualDpad.padVirtualDpad;
                 virtualDpad.padVirtualDpad = dir;
                 if ( oldDpad != virtualDpad.padVirtualDpad ) 
                 {
@@ -397,7 +397,7 @@ void GameController::handleAnalog(int player)
             const real_t maxInputVector = 32767 * sqrt(2);
             const real_t magnitude = sqrt(pow(rightx, 2) + pow(righty, 2));
             const real_t normalised = magnitude / (maxInputVector);
-            real_t deadzone = rightStickDeadzone / maxInputVector;
+            const real_t deadzone = rightStickDeadzone / maxInputVector;
 
             if ( normalised < deadzone )
             {
@@ -595,7 +595,7 @@ int GameController::getRawLeftXMove(int player) // no sensitivity
 #else
     int x = SDL_GameControllerGetAxis(sdl_device, SDL_CONTROLLER_AXIS_LEFTX);
 #endif
-    auto& leftStickDeadzone = playerSettings[multiplayer ? 0 : player].leftStickDeadzone;
+    const auto& leftStickDeadzone = playerSettings[multiplayer ? 0 : player].leftStickDeadzone;
     if ( leftStickDeadzoneType == DEADZONE_PER_AXIS )
     {
         if (x < leftStickDeadzone && x > -leftStickDeadzone )
@@ -625,7 +625,7 @@ int GameController::getRawLeftYMove(int player) // no sensitivity
 #else
     int y = SDL_GameControllerGetAxis(sdl_device, SDL_CONTROLLER_AXIS_LEFTY);
 #endif
-    auto& leftStickDeadzone = playerSettings[multiplayer ? 0 : player].leftStickDeadzone;
+    const auto& leftStickDeadzone = playerSettings[multiplayer ? 0 : player].leftStickDeadzone;
     if ( leftStickDeadzoneType == DEADZONE_PER_AXIS )
     {
         if (y < leftStickDeadzone && y > -leftStickDeadzone )
@@ -655,7 +655,7 @@ int GameController::getRawRightXMove(int player) // no sensitivity
 #else
     int x = SDL_GameControllerGetAxis(sdl_device, SDL_CONTROLLER_AXIS_RIGHTX);
 #endif
-    auto& rightStickDeadzone = playerSettings[multiplayer ? 0 : player].rightStickDeadzone;
+    const auto& rightStickDeadzone = playerSettings[multiplayer ? 0 : player].rightStickDeadzone;
     if ( rightStickDeadzoneType == DEADZONE_PER_AXIS )
     {
         if (x < rightStickDeadzone && x > -rightStickDeadzone )
@@ -685,7 +685,7 @@ int GameController::getRawRightYMove(int player) // no sensitivity
 #else
     int y = SDL_GameControllerGetAxis(sdl_device, SDL_CONTROLLER_AXIS_RIGHTY);
 #endif
-    auto& rightStickDeadzone = playerSettings[multiplayer ? 0 : player].rightStickDeadzone;
+    const auto& rightStickDeadzone = playerSettings[multiplayer ? 0 : player].rightStickDeadzone;
     if ( rightStickDeadzoneType == DEADZONE_PER_AXIS )
     {
         if (y < rightStickDeadzone && y > -rightStickDeadzone )
@@ -825,7 +825,7 @@ bool Player::GUI_t::handleCharacterSheetMovement()
         return false;
     }
     bool dpad_moved = false;
-    int player = this->player.playernum;
+    const int player = this->player.playernum;
 
     if ( !players[player]->bControlEnabled
         || gamePaused
@@ -1108,7 +1108,7 @@ bool Player::GUI_t::handleCharacterSheetMovement()
             Input::inputs[player].consumeBinaryToggle("InventoryMoveUp");
             Input::inputs[player].consumeBinaryToggle("InventoryMoveUpAnalog");
 
-            auto itr = std::find(elementSelectableList.begin(), elementSelectableList.end(), currentElement);
+            const auto itr = std::find(elementSelectableList.begin(), elementSelectableList.end(), currentElement);
             if ( itr == elementSelectableList.end() )
             {
                 currentElement = defaultElement;
@@ -1135,7 +1135,7 @@ bool Player::GUI_t::handleCharacterSheetMovement()
             Input::inputs[player].consumeBinaryToggle("InventoryMoveDown");
             Input::inputs[player].consumeBinaryToggle("InventoryMoveDownAnalog");
 
-            auto itr = std::find(elementSelectableList.begin(), elementSelectableList.end(), currentElement);
+            const auto itr = std::find(elementSelectableList.begin(), elementSelectableList.end(), currentElement);
             if ( itr == elementSelectableList.end() )
             {
                 currentElement = defaultElement;
@@ -1177,7 +1177,7 @@ bool Player::GUI_t::isGameoverActive()
 {
     if ( gameUIFrame[player.playernum] )
     {
-        for ( auto f : gameUIFrame[player.playernum]->getFrames() )
+        for (const auto f : gameUIFrame[player.playernum]->getFrames() )
         {
             if ( !strcmp(f->getName(), "gameover") )
             {
@@ -2139,7 +2139,7 @@ bool Player::GUI_t::handleInventoryMovement()
     {
         return false;
     }
-    int player = this->player.playernum;
+    const int player = this->player.playernum;
     auto& hotbar_t = players[player]->hotbar;
 
     if ( !bActiveModuleUsesInventory() )
@@ -2147,7 +2147,7 @@ bool Player::GUI_t::handleInventoryMovement()
         return false;
     }
 
-    bool rightStickMovement = 
+    const bool rightStickMovement = 
         !(this->player.inventoryUI.itemTooltipDisplay.expanded 
             && (players[player]->GUI.activeModule != Player::GUI_t::MODULE_INVENTORY
                 || players[player]->GUI.activeModule != Player::GUI_t::MODULE_HOTBAR))
@@ -2165,7 +2165,7 @@ bool Player::GUI_t::handleInventoryMovement()
         {
             //If hotbar is focused and chest, etc, not opened, navigate hotbar.
             hotbar_t.selectHotbarSlot(players[player]->hotbar.current_hotbar - 1);
-            auto slotFrame = hotbar_t.getHotbarSlotFrame(hotbar_t.current_hotbar);
+            const auto slotFrame = hotbar_t.getHotbarSlotFrame(hotbar_t.current_hotbar);
             if ( slotFrame && slotFrame->isDisabled() )
             {
                 // skip this disabled one, move twice. e.g using facebar and 10th slot disabled
@@ -2232,11 +2232,11 @@ bool Player::GUI_t::handleInventoryMovement()
         }
         else if ( players[player]->GUI.activeModule == Player::GUI_t::MODULE_SPELLS )
         {
-            Slider* slider = nullptr;
+            const Slider* slider = nullptr;
             bool disableDpad = false;
             if ( players[player]->inventoryUI.spellFrame )
             {
-                auto baseFrame = players[player]->inventoryUI.spellFrame->findFrame("spell base");
+                const auto baseFrame = players[player]->inventoryUI.spellFrame->findFrame("spell base");
                 slider = baseFrame->findSlider("spell slider");
                 if ( slider && !slider->isDisabled() &&
                     ((abs(Input::inputs[player].analog("MenuScrollDown")) > (Input::inputs[player].getAnalogToggleThreshold()))
@@ -2279,7 +2279,7 @@ bool Player::GUI_t::handleInventoryMovement()
         {
             //If hotbar is focused and chest, etc, not opened, navigate hotbar.
             hotbar_t.selectHotbarSlot(players[player]->hotbar.current_hotbar + 1);
-            auto slotFrame = hotbar_t.getHotbarSlotFrame(hotbar_t.current_hotbar);
+            const auto slotFrame = hotbar_t.getHotbarSlotFrame(hotbar_t.current_hotbar);
             if ( slotFrame && slotFrame->isDisabled() )
             {
                 // skip this disabled one, move twice. e.g using facebar and 10th slot disabled
@@ -2346,11 +2346,11 @@ bool Player::GUI_t::handleInventoryMovement()
         }
         else if ( players[player]->GUI.activeModule == Player::GUI_t::MODULE_SPELLS )
         {
-            Slider* slider = nullptr;
+            const Slider* slider = nullptr;
             bool disableDpad = false;
             if ( players[player]->inventoryUI.spellFrame )
             {
-                auto baseFrame = players[player]->inventoryUI.spellFrame->findFrame("spell base");
+                const auto baseFrame = players[player]->inventoryUI.spellFrame->findFrame("spell base");
                 slider = baseFrame->findSlider("spell slider");
                 if ( slider && !slider->isDisabled() &&
                     ((abs(Input::inputs[player].analog("MenuScrollDown")) > (Input::inputs[player].getAnalogToggleThreshold()))
@@ -2393,8 +2393,8 @@ bool Player::GUI_t::handleInventoryMovement()
         {
             if ( players[player]->inventory_mode == INVENTORY_MODE_SPELL )
             {
-                Item* itemToSnapTo = nullptr;
-                if ( auto& selectedItem = inputs.getUIInteraction(player)->selectedItem )
+                const Item* itemToSnapTo = nullptr;
+                if (const auto& selectedItem = inputs.getUIInteraction(player)->selectedItem )
                 {
                     if ( itemCategory(selectedItem) == SPELL_CAT )
                     {
@@ -2419,8 +2419,8 @@ bool Player::GUI_t::handleInventoryMovement()
             }
             else
             {
-                Item* itemToSnapTo = nullptr;
-                if ( auto& selectedItem = inputs.getUIInteraction(player)->selectedItem )
+                const Item* itemToSnapTo = nullptr;
+                if (const auto& selectedItem = inputs.getUIInteraction(player)->selectedItem )
                 {
                     if ( itemCategory(selectedItem) != SPELL_CAT )
                     {
@@ -2438,7 +2438,7 @@ bool Player::GUI_t::handleInventoryMovement()
                 }
                 if ( itemToSnapTo )
                 {
-                    auto slot = players[player]->paperDoll.getSlotForItem(*itemToSnapTo);
+                    const auto slot = players[player]->paperDoll.getSlotForItem(*itemToSnapTo);
                     if ( slot != Player::PaperDoll_t::PaperDollSlotType::SLOT_MAX )
                     {
                         int x, y;
@@ -2512,11 +2512,11 @@ bool Player::GUI_t::handleInventoryMovement()
         }
         else if ( players[player]->GUI.activeModule == Player::GUI_t::MODULE_SPELLS )
         {
-            Slider* slider = nullptr;
+            const Slider* slider = nullptr;
             bool disableDpad = false;
             if ( players[player]->inventoryUI.spellFrame )
             {
-                auto baseFrame = players[player]->inventoryUI.spellFrame->findFrame("spell base");
+                const auto baseFrame = players[player]->inventoryUI.spellFrame->findFrame("spell base");
                 slider = baseFrame->findSlider("spell slider");
                 if ( slider && !slider->isDisabled() &&
                     ((abs(Input::inputs[player].analog("MenuScrollDown")) > (Input::inputs[player].getAnalogToggleThreshold()))
@@ -2559,8 +2559,8 @@ bool Player::GUI_t::handleInventoryMovement()
         {
             if ( players[player]->inventory_mode == INVENTORY_MODE_SPELL )
             {
-                Item* itemToSnapTo = nullptr;
-                if ( auto& selectedItem = inputs.getUIInteraction(player)->selectedItem )
+                const Item* itemToSnapTo = nullptr;
+                if (const auto& selectedItem = inputs.getUIInteraction(player)->selectedItem )
                 {
                     if ( itemCategory(selectedItem) == SPELL_CAT )
                     {
@@ -2585,8 +2585,8 @@ bool Player::GUI_t::handleInventoryMovement()
             }
             else
             {
-                Item* itemToSnapTo = nullptr;
-                if ( auto& selectedItem = inputs.getUIInteraction(player)->selectedItem )
+                const Item* itemToSnapTo = nullptr;
+                if (const auto& selectedItem = inputs.getUIInteraction(player)->selectedItem )
                 {
                     if ( itemCategory(selectedItem) != SPELL_CAT )
                     {
@@ -2604,7 +2604,7 @@ bool Player::GUI_t::handleInventoryMovement()
                 }
                 if ( itemToSnapTo )
                 {
-                    auto slot = players[player]->paperDoll.getSlotForItem(*itemToSnapTo);
+                    const auto slot = players[player]->paperDoll.getSlotForItem(*itemToSnapTo);
                     if ( slot != Player::PaperDoll_t::PaperDollSlotType::SLOT_MAX )
                     {
                         int x, y;
@@ -2678,11 +2678,11 @@ bool Player::GUI_t::handleInventoryMovement()
         }
         else if ( players[player]->GUI.activeModule == Player::GUI_t::MODULE_SPELLS )
         {
-            Slider* slider = nullptr;
+            const Slider* slider = nullptr;
             bool disableDpad = false;
             if ( players[player]->inventoryUI.spellFrame )
             {
-                auto baseFrame = players[player]->inventoryUI.spellFrame->findFrame("spell base");
+                const auto baseFrame = players[player]->inventoryUI.spellFrame->findFrame("spell base");
                 slider = baseFrame->findSlider("spell slider");
                 if ( slider && !slider->isDisabled() &&
                     ((abs(Input::inputs[player].analog("MenuScrollDown")) > (Input::inputs[player].getAnalogToggleThreshold()))
@@ -2808,7 +2808,7 @@ GameController::Haptic_t::HapticEffect* GameController::handleRumble()
         ++haptics.hapticTick;
 #endif
     }
-    size_t size = haptics.activeRumbles.size();
+    const size_t size = haptics.activeRumbles.size();
     if ( size == 0 )
     {
         return nullptr;
@@ -2842,7 +2842,7 @@ GameController::Haptic_t::HapticEffect* GameController::handleRumble()
     for ( auto it = haptics.activeRumbles.begin(); it != haptics.activeRumbles.end(); /*blank*/ )
     {
         Uint32 priority = it->first;
-        auto& rumble = it->second;
+        const auto& rumble = it->second;
         if ( haptics.hapticTick - rumble.startTick >= rumble.length ) // expired length
         {
             it = haptics.activeRumbles.erase(it);
@@ -2854,8 +2854,8 @@ GameController::Haptic_t::HapticEffect* GameController::handleRumble()
     auto rumbleToPlay = haptics.activeRumbles.end();
     for ( auto it = haptics.activeRumbles.begin(); it != haptics.activeRumbles.end(); ++it )
     {
-        Uint32 priority = it->first;
-        auto& rumble = it->second;
+        const Uint32 priority = it->first;
+        const auto& rumble = it->second;
         if ( priority > highestPriority )
         {
             highestPriority = priority;
@@ -2892,7 +2892,7 @@ GameController::Haptic_t::HapticEffect* GameController::handleRumble()
             || rumbleToPlay->second.pattern == Haptic_t::RUMBLE_SPELL))
 #endif
     {
-        Uint32 newStartTime = (haptics.hapticTick - rumbleToPlay->second.startTick);
+        const Uint32 newStartTime = (haptics.hapticTick - rumbleToPlay->second.startTick);
         rumbleToPlay->second.startTime = newStartTime; // move the playhead forward.
         rumbleToPlay->second.isPlaying = true;
         return doRumble(&rumbleToPlay->second);
@@ -2959,7 +2959,7 @@ void Inputs::addRumbleForPlayerHPLoss(const int player, Sint32 damageAmount)
 #endif // NINTENDO
 
 
-        real_t percentHPLost = std::min(1.0, (stats[player]->OLDHP - stats[player]->HP) / static_cast<real_t>(std::max(1, stats[player]->MAXHP)));
+        const real_t percentHPLost = std::min(1.0, (stats[player]->OLDHP - stats[player]->HP) / static_cast<real_t>(std::max(1, stats[player]->MAXHP)));
         if ( stats[player]->HP <= 0 )
         {
             rumble(player, GameController::Haptic_t::RUMBLE_DEATH, 32000, 32000, durationMult * 2 * TICKS_PER_SECOND, 0);
@@ -3049,7 +3049,7 @@ GameController::Haptic_t::HapticEffect* GameController::doRumble(Haptic_t::Rumbl
         {
             if ( players[i]->isLocalPlayerAlive() && inputs.getController(i) == this )
             {
-                int dist = static_cast<int>(entityDist(ent, players[i]->entity));
+                const int dist = static_cast<int>(entityDist(ent, players[i]->entity));
                 dampening = 1.0 - std::min((dist / TOUCHRANGE) * .1, 1.0);
 
                 //if we want l/r vibration channels
@@ -3068,7 +3068,7 @@ GameController::Haptic_t::HapticEffect* GameController::doRumble(Haptic_t::Rumbl
     }
     else if ( r->pattern == Haptic_t::RUMBLE_BOULDER )
     {
-        real_t currentPlayheadPercent = r->startTime / static_cast<real_t>(r->length);
+        const real_t currentPlayheadPercent = r->startTime / static_cast<real_t>(r->length);
         r->customEffect = (currentPlayheadPercent);
         /*real_t currentPlayheadPercent = r->startTime / static_cast<real_t>(r->length);
        if ( currentPlayheadPercent < .33 )
@@ -3102,7 +3102,7 @@ GameController::Haptic_t::HapticEffect* GameController::doRumble(Haptic_t::Rumbl
     }
     else if ( r->pattern == Haptic_t::RUMBLE_TMP )
     {
-        real_t currentPlayheadPercent = r->startTime / static_cast<real_t>(r->length);
+        const real_t currentPlayheadPercent = r->startTime / static_cast<real_t>(r->length);
         if ( currentPlayheadPercent < .165 )
         {
             r->customEffect = (currentPlayheadPercent) / .165;
@@ -3128,14 +3128,14 @@ GameController::Haptic_t::HapticEffect* GameController::doRumble(Haptic_t::Rumbl
     }
     else if ( r->pattern == Haptic_t::RUMBLE_SPELL )
     {
-        real_t currentPlayheadPercent = r->startTime / static_cast<real_t>(r->length);
+        const real_t currentPlayheadPercent = r->startTime / static_cast<real_t>(r->length);
         r->customEffect = sin(currentPlayheadPercent * PI);
         haptics.hapticEffect.large_magnitude = r->largeMagnitude * r->customEffect;
         haptics.hapticEffect.small_magnitude = r->smallMagnitude * r->customEffect;
     }
     else if ( r->pattern == Haptic_t::RUMBLE_DEATH )
     {
-        real_t currentPlayheadPercent = r->startTime / static_cast<real_t>(r->length);
+        const real_t currentPlayheadPercent = r->startTime / static_cast<real_t>(r->length);
         if ( currentPlayheadPercent > .5 )
         {
             r->customEffect = std::max(0.1, (1 - ((currentPlayheadPercent - .5) / .5)));
@@ -3346,7 +3346,7 @@ void Player::PlayerMovement_t::reset()
 real_t Player::WorldUI_t::tooltipHeightOffsetZ = 0.0;
 void Player::WorldUI_t::reset()
 {
-    for ( auto& tooltip : tooltipsInRange )
+    for (const auto& tooltip : tooltipsInRange )
     {
         if ( bTooltipActiveForPlayer(*tooltip.first) )
         {
@@ -3387,15 +3387,15 @@ bool monsterIsFriendlyForTooltip(const int player, Entity& entity)
         }
     }
 
-    Monster playerRace = stats[player]->type;
-    Monster targetEntityType = entity.getMonsterTypeFromSprite();
+    const Monster playerRace = stats[player]->type;
+    const Monster targetEntityType = entity.getMonsterTypeFromSprite();
     if ( targetEntityType == SHOPKEEPER )
     {
         if ( shopIsMysteriousShopkeeper(&entity) )
         {
             return true;
         }
-        bool hostile = ShopkeeperPlayerHostility.isPlayerEnemy(player);
+        const bool hostile = ShopkeeperPlayerHostility.isPlayerEnemy(player);
         if ( !hostile && !(entity.getStats() && entity.getStats()->getEffectActive(EFF_CONFUSED)) )
         {
             return true;
@@ -3448,7 +3448,7 @@ bool monsterIsFriendlyForTooltip(const int player, Entity& entity)
             {
                 if ( !(*allyTable)[playerRace].empty() )
                 {
-                    for ( auto& ally : (*allyTable)[playerRace] )
+                    for (const auto& ally : (*allyTable)[playerRace] )
                     {
                         if ( ally < 0 || ally >= NUMMONSTERS ) { continue; }
                         if ( ally == targetEntityType )
@@ -3473,7 +3473,7 @@ bool monsterIsFriendlyForTooltip(const int player, Entity& entity)
                 {
                     for ( auto& allyPair : (*allyTable)[playerRace] )
                     {
-                        auto& ally = allyPair.first;
+                        const auto& ally = allyPair.first;
                         if ( ally < 0 || ally >= NUMMONSTERS ) { continue; }
                         if ( ally == targetEntityType )
                         {
@@ -4399,7 +4399,7 @@ void Player::WorldUI_t::setTooltipActive(Entity& tooltip)
         else if ( parent->behavior == &::actWallLock )
         {
             static char buf[256] = "";
-            int wallLockState = parent->wallLockState;
+            const int wallLockState = parent->wallLockState;
             if ( wallLockState == Entity::WallLockStates::LOCK_NO_KEY )
             {
                 snprintf(buf, sizeof(buf), Language::get(6397), Language::get(6383 + parent->wallLockMaterial));
@@ -4463,7 +4463,7 @@ void Player::WorldUI_t::cycleToNextTooltip()
     int index = 0;
     int newIndex = 0;
     bool bFound = false;
-    for ( auto& pair : tooltipsInRange )
+    for (const auto& pair : tooltipsInRange )
     {
         if ( pair.first->getUID() == UID_TOOLTIP_ACTIVE )
         {
@@ -4500,7 +4500,7 @@ void Player::WorldUI_t::cycleToPreviousTooltip()
     int index = 0;
     int newIndex = 0;
     bool bFound = false;
-    for ( auto& pair : tooltipsInRange )
+    for (const auto& pair : tooltipsInRange )
     {
         if ( pair.first->getUID() == UID_TOOLTIP_ACTIVE )
         {
@@ -4784,8 +4784,8 @@ void Player::WorldUI_t::handleTooltips()
             hit.entity = ohitentity;
         }
 
-        bool cycleNext = Input::inputs[player].consumeBinaryToggle("Interact Tooltip Next");
-        bool cyclePrev = Input::inputs[player].consumeBinaryToggle("Interact Tooltip Prev");
+        const bool cycleNext = Input::inputs[player].consumeBinaryToggle("Interact Tooltip Next");
+        const bool cyclePrev = Input::inputs[player].consumeBinaryToggle("Interact Tooltip Prev");
         if ( !bDoingActionHideTooltips && players[player]->worldUI.tooltipsInRange.size() > 1 )
         {
             if ( cyclePrev )
@@ -4806,9 +4806,9 @@ void Player::WorldUI_t::handleTooltips()
             || players[player]->worldUI.tooltipView == TOOLTIP_VIEW_RESCAN)
         {
             players[player]->worldUI.reset();
-            for ( node_t* node = map.worldUI->first; node; node = node->next )
+            for (const node_t* node = map.worldUI->first; node; node = node->next )
             {
-                auto tooltip = static_cast<Entity*>(node->element);
+                const auto tooltip = static_cast<Entity*>(node->element);
                 if ( !tooltip || tooltip->behavior != &actSpriteWorldTooltip )
                 {
                     continue;
@@ -4841,9 +4841,9 @@ void Player::WorldUI_t::handleTooltips()
             }
 
             Entity* closestTooltip = nullptr;
-            Entity* parent = nullptr;
+            const Entity* parent = nullptr;
             real_t dist = 10000.0;
-            for ( node_t* node = map.worldUI->first; node; node = node->next )
+            for (const node_t* node = map.worldUI->first; node; node = node->next )
             {
                 auto tooltip = static_cast<Entity*>(node->element);
                 if ( !tooltip || tooltip->behavior != &actSpriteWorldTooltip )
@@ -4885,7 +4885,7 @@ void Player::WorldUI_t::handleTooltips()
                     if ( selectInteract && parent && closestTooltip && parent->behavior != &actMonster )
                     {
                         // follower interaction - monsters have higher priority than interactibles.
-                        Entity* closestParent = uidToEntity(closestTooltip->parent);
+                        const Entity* closestParent = uidToEntity(closestTooltip->parent);
                         if ( closestParent && closestParent->behavior == &actMonster )
                         {
                             continue;
@@ -4953,7 +4953,7 @@ void Player::WorldUI_t::handleTooltips()
             {
                 currentYaw += 2 * PI;
             }
-            real_t yawDiff = players[player]->worldUI.playerLastYaw - currentYaw;
+            const real_t yawDiff = players[player]->worldUI.playerLastYaw - currentYaw;
             real_t currentPitch = players[player]->camera().vang;
             while ( currentPitch >= 4 * PI )
             {
@@ -4963,12 +4963,12 @@ void Player::WorldUI_t::handleTooltips()
             {
                 currentPitch += 2 * PI;
             }
-            real_t pitchDiff = players[player]->worldUI.playerLastPitch - currentPitch;
+            const real_t pitchDiff = players[player]->worldUI.playerLastPitch - currentPitch;
             if ( inputs.hasController(player) )
             {
-                real_t floatx = inputs.getController(player)->getLeftXPercent(player);
-                real_t floaty = inputs.getController(player)->getLeftYPercent(player);
-                real_t magnitude = sqrt(pow(floaty, 2) + pow(floatx, 2));
+                const real_t floatx = inputs.getController(player)->getLeftXPercent(player);
+                const real_t floaty = inputs.getController(player)->getLeftYPercent(player);
+                const real_t magnitude = sqrt(pow(floaty, 2) + pow(floatx, 2));
                 if ( magnitude > 0.0 )
                 {
                     players[player]->worldUI.tooltipView = TOOLTIP_VIEW_FREE;
@@ -5000,7 +5000,7 @@ void Player::WorldUI_t::handleTooltips()
 
             std::array<const char*, 3> salvageStrings = { Language::get(3999), Language::get(4006), Language::get(4008) };
             bool foundSalvageString = false;
-            for ( auto s : salvageStrings )
+            for (const auto s : salvageStrings )
             {
                 if ( players[player]->worldUI.interactText.find(s) != std::string::npos )
                 {
@@ -5020,7 +5020,7 @@ void Player::WorldUI_t::handleTooltips()
                 continue;
             }
 
-            for ( auto& tooltip : players[player]->worldUI.tooltipsInRange )
+            for (const auto& tooltip : players[player]->worldUI.tooltipsInRange )
             {
                 if ( players[player]->worldUI.bTooltipActiveForPlayer(*tooltip.first) )
                 {
@@ -5030,7 +5030,7 @@ void Player::WorldUI_t::handleTooltips()
                         {
                             std::array<const char*, 2> switchStrings = { Language::get(4018), Language::get(4019) };
                             bool foundSwitchString = false;
-                            for ( auto s : switchStrings )
+                            for (const auto s : switchStrings )
                             {
                                 if ( players[player]->worldUI.interactText.find(s) != std::string::npos )
                                 {
@@ -5077,7 +5077,7 @@ void Player::WorldUI_t::handleTooltips()
                             snprintf(buf, sizeof(buf), Language::get(6399), Language::get(6383 + parent->wallLockMaterial));
                             wallLockStringDeactivate = buf;
 
-                            int wallLockState = parent->wallLockState;
+                            const int wallLockState = parent->wallLockState;
                             if ( wallLockState == Entity::WallLockStates::LOCK_NO_KEY )
                             {
                                 if ( players[player]->worldUI.interactText != wallLockStringNoKey )
@@ -5415,7 +5415,7 @@ const int Player::HUD_t::getActionIconForPlayer(ActionPrompts prompt, std::strin
         {
             if ( stats[player.playernum]->shield )
             {
-                bool hasSpellBook = itemCategory(stats[player.playernum]->shield) == SPELLBOOK;
+                const bool hasSpellBook = itemCategory(stats[player.playernum]->shield) == SPELLBOOK;
                 bool allowCasting = true;
                 bool allowDefending = true;
                 if ( shapeshifted && playerRace != CREATURE_IMP )
@@ -5430,7 +5430,7 @@ const int Player::HUD_t::getActionIconForPlayer(ActionPrompts prompt, std::strin
                 }
                 if ( allowCasting && itemTypeIsFoci(stats[player.playernum]->shield->type) )
                 {
-                    if ( auto spell = getSpellFromID(getSpellIDFromFoci(stats[player.playernum]->shield->type)) )
+                    if (const auto spell = getSpellFromID(getSpellIDFromFoci(stats[player.playernum]->shield->type)) )
                     {
                         return spell->skillID;
                     }
@@ -5447,7 +5447,7 @@ const int Player::HUD_t::getActionIconForPlayer(ActionPrompts prompt, std::strin
                     {
                         promptString = Language::get(4079);
                     }
-                    if ( auto spell = getSpellFromID(getSpellIDFromSpellbook(stats[player.playernum]->shield->type)) )
+                    if (const auto spell = getSpellFromID(getSpellIDFromSpellbook(stats[player.playernum]->shield->type)) )
                     {
                         return spell->skillID;
                     }
@@ -5545,7 +5545,7 @@ const int Player::HUD_t::getActionIconForPlayer(ActionPrompts prompt, std::strin
 
 const int Player::Inventory_t::getPlayerItemInventoryX() const
 {
-    int x = DEFAULT_INVENTORY_SIZEX;
+    const int x = DEFAULT_INVENTORY_SIZEX;
     if ( !stats[player.playernum] || !player.isLocalPlayer() )
     {
         return x;
@@ -5595,7 +5595,7 @@ bool Player::Inventory_t::warpMouseToSelectedItem(Item* snapToItem, Uint32 flags
             player.paperDoll.getCoordinatesFromSlotType(slot, x, y);
         }
 
-        if ( auto slot = getInventorySlotFrame(x, y) )
+        if (const auto slot = getInventorySlotFrame(x, y) )
         {
             if ( !isInteractable )
             {
@@ -5633,12 +5633,12 @@ bool Player::Inventory_t::warpMouseToSelectedSpell(Item* snapToItem, Uint32 flag
         {
             if ( abs(spellPanel.scrollAnimateX - spellPanel.scrollSetpoint) > 0.00001 )
             {
-                int diff = (spellPanel.scrollAnimateX - spellPanel.scrollSetpoint) / getSlotSize();
+                const int diff = (spellPanel.scrollAnimateX - spellPanel.scrollSetpoint) / getSlotSize();
                 y += diff; // if we have a scroll in the works, then manipulate y to pretend where we'd be ahead of time.
             }
         }
 
-        if ( auto slot = getSpellSlotFrame(x, y) )
+        if (const auto slot = getSpellSlotFrame(x, y) )
         {
             if ( !spellPanel.isInteractable )
             {
@@ -5676,12 +5676,12 @@ bool Player::Inventory_t::warpMouseToSelectedChestSlot(Item* snapToItem, Uint32 
         {
             if ( abs(chestGUI.scrollAnimateX - chestGUI.scrollSetpoint) > 0.00001 )
             {
-                int diff = (chestGUI.scrollAnimateX - chestGUI.scrollSetpoint) / getSlotSize();
+                const int diff = (chestGUI.scrollAnimateX - chestGUI.scrollSetpoint) / getSlotSize();
                 y += diff; // if we have a scroll in the works, then manipulate y to pretend where we'd be ahead of time.
             }
         }
 
-        if ( auto slot = getChestSlotFrame(x, y) )
+        if (const auto slot = getChestSlotFrame(x, y) )
         {
             if ( !chestGUI.isInteractable )
             {
@@ -5715,7 +5715,7 @@ bool Player::ShopGUI_t::warpMouseToSelectedShopItem(Item* snapToItem, Uint32 fla
             y = snapToItem->y;
         }
 
-        if ( auto slot = getShopSlotFrame(x, y) )
+        if (const auto slot = getShopSlotFrame(x, y) )
         {
             if ( !isInteractable )
             {
@@ -5776,8 +5776,8 @@ Frame* Player::Inventory_t::getChestSlotFrame(int x, int y) const
     {
         //return chestSlotFrames.at(x + y * 100);
 
-        int key = x + y * 100;
-        auto find = chestSlotFrames.find(key);
+        const int key = x + y * 100;
+        const auto find = chestSlotFrames.find(key);
         return find != chestSlotFrames.end() ? find->second : nullptr;
         //assert(chestSlotFrames.find(key) == chestSlotFrames.end());
     }
@@ -5790,8 +5790,8 @@ Frame* Player::ShopGUI_t::getShopSlotFrame(int x, int y) const
     {
         //return shopSlotFrames.at(x + y * 100);
 
-        int key = x + y * 100;
-        auto find = shopSlotFrames.find(key);
+        const int key = x + y * 100;
+        const auto find = shopSlotFrames.find(key);
         return find != shopSlotFrames.end() ? find->second : nullptr;
         //assert(shopSlotFrames.find(key) == shopSlotFrames.end());
     }
@@ -5826,15 +5826,15 @@ Frame* Player::Inventory_t::getItemSlotFrame(Item* item, int x, int y) const
 
 const bool Player::Inventory_t::bItemInventoryHasFreeSlot() const
 {
-    int numSlots = freeVisibleInventorySlots();
+    const int numSlots = freeVisibleInventorySlots();
     int itemCount = 0;
     if ( !stats[player.playernum] || !player.isLocalPlayer() )
     {
         return false;
     }
-    for ( node_t* node = stats[player.playernum]->inventory.first; node; node = node->next )
+    for (const node_t* node = stats[player.playernum]->inventory.first; node; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( !item )
         {
             continue;
@@ -5889,8 +5889,8 @@ void Player::Magic_t::setQuickCastTomeFromInventory(Item* item)
 {
     if ( item && itemCategory(item) == TOME_SPELL )
     {
-        int spellID = item->getTomeSpellID();
-        if ( auto spell = getSpellFromID(spellID) )
+        const int spellID = item->getTomeSpellID();
+        if (const auto spell = getSpellFromID(spellID) )
         {
             if ( spell->ID > SPELL_NONE )
             {
@@ -6072,7 +6072,7 @@ const Sint32 Inputs::getMouse(const int player, MouseInputs input)
         // add controller virtual mouse if applicable, only in shootmode
         // shootmode has no limits on rotation, but !shootmode is inventory
 
-        bool combineMouseInputs = (players[player]->shootmode && hasController(player)) && !gamePaused && !intro;
+        const bool combineMouseInputs = (players[player]->shootmode && hasController(player)) && !gamePaused && !intro;
 
         switch ( input )
         {
@@ -6130,7 +6130,7 @@ const real_t Inputs::getMouseFloat(const int player, MouseInputs input)
         // add controller virtual mouse if applicable, only in shootmode
         // shootmode has no limits on rotation, but !shootmode is inventory
 
-        bool combineMouseInputs = (players[player]->shootmode && hasController(player)) && !gamePaused && !intro;
+        const bool combineMouseInputs = (players[player]->shootmode && hasController(player)) && !gamePaused && !intro;
 
         switch ( input )
         {
@@ -6407,7 +6407,7 @@ const bool Inputs::bMouseLeft(int player) const
         return true;
     }
 
-    bool hackFromPreviousCode = bControllerInputPressed(player, INJOY_MENU_LEFT_CLICK);
+    const bool hackFromPreviousCode = bControllerInputPressed(player, INJOY_MENU_LEFT_CLICK);
     if ( hackFromPreviousCode && ((!players[player]->shootmode && players[player]->gui_mode == GUI_MODE_NONE) || gamePaused) && rebindaction == -1 )
     {
         return true;
@@ -6598,7 +6598,7 @@ void Inputs::controllerHandleMouse(int player)
 
 SDL_Rect Inputs::getGlyphRectForInput(const int player, bool pressed, const unsigned keyboardImpulse, const unsigned controllerImpulse)
 {
-    SDL_Rect defaultRect{ 0, 0, 0, 0 };
+    const SDL_Rect defaultRect{ 0, 0, 0, 0 };
 
     if ( bPlayerUsingKeyboardControl(player) )
     {
@@ -6610,7 +6610,7 @@ SDL_Rect Inputs::getGlyphRectForInput(const int player, bool pressed, const unsi
         }
     }
 
-    GameController* controller = getController(player);
+    const GameController* controller = getController(player);
     if ( !controller )
     {
         return defaultRect;
@@ -6644,7 +6644,7 @@ SDL_Rect Inputs::getGlyphRectForInput(const int player, bool pressed, const unsi
     }
     else
     {
-        auto but = static_cast<SDL_GameControllerButton>(controllerImpulse);
+        const auto but = static_cast<SDL_GameControllerButton>(controllerImpulse);
         /*if ( but == SDL_CONTROLLER_BUTTON_INVALID && controllerImpulse >= 299 )
       {
           but = static_cast<SDL_GameControllerButton>(controllerImpulse - 301);
@@ -6869,12 +6869,12 @@ float GameController::analogOf(Binding_t& binding)
             SDL_GameController* pad = sdl_device;
             if ( binding.padAxisNegative )
             {
-                float result = std::min(SDL_GameControllerGetAxis(pad, binding.padAxis) / 32768.f, 0.f) * -1.f;
+                const float result = std::min(SDL_GameControllerGetAxis(pad, binding.padAxis) / 32768.f, 0.f) * -1.f;
                 return (fabs(result) > binding.deadzone) ? result : 0.f;
             }
             else 
             {
-                float result = std::max(SDL_GameControllerGetAxis(pad, binding.padAxis) / 32767.f, 0.f);
+                const float result = std::max(SDL_GameControllerGetAxis(pad, binding.padAxis) / 32767.f, 0.f);
                 return (fabs(result) > binding.deadzone) ? result : 0.f;
             }
 #endif
@@ -6910,7 +6910,7 @@ void GameController::updateButtons()
     {
         buttons[i].analog = analogOf(buttons[i]);
 
-        bool oldBinary = buttons[i].binary;
+        const bool oldBinary = buttons[i].binary;
         buttons[i].binary = binaryOf(buttons[i]);
 
         if ( buttons[i].binary )
@@ -6971,7 +6971,7 @@ void GameController::updateAxis()
     {
         axis[i].analog = analogOf(axis[i]);
 
-        bool oldBinary = axis[i].binary;
+        const bool oldBinary = axis[i].binary;
         axis[i].binary = binaryOf(axis[i]);
 
         if ( axis[i].binary )
@@ -7297,7 +7297,7 @@ static const char* getDirectConnectPlayerName(const int playernum)
 
 const char* Player::getAccountName() const
 {
-    auto unknown = "...";
+    const auto unknown = "...";
     if ( directConnect )
     {
         return getDirectConnectPlayerName(playernum);
@@ -7400,8 +7400,8 @@ bool Player::PlayerMechanics_t::itemDegradeRoll(Item* item, int skillID, int* ch
     if ( itemCategory(item) == SPELLBOOK )
     {
         // 10 max base interval
-        auto spellID = getSpellIDFromSpellbook(item->type);
-        if ( auto spell = getSpellFromID(spellID) )
+        const auto spellID = getSpellIDFromSpellbook(item->type);
+        if (const auto spell = getSpellFromID(spellID) )
         {
             interval = (1 + item->status) + stats[player.playernum]->getModifiedProficiency(spell->skillID) / 20;
             if ( item->beatitude < 0
@@ -7483,7 +7483,7 @@ bool Player::PlayerMechanics_t::itemDegradeRoll(Item* item, int skillID, int* ch
                     if ( skillID == PRO_SWORD || skillID == PRO_RANGED || skillID == PRO_AXE
                         || skillID == PRO_MACE || skillID == PRO_POLEARM || skillID == PRO_UNARMED )
                     {
-                        int bonus = (stats[player.playernum]->getModifiedProficiency(skillID) / 20);
+                        const int bonus = (stats[player.playernum]->getModifiedProficiency(skillID) / 20);
                         interval += bonus;
                     }
                 }
@@ -7621,7 +7621,7 @@ int Player::PlayerMechanics_t::baseSpellLevelChance(int skillID)
     {
         return 0;
     }
-    int threshold = 20 + stats[player.playernum]->getProficiency(skillID) / 5; //20-40
+    const int threshold = 20 + stats[player.playernum]->getProficiency(skillID) / 5; //20-40
 
     return counter / threshold;
 }
@@ -7648,7 +7648,7 @@ bool Player::PlayerMechanics_t::updateSustainedSpellEvent(int spellID, real_t va
 
     if ( hitentity && multiplayer != CLIENT )
     {
-        if ( Stat* hitstats = hitentity->getStats() )
+        if (const Stat* hitstats = hitentity->getStats() )
         {
             if ( hitstats->getEffectActive(EFF_STASIS) )
             {
@@ -7669,7 +7669,7 @@ bool Player::PlayerMechanics_t::updateSustainedSpellEvent(int spellID, real_t va
         if ( players[player.playernum]->entity && sustainedSpellIDCounter[spellID] > 8 * 16.0 )
         {
             sustainedSpellIDCounter[spellID] = 0.0;
-            Uint32 flags = spell_t::SPELL_LEVEL_EVENT_DEFAULT;
+            const Uint32 flags = spell_t::SPELL_LEVEL_EVENT_DEFAULT;
             magicOnSpellCastEvent(players[player.playernum]->entity, players[player.playernum]->entity,
                 nullptr, spellID, flags, 1);
             return true;
@@ -7685,7 +7685,7 @@ bool Player::PlayerMechanics_t::updateSustainedSpellEvent(int spellID, real_t va
             sustainedSpellIDCounter[spellID] += value * scaleValue;
             if ( players[player.playernum]->entity && sustainedSpellIDCounter[spellID] > 8 * 16.0 )
             {
-                Uint32 flags = spell_t::SPELL_LEVEL_EVENT_SUSTAIN;
+                const Uint32 flags = spell_t::SPELL_LEVEL_EVENT_SUSTAIN;
                 sustainedSpellIDCounter[spellID] = 0.0;
                 if ( magicOnSpellCastEvent(players[player.playernum]->entity, players[player.playernum]->entity,
                     nullptr, spellID, flags, 1) )
@@ -7718,7 +7718,7 @@ bool Player::PlayerMechanics_t::updateSustainedSpellEvent(int spellID, real_t va
             if ( players[player.playernum]->entity && sustainedSpellIDCounter[spellID] > 8 * 16.0 )
             {
                 sustainedSpellIDCounter[spellID] = 0.0;
-                Uint32 flags = spell_t::SPELL_LEVEL_EVENT_DEFAULT;
+                const Uint32 flags = spell_t::SPELL_LEVEL_EVENT_DEFAULT;
                 if ( magicOnSpellCastEvent(players[player.playernum]->entity, players[player.playernum]->entity,
                     nullptr, spellID, flags, 1) )
                 {
@@ -7732,7 +7732,7 @@ bool Player::PlayerMechanics_t::updateSustainedSpellEvent(int spellID, real_t va
             sustainedSpellIDCounter[spellID] += value * scaleValue;
             if ( players[player.playernum]->entity && sustainedSpellIDCounter[spellID] > 8 * 16.0 )
             {
-                Uint32 flags = spell_t::SPELL_LEVEL_EVENT_SUMMON;
+                const Uint32 flags = spell_t::SPELL_LEVEL_EVENT_SUMMON;
                 if ( magicOnSpellCastEvent(players[player.playernum]->entity, players[player.playernum]->entity,
                     nullptr, spellID, flags, 1) )
                 {
@@ -7764,9 +7764,9 @@ bool Player::PlayerMechanics_t::updateSustainedSpellEvent(int spellID, real_t va
             }
         }
 
-        for ( node_t* node = stats[player.playernum]->magic_effects.first; node; node = node->next )
+        for (const node_t* node = stats[player.playernum]->magic_effects.first; node; node = node->next )
         {
-            if (auto sustainedSpell = static_cast<spell_t*>(node->element) )
+            if (const auto sustainedSpell = static_cast<spell_t*>(node->element) )
             {
                 if ( sustainedSpell->ID == spellID )
                 {
@@ -7813,8 +7813,8 @@ bool Player::PlayerMechanics_t::updateSustainedSpellEvent(int spellID, real_t va
 
 void Player::PlayerMechanics_t::baseSpellClearMP(int skillID)
 {
-    int threshold = 20 + stats[player.playernum]->getProficiency(skillID) / 5;
-    int leftoverCap = threshold * 4;
+    const int threshold = 20 + stats[player.playernum]->getProficiency(skillID) / 5;
+    const int leftoverCap = threshold * 4;
     if ( skillID == PRO_SORCERY )
     {
         baseSpellMPUsedSorcery = std::max(0, baseSpellMPUsedSorcery - 4 * threshold);
@@ -7893,7 +7893,7 @@ void Player::PlayerMechanics_t::ensembleMusicUpdateServer()
                 }
 
                 Uint16 effectData = 0;
-                if ( Uint8 effectStrength = stats[i]->getEffectActive(EFF_ENSEMBLE_DRUM) )
+                if (const Uint8 effectStrength = stats[i]->getEffectActive(EFF_ENSEMBLE_DRUM) )
                 {
                     effectData |= (1 << 0);
                     if ( effectStrength >= Stat::kEnsembleBreakPointTier4 )
@@ -7905,7 +7905,7 @@ void Player::PlayerMechanics_t::ensembleMusicUpdateServer()
                         effectData |= (1 << 6); // beb 1
                     }
                 }
-                if ( Uint8 effectStrength = stats[i]->getEffectActive(EFF_ENSEMBLE_FLUTE) )
+                if (const Uint8 effectStrength = stats[i]->getEffectActive(EFF_ENSEMBLE_FLUTE) )
                 {
                     effectData |= (1 << 1);
                     if ( effectStrength >= Stat::kEnsembleBreakPointTier4 )
@@ -7917,7 +7917,7 @@ void Player::PlayerMechanics_t::ensembleMusicUpdateServer()
                         effectData |= (1 << 6); // beb 1
                     }
                 }
-                if ( Uint8 effectStrength = stats[i]->getEffectActive(EFF_ENSEMBLE_LUTE) )
+                if (const Uint8 effectStrength = stats[i]->getEffectActive(EFF_ENSEMBLE_LUTE) )
                 {
                     effectData |= (1 << 3);
                     if ( effectStrength >= Stat::kEnsembleBreakPointTier4 )
@@ -7929,7 +7929,7 @@ void Player::PlayerMechanics_t::ensembleMusicUpdateServer()
                         effectData |= (1 << 6); // beb 1
                     }
                 }
-                if ( Uint8 effectStrength = stats[i]->getEffectActive(EFF_ENSEMBLE_LYRE) )
+                if (const Uint8 effectStrength = stats[i]->getEffectActive(EFF_ENSEMBLE_LYRE) )
                 {
                     effectData |= (1 << 4);
                     if ( effectStrength >= Stat::kEnsembleBreakPointTier4 )
@@ -7941,7 +7941,7 @@ void Player::PlayerMechanics_t::ensembleMusicUpdateServer()
                         effectData |= (1 << 6); // beb 1
                     }
                 }
-                if ( Uint8 effectStrength = stats[i]->getEffectActive(EFF_ENSEMBLE_HORN) )
+                if (const Uint8 effectStrength = stats[i]->getEffectActive(EFF_ENSEMBLE_HORN) )
                 {
                     effectData |= (1 << 2);
                     if ( effectStrength >= Stat::kEnsembleBreakPointTier4 )
@@ -8608,7 +8608,7 @@ void Player::PlayerMechanics_t::incrementBreakableCounter(Player::PlayerMechanic
         {
             amount += 5;
         }
-        int prevTier = getBreakableCounterTier();
+        const int prevTier = getBreakableCounterTier();
         gremlinBreakableCounter += amount;
         gremlinBreakableCounter = std::min(50, gremlinBreakableCounter);
         if ( getBreakableCounterTier() > prevTier )
@@ -8616,7 +8616,7 @@ void Player::PlayerMechanics_t::incrementBreakableCounter(Player::PlayerMechanic
             if ( player.entity )
             {
                 player.entity->modMP(getBreakableCounterTier() + local_rng.rand() % 2);
-                int duration = (5 + (getBreakableCounterTier() * 5)) * TICKS_PER_SECOND;
+                const int duration = (5 + (getBreakableCounterTier() * 5)) * TICKS_PER_SECOND;
                 player.entity->setEffect(EFF_MP_REGEN, true, stats[player.playernum]->EFFECTS_TIMERS[EFF_MP_REGEN] + duration, false);
                 messagePlayerColor(player.playernum, MESSAGE_HINT, makeColorRGB(0, 255, 0), Language::get(6886));
                 playSoundEntity(player.entity, 168, 128);
@@ -8630,7 +8630,7 @@ void Player::PlayerMechanics_t::updateBreakableCounterServer()
 {
     if ( multiplayer == SERVER && player.playernum > 0 && !player.isLocalPlayer() && !client_disconnected[player.playernum] )
     {
-        int i = player.playernum;
+        const int i = player.playernum;
         strcpy((char*)net_packet->data, "GBRK");
         net_packet->data[4] = std::min(255, gremlinBreakableCounter);
         net_packet->len = 5;
@@ -8672,8 +8672,8 @@ bool Player::PlayerMechanics_t::rollRngProc(Player::PlayerMechanics_t::RngRollTy
     {
         return false;
     }
-    int breakpoint = (chance / 5) * 5;
-    auto find = prng_tables.find(breakpoint);
+    const int breakpoint = (chance / 5) * 5;
+    const auto find = prng_tables.find(breakpoint);
     if ( find != prng_tables.end() )
     {
         real_t c = find->second;
@@ -8684,10 +8684,10 @@ bool Player::PlayerMechanics_t::rollRngProc(Player::PlayerMechanics_t::RngRollTy
         else if ( chance % 5 > 0 )
         {
             // find next breakpoint, lerp
-            auto find2 = prng_tables.find(breakpoint + 5);
+            const auto find2 = prng_tables.find(breakpoint + 5);
             if ( find2 != prng_tables.end() )
             {
-                real_t c2 = find2->second;
+                const real_t c2 = find2->second;
                 c += (c2 - c) * ((chance % 5) / 5.0);
             }
         }
@@ -8695,7 +8695,7 @@ bool Player::PlayerMechanics_t::rollRngProc(Player::PlayerMechanics_t::RngRollTy
         int pityCap = 20;
         if ( chance < 5 )
         {
-            int oneInRoll = 1 / (chance / 100.0);
+            const int oneInRoll = 1 / (chance / 100.0);
             pityCap = std::max(pityCap, oneInRoll);
         }
 
@@ -8709,7 +8709,7 @@ bool Player::PlayerMechanics_t::rollRngProc(Player::PlayerMechanics_t::RngRollTy
             return true;
         }
 
-        real_t roll = (local_rng.rand() % 10000) / 10000.0;
+        const real_t roll = (local_rng.rand() % 10000) / 10000.0;
         if ( roll <= c * (rng_counter + 1) )
         {
             // success

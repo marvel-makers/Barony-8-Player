@@ -77,7 +77,7 @@ void initInsectoid(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // boss variants
 
@@ -98,7 +98,7 @@ void initInsectoid(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
                                                          // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -725,7 +725,7 @@ void insectoidMoveBodyparts(Entity* my, Stat* myStats, double dist)
     Entity* entity = nullptr, *entity2 = nullptr;
     Entity* rightbody = nullptr;
     Entity* weaponarm = nullptr;
-    Entity* torso = nullptr;
+    const Entity* torso = nullptr;
     int bodypart;
     bool wearingring = false;
 
@@ -812,7 +812,7 @@ void insectoidMoveBodyparts(Entity* my, Stat* myStats, double dist)
     }
 
     Entity* shieldarm = nullptr;
-    Entity* additionalLimb = nullptr;
+    const Entity* additionalLimb = nullptr;
     Entity* helmet = nullptr;
 
     //Move bodyparts
@@ -844,9 +844,9 @@ void insectoidMoveBodyparts(Entity* my, Stat* myStats, double dist)
             if ( bodypart == LIMB_HUMANOID_LEFTARM && 
                 (my->monsterSpecialState == INSECTOID_ACID && my->monsterAttack != 0) )
             {
-                Entity* weaponarm = nullptr;
+                const Entity* weaponarm = nullptr;
                 // leftarm follows the right arm during special acid attack
-                node_t* weaponarmNode = list_Node(&my->children, LIMB_HUMANOID_RIGHTARM);
+                const node_t* weaponarmNode = list_Node(&my->children, LIMB_HUMANOID_RIGHTARM);
                 if ( weaponarmNode )
                 {
                     weaponarm = static_cast<Entity*>(weaponarmNode->element);
@@ -871,9 +871,9 @@ void insectoidMoveBodyparts(Entity* my, Stat* myStats, double dist)
                 weaponarm = entity;
                 if ( my->monsterAttack > 0 )
                 {
-                    Entity* rightbody = nullptr;
+                    const Entity* rightbody = nullptr;
                     // set rightbody to left leg.
-                    node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
+                    const node_t* rightbodyNode = list_Node(&my->children, LIMB_HUMANOID_LEFTLEG);
                     if ( rightbodyNode )
                     {
                         rightbody = static_cast<Entity*>(rightbodyNode->element);
@@ -1147,10 +1147,10 @@ void insectoidMoveBodyparts(Entity* my, Stat* myStats, double dist)
             // right arm
             case LIMB_HUMANOID_RIGHTARM:
             {
-                node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
+                const node_t* weaponNode = list_Node(&my->children, LIMB_HUMANOID_WEAPON);
                 if ( weaponNode )
                 {
-                    auto weapon = static_cast<Entity*>(weaponNode->element);
+                    const auto weapon = static_cast<Entity*>(weaponNode->element);
                     if ( MONSTER_ARMBENDED || (weapon->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT) )
                     {
                         // if weapon invisible and I'm not attacking, relax arm.
@@ -1176,10 +1176,10 @@ void insectoidMoveBodyparts(Entity* my, Stat* myStats, double dist)
             case LIMB_HUMANOID_LEFTARM:
             {
                 shieldarm = entity;
-                node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
+                const node_t* shieldNode = list_Node(&my->children, LIMB_HUMANOID_SHIELD);
                 if ( shieldNode )
                 {
-                    auto shield = static_cast<Entity*>(shieldNode->element);
+                    const auto shield = static_cast<Entity*>(shieldNode->element);
                     if ( shield->flags[INVISIBLE] && my->monsterState == MONSTER_STATE_WAIT )
                     {
                         entity->focalx = limbs[INSECTOID][5][0]; // 0
@@ -1622,10 +1622,10 @@ void insectoidMoveBodyparts(Entity* my, Stat* myStats, double dist)
         }
     }
     // rotate shield a bit
-    node_t* shieldNode = list_Node(&my->children, 8);
+    const node_t* shieldNode = list_Node(&my->children, 8);
     if ( shieldNode )
     {
-        auto shieldEntity = static_cast<Entity*>(shieldNode->element);
+        const auto shieldEntity = static_cast<Entity*>(shieldNode->element);
         if ( shieldEntity->sprite != items[TOOL_TORCH].index && shieldEntity->sprite != items[TOOL_LANTERN].index && shieldEntity->sprite != items[TOOL_CRYSTALSHARD].index )
         {
             shieldEntity->yaw -= PI / 6;
@@ -1647,7 +1647,7 @@ void insectoidMoveBodyparts(Entity* my, Stat* myStats, double dist)
 
 bool Entity::insectoidCanWieldItem(const Item& item) const
 {
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( !myStats )
     {
         return false;
@@ -1663,7 +1663,7 @@ bool Entity::insectoidCanWieldItem(const Item& item) const
             return true;
         case ARMOR:
         { //Little baby compiler stop whining, wah wah.
-            int equipType = checkEquipType(&item);
+            const int equipType = checkEquipType(&item);
             if ( equipType == TYPE_HAT || equipType == TYPE_HELM )
             {
                 return false; //No can wear hats, because antennae.
@@ -1719,7 +1719,7 @@ void Entity::insectoidChooseWeapon(const Entity* target, double dist)
             node_t* node = itemNodeInInventory(myStats, -1, THROWN);
             if ( node != nullptr )
             {
-                bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, node, true, true);
+                const bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, node, true, true);
                 if ( swapped )
                 {
                     if ( myStats->weapon->count > 1 )
@@ -1736,7 +1736,7 @@ void Entity::insectoidChooseWeapon(const Entity* target, double dist)
         }
     }
 
-    bool inMeleeRange = monsterInMeleeRange(target, dist);
+    const bool inMeleeRange = monsterInMeleeRange(target, dist);
 
     if ( inMeleeRange )
     {
@@ -1749,7 +1749,7 @@ void Entity::insectoidChooseWeapon(const Entity* target, double dist)
                 return; //Resort to fists.
             }
 
-            bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, weaponNode, false, false);
+            const bool swapped = swapMonsterWeaponWithInventoryItem(this, myStats, weaponNode, false, false);
             if ( !swapped )
             {
                 //Don't return so that monsters will at least equip ranged weapons in melee range if they don't have anything else.

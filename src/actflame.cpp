@@ -56,7 +56,7 @@ void actFlame(Entity* my)
             FLAME_ANG -= PI * 2.0;
         }
         FLAME_VELZ = -sin(FLAME_ANG) * 0.02;
-        Entity* parent = uidToEntity(my->parent);
+        const Entity* parent = uidToEntity(my->parent);
         if ( parent )
         {
             my->x += parent->x - FLAME_DIFFX;
@@ -155,8 +155,8 @@ Entity* spawnFlame(Entity* parentent, Sint32 sprite )
             && !parentent->flags[OVERDRAW]
             && !parentent->flags[GENIUS] )
         {
-            int x = parentent->x / 16.0;
-            int y = parentent->y / 16.0;
+            const int x = parentent->x / 16.0;
+            const int y = parentent->y / 16.0;
             if ( x >= 0 && x < map.width && y >= 0 && y < map.height )
             {
                 bool anyVismap = false;
@@ -196,7 +196,7 @@ Entity* spawnFlame(Entity* parentent, Sint32 sprite )
     entity->yaw = (local_rng.rand() % 360) * PI / 180.0;
     entity->pitch = (local_rng.rand() % 360) * PI / 180.0;
     entity->roll = (local_rng.rand() % 360) * PI / 180.0;
-    double vel = (local_rng.rand() % 10) / 10.0;
+    const double vel = (local_rng.rand() % 10) / 10.0;
     if (flickerLights)
     {
         entity->skill[0] = 5; // life-span

@@ -26,7 +26,7 @@
 int getSlimeFrame(std::string color, int frame)
 {
     auto& data = MonsterData_t::monsterDataEntries[SLIME];
-    auto find = data.keyToSpriteLookup.find(color);
+    const auto find = data.keyToSpriteLookup.find(color);
     if ( find == data.keyToSpriteLookup.end() ) {
         if ( frame >= data.keyToSpriteLookup["slime green"].size() )
         {
@@ -100,9 +100,9 @@ void slimeSetType(Entity* my, Stat* myStats, bool sink, BaronyRNG* rng)
         }
     }
 
-    int x = my->x / 16;
-    int y = my->y / 16;
-    int mapIndex = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
+    const int x = my->x / 16;
+    const int y = my->y / 16;
+    const int mapIndex = (y)*MAP_LAYERS + (x)*MAP_LAYERS * map.height;
     if ( x > 0 && x < map.width && y > 0 && y < map.height )
     {
         if ( map.tiles[mapIndex] )
@@ -146,7 +146,7 @@ void slimeSetType(Entity* my, Stat* myStats, bool sink, BaronyRNG* rng)
         }
     }
 
-    int roll = rng ? rng->rand() % possibleTypes.size() : local_rng.rand() % possibleTypes.size();
+    const int roll = rng ? rng->rand() % possibleTypes.size() : local_rng.rand() % possibleTypes.size();
     myStats->setAttribute("slime_type", possibleTypes[roll].first);
 }
 
@@ -159,8 +159,8 @@ void slimeSetStats(Entity& my, Stat& myStats)
     myStats.PER = -2;
     myStats.LVL = 4;
 
-    auto color = MonsterData_t::getKeyFromSprite(my.sprite, SLIME);
-    int level = std::max(currentlevel, 0) / LENGTH_OF_LEVEL_REGION;
+    const auto color = MonsterData_t::getKeyFromSprite(my.sprite, SLIME);
+    const int level = std::max(currentlevel, 0) / LENGTH_OF_LEVEL_REGION;
     myStats.LVL += 3 * level;
     myStats.STR += 3 * level;
     myStats.HP += 20 * level;
@@ -255,7 +255,7 @@ void initSlime(Entity* my, Stat* myStats)
             setRandomMonsterStats(myStats, rng);
 
             // generate 6 items max, less if there are any forced items from boss variants
-            int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
+            const int customItemsToGenerate = ITEM_CUSTOM_SLOT_LIMIT;
 
             // boss variants
 
@@ -271,7 +271,7 @@ void initSlime(Entity* my, Stat* myStats)
             int customItems = countCustomItems(myStats); //max limit of 6 custom items per entity.
 
                                                          // count any inventory items set to default in edtior
-            int defaultItems = countDefaultItems(myStats);
+            const int defaultItems = countDefaultItems(myStats);
 
             my->setHardcoreStats(*myStats);
 
@@ -298,8 +298,8 @@ void slimeSprayAttack(Entity* my)
 {
     if ( !my ) { return; }
 
-    auto color = MonsterData_t::getKeyFromSprite(my->sprite, SLIME);
-    Entity* spellTimer = nullptr;
+    const auto color = MonsterData_t::getKeyFromSprite(my->sprite, SLIME);
+    const Entity* spellTimer = nullptr;
     if ( multiplayer == CLIENT )
     {
         int particle = 180;
@@ -368,7 +368,7 @@ void slimeSprayAttack(Entity* my)
 void slimeAnimate(Entity* my, Stat* myStats, double dist)
 {
     //const bool green = my->sprite == 210 || my->sprite >= 1113;
-    auto color = MonsterData_t::getKeyFromSprite(my->sprite, SLIME);
+    const auto color = MonsterData_t::getKeyFromSprite(my->sprite, SLIME);
 
     if ( multiplayer == CLIENT )
     {
@@ -644,9 +644,9 @@ void slimeAnimate(Entity* my, Stat* myStats, double dist)
     bool swimming = false;
     if ( !isLevitating(myStats) )
     {
-        int x = std::min(std::max<unsigned int>(0, floor(my->x / 16)), map.width - 1);
-        int y = std::min(std::max<unsigned int>(0, floor(my->y / 16)), map.height - 1);
-        int index = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
+        const int x = std::min(std::max<unsigned int>(0, floor(my->x / 16)), map.width - 1);
+        const int y = std::min(std::max<unsigned int>(0, floor(my->y / 16)), map.height - 1);
+        const int index = y * MAP_LAYERS + x * MAP_LAYERS * map.height;
         if ( map.tiles[index] )
         {
             if ( swimmingtiles[map.tiles[index]]
@@ -673,7 +673,7 @@ void slimeDie(Entity* my)
         serverSpawnGibForClient(gib);
     }
 
-    auto color = MonsterData_t::getKeyFromSprite(my->sprite, SLIME);
+    const auto color = MonsterData_t::getKeyFromSprite(my->sprite, SLIME);
     if ( color == "slime green" )
     {
         // green blood
@@ -710,7 +710,7 @@ void slimeDie(Entity* my)
 
 void Entity::slimeChooseWeapon(const Entity* target, double dist)
 {
-    Stat* myStats = getStats();
+    const Stat* myStats = getStats();
     if ( !myStats )
     {
         return;
@@ -726,7 +726,7 @@ void Entity::slimeChooseWeapon(const Entity* target, double dist)
         && (monsterAttack == 0 || ((monsterAttack == 1) && monsterAttackTime >= 25))
         && dist < 48 )
     {
-        Stat* targetStats = target->getStats();
+        const Stat* targetStats = target->getStats();
         if ( !targetStats )
         {
             return;

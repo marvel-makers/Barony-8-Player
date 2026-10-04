@@ -333,7 +333,7 @@ void actCauldron(Entity* my)
             {
                 if ( cauldronInteracting != 0 )
                 {
-                    if ( Entity* interacting = uidToEntity(cauldronInteracting) )
+                    if (const Entity* interacting = uidToEntity(cauldronInteracting) )
                     {
                         if ( interacting != players[i]->entity )
                         {
@@ -528,7 +528,7 @@ void actWorkbench(Entity* my)
             {
                 if ( workbenchInteracting != 0 )
                 {
-                    if ( Entity* interacting = uidToEntity(workbenchInteracting) )
+                    if (const Entity* interacting = uidToEntity(workbenchInteracting) )
                     {
                         if ( interacting != players[i]->entity )
                         {
@@ -631,7 +631,7 @@ void actMailbox(Entity* my)
             {
                 if ( mailboxInteracting != 0 )
                 {
-                    if ( Entity* interacting = uidToEntity(mailboxInteracting) )
+                    if (const Entity* interacting = uidToEntity(mailboxInteracting) )
                     {
                         if ( interacting != players[i]->entity )
                         {

@@ -57,7 +57,7 @@ bool getShopFreeSlot(const int player, list_t* shopInventory, Item* itemToSell, 
     xout = Player::ShopGUI_t::MAX_SHOP_X;
     yout = Player::ShopGUI_t::MAX_SHOP_Y;
 
-    list_t* shopkeeperInv = nullptr;
+    const list_t* shopkeeperInv = nullptr;
     if ( player >= 0 )
     {
         shopkeeperInv = shopInv[player];
@@ -81,9 +81,9 @@ bool getShopFreeSlot(const int player, list_t* shopInventory, Item* itemToSell, 
     }
     if ( lookForStackableItem )
     {
-        for ( node_t* node = shopkeeperInv->first; node != nullptr; node = node->next )
+        for (const node_t* node = shopkeeperInv->first; node != nullptr; node = node->next )
         {
-            auto item = static_cast<Item*>(node->element);
+            const auto item = static_cast<Item*>(node->element);
             if ( item )
             {
                 if ( hideItemFromShopView(*item) )
@@ -106,9 +106,9 @@ bool getShopFreeSlot(const int player, list_t* shopInventory, Item* itemToSell, 
     }
 
     std::unordered_set<int> takenSlots;
-    for ( node_t* node = shopkeeperInv->first; node != nullptr; node = node->next )
+    for (const node_t* node = shopkeeperInv->first; node != nullptr; node = node->next )
     {
-        auto item = static_cast<Item*>(node->element);
+        const auto item = static_cast<Item*>(node->element);
         if ( item )
         {
             if ( hideItemFromShopView(*item) )
@@ -169,23 +169,23 @@ void updateShopWindow(const int player)
 
     if ( multiplayer != CLIENT && players[player]->isLocalPlayer() )
     {
-        Entity* entity = uidToEntity(shopkeeper[player]);
+        const Entity* entity = uidToEntity(shopkeeper[player]);
         if (entity)
         {
-            Stat* stats = entity->getStats();
+            const Stat* stats = entity->getStats();
             shopkeepername[player] = stats->name;
         }
     }
 
-    bool mysteriousShopkeeper = (shopkeepertype[player] == 10);
+    const bool mysteriousShopkeeper = (shopkeepertype[player] == 10);
     bool mysteriousShopkeeperGreenOrb = false;
     bool mysteriousShopkeeperBlueOrb = false;
     bool mysteriousShopkeeperRedOrb = false;
     if ( mysteriousShopkeeper )
     {
-        for ( node_t* node = shopInv[player]->first; node != nullptr; node = node->next )
+        for (const node_t* node = shopInv[player]->first; node != nullptr; node = node->next )
         {
-            auto item = static_cast<Item*>(node->element);
+            const auto item = static_cast<Item*>(node->element);
             if ( item )
             {
                 if ( item->type == ARTIFACT_ORB_BLUE )
@@ -205,9 +205,9 @@ void updateShopWindow(const int player)
                 }
             }
         }
-        for ( node_t* node = shopInv[player]->first; node != nullptr; node = node->next )
+        for (const node_t* node = shopInv[player]->first; node != nullptr; node = node->next )
         {
-            auto item = static_cast<Item*>(node->element);
+            const auto item = static_cast<Item*>(node->element);
             if ( item )
             {
                 if ( shopkeeperMysteriousItems[ARTIFACT_ORB_BLUE].find(item->type) != shopkeeperMysteriousItems[ARTIFACT_ORB_BLUE].end() )
@@ -301,7 +301,7 @@ void shopChangeGoldEvent(const int player, Sint32 amount)
     }
 
     bool addedToCurrentTotal = false;
-    bool isAnimatingValue = ((ticks - players[player]->shopGUI.animGoldStartTicks) > TICKS_PER_SECOND / 2);
+    const bool isAnimatingValue = ((ticks - players[player]->shopGUI.animGoldStartTicks) > TICKS_PER_SECOND / 2);
     if ( amount < 0 )
     {
         if ( players[player]->shopGUI.playerChangeGold < 0 
@@ -356,7 +356,7 @@ void Player::ShopGUI_t::openShop()
 {
     if ( shopFrame )
     {
-        bool wasDisabled = shopFrame->isDisabled();
+        const bool wasDisabled = shopFrame->isDisabled();
         shopFrame->setDisabled(false);
         if ( wasDisabled )
         {
@@ -376,21 +376,21 @@ void Player::ShopGUI_t::openShop()
         player.gui_mode = GUI_MODE_SHOP;
         bOpen = true;
 
-        bool flipped = player.inventoryUI.inventoryPanelJustify == Player::PANEL_JUSTIFY_RIGHT;
+        const bool flipped = player.inventoryUI.inventoryPanelJustify == Player::PANEL_JUSTIFY_RIGHT;
 
-        if ( auto bgFrame = shopFrame->findFrame("shop base") )
+        if (const auto bgFrame = shopFrame->findFrame("shop base") )
         {
-            if ( auto shopName = bgFrame->findField("shop name") )
+            if (const auto shopName = bgFrame->findField("shop name") )
             {
                 if ( shopkeepertype[player.playernum] == 10 ) // mysterious shopkeep
                 {
                     shopName->setText(Language::get(4129)); // '???'s'
 
                     // opening shop triggers shopkeep compendium reveal
-                    auto find = Compendium_t::Events_t::monsterUniqueIDLookup.find("mysterious shop");
+                    const auto find = Compendium_t::Events_t::monsterUniqueIDLookup.find("mysterious shop");
                     if ( find != Compendium_t::Events_t::monsterUniqueIDLookup.end() )
                     {
-                        auto find2 = Compendium_t::Events_t::monsterIDToString.find(Compendium_t::Events_t::kEventMonsterOffset + find->second);
+                        const auto find2 = Compendium_t::Events_t::monsterIDToString.find(Compendium_t::Events_t::kEventMonsterOffset + find->second);
                         if ( find2 != Compendium_t::Events_t::monsterIDToString.end() )
                         {
                             auto& unlockStatus = Compendium_t::CompendiumMonsters_t::unlocks[find2->second];
@@ -408,7 +408,7 @@ void Player::ShopGUI_t::openShop()
                     shopName->setText(buf);
 
                     // opening shop triggers shopkeep compendium reveal
-                    auto find = Compendium_t::Events_t::monsterIDToString.find(Compendium_t::Events_t::kEventMonsterOffset + SHOPKEEPER);
+                    const auto find = Compendium_t::Events_t::monsterIDToString.find(Compendium_t::Events_t::kEventMonsterOffset + SHOPKEEPER);
                     if ( find != Compendium_t::Events_t::monsterIDToString.end() )
                     {
                         auto& unlockStatus = Compendium_t::CompendiumMonsters_t::unlocks[find->second];
@@ -430,7 +430,7 @@ void Player::ShopGUI_t::openShop()
                 }
                 shopName->setSize(pos);
             }
-            if ( auto shopType = bgFrame->findField("shop type") )
+            if (const auto shopType = bgFrame->findField("shop type") )
             {
                 SDL_Rect pos = shopType->getSize();
                 if ( flipped )
@@ -472,7 +472,7 @@ void Player::ShopGUI_t::closeShop()
     animx = 0.0;
     animTooltip = 0.0;
     isInteractable = false;
-    bool wasOpen = bOpen;
+    const bool wasOpen = bOpen;
     bOpen = false;
     bFirstTimeSnapCursor = false;
     if ( wasOpen )
@@ -505,11 +505,11 @@ void Player::ShopGUI_t::closeShop()
 
     if ( shopFrame )
     {
-        if ( auto bgFrame = shopFrame->findFrame("shop base") )
+        if (const auto bgFrame = shopFrame->findFrame("shop base") )
         {
-            if ( auto discountFrame = bgFrame->findFrame("discount frame") )
+            if (const auto discountFrame = bgFrame->findFrame("discount frame") )
             {
-                if ( auto discountValue = discountFrame->findField("discount") )
+                if (const auto discountValue = discountFrame->findField("discount") )
                 {
                     discountValue->setText("");
                 }
@@ -548,23 +548,23 @@ int Player::ShopGUI_t::heightOffsetWhenNotCompact = 172;
 
 void updatePlayerGold(const int player, const int flipped)
 {
-    auto shopFrame = players[player]->shopGUI.shopFrame;
+    const auto shopFrame = players[player]->shopGUI.shopFrame;
     if ( !shopFrame )
     {
         return;
     }
 
-    auto bgFrame = shopFrame->findFrame("shop base");
+    const auto bgFrame = shopFrame->findFrame("shop base");
     assert(bgFrame);
-    auto currentGoldText = bgFrame->findField("current gold");
-    auto changeGoldText = bgFrame->findField("change gold");
-    auto currentGoldLabelText = bgFrame->findField("current gold label");
+    const auto currentGoldText = bgFrame->findField("current gold");
+    const auto changeGoldText = bgFrame->findField("change gold");
+    const auto currentGoldLabelText = bgFrame->findField("current gold label");
     if ( flipped )
     {
         std::string s = Language::get(4119);
         if ( flipped )
         {
-            size_t found = s.find(':'); // remove colon as text to right of box
+            const size_t found = s.find(':'); // remove colon as text to right of box
             if ( found != std::string::npos )
             {
                 s.erase(found);
@@ -584,14 +584,14 @@ void updatePlayerGold(const int player, const int flipped)
     bool pauseChangeGoldAnim = false;
 
     real_t& animNoDeal = players[player]->shopGUI.animNoDeal;
-    Uint32& animNoDealTicks = players[player]->shopGUI.animNoDealTicks;
+    const Uint32& animNoDealTicks = players[player]->shopGUI.animNoDealTicks;
 
     if ( players[player]->shopGUI.playerChangeGold != 0 )
     {
         if ( ((ticks - players[player]->shopGUI.animGoldStartTicks) > TICKS_PER_SECOND / 2) )
         {
             const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-            real_t setpointDiffX = fpsScale * std::max(.1, (animGold)) / 10.0;
+            const real_t setpointDiffX = fpsScale * std::max(.1, (animGold)) / 10.0;
             animGold -= setpointDiffX;
             animGold = std::max(0.0, animGold);
 
@@ -605,7 +605,7 @@ void updatePlayerGold(const int player, const int flipped)
             pauseChangeGoldAnim = true;
 
             const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-            real_t setpointDiffX = fpsScale * std::max(.01, (1.0 - animGold)) / 10.0;
+            const real_t setpointDiffX = fpsScale * std::max(.01, (1.0 - animGold)) / 10.0;
             animGold += setpointDiffX;
             animGold = std::min(1.0, animGold);
 
@@ -635,7 +635,7 @@ void updatePlayerGold(const int player, const int flipped)
     { 
         // constant decay for animation
         const real_t fpsScale = getFPSScale(50.0); // ported from 50Hz
-        real_t setpointDiffX = fpsScale * 1.0 / 25.0;
+        const real_t setpointDiffX = fpsScale * 1.0 / 25.0;
         animNoDeal -= setpointDiffX;
         animNoDeal = std::max(0.0, animNoDeal);
 
@@ -679,7 +679,7 @@ void updatePlayerGold(const int player, const int flipped)
             }
             s += std::to_string(displayedChangeGold);
             changeGoldText->setText(s.c_str());
-            Sint32 displayedCurrentGold = players[player]->shopGUI.playerCurrentGold 
+            const Sint32 displayedCurrentGold = players[player]->shopGUI.playerCurrentGold 
                 + (players[player]->shopGUI.playerChangeGold - displayedChangeGold);
             currentGoldText->setText(std::to_string(displayedCurrentGold).c_str());
         }
@@ -687,7 +687,7 @@ void updatePlayerGold(const int player, const int flipped)
     
     if ( !showChangedGold )
     {
-        Sint32 displayedChangeGold = 0;
+        const Sint32 displayedChangeGold = 0;
         changeGoldText->setDisabled(true);
         changeGoldText->setText(std::to_string(displayedChangeGold).c_str());
         currentGoldText->setText(std::to_string(stats[player]->GOLD).c_str());
@@ -696,33 +696,33 @@ void updatePlayerGold(const int player, const int flipped)
 
 void updateShopGUIChatter(const int player, const bool flipped)
 {
-    auto shopFrame = players[player]->shopGUI.shopFrame;
+    const auto shopFrame = players[player]->shopGUI.shopFrame;
     if ( !shopFrame )
     {
         return;
     }
 
-    auto bgFrame = shopFrame->findFrame("shop base");
+    const auto bgFrame = shopFrame->findFrame("shop base");
     assert(bgFrame);
-    auto chatWindow = bgFrame->findFrame("chatter");
+    const auto chatWindow = bgFrame->findFrame("chatter");
     assert(chatWindow);
 
-    auto tl = chatWindow->findImage("top left img");
-    auto tm = chatWindow->findImage("top img");
-    auto tr = chatWindow->findImage("top right img");
+    const auto tl = chatWindow->findImage("top left img");
+    const auto tm = chatWindow->findImage("top img");
+    const auto tr = chatWindow->findImage("top right img");
 
-    auto ml = chatWindow->findImage("middle left img");
-    auto mm1 = chatWindow->findImage("middle 1 img");
-    auto mm2 = chatWindow->findImage("middle 2 img");
-    auto mr = chatWindow->findImage("middle right img");
+    const auto ml = chatWindow->findImage("middle left img");
+    const auto mm1 = chatWindow->findImage("middle 1 img");
+    const auto mm2 = chatWindow->findImage("middle 2 img");
+    const auto mr = chatWindow->findImage("middle right img");
 
-    auto bl = chatWindow->findImage("bottom left img");
-    auto bm = chatWindow->findImage("bottom img");
-    auto br = chatWindow->findImage("bottom right img");
+    const auto bl = chatWindow->findImage("bottom left img");
+    const auto bm = chatWindow->findImage("bottom img");
+    const auto br = chatWindow->findImage("bottom right img");
 
-    auto pointer = chatWindow->findImage("pointer img");
+    const auto pointer = chatWindow->findImage("pointer img");
 
-    auto shopkeeperImg = bgFrame->findImage("shopkeeper img");
+    const auto shopkeeperImg = bgFrame->findImage("shopkeeper img");
     if ( shopkeepertype[player] == 10 )
     {
         shopkeeperImg->path = "images/ui/Shop/shopkeeper2.png";
@@ -740,8 +740,8 @@ void updateShopGUIChatter(const int player, const bool flipped)
         shopkeeperImg->pos.x = shopFrame->getSize().w - 14 - 80;
     }
 
-    int width = 288;
-    int height = 200;
+    const int width = 288;
+    const int height = 200;
     const int pointerHeightAddition = 10;
     SDL_Rect chatPos{ bgFrame->getSize().w - 12 - width, 88, width, height + pointerHeightAddition };
     if ( flipped )
@@ -765,7 +765,7 @@ void updateShopGUIChatter(const int player, const bool flipped)
     if ( players[player]->shopGUI.chatStrFull.size() > 1 )
     {
         chatWindow->setDisabled(false);
-        auto chatText = chatWindow->findField("chat body");
+        const auto chatText = chatWindow->findField("chat body");
         if ( players[player]->shopGUI.chatTicks - ticks > 1 )
         {
             players[player]->shopGUI.chatTicks = ticks;
@@ -776,7 +776,7 @@ void updateShopGUIChatter(const int player, const bool flipped)
             chatText->setSize(textPos);
 
             size_t& currentLen = players[player]->shopGUI.chatStringLength;
-            size_t fullLen = players[player]->shopGUI.chatStrFull.size();
+            const size_t fullLen = players[player]->shopGUI.chatStrFull.size();
 
             if ( currentLen < fullLen )
             {
@@ -795,7 +795,7 @@ void updateShopGUIChatter(const int player, const bool flipped)
                 currentLen = fullLen;
             }
 
-            if ( Font* actualFont = Font::get(chatText->getFont()) )
+            if (const Font* actualFont = Font::get(chatText->getFont()) )
             {
                 textPos.h = std::min(textPos.h, chatText->getNumTextLines() * actualFont->height(true) + 12);
                 chatText->setSize(textPos);
@@ -871,12 +871,12 @@ void Player::ShopGUI_t::setItemDisplayNameAndPrice(Item* item)
     {
         clearItemDisplayed();
     }
-    auto bgFrame = shopFrame->findFrame("shop base");
+    const auto bgFrame = shopFrame->findFrame("shop base");
     Field* buyOrSellPrompt = nullptr;
     Frame::image_t* orbImg = nullptr;
     if ( bgFrame )
     {
-        auto buyTooltipFrame = shopFrame->findFrame("buy tooltip frame");
+        const auto buyTooltipFrame = shopFrame->findFrame("buy tooltip frame");
         orbImg = buyTooltipFrame->findImage("orb img");
         orbImg->disabled = true;
         buyOrSellPrompt = buyTooltipFrame->findField("buy prompt txt");
@@ -952,7 +952,7 @@ void Player::ShopGUI_t::setItemDisplayNameAndPrice(Item* item)
             {
                 if ( orbCategories.second.find(item->type) != orbCategories.second.end() )
                 {
-                    ItemType oldType = item->type;
+                    const ItemType oldType = item->type;
                     item->type = static_cast<ItemType>(orbCategories.first);
                     if ( orbImg )
                     {
@@ -1017,9 +1017,9 @@ void Player::ShopGUI_t::setItemDisplayNameAndPrice(Item* item)
 
     if ( bgFrame )
     {
-        auto buyTooltipFrame = shopFrame->findFrame("buy tooltip frame");
-        auto itemSlotFrame = buyTooltipFrame->findFrame("item slot frame");
-        int oldQty = item->count;
+        const auto buyTooltipFrame = shopFrame->findFrame("buy tooltip frame");
+        const auto itemSlotFrame = buyTooltipFrame->findFrame("item slot frame");
+        const int oldQty = item->count;
         if ( !itemTypeIsQuiver(item->type) )
         {
             item->count = 1;
@@ -1807,7 +1807,7 @@ const bool Player::ShopGUI_t::isItemFromShop(Item* item) const
         return false;
     }
 
-    Entity* shopkeeperEntity = uidToEntity(shopkeeper[player.playernum]);
+    const Entity* shopkeeperEntity = uidToEntity(shopkeeper[player.playernum]);
     if ( !shopkeeperEntity )
     {
         return false;
@@ -1827,7 +1827,7 @@ const bool Player::ShopGUI_t::isItemSelectedFromShop(Item* item) const
         return false;
     }
 
-    Entity* shopkeeperEntity = uidToEntity(shopkeeper[player.playernum]);
+    const Entity* shopkeeperEntity = uidToEntity(shopkeeper[player.playernum]);
     if ( !shopkeeperEntity )
     {
         return false;
@@ -1855,7 +1855,7 @@ const bool Player::ShopGUI_t::isItemSelectedToSellToShop(Item* item) const
         return false;
     }
 
-    Entity* shopkeeperEntity = uidToEntity(shopkeeper[player.playernum]);
+    const Entity* shopkeeperEntity = uidToEntity(shopkeeper[player.playernum]);
     if ( !shopkeeperEntity )
     {
         return false;
